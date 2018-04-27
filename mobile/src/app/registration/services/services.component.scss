@@ -1,0 +1,131 @@
+page-services {
+  // p = page
+  // -asd = first letter of each word (in this case just -s)
+  .p-s{
+    &-wp{
+      max-width: 557px;
+      margin: 0 auto;
+    }
+
+
+    &-def{
+      padding: pxtoem(45) 0 0;
+
+      @media ($phone) {
+        padding: pxtoem(40) 0 0;
+      }
+
+      &-title{
+        font-size: pxtoem(36);
+        margin-bottom: pxtoem(18);
+        color: color($colors, dark);
+
+        @media ($phone) {
+          font-size: pxtoem(29);
+        }
+
+        &-a{
+          font-size: pxtoem(20);
+          margin-bottom: pxtoem(27);
+          color: color($colors, dark);
+          opacity: 0.4;
+
+          @media ($phone) {
+            margin-bottom: pxtoem(17);
+          }
+        }
+      }
+
+      &-box{
+        position: relative;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: pxtoem(50);
+
+        @media ($phone) {
+          margin-bottom: pxtoem(40);
+        }
+
+        &-item{
+          position: relative;
+          z-index: 1;
+          width: 46%;
+          min-height: pxtoem(420);
+          border-radius: 7px;
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-end;
+          color: #ffffff;
+          background: #000000;
+          background-size: cover;
+          background-repeat: no-repeat;
+          background-position: center;
+
+          @media ($phone) {
+            min-height: pxtoem(350);
+          }
+
+          &-text{
+            font-size: pxtoem(24);
+            padding: 0 0 pxtoem(36);
+            text-align: center;
+
+            @media ($phone) {
+              font-size: pxtoem(20);
+              padding: 0 0 pxtoem(34);
+            }
+          }
+
+          &-icon{
+            position: absolute;
+            left: 50%;
+            top: 43%;
+            transform: translate(-50%, -50%);
+            font-size: pxtoem(144);
+          }
+
+          &.violet{
+            background: transparent;
+            border: 2px solid #e6dce9;
+            color: #000000;
+          }
+        }
+      }
+    }
+
+
+    &-list{
+      margin-bottom: pxtoem(40);
+
+      &-empty{
+        text-align: center;
+
+        &-icon{
+          font-size: pxtoem(140);
+
+          @media ($phone) {
+            font-size: pxtoem(110);
+          }
+        }
+        &-text{
+          font-size: pxtoem(34);
+          margin-bottom: pxtoem(8);
+
+          @media ($phone) {
+            font-size: pxtoem(27);
+          }
+
+          &-a{
+            font-size: pxtoem(24);
+            margin-bottom: pxtoem(20);
+
+            @media ($phone) {
+              font-size: pxtoem(20);
+            }
+          }
+        }
+      }
+    }
+  }
+}

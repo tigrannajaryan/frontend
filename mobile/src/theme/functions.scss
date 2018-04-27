@@ -11,3 +11,9 @@ $browser-context: 16;
 
   @return $pixels / $context * 1em;
 }
+
+
+@function pxtorem($size) {
+  $remSize: $size / #{$browser-context};
+  @return #{$remSize}rem;
+}

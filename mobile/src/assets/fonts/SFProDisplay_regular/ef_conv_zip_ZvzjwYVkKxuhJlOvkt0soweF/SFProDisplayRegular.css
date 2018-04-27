@@ -1,9 +1,0 @@
-@font-face {
-    font-family: 'SFProDisplayRegular';
-    src: url('fonts/SFProDisplayRegular.eot');
-    src: url('fonts/SFProDisplayRegular.eot') format('embedded-opentype'),
-         url('fonts/SFProDisplayRegular.woff2') format('woff2'),
-         url('fonts/SFProDisplayRegular.woff') format('woff'),
-         url('fonts/SFProDisplayRegular.ttf') format('truetype'),
-         url('fonts/SFProDisplayRegular.svg#SFProDisplayRegular') format('svg');
-}

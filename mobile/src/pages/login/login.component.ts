@@ -33,7 +33,7 @@ export class LoginComponent {
       return PageNames.RegisterSalon;
     }
     if (!profileStatus.has_services_set) {
-      return PageNames.RegisterConfigureServices;
+      return PageNames.RegisterServices;
     }
 
     // TODO: check the remaining has_ flags and return the appropriate
@@ -55,6 +55,9 @@ export class LoginComponent {
 
       // Auth successfull. Remember token in local storage.
       localStorage.setItem('authToken', JSON.stringify(authResponse.token));
+
+      // TODO: make user service
+      localStorage.setItem('user', JSON.stringify(authResponse));
 
       // Erase all previous navigation history and go the next
       // page that must be shown to this user.
