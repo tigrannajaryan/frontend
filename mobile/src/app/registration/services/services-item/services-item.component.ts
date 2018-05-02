@@ -101,7 +101,6 @@ export class ServicesItemComponent extends BaseComponent {
    * If we have some data we can set it via this function
    * its should be initialized after form creation
    */
-
   private setForm(data: ServicesItemForm): void {
     if (data) {
       if (data.categories) {
@@ -131,18 +130,18 @@ export class ServicesItemComponent extends BaseComponent {
     }
   }
 
-  private setFormControl(control, value): void {
+  private setFormControl(control: string, value: any): void {
     const formControl = this.form.get(control) as FormControl;
     formControl.setValue(value);
   }
 
-  private pushNewServiceItem(categoryUuid, newServiceItem): void {
+  private pushNewServiceItem(categoryUuid: string, newServiceItem: ServiceTemplateSetServices): void {
     const categoryIndex = this.templateSet.categories.findIndex(x => x.uuid === categoryUuid);
     const curCategory: ServiceTemplateSetCategories = this.templateSet.categories[categoryIndex];
     curCategory.services.push(newServiceItem);
   }
 
-  private updateCurrentServiceItem(categoryUuid, newServiceItem): void {
+  private updateCurrentServiceItem(categoryUuid: string, newServiceItem: ServiceTemplateSetServices): void {
     const categoryIndex = this.templateSet.categories.findIndex(x => x.uuid === categoryUuid);
     const curCategory: ServiceTemplateSetCategories = this.templateSet.categories[categoryIndex];
     const serviceIndex = curCategory.services.findIndex(x => x.id === newServiceItem.id);
@@ -155,7 +154,7 @@ export class ServicesItemComponent extends BaseComponent {
     }
   }
 
-  private deleteCurrentServiceItem(categoryUuid, newServiceItem): void {
+  private deleteCurrentServiceItem(categoryUuid: string, newServiceItem: ServiceTemplateSetServices): void {
     const categoryIndex = this.templateSet.categories.findIndex(x => x.uuid === categoryUuid);
     const curCategory: ServiceTemplateSetCategories = this.templateSet.categories[categoryIndex];
     const serviceIndex = curCategory.services.findIndex(x => x.id === newServiceItem.id);

@@ -45,7 +45,7 @@ export interface SimpleDiscounts {
 
 // Service templates
 
-export interface ServiceTemplate {
+export interface ServicesTemplate {
   uuid?: number;
   name: string;
   description: string;

@@ -2,7 +2,11 @@ import { Component } from '@angular/core';
 import { AlertController, IonicPage, LoadingController, ModalController, NavController, NavParams } from 'ionic-angular';
 
 import { BaseComponent } from '../../../../helpers/base-component';
-import { ServiceTemplateSet } from '../../../../providers/stylist-service/stylist-models';
+import {
+  ServiceTemplateSet,
+  ServiceTemplateSetCategories,
+  ServiceTemplateSetServices
+} from '../../../../providers/stylist-service/stylist-models';
 import { StoreService } from '../../../../providers/store/store';
 import { StylistServiceProvider } from '../../../../providers/stylist-service/stylist-service';
 import { ServiceTemplateSetResponse } from '../../../../providers/store/store-model';
@@ -61,7 +65,7 @@ export class ServicesListComponent extends BaseComponent {
     return `${h}h ${m < 10 ? '0' : ''}${m}m`;
   }
 
-  openServiceModal(srv?, cat?): void {
+  openServiceModal(srv?: ServiceTemplateSetServices, cat?: ServiceTemplateSetCategories): void {
     const profileModal = this.modalCtrl.create(PageNames.RegisterServicesItemAdd, {
       data: {
         service: srv,

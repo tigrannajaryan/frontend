@@ -4,7 +4,7 @@ import 'rxjs/operators/pluck';
 
 import { StylistServiceProvider } from '../../../providers/stylist-service/stylist-service';
 import { StoreService } from '../../../providers/store/store';
-import { ServiceTemplate } from '../../../providers/stylist-service/stylist-models';
+import { ServicesTemplate } from '../../../providers/stylist-service/stylist-models';
 import { ServiceTemplatesResponse } from '../../../providers/store/store-model';
 import { PageNames } from '../../../pages/page-names';
 import { BaseComponent } from '../../../helpers/base-component';
@@ -17,7 +17,7 @@ import { BaseComponent } from '../../../helpers/base-component';
   templateUrl: 'services.component.html'
 })
 export class ServicesComponent extends BaseComponent {
-  serviceTemplates: ServiceTemplate[];
+  serviceTemplates: ServicesTemplate[];
 
   constructor(
     public navCtrl: NavController,
@@ -34,7 +34,7 @@ export class ServicesComponent extends BaseComponent {
     });
   }
 
-  openService(serviceItem): void {
+  openService(serviceItem: ServicesTemplate): void {
     this.navCtrl.push(PageNames.RegisterServicesItem, {uuid: serviceItem.uuid});
   }
 }
