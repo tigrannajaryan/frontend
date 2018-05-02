@@ -1,7 +1,13 @@
 import { Services, ServiceTemplate, ServiceTemplateSet } from '../stylist-service/stylist-models';
 
-export interface Store {
-  service_templates?: ServiceTemplate[];
-  template_set?: ServiceTemplateSet;
-  services?: Services[];
+export interface ServicesResponse {
+  services: Services[];
+}
+
+export interface ServiceTemplatesResponse {
+  service_templates: ServiceTemplate[];
+}
+
+export interface ServiceTemplateSetResponse {
+  template_set: ServiceTemplateSet;
 }

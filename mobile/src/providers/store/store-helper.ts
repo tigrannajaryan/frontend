@@ -9,20 +9,32 @@ import { StoreService } from './store';
 export class StoreServiceHelper {
   constructor(private store: StoreService) {}
 
-  update(prop, state): void {
+  /**
+   * @param prop find it in store object
+   * @param state data that sould be saved in store using prop
+   */
+  update(prop: string, state: any): void {
     const currentState = this.store.getState();
     const stateObj = { [prop]: state };
     this.store.setState({...currentState, ...stateObj});
   }
 
-  add(prop, state): void {
+  /**
+   * @param prop add it in store object
+   * @param state data that sould be saved in store using prop
+   */
+  add(prop: string, state: any): void {
     const currentState = this.store.getState();
     const collection = currentState[prop];
     const stateObj = { [prop]: [state, ...collection] };
     this.store.setState({...currentState, ...stateObj});
   }
 
-  findAndUpdate(prop, state): void {
+  /**
+   * @param prop find and update it in store object
+   * @param state data that sould be saved in store using prop
+   */
+  findAndUpdate(prop: string, state: any): void {
     const currentState = this.store.getState();
     const collection = currentState[prop];
     const stateObj = {[prop]: collection.map(item => {
@@ -36,7 +48,11 @@ export class StoreServiceHelper {
     this.store.setState({...currentState, ...stateObj});
   }
 
-  findAndDelete(prop, id): void {
+  /**
+   * @param prop find and delete it from store object
+   * @param id filter waht to delete using id
+   */
+  findAndDelete(prop: string, id: number): void {
     const currentState = this.store.getState();
     const collection = currentState[prop];
     const stateObj = {[prop]: collection.filter(item => item.id !== id)};

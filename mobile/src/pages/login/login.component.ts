@@ -40,6 +40,11 @@ export class LoginComponent {
     // page name once the pages are implemented.
 
     // Everything is complete, go to Today screen.
+    /**
+     * with this approach (PageNames.Today) we have = 'TodayComponent'
+     * if TodayComponent wrapped with quotes then its lazy loadint and we need to add module for this component
+     * otherwise we will get an error
+     */
     return PageNames.Today;
   }
 
@@ -55,9 +60,6 @@ export class LoginComponent {
 
       // Auth successfull. Remember token in local storage.
       localStorage.setItem('authToken', JSON.stringify(authResponse.token));
-
-      // TODO: make user service
-      localStorage.setItem('user', JSON.stringify(authResponse));
 
       // Erase all previous navigation history and go the next
       // page that must be shown to this user.

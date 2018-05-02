@@ -1,15 +1,15 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
-import { ServicesItemAddComponent } from './services-item-add.component';
+import { ServicesListComponent } from './services-list.component';
 import { SharedModule } from '../../../../shared/shared.module';
 
 @NgModule({
   declarations: [
-    ServicesItemAddComponent
+    ServicesListComponent
   ],
   imports: [
-    IonicPageModule.forChild(ServicesItemAddComponent),
+    IonicPageModule.forChild(ServicesListComponent),
     SharedModule
   ]
 })
-export class ServicesItemAddComponentModule {}
+export class ServicesListComponentModule {}

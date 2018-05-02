@@ -1,113 +1,164 @@
 import { Component } from '@angular/core';
-import { AlertController, IonicPage, LoadingController, ModalController, NavController, NavParams } from 'ionic-angular';
-
+import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { BaseComponent } from '../../../../helpers/base-component';
-import { ServiceTemplateSet } from '../../../../providers/stylist-service/stylist-models';
+import { ServiceTemplateSetResponse } from '../../../../providers/store/store-model';
 import { StoreService } from '../../../../providers/store/store';
-import { StylistServiceProvider } from '../../../../providers/stylist-service/stylist-service';
-import { Store } from '../../../../providers/store/store-model';
-import { PageNames } from '../../../../pages/page-names';
-import {StoreServiceHelper} from '../../../../providers/store/store-helper';
+import {
+  ServiceTemplateSet,
+  ServiceTemplateSetCategories,
+  ServiceTemplateSetServices
+} from '../../../../providers/stylist-service/stylist-models';
+import { StoreServiceHelper } from '../../../../providers/store/store-helper';
+import { ServicesItemForm } from './services-item.component.model';
 
-// this need for saving uuid (page refresh will not remove it)
 @IonicPage({
-  segment: 'services/:uuid'
+  segment: 'service-item'
 })
 @Component({
-  selector: 'page-services-item',
+  selector: 'page-service-item',
   templateUrl: 'services-item.component.html'
 })
 export class ServicesItemComponent extends BaseComponent {
-  uuid: number;
-  timeGap = 15;
   templateSet: ServiceTemplateSet;
+  form: FormGroup;
+  oldCategoryUuid: string;
 
   constructor(
     public navCtrl: NavController,
+    public formBuilder: FormBuilder,
     public navParams: NavParams,
-    public modalCtrl: ModalController,
-    public loadingCtrl: LoadingController,
-    private alertCtrl: AlertController,
+    public viewCtrl: ViewController,
     private store: StoreService,
-    private stylistService: StylistServiceProvider,
     private storeHelper: StoreServiceHelper
   ) {
     super();
     this.init();
   }
 
-  async init(): Promise<any> {
-    this.uuid = this.navParams.get('uuid');
-
-    if (this.uuid) {
-      // call api
-      await this.stylistService.getServiceTemplateById(this.uuid);
-      // get fresh data
-      this.store.changes.safeSubscribe(this, (res: Store) => {
-        this.templateSet = res.template_set;
-      });
+  changeCategory(selectUuid: string): void {
+    if (this.oldCategoryUuid && this.oldCategoryUuid !== selectUuid) {
+      const {vars, categoryUuid, ...newServiceItem} = this.form.value;
+      this.deleteCurrentServiceItem(categoryUuid, newServiceItem);
+      this.pushNewServiceItem(categoryUuid, newServiceItem);
     }
+    this.oldCategoryUuid = selectUuid;
   }
 
-  convertMinsToHrsMins(mins: number): string {
-    const h = Math.floor(mins / 60);
-    const m = mins % 60;
+  onServiceDelete(): void {
+    const {vars, categoryUuid, ...newServiceItem} = this.form.value;
+    this.deleteCurrentServiceItem(categoryUuid, newServiceItem);
 
-    return `${h}h ${m < 10 ? '0' : ''}${m} m`;
+    this.storeHelper.update('template_set', this.templateSet as ServiceTemplateSet);
+    this.viewCtrl.dismiss();
   }
 
-  openService(srv?, cat?): void {
-    const profileModal = this.modalCtrl.create(PageNames.RegisterServicesItemAdd, {
-      data: {
-        service: srv,
-        categoryUuid: cat ? cat.uuid : undefined
-      }
+  submit(): void {
+    const {vars, categoryUuid, ...newServiceItem} = this.form.value;
+
+    // add new category service element if !id else update
+    if (!newServiceItem.id) {
+      this.pushNewServiceItem(categoryUuid, newServiceItem);
+    } else {
+      this.updateCurrentServiceItem(categoryUuid, newServiceItem);
+    }
+
+    this.storeHelper.update('template_set', this.templateSet as ServiceTemplateSet);
+    this.viewCtrl.dismiss();
+  }
+
+  private async init(): Promise<void> {
+    await this.store.changes.safeSubscribe(this, (res: ServiceTemplateSetResponse) => {
+      this.templateSet = res.template_set;
     });
-    profileModal.present();
+
+    const data: ServicesItemForm = {
+      categories: this.templateSet.categories,
+      ...this.navParams.get('data')
+    };
+
+    this.initForm();
+    this.setForm(data);
   }
 
-  saveChanges(): void {
-    const categoriesServices = [];
+  private initForm(): void {
+    this.form = this.formBuilder.group({
+      vars: this.formBuilder.group({
+        categories: ''
+      }),
 
-    for (let i = 0; i < this.templateSet.categories.length; i++) {
-      const curCategory = this.templateSet.categories[i];
+      categoryUuid: ['', Validators.required],
 
-      for (let j = 0; j < curCategory.services.length; j++) {
-        const curServices = curCategory.services[j];
+      id: '',
+      base_price: ['', Validators.required],
+      description: [''],
+      duration_minutes: ['', Validators.required],
+      name: ['', Validators.required]
+    });
+  }
 
-        let services = {
-          name: curServices.name,
-          description: curServices.description,
-          base_price: +curServices.base_price,
-          duration_minutes: +curServices.duration_minutes,
-          is_enabled: true,
-          category_uuid: curCategory.uuid
-        };
+  /**
+   * If we have some data we can set it via this function
+   * its should be initialized after form creation
+   */
 
-        categoriesServices.push(services);
+  private setForm(data: ServicesItemForm): void {
+    if (data) {
+      if (data.categories) {
+        const categoriesNameUuidArr = [];
+
+        for (const curCategory of data.categories) {
+          categoriesNameUuidArr.push({
+            name: curCategory.name,
+            uuid: curCategory.uuid
+          });
+        }
+
+        this.setFormControl('vars.categories', categoriesNameUuidArr);
+      }
+
+      if (data.categoryUuid) {
+        this.setFormControl('categoryUuid', data.categoryUuid);
+      }
+
+      if (data.service) {
+        this.setFormControl('id', data.service.id);
+        this.setFormControl('base_price', data.service.base_price);
+        this.setFormControl('description', data.service.description);
+        this.setFormControl('duration_minutes', data.service.duration_minutes);
+        this.setFormControl('name', data.service.name);
       }
     }
+  }
 
-    try {
-      // Show loader
-      let loading = this.loadingCtrl.create();
-      loading.present();
+  private setFormControl(control, value): void {
+    const formControl = this.form.get(control) as FormControl;
+    formControl.setValue(value);
+  }
 
-      this.stylistService.setStylistServices(categoriesServices).then(() => {
-        loading.dismiss();
-      });
-    } catch (e) {
-      // Show an error message
-      const alert = this.alertCtrl.create({
-        title: 'Error',
-        subTitle: e,
-        buttons: ['Dismiss']
-      });
-      alert.present();
+  private pushNewServiceItem(categoryUuid, newServiceItem): void {
+    const categoryIndex = this.templateSet.categories.findIndex(x => x.uuid === categoryUuid);
+    const curCategory: ServiceTemplateSetCategories = this.templateSet.categories[categoryIndex];
+    curCategory.services.push(newServiceItem);
+  }
+
+  private updateCurrentServiceItem(categoryUuid, newServiceItem): void {
+    const categoryIndex = this.templateSet.categories.findIndex(x => x.uuid === categoryUuid);
+    const curCategory: ServiceTemplateSetCategories = this.templateSet.categories[categoryIndex];
+    const serviceIndex = curCategory.services.findIndex(x => x.id === newServiceItem.id);
+    const services: ServiceTemplateSetServices = curCategory.services[serviceIndex];
+
+    for (const key in services) {
+      if (services.hasOwnProperty(key)) {
+        services[key] = newServiceItem[key];
+      }
     }
   }
 
-  resetList(): void {
-    this.storeHelper.update('template_set', []);
+  private deleteCurrentServiceItem(categoryUuid, newServiceItem): void {
+    const categoryIndex = this.templateSet.categories.findIndex(x => x.uuid === categoryUuid);
+    const curCategory: ServiceTemplateSetCategories = this.templateSet.categories[categoryIndex];
+    const serviceIndex = curCategory.services.findIndex(x => x.id === newServiceItem.id);
+    curCategory.services.splice(serviceIndex, 1);
   }
 }

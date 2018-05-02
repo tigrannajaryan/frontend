@@ -85,13 +85,11 @@ export interface ServiceTemplateSets {
 }
 
 // Services
-
 export interface Services extends ServiceTemplateSetServices {
   is_enabled: boolean;
-  "photo_samples": ServicesPhotoSamples[];
+  photo_samples: ServicesPhotoSamples[];
 }
 
 export interface ServicesPhotoSamples {
-  "url": string;
+  url: string;
 }
-

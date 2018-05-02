@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { IonicPage, NavController } from 'ionic-angular';
 
+@IonicPage({
+  segment: 'today'
+})
 @Component({
   selector: 'page-today',
   templateUrl: 'today.component.html'

@@ -6,20 +6,23 @@ import { OnDestroy } from '@angular/core';
  * Wrap default subscribe function
  * and add feature to auto unsubscribe on ngOnDestroy
  */
-
 export class BaseComponent implements OnDestroy {
     private _subscriptions: Subscription[] = [];
-    public ngOnDestroy(): void {
+    ngOnDestroy(): void {
         for (const sub of this._subscriptions) {
             sub.unsubscribe();
         }
     }
 
-    public markForSafeDelete(sub: any): void {
+    markForSafeDelete(sub: any): void {
         this._subscriptions.push(sub);
     }
 }
 
+/**
+ * Wrap default subscribe function
+ * and save subscriptions
+ */
 export function safeSubscribe<T>(this: Observable<T>, component: BaseComponent,
                                  next?: (value: T) => void, error?: (error: T) => void, complete?: () => void): Subscription {
     const sub = this.subscribe(next, error, complete);

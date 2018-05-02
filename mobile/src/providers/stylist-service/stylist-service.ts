@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BaseServiceProvider } from '../base-service';
-import {Services, ServiceTemplate, ServiceTemplateSet, StylistProfile} from './stylist-models';
+import { Services, ServiceTemplate, ServiceTemplateSet, StylistProfile } from './stylist-models';
 import { StoreServiceHelper } from '../store/store-helper';
-import { Store } from '../store/store-model';
+import { ServicesResponse, ServiceTemplateSetResponse, ServiceTemplatesResponse } from '../store/store-model';
 
 /**
  * StylistServiceProvider provides authentication against server API.
@@ -36,31 +36,31 @@ export class StylistServiceProvider extends BaseServiceProvider {
   /**
    * Get default service Templates. The stylist must be already authenticated as a user.
    */
-  async getServiceTemplates(): Promise<any> {
-    return this.get<Store>('stylist/service-template-sets')
-      .then((res: Store) => this.storeHelper.update('service_templates', res.service_templates as ServiceTemplate[]));
+  async getServiceTemplateSets(): Promise<any> {
+    return this.get<ServiceTemplatesResponse>('stylist/service-template-sets')
+      .then((res: ServiceTemplatesResponse) => this.storeHelper.update('service_templates', res.service_templates as ServiceTemplate[]));
   }
 
   /**
    * Get default service Templates by Id. The stylist must be already authenticated as a user.
    */
-  async getServiceTemplateById(uuid: number): Promise<any> {
-    return this.get<Store>(`stylist/service-template-sets/${uuid}`)
-      .then((res: Store) => this.storeHelper.update('template_set', res.template_set as ServiceTemplateSet));
+  async getServiceTemplateSetById(uuid: string): Promise<any> {
+    return this.get<ServiceTemplateSetResponse>(`stylist/service-template-sets/${uuid}`)
+      .then((res: ServiceTemplateSetResponse) => this.storeHelper.update('template_set', res.template_set as ServiceTemplateSet));
   }
 
   /**
    * Get stylist services. The stylist must be already authenticated as a user.
    */
   async getStylistServices(): Promise<any> {
-    return this.get<Store>('stylist/services')
-      .then((res: Store) => this.storeHelper.update('services', res.services as Services[]));
+    return this.get<ServicesResponse>('stylist/services')
+      .then((res: ServicesResponse) => this.storeHelper.update('services', res.services as Services[]));
   }
 
   /**
    * Set service to stylist. The stylist must be already authenticated as a user.
    */
   async setStylistServices(data: any): Promise<any> {
-    return this.post<Store>('stylist/services', data);
+    return this.post<Services>('stylist/services', data);
   }
 }

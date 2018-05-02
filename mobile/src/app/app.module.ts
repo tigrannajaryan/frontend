@@ -6,7 +6,6 @@ import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 
 import { MyAppComponent } from './app.component';
-import { TodayComponent } from '../pages/today/today.component';
 import { ListComponent } from '../pages/list/list';
 import { AuthServiceProvider } from '../providers/auth-service/auth-service';
 import { httpInterceptorProviders } from '../http-interceptors';
@@ -17,7 +16,6 @@ import { StoreServiceHelper } from '../providers/store/store-helper';
 @NgModule({
   declarations: [
     MyAppComponent,
-    TodayComponent,
     ListComponent
   ],
   imports: [
@@ -28,7 +26,6 @@ import { StoreServiceHelper } from '../providers/store/store-helper';
   bootstrap: [IonicApp],
   entryComponents: [
     MyAppComponent,
-    TodayComponent,
     ListComponent
   ],
   providers: [

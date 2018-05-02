@@ -1,7 +1,6 @@
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Injectable } from '@angular/core';
 import 'rxjs/add/operator/distinctUntilChanged';
-import { Store } from './store-model';
 
 /**
  * StoreService its app store for saving data from server
@@ -9,11 +8,11 @@ import { Store } from './store-model';
  */
 @Injectable()
 export class StoreService {
-  _store = new BehaviorSubject<Store>({});
+  _store = new BehaviorSubject<any>({});
   changes = this._store.asObservable()
     .distinctUntilChanged();
 
-  setState(state: Store): void {
+  setState(state: any): void {
     this._store.next(state);
   }
 

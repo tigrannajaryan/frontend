@@ -5,7 +5,7 @@ import 'rxjs/operators/pluck';
 import { StylistServiceProvider } from '../../../providers/stylist-service/stylist-service';
 import { StoreService } from '../../../providers/store/store';
 import { ServiceTemplate } from '../../../providers/stylist-service/stylist-models';
-import { Store } from '../../../providers/store/store-model';
+import { ServiceTemplatesResponse } from '../../../providers/store/store-model';
 import { PageNames } from '../../../pages/page-names';
 import { BaseComponent } from '../../../helpers/base-component';
 
@@ -27,9 +27,9 @@ export class ServicesComponent extends BaseComponent {
   ) {
     super();
     // call api
-    this.stylistService.getServiceTemplates();
+    this.stylistService.getServiceTemplateSets();
     // get fresh data
-    this.store.changes.safeSubscribe(this, (res: Store) => {
+    this.store.changes.safeSubscribe(this, (res: ServiceTemplatesResponse) => {
       this.serviceTemplates = res.service_templates;
     });
   }
