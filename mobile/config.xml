@@ -82,9 +82,9 @@
     <plugin name="cordova-plugin-ionic-webview" spec="^1.1.19" />
     <plugin name="cordova-plugin-ionic-keyboard" spec="^2.0.5" />
     <plugin name="cordova-plugin-facebook4" spec="git+https://github.com/amritk/cordova-plugin-facebook4.git">
-        <variable name="APP_ID" value="199496197324986" />
+        <variable name="APP_ID" value="422102408215578" />
         <variable name="APP_NAME" value="bb" />
-        <variable name="fb_app_id" value="199496197324986" />
+        <variable name="fb_app_id" value="422102408215578" />
         <variable name="fb_app_name" value="bb" />
     </plugin>
     <engine name="android" spec="7.0.0" />
