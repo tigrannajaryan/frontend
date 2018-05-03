@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Facebook } from '@ionic-native/facebook';
 
 import { PageNames } from '../page-names';
+import { AuthServiceProvider, FbAuthCredentials } from '../../providers/auth-service/auth-service';
 
 /**
  * Generated class for the FirstScreenPage page.
@@ -21,7 +22,8 @@ export class FirstScreenComponent {
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
-    private fb: Facebook
+    private fb: Facebook,
+    private authServiceProvider: AuthServiceProvider
   ) {
   }
 
@@ -30,27 +32,21 @@ export class FirstScreenComponent {
   }
 
   register(): void {
-    // this.navCtrl.push(PageNames.Services, {}, {animate: false});
     this.navCtrl.push(PageNames.RegisterByEmail, {}, {animate: false});
   }
 
-  loginByFb(): void {
+  registerByFb(): void {
     this.fb.login(['public_profile', 'user_friends', 'email'])
       .then(res => {
         if (res.status === 'connected') {
-          this.getUserDetail(res.authResponse.userID);
+          const credentials: FbAuthCredentials = {
+            fbAccessToken: res.authResponse.accessToken,
+            fbUserID: res.authResponse.userID
+          };
+
+          this.authServiceProvider.registerByFb(credentials);
         }
       })
       .catch(e => console.dir('Error logging into Facebook', e));
-  }
-
-  getUserDetail(userid): void {
-    this.fb.api(`/${userid}/?fields=id`, ['public_profile'])
-      .then(res => {
-        console.dir(res);
-      })
-      .catch(e => {
-        console.dir(e);
-      });
   }
 }
