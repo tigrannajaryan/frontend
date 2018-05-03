@@ -6,18 +6,14 @@ import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 
 import { MyAppComponent } from './app.component';
-import { TodayComponent } from '../pages/today/today.component';
 import { ListComponent } from '../pages/list/list';
 import { AuthServiceProvider } from '../providers/auth-service/auth-service';
 import { httpInterceptorProviders } from '../http-interceptors';
 import { StylistServiceProvider } from '../providers/stylist-service/stylist-service';
-import { StoreService } from '../providers/store/store';
-import { StoreServiceHelper } from '../providers/store/store-helper';
 
 @NgModule({
   declarations: [
     MyAppComponent,
-    TodayComponent,
     ListComponent
   ],
   imports: [
@@ -28,7 +24,6 @@ import { StoreServiceHelper } from '../providers/store/store-helper';
   bootstrap: [IonicApp],
   entryComponents: [
     MyAppComponent,
-    TodayComponent,
     ListComponent
   ],
   providers: [
@@ -37,9 +32,7 @@ import { StoreServiceHelper } from '../providers/store/store-helper';
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     AuthServiceProvider,
     StylistServiceProvider,
-    httpInterceptorProviders,
-    StoreService,
-    StoreServiceHelper
+    httpInterceptorProviders
   ]
 })
 export class AppModule {}

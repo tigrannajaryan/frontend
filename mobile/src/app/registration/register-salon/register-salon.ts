@@ -106,7 +106,7 @@ export class RegisterSalonComponent {
       // TODO: decide on fullname vs firstname/last and add phone field to the form.
       await this.apiService.setProfile(profile);
 
-      this.navCtrl.push(PageNames.RegisterConfigureServices, {}, { animate: false });
+      this.navCtrl.push(PageNames.RegisterServices, {}, { animate: false });
     } catch (e) {
       const alert = this.alertCtrl.create({
         title: 'Saving profile information failed',

@@ -1,0 +1,151 @@
+page-services-list {
+  // p = page
+  // -asd = first letter of each word (in this case just -si)
+  .p-sl{
+    &-top{
+      position: relative;
+      text-align: center;
+      box-shadow: 0 0 40px #E4E4E4;
+      background: #ffffff;
+      margin: pxtoem(54) 0 pxtoem(58);
+      padding: pxtoem(57) 0 pxtoem(54);
+      border-radius: 7px;
+
+      @media ($phone) {
+        margin: pxtoem(37) 0 pxtoem(33);
+        padding: pxtoem(41) 0 pxtoem(37);
+      }
+
+
+      &-title{
+        font-size: pxtoem(25);
+        margin: 0 0 pxtoem(5);
+
+        @media ($phone) {
+          font-size: pxtoem(21);
+        }
+
+        &-a{
+          font-size: pxtoem(36);
+
+          @media ($phone) {
+            font-size: pxtoem(26);
+          }
+        }
+      }
+
+
+      &-reset{
+        position: absolute;
+        right: 11%;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #FF6161;
+        font-size: pxtoem(33);
+
+        @media ($phone) {
+          font-size: pxtoem(28);
+          right: 4%;
+        }
+      }
+    }
+
+    &-table{
+      padding: 0 10px;
+
+      &-head{
+        font-size: pxtoem(20);
+        color: rgba(0, 0, 0, 0.5);
+
+        @media ($phone) {
+          font-size: pxtoem(15);
+        }
+      }
+
+      &-title{
+        font-size: pxtoem(36);
+        padding: pxtoem(20) 10px pxtoem(8);
+
+        @media ($phone) {
+          font-size: pxtoem(23);
+        }
+      }
+
+      &-row{
+        padding: pxtoem(25) 0;
+        border-bottom: 1px solid black;
+
+        @media ($phone) {
+          padding: pxtoem(7) 0;
+        }
+
+
+        &-col{
+          white-space: normal;
+          font-size: pxtoem(24);
+
+          @media ($phone) {
+            font-size: pxtoem(12);
+          }
+
+          &:first-child{
+            padding-left: 0;
+          }
+
+          &:last-child{
+            padding-right: 0;
+            display: flex;
+            justify-content: space-between;
+          }
+        }
+      }
+
+      &-swipe{
+        .button-inner{
+          @media ($phone) {
+            font-size: pxtoem(12);
+          }
+        }
+      }
+    }
+
+    &-gap{
+      background: color($colors, bb_violet);
+      border-radius: 7px;
+      margin: pxtoem(60) 0;
+      padding: pxtoem(67) pxtoem(85) pxtoem(72);
+      text-align: center;
+
+      @media ($phone) {
+        margin: pxtoem(47) 0;
+        padding: pxtoem(43) pxtoem(30) pxtoem(15);
+      }
+
+      &-icon{
+        font-size: pxtoem(60);
+        margin: 0 0 pxtoem(7);
+
+        @media ($phone) {
+          font-size: pxtoem(50);
+          margin: 0 0 pxtoem(6);
+        }
+      }
+      &-title{
+        font-size: pxtoem(36);
+        margin: 0 0 pxtoem(10);
+
+        @media ($phone) {
+          font-size: pxtoem(25);
+          margin: 0;
+        }
+      }
+      &-range{
+        font-size: pxtoem(24);
+
+        @media ($phone) {
+          font-size: pxtoem(18);
+        }
+      }
+    }
+  }
+}

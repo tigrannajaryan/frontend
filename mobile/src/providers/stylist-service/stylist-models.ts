@@ -45,18 +45,39 @@ export interface SimpleDiscounts {
 
 // Service templates
 
-export interface ServiceTemplate {
-  id?: number;
+export interface ServicesTemplate {
+  uuid?: number;
   name: string;
   description: string;
-  price: number;
-  duration_in_min: number;
+  image_url: string;
+  services: ServiceName[];
+}
+
+export interface ServiceName {
+  name: string;
 }
 
 export interface ServiceTemplateSet {
   id?: number;
   name: string;
-  services: ServiceTemplate[];
+  description: string;
+  categories: ServiceCategory[];
+}
+
+export interface ServiceCategory {
+  uuid: string;
+  name: string;
+  services: ServiceTemplateItem[];
+}
+
+export interface ServiceTemplateItem {
+  categoryUuid?: number;
+
+  id?: number;
+  name: string;
+  description: string;
+  base_price: number;
+  duration_minutes: number;
 }
 
 export interface ServiceTemplateSets {
@@ -64,11 +85,11 @@ export interface ServiceTemplateSets {
 }
 
 // Services
-
-export interface Service extends ServiceTemplate {
+export interface ServiceItem extends ServiceTemplateItem {
   is_enabled: boolean;
+  photo_samples: ServicesPhotoSample[];
 }
 
-export interface Services {
-  services: Service[];
+export interface ServicesPhotoSample {
+  url: string;
 }

@@ -20,26 +20,10 @@ page-register-salon {
     position: relative;
     top: 40%;
     left: 50%;
+    text-align: center;
     .icon {
       font-size: 38px;
       color: white;
     }
-  }
-
-  .text-center {
-    text-align: center;
-  }
-
-  ion-label{
-    text-align: center;
-    font-size: 1.5rem !important;
-  }
-
-  .text-input{
-    text-align: center;
-  }
-
-  ion-input {
-    font-size: 1.6rem;
   }
 }

@@ -44,6 +44,7 @@ $colors: (
   bb_violet:  #E6DBE9,
   bb_gray:  #F1F1F1,
   bb_honey:  #F2C8A1,
+  bb_gold:  #FEF1E4,
   bb_warn:  #FF6161
 );
 
@@ -92,3 +93,12 @@ $colors: (
 
 @import "roboto";
 @import "noto-sans";
+
+
+// Media
+// --------------------------------------------------
+
+$tablet: 'max-width: 600px';
+$smartphone: 'max-width: 500px';
+$phone: 'max-width: 415px';
+
