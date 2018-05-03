@@ -1,14 +1,14 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
-import { ServicesItemComponent } from './services-item.component';
+import { ServiceItemComponent } from './services-item.component';
 import { SharedModule } from '../../../../shared/shared.module';
 
 @NgModule({
   declarations: [
-    ServicesItemComponent
+    ServiceItemComponent
   ],
   imports: [
-    IonicPageModule.forChild(ServicesItemComponent),
+    IonicPageModule.forChild(ServiceItemComponent),
     SharedModule
   ]
 })

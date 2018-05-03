@@ -50,10 +50,10 @@ export interface ServicesTemplate {
   name: string;
   description: string;
   image_url: string;
-  services: ServiceTemplateServices[];
+  services: ServiceName[];
 }
 
-export interface ServiceTemplateServices {
+export interface ServiceName {
   name: string;
 }
 
@@ -61,16 +61,16 @@ export interface ServiceTemplateSet {
   id?: number;
   name: string;
   description: string;
-  categories: ServiceTemplateSetCategories[];
+  categories: ServiceCategory[];
 }
 
-export interface ServiceTemplateSetCategories {
+export interface ServiceCategory {
   uuid: string;
   name: string;
-  services: ServiceTemplateSetServices[];
+  services: ServiceTemplateItem[];
 }
 
-export interface ServiceTemplateSetServices {
+export interface ServiceTemplateItem {
   categoryUuid?: number;
 
   id?: number;
@@ -85,11 +85,11 @@ export interface ServiceTemplateSets {
 }
 
 // Services
-export interface Services extends ServiceTemplateSetServices {
+export interface ServiceItem extends ServiceTemplateItem {
   is_enabled: boolean;
-  photo_samples: ServicesPhotoSamples[];
+  photo_samples: ServicesPhotoSample[];
 }
 
-export interface ServicesPhotoSamples {
+export interface ServicesPhotoSample {
   url: string;
 }

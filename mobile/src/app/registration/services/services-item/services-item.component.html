@@ -10,7 +10,7 @@
   <form [formGroup]="form" (ngSubmit)="submit()">
     <ion-item class="ion-bb-input">
       <ion-label stacked>Select category</ion-label>
-      <ion-select formGroupName="vars" placeholder="ex. color" formControlName="categoryUuid" (ngModelChange)="changeCategory($event)">
+      <ion-select formGroupName="vars" placeholder="ex. color" formControlName="categoryUuid">
         <ion-option *ngFor="let item of form.get('vars.categories').value" [value]="item.uuid">{{ item.name }}</ion-option>
       </ion-select>
     </ion-item>

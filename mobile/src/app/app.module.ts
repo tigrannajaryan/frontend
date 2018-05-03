@@ -10,8 +10,6 @@ import { ListComponent } from '../pages/list/list';
 import { AuthServiceProvider } from '../providers/auth-service/auth-service';
 import { httpInterceptorProviders } from '../http-interceptors';
 import { StylistServiceProvider } from '../providers/stylist-service/stylist-service';
-import { StoreService } from '../providers/store/store';
-import { StoreServiceHelper } from '../providers/store/store-helper';
 
 @NgModule({
   declarations: [
@@ -34,9 +32,7 @@ import { StoreServiceHelper } from '../providers/store/store-helper';
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     AuthServiceProvider,
     StylistServiceProvider,
-    httpInterceptorProviders,
-    StoreService,
-    StoreServiceHelper
+    httpInterceptorProviders
   ]
 })
 export class AppModule {}
