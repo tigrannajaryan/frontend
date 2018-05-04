@@ -1,0 +1,91 @@
+<ion-header class="ion-bb-header">
+  <ion-navbar>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+  <bb-nav [activePageIndex]="1"></bb-nav>
+
+
+  <div class="bb-wp">
+    <div class="p-sl-top">
+      <div class="p-sl-top-title">Create</div>
+      <div class="p-sl-top-title-a">Custom list</div>
+
+      <button (click)="resetList()" class="bb-btn-o p-sl-top-reset">
+        <i class="bb-icon-reset"></i>
+      </button>
+    </div>
+
+
+    <div *ngIf="templateSet && templateSet.categories" class="bb-wp-a p-sl-table">
+      <ion-grid>
+        <ion-row class="p-sl-table-head">
+          <ion-col col-6>
+            Name
+          </ion-col>
+          <ion-col col-3>
+            Price
+          </ion-col>
+          <ion-col col-3>
+            Duration
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+
+
+      <div *ngFor="let category of templateSet.categories">
+        <div class="p-sl-table-title">{{ category.name }}</div>
+
+        <ion-list class="p-sl-table ion-bb-sliding">
+          <ion-item-sliding *ngFor="let service of category.services; let i = index" (click)="openServiceModal(category, service)" class="p-sl-table-row" #item>
+            <ion-item>
+              <ion-row class="p-sl-table-row">
+                <ion-col col-6 class="p-sl-table-row-col">
+                  {{ service.name }}
+                </ion-col>
+                <ion-col col-3 class="p-sl-table-row-col">
+                  {{ service.base_price }}
+                </ion-col>
+                <ion-col col-3 class="p-sl-table-row-col">
+                  <span>{{ convertMinsToHrsMins(service.duration_minutes) }}</span>
+                  <ion-icon name="ios-arrow-forward-outline"></ion-icon>
+                </ion-col>
+              </ion-row>
+            </ion-item>
+            <ion-item-options side="right" class="p-sl-table-swipe">
+              <button (click)="category.services.splice(i, 1)" ion-button color="danger">DELETE</button>
+            </ion-item-options>
+          </ion-item-sliding>
+        </ion-list>
+
+
+
+        <div class="p-sl-table-row tac">
+          <button (click)="openServiceModal(category)" ion-button outline color="bb_violet" class="bb-btn">Add service</button>
+        </div>
+      </div>
+    </div>
+
+
+
+    <div class="p-sl-gap">
+      <i class="bb-icon-timer p-sl-gap-icon"></i>
+
+      <div class="p-sl-gap-title">Service Time Gap</div>
+
+      <ion-range min="0" max="45" step="1" [(ngModel)]="timeGap" color="dark" class="p-sl-gap-range">
+        <div range-right>
+          {{ timeGap }} min
+        </div>
+      </ion-range>
+    </div>
+
+
+
+    <div class="bb-wp-a">
+      <button (click)="saveChanges()" ion-button full color="dark" class="bb-btn-a">Save changes</button>
+    </div>
+  </div>
+</ion-content>

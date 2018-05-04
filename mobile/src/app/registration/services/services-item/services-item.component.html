@@ -1,0 +1,49 @@
+<ion-header class="ion-bb-header ion-bb-showback">
+  <ion-navbar>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding class="bb-bg-gold">
+  <bb-nav [activePageIndex]="6"></bb-nav>
+
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <ion-item class="ion-bb-input">
+      <ion-label stacked>Select category</ion-label>
+      <ion-select formGroupName="vars" placeholder="ex. color" formControlName="categoryUuid">
+        <ion-option *ngFor="let item of form.get('vars.categories').value" [value]="item.uuid">{{ item.name }}</ion-option>
+      </ion-select>
+    </ion-item>
+    <ion-item class="ion-bb-input">
+      <ion-label stacked>Service name</ion-label>
+      <ion-input type="text" placeholder="ex. color correction" formControlName="name"></ion-input>
+    </ion-item>
+    <ion-item class="ion-bb-input">
+      <ion-label stacked>Duration</ion-label>
+      <ion-input type="number" placeholder="ex. 30 minutes" formControlName="duration_minutes"></ion-input>
+    </ion-item>
+    <ion-item class="ion-bb-input">
+      <ion-label stacked>Price</ion-label>
+      <ion-input type="number" placeholder="ex. 120" formControlName="base_price"></ion-input>
+      <span item-right class="ion-bb-input-prefix">USD</span>
+    </ion-item>
+
+
+    <ion-row *ngIf="!form.get('categoryUuid').value" justify-content-center align-items-center style="margin-top: 100px;">
+      Add new
+      <button [disabled]="form.invalid" ion-button type="submit" class="bb-btn-circle">
+        <ion-icon name="ios-add-outline"></ion-icon>
+      </button>
+      Service
+    </ion-row>
+    <ion-row *ngIf="form.get('categoryUuid').value" justify-content-center align-items-center style="margin-top: 100px;">
+      <button ion-button color="danger" clear style="visibility: hidden;">Delete</button>
+
+      <button [disabled]="form.invalid" ion-button type="submit" class="bb-btn-circle">
+        <ion-icon name="ios-checkmark-outline"></ion-icon>
+      </button>
+
+      <button (click)="onServiceDelete()" type="button" ion-button color="danger" clear>Delete</button>
+    </ion-row>
+  </form>
+</ion-content>

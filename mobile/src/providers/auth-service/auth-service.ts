@@ -3,10 +3,17 @@ import { HttpClient } from '@angular/common/http';
 import 'rxjs/add/operator/toPromise';
 import { BaseServiceProvider } from '../base-service';
 import { StylistProfile } from '../stylist-service/stylist-models';
+import { PageNames } from '../../pages/page-names';
+import { App } from 'ionic-angular';
 
 export interface AuthCredentials {
   email: string;
   password: string;
+}
+
+export interface FbAuthCredentials {
+  fbAccessToken: string;
+  fbUserID: string;
 }
 
 export interface StylistProfileStatus {
@@ -39,7 +46,10 @@ export class AuthServiceProvider extends BaseServiceProvider {
 
   private authResponse: AuthResponse;
 
-  constructor(public http: HttpClient) {
+  constructor(
+    public http: HttpClient,
+    public app: App
+  ) {
     super(http);
   }
 
@@ -62,10 +72,53 @@ export class AuthServiceProvider extends BaseServiceProvider {
   }
 
   /**
+   * Register a new user authenticate using the API. If successfull remembers the auth response
+   * and token which can be later obtained via getAuthToken().
+   */
+  async loginByFb(credentials: FbAuthCredentials): Promise<AuthResponse> {
+    return this.post<AuthResponse>('auth/get-token-fb', credentials);
+  }
+
+  /**
    * Return token remembered after the last succesfull authentication.
    */
   getAuthToken(): string {
     return this.authResponse ? this.authResponse.token : undefined;
+  }
+
+  /**
+   * Determines what page to show after auth based on the completeness
+   * of the profile of the user.
+   * @param profileStatus as returned by auth.
+   */
+  profileStatusToPage(profileStatus: StylistProfileStatus): void {
+    /**
+     * with this approach (PageNames.Today) we have = 'TodayComponent'
+     * if TodayComponent wrapped with quotes then its lazy loadint and we need to add module for this component
+     * otherwise we will get an error
+     */
+    let setPage: string;
+    if (!profileStatus) {
+      // No profile at all, start from beginning.
+      setPage = PageNames.RegisterSalon;
+    }
+    if (!profileStatus.has_personal_data || !profileStatus.has_picture_set) {
+      setPage = PageNames.RegisterSalon;
+    }
+    if (!profileStatus.has_services_set) {
+      setPage = PageNames.RegisterServices;
+    }
+
+    // TODO: check the remaining has_ flags and return the appropriate
+    // page name once the pages are implemented.
+
+    // Everything is complete, go to Today screen.
+    setPage = PageNames.Today;
+
+    // Erase all previous navigation history and go the next
+    // page that must be shown to this user.
+    this.app.getActiveNav()
+      .setRoot(setPage);
   }
 
   /**

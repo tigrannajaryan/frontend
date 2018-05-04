@@ -29,11 +29,15 @@ export class BbNavComponent implements AfterViewInit {
   }
 
   scrollToActive(): void {
+    this.activePageIndex = this.activePageIndex > this.navItems.length - 1 ? this.navItems.length - 1 : this.activePageIndex;
+
     const elChildren = this.navEl.nativeElement.children;
     for (let i = 0; i < elChildren.length; i++) {
-      const curChild = elChildren[i];
-      if (curChild.className.indexOf('active') >= 0 && i !== 0) {
-        this.navEl.nativeElement.style.marginLeft = `${-curChild.offsetLeft + 15}px`;
+      if (
+        elChildren[i].className.indexOf('active') >= 0 && i !== 0 &&
+        elChildren[i - 1]
+      ) {
+        this.navEl.nativeElement.style.marginLeft = `${-elChildren[i].offsetLeft}px`;
       }
     }
   }

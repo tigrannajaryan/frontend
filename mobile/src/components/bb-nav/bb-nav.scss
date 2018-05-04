@@ -1,16 +1,21 @@
 bb-nav {
-
   .nav{
+    position: relative;
+
     &-scroll{
       white-space: nowrap;
 
       &-item{
-        font-size: pxtoem(20);
-        color: color($colors, bb_gray);
+        font-size: pxtoem(23);
+        color: rgba(0, 0, 0, 0.4);
         text-decoration: none;
         display: inline-block;
         vertical-align: middle;
         padding: 0 5px 0;
+
+        @media ($phone) {
+          font-size: pxtoem(17);
+        }
 
         &.active{
           color: color($colors, dark);
@@ -22,7 +27,7 @@ bb-nav {
           vertical-align: middle;
           width: 45px;
           height: 1px;
-          background: color($colors, bb_gray);
+          background: rgba(0, 0, 0, 0.4);
           margin: 0 0 0 10px;
         }
         &:last-child:after{display: none;}
@@ -30,11 +35,15 @@ bb-nav {
     }
 
     &-info{
-      padding: 3px 5px;
+      padding: pxtoem(23) 5px 0;
       font-size: pxtoem(14);
       color: color($colors, bb_honey);
+
+      @media ($phone) {
+        font-size: pxtoem(12);
+        padding: pxtoem(17) 5px 0;
+      }
     }
   }
-
 }
 
