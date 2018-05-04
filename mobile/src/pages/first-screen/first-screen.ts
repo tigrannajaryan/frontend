@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { AlertController, IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Facebook } from '@ionic-native/facebook';
 
 import { PageNames } from '../page-names';
@@ -23,7 +23,8 @@ export class FirstScreenComponent {
     public navCtrl: NavController,
     public navParams: NavParams,
     private fb: Facebook,
-    private authServiceProvider: AuthServiceProvider
+    private authServiceProvider: AuthServiceProvider,
+    private alertCtrl: AlertController
   ) {
   }
 
@@ -35,18 +36,29 @@ export class FirstScreenComponent {
     this.navCtrl.push(PageNames.RegisterByEmail, {}, {animate: false});
   }
 
-  registerByFb(): void {
+  loginByFb(): void  {
     this.fb.login(['public_profile', 'user_friends', 'email'])
-      .then(res => {
+      .then(async res => {
+        console.dir('then');
         if (res.status === 'connected') {
           const credentials: FbAuthCredentials = {
             fbAccessToken: res.authResponse.accessToken,
             fbUserID: res.authResponse.userID
           };
 
-          this.authServiceProvider.registerByFb(credentials);
+          const authResponse = await this.authServiceProvider.loginByFb(credentials);
+
+          // process authResponse and move to needed page
+          this.authServiceProvider.profileStatusToPage(authResponse.stylist_profile_status);
         }
-      })
-      .catch(e => console.dir('Error logging into Facebook', e));
+      }, e => {
+        console.dir('catch');
+        const alert = this.alertCtrl.create({
+          title: 'Login failed',
+          subTitle: 'Invalid email or password',
+          buttons: ['Dismiss']
+        });
+        alert.present();
+      });
   }
 }
