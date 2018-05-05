@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 
 import { ENV } from '../../environments/environment.default';
 
+const noop = (): any => undefined;
+
 /**
  * A common logger that is used by the app.
  * TODO: properly handle multiple parameters to log() function.
@@ -9,25 +11,24 @@ import { ENV } from '../../environments/environment.default';
  */
 @Injectable()
 export class Logger {
-  /**
-   * @param msg Log a message
-   */
-  log(msg: any): void {
+
+  private static invokeConsoleMethod(type: string, args?: any): void {
     // Don't log in production
     if (!ENV.production) {
-      // tslint:disable-next-line:no-console
-      console.log(msg);
+      const logFn: Function = (console)[type] || console.log || noop;
+      logFn.apply(console, args);
     }
   }
 
-  /**
-   * @param msg Log a message
-   */
-  error(msg: any): void {
-    // Don't log in production
-    if (!ENV.production) {
-      // tslint:disable-next-line:no-console
-      console.error(msg);
-    }
+  info(...args: any[]): void {
+    Logger.invokeConsoleMethod('info', args);
+  }
+
+  warn(...args: any[]): void {
+    Logger.invokeConsoleMethod('warn', args);
+  }
+
+  error(...args: any[]): void {
+    Logger.invokeConsoleMethod('error', args);
   }
 }

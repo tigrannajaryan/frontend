@@ -32,32 +32,17 @@ export class BaseServiceProvider {
     return this.http.request<ResponseType>(method, url, httpOptions)
       .toPromise()
       .catch(e => {
-        this.logger.error(`API request failed: ${e}`);
+        this.logger.error('API request failed:', e);
         throw e;
       });
   }
 
   protected get<ResponseType>(apiPath: string): Promise<ResponseType> {
-    return this.request('get', apiPath);
+    return this.request<ResponseType>('get', apiPath);
   }
 
   protected post<ResponseType>(apiPath: string, data: any): Promise<ResponseType> {
-    // For help on how to use HttpClient see https://angular.io/guide/http
-
-    const httpOptions = {
-      headers: new HttpHeaders({
-        // TODO: are standard HTTP headers defined as a constant anywhere?
-        'Content-Type': 'application/json'
-      })
-    };
-
-    const url = ENV.apiUrl + apiPath;
-
-    return this.http.post<ResponseType>(url, JSON.stringify(data), httpOptions)
-      .toPromise()
-      .catch(e => {
-        throw e;
-      });
+    return this.request<ResponseType>('post', apiPath, data);
   }
 
   uploadFile(formData: FormData): Promise<ResponseType> {
@@ -66,6 +51,7 @@ export class BaseServiceProvider {
     return this.http.post<ResponseType>(url, formData)
       .toPromise()
       .catch(e => {
+        this.logger.error('API request failed:', e);
         throw e;
       });
   }

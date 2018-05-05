@@ -3,10 +3,10 @@ import { MenuController, Nav, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
-import { TodayComponent } from '../pages/today/today.component';
 import { ListComponent } from '../pages/list/list';
 import { PageNames } from '../pages/page-names';
 import { Logger } from './shared/logger';
+import { TodayComponent } from './today/today.component';
 
 @Component({
   templateUrl: 'app.html'
@@ -37,7 +37,7 @@ export class MyAppComponent {
   }
 
   initializeApp(): void {
-    this.logger.log('App initializing...');
+    this.logger.info('App initializing...');
     this.platform.ready()
       .then(() => {
         // Okay, so the platform is ready and our plugins are available.

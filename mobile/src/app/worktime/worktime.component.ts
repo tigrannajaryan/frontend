@@ -225,7 +225,7 @@ export class WorktimeComponent {
 
       } catch (e) {
         // Ignore invalid response from api
-        this.logger.log(`Error decoding Worktime: ${e}`);
+        this.logger.error(`Error decoding Worktime: ${e}`);
       }
     }
 

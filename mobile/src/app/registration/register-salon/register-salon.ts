@@ -63,7 +63,7 @@ export class RegisterSalonComponent {
         Validators.nullValidator
       ]],
       salon_address: ['', Validators.required],
-      profile_photo_id: ''
+      profile_photo_id: undefined
     });
   }
 
@@ -103,7 +103,6 @@ export class RegisterSalonComponent {
     try {
       const { vars, ...profile } = this.form.value;
 
-      // TODO: decide on fullname vs firstname/last and add phone field to the form.
       await this.apiService.setProfile(profile);
 
       this.navCtrl.push(PageNames.RegisterServices, {}, { animate: false });
