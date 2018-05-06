@@ -3,13 +3,12 @@ import { MenuController, Nav, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
-import { ListComponent } from '../pages/list/list';
-import { PageNames } from '../pages/page-names';
+import { PageNames } from './shared/page-names';
 import { Logger } from './shared/logger';
 import { TodayComponent } from './today/today.component';
 
 @Component({
-  templateUrl: 'app.html'
+  templateUrl: 'app.component.html'
 })
 export class MyAppComponent {
   @ViewChild(Nav) nav: Nav;
@@ -30,8 +29,7 @@ export class MyAppComponent {
 
     // used for an example of ngFor and navigation
     this.pages = [
-      { title: 'Today', component: TodayComponent },
-      { title: 'List', component: ListComponent }
+      { title: 'Today', component: TodayComponent }
     ];
 
   }

@@ -36,10 +36,10 @@ import {
 } from 'ionic-angular';
 
 import { AlertControllerMock, ConfigMock, LoadingControllerMock, PlatformMock } from 'ionic-mocks';
-import { AuthServiceProviderMock } from './providers/auth-service/auth-service-mock';
-import { AuthServiceProvider } from './providers/auth-service/auth-service';
 import { WorktimeApi } from './app/worktime/worktime.api';
 import { WorktimeApiMock } from './app/worktime/worktime.api.mock';
+import { AuthServiceProvider } from './app/shared/auth-service/auth-service';
+import { AuthServiceProviderMock } from './app/shared/auth-service/auth-service-mock';
 
 declare const require: any;
 

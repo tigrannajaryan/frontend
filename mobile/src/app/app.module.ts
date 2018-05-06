@@ -8,19 +8,16 @@ import { EffectsModule } from '@ngrx/effects';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 
 import { MyAppComponent } from './app.component';
-import { ListComponent } from '../pages/list/list';
-
-import { AuthServiceProvider } from '../providers/auth-service/auth-service';
-import { httpInterceptorProviders } from '../http-interceptors';
-import { StylistServiceProvider } from '../providers/stylist-service/stylist-service';
-import { SharedModule } from '../shared/shared.module';
-import { getMetaReducers, reducers } from './app.reducers';
 import { Logger } from './shared/logger';
+import { AuthServiceProvider } from './shared/auth-service/auth-service';
+import { StylistServiceProvider } from './shared/stylist-service/stylist-service';
+import { httpInterceptorProviders } from './shared/http-interceptors';
+import { SharedModule } from './shared/shared.module';
+import { getMetaReducers, reducers } from './app.reducers';
 
 @NgModule({
   declarations: [
-    MyAppComponent,
-    ListComponent
+    MyAppComponent
   ],
   imports: [
     BrowserModule,
@@ -50,8 +47,7 @@ import { Logger } from './shared/logger';
   bootstrap: [IonicApp],
 
   entryComponents: [
-    MyAppComponent,
-    ListComponent
+    MyAppComponent
   ],
   providers: [
     StatusBar,

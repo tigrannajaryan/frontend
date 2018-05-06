@@ -3,10 +3,9 @@ import { TestUtils } from '../../test';
 import { defaultEndTime, defaultStartTime, WeekdayIso, WorktimeComponent } from './worktime.component';
 import { WorktimeComponentModule } from './worktime.component.module';
 import { WorktimeApi } from './worktime.api';
-import { SharedModule } from '../../shared/shared.module';
-import { ComponentsModule } from '../../components/components.module';
 import { WorktimeApiMock } from './worktime.api.mock';
 import { Worktime } from './worktime.models';
+import { SharedModule } from '../shared/shared.module';
 
 let fixture: ComponentFixture<WorktimeComponent>;
 let instance: WorktimeComponent;

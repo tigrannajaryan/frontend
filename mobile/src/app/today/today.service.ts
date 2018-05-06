@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BaseServiceProvider } from '../../providers/base-service';
 import { AppointmentStatus, Today } from './today.models';
 import { Logger } from '../shared/logger';
+import { BaseServiceProvider } from '../shared/base-service';
 
 @Injectable()
 export class TodayService extends BaseServiceProvider {
