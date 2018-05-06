@@ -1,0 +1,95 @@
+<!--
+  Generated template for the RegisterWorktimePage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header class="ion-bb-header">
+    <ion-navbar color="white">
+      <ion-buttons end>
+        <button ion-button icon-only>
+          <ion-icon name="key"></ion-icon>
+        </button>
+      </ion-buttons>
+    </ion-navbar>
+  </ion-header>
+
+
+<ion-content padding>
+  <!--<bb-nav [activePageIndex]="0"></bb-nav> -->
+
+   <h2 class="mb_h2">Your sifts</h2>
+   <form class="form">
+<!--shifts block start -->
+      <ion-grid class="workingtime_shifts_block" item-content>
+        <ion-row>
+          <ion-col>
+                <ion-label>Start</ion-label>
+                <ion-datetime displayFormat="HH:mm a"></ion-datetime>
+          </ion-col>
+          <ion-col>
+                  <ion-label>End</ion-label>
+                  <ion-datetime displayFormat="HH:mm a"></ion-datetime>
+          </ion-col>
+          <ion-col>
+                <ion-label>Duration</ion-label>
+                <span>8 h 30 min</span>                
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <!--Week days grid start-->
+              <ion-grid class="wd_greed" >
+                  <ion-row>
+                    <ion-col><a href="#" class="disabled" >Mon</a></ion-col>
+                    <ion-col><a href="#">Tue</a></ion-col>
+                    <ion-col><a href="#">Wed</a></ion-col>
+                    <ion-col><a href="#">Thu</a></ion-col>
+                    <ion-col><a href="#">Fri</a></ion-col>
+                    <ion-col><a href="#"  class="disabled" >Sat</a></ion-col>
+                    <ion-col><a href="#">Sun</a></ion-col>
+                  </ion-row>
+                </ion-grid>
+                 <!--Week days grid start-->
+          </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col class="time_greed" >
+                <ion-grid >
+                  <ion-row class="time_greed_col">
+                    <ion-col>&nbsp;</ion-col>
+                    <ion-col></ion-col>
+                    <ion-col></ion-col>
+                    <ion-col></ion-col>
+                    <ion-col></ion-col>
+                    <ion-col></ion-col>
+                    <ion-col></ion-col>
+                    <ion-col></ion-col>
+                    <ion-col style="border-right:0px"></ion-col>
+                  </ion-row>
+                </ion-grid>
+            </ion-col>
+          </ion-row>
+      </ion-grid>
+      <!--shifts block end -->
+      <h3 class="mb_h3">Different working hours for different days?</h3>
+      <ion-grid>
+          <ion-row   class="add_new_block">
+            <ion-col>Add new</ion-col>
+            <ion-col><div class="round_button"><button>+</button></div></ion-col>
+            <ion-col>Timeblock</ion-col>
+          </ion-row>
+          <ion-row class="last_row">
+              <ion-col>You work weekly</ion-col>
+              <ion-col>3 days</ion-col>
+              <ion-col>25  h 30 min</ion-col>
+            </ion-row>
+            <ion-row >
+                <ion-col>
+                  <button ion-button color="dark" full type="submit">Next step</button>
+                </ion-col>
+                
+              </ion-row>
+        </ion-grid>
+    </form>
+</ion-content>

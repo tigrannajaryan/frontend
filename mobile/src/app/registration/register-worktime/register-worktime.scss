@@ -1,0 +1,110 @@
+page-register-worktime {
+  .mb_h2{
+    font-size: 1.25em;
+    margin-top: 10rem;
+    margin-bottom: 2rem;
+  }
+  .mb_h3{
+    font-size: 1.1em;
+    margin: 3rem 7rem;
+    font-weight: normal;
+    text-align: center;
+    line-height: 2.5rem;
+  }
+  .workingtime_shifts_block{
+    border-radius: 5px;
+    padding: 0px;
+    background: #e6dce9;
+  }
+  .workingtime_shifts_block ion-row ion-col{
+    padding: 0px;
+  }
+  .workingtime_shifts_block ion-row:first-child ion-col{
+    padding-left: 10px;
+  }
+  .workingtime_shifts_block .label-md{
+    margin: 13px 0px 0px 10px;
+    font-size: smaller;
+  }
+ 
+  .workingtime_shifts_block .datetime-md{
+    margin: 5px 8px 13px 10px;
+    border-bottom: 1px solid #c0c0c0;
+    padding: 0px;
+    font-size: larger;
+  }
+  .workingtime_shifts_block span{
+    padding-top: 5px; 
+    font-size:1.15em;
+    display:inline-block;
+  }
+  .workingtime_shifts_block .wd_greed{
+    width: 88%;
+    background-color: #fff;
+    border-radius:5px;
+    margin-bottom:20px;
+  }
+  .workingtime_shifts_block .wd_greed a{
+    color: #000;
+    text-decoration: none;
+    font-size: small;
+  }
+  .workingtime_shifts_block .wd_greed a.disabled{
+    color: #c0c0c0;
+  }
+  .workingtime_shifts_block .wd_greed ion-row ion-col{
+    padding: 0px 5px;;
+  }
+  .workingtime_shifts_block .time_greed{
+    padding:0px;
+
+  }
+  .workingtime_shifts_block .time_greed ion-grid{
+    padding:0px;
+  }
+  .workingtime_shifts_block .time_greed ion-grid ion-row ion-col{
+    border-right:1px solid #cbb0d4;
+    padding: 0px;
+  }
+  div.round_button{ 
+    border: 1px solid #ccc;
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    padding: auto;
+    margin: auto;
+    text-align: center;
+   
+  }
+  .round_button button{ 
+    background-color: black;
+    color: #fff;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin: 23% auto;
+    font-size: 1.2em;    
+  }
+  .last_row {
+    margin:3rem 0rem 2rem 0rem;
+    padding-top: 5px;
+    border-top: 1px solid #c0c0c0;
+    font-size: small;
+  }
+  .last_row ion-col:first-child{
+    min-width: 120px !important;
+  }
+  .add_new_block ion-col:first-child{
+    padding-top: 40px;
+    text-align: right;
+    font-size: smaller
+  }
+  .add_new_block ion-col:last-child{
+    padding-top: 40px;
+    text-align: left;
+    font-size: smaller;
+  }
+  .button-md{
+    text-transform: none; 
+  }
+}
