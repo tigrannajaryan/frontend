@@ -5,6 +5,7 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 
 import { ENV } from '../environments/environment.default';
+import { Logger } from '../app/shared/logger';
 
 /**
  * AuthServiceProvider provides authentication against server API.
@@ -12,7 +13,7 @@ import { ENV } from '../environments/environment.default';
 @Injectable()
 export class BaseServiceProvider {
 
-  constructor(public http: HttpClient) {
+  constructor(public http: HttpClient, public logger: Logger) {
   }
 
   protected request<ResponseType>(method: string, apiPath: string, data?: any): Promise<ResponseType> {
@@ -31,6 +32,7 @@ export class BaseServiceProvider {
     return this.http.request<ResponseType>(method, url, httpOptions)
       .toPromise()
       .catch(e => {
+        this.logger.error(`API request failed: ${e}`);
         throw e;
       });
   }

@@ -12,5 +12,6 @@ export enum PageNames {
     RegisterServices = 'ServicesComponent',
     RegisterServicesItem = 'ServicesListComponent',
     RegisterServicesItemAdd = 'ServiceItemComponent',
+    Worktime = 'WorktimeComponent',
     Today = 'TodayComponent'
 }

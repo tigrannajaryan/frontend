@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BaseServiceProvider } from '../base-service';
 import { ServiceItem, ServicesTemplate, ServiceTemplateSet, StylistProfile } from './stylist-models';
+import { Logger } from '../../app/shared/logger';
 
 export interface ServicesResponse {
   services: ServiceItem[];
@@ -23,8 +24,10 @@ export interface ServiceTemplateSetResponse {
 @Injectable()
 export class StylistServiceProvider extends BaseServiceProvider {
 
-  constructor(public http: HttpClient) {
-    super(http);
+  constructor(
+    public http: HttpClient,
+    public logger: Logger) {
+    super(http, logger);
   }
 
   /**

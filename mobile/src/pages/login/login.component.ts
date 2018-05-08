@@ -29,11 +29,17 @@ export class LoginComponent {
       // No profile at all, start from beginning.
       return PageNames.RegisterSalon;
     }
+
     if (!profileStatus.has_personal_data || !profileStatus.has_picture_set) {
       return PageNames.RegisterSalon;
     }
+
     if (!profileStatus.has_services_set) {
       return PageNames.RegisterServices;
+    }
+
+    if (!profileStatus.has_business_hours_set) {
+      return PageNames.Worktime;
     }
 
     // TODO: check the remaining has_ flags and return the appropriate

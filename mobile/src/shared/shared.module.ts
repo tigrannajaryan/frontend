@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { IonicModule } from 'ionic-angular';
 import { ComponentsModule } from '../components/components.module';
 import { BaseServiceProvider } from '../providers/base-service';
+import { Logger } from '../app/shared/logger';
 
 const ex = [
   ComponentsModule
@@ -16,7 +17,8 @@ const ex = [
     ...ex
   ],
   providers: [
-    BaseServiceProvider
+    BaseServiceProvider,
+    Logger
   ]
 })
 export class SharedModule {}

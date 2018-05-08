@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import 'rxjs/add/operator/toPromise';
+
 import { BaseServiceProvider } from '../base-service';
 import { StylistProfile } from '../stylist-service/stylist-models';
+import { Logger } from '../../app/shared/logger';
 
 export interface AuthCredentials {
   email: string;
@@ -32,6 +34,11 @@ export interface AuthError {
 }
 
 /**
+ * Local storage key for storing the authResponse.
+ */
+const storageKey = 'authResponse';
+
+/**
  * AuthServiceProvider provides authentication against server API.
  */
 @Injectable()
@@ -39,8 +46,17 @@ export class AuthServiceProvider extends BaseServiceProvider {
 
   private authResponse: AuthResponse;
 
-  constructor(public http: HttpClient) {
-    super(http);
+  constructor(
+    public http: HttpClient,
+    public logger: Logger) {
+
+    super(http, logger);
+
+    // Read previously saved authResponse (if any). We are using
+    // window.localStorage instead of Ionic Storage class because
+    // we need synchronous behavior which window.localStorage
+    // provides and Ionic Storage doesn't (Ionic Storage.get() is async).
+    this.authResponse = JSON.parse(window.localStorage.getItem(storageKey));
   }
 
   /**
@@ -81,11 +97,17 @@ export class AuthServiceProvider extends BaseServiceProvider {
         // Save auth response
         this.authResponse = response;
 
+        // Save the authResponse for later use. This allows us to access any page
+        // without re-login, which is very useful during development/debugging
+        // since you can just refresh the browser window.
+        window.localStorage.setItem(storageKey, JSON.stringify(this.authResponse));
+
         return response;
       })
       .catch(e => {
         // Failed authentication. Clear previously saved successfull response (if any).
         this.authResponse = undefined;
+        this.logger.error(e);
         throw e;
       });
   }

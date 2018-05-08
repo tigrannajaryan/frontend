@@ -1,0 +1,70 @@
+<ion-header class="ion-bb-header">
+  <ion-navbar color="white">
+    <ion-buttons end>
+      <button ion-button icon-only>
+        <ion-icon name="key"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+  <bb-nav [activePageIndex]="2"></bb-nav>
+
+  <h2 class="mb_h2">Your shifts</h2>
+  <!--shifts block start -->
+  <ion-grid *ngFor="let card of cards" class="workingtime_shifts_block" item-content>
+    <ion-row>
+      <ion-col>
+        <ion-label>Start</ion-label>
+        <ion-datetime displayFormat="h:mm a" pickerFormat="h mm A" [(ngModel)]="card.workStartAt"></ion-datetime>
+      </ion-col>
+      <ion-col>
+        <ion-label>End</ion-label>
+        <ion-datetime displayFormat="h:mm a" [(ngModel)]="card.workEndAt"></ion-datetime>
+      </ion-col>
+      <ion-col>
+        <ion-label>Duration</ion-label>
+        <span>{{ card.getDurationStr() }}</span>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <!--Week days grid start-->
+        <ion-grid class="wd_greed">
+          <ion-row>
+            <ion-col *ngFor="let day of card.weekdays">
+              <a [ngClass]="{'disabled': !day.enabled}" (click)="toggleWeekday(day)">{{ day.label }}</a>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+        <!--Week days grid start-->
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <!--shifts block end -->
+  <h3 class="mb_h3">Different working hours for different days?</h3>
+  <ion-grid>
+    <ion-row class="add_new_block">
+      <ion-col>Add new</ion-col>
+      <ion-col>
+        <div class="round_button">
+          <button (click)="addNewCard()">+</button>
+        </div>
+      </ion-col>
+      <ion-col>Timeblock</ion-col>
+    </ion-row>
+    <ion-row class="last_row">
+      <ion-col>You work weekly</ion-col>
+      <ion-col>{{ calcTotals().days }} days</ion-col>
+      <ion-col>{{ calcTotals().hoursMins }} </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <!-- TODO: This needs to be extracted as a common component -->
+  <div class="bb-wp-a">
+    <button (click)="saveChanges()" ion-button full color="dark" class="bb-btn-a">Next step</button>
+  </div>
+
+</ion-content>

@@ -10,6 +10,7 @@ import { ListComponent } from '../pages/list/list';
 import { AuthServiceProvider } from '../providers/auth-service/auth-service';
 import { httpInterceptorProviders } from '../http-interceptors';
 import { StylistServiceProvider } from '../providers/stylist-service/stylist-service';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { StylistServiceProvider } from '../providers/stylist-service/stylist-ser
   imports: [
     BrowserModule,
     HttpClientModule,
-    IonicModule.forRoot(MyAppComponent, {backButtonText: '', backButtonIcon: 'md-arrow-back'})
+    IonicModule.forRoot(MyAppComponent, {backButtonText: '', backButtonIcon: 'md-arrow-back'}),
+    SharedModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [

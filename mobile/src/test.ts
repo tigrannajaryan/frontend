@@ -28,15 +28,18 @@ import {
   GestureController,
   IonicModule,
   Keyboard,
+  LoadingController,
   MenuController,
   NavController,
   NavParams,
   Platform
 } from 'ionic-angular';
 
-import { AlertControllerMock, ConfigMock, PlatformMock } from 'ionic-mocks';
+import { AlertControllerMock, ConfigMock, LoadingControllerMock, PlatformMock } from 'ionic-mocks';
 import { AuthServiceProviderMock } from './providers/auth-service/auth-service-mock';
 import { AuthServiceProvider } from './providers/auth-service/auth-service';
+import { WorktimeApi } from './app/worktime/worktime.api';
+import { WorktimeApiMock } from './app/worktime/worktime.api.mock';
 
 declare const require: any;
 
@@ -73,12 +76,15 @@ export class TestUtils {
         ...components
       ],
       providers: [
-        App, Form, Keyboard, DomController, MenuController, NavController, NavParams, GestureController, AlertControllerMock,
+        App, Form, Keyboard, DomController, MenuController, NavController,
+        NavParams, GestureController, AlertControllerMock, LoadingControllerMock,
         { provide: Platform, useFactory: () => PlatformMock.instance() },
         { provide: Config, useFactory: () => ConfigMock.instance() },
         { provide: DeepLinker, useFactory: () => ConfigMock.instance() },
         { provide: AlertController, useFactory: () => AlertControllerMock.instance() },
-        { provide: AuthServiceProvider, useClass: AuthServiceProviderMock }
+        { provide: LoadingController, useFactory: () => LoadingControllerMock.instance() },
+        { provide: AuthServiceProvider, useClass: AuthServiceProviderMock },
+        { provide: WorktimeApi, useClass: WorktimeApiMock }
       ],
       imports: [
         FormsModule,

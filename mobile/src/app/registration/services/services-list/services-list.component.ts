@@ -18,6 +18,8 @@ import { StylistServiceProvider } from '../../../../providers/stylist-service/st
 import { PageNames } from '../../../../pages/page-names';
 import { ServiceItemComponentData } from '../services-item/services-item.component';
 
+import * as time from '../../../shared/time';
+
 // this is required for saving uuid (page refresh will not remove it)
 @IonicPage({ segment: 'services/:uuid' })
 @Component({
@@ -47,18 +49,6 @@ export class ServicesListComponent {
       const response = await this.stylistService.getServiceTemplateSetById(this.uuid);
       this.templateSet = response.template_set;
     }
-  }
-
-  /**
-   * It get number in minutes and return converted string
-   * input: 60
-   * output: 1h 0m
-   */
-  convertMinsToHrsMins(mins: number): string {
-    const h = Math.floor(mins / 60);
-    const m = mins % 60;
-
-    return `${h}h ${m < 10 ? '0' : ''}${m}m`;
   }
 
   /**
@@ -106,6 +96,7 @@ export class ServicesListComponent {
 
       try {
         await this.stylistService.setStylistServices(categoriesServices);
+        this.navCtrl.push(PageNames.Worktime);
       } finally {
         loading.dismiss();
       }
@@ -125,6 +116,10 @@ export class ServicesListComponent {
    */
   resetList(): void {
     this.init();
+  }
+
+  convertMinsToHrsMins(mins: number): string {
+    return time.convertMinsToHrsMins(mins);
   }
 
   /**

@@ -10,6 +10,7 @@
     "curly": true,
     "i18n": [true, "check-id"],
     "component-selector": [false, "TODO: disabled temporarily. see http://codelyzer.com/rules/component-selector/ for more details and to enable."],
-    "trackBy-function": [false, "TODO: unclear if trackBy universaly needed. Will explore this later."]
+    "trackBy-function": [false, "TODO: unclear if trackBy universaly needed. Will explore this later."],
+    "newline-per-chained-call": false
   }
 }

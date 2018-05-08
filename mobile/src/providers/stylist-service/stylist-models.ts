@@ -9,20 +9,6 @@ export interface StylistProfile {
   profile_photo_id: string;
 }
 
-// Stylist availability days and hours
-
-export interface StylistAvailabilityDay {
-  label: string;
-  weekday_iso: number;
-  available: boolean;
-  day_start_at: string;
-  day_end_at: string;
-}
-
-export interface StylistAvailability {
-  weekdays: StylistAvailabilityDay[];
-}
-
 // Weekday discounts
 
 export interface WeekdayDiscount {
