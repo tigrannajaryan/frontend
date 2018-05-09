@@ -1,3 +1,37 @@
 page-first-screen {
+  // p = page
+  // -fs = first letter of each word (in this case just -fs)
+  .p-fs {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-content: stretch;
+    height: 100%;
+    text-align: center;
 
+    &-img{
+      height: 440px;
+      margin-top: pxtorem(160);
+      margin-bottom: pxtorem(60);
+
+      img{
+        height: 100%;
+      }
+    }
+
+    &-title{
+      font-size: pxtoem(24);
+    }
+
+    &-box{
+      &-buttons{
+        margin: pxtorem(45) 0 pxtorem(55);
+
+        button{
+          margin: pxtorem(15) 0;
+        }
+      }
+    }
+  }
 }

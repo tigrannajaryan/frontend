@@ -1,3 +1,18 @@
 page-login {
+  // p = page
+  // -l = first letter of each word (in this case just -l)
+  .p-l {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: flex-end;
+    align-content: stretch;
+    height: 100%;
+    text-align: center;
 
+
+    &-btn{
+      margin: pxtoem(40) 0;
+    }
+  }
 }

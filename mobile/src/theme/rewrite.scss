@@ -13,12 +13,15 @@ ion-app.md, ion-app.ios, ion-app.wp{
     font-size: 10px;
   }
 }
+
 button[color="bb_violet"]{
   color: #000;
 }
+
 ion-header ion-icon.back-button-icon.icon {
   color: map-get($colors, dark);
 }
+
 .range-md{
   .range-knob{
     transform: scale(1.8);
@@ -33,12 +36,30 @@ ion-header ion-icon.back-button-icon.icon {
   }
 }
 
+button[color='bb_honey']{
+  color: #fff;
+}
 
+[ion-button].noborder{
+  border: none;
+}
+
+
+
+
+
+// wrap and rewrite ionic def style
 .ion-bb{
   &-header{
-    .toolbar-background{
-      border-color: transparent;
-      background: none;
+    .toolbar{
+      &-title{
+        color: #000;
+      }
+
+      &-background{
+        border-color: transparent;
+        background: none;
+      }
     }
 
     &:after{display: none;}
@@ -86,6 +107,71 @@ ion-header ion-icon.back-button-icon.icon {
     }
   }
 
+  &-inputbox{
+    border: 1px solid #ebebeb;
+    border-radius: 10px;
+    padding: 0 pxtorem(45);
+    transition: all 100ms linear;
+
+    @media ($smartphone) {
+      padding: 0 pxtorem(35);
+    }
+
+    @media ($phone) {
+      padding: 0 pxtorem(25);
+    }
+
+
+    &-item{
+      padding: 0;
+      font-size: pxtoem(24);
+
+      .item-inner{
+        padding: pxtoem(10) 0;
+        border-bottom: 1px solid #dedede !important;
+        box-shadow: none !important;
+
+        @media ($phone) {
+          padding: 0;
+        }
+      }
+      .text-input{
+        margin: 13px 0;
+      }
+
+      &:last-child{
+        .item-inner{
+          border-bottom-color: transparent !important;
+          box-shadow: none !important;
+        }
+      }
+
+      button[item-right]{
+        margin: 9px 0 9px 0;
+        font-size: pxtoem(24);
+        padding: 0;
+
+        @media ($smartphone) {
+          font-size: pxtoem(22);
+        }
+
+        @media ($phone) {
+          font-size: pxtoem(20);
+        }
+
+        ion-icon{
+          padding: 0;
+        }
+      }
+    }
+
+
+    &.focus{
+      border: 1px solid transparent;
+      box-shadow: 0 0 70px -17px rgba(0, 0, 0, 0.4);
+    }
+  }
+
   &-showback{
     .back-button {
       display: block !important;
@@ -108,6 +194,5 @@ ion-header ion-icon.back-button-icon.icon {
       padding: 0 !important;
     }
   }
-
 }
 

@@ -9,6 +9,12 @@
       width: 100%;
       margin: 0 auto;
     }
+
+    &-b{
+      max-width: 500px;
+      width: 100%;
+      margin: 0 auto;
+    }
   }
 
   &-btn{
@@ -57,9 +63,19 @@
       height: 89px;
       font-size: pxtoem(22);
 
+      @media ($smartphone) {
+        height: 60px;
+        font-size: pxtoem(20);
+      }
+
       @media ($phone) {
         height: 40px;
         font-size: pxtoem(18);
+      }
+
+
+      &.o_shadow{
+        box-shadow: 0 0 31px 6px rgba(255, 197, 150, 0.5);
       }
     }
   }
@@ -68,6 +84,10 @@
     &-gold{
       background: color($colors, bb_gold);
     }
+  }
+
+  &-link{
+    color: color($colors, bb_orange);
   }
 
   &-topcircle{
@@ -92,5 +112,10 @@
         transform: translate(-50%, -67%);
       }
     }
+  }
+
+  &-text{
+    font-size: pxtoem(24);
+    line-height: pxtoem(26);
   }
 }

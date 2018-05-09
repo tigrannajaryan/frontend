@@ -1,34 +1,32 @@
-<!--
-  Generated template for the LoginPage page.
-
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
-<ion-header>
-
+<ion-header class="ion-bb-header">
   <ion-navbar>
-    <ion-title>login</ion-title>
+    <ion-title text-center>Made</ion-title>
   </ion-navbar>
-
 </ion-header>
 
 
 <ion-content padding>
+  <div class="p-l bb-wp-b">
 
-  <ion-list>
+    <div class="ion-bb-inputbox" [ngClass]="{'focus': formData.email || formData.password}">
+      <ion-item class="ion-bb-inputbox-item">
+        <ion-input type="email" placeholder="E-mail address" [(ngModel)]="formData.email"></ion-input>
+      </ion-item>
 
-    <ion-item>
-      <ion-label fixed>Email</ion-label>
-      <ion-input type="email" value="" [(ngModel)]="formData.email"></ion-input>
-    </ion-item>
+      <ion-item class="ion-bb-inputbox-item">
+        <ion-input [type]="passwordType" placeholder="Password" [(ngModel)]="formData.password"></ion-input>
 
-    <ion-item>
-      <ion-label floating>Password</ion-label>
-      <ion-input type="password" [(ngModel)]="formData.password"></ion-input>
-    </ion-item>
+        <button (click)="switchPasswordType()" type="button" ion-button icon-start item-right outline color="bb_orange" class="noborder"><ion-icon name="ios-eye-outline"></ion-icon></button>
+      </ion-item>
+    </div>
 
-    <button ion-button block color="primary" (click)="login()">Login</button>
+    <button (click)="login()" ion-button full color="bb_honey" class="bb-btn-a o_shadow p-l-btn">
+      &nbsp; Log in
+    </button>
 
-  </ion-list>
-
+    <div class="bb-text">
+      Forgot your password again, haven't you? <br>
+      <a (click)="register()" class="bb-link">Reset it to the ground</a>
+    </div>
+  </div>
 </ion-content>

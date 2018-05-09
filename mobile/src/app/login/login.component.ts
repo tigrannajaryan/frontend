@@ -3,13 +3,6 @@ import { AlertController, IonicPage, NavController, NavParams } from 'ionic-angu
 import { profileStatusToPage } from '../shared/functions';
 import { AuthCredentials, AuthServiceProvider, UserRole } from '../shared/auth-service/auth-service';
 
-/**
- * Generated class for the LoginPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
-
 @IonicPage()
 @Component({
   selector: 'page-login',
@@ -17,7 +10,8 @@ import { AuthCredentials, AuthServiceProvider, UserRole } from '../shared/auth-s
 })
 export class LoginComponent {
 
-  formData = { email: '', password: ''};
+  formData = { email: '', password: '' };
+  passwordType = 'password';
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
@@ -48,5 +42,13 @@ export class LoginComponent {
       });
       alert.present();
     }
+  }
+
+  switchPasswordType(): void {
+    this.passwordType = this.passwordType === 'password' ? 'type' : 'password';
+  }
+
+  reset(): void {
+    // TODO: add api call when it will be ready
   }
 }
