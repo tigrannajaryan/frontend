@@ -1,19 +1,22 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { Worktime } from './worktime.models';
+import { BaseApiService } from '../shared/base-api-service';
+import { HttpClient } from '@angular/common/http';
 import { Logger } from '../shared/logger';
-import { BaseServiceProvider } from '../shared/base-service';
+import { ServerStatusTracker } from '../shared/server-status-tracker';
 
 /**
  * WorktimeApi allows getting and setting the working time for stylist.
  */
 @Injectable()
-export class WorktimeApi extends BaseServiceProvider {
+export class WorktimeApi extends BaseApiService {
 
   constructor(
-    public http: HttpClient,
-    public logger: Logger) {
-    super(http, logger);
+    protected http: HttpClient,
+    protected logger: Logger,
+    protected serverStatus: ServerStatusTracker
+  ) {
+    super(http, logger, serverStatus);
   }
 
   /**

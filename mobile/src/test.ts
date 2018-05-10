@@ -35,11 +35,18 @@ import {
   Platform
 } from 'ionic-angular';
 
-import { AlertControllerMock, ConfigMock, LoadingControllerMock, PlatformMock } from 'ionic-mocks';
+import {
+  AlertControllerMock,
+  ConfigMock,
+  LoadingControllerMock,
+  NavControllerMock,
+  PlatformMock
+} from 'ionic-mocks';
+
 import { WorktimeApi } from './app/worktime/worktime.api';
 import { WorktimeApiMock } from './app/worktime/worktime.api.mock';
-import { AuthServiceProvider } from './app/shared/auth-service/auth-service';
-import { AuthServiceProviderMock } from './app/shared/auth-service/auth-service-mock';
+import { AuthApiService } from './app/shared/auth-api-service/auth-api-service';
+import { AuthApiServiceMock } from './app/shared/auth-api-service/auth-api-service-mock';
 
 declare const require: any;
 
@@ -83,7 +90,8 @@ export class TestUtils {
         { provide: DeepLinker, useFactory: () => ConfigMock.instance() },
         { provide: AlertController, useFactory: () => AlertControllerMock.instance() },
         { provide: LoadingController, useFactory: () => LoadingControllerMock.instance() },
-        { provide: AuthServiceProvider, useClass: AuthServiceProviderMock },
+        { provide: NavController, useFactory: () => NavControllerMock.instance() },
+        { provide: AuthApiService, useClass: AuthApiServiceMock },
         { provide: WorktimeApi, useClass: WorktimeApiMock }
       ],
       imports: [

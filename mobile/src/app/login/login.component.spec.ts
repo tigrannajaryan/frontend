@@ -1,19 +1,29 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { StoreModule } from '@ngrx/store';
+
 import { TestUtils } from '../../test';
 import { LoginComponent } from './login.component';
-import { AuthServiceProvider, StylistProfileStatus} from '../shared/auth-service/auth-service';
 import { PageNames } from '../shared/page-names';
 import { profileStatusToPage } from '../shared/functions';
+import { AuthApiServiceMock } from '../shared/auth-api-service/auth-api-service-mock';
+import { AuthApiService, ProfileStatus } from '../shared/auth-api-service/auth-api-service';
+import { prepareSharedObjectsForTests } from '../shared/test-utils.spec';
 
 let fixture: ComponentFixture<LoginComponent>;
 let instance: LoginComponent;
 
 describe('Pages: LoginComponent', () => {
 
+  prepareSharedObjectsForTests();
+
   beforeEach(async(() => TestUtils.beforeEachCompiler([LoginComponent])
     .then(compiled => {
       fixture = compiled.fixture;
       instance = compiled.instance;
+
+      // Make sure the component and sub-components are properly
+      // initialized (this calls onNgInit).
+      fixture.detectChanges();
     })));
 
   it('should create the page', async(() => {
@@ -23,7 +33,7 @@ describe('Pages: LoginComponent', () => {
 
   it('should authenticate after login is called with valid credentials', async(() => {
 
-    const authService = TestBed.get(AuthServiceProvider);
+    const authService = TestBed.get(AuthApiService);
 
     expect(authService.getAuthToken())
       .toEqual(undefined);
@@ -40,19 +50,16 @@ describe('Pages: LoginComponent', () => {
 
   it('should fail to authenticate after login is called with wrong password', async(() => {
 
-    const authService = TestBed.get(AuthServiceProvider);
+    const authService = TestBed.get(AuthApiService);
 
-    expect(authService.getAuthToken())
-      .toEqual(undefined);
+    expect(authService.getAuthToken()).toEqual(undefined);
 
     instance.formData.email = 'user@test.com';
     instance.formData.password = 'wrongpassword';
 
-    instance.login()
-      .then(() => {
-        expect(authService.getAuthToken())
-          .toEqual(undefined);
-      });
+    instance.login().catch(e => {
+      expect(authService.getAuthToken()).toEqual(undefined);
+    });
   }));
 
   it('should correctly map stylist profile completeness to pages', async(() => {
@@ -63,7 +70,7 @@ describe('Pages: LoginComponent', () => {
       .toEqual(PageNames.RegisterSalon);
 
     // Full profile
-    const profileStatus: StylistProfileStatus = {
+    const profileStatus: ProfileStatus = {
       has_business_hours_set: true,
       has_invited_clients: true,
       has_other_discounts_set: true,

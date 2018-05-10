@@ -1,11 +1,13 @@
 import { async, ComponentFixture, getTestBed, TestBed } from '@angular/core/testing';
+import { StoreModule } from '@ngrx/store';
+
 import { TestUtils } from '../../test';
 import { defaultEndTime, defaultStartTime, WeekdayIso, WorktimeComponent } from './worktime.component';
 import { WorktimeComponentModule } from './worktime.component.module';
 import { WorktimeApi } from './worktime.api';
 import { WorktimeApiMock } from './worktime.api.mock';
 import { Worktime } from './worktime.models';
-import { SharedModule } from '../shared/shared.module';
+import { prepareSharedObjectsForTests } from '../shared/test-utils.spec';
 
 let fixture: ComponentFixture<WorktimeComponent>;
 let instance: WorktimeComponent;
@@ -13,22 +15,18 @@ const injector = getTestBed();
 
 describe('Pages: WorktimeComponent', () => {
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      providers: [WorktimeComponent],
-      imports: [SharedModule]
-    });
-  });
+  prepareSharedObjectsForTests();
 
   beforeEach(async(() => TestUtils.beforeEachCompiler([WorktimeComponent])
     .then(compiled => {
       fixture = compiled.fixture;
       instance = compiled.instance;
+      fixture.detectChanges();
     })));
 
   it('should create the page', async () => {
     expect(instance).toBeTruthy();
-    expect(instance.cards).toEqual(undefined);
+    expect(instance.cards).toEqual([]);
   });
 
   it('should toggle weekday and steal from another card', async () => {

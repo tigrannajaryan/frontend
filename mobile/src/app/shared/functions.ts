@@ -1,4 +1,4 @@
-import { StylistProfileStatus } from './auth-service/auth-service';
+import { ProfileStatus } from './auth-api-service/auth-api-service';
 import { PageNames } from './page-names';
 
 /**
@@ -6,7 +6,7 @@ import { PageNames } from './page-names';
  * of the profile of the user.
  * @param profileStatus as returned by auth.
  */
-export function profileStatusToPage(profileStatus: StylistProfileStatus): string {
+export function profileStatusToPage(profileStatus: ProfileStatus): string {
   /**
    * with this approach (PageNames.Today) we have = 'TodayComponent'
    * if TodayComponent wrapped with quotes then its lazy loadint and we need to add module for this component

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { AlertController, IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, LoadingController, NavController, NavParams } from 'ionic-angular';
 
-import { AuthCredentials, AuthServiceProvider, UserRole } from '../shared/auth-service/auth-service';
+import { AuthApiService, AuthCredentials, UserRole } from '../shared/auth-api-service/auth-api-service';
 import { PageNames } from '../shared/page-names';
 
 /**
@@ -23,26 +23,25 @@ export class RegisterByEmailComponent {
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
-    private authService: AuthServiceProvider,
-    private alertCtrl: AlertController) {
+    private authService: AuthApiService,
+    private loadingCtrl: LoadingController) {
   }
 
   async register(): Promise<void> {
-    const authCredentialsRecord: AuthCredentials = {
-      email: this.formData.email,
-      password: this.formData.password,
-      role: UserRole.stylist
-    };
+    const loading = this.loadingCtrl.create();
     try {
+      loading.present();
+
+      const authCredentialsRecord: AuthCredentials = {
+        email: this.formData.email,
+        password: this.formData.password,
+        role: UserRole.stylist
+      };
       await this.authService.registerByEmail(authCredentialsRecord);
+
       this.navCtrl.push(PageNames.RegisterSalon, {}, { animate: false });
-    } catch (e) {
-      const alert = this.alertCtrl.create({
-        title: 'Registration failed',
-        subTitle: e.message,
-        buttons: ['Dismiss']
-      });
-      alert.present();
+    } finally {
+      loading.dismiss();
     }
   }
 }
