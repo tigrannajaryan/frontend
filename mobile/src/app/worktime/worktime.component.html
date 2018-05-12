@@ -9,7 +9,7 @@
 </ion-header>
 
 
-<ion-content padding>
+<ion-content padding class="worktime">
   <bb-nav [activePageIndex]="2"></bb-nav>
 
   <h2 class="mb_h2">Your shifts</h2>
@@ -32,13 +32,15 @@
     <ion-row>
       <ion-col>
         <!--Week days grid start-->
-        <ion-grid class="wd_greed">
-          <ion-row>
-            <ion-col *ngFor="let day of card.weekdays">
-              <a [ngClass]="{'disabled': !day.enabled}" (click)="toggleWeekday(day)">{{ day.label }}</a>
-            </ion-col>
-          </ion-row>
-        </ion-grid>
+        <div class="wd_greed">
+          <ion-grid>
+            <ion-row>
+              <ion-col *ngFor="let day of card.weekdays">
+                <a [ngClass]="{'disabled': !day.enabled}" (click)="toggleWeekday(day)">{{ day.label }}</a>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+      </div>
         <!--Week days grid start-->
       </ion-col>
     </ion-row>
@@ -66,5 +68,4 @@
   <div class="bb-wp-a">
     <button (click)="saveChanges()" ion-button full color="dark" class="bb-btn-a">Next step</button>
   </div>
-
 </ion-content>
