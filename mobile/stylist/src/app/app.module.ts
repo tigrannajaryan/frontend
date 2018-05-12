@@ -14,6 +14,7 @@ import { StylistServiceProvider } from './shared/stylist-service/stylist-service
 import { httpInterceptorProviders } from './shared/http-interceptors';
 import { SharedModule } from './shared/shared.module';
 import { getMetaReducers, reducers } from './app.reducers';
+import { ExampleSharedProvider } from '@shared/example-provider';
 
 @NgModule({
   declarations: [
@@ -62,7 +63,8 @@ import { getMetaReducers, reducers } from './app.reducers';
       provide: META_REDUCERS,
       deps: [Logger],
       useFactory: getMetaReducers
-    }
+    },
+    ExampleSharedProvider
   ]
 })
 export class AppModule { }

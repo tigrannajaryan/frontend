@@ -4,8 +4,11 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { PageNames } from './shared/page-names';
-import { Logger } from './shared/logger';
-import { TodayComponent } from './today/today.component';
+import { Logger } from '~/shared/logger';
+import { TodayComponent } from '~/today/today.component';
+
+import { ExampleSharedClass } from '@shared/example-class';
+import { ExampleSharedProvider } from '@shared/example-provider';
 
 @Component({
   templateUrl: 'app.component.html'
@@ -22,10 +25,15 @@ export class MyAppComponent {
     public statusBar: StatusBar,
     public splashScreen: SplashScreen,
     public menuCtrl: MenuController,
-    private logger: Logger
+    private logger: Logger,
+    private sharedProvider: ExampleSharedProvider
   ) {
 
     this.initializeApp();
+
+    // TODO: this is just a proof-of-concept for shared code. Must be removed.
+    // tslint:disable-next-line:no-console
+    console.log('Hello SharedProvider:', this.sharedProvider.str);
 
     // used for an example of ngFor and navigation
     this.pages = [
@@ -36,6 +44,11 @@ export class MyAppComponent {
 
   initializeApp(): void {
     this.logger.info('App initializing...');
+
+    // TODO: this is just a proof-of-concept for shared code. Must be removed.
+    const simple: ExampleSharedClass = new ExampleSharedClass('Test line from shared class.');
+    this.logger.info(simple.val);
+
     this.platform.ready()
       .then(() => {
         // Okay, so the platform is ready and our plugins are available.

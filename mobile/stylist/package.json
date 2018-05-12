@@ -96,6 +96,7 @@
   },
   "config": {
     "ionic_bail_on_lint_error": true,
-    "ionic_webpack": "./config/webpack.config.js"
+    "ionic_webpack": "./config/webpack.config.js",
+    "ionic_watch": "./config/watch.config.js"
   }
 }

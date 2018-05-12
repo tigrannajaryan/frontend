@@ -1,11 +1,11 @@
 # Introduction
-BetterBeauty source code monorepo. This repo contains all source code for all our applications.
+MadeBeauty source code monorepo. This repo contains all source code for all our applications.
 
 # Directory Structure
 
 The repository has the following structure:
 ```
-/mobile  - mobile Ionic application.
+/mobile  - mobile apps.
 /webapp  - application backend API and admin.
 /website - betterbeauty.com public web site.
 ```

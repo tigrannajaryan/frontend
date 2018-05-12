@@ -1,3 +1,4 @@
+const path = require('path');
 const webpack = require('webpack');
 const merge = require('webpack-merge');
 
@@ -18,7 +19,17 @@ const config = {
         console.log('No environment specified. Using `default`');
       }
     })
-  ]
+  ],
+  resolve: {
+    alias: {
+      // Make @shared an alias for our shared code directory.
+      // Inspired by this: https://github.com/ionic-team/ionic-cli/issues/2232#issuecomment-365786680
+      "@shared": path.resolve('../shared/'),
+
+      // Make ~ an alias for root source code directory (inspired by Alexei Mironov)
+      "~": path.resolve('./src/app')
+    }
+  }
 };
 
 module.exports = {

@@ -1,4 +1,4 @@
-cd mobile
+cd mobile/stylist
 echo "--Creating www folder"
 mkdir www
 
