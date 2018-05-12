@@ -1,0 +1,24 @@
+{
+  "extends": "../tsconfig.ng-cli.json",
+  "compilerOptions": {
+    "outDir": "../out-tsc/spec",
+    "baseUrl": "./",
+    "module": "commonjs",
+    "target": "es2015",
+    "types": [
+      "jasmine",
+      "node"
+    ],
+    "paths": {
+      "@shared/*": ["../../shared/*"],
+      "~/*": ["app/*"]
+    }
+  },
+  "files": [
+    "test.ts"
+  ],
+  "include": [
+    "**/*.spec.ts",
+    "**/*.d.ts"
+  ]
+}

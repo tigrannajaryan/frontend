@@ -1,0 +1,19 @@
+$browser-context: 16;
+
+@function pxtoem($pixels, $context: $browser-context) {
+  @if (unitless($pixels)) {
+    $pixels: $pixels * 1px;
+  }
+
+  @if (unitless($context)) {
+    $context: $context * 1px;
+  }
+
+  @return $pixels / $context * 1em;
+}
+
+
+@function pxtorem($size) {
+  $remSize: $size / #{$browser-context};
+  @return #{$remSize}rem;
+}

@@ -1,0 +1,17 @@
+{
+  "rulesDirectory": [
+    "node_modules/codelyzer"
+  ],
+  "extends": ["angular-tslint-rules"],
+  "rules": {
+    "no-duplicate-variable": true,
+    "no-unused-variable": [true],
+    "array-type": [true, "array-simple"],
+    "curly": true,
+    "i18n": [true, "check-id"],
+    "component-selector": [false, "TODO: disabled temporarily. see http://codelyzer.com/rules/component-selector/ for more details and to enable."],
+    "trackBy-function": [false, "TODO: unclear if trackBy universaly needed. Will explore this later."],
+    "newline-per-chained-call": false,
+    "no-implicit-dependencies": false
+  }
+}

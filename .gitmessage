@@ -1,0 +1,51 @@
+# One line subject description of the change (Max 72 char)
+# |<----  Using a Maximum Of 72 Characters  -------------------------->|
+# If applied this commit will ...
+
+
+# Explain why this change is being made
+# |<----   Try To Limit Each Line to a Maximum Of 72 Characters   ---->|
+
+
+# Provide links to any relevant tickets, articles or other resources
+# If this is related to an existing Github issue specify the number below,
+# for example Github issue: #34
+Github issue: #
+
+
+
+# --- COMMIT END ---
+#
+# Remember to
+#    Capitalize the subject line
+#    Use the imperative mood in the subject line
+#    Do not end the subject line with a period
+#    Separate subject from body with a blank line
+#    Use the body to explain what and why vs. how
+#    Can use multiple lines with "-" for bullet points in body
+#
+# For example:
+#
+# Summarize changes in around 72 characters or less
+#
+# More detailed explanatory text, if necessary. Wrap it to about 72
+# characters or so. In some contexts, the first line is treated as the
+# subject of the commit and the rest of the text as the body. The
+# blank line separating the summary from the body is critical (unless
+# you omit the body entirely); various tools like `log`, `shortlog`
+# and `rebase` can get confused if you run the two together.
+#
+# Explain the problem that this commit is solving. Focus on why you
+# are making this change as opposed to how (the code explains that).
+# Are there side effects or other unintuitive consequences of this
+# change? Here's the place to explain them.
+#
+# Further paragraphs come after blank lines.
+#
+#  - Bullet points are okay, too
+#
+#  - Typically a hyphen or asterisk is used for the bullet, preceded
+#    by a single space, with blank lines in between.
+#
+# Resolves: #123
+# See also: #456, #789

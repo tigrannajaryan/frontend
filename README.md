@@ -18,6 +18,10 @@ when contributing to this repo. See also additional guideance
 on specific apps in `/mobile/README.md` and
 `/webapp/README.md` files.
 
+Use supplied `/.gitcommit` commit message template. You can enable
+it this way:
+`git config commit.template .gitcommit`
+
 ## Branching Model
 
 We practice Continuous Deployment with 2 mainline branches:

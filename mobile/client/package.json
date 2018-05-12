@@ -1,0 +1,102 @@
+{
+  "name": "made-client",
+  "version": "0.0.1",
+  "author": "MadeBeauty, Inc.",
+  "homepage": "http://madebeauty.com/",
+  "private": true,
+  "scripts": {
+    "clean": "ionic-app-scripts clean",
+    "build": "ionic-app-scripts build",
+    "lint": "ionic-app-scripts lint",
+    "ionic:build": "cross-env BB_ENV=prod ionic-app-scripts build --prod",
+    "ionic:serve": "cross-env BB_ENV=dev ionic-app-scripts serve",
+    "mobserve": "ionic serve -c",
+    "test-coverage": "ng test --code-coverage",
+    "test": "ng test",
+    "test-headless": "ng test --watch=false --single-run=true --reporters=junit,progress --browsers=ChromeHeadless",
+    "build-full": "npm run build && npm run test-headless"
+  },
+  "dependencies": {
+    "@angular/common": "5.2.9",
+    "@angular/compiler": "5.2.9",
+    "@angular/compiler-cli": "5.2.9",
+    "@angular/core": "5.2.9",
+    "@angular/forms": "5.2.9",
+    "@angular/http": "5.2.9",
+    "@angular/platform-browser": "5.2.9",
+    "@angular/platform-browser-dynamic": "5.2.9",
+    "@ionic-native/core": "4.6.0",
+    "@ionic-native/facebook": "4.7.0",
+    "@ionic-native/splash-screen": "4.6.0",
+    "@ionic-native/status-bar": "4.6.0",
+    "@ionic/storage": "2.1.3",
+    "@ngrx/effects": "5.2.0",
+    "@ngrx/router-store": "5.2.0",
+    "@ngrx/store": "5.2.0",
+    "angular-tslint-rules": "1.3.0",
+    "cordova-android": "7.0.0",
+    "cordova-ios": "4.5.4",
+    "cordova-ios-plugin-no-export-compliance": "0.0.5",
+    "cordova-plugin-device": "2.0.2",
+    "cordova-plugin-facebook4": "2.1.0",
+    "cordova-plugin-ionic-keyboard": "2.0.5",
+    "cordova-plugin-ionic-webview": "1.2.1",
+    "cordova-plugin-splashscreen": "5.0.2",
+    "cordova-plugin-whitelist": "1.3.3",
+    "ionic-angular": "3.9.2",
+    "ionic-mocks": "1.3.0",
+    "ionicons": "3.0.0",
+    "moment": "2.22.1",
+    "ngrx-store-freeze": "0.2.2",
+    "rxjs": "5.5.8",
+    "sw-toolbox": "3.6.0",
+    "zone.js": "0.8.20"
+  },
+  "devDependencies": {
+    "@angular/cli": "1.7.4",
+    "@angular/router": "5.2.9",
+    "@ionic/app-scripts": "3.1.8",
+    "@types/jasmine": "2.8.6",
+    "@types/node": "9.6.5",
+    "codelyzer": "4.3.0",
+    "cross-env": "5.1.4",
+    "ionic": "3.20.0",
+    "jasmine-core": "2.8.0",
+    "jasmine-reporters": "2.3.0",
+    "karma": "2.0.0",
+    "karma-chrome-launcher": "2.2.0",
+    "karma-cli": "1.0.1",
+    "karma-coverage-istanbul-reporter": "1.4.2",
+    "karma-jasmine": "1.1.1",
+    "karma-jasmine-html-reporter": "0.2.2",
+    "karma-junit-reporter": "1.2.0",
+    "puppeteer": "1.3.0",
+    "typescript": "2.6.2"
+  },
+  "description": "MadeBeauty Client App",
+  "cordova": {
+    "plugins": {
+      "cordova-plugin-whitelist": {},
+      "cordova-plugin-device": {},
+      "cordova-plugin-splashscreen": {},
+      "cordova-plugin-ionic-webview": {},
+      "cordova-ios-plugin-no-export-compliance": {},
+      "cordova-plugin-ionic-keyboard": {},
+      "cordova-plugin-facebook4": {
+        "APP_ID": "199496197324986",
+        "APP_NAME": "bb",
+        "fb_app_id": "199496197324986",
+        "fb_app_name": "bb"
+      }
+    },
+    "platforms": [
+      "android",
+      "ios"
+    ]
+  },
+  "config": {
+    "ionic_bail_on_lint_error": true,
+    "ionic_webpack": "./config/webpack.config.js",
+    "ionic_watch": "./config/watch.config.js"
+  }
+}
