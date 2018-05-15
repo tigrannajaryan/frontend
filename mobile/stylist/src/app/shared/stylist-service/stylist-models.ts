@@ -32,7 +32,7 @@ export interface SimpleDiscounts {
 // Service templates
 
 export interface ServicesTemplate {
-  uuid?: number;
+  uuid?: string;
   name: string;
   description: string;
   image_url: string;
@@ -57,7 +57,7 @@ export interface ServiceCategory {
 }
 
 export interface ServiceTemplateItem {
-  categoryUuid?: number;
+  categoryUuid?: string;
 
   id?: number;
   name: string;

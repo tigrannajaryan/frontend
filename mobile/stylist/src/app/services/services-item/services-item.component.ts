@@ -36,10 +36,14 @@ export class ServiceItemComponent {
     public navParams: NavParams,
     public viewCtrl: ViewController
   ) {
+    this.init();
+  }
+
+  init(): void {
     // Unfortunately navaParams.get() is untyped 'any' data.
-    this.data = navParams.get('data') as ServiceItemComponentData;
+    this.data = this.navParams.get('data') as ServiceItemComponentData;
     this.createForm();
-    this.setFormData();
+    this.setFormData(this.data);
   }
 
   onServiceDelete(): void {
@@ -84,12 +88,12 @@ export class ServiceItemComponent {
    * If we have some data we can set it via this function
    * its should be initialized after form creation
    */
-  private setFormData(): void {
-    if (this.data) {
-      if (this.data.categories) {
+  private setFormData(data: ServiceItemComponentData): void {
+    if (data) {
+      if (data.categories) {
         const categoriesNameUuidArr = [];
 
-        for (const curCategory of this.data.categories) {
+        for (const curCategory of data.categories) {
           categoriesNameUuidArr.push({
             name: curCategory.name,
             uuid: curCategory.uuid
@@ -99,16 +103,16 @@ export class ServiceItemComponent {
         this.setFormControl('vars.categories', categoriesNameUuidArr);
       }
 
-      if (this.data.categoryUuid) {
-        this.setFormControl('categoryUuid', this.data.categoryUuid);
+      if (data.categoryUuid) {
+        this.setFormControl('categoryUuid', data.categoryUuid);
       }
 
-      if (this.data.service) {
-        this.setFormControl('id', this.data.service.id);
-        this.setFormControl('base_price', this.data.service.base_price);
-        this.setFormControl('description', this.data.service.description);
-        this.setFormControl('duration_minutes', this.data.service.duration_minutes);
-        this.setFormControl('name', this.data.service.name);
+      if (data.service) {
+        this.setFormControl('id', data.service.id);
+        this.setFormControl('base_price', data.service.base_price);
+        this.setFormControl('description', data.service.description);
+        this.setFormControl('duration_minutes', data.service.duration_minutes);
+        this.setFormControl('name', data.service.name);
       }
     }
   }

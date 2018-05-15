@@ -4,7 +4,7 @@ import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 
-import { Logger } from '../shared/logger';
+import { Logger } from './logger';
 import { ENV } from '../../environments/environment.default';
 
 /**
@@ -29,7 +29,8 @@ export class BaseServiceProvider {
 
     const url = ENV.apiUrl + apiPath;
 
-    return this.http.request<ResponseType>(method, url, httpOptions)
+    // TODO: find why this.http.request = undefined on npm run test
+    return this.http.request<any>(method, url, httpOptions)
       .toPromise()
       .catch(e => {
         this.logger.error('API request failed:', e);
