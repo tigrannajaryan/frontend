@@ -1,16 +1,19 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AppointmentStatus, Today } from './today.models';
+import { BaseApiService } from '../shared/base-api-service';
+import { HttpClient } from '@angular/common/http';
 import { Logger } from '../shared/logger';
-import { BaseServiceProvider } from '../shared/base-service';
+import { ServerStatusTracker } from '../shared/server-status-tracker';
 
 @Injectable()
-export class TodayService extends BaseServiceProvider {
+export class TodayService extends BaseApiService {
 
   constructor(
-    public http: HttpClient,
-    public logger: Logger) {
-    super(http, logger);
+    protected http: HttpClient,
+    protected logger: Logger,
+    protected serverStatus: ServerStatusTracker
+  ) {
+    super(http, logger, serverStatus);
   }
 
   getAppointments(): Promise<AppointmentStatus[]> {

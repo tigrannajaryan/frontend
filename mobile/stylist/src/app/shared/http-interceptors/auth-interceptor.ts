@@ -1,7 +1,7 @@
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { AuthServiceProvider } from '../auth-service/auth-service';
+import { AuthApiService } from '../auth-api-service/auth-api-service';
 
 /**
  * AuthInterceptor injects AuthService to get the auth token and adds an
@@ -11,7 +11,7 @@ import { AuthServiceProvider } from '../auth-service/auth-service';
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
 
-  constructor(private auth: AuthServiceProvider) {
+  constructor(private auth: AuthApiService) {
   }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {

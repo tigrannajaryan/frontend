@@ -5,16 +5,16 @@ import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { META_REDUCERS, StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
-import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
+import { IonicApp, IonicModule } from 'ionic-angular';
 
 import { MyAppComponent } from './app.component';
 import { Logger } from './shared/logger';
-import { AuthServiceProvider } from './shared/auth-service/auth-service';
+import { AuthApiService } from './shared/auth-api-service/auth-api-service';
 import { StylistServiceProvider } from './shared/stylist-service/stylist-service';
 import { httpInterceptorProviders } from './shared/http-interceptors';
 import { SharedModule } from './shared/shared.module';
 import { getMetaReducers, reducers } from './app.reducers';
-import { ExampleSharedProvider } from '@shared/example-provider';
+import { UnhandledErrorHandler } from './shared/unhandled-error-handler';
 
 @NgModule({
   declarations: [
@@ -53,18 +53,22 @@ import { ExampleSharedProvider } from '@shared/example-provider';
   providers: [
     StatusBar,
     SplashScreen,
-    { provide: ErrorHandler, useClass: IonicErrorHandler },
-    AuthServiceProvider,
+    AuthApiService,
     StylistServiceProvider,
     httpInterceptorProviders,
+
+    {
+      // Our custom handler for unhandled exceptions
+      provide: ErrorHandler,
+      useClass: UnhandledErrorHandler
+    },
 
     {
       // This allows us to inject Logger into getMetaReducers()
       provide: META_REDUCERS,
       deps: [Logger],
       useFactory: getMetaReducers
-    },
-    ExampleSharedProvider
+    }
   ]
 })
 export class AppModule { }

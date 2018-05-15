@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AlertController, IonicPage, LoadingController } from 'ionic-angular';
+import { IonicPage, LoadingController } from 'ionic-angular';
 import { Workday, Worktime } from './worktime.models';
 import { WorktimeApi } from './worktime.api';
 import { convertMinsToHrsMins, Time, TimeRange } from '../shared/time';
@@ -76,7 +76,7 @@ type HourRange = [string, string];
 })
 export class WorktimeComponent {
 
-  cards: VisualWeekCard[];
+  cards: VisualWeekCard[] = [];
 
   /**
    * Create an array of 7 weekday elements.
@@ -106,20 +106,12 @@ export class WorktimeComponent {
   constructor(
     private api: WorktimeApi,
     private loadingCtrl: LoadingController,
-    private alertCtrl: AlertController,
-    private logger: Logger
-  ) { }
+    private logger: Logger) {}
 
   async ionViewDidEnter(): Promise<void> {
     // Load data from backend and show it
-    // TODO: need to come up with general way to handle errors while loading
-    // data from API and show them nicely.
-    try {
-      const worktime = await this.api.getWorktime();
-      this.cards = this.api2presentation(worktime);
-    } catch (e) {
-      this.showError(e);
-    }
+    const worktime = await this.api.getWorktime();
+    this.cards = this.api2presentation(worktime);
   }
 
   /**
@@ -165,26 +157,19 @@ export class WorktimeComponent {
   }
 
   async saveChanges(): Promise<void> {
-    // TODO: we need to find a nicer general way to handling loading indicator
-    // and show errors. This is a repetition of what we have on other pages
-    // and is not DRY and not complete.
+    // Show loader
+    const loading = this.loadingCtrl.create();
+    loading.present();
+
     try {
-      // Show loader
-      const loading = this.loadingCtrl.create();
-      loading.present();
+      // Save to backend
+      const worktime = await this.api.setWorktime(this.presentation2api(this.cards));
 
-      try {
-        // Save to backend
-        const worktime = await this.api.setWorktime(this.presentation2api(this.cards));
+      // And load the response back to make sure client shows what backend understood.
+      this.cards = this.api2presentation(worktime);
 
-        // And load the response back to make sure client shows what backend understood.
-        this.cards = this.api2presentation(worktime);
-
-      } finally {
-        loading.dismiss();
-      }
-    } catch (e) {
-      this.showError(e);
+    } finally {
+      loading.dismiss();
     }
   }
 
@@ -284,14 +269,5 @@ export class WorktimeComponent {
     }
 
     return worktime;
-  }
-
-  private showError(e: any): void {
-    const alert = this.alertCtrl.create({
-      title: 'Error',
-      subTitle: 'Stylist App services are unavaible. Try again later.',
-      buttons: ['Dismiss']
-    });
-    alert.present();
   }
 }

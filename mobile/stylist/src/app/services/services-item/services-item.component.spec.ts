@@ -5,39 +5,14 @@ import { StylistServiceProvider } from '../../shared/stylist-service/stylist-ser
 import { ServiceItemComponent, ServiceItemComponentData } from './services-item.component';
 import { NavMock } from '../services.component.spec';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
-export class ViewControllerMock{
-  readReady = {
-    subscribe(){
-
-    }
-  };
-  writeReady = {
-    subscribe(){
-
-    }
-  };
-
-  dismiss(){
-    console.log('View Controller Dismiss Called');
-  }
-  _setHeader(){
-
-  }
-  _setNavbar(){
-
-  }
-  _setIONContent(){
-
-  }
-  _setIONContentRef(){
-
-  }
-}
+import { prepareSharedObjectsForTests } from '../../shared/test-utils.spec';
+import { ViewControllerMock } from '../../shared/view-controller-mock';
 
 describe('Pages: ServiceItemComponent', () => {
   let fixture;
   let component;
+
+  prepareSharedObjectsForTests();
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -100,7 +75,7 @@ describe('Pages: ServiceItemComponent', () => {
   });
 
   it('should dismiss modal on service delete', () => {
-    let loadingCtrl = fixture.debugElement.injector.get(ViewController);
+    const loadingCtrl = fixture.debugElement.injector.get(ViewController);
     spyOn(loadingCtrl, 'dismiss');
 
     component.onServiceDelete();
@@ -109,7 +84,7 @@ describe('Pages: ServiceItemComponent', () => {
   });
 
   it('should send data and dismiss modal', () => {
-    let viewController = fixture.debugElement.injector.get(ViewController);
+    const viewController = fixture.debugElement.injector.get(ViewController);
     viewController.dismiss = jasmine.createSpy('dismiss').and.returnValue({
       service: [],
       categoryUuid: ''

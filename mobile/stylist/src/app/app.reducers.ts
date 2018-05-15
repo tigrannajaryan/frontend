@@ -42,7 +42,7 @@ export const reducers: ActionReducerMap<State> = {
  */
 export function loggerReducer(logger: Logger, reducer: ActionReducer<State>): ActionReducer<State> {
   return (state: State, action: any): State => {
-    logger.info('>>>> Action:', action, 'Current state:', state);
+    logger.info('>>>> Action:', action.constructor.name + JSON.stringify(action));
 
     return reducer(state, action);
   };

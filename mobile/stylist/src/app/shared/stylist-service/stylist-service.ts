@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BaseServiceProvider } from '../base-service';
+import { BaseApiService } from '../base-api-service';
 import { ServiceItem, ServicesTemplate, ServiceTemplateSet, StylistProfile } from './stylist-models';
-import { Logger } from '../../shared/logger';
+import { Logger } from '../logger';
+import { ServerStatusTracker } from '../server-status-tracker';
 
 export interface ServicesResponse {
   services: ServiceItem[];
@@ -22,12 +23,13 @@ export interface ServiceTemplateSetResponse {
  * AuthServiceProvider.
  */
 @Injectable()
-export class StylistServiceProvider extends BaseServiceProvider {
+export class StylistServiceProvider extends BaseApiService {
 
   constructor(
     public http: HttpClient,
-    public logger: Logger) {
-    super(http, logger);
+    public logger: Logger,
+    protected serverStatus: ServerStatusTracker) {
+    super(http, logger, serverStatus);
   }
 
   /**

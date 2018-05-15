@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
-import { AlertController, IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, LoadingController, NavController } from 'ionic-angular';
+
 import { profileStatusToPage } from '../shared/functions';
-import { AuthCredentials, AuthServiceProvider, UserRole } from '../shared/auth-service/auth-service';
+import { AuthApiService, AuthCredentials, UserRole } from '../shared/auth-api-service/auth-api-service';
+import { ServerFieldError } from '../shared/api-errors';
 
 @IonicPage()
 @Component({
@@ -13,34 +15,35 @@ export class LoginComponent {
   formData = { email: '', password: '' };
   passwordType = 'password';
 
-  constructor(public navCtrl: NavController,
-              public navParams: NavParams,
-              public authService: AuthServiceProvider,
-              private alertCtrl: AlertController) {
-  }
+  constructor(
+    private navCtrl: NavController,
+    private loadingCtrl: LoadingController,
+    private authService: AuthApiService
+  ) { }
 
   async login(): Promise<void> {
+    const loading = this.loadingCtrl.create();
     try {
-      const authCredentialsRecord: AuthCredentials = {
+      loading.present();
+
+      // Call auth API
+      const authCredentials: AuthCredentials = {
         email: this.formData.email,
         password: this.formData.password,
         role: UserRole.stylist
       };
-      const authResponse = await this.authService.doAuth(authCredentialsRecord);
-
-      // Auth successfull. Remember token in local storage.
-      localStorage.setItem('authToken', JSON.stringify(authResponse.token));
+      const authResponse = await this.authService.doAuth(authCredentials);
 
       // process authResponse and move to needed page
       this.navCtrl.setRoot(profileStatusToPage(authResponse.profile_status));
+
     } catch (e) {
-      // Show an error message
-      const alert = this.alertCtrl.create({
-        title: 'Login failed',
-        subTitle: 'Invalid email or password',
-        buttons: ['Dismiss']
-      });
-      alert.present();
+      if (e instanceof ServerFieldError) {
+        // TODO: Iterate over e.errors Map and show all errors on the form.
+      }
+      throw e;
+    } finally {
+      loading.dismiss();
     }
   }
 

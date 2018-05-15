@@ -1,24 +1,23 @@
 import { NgModule } from '@angular/core';
 import { IonicModule } from 'ionic-angular';
-import { BaseServiceProvider } from './base-service';
+
+import { BaseApiService } from './base-api-service';
 import { ComponentsModule } from './components/components.module';
 import { Logger } from './logger';
-
-const ex = [
-ComponentsModule
-];
+import { ServerStatusTracker } from './server-status-tracker';
 
 @NgModule({
   imports: [
     IonicModule,
-    ...ex
+    ComponentsModule
   ],
   exports: [
-    ...ex
+    ComponentsModule
   ],
   providers: [
-    BaseServiceProvider,
-    Logger
+    BaseApiService,
+    Logger,
+    ServerStatusTracker
   ]
 })
 export class SharedModule {}

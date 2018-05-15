@@ -3,7 +3,7 @@ import { AlertController, IonicPage, NavController } from 'ionic-angular';
 import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook';
 
 import { profileStatusToPage } from '../shared/functions';
-import { AuthServiceProvider, FbAuthCredentials, UserRole } from '../shared/auth-service/auth-service';
+import { AuthApiService, FbAuthCredentials, UserRole } from '../shared/auth-api-service/auth-api-service';
 import { PageNames } from '../shared/page-names';
 
 // Permissions of Facebook Login
@@ -21,7 +21,7 @@ export class FirstScreenComponent {
   constructor(
     private navCtrl: NavController,
     private fb: Facebook,
-    private authServiceProvider: AuthServiceProvider,
+    private authServiceProvider: AuthApiService,
     private alertCtrl: AlertController
   ) {
   }

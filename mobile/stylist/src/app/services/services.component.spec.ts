@@ -3,12 +3,13 @@ import { ServicesComponent } from './services.component';
 import { IonicModule, NavController, NavParams } from 'ionic-angular';
 import { HttpClient } from '@angular/common/http';
 import { SharedModule } from '../shared/shared.module';
-import {ServiceTemplatesResponse, StylistServiceProvider} from '../shared/stylist-service/stylist-service';
-import {ServicesTemplate} from '../shared/stylist-service/stylist-models';
+import { ServiceTemplatesResponse, StylistServiceProvider } from '../shared/stylist-service/stylist-service';
+import { ServicesTemplate } from '../shared/stylist-service/stylist-models';
+import { prepareSharedObjectsForTests } from '../shared/test-utils.spec';
 
 export class NavMock {
-  public push(): any {
-    return new Promise(function(resolve: Function): void {
+  push(): any {
+    return new Promise((resolve: Function) => {
       resolve();
     });
   }
@@ -17,6 +18,8 @@ export class NavMock {
 describe('Pages: ServicesComponent', () => {
   let fixture;
   let component;
+
+  prepareSharedObjectsForTests();
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -29,7 +32,7 @@ describe('Pages: ServicesComponent', () => {
         StylistServiceProvider,
         NavParams,
         { provide: NavController, useClass: NavMock },
-        { provide: HttpClient, useClass: class { HttpClient = jasmine.createSpy("HttpClient"); } }
+        { provide: HttpClient, useClass: class { httpClient = jasmine.createSpy('HttpClient'); } }
       ]
     });
   }));

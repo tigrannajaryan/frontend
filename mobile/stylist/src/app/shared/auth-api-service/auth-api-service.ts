@@ -2,11 +2,12 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import 'rxjs/add/operator/toPromise';
 
-import { BaseServiceProvider } from '../base-service';
+import { BaseApiService } from '../base-api-service';
 import { StylistProfile } from '../stylist-service/stylist-models';
 import { Logger } from '../../shared/logger';
+import { ServerStatusTracker } from '../server-status-tracker';
 
-export enum UserRole {stylist = 'stylist', client = 'client'}
+export enum UserRole { stylist = 'stylist', client = 'client' }
 
 export interface AuthCredentials {
   email: string;
@@ -20,7 +21,7 @@ export interface FbAuthCredentials {
   role: UserRole;
 }
 
-export interface StylistProfileStatus {
+export interface ProfileStatus {
   has_personal_data: boolean;
   has_picture_set: boolean;
   has_services_set: boolean;
@@ -34,7 +35,7 @@ export interface AuthResponse {
   token: string;
   role: UserRole;
   profile?: StylistProfile;
-  profile_status?: StylistProfileStatus;
+  profile_status?: ProfileStatus;
 }
 
 export interface AuthError {
@@ -52,21 +53,26 @@ const storageKey = 'authResponse';
  * AuthServiceProvider provides authentication against server API.
  */
 @Injectable()
-export class AuthServiceProvider extends BaseServiceProvider {
+export class AuthApiService extends BaseApiService {
 
   private authResponse: AuthResponse;
 
   constructor(
-    public http: HttpClient,
-    public logger: Logger) {
+    protected http: HttpClient,
+    protected logger: Logger,
+    protected serverStatus: ServerStatusTracker) {
 
-    super(http, logger);
+    super(http, logger, serverStatus);
 
     // Read previously saved authResponse (if any). We are using
     // window.localStorage instead of Ionic Storage class because
     // we need synchronous behavior which window.localStorage
     // provides and Ionic Storage doesn't (Ionic Storage.get() is async).
-    this.authResponse = JSON.parse(window.localStorage.getItem(storageKey));
+    try {
+      this.authResponse = JSON.parse(window.localStorage.getItem(storageKey));
+    } catch (e) {
+      this.authResponse = undefined;
+    }
   }
 
   /**
@@ -95,6 +101,10 @@ export class AuthServiceProvider extends BaseServiceProvider {
     return this.post<AuthResponse>('auth/get-token-fb', credentials);
   }
 
+  logout(): void {
+    this.setAuthResponse(undefined);
+  }
+
   /**
    * Return token remembered after the last succesfull authentication.
    */
@@ -112,21 +122,27 @@ export class AuthServiceProvider extends BaseServiceProvider {
   private async processAuthResponse(apiCall: () => Promise<AuthResponse>): Promise<AuthResponse> {
     return apiCall()
       .then(response => {
-        // Save auth response
-        this.authResponse = response;
-
-        // Save the authResponse for later use. This allows us to access any page
-        // without re-login, which is very useful during development/debugging
-        // since you can just refresh the browser window.
-        window.localStorage.setItem(storageKey, JSON.stringify(this.authResponse));
-
+        this.setAuthResponse(response);
         return response;
       })
       .catch(e => {
         // Failed authentication. Clear previously saved successfull response (if any).
-        this.authResponse = undefined;
-        this.logger.error(e);
+        this.setAuthResponse(undefined);
+        this.logger.error('Authentication failed:', JSON.stringify(e));
         throw e;
       });
+  }
+
+  /**
+   * Set the auth response. Remembers it in local storage, so it persists.
+   * Passing undefined for response effectively logs out from current session.
+   */
+  private setAuthResponse(response: AuthResponse): void {
+    this.authResponse = response;
+
+    // Save the authResponse for later use. This allows us to access any page
+    // without re-login, which is very useful during development/debugging
+    // since you can just refresh the browser window.
+    window.localStorage.setItem(storageKey, JSON.stringify(this.authResponse));
   }
 }

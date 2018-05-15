@@ -7,7 +7,7 @@ The repository has the following structure:
 ```
 /mobile  - mobile apps.
 /webapp  - application backend API and admin.
-/website - betterbeauty.com public web site.
+/website - madebeauty.com public web site.
 ```
 
 

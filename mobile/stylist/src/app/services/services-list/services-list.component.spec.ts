@@ -1,16 +1,19 @@
 import { async, TestBed } from '@angular/core/testing';
-import {IonicModule, ModalController, NavController, NavParams, ViewController} from 'ionic-angular';
+import { IonicModule, ModalController, NavController, NavParams, ViewController } from 'ionic-angular';
 import { HttpClient } from '@angular/common/http';
 import { ServicesListComponent } from './services-list.component';
 import { SharedModule } from '../../shared/shared.module';
 import { StylistServiceProvider } from '../../shared/stylist-service/stylist-service';
-import {ServiceItemComponentData} from '../services-item/services-item.component';
-import {ServiceCategory, ServiceTemplateItem} from '../../shared/stylist-service/stylist-models';
-import {PageNames} from '../../shared/page-names';
+import { ServiceItemComponentData } from '../services-item/services-item.component';
+import { ServiceCategory, ServiceTemplateItem } from '../../shared/stylist-service/stylist-models';
+import { PageNames } from '../../shared/page-names';
+import { prepareSharedObjectsForTests } from '../../shared/test-utils.spec';
 
 describe('Pages: ServicesListComponent', () => {
   let fixture;
   let component;
+
+  prepareSharedObjectsForTests();
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -24,7 +27,7 @@ describe('Pages: ServicesListComponent', () => {
         NavController,
         NavParams,
         ModalController,
-        { provide: HttpClient, useClass: class { HttpClient = jasmine.createSpy("HttpClient"); } }
+        { provide: HttpClient, useClass: class { httpClient = jasmine.createSpy('HttpClient'); } }
       ]
     });
   }));

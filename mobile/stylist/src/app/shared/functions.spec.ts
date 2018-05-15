@@ -1,7 +1,7 @@
 import { async } from '@angular/core/testing';
 import { profileStatusToPage } from './functions';
 import { PageNames } from './page-names';
-import { StylistProfileStatus } from './auth-service/auth-service';
+import { ProfileStatus } from './auth-api-service/auth-api-service';
 
 describe('Shared functions: profileStatusToPage', () => {
 
@@ -11,7 +11,7 @@ describe('Shared functions: profileStatusToPage', () => {
       .toEqual(PageNames.RegisterSalon);
 
     // Full profile
-    const profileStatus: StylistProfileStatus = {
+    const profileStatus: ProfileStatus = {
       has_business_hours_set: true,
       has_invited_clients: true,
       has_other_discounts_set: true,

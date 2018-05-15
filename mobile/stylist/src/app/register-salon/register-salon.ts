@@ -1,13 +1,20 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
-import { AlertController, IonicPage, NavController, NavParams } from 'ionic-angular';
+
+import {
+  AlertController,
+  IonicPage,
+  LoadingController,
+  NavController,
+  NavParams
+} from 'ionic-angular';
 
 import 'rxjs/add/operator/pluck';
 
 import { PageNames } from '../shared/page-names';
 import { StylistServiceProvider } from '../shared/stylist-service/stylist-service';
-import { BaseServiceProvider } from '../shared/base-service';
+import { BaseApiService } from '../shared/base-api-service';
 
 /**
  * Generated class for the RegisterSalonPage page.
@@ -30,8 +37,9 @@ export class RegisterSalonComponent {
     public navParams: NavParams,
     public fb: FormBuilder,
     private apiService: StylistServiceProvider,
-    private baseService: BaseServiceProvider,
+    private baseService: BaseApiService,
     private alertCtrl: AlertController,
+    private loadingCtrl: LoadingController,
     private domSanitizer: DomSanitizer) {
 
   }
@@ -68,7 +76,10 @@ export class RegisterSalonComponent {
   }
 
   processWebImage(event): void {
+    const loading = this.loadingCtrl.create();
     try {
+      loading.present();
+
       // convert to base64 and show it
       const reader = new FileReader();
       reader.onload = readerEvent => {
@@ -96,23 +107,22 @@ export class RegisterSalonComponent {
         buttons: ['Dismiss']
       });
       alert.present();
+    } finally {
+      loading.dismiss();
     }
   }
 
   async next(): Promise<void> {
+    const loading = this.loadingCtrl.create();
     try {
-      const { vars, ...profile } = this.form.value;
+      loading.present();
 
+      const { vars, ...profile } = this.form.value;
       await this.apiService.setProfile(profile);
 
       this.navCtrl.push(PageNames.RegisterServices, {}, { animate: false });
-    } catch (e) {
-      const alert = this.alertCtrl.create({
-        title: 'Saving profile information failed',
-        subTitle: e.message,
-        buttons: ['Dismiss']
-      });
-      alert.present();
+    } finally {
+      loading.dismiss();
     }
   }
 }
