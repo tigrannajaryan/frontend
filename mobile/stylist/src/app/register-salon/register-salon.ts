@@ -23,7 +23,9 @@ import { BaseApiService } from '../shared/base-api-service';
  * Ionic pages and navigation.
  */
 
-@IonicPage()
+@IonicPage({
+  segment: 'register-salon'
+})
 @Component({
   selector: 'page-register-salon',
   templateUrl: 'register-salon.html'
@@ -35,7 +37,7 @@ export class RegisterSalonComponent {
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
-    public fb: FormBuilder,
+    public formBuilder: FormBuilder,
     private apiService: StylistServiceProvider,
     private baseService: BaseApiService,
     private alertCtrl: AlertController,
@@ -45,8 +47,8 @@ export class RegisterSalonComponent {
   }
 
   ionViewWillLoad(): void {
-    this.form = this.fb.group({
-      vars: this.fb.group({
+    this.form = this.formBuilder.group({
+      vars: this.formBuilder.group({
         image: ''
       }),
 
@@ -107,6 +109,10 @@ export class RegisterSalonComponent {
         buttons: ['Dismiss']
       });
       alert.present();
+
+      // reset on cancel
+      this.form.get('vars.image').setValue('');
+      this.form.get('profile_photo_id').setValue(undefined);
     } finally {
       loading.dismiss();
     }

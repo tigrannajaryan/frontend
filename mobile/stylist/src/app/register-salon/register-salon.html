@@ -21,15 +21,12 @@
 
   <form class="form" [formGroup]="form" (ngSubmit)="next()">
     <ion-list>
-      <div class="row">
-        <div class="col text-center">
-          <div [style.backgroundImage]="form.get('vars.image').value" class="circle">
-            <label class="small-circle">
-              <ion-icon name="add"></ion-icon>
-              <input (change)="processWebImage($event)" type="file" style="display: none;">
-            </label>
-          </div>
-        </div>
+      <div class="p-rs-circle">
+        <div [style.backgroundImage]="form.get('vars.image').value" class="p-rs-circle-photo"></div>
+        <label class="p-rs-circle-add">
+          <i class="bb-icon-camera p-rs-circle-add-icon"></i>
+          <input (change)="processWebImage($event)" type="file" style="display: none;">
+        </label>
       </div>
 
       <ion-item>

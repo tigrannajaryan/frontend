@@ -51,7 +51,7 @@ export class LoginComponent {
     this.passwordType = this.passwordType === 'password' ? 'type' : 'password';
   }
 
-  reset(): void {
-    // TODO: add api call when it will be ready
-  }
+  // TODO: add api call when it will be ready
+  // reset(): void {
+  // }
 }
