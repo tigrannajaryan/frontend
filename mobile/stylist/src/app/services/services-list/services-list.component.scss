@@ -50,65 +50,6 @@ page-services-list {
       }
     }
 
-    &-table{
-      padding: 0 10px;
-
-      &-head{
-        font-size: pxtoem(20);
-        color: rgba(0, 0, 0, 0.5);
-
-        @media ($phone) {
-          font-size: pxtoem(15);
-        }
-      }
-
-      &-title{
-        font-size: pxtoem(36);
-        padding: pxtoem(20) 10px pxtoem(8);
-
-        @media ($phone) {
-          font-size: pxtoem(23);
-        }
-      }
-
-      &-row{
-        padding: pxtoem(25) 0;
-        border-bottom: 1px solid black;
-
-        @media ($phone) {
-          padding: pxtoem(7) 0;
-        }
-
-
-        &-col{
-          white-space: normal;
-          font-size: pxtoem(24);
-
-          @media ($phone) {
-            font-size: pxtoem(12);
-          }
-
-          &:first-child{
-            padding-left: 0;
-          }
-
-          &:last-child{
-            padding-right: 0;
-            display: flex;
-            justify-content: space-between;
-          }
-        }
-      }
-
-      &-swipe{
-        .button-inner{
-          @media ($phone) {
-            font-size: pxtoem(12);
-          }
-        }
-      }
-    }
-
     &-gap{
       background: color($colors, bb_violet);
       border-radius: 7px;

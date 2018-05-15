@@ -19,9 +19,9 @@
     </div>
 
 
-    <div *ngIf="templateSet && templateSet.categories" class="bb-wp-a p-sl-table">
+    <div *ngIf="templateSet && templateSet.categories" class="bb-wp-a bb-table">
       <ion-grid>
-        <ion-row class="p-sl-table-head">
+        <ion-row class="bb-table-head">
           <ion-col col-6>
             Name
           </ion-col>
@@ -36,25 +36,25 @@
 
 
       <div *ngFor="let category of templateSet.categories">
-        <div class="p-sl-table-title">{{ category.name }}</div>
+        <div class="bb-table-title">{{ category.name }}</div>
 
-        <ion-list class="p-sl-table ion-bb-sliding">
-          <ion-item-sliding *ngFor="let service of category.services; let i = index" (click)="openServiceModal(category, service)" class="p-sl-table-row" #item>
+        <ion-list class="bb-table ion-bb-sliding">
+          <ion-item-sliding *ngFor="let service of category.services; let i = index" (click)="openServiceModal(category, service)" class="bb-table-row" #item>
             <ion-item>
-              <ion-row class="p-sl-table-row">
-                <ion-col col-6 class="p-sl-table-row-col">
+              <ion-row class="bb-table-row">
+                <ion-col col-6 class="bb-table-row-col">
                   {{ service.name }}
                 </ion-col>
-                <ion-col col-3 class="p-sl-table-row-col">
+                <ion-col col-3 class="bb-table-row-col">
                   {{ service.base_price }}
                 </ion-col>
-                <ion-col col-3 class="p-sl-table-row-col">
+                <ion-col col-3 class="bb-table-row-col">
                   <span>{{ convertMinsToHrsMins(service.duration_minutes) }}</span>
                   <ion-icon name="ios-arrow-forward-outline"></ion-icon>
                 </ion-col>
               </ion-row>
             </ion-item>
-            <ion-item-options side="right" class="p-sl-table-swipe">
+            <ion-item-options side="right" class="bb-table-swipe">
               <button (click)="category.services.splice(i, 1)" ion-button color="danger">DELETE</button>
             </ion-item-options>
           </ion-item-sliding>
@@ -62,7 +62,7 @@
 
 
 
-        <div class="p-sl-table-row tac">
+        <div class="bb-table-row tac">
           <button (click)="openServiceModal(category)" ion-button outline color="bb_violet" class="bb-btn">Add service</button>
         </div>
       </div>

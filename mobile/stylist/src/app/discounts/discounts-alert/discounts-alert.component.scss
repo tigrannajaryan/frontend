@@ -1,0 +1,56 @@
+discounts-alert {
+  padding-top: 90%;
+
+  .da{
+    height: 100%;
+    position: relative;
+    background: color($colors, bb_pink);
+    box-shadow: 0 0 40px #E4E4E4;
+    text-align: center;
+    overflow-y: scroll;
+
+    &-close{
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      right: 0;
+    }
+
+    &-icon{
+      font-size: pxtoem(125);
+      padding: pxtorem(80) 0 pxtorem(70);
+      display: block;
+
+      @media ($smartphone) {
+        font-size: pxtoem(105);
+        padding: pxtorem(20) 0 pxtorem(50);
+      }
+
+      @media ($phone) {
+        font-size: pxtoem(80);
+        padding: pxtorem(10) 0 pxtorem(25);
+      }
+    }
+    &-title{
+      font-size: pxtoem(36);
+
+      @media ($phone) {
+        font-size: pxtoem(30);
+      }
+    }
+    &-text{
+      font-size: pxtoem(24);
+      color: rgba(0, 0, 0, 0.6);
+      margin: pxtorem(50) 0 pxtorem(100);
+
+      @media ($smartphone) {
+        margin: pxtorem(30) 0 pxtorem(60);
+      }
+
+      @media ($phone) {
+        margin: pxtorem(30) 0;
+      }
+    }
+  }
+}

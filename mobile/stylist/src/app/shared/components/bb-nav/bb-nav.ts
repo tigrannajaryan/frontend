@@ -16,6 +16,7 @@ export class BbNavComponent implements AfterViewInit {
     'Personal Data',
     'Services',
     'Worktime',
+    'Discounts',
     'Summary'
   ];
   @Input() activePageIndex: number;

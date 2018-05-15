@@ -42,6 +42,16 @@
       box-shadow: none;
       margin: 0 20px;
 
+      @media ($smartphone) {
+        width: 110px;
+        height: 110px;
+      }
+
+      @media ($phone) {
+        width: 90px;
+        height: 90px;
+      }
+
       .button-inner{
         background: #000;
         border-radius: 50%;
@@ -49,6 +59,18 @@
         height: 79px;
         margin: auto;
         font-size: pxtoem(60);
+
+        @media ($smartphone) {
+          font-size: pxtoem(40);
+          width: 55px;
+          height: 55px;
+        }
+
+        @media ($phone) {
+          font-size: pxtoem(30);
+          width: 40px;
+          height: 40px;
+        }
       }
     }
 
@@ -88,6 +110,65 @@
 
   &-link{
     color: color($colors, bb_orange);
+  }
+
+  &-table{
+    padding: 0 10px;
+
+    &-head{
+      font-size: pxtoem(20);
+      color: rgba(0, 0, 0, 0.5);
+
+      @media ($phone) {
+        font-size: pxtoem(15);
+      }
+    }
+
+    &-title{
+      font-size: pxtoem(36);
+      padding: pxtoem(20) 10px pxtoem(8);
+
+      @media ($phone) {
+        font-size: pxtoem(23);
+      }
+    }
+
+    &-row{
+      padding: pxtoem(25) 0;
+      border-bottom: 1px solid black;
+
+      @media ($phone) {
+        padding: pxtoem(7) 0;
+      }
+
+
+      &-col{
+        white-space: normal;
+        font-size: pxtoem(24);
+
+        @media ($phone) {
+          font-size: pxtoem(12);
+        }
+
+        &:first-child{
+          padding-left: 0;
+        }
+
+        &:last-child{
+          padding-right: 0;
+          display: flex;
+          justify-content: space-between;
+        }
+      }
+    }
+
+    &-swipe{
+      .button-inner{
+        @media ($phone) {
+          font-size: pxtoem(12);
+        }
+      }
+    }
   }
 
   &-topcircle{

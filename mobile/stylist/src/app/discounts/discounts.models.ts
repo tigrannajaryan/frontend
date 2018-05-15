@@ -1,9 +1,10 @@
-interface WeekdayDiscount {
-  weekday_iso: number;
-  discount: number;
+export interface WeekdayDiscount {
+  weekday: number;
+  weekday_verbose: string;
+  discount_percent: number;
 }
 
-interface Discounts {
+export interface Discounts {
   weekdays: WeekdayDiscount[];
   first_booking: number;
   rebook_within_1_week: number;

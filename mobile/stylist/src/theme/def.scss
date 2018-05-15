@@ -1,6 +1,10 @@
 .tac{
   text-align: center;
 }
+.inactive{
+  opacity: .3;
+  pointer-events: none;
+}
 .w100p{
   width: 100%;
 }

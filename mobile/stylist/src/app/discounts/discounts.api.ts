@@ -3,6 +3,7 @@ import { BaseApiService } from '../shared/base-api-service';
 import { HttpClient } from '@angular/common/http';
 import { Logger } from '../shared/logger';
 import { ServerStatusTracker } from '../shared/server-status-tracker';
+import { Discounts } from './discounts.models';
 
 const apiUrl = 'stylist/discounts';
 
