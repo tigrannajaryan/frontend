@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
-import { IonicPage, LoadingController } from 'ionic-angular';
+import { Component, Input } from '@angular/core';
+import { IonicPage, LoadingController, NavController } from 'ionic-angular';
 import { Workday, Worktime } from './worktime.models';
 import { WorktimeApi } from './worktime.api';
 import { convertMinsToHrsMins, Time, TimeRange } from '../shared/time';
 import { Logger } from '../shared/logger';
+import { PageNames } from '~/shared/page-names';
 
 export enum WeekdayIso {
   Mon = 1, Tue, Wed, Thu, Fri, Sat, Sun
@@ -78,6 +79,10 @@ export class WorktimeComponent {
 
   cards: VisualWeekCard[] = [];
 
+  // Indicates if this screen should work in registration mode
+  @Input()
+  registrationMode = true;
+
   /**
    * Create an array of 7 weekday elements.
    * @param enabled set all days to enabled or disabled state
@@ -106,6 +111,7 @@ export class WorktimeComponent {
   constructor(
     private api: WorktimeApi,
     private loadingCtrl: LoadingController,
+    private navCtrl: NavController,
     private logger: Logger) {}
 
   async ionViewDidEnter(): Promise<void> {
@@ -165,8 +171,13 @@ export class WorktimeComponent {
       // Save to backend
       const worktime = await this.api.setWorktime(this.presentation2api(this.cards));
 
-      // And load the response back to make sure client shows what backend understood.
-      this.cards = this.api2presentation(worktime);
+      if (this.registrationMode) {
+        // Continue registration on the next page
+        this.navCtrl.push(PageNames.Discounts);
+      } else {
+        // And load the response back to make sure client shows what backend understood.
+        this.cards = this.api2presentation(worktime);
+      }
 
     } finally {
       loading.dismiss();

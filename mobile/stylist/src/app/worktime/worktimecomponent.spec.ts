@@ -32,6 +32,9 @@ describe('Pages: WorktimeComponent', () => {
   it('should toggle weekday and steal from another card', async () => {
     await instance.ionViewDidEnter();
 
+    // Test non-registration mode, when saving should result in refreshing of the page
+    instance.registrationMode = false;
+
     expect(instance.cards.length).toEqual(1);
 
     expect(instance.cards[0].workStartAt).toEqual(defaultStartTime);
