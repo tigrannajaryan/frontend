@@ -1,29 +1,23 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { StoreModule } from '@ngrx/store';
 
 import { TestUtils } from '../../test';
-import { LoginComponent } from './login.component';
-import { PageNames } from '../shared/page-names';
-import { profileStatusToPage } from '../shared/functions';
-import { AuthApiServiceMock } from '../shared/auth-api-service/auth-api-service-mock';
-import { AuthApiService, ProfileStatus } from '../shared/auth-api-service/auth-api-service';
-import { prepareSharedObjectsForTests } from '../shared/test-utils.spec';
+import { LoginRegisterComponent } from './login-register.component';
+import { PageNames } from '~/shared/page-names';
+import { profileStatusToPage } from '~/shared/functions';
+import { AuthApiService, ProfileStatus } from '~/shared/auth-api-service/auth-api-service';
+import { prepareSharedObjectsForTests } from '~/shared/test-utils.spec';
 
-let fixture: ComponentFixture<LoginComponent>;
-let instance: LoginComponent;
+let fixture: ComponentFixture<LoginRegisterComponent>;
+let instance: LoginRegisterComponent;
 
-describe('Pages: LoginComponent', () => {
+describe('Pages: LoginRegisterComponent', () => {
 
   prepareSharedObjectsForTests();
 
-  beforeEach(async(() => TestUtils.beforeEachCompiler([LoginComponent])
+  beforeEach(async(() => TestUtils.beforeEachCompiler([LoginRegisterComponent])
     .then(compiled => {
       fixture = compiled.fixture;
       instance = compiled.instance;
-
-      // Make sure the component and sub-components are properly
-      // initialized (this calls onNgInit).
-      fixture.detectChanges();
     })));
 
   it('should create the page', async(() => {
@@ -31,7 +25,7 @@ describe('Pages: LoginComponent', () => {
       .toBeTruthy();
   }));
 
-  it('should authenticate after login is called with valid credentials', async(() => {
+  it('should authenticate after login-register is called with valid credentials', async(() => {
 
     const authService = TestBed.get(AuthApiService);
 
@@ -48,7 +42,7 @@ describe('Pages: LoginComponent', () => {
       });
   }));
 
-  it('should fail to authenticate after login is called with wrong password', async(() => {
+  it('should fail to authenticate after login-register is called with wrong password', async(() => {
 
     const authService = TestBed.get(AuthApiService);
 

@@ -20,7 +20,7 @@
       </div>
 
       <div class="p-fs-box-buttons">
-        <button (click)="loginByEmail()" ion-button full color="bb_honey" class="bb-btn-a o_shadow">
+        <button (click)="goToPage(LoginOrRegisterType.login)" ion-button full color="bb_honey" class="bb-btn-a o_shadow">
           &nbsp; Log in with Password
         </button>
         <button (click)="loginByFb()" ion-button outline  color="bb_violet" class="bb-btn-a w100p">
@@ -29,7 +29,7 @@
       </div>
 
       <div class="bb-text">
-        If you don't have account <a (click)="register()" class="bb-link">click here</a>
+        If you don't have account <a (click)="goToPage(LoginOrRegisterType.register)" class="bb-link">click here</a>
       </div>
     </div>
   </div>

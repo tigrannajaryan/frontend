@@ -21,15 +21,16 @@
         </ion-item>
       </div>
 
-      <button (click)="login()" ion-button full color="bb_honey" class="bb-btn-a o_shadow p-l-btn">
-        &nbsp; Log in
+      <button (click)="onLoginOrRegister()" ion-button full color="bb_honey" class="bb-btn-a o_shadow p-l-btn">
+        <span *ngIf="pageType === LoginOrRegisterType.login">Log in</span>
+        <span *ngIf="pageType === LoginOrRegisterType.register">Register</span>
       </button>
 
-      <!--Uncomment when api will be ready-->
-      <!--<div class="bb-text">-->
-        <!--Forgot your password again, haven't you? <br>-->
-        <!--<a (click)="register()" class="bb-link">Reset it to the ground</a>-->
-      <!--</div>-->
+      <div *ngIf="pageType === LoginOrRegisterType.login" class="bb-text">
+        Forgot your password again, haven't you? <br>
+        <a (click)="resetPassword()" class="bb-link">Reset it to the ground</a>
+      </div>
     </div>
   </div>
 </ion-content>
+

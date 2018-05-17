@@ -2,9 +2,10 @@ import { Component } from '@angular/core';
 import { AlertController, IonicPage, NavController } from 'ionic-angular';
 import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook';
 
-import { profileStatusToPage } from '../shared/functions';
-import { AuthApiService, FbAuthCredentials, UserRole } from '../shared/auth-api-service/auth-api-service';
-import { PageNames } from '../shared/page-names';
+import { profileStatusToPage } from '~/shared/functions';
+import { AuthApiService, FbAuthCredentials, UserRole } from '~/shared/auth-api-service/auth-api-service';
+import { PageNames } from '~/shared/page-names';
+import { LoginOrRegisterType } from '~/login-register/login-register.component';
 
 // Permissions of Facebook Login
 // https://developers.facebook.com/docs/facebook-login/permissions/v3.0
@@ -26,12 +27,8 @@ export class FirstScreenComponent {
   ) {
   }
 
-  loginByEmail(): void {
-    this.navCtrl.push(PageNames.Login, {}, {animate: false});
-  }
-
-  register(): void {
-    this.navCtrl.push(PageNames.RegisterByEmail, {}, {animate: false});
+  goToPage(choosePageType: LoginOrRegisterType): void {
+    this.navCtrl.push(PageNames.LoginRegister, {pageType: choosePageType}, {animate: false});
   }
 
   async loginByFb(): Promise<void>  {

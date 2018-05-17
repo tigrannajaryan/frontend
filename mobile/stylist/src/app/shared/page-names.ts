@@ -6,8 +6,7 @@
 
 export enum PageNames {
     FirstScreen = 'FirstScreenComponent',
-    Login = 'LoginComponent',
-    RegisterByEmail = 'RegisterByEmailComponent',
+    LoginRegister = 'LoginRegisterComponent',
     RegisterSalon = 'RegisterSalonComponent',
     RegisterServices = 'ServicesComponent',
     RegisterServicesItem = 'ServicesListComponent',
