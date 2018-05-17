@@ -44,17 +44,6 @@
     <div *ngIf="discounts.first_booking >= 0 || discounts.rebook_within_1_week >= 0 || discounts.rebook_within_2_weeks >= 0" class="bb-wp-a bb-table">
       <div class="bb-table-title">Other</div>
 
-      <ion-grid>
-        <ion-row class="bb-table-head">
-          <ion-col col-9>
-            Day
-          </ion-col>
-          <ion-col col-3>
-            Discount
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-
       <ion-list class="bb-table ion-bb-sliding">
         <ion-item *ngIf="discounts.first_booking >= 0" (click)="onDiscountChange('first_booking')">
           <ion-row class="bb-table-row">
