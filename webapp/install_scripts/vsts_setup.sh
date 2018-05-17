@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -e
 echo "Adding repos"
 add-apt-repository --yes 'deb http://apt.postgresql.org/pub/repos/apt/ xenial-pgdg main'
 add-apt-repository --yes ppa:deadsnakes/ppa
@@ -13,11 +14,11 @@ update-locale LANG=en_US.UTF-8
 export LANG=en_US.UTF-8
 
 echo "Installing packages"
-apt-get install --yes postgresql postgresql-10 python3.6=3.6.* python-dev python-pip python-psycopg2  python3-distutils python3-virtualenv
+apt-get install --yes postgresql postgresql-10 python3.6
 
 echo "Starting postgres"
 sudo -u postgres /usr/lib/postgresql/10/bin/pg_ctl -D /etc/postgresql/10/main -l /tmp/postgres.log start || true
 
 echo "Setting up pip"
-pip install pip==9.0.1
+python3.6 -m pip install pip==9.0.1
 pip install virtualenv==15.1
