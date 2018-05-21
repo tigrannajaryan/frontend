@@ -1,0 +1,26 @@
+<div (click)="dismiss()" class="cp-close"></div>
+<div class="cp">
+  <div class="bb-wp-a">
+    <div class="cp-scroll">
+      <ion-grid class="cp-scroll-info">
+        <ion-row *ngIf="data">
+          <ion-col col-6 text-left>{{ data.label }}</ion-col>
+          <ion-col col-6 text-right class="inactive">{{ percentage }}%</ion-col>
+        </ion-row>
+      </ion-grid>
+
+      <ion-range min="0" max="100" step="1" [(ngModel)]="percentage" color="dark" class="ion-bb-range cp-scroll-range"></ion-range>
+    </div>
+
+
+    <ion-row justify-content-center align-items-center>
+      <a style="visibility: hidden;">Cancel</a>
+
+      <button (click)="save()" ion-button type="submit" class="bb-btn-circle">
+        <ion-icon name="ios-checkmark-outline"></ion-icon>
+      </button>
+
+      <a (click)="dismiss()" class="cp-cancel">Cancel</a>
+    </ion-row>
+  </div>
+</div>

@@ -16,5 +16,5 @@ export enum PageNames {
     Today = 'TodayComponent',
     Discounts = 'DiscountsComponent',
     DiscountsAlert = 'DiscountsAlertComponent',
-    DiscountsChange = 'DiscountsChangeComponent'
+    ChangePercent = 'ChangePercentComponent'
 }

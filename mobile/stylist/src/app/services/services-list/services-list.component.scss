@@ -71,6 +71,7 @@ page-services-list {
           margin: 0 0 pxtoem(6);
         }
       }
+
       &-title{
         font-size: pxtoem(36);
         margin: 0 0 pxtoem(10);
@@ -78,13 +79,6 @@ page-services-list {
         @media ($phone) {
           font-size: pxtoem(25);
           margin: 0;
-        }
-      }
-      &-range{
-        font-size: pxtoem(24);
-
-        @media ($phone) {
-          font-size: pxtoem(18);
         }
       }
     }

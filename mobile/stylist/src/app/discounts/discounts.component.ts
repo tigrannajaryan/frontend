@@ -2,7 +2,8 @@ import { Component } from '@angular/core';
 import { IonicPage, ModalController, NavController, NavParams } from 'ionic-angular';
 import { DiscountsApi } from './discounts.api';
 import { Discounts } from './discounts.models';
-import { PageNames } from '../shared/page-names';
+import { PageNames } from '~/shared/page-names';
+import { ChangePercent } from '~/shared/popups/change-percent/change-percent.component';
 
 enum DiscountsTypes {
   weekday = 'weekday',
@@ -58,13 +59,24 @@ export class DiscountsComponent {
    * Open modal where we can change percent of any item
    * @param type - type of key
    * @param index - if array of weekdays
+   * @param verbose - verbose name if not array
    */
-  onDiscountChange(type: DiscountsTypes, index?: number): void {
-    let data: number;
+  onDiscountChange(type: DiscountsTypes, index?: number, verbose?: string): void {
+    let data: ChangePercent;
 
-    data = type === 'weekday' ? this.discounts.weekdays[index].discount_percent : this.discounts[type];
+    if (type === DiscountsTypes.weekday) {
+      data = {
+        label: this.discounts.weekdays[index].weekday_verbose,
+        percentage: this.discounts.weekdays[index].discount_percent
+      };
+    } else {
+      data = {
+        label: verbose,
+        percentage: this.discounts[type]
+      };
+    }
 
-    const modal = this.modalCtrl.create(PageNames.DiscountsChange, { data });
+    const modal = this.modalCtrl.create(PageNames.ChangePercent, { data });
     modal.onDidDismiss((res: number) => {
       if (isNaN(res)) { return; }
 

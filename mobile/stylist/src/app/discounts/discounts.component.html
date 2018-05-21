@@ -30,8 +30,8 @@
               {{ weekday.weekday_verbose }}
             </ion-col>
             <ion-col col-3 class="bb-table-row-col">
-              <span *ngIf="weekday.discount_percent === 0" class="inactive">None</span>
-              <span *ngIf="weekday.discount_percent !== 0">{{ weekday.discount_percent }}%</span>
+              <span *ngIf="!weekday.discount_percent" class="inactive">None</span>
+              <span *ngIf="weekday.discount_percent">{{ weekday.discount_percent }}%</span>
               <ion-icon name="ios-arrow-forward-outline"></ion-icon>
             </ion-col>
           </ion-row>
@@ -45,38 +45,38 @@
       <div class="bb-table-title">Other</div>
 
       <ion-list class="bb-table ion-bb-sliding">
-        <ion-item *ngIf="discounts.first_booking >= 0" (click)="onDiscountChange('first_booking')">
+        <ion-item *ngIf="discounts.first_booking >= 0" (click)="onDiscountChange(DiscountsTypes.first_booking, 0, 'First booking')">
           <ion-row class="bb-table-row">
             <ion-col col-9 class="bb-table-row-col">
               First booking
             </ion-col>
             <ion-col col-3 class="bb-table-row-col">
-              <span *ngIf="discounts.first_booking === 0" class="inactive">None</span>
-              <span *ngIf="discounts.first_booking !== 0">{{ discounts.first_booking }}%</span>
+              <span *ngIf="!discounts.first_booking" class="inactive">None</span>
+              <span *ngIf="discounts.first_booking">{{ discounts.first_booking }}%</span>
               <ion-icon name="ios-arrow-forward-outline"></ion-icon>
             </ion-col>
           </ion-row>
         </ion-item>
-        <ion-item *ngIf="discounts.rebook_within_1_week >= 0" (click)="onDiscountChange('rebook_within_1_week')">
+        <ion-item *ngIf="discounts.rebook_within_1_week >= 0" (click)="onDiscountChange(DiscountsTypes.rebook_within_1_week, 0, 'Rebook within 1 week')">
           <ion-row class="bb-table-row">
             <ion-col col-9 class="bb-table-row-col">
               Rebook within 1 week
             </ion-col>
             <ion-col col-3 class="bb-table-row-col">
-              <span *ngIf="discounts.rebook_within_1_week === 0" class="inactive">None</span>
-              <span *ngIf="discounts.rebook_within_1_week !== 0">{{ discounts.rebook_within_1_week }}%</span>
+              <span *ngIf="!discounts.rebook_within_1_week" class="inactive">None</span>
+              <span *ngIf="discounts.rebook_within_1_week">{{ discounts.rebook_within_1_week }}%</span>
               <ion-icon name="ios-arrow-forward-outline"></ion-icon>
             </ion-col>
           </ion-row>
         </ion-item>
-        <ion-item *ngIf="discounts.rebook_within_2_weeks >= 0" (click)="onDiscountChange('rebook_within_2_weeks')">
+        <ion-item *ngIf="discounts.rebook_within_2_weeks >= 0" (click)="onDiscountChange(DiscountsTypes.rebook_within_2_weeks, 0, 'Rebook within 2 weeks')">
           <ion-row class="bb-table-row">
             <ion-col col-9 class="bb-table-row-col">
               Rebook within 2 weeks
             </ion-col>
             <ion-col col-3 class="bb-table-row-col">
-              <span *ngIf="discounts.rebook_within_2_weeks === 0" class="inactive">None</span>
-              <span *ngIf="discounts.rebook_within_2_weeks !== 0">{{ discounts.rebook_within_2_weeks }}%</span>
+              <span *ngIf="!discounts.rebook_within_2_weeks" class="inactive">None</span>
+              <span *ngIf="discounts.rebook_within_2_weeks">{{ discounts.rebook_within_2_weeks }}%</span>
               <ion-icon name="ios-arrow-forward-outline"></ion-icon>
             </ion-col>
           </ion-row>

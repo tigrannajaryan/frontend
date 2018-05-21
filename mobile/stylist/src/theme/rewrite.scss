@@ -194,5 +194,17 @@ button[color='bb_honey']{
       padding: 0 !important;
     }
   }
+
+  &-range{
+    font-size: pxtoem(24);
+
+    @media ($phone) {
+      font-size: pxtoem(18);
+    }
+
+    .range-knob {
+      border: 1px solid black;
+    }
+  }
 }
 
