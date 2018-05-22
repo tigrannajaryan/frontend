@@ -1,17 +1,23 @@
 import { Component } from '@angular/core';
-import { IonicPage } from 'ionic-angular';
+import { ActionSheetController, IonicPage } from 'ionic-angular';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs/Subscription';
 
 import {
-  CheckinAction,
   LoadAction,
   selectTodayState,
-  TempAddAction,
   TodayState
 } from './today.reducer';
 
 import { Today } from './today.models';
+import { TodayService } from '~/today/today.service';
+
+export enum AppointmentStatuses {
+  new = 'new',
+  no_show = 'no_show',
+  cancelled_by_stylist = 'cancelled_by_stylist',
+  checked_out = 'checked_out'
+}
 
 @IonicPage({ segment: 'today' })
 @Component({
@@ -24,7 +30,11 @@ export class TodayComponent {
 
   private stateSubscription: Subscription;
 
-  constructor(private store: Store<TodayState>) {
+  constructor(
+    public actionSheetCtrl: ActionSheetController,
+    public todayService: TodayService,
+    private store: Store<TodayState>
+  ) {
   }
 
   ionViewDidEnter(): void {
@@ -39,9 +49,6 @@ export class TodayComponent {
 
     // Initiate loading the today data.
     this.store.dispatch(new LoadAction());
-
-    // TODO: Remove the following line. This is for demo purposes only.
-    setTimeout(() => { this.pushNotificationDemo(); }, 2000);
   }
 
   ionViewDidLeave(): void {
@@ -50,20 +57,39 @@ export class TodayComponent {
     this.stateSubscription.unsubscribe();
   }
 
-  /**
-   * Handler for checkin button.
-   */
-  checkin(appointmentUuid: string): void {
-    this.store.dispatch(new CheckinAction(appointmentUuid));
+  openModal(appointmentUuid: string): void {
+    const actionSheet = this.actionSheetCtrl.create({
+      title: 'NOT PAID',
+      buttons: [
+        {
+          text: 'Checkout',
+          handler: () => {
+            this.checkOutAppointment(appointmentUuid);
+          }
+        },
+        {
+          text: 'Cancel',
+          role: 'destructive',
+          handler: () => {
+            this.cancelAppointment(appointmentUuid);
+          }
+        }
+      ]
+    });
+    actionSheet.present();
   }
 
   /**
-   * This is supposedly a push notification handler which
-   * modifies the state. This function is here just for
-   * demo purposes on how to work with the state. Must be
-   * replaced by real push notification handler in the future.
+   * Handler for checkout appointment button.
    */
-  private pushNotificationDemo(): void {
-    this.store.dispatch(new TempAddAction());
+  checkOutAppointment(appointmentUuid: string): void {
+    this.todayService.setAppointment(appointmentUuid, { status: AppointmentStatuses.checked_out });
+  }
+
+  /**
+   * Handler for cancel appointment button.
+   */
+  cancelAppointment(appointmentUuid: string): void {
+    this.todayService.setAppointment(appointmentUuid, { status: AppointmentStatuses.cancelled_by_stylist });
   }
 }
