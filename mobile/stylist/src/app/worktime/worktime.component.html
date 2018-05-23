@@ -13,7 +13,7 @@
 <ion-content padding class="worktime">
   <bb-nav [activePageIndex]="2"></bb-nav>
 
-  <h2 class="mb_h2">Your shifts</h2>
+  <h2 class="mb_h2">Hair is my hustle, let's set the schedule</h2>
   <!--shifts block start -->
   <ion-grid *ngFor="let card of cards" class="workingtime_shifts_block" item-content>
     <ion-row>
@@ -47,19 +47,17 @@
     </ion-row>
   </ion-grid>
   <!--shifts block end -->
-  <h3 class="mb_h3">Different working hours for different days?</h3>
+  <h3 class="mb_h3">Add another shift</h3>
   <ion-grid>
     <ion-row class="add_new_block">
-      <ion-col>Add new</ion-col>
       <ion-col>
         <div class="round_button">
           <button (click)="addNewCard()">+</button>
         </div>
       </ion-col>
-      <ion-col>Timeblock</ion-col>
     </ion-row>
     <ion-row class="last_row">
-      <ion-col>You work weekly</ion-col>
+      <ion-col>Hours I slay ‘em</ion-col>
       <ion-col>{{ calcTotals().days }} days</ion-col>
       <ion-col>{{ calcTotals().hoursMins }} </ion-col>
     </ion-row>

@@ -110,19 +110,10 @@ page-services {
         }
         &-text{
           font-size: pxtoem(34);
-          margin-bottom: pxtoem(8);
+          margin-bottom: pxtoem(15);
 
           @media ($phone) {
             font-size: pxtoem(27);
-          }
-
-          &-a{
-            font-size: pxtoem(24);
-            margin-bottom: pxtoem(20);
-
-            @media ($phone) {
-              font-size: pxtoem(20);
-            }
           }
         }
       }

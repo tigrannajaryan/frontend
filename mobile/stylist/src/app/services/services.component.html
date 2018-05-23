@@ -8,8 +8,8 @@
   <bb-nav [activePageIndex]="1"></bb-nav>
 
   <div class="p-s-def p-s-wp">
-    <div class="p-s-def-title">Set up your services</div>
-    <div class="p-s-def-title-a">Choose one of our predefined list </div>
+    <div class="p-s-def-title">Now let’s set your services</div>
+    <div class="p-s-def-title-a">Just click, we got what you need</div>
 
     <div class="p-s-def-box">
       <div *ngFor="let item of serviceTemplates; let odd = odd"
@@ -20,17 +20,16 @@
         <i *ngIf="!odd" class="bb-icon-black p-s-def-box-item-icon"></i>
         <i *ngIf="odd" class="bb-icon-white p-s-def-box-item-icon"></i>
 
-        <div class="p-s-def-box-item-text">{{ item.name }}</div>
+        <div [innerHtml]="item.name" class="p-s-def-box-item-text"></div>
       </div>
     </div>
 
     <div class="p-s-list">
       <div class="p-s-list-empty">
         <i class="bb-icon-services p-s-list-empty-icon"></i>
-        <div class="p-s-list-empty-text">Let me do it from scratch</div>
-        <div class="p-s-list-empty-text-a">I am a grown-up and I want to do it myself </div>
+        <div class="p-s-list-empty-text">Let me do it, I run this like cardio</div>
 
-        <button ion-button outline color="bb_violet" class="bb-btn">Create blank list</button>
+        <button ion-button outline color="bb_violet" class="bb-btn">Start from scratch</button>
       </div>
     </div>
   </div>

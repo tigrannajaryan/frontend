@@ -13,10 +13,10 @@ import { NavController } from 'ionic-angular';
 })
 export class BbNavComponent implements AfterViewInit {
   navItems: string[] = [
-    'Personal Data',
+    'Personal Info',
     'Services',
-    'Worktime',
-    'Discounts',
+    'Schedule',
+    'Custom Price',
     'Summary'
   ];
   @Input() activePageIndex: number;

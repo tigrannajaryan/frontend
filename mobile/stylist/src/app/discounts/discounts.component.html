@@ -10,7 +10,7 @@
 
   <div *ngIf="discounts" class="bb-wp">
     <div *ngIf="discounts.weekdays" class="bb-wp-a bb-table">
-      <div class="bb-table-title">Daily discounts</div>
+      <div class="bb-table-title">Ok gorgeous, set your custom pricing</div>
 
       <ion-grid>
         <ion-row class="bb-table-head">
@@ -42,7 +42,7 @@
 
 
     <div *ngIf="discounts.first_booking >= 0 || discounts.rebook_within_1_week >= 0 || discounts.rebook_within_2_weeks >= 0" class="bb-wp-a bb-table">
-      <div class="bb-table-title">Other</div>
+      <div class="bb-table-title">More custom pricing</div>
 
       <ion-list class="bb-table ion-bb-sliding">
         <ion-item *ngIf="discounts.first_booking >= 0" (click)="onDiscountChange(DiscountsTypes.first_booking, 0, 'First booking')">
@@ -57,10 +57,10 @@
             </ion-col>
           </ion-row>
         </ion-item>
-        <ion-item *ngIf="discounts.rebook_within_1_week >= 0" (click)="onDiscountChange(DiscountsTypes.rebook_within_1_week, 0, 'Rebook within 1 week')">
+        <ion-item *ngIf="discounts.rebook_within_1_week >= 0" (click)="onDiscountChange(DiscountsTypes.rebook_within_1_week, 0, 'Revisit within 1 week')">
           <ion-row class="bb-table-row">
             <ion-col col-9 class="bb-table-row-col">
-              Rebook within 1 week
+              Revisit within 1 week
             </ion-col>
             <ion-col col-3 class="bb-table-row-col">
               <span *ngIf="!discounts.rebook_within_1_week" class="inactive">None</span>
@@ -69,10 +69,10 @@
             </ion-col>
           </ion-row>
         </ion-item>
-        <ion-item *ngIf="discounts.rebook_within_2_weeks >= 0" (click)="onDiscountChange(DiscountsTypes.rebook_within_2_weeks, 0, 'Rebook within 2 weeks')">
+        <ion-item *ngIf="discounts.rebook_within_2_weeks >= 0" (click)="onDiscountChange(DiscountsTypes.rebook_within_2_weeks, 0, 'Revisit within 2 weeks')">
           <ion-row class="bb-table-row">
             <ion-col col-9 class="bb-table-row-col">
-              Rebook within 2 weeks
+              Revisit within 2 weeks
             </ion-col>
             <ion-col col-3 class="bb-table-row-col">
               <span *ngIf="!discounts.rebook_within_2_weeks" class="inactive">None</span>
@@ -87,8 +87,7 @@
 
     <div class="bb-wp-a">
       <button (click)="saveDiscounts()" ion-button full color="dark" class="bb-btn-a">
-        <!--No Discounts-->
-        Save discounts
+        Save pricing
       </button>
     </div>
   </div>

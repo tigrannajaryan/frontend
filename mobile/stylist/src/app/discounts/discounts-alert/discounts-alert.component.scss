@@ -1,9 +1,9 @@
 discounts-alert {
-  padding-top: 90%;
-
   .da{
-    height: 100%;
-    position: relative;
+    position: absolute;
+    top: 50%;
+    height: 50%;
+    width: 100%;
     background: color($colors, bb_pink);
     box-shadow: 0 0 40px #E4E4E4;
     text-align: center;

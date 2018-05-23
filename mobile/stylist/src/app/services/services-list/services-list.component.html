@@ -9,14 +9,15 @@
 
 
   <div class="bb-wp">
-    <div class="p-sl-top">
-      <div class="p-sl-top-title">Create</div>
-      <div class="p-sl-top-title-a">Custom list</div>
+    <!--hide it for now-->
+    <!--<div class="p-sl-top">-->
+      <!--<div class="p-sl-top-title">Create</div>-->
+      <!--<div class="p-sl-top-title-a">Custom list</div>-->
 
-      <button (click)="resetList()" class="bb-btn-o p-sl-top-reset">
-        <i class="bb-icon-reset"></i>
-      </button>
-    </div>
+      <!--<button (click)="resetList()" class="bb-btn-o p-sl-top-reset">-->
+        <!--<i class="bb-icon-reset"></i>-->
+      <!--</button>-->
+    <!--</div>-->
 
 
     <div *ngIf="templateSet && templateSet.categories" class="bb-wp-a bb-table">
@@ -29,7 +30,7 @@
             Price
           </ion-col>
           <ion-col col-3>
-            Duration
+            Time
           </ion-col>
         </ion-row>
       </ion-grid>
@@ -46,7 +47,7 @@
                   {{ service.name }}
                 </ion-col>
                 <ion-col col-3 class="bb-table-row-col">
-                  {{ service.base_price }}
+                  ${{ service.base_price }}
                 </ion-col>
                 <ion-col col-3 class="bb-table-row-col">
                   <span>{{ convertMinsToHrsMins(service.duration_minutes) }}</span>
@@ -73,9 +74,9 @@
     <div class="p-sl-gap">
       <i class="bb-icon-timer p-sl-gap-icon"></i>
 
-      <div class="p-sl-gap-title">Service Time Gap</div>
+      <div class="p-sl-gap-title">Set your gap time between visits</div>
 
-      <ion-range min="0" max="45" step="1" [(ngModel)]="timeGap" color="dark" class="ion-bb-range">
+      <ion-range min="0" max="60" step="1" [(ngModel)]="timeGap" color="dark" class="ion-bb-range">
         <div range-right>
           {{ timeGap }} min
         </div>
