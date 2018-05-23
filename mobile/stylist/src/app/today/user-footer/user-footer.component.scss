@@ -1,7 +1,8 @@
 user-footer{
   .u-f{
     &-footer{
-      box-shadow: 0 0 50px 15px color($colors, color7);
+      background: white;
+      box-shadow: 0 0 60px 35px color($colors, color7);
 
       &:before{
         display: none;
@@ -34,6 +35,10 @@ user-footer{
         color: color($colors, dark);
         margin-top: -50px;
         display: inline-block;
+
+        &.activated{
+          background: rgb(255, 218, 202);
+        }
 
         @media ($smartphone) {
           width: 60px;

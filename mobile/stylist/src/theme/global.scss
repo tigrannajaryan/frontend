@@ -96,6 +96,13 @@
         font-size: pxtoem(18);
       }
 
+      &[color="bb_honey"]{
+        box-shadow: 0 0 25px 5px rgba(255, 224, 208, 0.46);
+      }
+
+      &.black{
+        color: #000;
+      }
 
       &.o_shadow{
         box-shadow: 0 0 31px 6px rgba(255, 197, 150, 0.5);

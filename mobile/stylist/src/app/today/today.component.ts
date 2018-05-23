@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import { ActionSheetController, IonicPage } from 'ionic-angular';
+import { AlertController, IonicPage, LoadingController, ModalController, NavController } from 'ionic-angular';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs/Subscription';
+import { Loading } from 'ionic-angular/components/loading/loading';
 
 import {
   LoadAction,
@@ -10,7 +11,9 @@ import {
 } from './today.reducer';
 
 import { Today } from './today.models';
+import { Appointment } from '~/today/today.models';
 import { TodayService } from '~/today/today.service';
+import { PageNames } from '~/core/page-names';
 
 export enum AppointmentStatuses {
   new = 'new',
@@ -25,21 +28,51 @@ export enum AppointmentStatuses {
   templateUrl: 'today.component.html'
 })
 export class TodayComponent {
-
+  // this should be here if we using enum in html
+  protected AppointmentStatuses = AppointmentStatuses;
+  hasBlur = false;
   today: Today;
 
   private stateSubscription: Subscription;
 
   constructor(
-    public actionSheetCtrl: ActionSheetController,
+    public navCtrl: NavController,
     public todayService: TodayService,
+    public modalCtrl: ModalController,
+    public alertCtrl: AlertController,
+    private loadingCtrl: LoadingController,
     private store: Store<TodayState>
   ) {
   }
 
   ionViewDidEnter(): void {
+    this.updateTodayPage();
+  }
+
+  ionViewDidLeave(): void {
+    // Unsubscribe from observer when this view is no longer visible
+    // to avoid unneccessary processing.
+    this.stateSubscription.unsubscribe();
+
+    // unblur on ionViewDidLeave
+    this.hasBlur = false;
+  }
+
+  /***
+   * Update today page data
+   * @param {boolean} hasLoader if true loader will start in this function
+   * @param {() => void} callBack run in the end of function
+   * @returns {Promise<void>}
+   */
+  async updateTodayPage(hasLoader = true, callBack?: () => void): Promise<void> {
+    let loader: Loading;
+    if (hasLoader) {
+      loader = this.loadingCtrl.create();
+      loader.present();
+    }
+
     // Subscribe to receive updates on todayState data.
-    this.stateSubscription = this.store.select(selectTodayState)
+    this.stateSubscription = await this.store.select(selectTodayState)
       .subscribe(todayState => {
         // Received new state. Update the view.
         this.today = todayState.today;
@@ -49,47 +82,60 @@ export class TodayComponent {
 
     // Initiate loading the today data.
     this.store.dispatch(new LoadAction());
+
+    if (hasLoader) {
+      loader.dismiss();
+    }
+
+    if (callBack) {
+      callBack();
+    }
   }
 
-  ionViewDidLeave(): void {
-    // Unsubscribe from observer when this view is no longer visible
-    // to avoid unneccessary processing.
-    this.stateSubscription.unsubscribe();
+  /**
+   * Handler for appointment card click event.
+   */
+  changeCheckedStatus(appointmentNode: Element, status: boolean): void {
+    appointmentNode['isChecked'] = status;
+    this.hasBlur = status;
   }
 
-  openModal(appointmentUuid: string): void {
-    const actionSheet = this.actionSheetCtrl.create({
-      title: 'NOT PAID',
-      buttons: [
-        {
-          text: 'Checkout',
-          handler: () => {
-            this.checkOutAppointment(appointmentUuid);
-          }
-        },
-        {
-          text: 'Cancel',
-          role: 'destructive',
-          handler: () => {
-            this.cancelAppointment(appointmentUuid);
-          }
-        }
-      ]
+  /**
+   * Handler for appointment-checkout appointment event.
+   */
+  async checkOutAppointment(appointment: Appointment, appointmentNode: Element): Promise<void> {
+    const loader = this.loadingCtrl.create();
+    loader.present();
+
+    const checkoutModal = this.modalCtrl.create(PageNames.AppointmentCheckout, { uuid: appointment.uuid });
+    await checkoutModal.present();
+
+    this.changeCheckedStatus(appointmentNode, false);
+
+    checkoutModal.onDidDismiss(async (isCheckedOut: boolean) => {
+      if (isCheckedOut) {
+        await this.todayService.setAppointment(appointment.uuid, { status: AppointmentStatuses.checked_out });
+
+        await this.updateTodayPage(false);
+      }
+
+      loader.dismiss();
     });
-    actionSheet.present();
   }
 
   /**
-   * Handler for checkout appointment button.
+   * Handler for cancel appointment event
    */
-  checkOutAppointment(appointmentUuid: string): void {
-    this.todayService.setAppointment(appointmentUuid, { status: AppointmentStatuses.checked_out });
-  }
+  async cancelAppointment(appointment: Appointment, appointmentNode: Element): Promise<void> {
+    const loader = this.loadingCtrl.create();
+    loader.present();
 
-  /**
-   * Handler for cancel appointment button.
-   */
-  cancelAppointment(appointmentUuid: string): void {
-    this.todayService.setAppointment(appointmentUuid, { status: AppointmentStatuses.cancelled_by_stylist });
+    this.changeCheckedStatus(appointmentNode, false);
+
+    await this.todayService.setAppointment(appointment.uuid, { status: AppointmentStatuses.cancelled_by_stylist });
+
+    this.updateTodayPage(false, () => {
+      loader.dismiss();
+    });
   }
 }

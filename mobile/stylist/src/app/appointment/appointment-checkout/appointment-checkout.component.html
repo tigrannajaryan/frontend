@@ -1,0 +1,98 @@
+<ion-header class="ion-bb-header">
+  <user-header [hasBackButton]="true"></user-header>
+</ion-header>
+
+<ion-content padding>
+  <div *ngIf="appointment" class="bb-wp-a">
+    <div class="p-c-top">
+      <div class="p-c-top-time">
+        {{ appointment.datetime_start_at | date: 'h:mmaaaaa' }}
+      </div>
+
+      <div class="p-c-top-user">
+        <div [style.backgroundImage]="'url()'" class="p-c-top-user-ava"></div>
+        <div class="p-c-top-user-name">
+          {{ appointment.client_first_name }}
+          {{ appointment.client_last_name }}
+        </div>
+      </div>
+    </div>
+
+    <div class="p-c-box">
+      <div class="p-c-box-title">Your total price is</div>
+
+
+      <ion-grid no-padding class="p-c-box-price">
+        <ion-row>
+          <ion-col col-4 text-right>
+            <div class="p-c-box-price-sign">$</div>
+          </ion-col>
+          <ion-col col-4>
+            <div class="p-c-box-price-num">256</div>
+          </ion-col>
+          <ion-col col-4>
+            <div class="p-c-box-price-last">
+              WAS $ 310
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+
+
+      <ion-grid no-padding class="p-c-box-change">
+        <ion-row>
+          <ion-col col-5>
+            <div class="p-c-box-change-title">Base price</div>
+            <div class="p-c-box-change-num">210</div>
+          </ion-col>
+          <ion-col col-4>
+            <div class="p-c-box-change-title">Tax incl.</div>
+            <div class="p-c-box-change-num">
+              40
+              <ion-toggle></ion-toggle>
+            </div>
+          </ion-col>
+          <ion-col col-3>
+            <div class="p-c-box-change-title">Card fee</div>
+            <div class="p-c-box-change-num">
+              6
+              <ion-toggle></ion-toggle>
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+
+
+
+      <ion-grid no-padding class="p-c-box-service">
+        <ion-row>
+          <ion-col col-5>
+            <div class="p-c-box-service-title">Service</div>
+            <div class="p-c-box-service-text">Colouring</div>
+          </ion-col>
+          <ion-col col-3>
+            <div class="p-c-box-service-title">Price</div>
+            <div class="p-c-box-service-text">$ 210</div>
+          </ion-col>
+          <ion-col col-4>
+            <div class="p-c-box-service-title">Was</div>
+            <div class="p-c-box-service-text">
+              $ 310
+              <button menuToggle ion-button icon-only class="p-c-box-service-btn">
+                <ion-icon name="ios-more-outline"></ion-icon>
+              </button>
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+
+
+      <!--hide it for now-->
+      <!--<button col-6 ion-button outline color="bb_violet" class="bb-btn-a">Add service</button>-->
+    </div>
+
+    <div class="p-c-fin">
+      <button (click)="onFinalizeCheckout()" col-6 ion-button color="bb_honey" class="bb-btn-a black">Finalize checkout</button>
+    </div>
+  </div>
+</ion-content>

@@ -3,19 +3,15 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 
 import { IonicPageModule } from 'ionic-angular';
-import { CoreModule } from '~/core/core.module';
 import { TodayComponent } from './today.component';
 import { todayReducer } from './today.reducer';
 import { TodayService } from './today.service';
 import { TodayEffects } from './today.effects';
-import { UserFooterComponent } from '~/today/user-footer/user-footer.component';
-import { UserHeaderComponent } from '~/today/user-header/user-header.component';
+import { CoreModule } from '~/core/core.module';
 
 @NgModule({
   declarations: [
-    TodayComponent,
-    UserHeaderComponent,
-    UserFooterComponent
+    TodayComponent
   ],
   imports: [
     IonicPageModule.forChild(TodayComponent),

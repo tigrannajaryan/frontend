@@ -1,12 +1,9 @@
-import { async, ComponentFixture, getTestBed, TestBed } from '@angular/core/testing';
-import { StoreModule } from '@ngrx/store';
+import { async, ComponentFixture, getTestBed } from '@angular/core/testing';
 
 import { TestUtils } from '../../test';
 import { defaultEndTime, defaultStartTime, WeekdayIso, WorktimeComponent } from './worktime.component';
-import { WorktimeComponentModule } from './worktime.component.module';
 import { WorktimeApi } from './worktime.api';
 import { WorktimeApiMock } from './worktime.api.mock';
-import { Worktime } from './worktime.models';
 import { prepareSharedObjectsForTests } from '~/core/test-utils.spec';
 
 let fixture: ComponentFixture<WorktimeComponent>;

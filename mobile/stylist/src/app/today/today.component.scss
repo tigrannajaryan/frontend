@@ -2,6 +2,10 @@ page-today {
   // p = page
   // -asd = first letter of each word (in this case just -t)
   .p-t{
+    &-blur{
+      filter: blur(3px);
+    }
+
     &-top{
       display: flex;
       justify-content: space-between;
@@ -116,6 +120,17 @@ page-today {
           padding: 4px 10px;
         }
       }
+
+      &-refresh{
+        font-size: pxtorem(36);
+
+        @media ($smartphone) {
+          font-size: pxtorem(28);
+        }
+        @media ($phone) {
+          font-size: pxtorem(18);
+        }
+      }
     }
 
     &-history{
@@ -180,37 +195,50 @@ page-today {
     }
 
     &-items{
-      margin-bottom: pxtorem(110);
+      margin-bottom: pxtorem(180);
 
       @media ($smartphone) {
-        margin-bottom: pxtorem(85);
+        margin-bottom: pxtorem(120);
       }
       @media ($phone) {
-        margin-bottom: pxtorem(45);
+        margin-bottom: pxtorem(80);
       }
 
       &-item{
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
         position: relative;
         background: color($colors, white);
         border-radius: 20px;
-        padding: pxtoem(33) pxtorem(60);
         margin-bottom: pxtorem(70);
         box-shadow: 0 0 50px 15px color($colors, color7);
 
         @media ($smartphone) {
           margin-bottom: pxtorem(55);
-          padding: pxtoem(30) pxtorem(35);
         }
         @media ($phone) {
           margin-bottom: pxtorem(40);
-          padding: pxtoem(20) pxtorem(35);
+        }
+
+        &-wp{
+          display: flex;
+          justify-content: space-between;
+          align-items: flex-start;
+          padding: pxtoem(33) pxtorem(60);
+
+          @media ($smartphone) {
+            padding: pxtoem(30) pxtorem(35);
+          }
+          @media ($phone) {
+            padding: pxtoem(20) pxtorem(35);
+          }
+
+          &.isChecked{
+            visibility: hidden;
+          }
         }
 
         &-status{
           position: absolute;
+          z-index: 2;
           left: 7%;
           top: -15px;
           padding: pxtorem(10);
@@ -308,6 +336,20 @@ page-today {
               height: 16px;
             }
           }
+        }
+
+        &-btns{
+          position: absolute;
+          z-index: 2;
+          left: 0;
+          top: 0;
+          right: 0;
+          bottom: 0;
+          display: flex;
+          justify-content: space-between;
+          align-content: center;
+          align-items: center;
+          padding: 0 pxtoem(40);
         }
       }
     }

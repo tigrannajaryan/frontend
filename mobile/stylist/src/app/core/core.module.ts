@@ -3,14 +3,15 @@ import { IonicModule } from 'ionic-angular';
 
 import { BaseApiService } from '~/shared/base-api-service';
 import { ComponentsModule } from './components/components.module';
+import { ClickOutsideDirective } from '~/core/directives/click-outside.directive';
 import { Logger } from '~/shared/logger';
 import { ServerStatusTracker } from '~/shared/server-status-tracker';
-
 import { InputNumberDirective } from '~/core/directives/input-number.directive';
 
 @NgModule({
   declarations: [
-    InputNumberDirective
+    InputNumberDirective,
+    ClickOutsideDirective
   ],
   imports: [
     IonicModule,
@@ -18,7 +19,8 @@ import { InputNumberDirective } from '~/core/directives/input-number.directive';
   ],
   exports: [
     ComponentsModule,
-    InputNumberDirective
+    InputNumberDirective,
+    ClickOutsideDirective
   ],
   providers: [
     BaseApiService,

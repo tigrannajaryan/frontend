@@ -1,56 +1,73 @@
-<ion-header class="ion-bb-header">
+<ion-header [class.p-t-blur]="hasBlur" class="ion-bb-header">
   <user-header [hasBackButton]="false"></user-header>
 </ion-header>
 
 <ion-content padding>
   <div *ngIf="today" class="bb-wp-a">
-    <div class="p-t-top">
-      <div class="p-t-top-info">
-        Available time <span>45 min</span>
-        <div class="p-t-top-info-progress"><div class="p-t-top-info-progress-line" [style.width]="'50%'"></div></div>
+    <div [class.p-t-blur]="hasBlur">
+      <div class="p-t-top">
+        <div class="p-t-top-info">
+          Available time <span>45 min</span>
+          <div class="p-t-top-info-progress"><div class="p-t-top-info-progress-line" [style.width]="'50%'"></div></div>
+        </div>
+      </div>
+
+      <div class="p-t-up" ion-row justify-content-between align-items-center>
+        <div>
+          What's up
+          <span class="p-t-up-info">{{ today.past_visits_count + today.week_visits_count }}</span>
+        </div>
+
+        <button (click)="updateTodayPage()" ion-button icon-only outline clear color="dark" class="p-t-up-refresh">
+          <ion-icon name="ios-refresh-outline"></ion-icon>
+        </button>
+      </div>
+
+
+      <div class="p-t-history">
+        <button ion-button icon-only clear color="dark" class="p-t-history-item">
+          Today you have
+          <span class="p-t-history-item-num">{{ today.today_visits_count }}</span>
+        </button>
+        <button ion-button icon-only clear color="dark" class="p-t-history-item">
+          This week
+          <span class="p-t-history-item-num">{{ today.week_visits_count }}</span>
+        </button>
+        <button ion-button icon-only clear color="dark" class="p-t-history-item">
+          Later on
+          <span class="p-t-history-item-num">20</span>
+        </button>
       </div>
     </div>
 
 
-    <div class="p-t-up">
-      What's up
-      <span class="p-t-up-info">{{ today.past_visits_count + today.week_visits_count }}</span>
-    </div>
-
-
-    <div class="p-t-history">
-      <button ion-button icon-only clear color="dark" class="p-t-history-item">
-        Today you have
-        <span class="p-t-history-item-num">{{ today.today_visits_count }}</span>
-      </button>
-      <button ion-button icon-only clear color="dark" class="p-t-history-item">
-        This week
-        <span class="p-t-history-item-num">{{ today.week_visits_count }}</span>
-      </button>
-      <button ion-button icon-only clear color="dark" class="p-t-history-item">
-        Later on
-        <span class="p-t-history-item-num">20</span>
-      </button>
-    </div>
-
-
     <div class="p-t-items">
-      <div *ngFor="let appointment of today.today_appointments" (click)="openModal(appointment.uuid)" class="p-t-items-item">
-        <div class="p-t-items-item-status">Now</div>
-        <div class="p-t-items-item-status notpaid">Not checked out</div>
+      <div
+        *ngFor="let appointment of today.today_appointments"
+        #appointmentNode
+        (ngxClickOutside)="changeCheckedStatus(appointmentNode, false)"
+        [class.p-t-blur]="hasBlur && !appointmentNode.isChecked"
+        class="p-t-items-item"
+      >
+        <div [class.notpaid]="appointment.status !== AppointmentStatuses.checked_out" class="p-t-items-item-status">{{ appointment.status }}</div>
 
-        <div class="p-t-items-item-info">
-          <div class="p-t-items-item-info-time">
-            {{ appointment.datetime_start_at | date: 'h:maaaaa' }}
-            <sup class="p-t-items-item-info-time-sup">
-              {{ appointment.datetime_start_at | date: 'dd MMM' }}
-            </sup>
+        <div (click)="changeCheckedStatus(appointmentNode, true)" [class.isChecked]="appointmentNode.isChecked" class="p-t-items-item-wp">
+          <div class="p-t-items-item-info">
+            <div class="p-t-items-item-info-time">
+              {{ appointment.datetime_start_at | date: 'h:mmaaaaa' }}
+            </div>
+            <div class="p-t-items-item-info-desc">{{ appointment.service_name }}</div>
           </div>
-          <div class="p-t-items-item-info-desc">{{ appointment.service_name }}</div>
+          <div class="p-t-items-item-name">
+            <div [style.background-image]="" class="p-t-items-item-name-ava"></div>
+            {{ appointment.client_first_name }}
+            {{ appointment.client_last_name }}
+          </div>
         </div>
-        <div class="p-t-items-item-name">
-          <div [style.background-image]="" class="p-t-items-item-name-ava"></div>
-          {{ appointment.client_first_name }}
+
+        <div *ngIf="appointmentNode.isChecked" class="p-t-items-item-btns">
+          <button (click)="checkOutAppointment(appointment, appointmentNode)" col-5 ion-button color="bb_honey" class="bb-btn-a black">Checkout</button>
+          <button (click)="cancelAppointment(appointment, appointmentNode)" col-5 ion-button outline color="bb_warn" class="bb-btn-a">Delete</button>
         </div>
       </div>
     </div>

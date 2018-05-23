@@ -16,15 +16,31 @@ export class TodayService extends BaseApiService {
     super(http, logger, serverStatus);
   }
 
-  getAppointments(): Promise<Appointment[]> {
-    return this.get<Appointment[]>('appointments');
-  }
-
+  /**
+   * Get today page data. The stylist must be already authenticated as a user.
+   */
   getToday(): Promise<Today> {
     return this.get<Today>('stylist/today');
   }
 
+  /**
+   * Get all appointments. The stylist must be already authenticated as a user.
+   */
+  getAppointments(): Promise<Appointment[]> {
+    return this.get<Appointment[]>('stylist/appointments');
+  }
+
+  /**
+   * Get appointment by id. The stylist must be already authenticated as a user.
+   */
+  getAppointmentById(appointmentUuid: string): Promise<Appointment> {
+    return this.get<Appointment>(`stylist/appointments/${appointmentUuid}`);
+  }
+
+  /**
+   * Set appointment by id. The stylist must be already authenticated as a user.
+   */
   setAppointment(appointmentUuid: string, data: AppointmentStatus): Promise<AppointmentStatus[]> {
-    return this.post<AppointmentStatus[]>(`appointments/${appointmentUuid}`, data);
+    return this.post<AppointmentStatus[]>(`stylist/appointments/${appointmentUuid}`, data);
   }
 }

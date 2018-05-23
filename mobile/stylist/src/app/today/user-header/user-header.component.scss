@@ -92,6 +92,10 @@ user-header{
             font-size: pxtorem(30);
             margin: 0;
           }
+
+          &.dark{
+            color: color($colors, dark);
+          }
         }
       }
     }
