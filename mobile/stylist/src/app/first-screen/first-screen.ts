@@ -18,6 +18,7 @@ const connected = 'connected';
   templateUrl: 'first-screen.html'
 })
 export class FirstScreenComponent {
+  LoginOrRegisterType = LoginOrRegisterType;
 
   constructor(
     private navCtrl: NavController,

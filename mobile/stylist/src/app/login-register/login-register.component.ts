@@ -7,7 +7,8 @@ import { ServerFieldError } from '~/shared/api-errors';
 import { PageNames } from '~/shared/page-names';
 
 export enum LoginOrRegisterType {
-  login, register
+  login = 'login',
+  register = 'register'
 }
 
 @IonicPage({
@@ -18,6 +19,7 @@ export enum LoginOrRegisterType {
   templateUrl: 'login-register.component.html'
 })
 export class LoginRegisterComponent {
+  LoginOrRegisterType = LoginOrRegisterType;
 
   pageType: LoginOrRegisterType;
   formData = { email: '', password: '' };
