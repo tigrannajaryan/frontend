@@ -53,7 +53,7 @@ export class UnhandledErrorHandler {
       // This is most likely an exception thrown from async function.
       error = error.rejection;
     }
-    this.logger.error('Unhandled exception:', error);
+    this.logger.error('Unhandled exception:', JSON.stringify(error));
 
     // Do updates via setTimeout to work around known Angular bug:
     // https://stackoverflow.com/questions/37836172/angular-2-doesnt-update-view-after-exception-is-thrown)

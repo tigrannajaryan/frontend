@@ -25,7 +25,7 @@ export function profileStatusToPage(profileStatus: ProfileStatus): string {
   if (!profileStatus.has_business_hours_set) {
     return PageNames.Worktime;
   }
-  if (!profileStatus.has_weekday_discounts_set || !profileStatus.has_other_discounts_set) {
+  if (!profileStatus.has_weekday_discounts_set && !profileStatus.has_other_discounts_set) {
     return PageNames.Discounts;
   }
 
