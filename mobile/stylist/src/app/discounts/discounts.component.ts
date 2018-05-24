@@ -5,7 +5,7 @@ import { Discounts } from './discounts.models';
 import { PageNames } from '~/shared/page-names';
 import { ChangePercent } from '~/shared/popups/change-percent/change-percent.component';
 
-enum DiscountsTypes {
+export enum DiscountsTypes {
   weekday = 'weekday',
   first_booking = 'first_booking',
   rebook_within_1_week = 'rebook_within_1_week',
@@ -20,6 +20,9 @@ enum DiscountsTypes {
   templateUrl: 'discounts.component.html'
 })
 export class DiscountsComponent {
+  // this should be here if we using enum in html
+  protected DiscountsTypes = DiscountsTypes;
+
   discounts: Discounts;
 
   constructor(

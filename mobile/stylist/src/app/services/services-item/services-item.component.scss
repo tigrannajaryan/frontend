@@ -1,4 +1,14 @@
-page-service-item-add {
-  .page-rcsia {
+page-service-item {
+  .p-si {
+    &-btns{
+      margin-top: pxtorem(100);
+
+      @media ($smartphone) {
+        margin-top: pxtorem(80);
+      }
+      @media ($phone) {
+        margin-top: pxtorem(60);
+      }
+    }
   }
 }

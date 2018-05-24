@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
+import { Camera, CameraOptions } from '@ionic-native/camera';
 
 import {
+  ActionSheetController,
   AlertController,
   IonicPage,
   LoadingController,
@@ -12,16 +14,14 @@ import {
 
 import 'rxjs/add/operator/pluck';
 
-import { PageNames } from '../shared/page-names';
-import { StylistServiceProvider } from '../shared/stylist-service/stylist-service';
-import { BaseApiService } from '../shared/base-api-service';
+import { PageNames } from '~/shared/page-names';
+import { StylistServiceProvider } from '~/shared/stylist-service/stylist-service';
+import { BaseApiService } from '~/shared/base-api-service';
 
-/**
- * Generated class for the RegisterSalonPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+enum PhotoSourceType {
+  photoLibrary = 0,
+  camera = 1
+}
 
 @IonicPage({
   segment: 'register-salon'
@@ -42,7 +42,9 @@ export class RegisterSalonComponent {
     private baseService: BaseApiService,
     private alertCtrl: AlertController,
     private loadingCtrl: LoadingController,
-    private domSanitizer: DomSanitizer) {
+    private domSanitizer: DomSanitizer,
+    private camera: Camera,
+    private actionSheetCtrl: ActionSheetController) {
 
   }
 
@@ -77,47 +79,6 @@ export class RegisterSalonComponent {
     });
   }
 
-  processWebImage(event): void {
-    const loading = this.loadingCtrl.create();
-    try {
-      loading.present();
-
-      // convert to base64 and show it
-      const reader = new FileReader();
-      reader.onload = readerEvent => {
-        const imageData = (readerEvent.target as any).result;
-        this.form.get('vars.image')
-          .setValue(this.domSanitizer.bypassSecurityTrustStyle(`url(${imageData})`));
-      };
-      reader.readAsDataURL(event.target.files[0]);
-
-      // get file and convert to formData
-      const file = event.target.files[0];
-      const formData = new FormData();
-      formData.append('file', file);
-
-      this.baseService.uploadFile(formData)
-        .then((res: any) => {
-
-          this.form.get('profile_photo_id')
-            .setValue(res.uuid);
-        });
-    } catch (e) {
-      const alert = this.alertCtrl.create({
-        title: 'Saving photo failed',
-        subTitle: e.message,
-        buttons: ['Dismiss']
-      });
-      alert.present();
-
-      // reset on cancel
-      this.form.get('vars.image').setValue('');
-      this.form.get('profile_photo_id').setValue(undefined);
-    } finally {
-      loading.dismiss();
-    }
-  }
-
   async next(): Promise<void> {
     const loading = this.loadingCtrl.create();
     try {
@@ -127,6 +88,95 @@ export class RegisterSalonComponent {
       await this.apiService.setProfile(profile);
 
       this.navCtrl.push(PageNames.RegisterServices, {}, { animate: false });
+    } finally {
+      loading.dismiss();
+    }
+  }
+
+  processPhoto(): void {
+    const buttons = [
+      {
+        text: 'Take Photo',
+        handler: () => {
+          this.takePhoto(PhotoSourceType.camera);
+        }
+      }, {
+        text: 'Add Photo',
+        handler: () => {
+          this.takePhoto(PhotoSourceType.photoLibrary);
+        }
+      }, {
+        text: 'Cancel',
+        role: 'cancel'
+      }
+    ];
+
+    if (this.form.get('vars.image').value) {
+      buttons.splice(-1, 0, {
+        text: 'Remove Photo',
+        role: 'destructive',
+        handler: () => {
+          this.form.get('vars.image').setValue('');
+          this.form.get('profile_photo_id').setValue(undefined);
+        }
+      });
+    }
+
+    const actionSheet = this.actionSheetCtrl.create({ buttons });
+    actionSheet.present();
+  }
+
+  // convert base64 to File
+  protected urlToFile(url: string, filename: string, mimeType?): Promise<File> {
+    mimeType = mimeType || (url.match(/^data:([^;]+);/) || '')[1];
+    return (fetch(url).catch(e => { throw e; })
+      .then(res => res.arrayBuffer())
+      .then(buf => new File([buf], filename, {type: mimeType})));
+  }
+
+  private takePhoto(sourceType: PhotoSourceType): void {
+    const loading = this.loadingCtrl.create();
+
+    try {
+      loading.present();
+
+      const options: CameraOptions = {
+        quality: 50,
+        destinationType: this.camera.DestinationType.DATA_URL,
+        encodingType: this.camera.EncodingType.JPEG,
+        mediaType: this.camera.MediaType.PICTURE,
+        correctOrientation: true,
+        sourceType // PHOTOLIBRARY = 0, CAMERA = 1
+      };
+
+      this.camera.getPicture(options).then(imageData => {
+        // imageData is either a base64 encoded string or a file URI
+        // If it's base64:
+        const base64Image = `data:image/jpeg;base64,${imageData}`;
+
+        // set image preview
+        this.form.get('vars.image')
+          .setValue(this.domSanitizer.bypassSecurityTrustStyle(`url(${base64Image})`));
+
+        // convert base64 to File after to formData and send it to server
+        this.urlToFile(base64Image, 'file.png')
+          .then(file => {
+            const formData = new FormData();
+            formData.append('file', file);
+            this.baseService.uploadFile(formData)
+              .then((res: any) => {
+                this.form.get('profile_photo_id')
+                  .setValue(res.uuid);
+              });
+          });
+      });
+    } catch (e) {
+      const alert = this.alertCtrl.create({
+        title: 'Saving photo failed',
+        subTitle: e.message,
+        buttons: ['Dismiss']
+      });
+      alert.present();
     } finally {
       loading.dismiss();
     }

@@ -20,23 +20,24 @@
     </ion-item>
     <ion-item class="ion-bb-input">
       <ion-label stacked>Duration</ion-label>
-      <ion-input type="number" placeholder="ex. 30 minutes" formControlName="duration_minutes"></ion-input>
+      <ion-input type="tel" ngxInputNumber placeholder="ex. 30" formControlName="duration_minutes"></ion-input>
+      <span item-right class="ion-bb-input-prefix">min</span>
     </ion-item>
     <ion-item class="ion-bb-input">
       <ion-label stacked>Price</ion-label>
-      <ion-input type="number" placeholder="ex. 120" formControlName="base_price"></ion-input>
-      <span item-right class="ion-bb-input-prefix">USD</span>
+      <ion-input type="tel" ngxInputNumber placeholder="ex. 120" formControlName="base_price"></ion-input>
+      <span item-right class="ion-bb-input-prefix">$</span>
     </ion-item>
 
 
-    <ion-row *ngIf="!form.get('categoryUuid').value" justify-content-center align-items-center style="margin-top: 100px;">
+    <ion-row *ngIf="!form.get('categoryUuid').value" justify-content-center align-items-center class="p-si-btns">
       Add new
       <button [disabled]="form.invalid" ion-button type="submit" class="bb-btn-circle">
         <ion-icon name="ios-add-outline"></ion-icon>
       </button>
       Service
     </ion-row>
-    <ion-row *ngIf="form.get('categoryUuid').value" justify-content-center align-items-center style="margin-top: 100px;">
+    <ion-row *ngIf="form.get('categoryUuid').value" justify-content-center align-items-center class="p-si-btns">
       <button ion-button color="danger" clear style="visibility: hidden;">Delete</button>
 
       <button [disabled]="form.invalid" ion-button type="submit" class="bb-btn-circle">

@@ -17,9 +17,8 @@
     <ion-list>
       <div class="p-rs-circle">
         <div [style.backgroundImage]="form.get('vars.image').value" class="p-rs-circle-photo"></div>
-        <label class="p-rs-circle-add">
+        <label (click)="processPhoto()" class="p-rs-circle-add">
           <i class="bb-icon-camera p-rs-circle-add-icon"></i>
-          <input (change)="processWebImage($event)" type="file" style="display: none;">
         </label>
       </div>
 

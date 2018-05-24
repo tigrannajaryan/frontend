@@ -44,7 +44,10 @@ button[color='bb_honey']{
   border: none;
 }
 
-
+// this need for fixing known bug https://forum.ionicframework.com/t/ion-input-shows-only-the-first-entered-character-on-ios/73107/4
+ion-input > input {
+  transform: translateZ(0px)
+}
 
 
 
@@ -75,6 +78,13 @@ button[color='bb_honey']{
       transform: translateY(-50%);
       margin: 0;
       font-size: pxtoem(20);
+
+      @media ($smartphone) {
+        font-size: pxtoem(18);
+      }
+      @media ($phone) {
+        font-size: pxtoem(16);
+      }
     }
 
 
