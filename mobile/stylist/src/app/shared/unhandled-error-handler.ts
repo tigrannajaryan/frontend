@@ -49,6 +49,8 @@ export class UnhandledErrorHandler {
    * See https://angular.io/api/core/ErrorHandler
    */
   handleError(error: any): void {
+    console.log(error);
+
     if (error.rejection) {
       // This is most likely an exception thrown from async function.
       error = error.rejection;
@@ -62,6 +64,7 @@ export class UnhandledErrorHandler {
     // Despite Angular team claims the bug is still not fixed in Angular 5.2.9.
 
     setTimeout(() => {
+      console.log(error);
 
       if (error instanceof ServerNonFieldError) {
         this.popup(error.getStr());

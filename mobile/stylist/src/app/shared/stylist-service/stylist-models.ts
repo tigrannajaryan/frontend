@@ -6,7 +6,8 @@ export interface StylistProfile {
   phone: string;
   salon_name: string;
   salon_address: string;
-  profile_photo_id: string;
+  profile_photo_id?: string;
+  profile_photo_url?: string;
 }
 
 // Weekday discounts

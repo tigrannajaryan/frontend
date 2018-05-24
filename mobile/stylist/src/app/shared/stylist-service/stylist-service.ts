@@ -73,4 +73,11 @@ export class StylistServiceProvider extends BaseApiService {
   async setStylistServices(data: any): Promise<ServiceItem> {
     return this.post<ServiceItem>('stylist/services', data);
   }
+
+  /**
+   * Deletes service of a stylist. The stylist must be already authenticated as a user.
+   */
+  async deleteStylistService(id: number): Promise<ServiceItem> {
+    return this.delete<ServiceItem>(`stylist/services/${id}`);
+  }
 }

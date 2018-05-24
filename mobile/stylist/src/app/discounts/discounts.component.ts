@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, ModalController, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, LoadingController, ModalController, NavController, NavParams } from 'ionic-angular';
 import { DiscountsApi } from './discounts.api';
 import { Discounts } from './discounts.models';
 import { PageNames } from '~/shared/page-names';
@@ -21,19 +21,35 @@ enum DiscountsTypes {
 })
 export class DiscountsComponent {
   discounts: Discounts;
+  isProfile?: Boolean;
 
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
     public modalCtrl: ModalController,
-    public discountsApi: DiscountsApi
+    public discountsApi: DiscountsApi,
+    public loadingCtrl: LoadingController
     ) {
-    this.init();
   }
 
-  async init(): Promise<void> {
-    this.discounts = await this.discountsApi.getDiscounts() as Discounts;
+  async ionViewWillLoad(): Promise<void> {
+    this.isProfile = Boolean(this.navParams.get('isProfile'));
+
+    this.loadInitialData();
   }
+
+  loading(asyncFunc) {
+    return async function(): Promise<void> {
+      const loading = this.loadingCtrl.create();
+      loading.present();
+      await asyncFunc();
+      loading.dismiss();
+    }
+  }
+
+  loadInitialData = this.loading(async () => {
+    this.discounts = await this.discountsApi.getDiscounts() as Discounts;
+  })
 
   /**
    * Check if we have at least one value with percent > 0
@@ -89,17 +105,27 @@ export class DiscountsComponent {
     modal.present();
   }
 
+  nextRoute(): void {
+    if (this.isProfile) {
+      this.navCtrl.pop();
+      return;
+    }
+
+    // this.navCtrl.push(PageNames.Summary, {}, { animate: false });
+  }
+
   /**
    * Clean up the data before save,
    * show alert if we have no discounts,
    * save data on server
    */
   saveDiscounts(): void {
-    if (!this.hasDiscounts()) {
+    if (!this.hasDiscounts()) { // TODO: use promise and one-directional flow
       const modal = this.modalCtrl.create(PageNames.DiscountsAlert);
       modal.onDidDismiss((confirmNoDiscount: boolean) => {
         if (confirmNoDiscount) {
           this.discountsApi.setDiscounts(this.discounts);
+          this.nextRoute();
         }
       });
       modal.present();
@@ -108,5 +134,6 @@ export class DiscountsComponent {
     }
 
     this.discountsApi.setDiscounts(this.discounts);
+    this.nextRoute();
   }
 }

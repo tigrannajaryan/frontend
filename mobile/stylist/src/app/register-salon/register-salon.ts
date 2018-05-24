@@ -32,6 +32,7 @@ import { BaseApiService } from '../shared/base-api-service';
 })
 export class RegisterSalonComponent {
   PageNames = PageNames;
+  isProfile?: Boolean;
   form: FormGroup;
 
   constructor(
@@ -47,6 +48,8 @@ export class RegisterSalonComponent {
   }
 
   ionViewWillLoad(): void {
+    this.isProfile = Boolean(this.navParams.get('isProfile'));
+
     this.form = this.formBuilder.group({
       vars: this.formBuilder.group({
         image: ''
@@ -75,7 +78,40 @@ export class RegisterSalonComponent {
       salon_address: ['', Validators.required],
       profile_photo_id: undefined
     });
+
+    this.loadFormInitialData();
   }
+
+  loading(asyncFunc) {
+    return async function(): Promise<void> {
+      const loading = this.loadingCtrl.create();
+      loading.present();
+      await asyncFunc();
+      loading.dismiss();
+    }
+  }
+
+  loadFormInitialData = this.loading(async () => {
+    const {
+      profile_photo_url,
+      first_name,
+      last_name,
+      phone,
+      salon_name,
+      salon_address,
+      profile_photo_id
+    } = await this.apiService.getProfile();
+
+    this.form.patchValue({
+      vars: {image: profile_photo_url},
+      first_name,
+      last_name,
+      phone,
+      salon_name,
+      salon_address,
+      profile_photo_id
+    })
+  })
 
   processWebImage(event): void {
     const loading = this.loadingCtrl.create();
@@ -118,7 +154,16 @@ export class RegisterSalonComponent {
     }
   }
 
-  async next(): Promise<void> {
+  nextRoute(): void {
+    if (this.isProfile) {
+      this.navCtrl.pop();
+      return;
+    }
+
+    this.navCtrl.push(PageNames.RegisterServices, {}, { animate: false });
+  }
+
+  async submit(): Promise<void> {
     const loading = this.loadingCtrl.create();
     try {
       loading.present();
@@ -126,7 +171,7 @@ export class RegisterSalonComponent {
       const { vars, ...profile } = this.form.value;
       await this.apiService.setProfile(profile);
 
-      this.navCtrl.push(PageNames.RegisterServices, {}, { animate: false });
+      this.nextRoute();
     } finally {
       loading.dismiss();
     }

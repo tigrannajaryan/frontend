@@ -109,6 +109,10 @@ export class BaseApiService {
     return this.request<ResponseType>('post', apiPath, data);
   }
 
+  protected delete<ResponseType>(apiPath: string): Promise<ResponseType> {
+    return this.request<ResponseType>('delete', apiPath);
+  }
+
   uploadFile(formData: FormData): Promise<ResponseType> {
     const url = `${ENV.apiUrl}common/image/upload`;
 

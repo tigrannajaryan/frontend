@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { IonicPage, LoadingController, NavController } from 'ionic-angular';
+import { IonicPage, LoadingController, NavController, NavParams } from 'ionic-angular';
 import { Workday, Worktime } from './worktime.models';
 import { WorktimeApi } from './worktime.api';
 import { convertMinsToHrsMins, Time, TimeRange } from '../shared/time';
@@ -76,10 +76,12 @@ type HourRange = [string, string];
   templateUrl: 'worktime.component.html'
 })
 export class WorktimeComponent {
+  isProfile?: Boolean;
 
   cards: VisualWeekCard[] = [];
 
   // Indicates if this screen should work in registration mode
+  // TODO: use instead of isProfile
   @Input()
   registrationMode = true;
 
@@ -112,13 +114,29 @@ export class WorktimeComponent {
     private api: WorktimeApi,
     private loadingCtrl: LoadingController,
     private navCtrl: NavController,
+    private navParams: NavParams,
     private logger: Logger) {}
 
-  async ionViewDidEnter(): Promise<void> {
+  async ionViewWillLoad(): Promise<void> {
+    this.isProfile = Boolean(this.navParams.get('isProfile'));
+
+    this.loadInitialData();
+  }
+
+  loading(asyncFunc) {
+    return async function(): Promise<void> {
+      const loading = this.loadingCtrl.create();
+      loading.present();
+      await asyncFunc();
+      loading.dismiss();
+    }
+  }
+
+  loadInitialData = this.loading(async () => {
     // Load data from backend and show it
     const worktime = await this.api.getWorktime();
     this.cards = this.api2presentation(worktime);
-  }
+  })
 
   /**
    * Click handler for weekday box. Toggles the state of the day.
@@ -162,6 +180,15 @@ export class WorktimeComponent {
     this.cards.push(WorktimeComponent.createCard(false));
   }
 
+  nextRoute(): void {
+    if (this.isProfile) {
+      this.navCtrl.pop();
+      return;
+    }
+
+    this.navCtrl.push(PageNames.Discounts, {}, { animate: false });
+  }
+
   async saveChanges(): Promise<void> {
     // Show loader
     const loading = this.loadingCtrl.create();
@@ -173,7 +200,7 @@ export class WorktimeComponent {
 
       if (this.registrationMode) {
         // Continue registration on the next page
-        this.navCtrl.push(PageNames.Discounts);
+        this.nextRoute();
       } else {
         // And load the response back to make sure client shows what backend understood.
         this.cards = this.api2presentation(worktime);

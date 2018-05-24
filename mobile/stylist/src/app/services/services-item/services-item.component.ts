@@ -3,9 +3,16 @@ import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angul
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
 import {
+  AlertController,
+  LoadingController
+} from 'ionic-angular';
+
+import {
   ServiceCategory,
   ServiceTemplateItem
 } from '../../shared/stylist-service/stylist-models';
+
+import { StylistServiceProvider } from '~/shared/stylist-service/stylist-service';
 
 /**
  * Represents the data that is passed in and out of
@@ -34,22 +41,43 @@ export class ServiceItemComponent {
     public navCtrl: NavController,
     public formBuilder: FormBuilder,
     public navParams: NavParams,
-    public viewCtrl: ViewController
+    public viewCtrl: ViewController,
+    private stylistService: StylistServiceProvider,
+    private loadingCtrl: LoadingController,
+    private alertCtrl: AlertController
   ) {
-    this.init();
   }
 
-  init(): void {
+  ionViewWillLoad(): void {
     // Unfortunately navaParams.get() is untyped 'any' data.
     this.data = this.navParams.get('data') as ServiceItemComponentData;
     this.createForm();
     this.setFormData(this.data);
   }
 
-  onServiceDelete(): void {
+  async onServiceDelete(): Promise<void> {
+    const {service} = this.data;
+
+    if (service && typeof service.id !== 'undefined') {
+      const loading = this.loadingCtrl.create();
+      loading.present();
+
+      try {
+        await this.stylistService.deleteStylistService(service.id);
+      } catch (e) {
+        const alert = this.alertCtrl.create({
+          title: 'Error',
+          subTitle: e,
+          buttons: ['Dismiss']
+        });
+        alert.present();
+      }
+
+      loading.dismiss();
+    }
+
     // Empty data indicates deleted item.
-    const newData: ServiceItemComponentData = {
-    };
+    const newData: ServiceItemComponentData = {};
 
     this.viewCtrl.dismiss(newData);
   }
@@ -58,10 +86,21 @@ export class ServiceItemComponent {
    * Submit the data and close the modal.
    */
   submit(): void {
-    const { vars, categoryUuid, ...newServiceItem } = this.form.value;
+    const { vars, categoryUuid, id, ...service } = this.form.value;
+
+    // id should be added only if present
+    if (id !== null) {
+      service.id = id;
+    }
+
+    const {base_price, duration_minutes, ...otherValues} = service;
 
     const newData: ServiceItemComponentData = {
-      service: newServiceItem,
+      service: {
+        ...service,
+        base_price: Number(base_price),
+        duration_minutes: Number(duration_minutes)
+      },
       categoryUuid
     };
 
@@ -76,7 +115,7 @@ export class ServiceItemComponent {
 
       categoryUuid: ['', Validators.required],
 
-      id: '',
+      id: undefined,
       base_price: ['', Validators.required],
       description: [''],
       duration_minutes: ['', Validators.required],
