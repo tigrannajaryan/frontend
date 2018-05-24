@@ -22,7 +22,7 @@ export class DiscountsApi extends BaseApiService {
   }
 
   /**
-   * Set the discounts of the stylist. The stylist must be already authenticated as a user.
+   * Get the discounts of the stylist. The stylist must be already authenticated as a user.
    */
   async getDiscounts(): Promise<Discounts> {
     return this.get<Discounts>(apiUrl);

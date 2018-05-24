@@ -20,14 +20,14 @@ export class WorktimeApi extends BaseApiService {
   }
 
   /**
-   * Set the profile of the stylist. The stylist must be already authenticated as a user.
+   * Get the working hours of the stylist. The stylist must be already authenticated as a user.
    */
   async getWorktime(): Promise<Worktime> {
     return this.get<Worktime>('stylist/availability/weekdays');
   }
 
   /**
-   * Set service to stylist. The stylist must be already authenticated as a user.
+   * Sets the working hours of the stylist. The stylist must be already authenticated as a user.
    */
   async setWorktime(data: Worktime): Promise<Worktime> {
     return this.post<Worktime>('stylist/availability/weekdays', data.weekdays);

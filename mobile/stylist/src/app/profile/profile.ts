@@ -18,6 +18,8 @@ export class ProfileComponent {
   }
 
   async ionViewWillLoad() {
+    const data = await this.stylistService.getStylistSummary();
+    // TODO: check for errors, show data
   }
 
   // TODO: Link component with to=PageNames.SomePageName

@@ -5,6 +5,9 @@ import { ServiceItem, ServicesTemplate, ServiceTemplateSet, StylistProfile } fro
 import { Logger } from '../logger';
 import { ServerStatusTracker } from '../server-status-tracker';
 
+import { DiscountsApi } from '~/discounts/discounts.api';
+import { WorktimeApi } from '~/worktime/worktime.api';
+
 export interface ServicesResponse {
   services: ServiceItem[];
 }
@@ -30,6 +33,10 @@ export class StylistServiceProvider extends BaseApiService {
     public logger: Logger,
     protected serverStatus: ServerStatusTracker) {
     super(http, logger, serverStatus);
+
+    // TODO: remove after summary API is implemented
+    this.discountsApi = new DiscountsApi(http, logger, serverStatus);
+    this.worktimeApi = new WorktimeApi(http, logger, serverStatus);
   }
 
   /**
@@ -44,6 +51,20 @@ export class StylistServiceProvider extends BaseApiService {
    */
   async getProfile(): Promise<StylistProfile> {
     return this.get<StylistProfile>('stylist/profile');
+  }
+
+  /**
+   * Get data for stylist settings screen stylist. The stylist must be already authenticated as a user.
+   */
+  async getStylistSummary(): Promise<any> {
+    return Promise.all([
+      this.getProfile(),
+      this.getStylistServices(),
+      this.worktimeApi.getWorktime(),
+      this.discountsApi.getDiscounts()
+    ]).then(([profile, services, worktime, discounts]) => {
+      // TODO: come up with the API suggestion here
+    });
   }
 
   /**
