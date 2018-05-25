@@ -30,7 +30,7 @@ describe('Pages: WorktimeComponent', () => {
   });
 
   it('should toggle weekday and steal from another card', async () => {
-    await instance.ionViewDidEnter();
+    await instance.ionViewWillLoad();
 
     // Test non-registration mode, when saving should result in refreshing of the page
     instance.registrationMode = false;
