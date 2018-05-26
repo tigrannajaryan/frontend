@@ -120,8 +120,7 @@ export class DiscountsComponent {
       this.navCtrl.pop();
       return;
     }
-
-    this.navCtrl.setRoot(PageNames.Profile, {}, { animate: false });
+    this.navCtrl.push(PageNames.Invitations);
   }
 
   /**
