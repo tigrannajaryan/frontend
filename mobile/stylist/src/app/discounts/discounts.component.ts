@@ -1,7 +1,14 @@
+import {
+  AlertController,
+  IonicPage,
+  LoadingController,
+  ModalController,
+  NavController,
+  NavParams
+  } from 'ionic-angular';
 import { Component } from '@angular/core';
-import { IonicPage, ModalController, NavController, NavParams } from 'ionic-angular';
-import { DiscountsApi } from './discounts.api';
 import { Discounts } from './discounts.models';
+import { DiscountsApi } from './discounts.api';
 import { PageNames } from '~/shared/page-names';
 import { ChangePercent } from '~/shared/popups/change-percent/change-percent.component';
 
@@ -29,6 +36,8 @@ export class DiscountsComponent {
     public navCtrl: NavController,
     public navParams: NavParams,
     public modalCtrl: ModalController,
+    public loadingCtrl: LoadingController,
+    private alertCtrl: AlertController,
     public discountsApi: DiscountsApi
     ) {
     this.init();
@@ -97,7 +106,7 @@ export class DiscountsComponent {
    * show alert if we have no discounts,
    * save data on server
    */
-  saveDiscounts(): void {
+  async saveDiscounts(): Promise<void> {
     if (!this.hasDiscounts()) {
       const modal = this.modalCtrl.create(PageNames.DiscountsAlert);
       modal.onDidDismiss((confirmNoDiscount: boolean) => {
@@ -110,6 +119,25 @@ export class DiscountsComponent {
       return;
     }
 
-    this.discountsApi.setDiscounts(this.discounts);
+    try {
+      // Show loader
+      const loading = this.loadingCtrl.create();
+      loading.present();
+
+      try {
+        await this.discountsApi.setDiscounts(this.discounts);
+        this.navCtrl.push(PageNames.Invitations);
+      } finally {
+        loading.dismiss();
+      }
+    } catch (e) {
+      // Show an error message
+      const alert = this.alertCtrl.create({
+        title: 'Error',
+        subTitle: e,
+        buttons: ['Dismiss']
+      });
+      alert.present();
+    }
   }
 }
