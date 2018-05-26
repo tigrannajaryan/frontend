@@ -1,0 +1,34 @@
+<ion-header class="ion-bb-header">
+  <ion-navbar>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+  <bb-nav [activePageIndex]="4"></bb-nav>
+
+  <div class="bb-wp">
+    <div class="p-i-top">
+      <div class="p-i-title">Invite your clients</div>
+    </div>
+  </div>
+
+  <ion-list class="bb-table" no-lines>
+    <ion-item>
+      <ion-row class="bb-table-row">
+        <ion-col col-6 class="bb-table-row-col">
+          Laura
+        </ion-col>
+        <ion-col col-3 class="bb-table-row-col">
+          9999999999
+        </ion-col>
+        <ion-col col-3 class="bb-table-row-col">
+          invited
+        </ion-col>
+      </ion-row>
+    </ion-item>
+  </ion-list>
+
+  <button ion-button (click)="pickContact()">Add from Address Book</button>
+
+</ion-content>
