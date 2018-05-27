@@ -1,0 +1,99 @@
+user-header{
+  .u-h{
+    &-header{
+      &-title{
+        .toolbar-title{
+          font-size: pxtorem(45);
+          padding: 0;
+
+          @media ($smartphone) {
+            font-size: pxtorem(36);
+            padding: 0 12px;
+          }
+          @media ($phone) {
+            font-size: pxtorem(22);
+            padding: 0 10px;
+          }
+        }
+
+        &-sub{
+          display: block;
+          font-size: pxtorem(34);
+          color: rgba(0, 0, 0, 0.4);
+          padding: pxtorem(10) 0 0;
+
+          @media ($smartphone) {
+            font-size: pxtorem(24);
+          }
+          @media ($phone) {
+            font-size: pxtorem(18);
+          }
+        }
+      }
+
+      &-btns{
+        &-user{
+          display: inline-block;
+          vertical-align: middle;
+          font-size: pxtorem(40);
+          background: transparent;
+
+          width: 90px;
+          height: 90px;
+          border-radius: 50%;
+          background-size: cover !important;
+          background-repeat: no-repeat;
+          background-position: center;
+
+          @media ($smartphone) {
+            width: 80px;
+            height: 80px;
+          }
+          @media ($phone) {
+            width: 50px;
+            height: 50px;
+          }
+
+
+
+          &.hasAva{
+            border: 1px solid color($colors, color10);
+          }
+        }
+
+        &-del{
+          display: inline-block;
+          vertical-align: middle;
+          width: 1px;
+          height: 60px;
+          background: color($colors, color10);
+          margin: 0 pxtoem(10) auto;
+
+          @media ($smartphone) {
+            margin: 0 pxtoem(20) auto;
+            height: 50px;
+          }
+          @media ($phone) {
+            margin: 0 pxtoem(10) auto;
+            height: 30px;
+          }
+        }
+
+        &-menu{
+          display: inline-block;
+          vertical-align: middle;
+          color: color($colors, color11);
+          font-size: pxtorem(50);
+
+          @media ($smartphone) {
+            font-size: pxtorem(40);
+          }
+          @media ($phone) {
+            font-size: pxtorem(30);
+            margin: 0;
+          }
+        }
+      }
+    }
+  }
+}

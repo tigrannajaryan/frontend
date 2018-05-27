@@ -9,6 +9,8 @@ import { ActionSheetController } from 'ionic-angular';
 import { TodayService } from '~/today/today.service';
 import { TodayState } from '~/today/today.reducer';
 import { Store } from '@ngrx/store';
+import { UserFooterComponent } from '~/today/user-footer/user-footer.component';
+import { UserHeaderComponent } from '~/today/user-header/user-header.component';
 
 let fixture: ComponentFixture<TodayComponent>;
 let instance: TodayComponent;
@@ -23,6 +25,8 @@ describe('Pages: TodayComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
+        UserHeaderComponent,
+        UserFooterComponent
       ],
       imports: [
         HttpClientTestingModule
