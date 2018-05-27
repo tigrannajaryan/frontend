@@ -1,3 +1,69 @@
-page-invite-clients {
+page-invitations {
+
+  .p-i {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-content: stretch;
+    height: 100%;
+    text-align: center;
+
+    &-title{
+      font-size: pxtoem(36);
+      padding: pxtoem(20) 10px pxtoem(8);
+
+      @media ($phone) {
+        font-size: pxtoem(23);
+      }
+    }
+
+    &-text{
+      font-size: pxtoem(32);
+      padding: pxtoem(10) 0px pxtoem(8);
+
+      @media ($phone) {
+        font-size: pxtoem(23);
+      }
+    }
+
+    &-table{
+      padding: 0 10px;
+
+      &-row{
+        padding: pxtoem(25) 0;
+        border-bottom: none;
+
+        @media ($phone) {
+          padding: pxtoem(7) 0;
+        }
+
+
+        &-col{
+          white-space: normal;
+          font-size: pxtoem(24);
+
+          @media ($phone) {
+            font-size: pxtoem(12);
+          }
+
+          &:first-child{
+            padding-left: 0;
+          }
+
+          &:last-child{
+            padding-right: 0;
+            display: flex;
+            justify-content: space-between;
+          }
+        }
+      }
+    }
+  }
+
+  .invitations-table {
+    min-height: 100px;
+    border: 2px solid #e6dce9;
+  }
 
 }
