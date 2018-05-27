@@ -1,6 +1,7 @@
 // Client to invite
 
 export interface InvitationClient {
-  client_name?: string;
+  name?: string;
   phone: string;
+  status?: string;
 }

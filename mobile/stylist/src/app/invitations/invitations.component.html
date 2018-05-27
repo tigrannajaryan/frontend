@@ -5,30 +5,43 @@
 
 
 <ion-content padding>
-  <bb-nav [activePageIndex]="4"></bb-nav>
+  <bb-nav [activePageIndex]="6"></bb-nav>
 
-  <div class="bb-wp">
-    <div class="p-i-top">
-      <div class="p-i-title">Invite your clients</div>
-    </div>
+  <div class="p-i-top">
+    <div class="p-i-title">Invite your clients</div>
   </div>
 
-  <ion-list class="bb-table" no-lines>
-    <ion-item>
-      <ion-row class="bb-table-row">
-        <ion-col col-6 class="bb-table-row-col">
-          Laura
-        </ion-col>
-        <ion-col col-3 class="bb-table-row-col">
-          9999999999
-        </ion-col>
-        <ion-col col-3 class="bb-table-row-col">
-          invited
-        </ion-col>
-      </ion-row>
-    </ion-item>
-  </ion-list>
+  <ion-grid class="p-i-table">
+    <ion-row class="p-i-table-row">
+      <ion-col col-6 class="p-i-table-row-col">
+        <div class="p-i-text">Invitations sent {{ invitationsSent }}</div>
+      </ion-col>
+      <ion-col col-6 class="p-i-table-row-col">
+        <div class="p-i-text">Invitations accepted {{ invitationsAccepted }}</div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 
-  <button ion-button (click)="pickContact()">Add from Address Book</button>
+  <ion-grid class="p-i-table invitations-table">
+    <ion-row class="p-i-table-row" *ngFor="let invitation of invitations">
+      <ion-col col-6 class="p-i-table-row-col">
+        {{ invitation.phone }}
+      </ion-col>
+      <ion-col col-3 class="p-i-table-row-col">
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-item>
+    <ion-label>Invite new customer:</ion-label>
+  </ion-item>
+  <ion-item>
+    <ion-input [(ngModel)]="phoneNumber" placeholer="Enter client's phone number"></ion-input>
+    <button color="dark" clear item-right (click)="addContact()">Add</button>
+  </ion-item>
+
+  <button ion-button block color="white" (click)="pickContact()">Add from Address Book</button>
+
+  <button ion-button block color="dark" (click)="sendInvitations()">Send Invitation</button>
 
 </ion-content>

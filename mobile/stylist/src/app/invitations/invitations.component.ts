@@ -5,9 +5,9 @@ import {
   ModalController,
   NavController,
   NavParams
-  } from 'ionic-angular';
+} from 'ionic-angular';
 import { Component } from '@angular/core';
-import { Contacts, Contact } from '@ionic-native/contacts';
+import { Contact, Contacts } from '@ionic-native/contacts';
 import { InvitationClient } from './invitations.models';
 import { InvitationsApi } from './invitations.api';
 // import { PageNames } from '~/shared/page-names';
@@ -20,7 +20,11 @@ import { InvitationsApi } from './invitations.api';
   templateUrl: 'invitations.component.html'
 })
 export class InvitationsComponent {
-  invitations: InvitationClient[];
+  phoneNumber = '';
+  invitations: InvitationClient[] = [];
+
+  invitationsSent = 0;
+  invitationsAccepted = 0;
 
   constructor(
     public navCtrl: NavController,
@@ -30,16 +34,40 @@ export class InvitationsComponent {
     private alertCtrl: AlertController,
     private contacts: Contacts,
     private invitationsApi: InvitationsApi
-    ) {
+  ) {
   }
 
   pickContact(): void {
     this.contacts.pickContact().then((contact: Contact) => {
-      let newInvitation: InvitationClient = {
-        client_name: contact.displayName,
-        phone: contact.phoneNumbers[0].value
-      };
-      this.invitations.push()
+      if (contact.phoneNumbers.length > 1) {
+        const alert = this.alertCtrl.create();
+        alert.setTitle(contact.name.givenName);
+        contact.phoneNumbers.forEach(phoneNumber => {
+          alert.addInput({
+            type: 'radio',
+            label: phoneNumber.value,
+            value: phoneNumber.value
+          });
+        });
+        alert.addButton('Cancel');
+        alert.addButton({
+          text: 'OK',
+          handler: phoneNumber => {
+            const newInvitation: InvitationClient = {
+              name: contact.name.givenName,
+              phone: phoneNumber
+            };
+            this.invitations.push(newInvitation);
+          }
+        });
+        alert.present();
+      } else {
+        const newInvitation: InvitationClient = {
+          name: contact.name.givenName,
+          phone: contact.phoneNumbers[0].value
+        };
+        this.invitations.push(newInvitation);
+      }
     }).catch(error => {
       const alert = this.alertCtrl.create({
         title: 'Error',
@@ -48,6 +76,16 @@ export class InvitationsComponent {
       });
       alert.present();
     });
+  }
+
+  addContact(): void {
+    if (this.phoneNumber) {
+      const newInvitation: InvitationClient = {
+        phone: this.phoneNumber
+      };
+      this.invitations.push(newInvitation);
+      this.phoneNumber = '';
+    }
   }
 
   async sendInvitations(): Promise<void> {
@@ -63,4 +101,5 @@ export class InvitationsComponent {
       loading.dismiss();
     }
   }
+
 }
