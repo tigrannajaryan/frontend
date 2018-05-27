@@ -14,8 +14,8 @@ import {
 
 import 'rxjs/add/operator/pluck';
 
-import { PageNames } from '~/shared/page-names';
-import { StylistServiceProvider } from '~/shared/stylist-service/stylist-service';
+import { PageNames } from '~/core/page-names';
+import { StylistServiceProvider } from '~/core/stylist-service/stylist-service';
 import { BaseApiService } from '~/shared/base-api-service';
 
 enum PhotoSourceType {

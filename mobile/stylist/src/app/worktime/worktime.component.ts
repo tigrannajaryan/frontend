@@ -2,9 +2,9 @@ import { Component, Input } from '@angular/core';
 import { IonicPage, LoadingController, NavController } from 'ionic-angular';
 import { Workday, Worktime } from './worktime.models';
 import { WorktimeApi } from './worktime.api';
-import { convertMinsToHrsMins, Time, TimeRange } from '../shared/time';
-import { Logger } from '../shared/logger';
-import { PageNames } from '~/shared/page-names';
+import { convertMinsToHrsMins, Time, TimeRange } from '~/shared/time';
+import { Logger } from '~/shared/logger';
+import { PageNames } from '~/core/page-names';
 
 export enum WeekdayIso {
   Mon = 1, Tue, Wed, Thu, Fri, Sat, Sun

@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import { IonicPage, LoadingController, NavController, NavParams } from 'ionic-angular';
 
-import { profileStatusToPage } from '~/shared/functions';
-import { AuthApiService, AuthCredentials, UserRole } from '~/shared/auth-api-service/auth-api-service';
+import { profileStatusToPage } from '~/core/functions';
+import { AuthApiService, AuthCredentials, UserRole } from '~/core/auth-api-service/auth-api-service';
 import { ServerFieldError } from '~/shared/api-errors';
-import { PageNames } from '~/shared/page-names';
+import { PageNames } from '~/core/page-names';
 
 export enum LoginOrRegisterType {
   login,

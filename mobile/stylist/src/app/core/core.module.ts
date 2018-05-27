@@ -1,11 +1,12 @@
 import { NgModule } from '@angular/core';
 import { IonicModule } from 'ionic-angular';
 
-import { BaseApiService } from './base-api-service';
+import { BaseApiService } from '~/shared/base-api-service';
 import { ComponentsModule } from './components/components.module';
-import { Logger } from './logger';
-import { ServerStatusTracker } from './server-status-tracker';
-import { InputNumberDirective } from '~/shared/directives/input-number.directive';
+import { Logger } from '~/shared/logger';
+import { ServerStatusTracker } from '~/shared/server-status-tracker';
+
+import { InputNumberDirective } from '~/core/directives/input-number.directive';
 
 @NgModule({
   declarations: [
@@ -25,4 +26,4 @@ import { InputNumberDirective } from '~/shared/directives/input-number.directive
     ServerStatusTracker
   ]
 })
-export class SharedModule {}
+export class CoreModule {}

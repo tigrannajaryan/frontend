@@ -12,13 +12,13 @@ import {
   ServiceCategory,
   ServiceTemplateItem,
   ServiceTemplateSet
-} from '../../shared/stylist-service/stylist-models';
+} from '~/core/stylist-service/stylist-models';
 
-import { StylistServiceProvider } from '../../shared/stylist-service/stylist-service';
-import { PageNames } from '../../shared/page-names';
+import { StylistServiceProvider } from '~/core/stylist-service/stylist-service';
+import { PageNames } from '~/core/page-names';
 import { ServiceItemComponentData } from '../services-item/services-item.component';
 
-import * as time from '../../shared/time';
+import * as time from '~/shared/time';
 
 // this is required for saving uuid (page refresh will not remove it)
 @IonicPage({ segment: 'services/:uuid' })

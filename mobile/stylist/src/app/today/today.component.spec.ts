@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 import { TestUtils } from '../../test';
-import { prepareSharedObjectsForTests } from '~/shared/test-utils.spec';
+import { prepareSharedObjectsForTests } from '~/core/test-utils.spec';
 import { TodayComponent } from '~/today/today.component';
 import { ActionSheetController } from 'ionic-angular';
 import { TodayService } from '~/today/today.service';

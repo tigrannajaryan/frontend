@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 
-import { ServerStatusActionsUnion, ServerStatusState } from './components/server-status/server-status.reducer';
+import { ServerStatusActionsUnion, ServerStatusState } from './server-status/server-status.reducer';
 
 /**
  * A helper class to work with server status state and its visual indicator.

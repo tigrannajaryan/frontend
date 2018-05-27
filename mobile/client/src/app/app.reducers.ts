@@ -10,7 +10,7 @@ import {
  * ensure that none of the reducers accidentally mutates the state.
  */
 import { storeFreeze } from 'ngrx-store-freeze';
-import { Logger } from './shared/logger';
+import { Logger } from '~/shared/logger';
 
 import { ENV } from '../environments/environment.default';
 

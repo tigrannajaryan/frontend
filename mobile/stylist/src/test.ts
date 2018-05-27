@@ -45,8 +45,8 @@ import {
 
 import { WorktimeApi } from './app/worktime/worktime.api';
 import { WorktimeApiMock } from './app/worktime/worktime.api.mock';
-import { AuthApiService } from './app/shared/auth-api-service/auth-api-service';
-import { AuthApiServiceMock } from './app/shared/auth-api-service/auth-api-service-mock';
+import { AuthApiService } from './app/core/auth-api-service/auth-api-service';
+import { AuthApiServiceMock } from './app/core/auth-api-service/auth-api-service-mock';
 
 declare const require: any;
 

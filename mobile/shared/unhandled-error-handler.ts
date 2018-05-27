@@ -9,10 +9,9 @@ import {
   ServerUnreachableOrInternalError
 } from './api-errors';
 
-import { PageNames } from './page-names';
-import { Logger } from './logger';
-import { ServerStatusTracker } from './server-status-tracker';
-import { ServerReachabilityAction } from './components/server-status/server-status.reducer';
+import { Logger } from '~/shared/logger';
+import { ServerStatusTracker } from '~/shared/server-status-tracker';
+import { ServerReachabilityAction } from '~/shared/server-status/server-status.reducer';
 
 /**
  * Custom unhandled error handler.
@@ -22,6 +21,7 @@ import { ServerReachabilityAction } from './components/server-status/server-stat
 export class UnhandledErrorHandler {
 
   private nav: NavControllerBase;
+  private firstPageName: string;
 
   constructor(
     private logger: Logger,
@@ -30,8 +30,9 @@ export class UnhandledErrorHandler {
     private injector: Injector
   ) { }
 
-  setNavCtrl(nav: NavControllerBase): void {
+  init(nav: NavControllerBase, firstPageName: string): void {
     this.nav = nav;
+    this.firstPageName = firstPageName;
   }
 
   popup(msg: string): void {
@@ -76,7 +77,7 @@ export class UnhandledErrorHandler {
         this.popup('Error in the input fields');
       } else if (error instanceof ServerErrorResponse && error.status === HttpStatus.unauthorized) {
         // Erase all previous navigation history and make LoginPage the root
-        this.nav.setRoot(PageNames.FirstScreen);
+        this.nav.setRoot(this.firstPageName);
       } else if (error instanceof ServerUnreachableOrInternalError) {
         // Update server status. This will result in server status error banner to appear.
         this.serverStatus.dispatch(new ServerReachabilityAction(false));

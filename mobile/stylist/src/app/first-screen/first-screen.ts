@@ -2,9 +2,9 @@ import { Component } from '@angular/core';
 import { AlertController, IonicPage, LoadingController, NavController } from 'ionic-angular';
 import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook';
 
-import { profileStatusToPage } from '~/shared/functions';
-import { AuthApiService, FbAuthCredentials, UserRole } from '~/shared/auth-api-service/auth-api-service';
-import { PageNames } from '~/shared/page-names';
+import { profileStatusToPage } from '~/core/functions';
+import { AuthApiService, FbAuthCredentials, UserRole } from '~/core/auth-api-service/auth-api-service';
+import { PageNames } from '~/core/page-names';
 import { LoginOrRegisterType } from '~/login-register/login-register.component';
 
 // Permissions of Facebook Login

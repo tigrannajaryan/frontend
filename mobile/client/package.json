@@ -11,9 +11,9 @@
     "ionic:build": "cross-env BB_ENV=prod ionic-app-scripts build --prod",
     "ionic:serve": "cross-env BB_ENV=dev ionic-app-scripts serve",
     "mobserve": "ionic serve -c",
-    "test-coverage": "ng test --code-coverage",
-    "test": "ng test",
-    "test-headless": "ng test --watch=false --single-run=true --reporters=junit,progress --browsers=ChromeHeadless",
+    "test-coverage": "ng test --preserve-symlinks --code-coverage",
+    "test": "ng test --preserve-symlinks",
+    "test-headless": "ng test --preserve-symlinks --watch=false --single-run=true --reporters=junit,progress --browsers=ChromeHeadless",
     "build-full": "npm run build && npm run test-headless"
   },
   "dependencies": {

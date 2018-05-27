@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { Haptic, ViewController } from 'ionic-angular';
 import { TestUtils } from '../../../../test';
 import { ChangePercentComponent } from './change-percent.component';
-import { ViewControllerMock } from '../../view-controller-mock';
+import { ViewControllerMock } from '~/shared/view-controller-mock';
 
 let fixture: ComponentFixture<ChangePercentComponent>;
 let instance: ChangePercentComponent;

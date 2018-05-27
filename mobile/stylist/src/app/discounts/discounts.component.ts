@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { IonicPage, ModalController, NavController, NavParams } from 'ionic-angular';
 import { DiscountsApi } from './discounts.api';
 import { Discounts } from './discounts.models';
-import { PageNames } from '~/shared/page-names';
-import { ChangePercent } from '~/shared/popups/change-percent/change-percent.component';
+import { PageNames } from '~/core/page-names';
+import { ChangePercent } from '~/core/popups/change-percent/change-percent.component';
 
 export enum DiscountsTypes {
   weekday = 'weekday',
