@@ -1,3 +1,5 @@
+import * as moment from 'moment';
+
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BaseApiService } from '../base-api-service';
@@ -27,6 +29,8 @@ export interface ServiceTemplateSetResponse {
  */
 @Injectable()
 export class StylistServiceProvider extends BaseApiService {
+  discountsApi: DiscountsApi;
+  worktimeApi: WorktimeApi;
 
   constructor(
     public http: HttpClient,
@@ -34,7 +38,6 @@ export class StylistServiceProvider extends BaseApiService {
     protected serverStatus: ServerStatusTracker) {
     super(http, logger, serverStatus);
 
-    // TODO: remove after summary API is implemented
     this.discountsApi = new DiscountsApi(http, logger, serverStatus);
     this.worktimeApi = new WorktimeApi(http, logger, serverStatus);
   }
@@ -55,7 +58,7 @@ export class StylistServiceProvider extends BaseApiService {
 
   /**
    * Get data for stylist settings screen stylist. The stylist must be already authenticated as a user.
-   */
+   */ // TODO: should be removed after the API is implemented
   async getStylistSummary(): Promise<any> {
     return Promise.all([
       this.getProfile(),
@@ -63,7 +66,28 @@ export class StylistServiceProvider extends BaseApiService {
       this.worktimeApi.getWorktime(),
       this.discountsApi.getDiscounts()
     ]).then(([profile, services, worktime, discounts]) => {
-      // TODO: come up with the API suggestion here
+      return {
+        profile,
+        services: {
+          services:
+            services.services
+              .slice(0, 3)
+              .map(({name, base_price}) => ({
+                name,
+                regular_price: base_price,
+                today_price: base_price,
+              })),
+          count: services.services.length,
+        },
+        worktime:
+          worktime.weekdays
+            .filter(({is_available}) => is_available)
+            .map(({label, work_end_at, work_start_at}) => ({
+              day: label,
+              working_hours: `${moment(work_start_at, 'HH:mm:ss').format('HH:mm')} – ${moment(work_end_at, 'HH:mm:ss').format('HH:mm')}`,
+              slots: '',
+            }))
+      };
     });
   }
 

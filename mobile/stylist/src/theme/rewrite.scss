@@ -1,3 +1,13 @@
+// TODO:
+// The code below should be changed.
+// We should not tweak body’s font-size in order to achieve diff font sizes for diff media.
+// It produces many bad effects:
+// – misunderstanding of pxtoem(…): browser always use 16px as base, it adds hidden magic to pxtoem
+// – strong cohesion of font-sizes
+// – it’s never used this way
+// :root styles should be introduced in order to use `rem` units on 16px bases:
+// :root { font-size: 16px; }
+
 // rewrite ionic def style
 ion-app.md, ion-app.ios, ion-app.wp{
   font-family: 'Arial', sans-serif;

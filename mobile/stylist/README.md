@@ -22,7 +22,7 @@ Follow Angular Style Guide: https://angular.io/guide/styleguide
 
 Generate new page’s files (module, component and styles):
 ```sh
-echo YOUR_PAGE_NAME | xargs -I % sh -c 'ionic generate page %; mv src/pages/% src/app/%'
+echo PAGE_NAME | xargs -I % sh -c 'ionic generate page %; mv src/pages/% src/app/%'
 ```
 
 # Debugging in VS Code

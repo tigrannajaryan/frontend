@@ -1,8 +1,11 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController } from 'ionic-angular';
+import { IonicPage, LoadingController, NavController } from 'ionic-angular';
 
 import { PageNames } from '~/shared/page-names';
 import { StylistServiceProvider } from '~/shared/stylist-service/stylist-service';
+
+import { TableData } from '~/shared/components/bb-table/bb-table';
+import { StylistProfile } from '~/shared/stylist-service/stylist-models';
 
 @IonicPage()
 @Component({
@@ -10,37 +13,35 @@ import { StylistServiceProvider } from '~/shared/stylist-service/stylist-service
   templateUrl: 'profile.html'
 })
 export class ProfileComponent {
+  profile: StylistProfile;
+  services: TableData;
+  worktime: TableData;
+  allServicesCount: number;
+  worktingDaysCount: number;
 
   constructor(
     private navCtrl: NavController,
-    private stylistService: StylistServiceProvider
+    private stylistService: StylistServiceProvider,
+    private loadingCtrl: LoadingController
   ) {
   }
 
   async ionViewWillLoad() {
     const data = await this.stylistService.getStylistSummary();
-    // TODO: check for errors, show data
-  }
 
-  // TODO: Link component with to=PageNames.SomePageName
-  to(page: PageNames, params: Object = {}): void {
-    this.navCtrl.push(page, {isProfile: true, ...params}, {animate: false});
-  }
+    this.profile = data.profile;
+    this.profile.profile_photo_url = `url(${this.profile.profile_photo_url})`;
 
-  toRegisterServices(): void {
-    this.to(PageNames.RegisterServicesItem, {uuid: ''});
-  }
+    this.services = {
+      header: ['Service', 'Today price', 'Regular price'],
+      body: data.services.services.map(({name, regular_price, today_price}) => [name, `$ ${today_price}`, `$ ${regular_price}`])
+    };
+    this.allServicesCount = data.services.count;
 
-  toRegisterSalon(): void {
-    this.to(PageNames.RegisterSalon);
+    this.worktime = {
+      header: ['Day', 'Working hours', 'Slots available'],
+      body: data.worktime.map(({day, working_hours, slots}) => [day, working_hours, slots])
+    };
+    this.worktingDaysCount = data.worktime.length;
   }
-
-  toWorktime(): void {
-    this.to(PageNames.Worktime);
-  }
-
-  toDiscounts(): void {
-    this.to(PageNames.Discounts);
-  }
-
 }

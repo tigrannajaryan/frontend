@@ -1,14 +1,19 @@
 import { NgModule } from '@angular/core';
-import { BbNavComponent } from './bb-nav/bb-nav';
 import { IonicModule } from 'ionic-angular';
 import { StoreModule } from '@ngrx/store';
+
+import { BbLinkComponent } from './bb-link/bb-link';
+import { BbNavComponent } from './bb-nav/bb-nav';
+import { BbTable } from './bb-table/bb-table';
 
 import { serverStatusReducer, serverStatusStateName } from './server-status/server-status.reducer';
 import { ServerStatusComponent } from './server-status/server-status.component';
 
 @NgModule({
   declarations: [
+    BbLinkComponent,
     BbNavComponent,
+    BbTable,
     ServerStatusComponent
   ],
   imports: [
@@ -18,7 +23,9 @@ import { ServerStatusComponent } from './server-status/server-status.component';
     StoreModule.forFeature(serverStatusStateName, serverStatusReducer)
   ],
   exports: [
+    BbLinkComponent,
     BbNavComponent,
+    BbTable,
     ServerStatusComponent
   ]
 })
