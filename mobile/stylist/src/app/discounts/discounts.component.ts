@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, ModalController, NavController, NavParams } from 'ionic-angular';
+import { AlertController, IonicPage, LoadingController, ModalController, NavController, NavParams } from 'ionic-angular';
 import { DiscountsApi } from './discounts.api';
 import { Discounts } from './discounts.models';
 import { PageNames } from '~/core/page-names';
@@ -24,18 +24,41 @@ export class DiscountsComponent {
   protected DiscountsTypes = DiscountsTypes;
 
   discounts: Discounts;
+  isProfile?: Boolean;
 
   constructor(
+    private alertCtrl: AlertController,
     public navCtrl: NavController,
     public navParams: NavParams,
     public modalCtrl: ModalController,
-    public discountsApi: DiscountsApi
+    public discountsApi: DiscountsApi,
+    public loadingCtrl: LoadingController
     ) {
-    this.init();
   }
 
-  async init(): Promise<void> {
-    this.discounts = await this.discountsApi.getDiscounts() as Discounts;
+  async ionViewWillLoad(): Promise<void> {
+    this.isProfile = Boolean(this.navParams.get('isProfile'));
+
+    const loader = this.loadingCtrl.create();
+    loader.present();
+    try {
+      await this.loadInitialData();
+    } finally {
+      loader.dismiss();
+    }
+  }
+
+  async loadInitialData(): Promise<void> {
+    try {
+      this.discounts = await this.discountsApi.getDiscounts() as Discounts;
+    } catch (e) {
+      const alert = this.alertCtrl.create({
+        title: 'Loading discounts failed',
+        subTitle: e.message,
+        buttons: ['Dismiss']
+      });
+      alert.present();
+    }
   }
 
   /**
@@ -92,17 +115,27 @@ export class DiscountsComponent {
     modal.present();
   }
 
+  nextRoute(): void {
+    if (this.isProfile) {
+      this.navCtrl.pop();
+      return;
+    }
+
+    this.navCtrl.setRoot(PageNames.Profile, {}, { animate: false });
+  }
+
   /**
    * Clean up the data before save,
    * show alert if we have no discounts,
    * save data on server
    */
   saveDiscounts(): void {
-    if (!this.hasDiscounts()) {
+    if (!this.hasDiscounts()) { // TODO: use promise and one-directional flow
       const modal = this.modalCtrl.create(PageNames.DiscountsAlert);
       modal.onDidDismiss((confirmNoDiscount: boolean) => {
         if (confirmNoDiscount) {
           this.discountsApi.setDiscounts(this.discounts);
+          this.nextRoute();
         }
       });
       modal.present();
@@ -111,5 +144,6 @@ export class DiscountsComponent {
     }
 
     this.discountsApi.setDiscounts(this.discounts);
+    this.nextRoute();
   }
 }

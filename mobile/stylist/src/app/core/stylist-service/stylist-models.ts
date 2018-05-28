@@ -1,12 +1,36 @@
 // Stylist profile
 
 export interface StylistProfile {
+  id?: number;
   first_name: string;
   last_name: string;
   phone: string;
   salon_name: string;
   salon_address: string;
-  profile_photo_id: string;
+  profile_photo_id?: string;
+  profile_photo_url?: string;
+}
+
+export interface ServiceInSummary {
+  name: string;
+  base_price: number;
+  duration_minutes: number;
+}
+
+export interface WorkdayInSummary {
+  weekday_iso: number; // 1..7
+  is_available: boolean;
+  work_start_at: string; // time of day formatted as hh:mm:ss
+  work_end_at: string;   // time of day formatted as hh:mm:ss
+  booked_time_minutes: number;
+}
+
+export interface StylistSummary {
+  profile: StylistProfile;
+  services: ServiceInSummary[];
+  services_count: number;
+  worktime: WorkdayInSummary[];
+  total_week_booked_minutes: number;
 }
 
 // Weekday discounts

@@ -5,7 +5,6 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { PageNames } from '~/core/page-names';
 import { Logger } from './shared/logger';
-import { TodayComponent } from './today/today.component';
 import { AuthApiService } from '~/core/auth-api-service/auth-api-service';
 import { UnhandledErrorHandler } from '~/shared/unhandled-error-handler';
 
@@ -17,7 +16,10 @@ export class MyAppComponent {
 
   rootPage: any = PageNames.FirstScreen;
 
-  pages: Array<{ title: string, component: any }>;
+  pages: Array<{ title: string, component: any }> = [
+    { title: 'Today', component: PageNames.Today },
+    { title: 'My Profile', component: PageNames.Profile }
+  ];
 
   constructor(
     public platform: Platform,
@@ -29,11 +31,6 @@ export class MyAppComponent {
     private logger: Logger) {
 
     this.initializeApp();
-
-    // used for an example of ngFor and navigation
-    this.pages = [
-      { title: 'Today', component: TodayComponent }
-    ];
   }
 
   initializeApp(): void {
@@ -53,7 +50,7 @@ export class MyAppComponent {
     // selected page different from current?
     if (page.component !== this.nav.getActive().component) {
       // yes, push it to history and navigate to it
-      this.nav.push(page.component, {}, { animate: false });
+      this.nav.setRoot(page.component, {}, { animate: false });
     }
   }
 

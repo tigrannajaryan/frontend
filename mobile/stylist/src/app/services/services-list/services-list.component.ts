@@ -27,6 +27,7 @@ import * as time from '~/shared/time';
   templateUrl: 'services-list.component.html'
 })
 export class ServicesListComponent {
+  isProfile?: Boolean;
   uuid: string;
   timeGap = 15;
   templateSet: ServiceTemplateSet;
@@ -39,16 +40,67 @@ export class ServicesListComponent {
     private alertCtrl: AlertController,
     private stylistService: StylistServiceProvider
   ) {
-    this.init();
   }
 
-  async init(): Promise<any> {
-    this.uuid = this.navParams.get('uuid');
+  async ionViewWillLoad(): Promise<void> {
+    this.isProfile = Boolean(this.navParams.get('isProfile'));
 
-    if (this.uuid) {
-      const response = await this.stylistService.getServiceTemplateSetById(this.uuid);
-      this.templateSet = response.template_set;
+    const loader = this.loadingCtrl.create();
+    loader.present();
+    try {
+      await this.loadInitialData();
+    } finally {
+      loader.dismiss();
     }
+  }
+
+  async loadInitialData(): Promise<void> {
+    try {
+      const uuid = this.navParams.get('uuid');
+      let response;
+
+      if (uuid) {
+        response = await this.stylistService.getServiceTemplateSetById(uuid);
+        this.templateSet = {
+          ...response.template_set,
+          categories: response.template_set.categories.map(this.removeServicesIds)
+        };
+      } else {
+        response = await this.stylistService.getStylistServices();
+        this.templateSet = {
+          name: 'My services',
+          description: '',
+          categories: this.getCategorisedServices(response.services)
+        };
+      }
+    } catch (e) {
+      const alert = this.alertCtrl.create({
+        title: 'Loading services failed',
+        subTitle: e.message,
+        buttons: ['Dismiss']
+      });
+      alert.present();
+    }
+  }
+
+  removeServicesIds(category): ServiceCategory[] {
+    return {
+      ...category,
+      services: category.services.map(({id, ...serviceWithoutId}) => serviceWithoutId)
+    };
+  }
+
+  getCategorisedServices(services): ServiceCategory[] {
+    return services.reduce((categories, service) => {
+      let category = categories.find(({uuid}) => uuid === service.category_uuid);
+      if (!category) {
+        const {category_name: name, category_uuid: uuid} = service;
+        category = {name, uuid, services: []};
+        categories.push(category);
+      }
+      category.services.push(service);
+      return categories;
+    }, []);
   }
 
   /**
@@ -74,31 +126,26 @@ export class ServicesListComponent {
   }
 
   async saveChanges(): Promise<void> {
-    const categoriesServices = [];
+    const categoriesServices =
+      this.templateSet.categories.reduce((services, category) => (
+        services.concat(
+          category.services.map(service => ({
+            ...service,
+            is_enabled: true,
+            category_uuid: category.uuid
+          }))
+        )
+      ), []);
 
-    for (const curCategory of this.templateSet.categories) {
-      for (const curServices of curCategory.services) {
-        categoriesServices.push({
-          name: curServices.name,
-          description: curServices.description,
-          base_price: +curServices.base_price,
-          duration_minutes: +curServices.duration_minutes,
-          is_enabled: true,
-          category_uuid: curCategory.uuid
-        });
-      }
-    }
+    const loader = this.loadingCtrl.create();
+    loader.present();
 
     try {
-      // Show loader
-      const loading = this.loadingCtrl.create();
-      loading.present();
-
-      try {
-        await this.stylistService.setStylistServices(categoriesServices);
+      await this.stylistService.setStylistServices(categoriesServices);
+      if (this.isProfile) {
+        this.navCtrl.pop();
+      } else {
         this.navCtrl.push(PageNames.Worktime);
-      } finally {
-        loading.dismiss();
       }
     } catch (e) {
       // Show an error message
@@ -108,6 +155,8 @@ export class ServicesListComponent {
         buttons: ['Dismiss']
       });
       alert.present();
+    } finally {
+      loader.dismiss();
     }
   }
 
@@ -115,11 +164,31 @@ export class ServicesListComponent {
    * Reset the list of services to its initial state.
    */
   resetList(): void {
-    this.init();
+    this.ionViewWillLoad();
   }
 
   convertMinsToHrsMins(mins: number): string {
     return time.convertMinsToHrsMins(mins);
+  }
+
+  async deleteService(category, idx): Promise<void> {
+    const [service] = category.services.splice(idx, 1);
+
+    if (service.id !== undefined) {
+      try {
+        await this.stylistService.deleteStylistService(service.id);
+      } catch (e) {
+        const alert = this.alertCtrl.create({
+          title: 'Error',
+          subTitle: e,
+          buttons: ['Dismiss']
+        });
+        alert.present();
+
+        // put service back if error occurred
+        category.services.splice(idx, 0, service);
+      }
+    }
   }
 
   /**

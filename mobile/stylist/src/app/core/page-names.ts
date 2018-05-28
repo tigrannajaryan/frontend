@@ -4,16 +4,22 @@
  * to the page name as string (e.g. when passing to lazy loading navCtrl).
  */
 
+// (!) please stick to alphabetical order
+
 export enum PageNames {
+    ChangePercent = 'ChangePercentComponent',
+    Discounts = 'DiscountsComponent',
+    DiscountsAlert = 'DiscountsAlertComponent',
+    DiscountsChange = 'DiscountsChangeComponent',
     FirstScreen = 'FirstScreenComponent',
+    Login = 'LoginComponent',
     LoginRegister = 'LoginRegisterComponent',
+    Profile = 'ProfileComponent',
+    RegisterByEmail = 'RegisterByEmailComponent',
     RegisterSalon = 'RegisterSalonComponent',
     RegisterServices = 'ServicesComponent',
     RegisterServicesItem = 'ServicesListComponent',
     RegisterServicesItemAdd = 'ServiceItemComponent',
-    Worktime = 'WorktimeComponent',
     Today = 'TodayComponent',
-    Discounts = 'DiscountsComponent',
-    DiscountsAlert = 'DiscountsAlertComponent',
-    ChangePercent = 'ChangePercentComponent'
+    Worktime = 'WorktimeComponent'
 }

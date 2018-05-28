@@ -18,6 +18,13 @@ To build only run `npm run build`.
 
 Follow Angular Style Guide: https://angular.io/guide/styleguide
 
+# Code generating
+
+Generate new page’s files (module, component and styles):
+```sh
+echo PAGE_NAME | xargs -I % sh -c 'ionic generate page %; mv src/pages/% src/app/%'
+```
+
 # Debugging in VS Code
 
 - run `npm run ionic:serve -- -b` to build the app and start the server.

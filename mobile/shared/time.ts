@@ -49,9 +49,15 @@ export class TimeRange {
  * input: 60
  * output: 1h 0m
  */
-export function convertMinsToHrsMins(mins: number): string {
+export function convertMinsToHrsMins(mins: number, shortForm = false): string {
   const h = Math.floor(mins / 60);
   const m = mins % 60;
+
+  if (shortForm) {
+    let result = h !== 0 ? `${h}h` : '';
+    result += m !== 0 ? ` ${m < 10 ? '0' : ''}${m}m` : '';
+    return result.trim();
+  }
 
   return `${h}h ${m < 10 ? '0' : ''}${m}m`;
 }

@@ -10,7 +10,6 @@ import 'zone.js/dist/jasmine-patch';
 import 'zone.js/dist/async-test';
 import 'zone.js/dist/fake-async-test';
 
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { getTestBed, TestBed } from '@angular/core/testing';
 
 import {
@@ -47,6 +46,8 @@ import { WorktimeApi } from './app/worktime/worktime.api';
 import { WorktimeApiMock } from './app/worktime/worktime.api.mock';
 import { AuthApiService } from './app/core/auth-api-service/auth-api-service';
 import { AuthApiServiceMock } from './app/core/auth-api-service/auth-api-service-mock';
+import { StylistServiceProvider } from './app/core/stylist-service/stylist-service';
+import { StylistServiceMock } from './app/core/stylist-service/stylist-service-mock';
 
 declare const require: any;
 
@@ -64,8 +65,8 @@ context.keys()
 
 export class TestUtils {
 
-  static beforeEachCompiler(components: any[]): Promise<{ fixture: any, instance: any }> {
-    return TestUtils.configureIonicTestingModule(components)
+  static beforeEachCompiler(components: any[], providers: any[] = [], imports: any = []): Promise<{ fixture: any, instance: any }> {
+    return TestUtils.configureIonicTestingModule(components, providers, imports)
       .compileComponents()
       .then(() => {
         const fixture: any = TestBed.createComponent(components[0]);
@@ -77,7 +78,7 @@ export class TestUtils {
       });
   }
 
-  static configureIonicTestingModule(components: any[]): typeof TestBed {
+  static configureIonicTestingModule(components: any[], providers: any[] = [], imports: any = []): typeof TestBed {
     return TestBed.configureTestingModule({
       declarations: [
         ...components
@@ -92,12 +93,13 @@ export class TestUtils {
         { provide: LoadingController, useFactory: () => LoadingControllerMock.instance() },
         { provide: NavController, useFactory: () => NavControllerMock.instance() },
         { provide: AuthApiService, useClass: AuthApiServiceMock },
-        { provide: WorktimeApi, useClass: WorktimeApiMock }
+        { provide: WorktimeApi, useClass: WorktimeApiMock },
+        { provide: StylistServiceProvider, useClass: StylistServiceMock },
+        ...providers
       ],
       imports: [
-        FormsModule,
         IonicModule,
-        ReactiveFormsModule
+        ...imports
       ]
     });
   }

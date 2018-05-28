@@ -33,21 +33,34 @@ $app-direction: ltr;
 // colors so you can add, rename and remove colors as needed.
 // The "primary" color is the only required color in the map.
 
+// bootstrap-like grayscale colors
+$grayscale: (
+  100: #F4F4F4,
+  200: #ECECEC,
+  300: #CCCCCC,
+  400: #B8B8B8,
+  800: black,
+);
+
 $colors: (
+  light:      color($grayscale, 100),
+  dark:       color($grayscale, 800),
+  white:      white,
+
   primary:    #488aff,
   secondary:  #32db64,
   danger:     #f53d3d,
-  light:      #f4f4f4,
-  dark:       #000000,
-  white:      #ffffff,
+
   bb_beige:   #FFF1E4,
   bb_violet:  #E6DBE9,
-  bb_pink:  #E6DCE9,
-  bb_gray:  #F1F1F1,
-  bb_honey:  #F2C8A1,
-  bb_gold:  #FEF1E4,
+  bb_pink:    #E6DCE9,
+  bb_gray:    #F1F1F1,
+  bb_honey:   #F2C8A1,
+  bb_gold:    #FEF1E4,
   bb_orange:  #FFD8B8,
-  bb_warn:  #FF6161,
+  bb_skin:    #FFE0D0,
+  bb_warn:    #FF6161,
+
   color1: #f0efef,
   color2: #ffdaca,
   color3: #FFD737,
@@ -60,7 +73,6 @@ $colors: (
   color10: #A4B6C0,
   color11: #FBC69C,
 );
-
 
 // App iOS Variables
 // --------------------------------------------------
@@ -106,6 +118,27 @@ $colors: (
 
 @import "roboto";
 @import "noto-sans";
+
+
+// Typography
+// --------------------------------------------------
+@import "./functions";
+
+// for 16px base
+// $t-h1:    pxtorem(36) !default;
+// $t-h2:    pxtorem(24) !default;
+// $t-h3:    pxtorem(18) !default;
+// $t-h4:    pxtorem(15) !default;
+// $t-base:  pxtorem(12) !default;
+// $t-small: pxtorem(10) !default;
+
+// for 10px base
+$t-h1:    pxtorem10(36) !default;
+$t-h2:    pxtorem10(24) !default;
+$t-h3:    pxtorem10(18) !default;
+$t-h4:    pxtorem10(15) !default;
+$t-base:  pxtorem10(12) !default;
+$t-small: pxtorem10(10) !default;
 
 
 // Media

@@ -5,7 +5,7 @@
 
 
 <ion-content padding>
-  <bb-nav [activePageIndex]="3"></bb-nav>
+  <bb-nav *ngIf="!isProfile" [activePageIndex]="3"></bb-nav>
 
 
   <div *ngIf="discounts" class="bb-wp">

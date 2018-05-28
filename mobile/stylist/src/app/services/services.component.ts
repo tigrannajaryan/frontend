@@ -20,10 +20,9 @@ export class ServicesComponent {
     public navParams: NavParams,
     private stylistService: StylistServiceProvider
   ) {
-    this.init();
   }
 
-  async init(): Promise<void> {
+  async ionViewWillLoad(): Promise<void> {
     this.serviceTemplates = (await this.stylistService.getServiceTemplateSets()).service_templates;
   }
 
