@@ -7,10 +7,9 @@ import {
   NavParams
 } from 'ionic-angular';
 import { Component } from '@angular/core';
-import { Contact, Contacts } from '@ionic-native/contacts';
-import { InvitationClient } from './invitations.models';
+import { Contacts } from '@ionic-native/contacts';
+import { ClientInvitation } from './invitations.models';
 import { InvitationsApi } from './invitations.api';
-// import { PageNames } from '~/shared/page-names';
 
 @IonicPage({
   segment: 'invitations'
@@ -21,7 +20,7 @@ import { InvitationsApi } from './invitations.api';
 })
 export class InvitationsComponent {
   phoneNumber = '';
-  invitations: InvitationClient[] = [];
+  invitations: ClientInvitation[] = [];
 
   invitationsSent = 0;
   invitationsAccepted = 0;
@@ -37,8 +36,9 @@ export class InvitationsComponent {
   ) {
   }
 
-  pickContact(): void {
-    this.contacts.pickContact().then((contact: Contact) => {
+  async pickContactPhone(): Promise<void> {
+    try {
+      const contact = await this.contacts.pickContact();
       if (contact.phoneNumbers.length > 1) {
         const alert = this.alertCtrl.create();
         alert.setTitle(contact.name.givenName);
@@ -53,39 +53,39 @@ export class InvitationsComponent {
         alert.addButton({
           text: 'OK',
           handler: phoneNumber => {
-            const newInvitation: InvitationClient = {
-              name: contact.name.givenName,
-              phone: phoneNumber
-            };
-            this.invitations.push(newInvitation);
+            this.addInvitation(phoneNumber, contact.name.givenName);
           }
         });
         alert.present();
       } else {
-        const newInvitation: InvitationClient = {
-          name: contact.name.givenName,
-          phone: contact.phoneNumbers[0].value
-        };
-        this.invitations.push(newInvitation);
+        if (contact.phoneNumbers.length > 0) {
+          this.addInvitation(contact.phoneNumbers[0].value, contact.name.givenName);
+        }
       }
-    }).catch(error => {
+    } catch (error) {
       const alert = this.alertCtrl.create({
         title: 'Error',
         subTitle: error,
         buttons: ['Dismiss']
       });
       alert.present();
-    });
+    }
+
   }
 
   addContact(): void {
     if (this.phoneNumber) {
-      const newInvitation: InvitationClient = {
-        phone: this.phoneNumber
-      };
-      this.invitations.push(newInvitation);
+      this.addInvitation(this.phoneNumber, '');
       this.phoneNumber = '';
     }
+  }
+
+  private addInvitation(phone: string, name?:string): void {
+    const newInvitation: ClientInvitation = {
+      name: name,
+      phone: phone
+    };
+    this.invitations.push(newInvitation);
   }
 
   async sendInvitations(): Promise<void> {
@@ -96,7 +96,6 @@ export class InvitationsComponent {
       await this.invitationsApi.sendInvitations(this.invitations);
 
       // Go to Summary Page when it is created
-      // this.navCtrl.push(PageNames.?, {}, { animate: false });
     } finally {
       loading.dismiss();
     }

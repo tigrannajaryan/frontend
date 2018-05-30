@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BaseApiService } from '../shared/base-api-service';
-import { InvitationClient } from './invitations.models';
+import { ClientInvitation } from './invitations.models';
 import { Logger } from '../shared/logger';
 import { ServerStatusTracker } from '../shared/server-status-tracker';
 
 export interface InvitationsResponse {
-  services: InvitationClient[];
+  invitations: ClientInvitation[];
 }
 
 /**
@@ -27,7 +27,7 @@ export class InvitationsApi extends BaseApiService {
   /**
    * Sends invitation(s) to the provided client(s). The stylist must be already authenticated as a user.
    */
-  async sendInvitations(data: InvitationClient[]): Promise<InvitationsResponse> {
+  async sendInvitations(data: ClientInvitation[]): Promise<InvitationsResponse> {
     return this.post<InvitationsResponse>('stylist/invitations', data);
   }
 

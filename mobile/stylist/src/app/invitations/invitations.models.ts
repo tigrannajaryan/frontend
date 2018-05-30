@@ -1,6 +1,6 @@
 // Client to invite
 
-export interface InvitationClient {
+export interface ClientInvitation {
   name?: string;
   phone: string;
   status?: string;
