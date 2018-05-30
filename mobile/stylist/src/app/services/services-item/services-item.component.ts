@@ -7,7 +7,7 @@ import {
   ServiceTemplateItem
 } from '~/core/stylist-service/stylist-models';
 
-import { StylistServiceProvider } from '~/shared/stylist-service/stylist-service';
+import { StylistServiceProvider } from '~/core/stylist-service/stylist-service';
 
 /**
  * Represents the data that is passed in and out of

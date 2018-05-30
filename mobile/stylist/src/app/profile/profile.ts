@@ -4,9 +4,9 @@ import { Component } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { AlertController, IonicPage, LoadingController } from 'ionic-angular';
 
-import { StylistServiceProvider } from '~/shared/stylist-service/stylist-service';
-import { TableData } from '~/shared/components/made-table/made-table';
-import { StylistProfile } from '~/shared/stylist-service/stylist-models';
+import { StylistServiceProvider } from '~/core/stylist-service/stylist-service';
+import { TableData } from '~/core/components/made-table/made-table';
+import { StylistProfile } from '~/core/stylist-service/stylist-models';
 
 import { convertMinsToHrsMins } from '~/shared/time';
 

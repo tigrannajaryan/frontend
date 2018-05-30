@@ -5,15 +5,14 @@ import { DatePipe } from '@angular/common';
 
 import { NavMock } from '~/services/services.component.spec';
 import { ViewControllerMock } from '~/shared/view-controller-mock';
-import { SharedModule } from '~/shared/shared.module';
-import { prepareSharedObjectsForTests } from '~/shared/test-utils.spec';
+import { prepareSharedObjectsForTests } from '~/core/test-utils.spec';
 import { TestUtils } from '../../test';
 
-import { StylistServiceProvider } from '~/shared/stylist-service/stylist-service';
+import { StylistServiceProvider } from '~/core/stylist-service/stylist-service';
 import { ProfileComponent, WEEKDAY_FULL_NAMES } from './profile';
 import { ProfileInfoComponent } from './profile-info/profile-info';
 
-import { profileSummaryMock as mock } from '~/shared/stylist-service/stylist-service-mock';
+import { profileSummaryMock as mock } from '~/core/stylist-service/stylist-service-mock';
 import { convertMinsToHrsMins } from '~/shared/time';
 
 let fixture: ComponentFixture<ProfileComponent>;

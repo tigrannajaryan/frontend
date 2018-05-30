@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 
-import { StylistProfile } from '~/shared/stylist-service/stylist-models';
+import { StylistProfile } from '~/core/stylist-service/stylist-models';
 
 @Component({
   selector: 'profile-info',

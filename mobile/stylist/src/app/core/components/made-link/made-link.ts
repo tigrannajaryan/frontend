@@ -1,7 +1,7 @@
 import { Directive, HostListener, Input } from '@angular/core';
 import { NavController } from 'ionic-angular';
 
-import { PageNames } from '~/shared/page-names';
+import { PageNames } from '~/core/page-names';
 
 @Directive({
   selector: '[madeLink]'

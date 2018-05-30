@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 import { DatePipe } from '@angular/common';
 
-import { SharedModule } from '../shared/shared.module';
+import { CoreModule } from '~/core/core.module';
 import { ProfileComponent } from './profile';
 import { ProfileInfoComponent } from './profile-info/profile-info';
 
@@ -13,7 +13,7 @@ import { ProfileInfoComponent } from './profile-info/profile-info';
   ],
   imports: [
     IonicPageModule.forChild(ProfileComponent),
-    SharedModule
+    CoreModule
   ],
   providers: [DatePipe]
 })
