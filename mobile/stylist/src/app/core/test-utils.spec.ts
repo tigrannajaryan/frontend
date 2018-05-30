@@ -1,8 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 import { StoreModule } from '@ngrx/store';
 
-import { SharedModule } from './shared.module';
-import { serverStatusReducer } from './components/server-status/server-status.reducer';
+import { CoreModule } from '~/core/core.module';
+import { serverStatusReducer } from '~/shared/server-status/server-status.reducer';
 
 /**
  * Function to prepare the TestBed and make sure shared modules, components
@@ -12,7 +12,7 @@ export const prepareSharedObjectsForTests = () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
-        SharedModule,
+        CoreModule,
         StoreModule.forRoot({
           serverStatus: serverStatusReducer
         })

@@ -7,7 +7,7 @@ import { WorktimeComponentModule } from './worktime.component.module';
 import { WorktimeApi } from './worktime.api';
 import { WorktimeApiMock } from './worktime.api.mock';
 import { Worktime } from './worktime.models';
-import { prepareSharedObjectsForTests } from '../shared/test-utils.spec';
+import { prepareSharedObjectsForTests } from '~/core/test-utils.spec';
 
 let fixture: ComponentFixture<WorktimeComponent>;
 let instance: WorktimeComponent;

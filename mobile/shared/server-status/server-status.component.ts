@@ -3,7 +3,7 @@ import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
 
 import { selectServerStatusState, ServerStatusState } from './server-status.reducer';
-import { Logger } from '../../logger';
+import { Logger } from '../logger';
 
 /**
  * A server status indicator component that visualizes the global state

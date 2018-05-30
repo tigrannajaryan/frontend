@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { IonicModule } from 'ionic-angular';
 
-import { Logger } from './logger';
+import { Logger } from '~/shared/logger';
 
 const ex = [
 ];

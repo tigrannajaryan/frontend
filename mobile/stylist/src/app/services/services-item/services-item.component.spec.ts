@@ -1,12 +1,12 @@
 import { async, TestBed } from '@angular/core/testing';
 import { IonicModule, NavController, NavParams, ViewController } from 'ionic-angular';
-import { SharedModule } from '../../shared/shared.module';
-import { StylistServiceProvider } from '../../shared/stylist-service/stylist-service';
+import { CoreModule } from '~/core/core.module';
+import { StylistServiceProvider } from '~/core/stylist-service/stylist-service';
 import { ServiceItemComponent, ServiceItemComponentData } from './services-item.component';
 import { NavMock } from '../services.component.spec';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { prepareSharedObjectsForTests } from '../../shared/test-utils.spec';
-import { ViewControllerMock } from '../../shared/view-controller-mock';
+import { prepareSharedObjectsForTests } from '~/core/test-utils.spec';
+import { ViewControllerMock } from '~/shared/view-controller-mock';
 
 describe('Pages: ServiceItemComponent', () => {
   let fixture;
@@ -19,7 +19,7 @@ describe('Pages: ServiceItemComponent', () => {
       declarations: [ServiceItemComponent],
       imports: [
         IonicModule.forRoot(ServiceItemComponent),
-        SharedModule,
+        CoreModule,
         ReactiveFormsModule,
         FormsModule
       ],

@@ -17,14 +17,14 @@ export class TodayService extends BaseApiService {
   }
 
   getAppointments(): Promise<Appointment[]> {
-    return this.get<Appointment[]>('/appointments');
+    return this.get<Appointment[]>('appointments');
   }
 
   getToday(): Promise<Today> {
-    return this.get<Today>('/stylist/today');
+    return this.get<Today>('stylist/today');
   }
 
   setAppointment(appointmentUuid: string, data: AppointmentStatus): Promise<AppointmentStatus[]> {
-    return this.post<AppointmentStatus[]>(`/appointments/${appointmentUuid}`, data);
+    return this.post<AppointmentStatus[]>(`appointments/${appointmentUuid}`, data);
   }
 }

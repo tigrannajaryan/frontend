@@ -1,10 +1,10 @@
-import {async, ComponentFixture, getTestBed, TestBed} from '@angular/core/testing';
-import {DiscountsComponent} from './discounts.component';
-import {TestUtils} from '../../test';
-import {ModalController} from 'ionic-angular';
-import {SharedModule} from '../shared/shared.module';
-import {DiscountsApi} from './discounts.api';
-import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
+import { async, ComponentFixture, getTestBed, TestBed } from '@angular/core/testing';
+import { DiscountsComponent } from './discounts.component';
+import { TestUtils } from '../../test';
+import { ModalController } from 'ionic-angular';
+import { CoreModule } from '~/core/core.module';
+import { DiscountsApi } from './discounts.api';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
 let injector: TestBed;
 let fixture: ComponentFixture<DiscountsComponent>;
@@ -17,7 +17,7 @@ describe('Pages: DiscountsComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
-        SharedModule,
+        CoreModule,
         HttpClientTestingModule
       ],
       providers: [

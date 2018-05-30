@@ -1,46 +1,20 @@
 <ion-header class="ion-bb-header">
-  <ion-navbar class="p-t-nav bb-wp-a">
-    <ion-title class="p-t-nav-title">
-      Hello Sharon,
-      <span class="p-t-nav-title-sub">Thursday, 18 May</span>
-    </ion-title>
-
-    <ion-buttons end class="p-t-nav-btns">
-      <button [style.background-image]="" ion-button icon-only class="p-t-nav-btns-user hasAva">
-        <ion-icon *ngIf="false" name="ios-contact-outline"></ion-icon>
-      </button>
-      <div class="p-t-nav-btns-del"></div>
-      <button menuToggle ion-button icon-only class="p-t-nav-btns-menu">
-        <ion-icon name="ios-more-outline"></ion-icon>
-      </button>
-    </ion-buttons>
-  </ion-navbar>
+  <user-header [hasBackButton]="false"></user-header>
 </ion-header>
 
 <ion-content padding>
   <div *ngIf="today" class="bb-wp-a">
-    <!--<div class="p-t-top">-->
-      <!--<div class="p-t-top-info">-->
-        <!--Free time <span>45 min</span>-->
-      <!--</div>-->
-
-      <!--hide until we will have it-->
-      <!--<div class="p-t-top-stats">-->
-        <!--<button ion-button icon-only clear color="dark" class="p-t-top-stats-a">-->
-          <!--<ion-icon name="ios-heart-outline"></ion-icon>-->
-          <!--<span>3,5k</span>-->
-        <!--</button>-->
-        <!--<button ion-button icon-only clear color="dark" class="p-t-top-stats-b">-->
-          <!--<ion-icon name="ios-star-outline"></ion-icon>-->
-          <!--<span>80%</span>-->
-        <!--</button>-->
-      <!--</div>-->
-    <!--</div>-->
+    <div class="p-t-top">
+      <div class="p-t-top-info">
+        Available time <span>45 min</span>
+        <div class="p-t-top-info-progress"><div class="p-t-top-info-progress-line" [style.width]="'50%'"></div></div>
+      </div>
+    </div>
 
 
-    <div class="p-t-appo">
-      Your appointments
-      <span class="p-t-appo-info">{{ today.past_visits_count + today.week_visits_count }}</span>
+    <div class="p-t-up">
+      What's up
+      <span class="p-t-up-info">{{ today.past_visits_count + today.week_visits_count }}</span>
     </div>
 
 
@@ -53,13 +27,25 @@
         This week
         <span class="p-t-history-item-num">{{ today.week_visits_count }}</span>
       </button>
+      <button ion-button icon-only clear color="dark" class="p-t-history-item">
+        Later on
+        <span class="p-t-history-item-num">20</span>
+      </button>
     </div>
 
 
     <div class="p-t-items">
       <div *ngFor="let appointment of today.next_appointments" (click)="openModal(appointment.uuid)" class="p-t-items-item">
+        <div class="p-t-items-item-status">Now</div>
+        <div class="p-t-items-item-status notpaid">Not checked out</div>
+
         <div class="p-t-items-item-info">
-          {{ appointment.datetime_start_at | date: 'hh:mm' }}
+          <div class="p-t-items-item-info-time">
+            {{ appointment.datetime_start_at | date: 'h:maaaaa' }}
+            <sup class="p-t-items-item-info-time-sup">
+              {{ appointment.datetime_start_at | date: 'dd MMM' }}
+            </sup>
+          </div>
           <div class="p-t-items-item-info-desc">{{ appointment.service_name }}</div>
         </div>
         <div class="p-t-items-item-name">
@@ -68,39 +54,7 @@
         </div>
       </div>
     </div>
-
-
-    <div class="p-t-btns">
-      <button ion-button icon-only class="p-t-btns-btn">
-        Add appointment
-        <ion-icon name="ios-add-outline" class="p-t-btns-btn-plus"></ion-icon>
-      </button>
-
-      <button ion-button icon-only clear color="dark" class="p-t-btns-text">
-        Show all
-      </button>
-    </div>
-
-
-    <ion-grid class="p-t-bot">
-      <ion-row>
-        <ion-col col-6>
-          <div class="p-t-bot-item gold">
-            <div class="p-t-bot-item-top">
-              <div>Past visits</div>
-              <button ion-button icon-only clear color="dark">
-                <ion-icon name="refresh"></ion-icon>
-              </button>
-            </div>
-
-            <div class="p-t-bot-item-bot">
-              {{ today.past_visits_count }}
-            </div>
-          </div>
-        </ion-col>
-        <ion-col col-6>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
   </div>
 </ion-content>
+
+<user-footer></user-footer>

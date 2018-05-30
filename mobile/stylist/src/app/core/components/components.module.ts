@@ -3,8 +3,8 @@ import { BbNavComponent } from './bb-nav/bb-nav';
 import { IonicModule } from 'ionic-angular';
 import { StoreModule } from '@ngrx/store';
 
-import { serverStatusReducer, serverStatusStateName } from './server-status/server-status.reducer';
-import { ServerStatusComponent } from './server-status/server-status.component';
+import { serverStatusReducer, serverStatusStateName } from '~/shared/server-status/server-status.reducer';
+import { ServerStatusComponent } from '~/shared/server-status/server-status.component';
 
 @NgModule({
   declarations: [

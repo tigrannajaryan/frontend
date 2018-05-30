@@ -1,0 +1,16 @@
+<ion-navbar class="u-h-header bb-wp-a">
+  <ion-title *ngIf="!hasBackButton" class="u-h-header-title">
+    Hello Sharon,
+    <span class="u-h-header-title-sub">Thursday, 18 May</span>
+  </ion-title>
+
+  <ion-buttons end class="u-h-header-btns">
+    <button [style.background-image]="" ion-button icon-only class="u-h-header-btns-user hasAva">
+      <ion-icon *ngIf="false" name="ios-contact-outline"></ion-icon>
+    </button>
+    <div class="u-h-header-btns-del"></div>
+    <button menuToggle ion-button icon-only class="u-h-header-btns-menu">
+      <ion-icon name="ios-more-outline"></ion-icon>
+    </button>
+  </ion-buttons>
+</ion-navbar>

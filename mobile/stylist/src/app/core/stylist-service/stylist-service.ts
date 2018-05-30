@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BaseApiService } from '../base-api-service';
+import { BaseApiService } from '~/shared/base-api-service';
 import { ServiceItem, ServicesTemplate, ServiceTemplateSet, StylistProfile } from './stylist-models';
-import { Logger } from '../logger';
-import { ServerStatusTracker } from '../server-status-tracker';
+import { Logger } from '~/shared/logger';
+import { ServerStatusTracker } from '~/shared/server-status-tracker';
 
 export interface ServicesResponse {
   services: ServiceItem[];

@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 import { ChangePercentComponent } from './change-percent.component';
-import { SharedModule } from '../../shared.module';
+import { CoreModule } from '~/core/core.module';
 
 @NgModule({
   imports: [
     IonicPageModule.forChild(ChangePercentComponent),
-    SharedModule
+    CoreModule
   ],
   declarations: [
     ChangePercentComponent

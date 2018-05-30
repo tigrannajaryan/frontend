@@ -5,7 +5,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import {
   ServiceCategory,
   ServiceTemplateItem
-} from '../../shared/stylist-service/stylist-models';
+} from '~/core/stylist-service/stylist-models';
 
 /**
  * Represents the data that is passed in and out of

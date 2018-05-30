@@ -1,4 +1,5 @@
 import datetime
+from typing import Optional
 
 from annoying.functions import get_object_or_None
 from dateutil.parser import parse
@@ -15,10 +16,13 @@ from api.common.permissions import (
 )
 from appointment.models import Appointment
 from appointment.types import AppointmentStatus
+from client.models import Client
 from core.utils import post_or_get
 from salon.models import ServiceTemplateSet, Stylist, StylistService
 from .constants import MAX_APPOINTMENTS_PER_REQUEST
 from .serializers import (
+    AppointmentPreviewRequestSerializer,
+    AppointmentPreviewResponseSerializer,
     AppointmentSerializer,
     InvitationSerializer,
     ServiceTemplateSetDetailsSerializer,
@@ -32,6 +36,7 @@ from .serializers import (
     StylistServiceSerializer,
     StylistTodaySerializer,
 )
+from .types import AppointmentPreviewRequest, AppointmentPreviewResponse
 
 
 class StylistView(
@@ -223,6 +228,48 @@ class StylistAppointmentListCreateView(generics.ListCreateAPIView):
         return stylist.get_appointments_in_datetime_range(
             datetime_from, datetime_to, include_cancelled
         )[:limit]
+
+
+class StylistAppointmentPreviewView(views.APIView):
+    permission_classes = [StylistPermission, permissions.IsAuthenticated]
+
+    def post(self, request):
+        stylist: Stylist = self.request.user.stylist
+        serializer = AppointmentPreviewRequestSerializer(
+            data=request.data, context={'stylist': stylist, 'force_start': True}
+        )
+        serializer.is_valid(raise_exception=True)
+        preview_request = AppointmentPreviewRequest(**serializer.validated_data)
+        response_serializer = AppointmentPreviewResponseSerializer(
+            self._get_response_dict(
+                stylist, preview_request
+            ))
+        return Response(response_serializer.data)
+
+    @staticmethod
+    def _get_response_dict(
+            stylist: Stylist,
+            preview_request: AppointmentPreviewRequest
+    ) -> AppointmentPreviewResponse:
+        service: StylistService = stylist.services.get(
+            service_uuid=preview_request.service_uuid
+        )
+        client: Optional[Client] = Client.objects.filter(
+            uuid=preview_request.client_uuid
+        ) if preview_request.client_uuid else None
+
+        return AppointmentPreviewResponse(
+            regular_price=service.base_price,
+            client_price=service.calculate_price_for_client(
+                datetime_start_at=preview_request.datetime_start_at,
+                client=client
+            ),
+            duration=service.duration,
+            conflicts_with=stylist.get_appointments_in_datetime_range(
+                preview_request.datetime_start_at,
+                preview_request.datetime_start_at + service.duration
+            )
+        )
 
 
 class StylistAppointmentRetrieveUpdateCancelView(

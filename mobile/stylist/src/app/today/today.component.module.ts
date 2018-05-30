@@ -7,10 +7,14 @@ import { TodayComponent } from './today.component';
 import { todayReducer } from './today.reducer';
 import { TodayService } from './today.service';
 import { TodayEffects } from './today.effects';
+import { UserFooterComponent } from '~/today/user-footer/user-footer.component';
+import { UserHeaderComponent } from '~/today/user-header/user-header.component';
 
 @NgModule({
   declarations: [
-    TodayComponent
+    TodayComponent,
+    UserHeaderComponent,
+    UserFooterComponent
   ],
   imports: [
     IonicPageModule.forChild(TodayComponent),

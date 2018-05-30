@@ -977,6 +977,49 @@ curl -X GET \
 ```
 
 
+### Preview appointment
+
+This API does not actually create any parameter, but allows
+to preview resulting price and conflicting appointments (if any).
+
+**POST /api/v1/appointments/preview**
+
+- **service_uuid** (required) - uuid of a service to create appointment for
+- **datetime_start_at** (required) - datetime when appointment is to start
+- **client_uuid** (optional) - if supplied, client price may be different
+from the base price
+
+```
+curl -X POST \
+  http://apiserver/api/v1/stylist/appointments/preview \
+  -H 'Authorization: Token jwt_token' \
+  -F service_uuid=ca821ca4-3d34-454a-9aa7-daa291ce2840 \
+  -F 'datetime_start_at=2018-05-28 16:00' \
+  -F client_uuid=5637ce6c-7efd-4a0f-a9e4-86d6324d3a5d
+```
+
+**Response 200 OK**
+
+```
+{
+    "regular_price": 90,
+    "client_price": 90,
+    "duration_minutes": 60,
+    "conflicts_with": [
+        {
+            "uuid": "78d7ed13-d54e-4226-9bbc-85ff80251070",
+            "client_first_name": "Fred",
+            "client_last_name": "McBob",
+            "service_name": "Haircut",
+            "datetime_start_at": "2018-05-28T16:15:00-04:00",
+            "datetime_end_at": "2018-05-28T16:35:00-04:00",
+            "duration_minutes": 20
+        }
+    ]
+}
+```
+
+
 ### Add appointment
 
 There can be 2 possible situations:

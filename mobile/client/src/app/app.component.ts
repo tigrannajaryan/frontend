@@ -3,9 +3,9 @@ import { MenuController, Nav, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
-import { Logger } from './shared/logger';
+import { Logger } from '~/shared/logger';
 
-import { PageNames } from './shared/page-names';
+import { PageNames } from '~/core/page-names';
 
 import { FirstScreenComponent } from '~/first-screen/first-screen';
 

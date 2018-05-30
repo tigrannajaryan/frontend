@@ -4,10 +4,10 @@ import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 
-import { Logger } from '../shared/logger';
+import { Logger } from '~/shared/logger';
 import { ENV } from '../../environments/environment.default';
 
-import { ServerIsOkAction } from './components/server-status/server-status.reducer';
+import { ServerIsOkAction } from '~/shared/server-status/server-status.reducer';
 
 import {
   HttpStatus,
@@ -17,9 +17,9 @@ import {
   ServerNonFieldError,
   ServerUnknownError,
   ServerUnreachableError
-} from './api-errors';
+} from '~/shared/api-errors';
 
-import { ServerStatusTracker } from './server-status-tracker';
+import { ServerStatusTracker } from '~/shared/server-status-tracker';
 
 enum HttpContentType {
   ApplicationJson = 'application/json'

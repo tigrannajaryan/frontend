@@ -2,10 +2,10 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TestUtils } from '../../test';
 import { LoginRegisterComponent } from './login-register.component';
-import { PageNames } from '~/shared/page-names';
-import { profileStatusToPage } from '~/shared/functions';
-import { AuthApiService, ProfileStatus } from '~/shared/auth-api-service/auth-api-service';
-import { prepareSharedObjectsForTests } from '~/shared/test-utils.spec';
+import { PageNames } from '~/core/page-names';
+import { profileStatusToPage } from '~/core/functions';
+import { AuthApiService, ProfileStatus } from '~/core/auth-api-service/auth-api-service';
+import { prepareSharedObjectsForTests } from '~/core/test-utils.spec';
 
 let fixture: ComponentFixture<LoginRegisterComponent>;
 let instance: LoginRegisterComponent;

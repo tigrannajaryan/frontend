@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 import { Camera } from '@ionic-native/camera';
 import { RegisterSalonComponent } from './register-salon';
-import { SharedModule } from '~/shared/shared.module';
+import { CoreModule } from '~/core/core.module';
 
 @NgModule({
   declarations: [
@@ -10,7 +10,7 @@ import { SharedModule } from '~/shared/shared.module';
   ],
   imports: [
     IonicPageModule.forChild(RegisterSalonComponent),
-    SharedModule
+    CoreModule
   ],
   providers: [
     Camera
