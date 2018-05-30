@@ -80,14 +80,6 @@ export class InvitationsComponent {
     }
   }
 
-  private addInvitation(phone: string, name?:string): void {
-    const newInvitation: ClientInvitation = {
-      name: name,
-      phone: phone
-    };
-    this.invitations.push(newInvitation);
-  }
-
   async sendInvitations(): Promise<void> {
     const loading = this.loadingCtrl.create();
     try {
@@ -99,6 +91,14 @@ export class InvitationsComponent {
     } finally {
       loading.dismiss();
     }
+  }
+
+  private addInvitation(phoneNumber: string, clientName?: string): void {
+    const newInvitation: ClientInvitation = {
+      name: clientName,
+      phone: phoneNumber
+    };
+    this.invitations.push(newInvitation);
   }
 
 }
