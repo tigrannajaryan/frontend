@@ -418,44 +418,70 @@ class TestStylistDiscountsSerializer(object):
 class TestStylistTodaySerializer(object):
     @freeze_time('2018-05-14 13:30:00 UTC')
     @pytest.mark.django_db
-    def test_serializer_with_current_appointment(self, stylist_data: Stylist):
+    def test_today_appointments(self, stylist_data: Stylist):
         appointments = stylist_appointments_data(stylist_data)
+        client = G(Client)
+        appointments.update(
+            {
+                'past_unpaid_appointment': G(
+                    Appointment, client=client, stylist=stylist_data,
+                    datetime_start_at=stylist_data.salon.timezone.localize(
+                        datetime.datetime(2018, 5, 14, 10, 20)),
+                    duration=datetime.timedelta(minutes=30),
+                    status=AppointmentStatus.NEW,
+                ),
+                'cancelled_by_client_past': G(
+                    Appointment, client=client, stylist=stylist_data,
+                    datetime_start_at=stylist_data.salon.timezone.localize(
+                        datetime.datetime(2018, 5, 14, 10, 20)),
+                    duration=datetime.timedelta(minutes=30),
+                    status=AppointmentStatus.CANCELLED_BY_CLIENT,
+                ),
+                'cancelled_by_client_future': G(
+                    Appointment, client=client, stylist=stylist_data,
+                    datetime_start_at=stylist_data.salon.timezone.localize(
+                        datetime.datetime(2018, 5, 14, 18, 20)),
+                    duration=datetime.timedelta(minutes=30),
+                    status=AppointmentStatus.CANCELLED_BY_CLIENT,
+                ),
+                'cancelled_by_stylist': G(
+                    Appointment, client=client, stylist=stylist_data,
+                    datetime_start_at=stylist_data.salon.timezone.localize(
+                        datetime.datetime(2018, 5, 14, 15, 20)),
+                    duration=datetime.timedelta(minutes=30),
+                    status=AppointmentStatus.CANCELLED_BY_STYLIST,
+                ),
+                'past_paid_appointment': G(
+                    Appointment, client=client, stylist=stylist_data,
+                    datetime_start_at=stylist_data.salon.timezone.localize(
+                        datetime.datetime(2018, 5, 14, 10, 20)),
+                    duration=datetime.timedelta(minutes=30),
+                    status=AppointmentStatus.CHECKED_OUT,
+                ),
+                'no_call_no_show': G(
+                    Appointment, client=client, stylist=stylist_data,
+                    datetime_start_at=stylist_data.salon.timezone.localize(
+                        datetime.datetime(2018, 5, 14, 10, 20)),
+                    duration=datetime.timedelta(minutes=30),
+                    status=AppointmentStatus.NO_SHOW,
+                )
+            }
+        )
         serializer = StylistTodaySerializer(instance=stylist_data)
         data = serializer.data
-        next_appointments = data['next_appointments']
-        assert(len(next_appointments) == 2)
-        assert(next_appointments[0]['uuid'] == str(appointments['current_appointment'].uuid))
-        assert(next_appointments[1]['uuid'] == str(appointments['future_appointment'].uuid))
-        assert(data['today_visits_count'] == 4)
-        assert(data['week_visits_count'] == 5)
-        assert(data['past_visits_count'] == 2)
-
-    @freeze_time('2018-05-14 14:00:00 UTC')
-    @pytest.mark.django_db
-    def test_serializer_without_current_appointment(self, stylist_data: Stylist):
-        appointments = stylist_appointments_data(stylist_data)
-        serializer = StylistTodaySerializer(instance=stylist_data)
-        data = serializer.data
-        next_appointments = data['next_appointments']
-        assert (len(next_appointments) == 1)
-        assert (next_appointments[0]['uuid'] == str(appointments['future_appointment'].uuid))
-        assert (data['today_visits_count'] == 4)
-        assert (data['week_visits_count'] == 5)
-        assert (data['past_visits_count'] == 3)
-
-    @freeze_time('2018-05-16 14:00:00 UTC')
-    @pytest.mark.django_db
-    def test_serializer_without_current_and_next_appointment(self, stylist_data: Stylist):
-        # call fixture method just to generate appointments data
-        stylist_appointments_data(stylist_data)
-        serializer = StylistTodaySerializer(instance=stylist_data)
-        data = serializer.data
-        next_appointments = data['next_appointments']
-        # there are no other appointments for this day
-        assert (len(next_appointments) == 0)
-        assert (data['today_visits_count'] == 0)
-        assert (data['week_visits_count'] == 5)
-        assert (data['past_visits_count'] == 6)
+        today_appointments = data['today_appointments']
+        assert(frozenset([a['uuid'] for a in today_appointments]) == frozenset([
+            str(appointments['past_unpaid_appointment'].uuid),
+            str(appointments['cancelled_by_client_future'].uuid),
+            str(appointments['cancelled_by_client_past'].uuid),
+            str(appointments['current_appointment'].uuid),
+            str(appointments['past_appointment'].uuid),
+            str(appointments['future_appointment'].uuid),
+            str(appointments['late_night_appointment'].uuid),
+        ]))
+        assert(data['today_visits_count'] == 7)
+        assert(data['week_visits_count'] == 8)
+        assert(data['past_visits_count'] == 5)
 
 
 class TestAppointmentSerializer(object):

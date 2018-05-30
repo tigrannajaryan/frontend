@@ -34,6 +34,7 @@ from .serializers import (
     StylistSerializer,
     StylistServiceListSerializer,
     StylistServiceSerializer,
+    StylistSettingsRetrieveSerializer,
     StylistTodaySerializer,
 )
 from .types import AppointmentPreviewRequest, AppointmentPreviewResponse
@@ -318,3 +319,11 @@ class InvitationView(views.APIView):
             InvitationSerializer(created_objects, many=True).data,
             status=response_status
         )
+
+
+class StylistSettingsRetrieveView(generics.RetrieveAPIView):
+    permission_classes = [StylistPermission, permissions.IsAuthenticated]
+    serializer_class = StylistSettingsRetrieveSerializer
+
+    def get_object(self):
+        return self.request.user.stylist

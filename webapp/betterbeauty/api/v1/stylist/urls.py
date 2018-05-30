@@ -11,6 +11,7 @@ from .views import (
     StylistDiscountsView,
     StylistServiceListView,
     StylistServiceView,
+    StylistSettingsRetrieveView,
     StylistTodayView,
     StylistView,
 )
@@ -19,6 +20,7 @@ app_name = 'stylist'
 
 urlpatterns = [
     url('profile$', StylistView.as_view(), name='profile'),
+    url('settings$', StylistSettingsRetrieveView.as_view(), name='settings'),
     url('service-template-sets$', ServiceTemplateSetListView.as_view()),
     url('service-template-sets/(?P<template_set_uuid>[0-9a-f\-]+)$',
         ServiceTemplateSetDetailsView.as_view()),

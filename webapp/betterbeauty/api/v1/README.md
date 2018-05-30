@@ -1177,7 +1177,7 @@ to specify some extra information about checking out, etc.
 **Response 200 OK**
 ```
 {
-    "next_appointments": [
+    "today_appointments": [
         {
             "uuid": "f9c736e1-2d0d-4daf-b30f-3225dd51a313",
             "client_first_name": "Fred",
@@ -1208,6 +1208,96 @@ to specify some extra information about checking out, etc.
     "today_visits_count": 2,
     "week_visits_count": 7,
     "past_visits_count": 2
+}
+```
+
+## Settings screen
+
+This is a read-only API designed specifically to fetch information
+in one gulp for the Stylist app's Settings screen.
+
+**GET /api/v1/stylist/settings**
+
+**Response 200 OK**
+
+```
+{
+    "profile": {
+        "id": 2,
+        "first_name": "Jane",
+        "last_name": "McBob",
+        "phone": "95566889",
+        "profile_photo_url": null,
+        "salon_name": "Southern Wind",
+        "salon_address": "1158 George Ave, Milbrae"
+    },
+    "services_count": 1,
+    "services": [
+        {
+            "id": 3,
+            "name": "Updos",
+            "description": "",
+            "base_price": 90,
+            "duration_minutes": 20,
+            "is_enabled": true,
+            "photo_samples": [],
+            "category_uuid": "a8e74fbd-3385-492e-9fb4-44d632b5991a",
+            "category_name": "Special Occassions",
+            "service_uuid": "ca821ca4-3d34-454a-9aa7-daa291ce2840"
+        }
+    ],
+    "worktime": [
+        {
+            "weekday_iso": 1,
+            "work_start_at": "08:00:00",
+            "work_end_at": "17:00:00",
+            "is_available": true,
+            "booked_time_minutes": 20
+        },
+        {
+            "weekday_iso": 2,
+            "work_start_at": "08:00:00",
+            "work_end_at": "17:00:00",
+            "is_available": true,
+            "booked_time_minutes": 20
+        },
+        {
+            "weekday_iso": 3,
+            "work_start_at": "08:00:00",
+            "work_end_at": "17:00:00",
+            "is_available": true,
+            "booked_time_minutes": 0
+        },
+        {
+            "weekday_iso": 4,
+            "work_start_at": "08:00:00",
+            "work_end_at": "17:00:00",
+            "is_available": true,
+            "booked_time_minutes": 0
+        },
+        {
+            "weekday_iso": 5,
+            "work_start_at": "08:00:00",
+            "work_end_at": "17:00:00",
+            "is_available": true,
+            "booked_time_minutes": 0
+        },
+        {
+            "weekday_iso": 6,
+            "work_start_at": null,
+            "work_end_at": null,
+            "is_available": false,
+            "booked_time_minutes": 0
+        },
+        {
+            "weekday_iso": 7,
+            "work_start_at": null,
+            "work_end_at": null,
+            "is_available": false,
+            "booked_time_minutes": 0
+        }
+    ],
+    "total_week_booked_minutes": 40
 }
 ```
 

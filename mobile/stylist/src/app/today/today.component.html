@@ -35,7 +35,7 @@
 
 
     <div class="p-t-items">
-      <div *ngFor="let appointment of today.next_appointments" (click)="openModal(appointment.uuid)" class="p-t-items-item">
+      <div *ngFor="let appointment of today.today_appointments" (click)="openModal(appointment.uuid)" class="p-t-items-item">
         <div class="p-t-items-item-status">Now</div>
         <div class="p-t-items-item-status notpaid">Not checked out</div>
 
