@@ -103,5 +103,5 @@
     <plugin name="cordova-plugin-facebook4" spec="2.1.0" />
     <engine name="android" spec="7.0.0" />
     <plugin name="cordova-plugin-camera" spec="4.0.3" />
-    <plugin name="cordova-plugin-contacts" spec="^3.0.1" />
+    <plugin name="cordova-plugin-contacts" spec="3.0.1" />
 </widget>

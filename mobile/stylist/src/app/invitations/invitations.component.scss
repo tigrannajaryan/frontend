@@ -1,12 +1,8 @@
 page-invitations {
 
   .p-i {
-    display: flex;
-    flex-direction: column;
-    flex-wrap: nowrap;
-    justify-content: space-between;
-    align-content: stretch;
     height: 100%;
+    align-content: stretch;
     text-align: center;
 
     &-title{
