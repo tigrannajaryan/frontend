@@ -17,7 +17,8 @@ export class MyAppComponent {
   rootPage: any = PageNames.FirstScreen;
 
   pages: Array<{ title: string, component: any }> = [
-    { title: 'Today', component: PageNames.Today }
+    { title: 'Today', component: PageNames.Today },
+    { title: 'My Profile', component: PageNames.Profile }
   ];
 
   constructor(
