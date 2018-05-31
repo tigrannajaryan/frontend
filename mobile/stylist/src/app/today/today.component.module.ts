@@ -3,6 +3,7 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 
 import { IonicPageModule } from 'ionic-angular';
+import { CoreModule } from '~/core/core.module';
 import { TodayComponent } from './today.component';
 import { todayReducer } from './today.reducer';
 import { TodayService } from './today.service';
@@ -18,6 +19,7 @@ import { UserHeaderComponent } from '~/today/user-header/user-header.component';
   ],
   imports: [
     IonicPageModule.forChild(TodayComponent),
+    CoreModule,
 
     // Register reducers for today
     StoreModule.forFeature('today', todayReducer),

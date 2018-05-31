@@ -1,7 +1,7 @@
 <ion-footer class="p-t-footer">
   <ion-grid>
     <ion-row>
-      <ion-col class="p-t-footer-item">
+      <ion-col madeLink to="Profile" class="p-t-footer-item">
         <ion-icon name="ios-home-outline"></ion-icon>
         Home
       </ion-col>
@@ -14,7 +14,7 @@
           <ion-icon name="ios-add-outline"></ion-icon>
         </button>
       </ion-col>
-      <ion-col class="p-t-footer-item">
+      <ion-col madeLink to="Discounts" [params]="{isProfile: true}" class="p-t-footer-item">
         <ion-icon name="ios-pricetag-outline"></ion-icon>
         Pricing
       </ion-col>
