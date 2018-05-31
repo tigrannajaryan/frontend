@@ -13,7 +13,7 @@ import { ProfileComponent, WEEKDAY_FULL_NAMES } from './profile';
 import { ProfileInfoComponent } from './profile-info/profile-info';
 
 import { profileSummaryMock as mock } from '~/core/stylist-service/stylist-service-mock';
-import { convertMinsToHrsMins } from '~/shared/time';
+import { convertMinsToHrsMins, FormatType } from '~/shared/time';
 
 let fixture: ComponentFixture<ProfileComponent>;
 let instance: ProfileComponent;
@@ -90,7 +90,7 @@ describe('Pages: Profile / Settings', () => {
         .toContain(service.name);
 
       expect(fixture.nativeElement.textContent)
-        .toContain(convertMinsToHrsMins(service.duration_minutes, /* shortForm = */ true));
+        .toContain(convertMinsToHrsMins(service.duration_minutes, FormatType.ShortForm));
 
       expect(fixture.nativeElement.textContent)
         .toContain(`$${service.base_price}`);
@@ -134,7 +134,7 @@ describe('Pages: Profile / Settings', () => {
           .toContain(`${instance.formatTime(worktime.work_start_at)} – ${instance.formatTime(worktime.work_end_at)}`);
 
         expect(fixture.nativeElement.textContent)
-          .toContain(convertMinsToHrsMins(worktime.booked_time_minutes, /* shortForm = */ true));
+          .toContain(convertMinsToHrsMins(worktime.booked_time_minutes, FormatType.ShortForm));
       });
   });
 

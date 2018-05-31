@@ -63,7 +63,7 @@
     "@types/node": "9.6.5",
     "codelyzer": "4.3.0",
     "cross-env": "5.1.4",
-    "faker": "^4.1.0",
+    "faker": "4.1.0",
     "ionic": "3.20.0",
     "jasmine-core": "2.8.0",
     "jasmine-reporters": "2.3.0",

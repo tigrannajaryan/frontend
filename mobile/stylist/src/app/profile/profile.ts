@@ -8,7 +8,7 @@ import { StylistServiceProvider } from '~/core/stylist-service/stylist-service';
 import { TableData } from '~/core/components/made-table/made-table';
 import { StylistProfile } from '~/core/stylist-service/stylist-models';
 
-import { convertMinsToHrsMins } from '~/shared/time';
+import { convertMinsToHrsMins, FormatType } from '~/shared/time';
 
 export const WEEKDAY_FULL_NAMES = ['', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
@@ -48,7 +48,7 @@ export class ProfileComponent {
       header: ['Service', 'Duration', 'Price'],
       body: services.map(({name, duration_minutes, base_price}) => ([
         name,
-        convertMinsToHrsMins(duration_minutes, /* shortForm = */ true),
+        convertMinsToHrsMins(duration_minutes, FormatType.ShortForm),
         `$${base_price}`
       ]))
     };
@@ -63,7 +63,7 @@ export class ProfileComponent {
           .map(({weekday_iso, work_end_at, work_start_at, booked_time_minutes}) => ([
             WEEKDAY_FULL_NAMES[weekday_iso],
             `${this.formatTime(work_start_at)} – ${this.formatTime(work_end_at)}`,
-            convertMinsToHrsMins(booked_time_minutes, /* shortForm = */ true)
+            convertMinsToHrsMins(booked_time_minutes, FormatType.ShortForm)
           ]))
     };
   }
