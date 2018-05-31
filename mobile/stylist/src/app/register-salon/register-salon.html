@@ -10,55 +10,97 @@
 </ion-header>
 
 <ion-content padding>
-  <bb-nav *ngIf="!isProfile" [activePageIndex]="0"></bb-nav>
+  <made-nav *ngIf="!isProfile" [activePage]="PageNames.RegisterSalon"></made-nav>
 
 
   <form class="form" [formGroup]="form" (ngSubmit)="submit()">
-    <ion-list>
-      <div class="p-rs-circle">
+    <div class="p-rs-circle">
         <div [style.backgroundImage]="form.get('vars.image').value" class="p-rs-circle-photo"></div>
         <label (click)="processPhoto()" class="p-rs-circle-add">
           <i class="bb-icon-camera p-rs-circle-add-icon"></i>
         </label>
       </div>
 
-      <ion-item class="ion-bb-input">
-        <ion-grid item-content>
-          <ion-row>
-            <ion-col>
-              <ion-label stacked>First name</ion-label>
-              <ion-input placeholder="ex. John" type="text" formControlName="first_name"></ion-input>
-            </ion-col>
-            <ion-col>
-              <ion-label stacked>Last name</ion-label>
-              <ion-input placeholder="ex. Malkovich" type="text" formControlName="last_name"></ion-input>
-            </ion-col>
-          </ion-row>
-        </ion-grid>
-      </ion-item>
-      <br />
 
-      <ion-item class="ion-bb-input">
-        <ion-label stacked>Phone number</ion-label>
-        <ion-input type="phone" placeholder="ex. 123-456-7890" formControlName="phone"></ion-input>
-      </ion-item>
+    <ion-grid class="p-rs-inputs">
+      <ion-row>
+        <div col-6>
+          <div class="p-rs-input">
+            <div class="p-rs-input-label">First name</div>
 
-      <ion-item class="ion-bb-input">
-        <ion-label stacked>Salon name</ion-label>
-        <ion-input type="text" placeholder="ex. The Morning Beauty" formControlName="salon_name"></ion-input>
-      </ion-item>
-      <br />
+            <ion-item>
+              <ion-input type="text" formControlName="first_name"></ion-input>
+              <ion-icon name="ios-person-outline" item-right></ion-icon>
+            </ion-item>
+          </div>
+        </div>
+        <div col-6>
+          <div class="p-rs-input">
+            <div class="p-rs-input-label">Last name</div>
 
-      <ion-item class="ion-bb-input">
-        <ion-label stacked>Address</ion-label>
-        <ion-input type="text" placeholder="123 Made St., New York" formControlName="salon_address"></ion-input>
+            <ion-item>
+              <ion-input type="text" formControlName="last_name"></ion-input>
+              <ion-icon name="ios-person-outline" item-right></ion-icon>
+            </ion-item>
+          </div>
+        </div>
+      </ion-row>
 
-        <!--uncomment when we will have mac page-->
-        <!--<ion-icon name="ios-pin-outline" item-right></ion-icon>-->
-      </ion-item>
 
-      <br />
-      <button ion-button color="dark" full type="submit" [disabled]="!form.valid">{{ isProfile ? 'Save' : 'Next step' }}</button>
-    </ion-list>
+
+      <ion-row>
+        <ion-col>
+          <div class="p-rs-input">
+            <div class="p-rs-input-label">Salon name</div>
+
+            <ion-item>
+              <ion-input type="text" formControlName="salon_name"></ion-input>
+              <ion-icon name="ios-home-outline" item-right></ion-icon>
+            </ion-item>
+          </div>
+        </ion-col>
+      </ion-row>
+
+
+
+      <ion-row>
+        <ion-col>
+          <div class="p-rs-input">
+            <div class="p-rs-input-label">Address</div>
+
+            <ion-item>
+              <ion-input type="text" formControlName="salon_address"></ion-input>
+              <ion-icon name="ios-flag-outline" item-right></ion-icon>
+            </ion-item>
+          </div>
+        </ion-col>
+      </ion-row>
+
+
+
+      <ion-row>
+        <ion-col>
+          <div class="p-rs-input">
+            <div class="p-rs-input-label">Phone number</div>
+
+            <ion-item>
+              <ion-input type="phone" formControlName="phone"></ion-input>
+              <ion-icon name="ios-call-outline" item-right></ion-icon>
+            </ion-item>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+
+    <ion-row justify-content-center align-items-center>
+      <button ion-button color="danger" clear style="visibility: hidden;">Delete</button>
+
+      <button [disabled]="form.invalid" ion-button type="submit" class="bb-btn-circle">
+        <ion-icon name="ios-checkmark-outline"></ion-icon>
+      </button>
+
+      <button type="reset" ion-button color="danger" clear>Reset</button>
+    </ion-row>
   </form>
 </ion-content>

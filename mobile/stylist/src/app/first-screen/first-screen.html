@@ -1,15 +1,9 @@
-<ion-header class="ion-bb-header">
-  <ion-navbar>
-    <ion-title text-center>Made</ion-title>
-  </ion-navbar>
-</ion-header>
-
-
-<ion-content padding>
+<ion-content padding class="p-fs-bg">
   <div class="p-fs bb-wp-b">
     <div class="p-fs-img">
-      <!--demo-->
-      <img src="https://image.freepik.com/free-vector/business-woman-working-at-her-clean-office-desk_3446-509.jpg" alt="">
+      <div class="p-fs-img-text">Made</div>
+
+      <img src="assets/imgs/welcome.svg" alt="">
     </div>
 
 
@@ -19,10 +13,10 @@
       </div>
 
       <div class="p-fs-box-buttons">
-        <button (click)="goToPage(LoginOrRegisterType.login)" ion-button full color="bb_honey" class="bb-btn-a o_shadow">
+        <button (click)="goToPage(LoginOrRegisterType.login)" ion-button full color="bb_skin" class="bb-btn-a">
           &nbsp; Log in with Password
         </button>
-        <button (click)="loginByFb()" ion-button outline  color="bb_violet" class="bb-btn-a w100p">
+        <button (click)="loginByFb()" ion-button outline color="bb_skin" class="bb-btn-a w100p">
           &nbsp;Continue with Facebook
         </button>
       </div>

@@ -23,6 +23,7 @@ export enum DiscountsTypes {
 export class DiscountsComponent {
   // this should be here if we using enum in html
   protected DiscountsTypes = DiscountsTypes;
+  protected PageNames = PageNames;
 
   discounts: Discounts;
   isProfile?: Boolean;

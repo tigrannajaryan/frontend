@@ -1,0 +1,79 @@
+made-nav {
+  .nav{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: pxtorem10(25);
+
+    &-item{
+      flex: 1;
+      white-space: nowrap;
+      overflow: hidden;
+
+      &-el{
+        display: inline-block;
+        vertical-align: middle;
+
+        &-dot{
+          position: relative;
+          width: 10px;
+          height: 10px;
+          border-radius: 50%;
+          background: color($colors, bb_skin);
+          display: inline-block;
+          vertical-align: middle;
+          border: 1px solid transparent;
+          margin: 0 5px;
+
+          &.white{
+            background: color($colors, white);
+            border-color: rgba(0, 0, 0, 0.2);
+          }
+          &.plus:after{
+            content: "\f102";
+            display: inline-block;
+            font-family: "Ionicons";
+            speak: none;
+            font-style: normal;
+            font-weight: normal;
+            font-variant: normal;
+            text-transform: none;
+            text-rendering: auto;
+            line-height: 1;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            font-size: 12px;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            color: color($colors, color5);
+          }
+        }
+        &-line{
+          width: 90px;
+          height: 1px;
+          background: color($colors, bb_skin);
+          display: inline-block;
+          vertical-align: middle;
+          margin: 0 5px;
+        }
+      }
+
+
+      &.right{
+        direction: rtl;
+      }
+    }
+
+
+    &-active{
+      margin: 0 10px;
+      font-size: pxtorem10(20);
+
+    }
+  }
+}
+

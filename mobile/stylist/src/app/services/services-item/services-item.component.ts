@@ -9,6 +9,7 @@ import {
 
 import { loading } from '~/core/utils/loading';
 import { StylistServiceProvider } from '~/core/stylist-service/stylist-service';
+import { PageNames } from '~/core/page-names';
 
 /**
  * Represents the data that is passed in and out of
@@ -29,7 +30,7 @@ export interface ServiceItemComponentData {
   templateUrl: 'services-item.component.html'
 })
 export class ServiceItemComponent {
-
+  protected PageNames = PageNames;
   data: ServiceItemComponentData;
   form: FormGroup;
 

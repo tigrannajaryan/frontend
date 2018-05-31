@@ -2,15 +2,25 @@ page-register-salon {
   .p-rs{
     &-circle {
       position: relative;
-      width: 214px;
-      height: 214px;
+      width: 396px;
+      height: 396px;
       border-radius: 50%;
       margin: auto;
       padding: 8px;
 
 
+      @media ($smartphone) {
+        width: 280px;
+        height: 280px;
+      }
+      @media ($phone) {
+        width: 220px;
+        height: 220px;
+      }
+
+
       &-photo{
-        background: color($colors, bb_violet);
+        background: color($colors, bb_skin);
         background-repeat: no-repeat;
         background-position: center;
         background-size: cover;
@@ -28,21 +38,34 @@ page-register-salon {
         top: 0;
         bottom: 0;
         background: white;
-        border: 1px solid #e8d3ff;
+        border: 1px solid color($colors, bb_skin);
         border-radius: 50%;
+        opacity: 0.2;
       }
 
       &-add{
         position: absolute;
         z-index: 1;
         display: block;
-        width: 40px;
-        height: 40px;
+        width: 70px;
+        height: 70px;
         border-radius: 50%;
         top: 100%;
         left: 50%;
-        transform: translate(-50%, -25px);
+        transform: translate(-50%, -40px);
         text-align: center;
+        overflow: hidden;
+
+        @media ($smartphone) {
+          width: 50px;
+          height: 50px;
+          transform: translate(-50%, -30px);
+        }
+        @media ($phone) {
+          width: 36px;
+          height: 36px;
+          transform: translate(-50%, -20px);
+        }
 
         &:after{
           content: '';
@@ -52,8 +75,8 @@ page-register-salon {
           top: 0;
           bottom: 0;
           border-radius: 50%;
-          background: rgba(0, 0, 0, 0.3);
-          filter: blur(1px);
+          background: rgba(0, 0, 0, 0.16);
+          filter: blur(5px);
         }
 
         &-icon {
@@ -62,9 +85,56 @@ page-register-salon {
           top: 45%;
           z-index: 1;
           transform: translate(-50%, -50%);
-          font-size: 24px;
+          font-size: pxtorem(45);
           color: white;
+
+          @media ($phone) {
+            font-size: pxtorem(32);
+          }
         }
+      }
+    }
+
+
+    &-inputs{
+      padding: pxtorem(130) 0 pxtorem(60);
+
+      @media ($smartphone) {
+        padding: pxtorem(100) 0 pxtorem(50);
+      }
+      @media ($phone) {
+        padding: pxtorem(70) 0 pxtorem(40);
+      }
+    }
+
+
+    &-input{
+      margin-bottom: pxtorem(18);
+
+      ion-item{
+        padding: 0;
+      }
+      ion-icon[item-right]{
+        margin-right: 0 !important;
+      }
+      //ion-icon{
+      //  color: color($colors, color22);
+      //}
+
+      .text-input{
+        margin-left: 0 !important;
+        font-size: pxtorem(46);
+
+        @media ($smartphone) {
+          font-size: pxtorem(36);
+        }
+        @media ($phone) {
+          font-size: pxtorem(26);
+        }
+      }
+
+      &-label{
+        font-size: pxtorem10(20);
       }
     }
   }

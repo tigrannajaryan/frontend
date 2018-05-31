@@ -31,7 +31,7 @@ enum PhotoSourceType {
   templateUrl: 'register-salon.html'
 })
 export class RegisterSalonComponent {
-  PageNames = PageNames;
+  protected PageNames = PageNames;
   isProfile?: Boolean;
   form: FormGroup;
 
@@ -44,13 +44,8 @@ export class RegisterSalonComponent {
     private alertCtrl: AlertController,
     private domSanitizer: DomSanitizer,
     private camera: Camera,
-    private actionSheetCtrl: ActionSheetController) {
-
-  }
-
-  ionViewWillLoad(): void {
-    this.isProfile = Boolean(this.navParams.get('isProfile'));
-
+    private actionSheetCtrl: ActionSheetController
+  ) {
     this.form = this.formBuilder.group({
       vars: this.formBuilder.group({
         image: ''
@@ -79,6 +74,11 @@ export class RegisterSalonComponent {
       salon_address: ['', Validators.required],
       profile_photo_id: undefined
     });
+
+  }
+
+  ionViewDidLoad(): void {
+    this.isProfile = Boolean(this.navParams.get('isProfile'));
 
     this.loadFormInitialData();
   }

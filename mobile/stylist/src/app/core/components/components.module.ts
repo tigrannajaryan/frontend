@@ -7,13 +7,13 @@ import { ServerStatusComponent } from '~/shared/server-status/server-status.comp
 import { UserHeaderComponent } from '~/today/user-header/user-header.component';
 import { UserFooterComponent } from '~/today/user-footer/user-footer.component';
 
-import { BbNavComponent } from './bb-nav/bb-nav';
+import { MadeNavComponent } from './made-nav/made-nav.component';
 import { MadeTableComponent } from './made-table/made-table';
 import { MadeLinkDirective } from './made-link/made-link';
 
 @NgModule({
   declarations: [
-    BbNavComponent,
+    MadeNavComponent,
     ServerStatusComponent,
     UserHeaderComponent,
     UserFooterComponent,
@@ -28,7 +28,7 @@ import { MadeLinkDirective } from './made-link/made-link';
     StoreModule.forFeature(serverStatusStateName, serverStatusReducer)
   ],
   exports: [
-    BbNavComponent,
+    MadeNavComponent,
     ServerStatusComponent,
     UserHeaderComponent,
     UserFooterComponent,

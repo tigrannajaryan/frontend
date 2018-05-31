@@ -14,6 +14,8 @@ import { PageNames } from '~/core/page-names';
   templateUrl: 'services.component.html'
 })
 export class ServicesComponent {
+  // to use in html
+  protected PageNames = PageNames;
   serviceTemplates: ServicesTemplate[];
 
   constructor(

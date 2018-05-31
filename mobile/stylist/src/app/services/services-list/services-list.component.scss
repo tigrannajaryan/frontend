@@ -2,64 +2,39 @@ page-services-list {
   // p = page
   // -asd = first letter of each word (in this case just -si)
   .p-sl{
-    &-top{
-      position: relative;
-      text-align: center;
-      box-shadow: 0 0 40px #E4E4E4;
-      background: #ffffff;
-      margin: pxtoem(54) 0 pxtoem(58);
-      padding: pxtoem(57) 0 pxtoem(54);
-      border-radius: 7px;
+    &-title{
+      font-size: pxtoem(36);
+      margin-bottom: pxtoem(10);
+      color: color($colors, dark);
+      padding: 0 20px;
 
       @media ($phone) {
-        margin: pxtoem(37) 0 pxtoem(33);
-        padding: pxtoem(41) 0 pxtoem(37);
+        font-size: pxtoem(29);
       }
 
-
-      &-title{
-        font-size: pxtoem(25);
-        margin: 0 0 pxtoem(5);
-
-        @media ($phone) {
-          font-size: pxtoem(21);
-        }
-
-        &-a{
-          font-size: pxtoem(36);
-
-          @media ($phone) {
-            font-size: pxtoem(26);
-          }
-        }
-      }
-
-
-      &-reset{
-        position: absolute;
-        right: 11%;
-        top: 50%;
-        transform: translateY(-50%);
-        color: #FF6161;
-        font-size: pxtoem(33);
-
-        @media ($phone) {
-          font-size: pxtoem(28);
-          right: 4%;
-        }
+      &-a{
+        font-size: pxtoem(20);
+        color: color($colors, dark);
+        padding: 0 20px;
+        opacity: 0.4;
       }
     }
 
     &-gap{
-      background: color($colors, bb_violet);
-      border-radius: 7px;
+      background: color($colors, white);
+      border-radius: 30px;
       margin: pxtoem(60) 0;
       padding: pxtoem(67) pxtoem(60) pxtoem(72);
       text-align: center;
+      box-shadow: 0 13px 85px 0 rgba(0, 0, 0, 0.08);
 
+      @media ($smartphone) {
+        border-radius: 20px;
+      }
       @media ($phone) {
         margin: pxtoem(47) 0;
         padding: pxtoem(43) pxtoem(30) pxtoem(15);
+        border-radius: 10px;
       }
 
       &-icon{

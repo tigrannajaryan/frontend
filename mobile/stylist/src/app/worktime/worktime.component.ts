@@ -77,6 +77,7 @@ type HourRange = [string, string];
   templateUrl: 'worktime.component.html'
 })
 export class WorktimeComponent {
+  protected PageNames = PageNames;
   isProfile?: Boolean;
 
   cards: VisualWeekCard[] = [];

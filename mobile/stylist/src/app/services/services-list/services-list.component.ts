@@ -27,6 +27,7 @@ import * as time from '~/shared/time';
   templateUrl: 'services-list.component.html'
 })
 export class ServicesListComponent {
+  protected PageNames = PageNames;
   isProfile?: Boolean;
   uuid: string;
   timeGap = 15;

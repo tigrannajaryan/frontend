@@ -1,13 +1,10 @@
-<ion-header class="ion-bb-header">
-  <ion-navbar>
-    <ion-title text-center>Made</ion-title>
-    <server-status></server-status>
-  </ion-navbar>
-</ion-header>
+<ion-content padding class="p-l-bg">
+  <div class="p-l">
+    <div class="bb-wp-b">
+      <div class="p-l-icon">
+        <img src="assets/imgs/demo2.png" alt="">
+      </div>
 
-<ion-content padding>
-  <div class="p-l bb-wp-b">
-    <div class="p-l-wp">
       <div class="ion-bb-inputbox" [ngClass]="{'focus': formData.email || formData.password}">
         <ion-item class="ion-bb-inputbox-item">
           <ion-input type="email" placeholder="E-mail address" [(ngModel)]="formData.email"></ion-input>
@@ -16,14 +13,16 @@
         <ion-item class="ion-bb-inputbox-item">
           <ion-input [type]="passwordType" placeholder="Password" [(ngModel)]="formData.password"></ion-input>
 
-          <button (click)="switchPasswordType()" type="button" ion-button icon-start item-right outline color="bb_orange" class="noborder"><ion-icon name="ios-eye-outline"></ion-icon></button>
+          <button (click)="switchPasswordType()" type="button" ion-button icon-start item-right outline color="dark" class="noborder"><ion-icon name="ios-eye-outline"></ion-icon></button>
         </ion-item>
       </div>
 
-      <button (click)="onLoginOrRegister()" ion-button full color="bb_honey" class="bb-btn-a o_shadow p-l-btn">
-        <span *ngIf="pageType === LoginOrRegisterType.login">Log in</span>
-        <span *ngIf="pageType === LoginOrRegisterType.register">Register</span>
-      </button>
+      <div class="p-l-buttons">
+        <button (click)="onLoginOrRegister()" ion-button full color="bb_skin" class="bb-btn-a">
+          <span *ngIf="pageType === LoginOrRegisterType.login">Log in</span>
+          <span *ngIf="pageType === LoginOrRegisterType.register">Register</span>
+        </button>
+      </div>
 
       <div *ngIf="pageType === LoginOrRegisterType.login" class="bb-text">
         Forgot your password again, haven't you? <br>

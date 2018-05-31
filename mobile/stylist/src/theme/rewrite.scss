@@ -24,7 +24,8 @@ ion-app.md, ion-app.ios, ion-app.wp{
   }
 }
 
-button[color="bb_violet"]{
+button[color="bb_violet"],
+button[color="bb_skin"]{
   color: #000;
 }
 
@@ -128,9 +129,10 @@ ion-input > input {
   }
 
   &-inputbox{
-    border: 1px solid #ebebeb;
+    background: white;
     border-radius: 10px;
     padding: 0 pxtorem(45);
+    border: 1px solid transparent;
     transition: all 100ms linear;
 
     @media ($smartphone) {
@@ -168,15 +170,15 @@ ion-input > input {
 
       button[item-right]{
         margin: 9px 0 9px 0;
-        font-size: pxtoem(24);
+        font-size: pxtoem(20);
         padding: 0;
 
         @media ($smartphone) {
-          font-size: pxtoem(22);
+          font-size: pxtoem(18);
         }
 
         @media ($phone) {
-          font-size: pxtoem(20);
+          font-size: pxtoem(16);
         }
 
         ion-icon{
@@ -187,8 +189,7 @@ ion-input > input {
 
 
     &.focus{
-      border: 1px solid transparent;
-      box-shadow: 0 0 70px -17px rgba(0, 0, 0, 0.4);
+      box-shadow: 0 0 90px -30px rgba(0, 0, 0, 0.4);
     }
   }
 
@@ -222,8 +223,18 @@ ion-input > input {
       font-size: pxtoem(18);
     }
 
-    .range-knob {
-      border: 1px solid black;
+
+    .range{
+      &-knob{
+        background: color($colors, bb_skin);
+      }
+
+      &-bar{
+        background: rgba(0, 0, 0, 0.16);
+        &-active{
+          background: color($colors, bb_skin);
+        }
+      }
     }
   }
 }
