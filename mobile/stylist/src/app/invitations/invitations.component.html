@@ -8,40 +8,37 @@
   <bb-nav [activePageIndex]="6"></bb-nav>
 
   <div class="p-i-top">
-    <div class="p-i-title">Invite your clients</div>
+    <div class="p-i-title">Invite clients</div>
   </div>
 
-  <ion-grid class="p-i-table">
-    <ion-row class="p-i-table-row">
-      <ion-col col-6 class="p-i-table-row-col">
-        <div class="p-i-text">Invitations sent {{ invitationsSent }}</div>
-      </ion-col>
-      <ion-col col-6 class="p-i-table-row-col">
-        <div class="p-i-text">Invitations accepted {{ invitationsAccepted }}</div>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+  <div class="p-i-box">
+    <div class="p-i-box-title">
+      Number
+    </div>
+    <ion-grid class="p-i-table">
+      <ion-row class="p-i-table-row" *ngFor="let invitation of invitations">
+        <ion-col col-12 class="p-i-table-row-col">
+          {{ invitation.phone }}
+          <button class="p-i-table-row-button" item-right (click)="removeInvitation(invitation)">Delete</button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
 
-  <ion-grid class="p-i-table invitations-table">
-    <ion-row class="p-i-table-row" *ngFor="let invitation of invitations">
-      <ion-col col-6 class="p-i-table-row-col">
-        {{ invitation.phone }}
-      </ion-col>
-      <ion-col col-3 class="p-i-table-row-col">
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+  <div class="p-i-box">
+    <ion-item class="p-i-box-item">
+      <ion-label color="color9" stacked>Customer's mobile phone</ion-label>
+      <ion-input [(ngModel)]="phoneNumber"></ion-input>
+      <button class="p-i-box-item-button" item-right (click)="addContact()">Add</button>
+    </ion-item>
+    <br/>
+    <button class="p-i-box-button" ion-button color="bb_skin" (click)="pickContactPhone()">Add from contacts</button>
+  </div>
+  
+  <br/>
 
-  <ion-item>
-    <ion-label>Invite new customer:</ion-label>
-  </ion-item>
-  <ion-item>
-    <ion-input [(ngModel)]="phoneNumber" placeholer="Enter client's phone number"></ion-input>
-    <button color="dark" clear item-right (click)="addContact()">Add</button>
-  </ion-item>
-
-  <button ion-button block color="white" (click)="pickContact()">Add from Address Book</button>
-
-  <button ion-button block color="dark" (click)="sendInvitations()">Send Invitation</button>
+  <button class="p-i-button" round ion-button color="bb_skin" (click)="sendInvitations()">
+    <ion-icon name="checkmark"></ion-icon>
+  </button>
 
 </ion-content>

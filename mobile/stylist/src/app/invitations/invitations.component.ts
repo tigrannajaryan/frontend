@@ -80,6 +80,11 @@ export class InvitationsComponent {
     }
   }
 
+  removeInvitation(invitation: ClientInvitation): void {
+    const indexOfInvitation = this.invitations.indexOf(invitation);
+    this.invitations.splice(indexOfInvitation, 1);
+  }
+
   async sendInvitations(): Promise<void> {
     const loading = this.loadingCtrl.create();
     try {
