@@ -100,7 +100,7 @@ export class RegisterSalonComponent {
       } = await this.apiService.getProfile();
 
       this.form.patchValue({
-        vars: {image: profile_photo_url},
+        vars: {image: `url(${profile_photo_url})`},
         first_name,
         last_name,
         phone,
