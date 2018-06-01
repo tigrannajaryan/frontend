@@ -25,10 +25,10 @@ from .serializers import (
     AppointmentPreviewRequestSerializer,
     AppointmentPreviewResponseSerializer,
     AppointmentSerializer,
+    AppointmentUpdateSerializer,
     InvitationSerializer,
     ServiceTemplateSetDetailsSerializer,
     ServiceTemplateSetListSerializer,
-    StylistAppointmentStatusSerializer,
     StylistAvailableWeekDayListSerializer,
     StylistAvailableWeekDaySerializer,
     StylistDiscountsSerializer,
@@ -312,11 +312,19 @@ class StylistAppointmentRetrieveUpdateCancelView(
     def get_serializer_class(self):
         if self.request.method == 'GET':
             return AppointmentSerializer
-        return StylistAppointmentStatusSerializer
+        return AppointmentUpdateSerializer
+
+    def update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        appointment = serializer.save()
+        return Response(AppointmentSerializer(appointment).data)
 
     def get_serializer_context(self):
         return {
-            'user': self.request.user
+            'user': self.request.user,
+            'stylist': self.request.user.stylist
         }
 
     def get_queryset(self):

@@ -1,7 +1,7 @@
 import datetime
 
 import uuid
-from typing import Dict, Optional
+from typing import Dict, List, Optional
 
 from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
@@ -692,11 +692,35 @@ class AppointmentPreviewResponseSerializer(serializers.Serializer):
     )
 
 
-class StylistAppointmentStatusSerializer(serializers.ModelSerializer):
+class AppointmentUpdateSerializer(
+    AppointmentValidationMixin, serializers.ModelSerializer
+):
+
+    services = AppointmentServiceSerializer(many=True, required=False)
 
     class Meta:
         model = Appointment
-        fields = ['status', ]
+        fields = ['status', 'services', ]
+
+    def validate(self, attrs):
+        status = self.initial_data['status']
+        if status == AppointmentStatus.CHECKED_OUT and 'services' not in self.initial_data:
+            raise serializers.ValidationError({
+                'services': appointment_errors.ERR_SERVICE_REQUIRED
+            })
+        return attrs
+
+    def validate_services(self, services):
+        status = self.initial_data['status']
+        if status == AppointmentStatus.CHECKED_OUT:
+            services = self.initial_data.get('services', [])
+            if len(services) == 0:
+                raise serializers.ValidationError(appointment_errors.ERR_SERVICE_REQUIRED)
+            for service in services:
+                self.validate_service_uuid(
+                    str(service['service_uuid'])
+                )
+        return services
 
     def validate_status(self, status: AppointmentStatus) -> AppointmentStatus:
         if status not in APPOINTMENT_STYLIST_SETTABLE_STATUSES:
@@ -705,11 +729,42 @@ class StylistAppointmentStatusSerializer(serializers.ModelSerializer):
             )
         return status
 
+    @staticmethod
+    def _update_appointment_services(
+            appointment: Appointment, service_records: List[Dict[str, uuid.UUID]]
+    ) -> None:
+        """Replace existing appointment services preserving `is_original` field"""
+        stylist_services = appointment.stylist.services
+        original_services_uuids: List[uuid.UUID] = [
+            service.service_uuid
+            for service in appointment.services.filter(is_original=True)
+        ]
+        appointment.services.all().delete()
+        for service_record in service_records:
+            service_uuid: uuid.UUID = service_record['service_uuid']
+            service: StylistService = stylist_services.get(service_uuid=service_uuid)
+            AppointmentService.objects.create(
+                appointment=appointment,
+                service_uuid=service.service_uuid,
+                service_name=service.name,
+                duration=service.duration,
+                regular_price=service.base_price,
+                client_price=service.calculate_price_for_client(
+                    appointment.datetime_start_at,
+                    client=appointment.client),
+                is_original=service.service_uuid in original_services_uuids
+            )
+
     def save(self, **kwargs):
         status = self.validated_data['status']
         user: User = self.context['user']
         appointment: Appointment = self.instance
-        appointment.set_status(status, user)
+        with transaction.atomic():
+            if status == AppointmentStatus.CHECKED_OUT:
+                self._update_appointment_services(
+                    appointment, self.validated_data['services']
+                )
+            appointment.set_status(status, user)
         return appointment
 
 

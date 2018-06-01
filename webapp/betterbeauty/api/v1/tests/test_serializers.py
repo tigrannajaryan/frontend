@@ -9,6 +9,7 @@ from freezegun import freeze_time
 import appointment.error_constants as appointment_errors
 from api.v1.stylist.serializers import (
     AppointmentSerializer,
+    AppointmentUpdateSerializer,
     StylistAvailableWeekDaySerializer,
     StylistDiscountsSerializer,
     StylistProfileStatusSerializer,
@@ -676,3 +677,161 @@ class TestAppointmentSerializer(object):
         assert (original_service.regular_price == service.base_price)
         assert (original_service.service_uuid == service.service_uuid)
         assert (original_service.service_name == service.name)
+
+
+class TestAppointmentUpdateSerializer(object):
+
+    @pytest.mark.django_db
+    def test_validate_status(self):
+        appointment = G(
+            Appointment,
+            duration=datetime.timedelta(minutes=30)
+        )
+        data = {
+            'status': AppointmentStatus.CANCELLED_BY_CLIENT.value
+        }
+        serializer = AppointmentUpdateSerializer(instance=appointment, data=data)
+        assert(serializer.is_valid() is False)
+        assert(
+            appointment_errors.ERR_STATUS_NOT_ALLOWED in
+            serializer.errors['status']
+        )
+        data = {
+            'status': AppointmentStatus.CANCELLED_BY_STYLIST.value
+        }
+        serializer = AppointmentUpdateSerializer(instance=appointment, data=data)
+        assert(serializer.is_valid() is True)
+        data = {
+            'status': AppointmentStatus.CHECKED_OUT.value
+        }
+        serializer = AppointmentUpdateSerializer(instance=appointment, data=data)
+        assert (serializer.is_valid() is False)
+        assert (
+            appointment_errors.ERR_SERVICE_REQUIRED in
+            serializer.errors['services']
+        )
+
+    @pytest.mark.django_db
+    def test_validate_services(self):
+        appointment = G(
+            Appointment,
+            duration=datetime.timedelta(minutes=30)
+        )
+        stylist_service = G(
+            StylistService,
+            stylist=appointment.stylist,
+            duration=datetime.timedelta(minutes=30)
+        )
+        appointment_service_valid = G(
+            AppointmentService,
+            duration=stylist_service.duration,
+            service_uuid=stylist_service.service_uuid,
+        )
+        appointment_service_invalid = G(
+            AppointmentService,
+            duration=stylist_service.duration,
+        )
+        context = {
+            'stylist': stylist_service.stylist,
+            'user': stylist_service.stylist.user
+        }
+
+        data = {
+            'status': AppointmentStatus.CHECKED_OUT.value
+        }
+        serializer = AppointmentUpdateSerializer(instance=appointment, data=data)
+        assert (serializer.is_valid() is False)
+
+        data = {
+            'status': AppointmentStatus.CHECKED_OUT.value,
+            'services': [
+                {'service_uuid': appointment_service_valid.service_uuid}
+            ]
+        }
+        serializer = AppointmentUpdateSerializer(instance=appointment, data=data, context=context)
+        assert (serializer.is_valid() is True)
+
+        data = {
+            'status': AppointmentStatus.CHECKED_OUT.value,
+            'services': [
+                {'service_uuid': appointment_service_invalid.service_uuid}
+            ]
+        }
+        serializer = AppointmentUpdateSerializer(instance=appointment, data=data, context=context)
+        assert (serializer.is_valid() is False)
+        assert (
+            appointment_errors.ERR_SERVICE_DOES_NOT_EXIST in
+            serializer.errors['services']
+        )
+
+    @pytest.mark.django_db
+    def save_non_checked_out_status(self):
+        appointment = G(
+            Appointment,
+            duration=datetime.timedelta(minutes=30)
+        )
+        context = {
+            'stylist': appointment.stylist,
+            'user': appointment.stylist.user
+        }
+        assert(appointment.status == AppointmentStatus.NEW)
+        data = {
+            'status': AppointmentStatus.CANCELLED_BY_STYLIST.value
+        }
+        serializer = AppointmentUpdateSerializer(instance=appointment, data=data, context=context)
+        assert(serializer.is_valid())
+        appointment = serializer.save()
+        assert(appointment.status == AppointmentStatus.CANCELLED_BY_STYLIST)
+
+    def save_checked_out_status(self):
+        appointment = G(
+            Appointment,
+            duration=datetime.timedelta(minutes=30)
+        )
+        context = {
+            'stylist': appointment.stylist,
+            'user': appointment.stylist.user
+        }
+        original_service = G(
+            StylistService, stylist=appointment.stylist,
+            duration=datetime.timedelta(30),
+        )
+        G(
+            AppointmentService, appointment=appointment,
+            service_uuid=original_service.service_uuid, service_name=original_service.name,
+            duration=original_service.duration, is_original=True
+        )
+
+        new_service = G(
+            StylistService, stylist=appointment.stylist,
+            duration=datetime.timedelta(30),
+        )
+
+        assert(appointment.services.count() == 1)
+
+        data = {
+            'status': AppointmentStatus.CHECKED_OUT.value,
+            'services': [
+                {
+                    'service_uuid': original_service.service_uuid
+                },
+                {
+                    'service_uuid': new_service.service_uuid
+                }
+            ]
+        }
+
+        serializer = AppointmentUpdateSerializer(
+            instance=appointment, data=data, context=context
+        )
+        assert(serializer.is_valid() is True)
+        saved_appointment = serializer.save()
+        assert(saved_appointment.services.count() == 2)
+        assert(
+            saved_appointment.services.filter(is_original=True).first().service_uuid ==
+            original_service.service_uuid
+        )
+        assert (
+            saved_appointment.services.filter(is_original=False).first().service_uuid ==
+            new_service.service_uuid
+        )
