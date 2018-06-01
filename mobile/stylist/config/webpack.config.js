@@ -1,3 +1,4 @@
+const fs = require('fs');
 const path = require('path');
 const webpack = require('webpack');
 const merge = require('webpack-merge');
@@ -10,7 +11,13 @@ const config = {
     }),
     new webpack.NormalModuleReplacementPlugin(/\.\/environments\/environment\.default/, function (resource) {
       if (process.env.BB_ENV !== undefined) {
-        const env = process.env.BB_ENV.trim();
+        let env = process.env.BB_ENV.trim();
+
+        if (process.env.BB_ENV === 'dev' && fs.existsSync(path.resolve('./src/environments/environment.local.ts'))) {
+          console.warn('\033[1;33mReplacing .dev env config with .local\033[0m');
+          env = 'local';
+        }
+
         console.log('Rewriting ', resource.request);
         // @TODO try to generalise the regex using negative lookaheads https://stackoverflow.com/questions/977251/regular-expressions-and-negating-a-whole-character-group
         resource.request = resource.request.replace(/\.\/environments\/environment\.default/, '\.\/environments/environment.' + env);
