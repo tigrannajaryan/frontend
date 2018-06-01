@@ -39,6 +39,10 @@
 }
 
 page-profile {
+  .Profile-grid {
+    padding-bottom: pxtorem10(43);
+  }
+
   .Profile-header {
     padding: pxtorem10(46) 0 0;
     margin-bottom: pxtorem10(24);
