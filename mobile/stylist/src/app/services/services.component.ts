@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
-import { ServicesTemplate } from '../shared/stylist-service/stylist-models';
-import { StylistServiceProvider } from '../shared/stylist-service/stylist-service';
-import { PageNames } from '../shared/page-names';
+import { ServicesTemplate } from '~/core/stylist-service/stylist-models';
+import { StylistServiceProvider } from '~/core/stylist-service/stylist-service';
+import { PageNames } from '~/core/page-names';
 
 @IonicPage({
   segment: 'services'
@@ -20,10 +20,9 @@ export class ServicesComponent {
     public navParams: NavParams,
     private stylistService: StylistServiceProvider
   ) {
-    this.init();
   }
 
-  async init(): Promise<void> {
+  async ionViewWillLoad(): Promise<void> {
     this.serviceTemplates = (await this.stylistService.getServiceTemplateSets()).service_templates;
   }
 

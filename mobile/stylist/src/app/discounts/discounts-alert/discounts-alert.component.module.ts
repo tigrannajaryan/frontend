@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 import { DiscountsAlertComponent } from './discounts-alert.component';
-import { SharedModule } from '../../shared/shared.module';
+import { CoreModule } from '~/core/core.module';
 
 @NgModule({
   imports: [
     IonicPageModule.forChild(DiscountsAlertComponent),
-    SharedModule
+    CoreModule
   ],
   declarations: [
     DiscountsAlertComponent

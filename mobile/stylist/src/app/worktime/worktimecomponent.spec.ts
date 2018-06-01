@@ -7,7 +7,7 @@ import { WorktimeComponentModule } from './worktime.component.module';
 import { WorktimeApi } from './worktime.api';
 import { WorktimeApiMock } from './worktime.api.mock';
 import { Worktime } from './worktime.models';
-import { prepareSharedObjectsForTests } from '../shared/test-utils.spec';
+import { prepareSharedObjectsForTests } from '~/core/test-utils.spec';
 
 let fixture: ComponentFixture<WorktimeComponent>;
 let instance: WorktimeComponent;
@@ -30,7 +30,7 @@ describe('Pages: WorktimeComponent', () => {
   });
 
   it('should toggle weekday and steal from another card', async () => {
-    await instance.ionViewDidEnter();
+    await instance.ionViewWillLoad();
 
     // Test non-registration mode, when saving should result in refreshing of the page
     instance.registrationMode = false;

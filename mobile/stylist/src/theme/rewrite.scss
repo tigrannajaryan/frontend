@@ -1,3 +1,13 @@
+// TODO:
+// The code below should be changed.
+// We should not tweak body’s font-size in order to achieve diff font sizes for diff media.
+// It produces many bad effects:
+// – misunderstanding of pxtoem(…): browser always use 16px as base, it adds hidden magic to pxtoem
+// – strong cohesion of font-sizes
+// – it’s never used this way
+// :root styles should be introduced in order to use `rem` units on 16px bases:
+// :root { font-size: 16px; }
+
 // rewrite ionic def style
 ion-app.md, ion-app.ios, ion-app.wp{
   font-family: 'Arial', sans-serif;
@@ -44,7 +54,10 @@ button[color='bb_honey']{
   border: none;
 }
 
-
+// this need for fixing known bug https://forum.ionicframework.com/t/ion-input-shows-only-the-first-entered-character-on-ios/73107/4
+ion-input > input {
+  transform: translateZ(0px)
+}
 
 
 
@@ -75,6 +88,13 @@ button[color='bb_honey']{
       transform: translateY(-50%);
       margin: 0;
       font-size: pxtoem(20);
+
+      @media ($smartphone) {
+        font-size: pxtoem(18);
+      }
+      @media ($phone) {
+        font-size: pxtoem(16);
+      }
     }
 
 

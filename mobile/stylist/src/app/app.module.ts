@@ -9,12 +9,12 @@ import { IonicApp, IonicModule } from 'ionic-angular';
 
 import { MyAppComponent } from './app.component';
 import { Logger } from './shared/logger';
-import { AuthApiService } from './shared/auth-api-service/auth-api-service';
-import { StylistServiceProvider } from './shared/stylist-service/stylist-service';
-import { httpInterceptorProviders } from './shared/http-interceptors';
-import { SharedModule } from './shared/shared.module';
+import { AuthApiService } from '~/core/auth-api-service/auth-api-service';
+import { StylistServiceProvider } from '~/core/stylist-service/stylist-service';
+import { httpInterceptorProviders } from '~/core/http-interceptors';
+import { CoreModule } from '~/core/core.module';
 import { getMetaReducers, reducers } from './app.reducers';
-import { UnhandledErrorHandler } from './shared/unhandled-error-handler';
+import { UnhandledErrorHandler } from '~/shared/unhandled-error-handler';
 
 @NgModule({
   declarations: [
@@ -24,7 +24,7 @@ import { UnhandledErrorHandler } from './shared/unhandled-error-handler';
     BrowserModule,
     HttpClientModule,
     IonicModule.forRoot(MyAppComponent, {backButtonText: '', backButtonIcon: 'md-arrow-back'}),
-    SharedModule,
+    CoreModule,
 
     /**
      * StoreModule.forRoot is imported once in the root module, accepting a reducer

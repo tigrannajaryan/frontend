@@ -11,7 +11,7 @@
 
 
 <ion-content padding class="worktime">
-  <bb-nav [activePageIndex]="2"></bb-nav>
+  <bb-nav *ngIf="!isProfile" [activePageIndex]="2"></bb-nav>
 
   <h2 class="mb_h2">Hair is my hustle, let's set the schedule</h2>
   <!--shifts block start -->
@@ -65,6 +65,6 @@
 
   <!-- TODO: This needs to be extracted as a common component -->
   <div class="bb-wp-a">
-    <button (click)="saveChanges()" ion-button full color="dark" class="bb-btn-a">Next step</button>
+    <button (click)="saveChanges()" ion-button full color="dark" class="bb-btn-a">{{ isProfile ? 'Save' : 'Next step' }}</button>
   </div>
 </ion-content>

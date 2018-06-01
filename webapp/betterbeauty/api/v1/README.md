@@ -1,5 +1,50 @@
 # BetterBeauty API v.1
 
+- [**Authorization**](#authorization)
+  - [Getting auth token with email/password credentials](#getting-auth-token-with-emailpassword-credentials)
+  - [Getting auth token with Facebook credentials](#getting-auth-token-with-facebook-credentials)
+  - [Using auth token for authorization](#using-auth-token-for-authorization)
+  - [Refreshing auth token](#refreshing-auth-token)
+- [**Registration**](#registration)
+  - [Register user with Facebook credentials](#register-user-with-facebook-credentials)
+  - [Register user with email and password credentials](#register-user-with-email-and-password-credentials)
+- [**Stylist/Salon API**](#stylistsalon-api)
+    - [**Profile**](#profile)
+      - [Retrieve profile information](#retrieve-profile-information)
+      - [Create new profile](#create-new-profile)
+      - [Update existing profile with all required fields](#create-new-profile)
+      - [Partially update existing profile](#user-content-partially-update-existing-profile)
+      - [Add profile image file](#user-content-add-profile-image-file)
+    - [**Service templates and template sets**](#user-content-service-templates-and-template-sets)
+      - [Get list of service template sets](#user-content-get-list-of-service-template-sets)
+      - [Get full info for template set's services](#user-content-get-full-info-for-template-sets-services)
+    - [**Stylist's services**](#user-content-stylists-services)
+      - [Get list of services](#user-content-get-list-of-services)
+      - [Bulk add/update services](#user-content-bulk-addupdate-services)
+      - [Permanently delete a service](#user-content-permanently-delete-a-service)
+    - [**Availability**](#user-content-availability)
+      - [Retrieve availability](#user-content-retrieve-availability)
+      - [Set availability for one or multiple days](#user-content-set-availability-for-one-or-multiple-days)
+    - [**Discounts**](#user-content-discounts)
+      - [Retrieve discounts](#user-content-retrieve-discounts)
+      - [Set discounts](#user-content-set-discounts)
+    - [**Invitations**](#user-content-invitations)
+      - [Send invitation(s) to the client(s)](#user-content-send-invitations-to-the-clients)
+    - [**Appointments**](#user-content-appointments)
+      - [List existing appointments](#user-content-list-existing-appointments)
+      - [Retrieve single appointment](#user-content-retrieve-single-appointment)
+      - [Preview appointment](#user-content-preview-appointment)
+      - [Add appointment](#user-content-add-appointment)
+      - [Out-of-system client](#user-content-out-of-system-client)
+      - [In-the-system client](#user-content-in-the-system-client)
+      - [Change appointment status](#user-content-change-appointment-status)
+    - **Screens**
+      - [Today](#user-content-today-screen)
+      - [Settings](#user-content-settings-screen)
+    - **Uploads**
+      - [Files](#user-content-files-upload)
+      - [Images](#user-content-image-upload)
+
 # Authorization
 ## Getting auth token with email/password credentials
 In order to make requests to the API, client needs a JWT token. There are 2 ways to obtain
@@ -977,6 +1022,49 @@ curl -X GET \
 ```
 
 
+### Preview appointment
+
+This API does not actually create any parameter, but allows
+to preview resulting price and conflicting appointments (if any).
+
+**POST /api/v1/appointments/preview**
+
+- **service_uuid** (required) - uuid of a service to create appointment for
+- **datetime_start_at** (required) - datetime when appointment is to start
+- **client_uuid** (optional) - if supplied, client price may be different
+from the base price
+
+```
+curl -X POST \
+  http://apiserver/api/v1/stylist/appointments/preview \
+  -H 'Authorization: Token jwt_token' \
+  -F service_uuid=ca821ca4-3d34-454a-9aa7-daa291ce2840 \
+  -F 'datetime_start_at=2018-05-28 16:00' \
+  -F client_uuid=5637ce6c-7efd-4a0f-a9e4-86d6324d3a5d
+```
+
+**Response 200 OK**
+
+```
+{
+    "regular_price": 90,
+    "client_price": 90,
+    "duration_minutes": 60,
+    "conflicts_with": [
+        {
+            "uuid": "78d7ed13-d54e-4226-9bbc-85ff80251070",
+            "client_first_name": "Fred",
+            "client_last_name": "McBob",
+            "service_name": "Haircut",
+            "datetime_start_at": "2018-05-28T16:15:00-04:00",
+            "datetime_end_at": "2018-05-28T16:35:00-04:00",
+            "duration_minutes": 20
+        }
+    ]
+}
+```
+
+
 ### Add appointment
 
 There can be 2 possible situations:
@@ -1134,7 +1222,7 @@ to specify some extra information about checking out, etc.
 **Response 200 OK**
 ```
 {
-    "next_appointments": [
+    "today_appointments": [
         {
             "uuid": "f9c736e1-2d0d-4daf-b30f-3225dd51a313",
             "client_first_name": "Fred",
@@ -1165,6 +1253,96 @@ to specify some extra information about checking out, etc.
     "today_visits_count": 2,
     "week_visits_count": 7,
     "past_visits_count": 2
+}
+```
+
+## Settings screen
+
+This is a read-only API designed specifically to fetch information
+in one gulp for the Stylist app's Settings screen.
+
+**GET /api/v1/stylist/settings**
+
+**Response 200 OK**
+
+```
+{
+    "profile": {
+        "id": 2,
+        "first_name": "Jane",
+        "last_name": "McBob",
+        "phone": "95566889",
+        "profile_photo_url": null,
+        "salon_name": "Southern Wind",
+        "salon_address": "1158 George Ave, Milbrae"
+    },
+    "services_count": 1,
+    "services": [
+        {
+            "id": 3,
+            "name": "Updos",
+            "description": "",
+            "base_price": 90,
+            "duration_minutes": 20,
+            "is_enabled": true,
+            "photo_samples": [],
+            "category_uuid": "a8e74fbd-3385-492e-9fb4-44d632b5991a",
+            "category_name": "Special Occassions",
+            "service_uuid": "ca821ca4-3d34-454a-9aa7-daa291ce2840"
+        }
+    ],
+    "worktime": [
+        {
+            "weekday_iso": 1,
+            "work_start_at": "08:00:00",
+            "work_end_at": "17:00:00",
+            "is_available": true,
+            "booked_time_minutes": 20
+        },
+        {
+            "weekday_iso": 2,
+            "work_start_at": "08:00:00",
+            "work_end_at": "17:00:00",
+            "is_available": true,
+            "booked_time_minutes": 20
+        },
+        {
+            "weekday_iso": 3,
+            "work_start_at": "08:00:00",
+            "work_end_at": "17:00:00",
+            "is_available": true,
+            "booked_time_minutes": 0
+        },
+        {
+            "weekday_iso": 4,
+            "work_start_at": "08:00:00",
+            "work_end_at": "17:00:00",
+            "is_available": true,
+            "booked_time_minutes": 0
+        },
+        {
+            "weekday_iso": 5,
+            "work_start_at": "08:00:00",
+            "work_end_at": "17:00:00",
+            "is_available": true,
+            "booked_time_minutes": 0
+        },
+        {
+            "weekday_iso": 6,
+            "work_start_at": null,
+            "work_end_at": null,
+            "is_available": false,
+            "booked_time_minutes": 0
+        },
+        {
+            "weekday_iso": 7,
+            "work_start_at": null,
+            "work_end_at": null,
+            "is_available": false,
+            "booked_time_minutes": 0
+        }
+    ],
+    "total_week_booked_minutes": 40
 }
 ```
 

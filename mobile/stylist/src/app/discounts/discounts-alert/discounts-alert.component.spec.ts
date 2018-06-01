@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ViewController } from 'ionic-angular';
 import { TestUtils } from '../../../test';
 import { DiscountsAlertComponent } from './discounts-alert.component';
-import { ViewControllerMock } from '../../shared/view-controller-mock';
+import { ViewControllerMock } from '~/shared/view-controller-mock';
 
 let fixture: ComponentFixture<DiscountsAlertComponent>;
 let instance: DiscountsAlertComponent;

@@ -91,3 +91,23 @@ class Appointment(models.Model):
         self.status_updated_by = updated_by
         self.status_updated_at = current_now
         self.save(update_fields=['status', 'status_updated_by', 'status_updated_at', ])
+
+
+class AppointmentService(models.Model):
+    appointment = models.ForeignKey(Appointment, related_name='services', on_delete=models.CASCADE)
+    uuid = models.UUIDField(unique=True, default=uuid4, editable=False)
+
+    service_uuid = models.UUIDField()
+    service_name = models.CharField(max_length=255)
+
+    regular_price = models.DecimalField(max_digits=6, decimal_places=2)
+    client_price = models.DecimalField(max_digits=6, decimal_places=2)
+
+    duration = models.DurationField()
+
+    is_original = models.BooleanField(
+        verbose_name='Service with which appointment was created'
+    )
+
+    class Meta:
+        db_table = 'appointment_service'

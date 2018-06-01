@@ -7,10 +7,10 @@ import { META_REDUCERS, StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 
-import { Logger } from './shared/logger';
+import { Logger } from '~/shared/logger';
 
 import { MyAppComponent } from './app.component';
-import { SharedModule } from './shared/shared.module';
+import { SharedModule } from '~/core/shared.module';
 import { getMetaReducers, reducers } from './app.reducers';
 
 @NgModule({

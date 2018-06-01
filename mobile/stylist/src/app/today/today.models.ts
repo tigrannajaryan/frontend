@@ -17,7 +17,7 @@ export interface Appointment {
 }
 
 export interface Today {
-  next_appointments: Appointment[];
+  today_appointments: Appointment[];
   today_visits_count: number;
   week_visits_count: number;
   past_visits_count: number;

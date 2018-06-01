@@ -5,7 +5,7 @@
 
 
 <ion-content padding>
-  <bb-nav [activePageIndex]="1"></bb-nav>
+  <bb-nav *ngIf="!isProfile" [activePageIndex]="1"></bb-nav>
 
 
   <div class="bb-wp">
@@ -56,7 +56,7 @@
               </ion-row>
             </ion-item>
             <ion-item-options side="right" class="bb-table-swipe">
-              <button (click)="category.services.splice(i, 1)" ion-button color="danger">DELETE</button>
+              <button (click)="deleteService(category, i)" ion-button color="danger">DELETE</button>
             </ion-item-options>
           </ion-item-sliding>
         </ion-list>
@@ -86,7 +86,7 @@
 
 
     <div class="bb-wp-a">
-      <button (click)="saveChanges()" ion-button full color="dark" class="bb-btn-a">Next step</button>
+      <button (click)="saveChanges()" ion-button full color="dark" class="bb-btn-a">{{ isProfile ? 'Save' : 'Next step' }}</button>
     </div>
   </div>
 </ion-content>

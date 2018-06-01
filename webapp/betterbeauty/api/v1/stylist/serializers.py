@@ -1,19 +1,20 @@
 import datetime
 
 import uuid
-from typing import Dict, Optional, Tuple
+from typing import Dict, Optional
 
 from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
 from django.db import transaction
-from django.db.models import F
+from django.db.models import F, Sum
+from django.db.models.functions import Coalesce, ExtractWeekDay
 from django.shortcuts import get_object_or_404
 
 from rest_framework import serializers
 
 import appointment.error_constants as appointment_errors
 from appointment.constants import APPOINTMENT_STYLIST_SETTABLE_STATUSES
-from appointment.models import Appointment
+from appointment.models import Appointment, AppointmentService
 from appointment.types import AppointmentStatus
 from client.models import Client
 from core.models import TemporaryFile, User
@@ -110,6 +111,10 @@ class StylistServiceSerializer(serializers.ModelSerializer):
             service_uuid = service_template.uuid
 
         data_to_save.update({'category': category, 'service_uuid': service_uuid})
+
+        # FIXME: we need to replace `id` with `uuid` here and on frontend,
+        # FIXME: and subsequently remove `id` field from serializer
+
         try:
             service = stylist.services.get(pk=pk)
             return self.update(service, data_to_save)
@@ -121,6 +126,7 @@ class StylistServiceSerializer(serializers.ModelSerializer):
         fields = [
             'id', 'name', 'description', 'base_price', 'duration_minutes',
             'is_enabled', 'photo_samples', 'category_uuid', 'category_name',
+            'service_uuid',
         ]
 
 
@@ -347,9 +353,7 @@ class StylistProfileStatusSerializer(serializers.ModelSerializer):
         ])
 
     def get_has_invited_clients(self, stylist: Stylist) -> bool:
-        # We don't have model for this right now, so set to False
-        # TODO: reflect actual state
-        return False
+        return stylist.invites.exists()
 
 
 class StylistAvailableWeekDaySerializer(serializers.ModelSerializer):
@@ -380,6 +384,34 @@ class StylistAvailableWeekDaySerializer(serializers.ModelSerializer):
     class Meta:
         model = StylistAvailableWeekDay
         fields = ['weekday_iso', 'label', 'work_start_at', 'work_end_at', 'is_available', ]
+
+
+class StylistAvailableWeekDayWithBookedTimeSerializer(serializers.ModelSerializer):
+    weekday_iso = serializers.IntegerField(source='weekday')
+    booked_time_minutes = serializers.SerializerMethodField()
+
+    class Meta:
+        model = StylistAvailableWeekDay
+        fields = [
+            'weekday_iso', 'work_start_at', 'work_end_at', 'is_available', 'booked_time_minutes',
+        ]
+
+    def get_booked_time_minutes(self, weekday: StylistAvailableWeekDay) -> int:
+        """Return duration of appointments on this weekday during current week"""
+        stylist: Stylist = weekday.stylist
+        # ExtractWeekDay returns non-iso weekday, e.g. Sunday == 1, so need to cast
+        current_non_iso_week_day = (weekday.weekday % 7) + 1
+        total_week_duration: datetime.timedelta = stylist.get_current_week_appointments(
+            include_cancelled=False
+        ).annotate(
+            weekday=ExtractWeekDay('datetime_start_at')
+        ).filter(
+            weekday=current_non_iso_week_day
+        ).aggregate(
+            total_duration=Coalesce(Sum('duration'), datetime.timedelta(0))
+        )['total_duration']
+
+        return int(total_week_duration.total_seconds() / 60)
 
 
 class StylistAvailableWeekDayListSerializer(serializers.ModelSerializer):
@@ -445,7 +477,64 @@ class StylistDiscountsSerializer(serializers.ModelSerializer):
         ]
 
 
-class AppointmentSerializer(serializers.ModelSerializer):
+class AppointmentValidationMixin(object):
+
+    def validate_datetime_start_at(self, datetime_start_at: datetime.datetime):
+        context: Dict = getattr(self, 'context', {})
+        initial_data: Dict = getattr(self, 'initial_data', {})
+        if context.get('force_start', False):
+            return datetime_start_at
+
+        stylist: Stylist = context['stylist']
+        # check if appointment start is in the past
+        if datetime_start_at < stylist.get_current_now():
+            raise serializers.ValidationError(
+                appointment_errors.ERR_APPOINTMENT_IN_THE_PAST
+            )
+        # check if appointment doesn't fit working hours
+        service: Optional[StylistService] = stylist.services.filter(
+            service_uuid=initial_data['service_uuid']
+        ).last()
+
+        # if service is not found (which must be checked elsewhere) - just return
+        if not service:
+            return datetime_start_at
+
+        if not stylist.is_working_time(datetime_start_at, service.duration):
+            raise serializers.ValidationError(
+                appointment_errors.ERR_APPOINTMENT_OUTSIDE_WORKING_HOURS
+            )
+        # check if there are intersecting appointments
+        if stylist.get_appointments_in_datetime_range(
+            datetime_start_at, datetime_start_at + service.duration
+        ).exists():
+            raise serializers.ValidationError(
+                appointment_errors.ERR_APPOINTMENT_INTERSECTION
+            )
+        return datetime_start_at
+
+    def validate_service_uuid(self, service_uuid: str):
+        context: Dict = getattr(self, 'context', {})
+        stylist: Stylist = context['stylist']
+        service = stylist.services.filter(
+            service_uuid=service_uuid
+        ).last()
+        if not service:
+            raise serializers.ValidationError(
+                appointment_errors.ERR_SERVICE_DOES_NOT_EXIST
+            )
+        return service_uuid
+
+    def validate_client_uuid(self, client_uuid: Optional[str]):
+        if client_uuid:
+            if not Client.objects.filter(uuid=client_uuid).exists():
+                raise serializers.ValidationError(
+                    appointment_errors.ERR_CLIENT_DOES_NOT_EXIST
+                )
+        return client_uuid
+
+
+class AppointmentSerializer(AppointmentValidationMixin, serializers.ModelSerializer):
     uuid = serializers.UUIDField(read_only=True)
 
     client_uuid = serializers.UUIDField(source='client.uuid', allow_null=True, required=False)
@@ -483,52 +572,6 @@ class AppointmentSerializer(serializers.ModelSerializer):
             'service_uuid', 'datetime_start_at', 'duration_minutes', 'status',
         ]
 
-    def validate_datetime_start_at(self, datetime_start_at: datetime.datetime):
-        if self.context.get('force_start', False):
-            return datetime_start_at
-
-        stylist: Stylist = self.context['stylist']
-        # check if appointment start is in the past
-        if datetime_start_at < stylist.get_current_now():
-            raise serializers.ValidationError(
-                appointment_errors.ERR_APPOINTMENT_IN_THE_PAST
-            )
-        # check if appointment doesn't fit working hours
-        service = stylist.services.filter(
-            service_uuid=self.initial_data['service_uuid']
-        ).last()
-        if not stylist.is_working_time(datetime_start_at, service.duration):
-            raise serializers.ValidationError(
-                appointment_errors.ERR_APPOINTMENT_OUTSIDE_WORKING_HOURS
-            )
-        # check if there are intersecting appointments
-        if stylist.get_appointments_in_datetime_range(
-            datetime_start_at, datetime_start_at + service.duration
-        ).exists():
-            raise serializers.ValidationError(
-                appointment_errors.ERR_APPOINTMENT_INTERSECTION
-            )
-        return datetime_start_at
-
-    def validate_service_uuid(self, service_uuid: str):
-        stylist: Stylist = self.context['stylist']
-        service = stylist.services.filter(
-            service_uuid=service_uuid
-        ).last()
-        if not service:
-            raise serializers.ValidationError(
-                appointment_errors.ERR_SERVICE_DOES_NOT_EXIST
-            )
-        return service_uuid
-
-    def validate_client_uuid(self, client_uuid: Optional[str]):
-        if client_uuid:
-            if not Client.objects.filter(uuid=client_uuid).exists():
-                raise serializers.ValidationError(
-                    appointment_errors.ERR_CLIENT_DOES_NOT_EXIST
-                )
-        return client_uuid
-
     def create(self, validated_data):
         data = validated_data.copy()
         stylist: Stylist = self.context['stylist']
@@ -555,14 +598,63 @@ class AppointmentSerializer(serializers.ModelSerializer):
         # regular price copied from service, client's price is calculated
         data['regular_price'] = service.base_price
         datetime_start_at: datetime.datetime = data['datetime_start_at']
-        data['client_price'] = int(service.calculate_price_for_client(
+        client_price = int(service.calculate_price_for_client(
             datetime_start_at=datetime_start_at,
             client=client
         ))
+        data['client_price'] = client_price
         data['service_name'] = service.name
         data['duration'] = service.duration
 
-        return super(AppointmentSerializer, self).create(data)
+        # create first AppointmentService
+        with transaction.atomic():
+            appointment: Appointment = super(AppointmentSerializer, self).create(data)
+            AppointmentService.objects.create(
+                appointment=appointment,
+                service_name=service.name,
+                service_uuid=service.service_uuid,
+                regular_price=service.base_price,
+                client_price=client_price,
+                is_original=True,
+                duration=service.duration,
+            )
+
+        return appointment
+
+
+class AppointmentPreviewSerializer(serializers.ModelSerializer):
+    datetime_end_at = serializers.SerializerMethodField()
+    duration_minutes = DurationMinuteField(source='duration', read_only=True)
+
+    class Meta:
+        model = Appointment
+        fields = [
+            'uuid', 'client_first_name', 'client_last_name', 'service_name',
+            'datetime_start_at', 'datetime_end_at', 'duration_minutes',
+        ]
+
+    def get_datetime_end_at(self, appointment: Appointment):
+        datetime_end_at = appointment.datetime_start_at + appointment.duration
+        return serializers.DateTimeField().to_representation(datetime_end_at)
+
+
+class AppointmentPreviewRequestSerializer(AppointmentValidationMixin, serializers.Serializer):
+    client_uuid = serializers.UUIDField(
+        allow_null=True, required=False
+    )
+    service_uuid = serializers.UUIDField(required=True)
+    datetime_start_at = serializers.DateTimeField()
+
+
+class AppointmentPreviewResponseSerializer(serializers.Serializer):
+    regular_price = serializers.DecimalField(
+        max_digits=6, decimal_places=2, coerce_to_string=False, read_only=True,
+    )
+    client_price = serializers.DecimalField(
+        max_digits=6, decimal_places=2, coerce_to_string=False, read_only=True
+    )
+    duration_minutes = DurationMinuteField(source='duration', read_only=True)
+    conflicts_with = AppointmentPreviewSerializer(many=True)
 
 
 class StylistAppointmentStatusSerializer(serializers.ModelSerializer):
@@ -587,7 +679,7 @@ class StylistAppointmentStatusSerializer(serializers.ModelSerializer):
 
 
 class StylistTodaySerializer(serializers.ModelSerializer):
-    next_appointments = serializers.SerializerMethodField()
+    today_appointments = serializers.SerializerMethodField()
     today_visits_count = serializers.SerializerMethodField()
     week_visits_count = serializers.SerializerMethodField()
     past_visits_count = serializers.SerializerMethodField()
@@ -595,40 +687,21 @@ class StylistTodaySerializer(serializers.ModelSerializer):
     class Meta:
         model = Stylist
         fields = [
-            'next_appointments', 'today_visits_count', 'week_visits_count', 'past_visits_count',
+            'today_appointments', 'today_visits_count', 'week_visits_count', 'past_visits_count',
         ]
 
-    def _get_week_bounds(
-            self, stylist: Stylist
-    ) -> Tuple[datetime.datetime, datetime.datetime]:
-        current_now = stylist.get_current_now()
-        week_start: datetime.datetime = (
-            current_now - datetime.timedelta(
-                days=current_now.isoweekday() - 1
-            )
-        ).replace(hour=0, minute=0, second=0)
-        week_end: datetime.datetime = (
-            current_now + datetime.timedelta(
-                days=7 - current_now.isoweekday() + 1
-            )
-        ).replace(hour=0, minute=0, second=0)
-        return week_start, week_end
-
-    def get_next_appointments(self, stylist: Stylist):
-        """Return data for current, and if exists - next appointment"""
-        stylist_current_time = stylist.get_current_now()
-        next_midnight = (
-            stylist_current_time + datetime.timedelta(days=1)
-        ).replace(hour=0, minute=0, second=0)
-        next_appointments = stylist.get_appointments_in_datetime_range(
-            datetime_from=stylist_current_time,
-            datetime_to=next_midnight
-        )[:2]
-        if next_appointments.count():
-            if next_appointments.first().datetime_start_at > stylist_current_time:
-                # there's literally no *current* appointment, so we'll limit
-                # the query to just one next appointment
-                next_appointments = next_appointments[:1]
+    def get_today_appointments(self, stylist: Stylist):
+        """Return today's appointments that are still meaningful for the stylist"""
+        next_appointments = stylist.get_today_appointments(
+            upcoming_only=False,
+            include_cancelled=True
+        ).exclude(
+            status__in=[
+                AppointmentStatus.CANCELLED_BY_STYLIST,
+                AppointmentStatus.CHECKED_OUT,
+                AppointmentStatus.NO_SHOW,
+            ]
+        )
         return AppointmentSerializer(
             next_appointments, many=True
         ).data
@@ -637,7 +710,7 @@ class StylistTodaySerializer(serializers.ModelSerializer):
         return stylist.get_today_appointments(upcoming_only=False).count()
 
     def get_week_visits_count(self, stylist: Stylist):
-        week_start, week_end = self._get_week_bounds(stylist)
+        week_start, week_end = stylist.get_current_week_bounds()
         return stylist.get_appointments_in_datetime_range(
             datetime_from=week_start,
             datetime_to=week_end,
@@ -661,3 +734,33 @@ class InvitationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Invitation
         fields = ['phone', ]
+
+
+class StylistSettingsRetrieveSerializer(serializers.ModelSerializer):
+    profile = StylistSerializer(source='*')
+    services_count = serializers.IntegerField(source='services.count')
+    services = serializers.SerializerMethodField()
+    worktime = StylistAvailableWeekDayWithBookedTimeSerializer(
+        source='available_days', many=True
+    )
+    total_week_booked_minutes = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Stylist
+        fields = [
+            'profile', 'services_count', 'services', 'worktime', 'total_week_booked_minutes',
+        ]
+
+    def get_services(self, stylist: Stylist):
+        return StylistServiceSerializer(
+            stylist.services.all()[:3], many=True
+        ).data
+
+    def get_total_week_booked_minutes(self, stylist: Stylist) -> int:
+        total_week_duration: datetime.timedelta = stylist.get_current_week_appointments(
+            include_cancelled=False
+        ).aggregate(
+            total_duration=Coalesce(Sum('duration'), datetime.timedelta(0))
+        )['total_duration']
+
+        return int(total_week_duration.total_seconds() / 60)

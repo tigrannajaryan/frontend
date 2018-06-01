@@ -2,7 +2,12 @@ from .defaults import *  # noqa
 
 LEVEL = 'staging'
 
-ALLOWED_HOSTS = ('*.admindev.betterbeauty.io', 'admindev.betterbeauty.io', )
+ALLOWED_HOSTS = (
+    '*.admindev.betterbeauty.io',
+    'admindev.betterbeauty.io',
+    '*.admindev.madebeauty.com',
+    'admindev.madebeauty.com',
+)
 
 DEBUG = True
 

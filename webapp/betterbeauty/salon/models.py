@@ -2,7 +2,7 @@ import datetime
 import uuid
 
 from decimal import Decimal
-from typing import Optional
+from typing import Optional, Tuple
 
 from django.conf import settings
 from django.contrib.postgres.fields import DateRangeField
@@ -172,26 +172,26 @@ class Stylist(models.Model):
             datetime.datetime.now()
         )
 
-    def get_today_appointments(
-            self, upcoming_only=True, include_cancelled=False
-    ) -> models.QuerySet:
-        current_now: datetime.datetime = self.get_current_now()
-
-        datetime_from = current_now.replace(hour=0, minute=0, second=0)
-        if upcoming_only is True:
-            datetime_from = current_now - F('duration')
-
-        next_midnight = (
-            current_now + datetime.timedelta(days=1)
-        ).replace(hour=0, minute=0, second=0)
-
-        return self.get_appointments_in_datetime_range(
-            datetime_from, next_midnight, include_cancelled
-        )
-
     def with_salon_tz(self, date_time: datetime.datetime) -> datetime.datetime:
         """Convert supplied timezone-aware datetime to salon's timezone"""
         return date_time.astimezone(self.salon.timezone)
+
+    def get_current_week_bounds(
+            self
+    ) -> Tuple[datetime.datetime, datetime.datetime]:
+        """Return tuple of current week bounds"""
+        current_now = self.get_current_now()
+        week_start: datetime.datetime = (
+            current_now - datetime.timedelta(
+                days=current_now.isoweekday() - 1
+            )
+        ).replace(hour=0, minute=0, second=0)
+        week_end: datetime.datetime = (
+            current_now + datetime.timedelta(
+                days=7 - current_now.isoweekday() + 1
+            )
+        ).replace(hour=0, minute=0, second=0)
+        return week_start, week_end
 
     def get_appointments_in_datetime_range(
             self,
@@ -209,7 +209,6 @@ class Stylist(models.Model):
         :param kwargs: any optional filter kwargs to be applied
         :return: Resulting Appointment queryset
         """
-
         appointments = self.appointments.filter(
             **kwargs
         ).order_by('datetime_start_at')
@@ -234,6 +233,35 @@ class Stylist(models.Model):
                 AppointmentStatus.CANCELLED_BY_STYLIST
             ])
         return appointments
+
+    def get_today_appointments(
+            self, upcoming_only=True, include_cancelled=False
+    ) -> models.QuerySet:
+        """Return today's appointments, aware of stylist's timezone"""
+        current_now: datetime.datetime = self.get_current_now()
+
+        datetime_from = current_now.replace(hour=0, minute=0, second=0)
+        if upcoming_only is True:
+            datetime_from = current_now - F('duration')
+
+        next_midnight = (
+            current_now + datetime.timedelta(days=1)
+        ).replace(hour=0, minute=0, second=0)
+
+        return self.get_appointments_in_datetime_range(
+            datetime_from, next_midnight, include_cancelled=include_cancelled
+        )
+
+    def get_current_week_appointments(
+            self, include_cancelled=False
+    ) -> models.QuerySet:
+        """Return appointments in timezone-aware bounds of stylist's current week"""
+        week_start, week_end = self.get_current_week_bounds()
+        return self.get_appointments_in_datetime_range(
+            datetime_from=week_start,
+            datetime_to=week_end,
+            include_cancelled=include_cancelled
+        )
 
     def is_working_time(
             self, date_time: datetime.datetime, duration: Optional[datetime.timedelta]=None
@@ -357,7 +385,7 @@ class StylistDateRangeDiscount(models.Model):
 
 
 class Invitation(models.Model):
-    stylist = models.ForeignKey(Stylist, on_delete=models.CASCADE)
+    stylist = models.ForeignKey(Stylist, on_delete=models.CASCADE, related_name='invites')
     phone = models.CharField(max_length=15)
     status = models.CharField(
         max_length=15, choices=INVITATION_STATUS_CHOICES, default=InvitationStatus.UNSENT

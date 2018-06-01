@@ -12,6 +12,8 @@
     "component-selector": [false, "TODO: disabled temporarily. see http://codelyzer.com/rules/component-selector/ for more details and to enable."],
     "trackBy-function": [false, "TODO: unclear if trackBy universaly needed. Will explore this later."],
     "newline-per-chained-call": false,
-    "no-implicit-dependencies": false
+    "no-implicit-dependencies": false,
+    "prefer-conditional-expression": false,
+    "newline-before-return": false
   }
 }

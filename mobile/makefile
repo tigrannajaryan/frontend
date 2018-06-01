@@ -6,50 +6,84 @@ all: build-apps
 .PHONY: preinstall-dir preinstall-shared build-apps build-dir build-client build-stylist
 .PHONY: clean clean-shared clean-client clean-stylist
 
-preinstall-dir:
-	@echo Installing $(INSTALLDIR) prerequisites...
-	@cd $(INSTALLDIR) && npm i --silent
-	@echo Installed $(INSTALLDIR) prerequisites.
+# Define path separator symbol and
+
+ifeq ($(OS),Windows_NT)
+PATHSEP2=\\
+else
+PATHSEP2=/
+endif
+
+PATHSEP=$(strip $(PATHSEP2))
+
+# Define SYMLINK command
+
+ifeq ($(OS),Windows_NT)
+define SYMLINK
+mklink /D "$2" "$1" || (echo ERROR: Cannot create symbolink link $2. Run make as Administrator ^(required one time only^). && exit 1)
+endef
+else
+define SYMLINK
+ln -s $1 $2
+endef
+endif
+
+# Define RM command
+ifeq ($(OS),Windows_NT)
+RMDIR=rmdir /Q /S
+else
+RMDIR=rm -rf
+endif
+
+# See if logging is enabled. To enable logging call make with LOG=yes parameter
+ifeq "$(LOG)" "yes"
+	L=
+	SMAKE:=+$(MAKE)
+else
+	L=@
+	SMAKE:=+@$(MAKE) -s
+endif
 
 
-preinstall-shared:
-	@$(MAKE) -s preinstall-dir INSTALLDIR=shared
+$(INSTALLDIR)/src/app/shared:
+	$(call SYMLINK,..$(PATHSEP)..$(PATHSEP)..$(PATHSEP)shared,$@)
+
+preinstall-dir: $(INSTALLDIR)/src/app/shared
+	$(L)echo Installing $(INSTALLDIR) prerequisites...
+	$(L)cd $(INSTALLDIR) && npm i --silent --no-save
+	$(L)echo Installed $(INSTALLDIR) prerequisites.
 
 
 build-apps: build-client build-stylist
 
 
 preinstall-client:
-	@$(MAKE) -s preinstall-dir INSTALLDIR=client
+	$(SMAKE) preinstall-dir INSTALLDIR=client
 
 preinstall-stylist:
-	@$(MAKE) -s preinstall-dir INSTALLDIR=stylist
+	$(SMAKE) preinstall-dir INSTALLDIR=stylist
 
 
 npm-build-dir:
-	@echo Building $(BUILDDIR)...
-	@cd $(BUILDDIR) && npm run build-full --silent
-	@echo Build $(BUILDDIR) finished.
+	$(L)echo Building $(BUILDDIR)...
+	$(L)cd $(BUILDDIR) && npm run build-full --silent
+	$(L)echo Build $(BUILDDIR) finished.
 
-build-client: preinstall-shared preinstall-client
-	@$(MAKE) -s npm-build-dir BUILDDIR=client
-
-
-build-stylist: preinstall-shared preinstall-stylist
-	@$(MAKE) -s npm-build-dir BUILDDIR=stylist
+build-client: preinstall-client
+	$(SMAKE) npm-build-dir BUILDDIR=client
 
 
-clean: clean-shared clean-client clean-stylist
+build-stylist: preinstall-stylist
+	$(SMAKE) npm-build-dir BUILDDIR=stylist
 
 
-clean-shared:
-	cd shared		&& \
-	rm -rf node_modules
+clean: clean-client clean-stylist
+
 
 clean-client:
 	cd client		&& \
-	rm -rf node_modules www platforms plugins .sourcemaps TESTS.xml
+	$(RMDIR) node_modules www platforms plugins .sourcemaps TESTS.xml || echo
 
 clean-stylist:
 	cd stylist		&& \
-	rm -rf node_modules www platforms plugins .sourcemaps TESTS.xml
+	$(RMDIR) node_modules www platforms plugins .sourcemaps TESTS.xml || echo

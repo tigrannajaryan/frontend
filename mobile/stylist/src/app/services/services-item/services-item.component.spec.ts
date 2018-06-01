@@ -1,12 +1,12 @@
 import { async, TestBed } from '@angular/core/testing';
+import { HttpClientModule } from '@angular/common/http';
 import { IonicModule, NavController, NavParams, ViewController } from 'ionic-angular';
-import { SharedModule } from '../../shared/shared.module';
-import { StylistServiceProvider } from '../../shared/stylist-service/stylist-service';
+import { CoreModule } from '~/core/core.module';
+import { StylistServiceProvider } from '~/core/stylist-service/stylist-service';
 import { ServiceItemComponent, ServiceItemComponentData } from './services-item.component';
 import { NavMock } from '../services.component.spec';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { prepareSharedObjectsForTests } from '../../shared/test-utils.spec';
-import { ViewControllerMock } from '../../shared/view-controller-mock';
+import { prepareSharedObjectsForTests } from '~/core/test-utils.spec';
+import { ViewControllerMock } from '~/shared/view-controller-mock';
 
 describe('Pages: ServiceItemComponent', () => {
   let fixture;
@@ -19,9 +19,8 @@ describe('Pages: ServiceItemComponent', () => {
       declarations: [ServiceItemComponent],
       imports: [
         IonicModule.forRoot(ServiceItemComponent),
-        SharedModule,
-        ReactiveFormsModule,
-        FormsModule
+        CoreModule,
+        HttpClientModule
       ],
       providers: [
         StylistServiceProvider,
@@ -60,7 +59,7 @@ describe('Pages: ServiceItemComponent', () => {
       service: ''
     });
 
-    component.init();
+    component.ionViewWillLoad();
 
     expect(component.data).toBeDefined();
   });
@@ -70,13 +69,20 @@ describe('Pages: ServiceItemComponent', () => {
       categoryUuid: 'string'
     };
 
+    component.createForm();
+
     component.setFormData(data);
     expect(component.form.get('categoryUuid').value).toEqual('string');
   });
 
-  it('should dismiss modal on service delete', () => {
+  it('should dismiss loading on service delete', () => {
     const loadingCtrl = fixture.debugElement.injector.get(ViewController);
     spyOn(loadingCtrl, 'dismiss');
+
+    const navParams = fixture.debugElement.injector.get(NavParams);
+    navParams.get = jasmine.createSpy('get').and.returnValue({id: 1});
+
+    component.ionViewWillLoad();
 
     component.onServiceDelete();
 
@@ -89,6 +95,8 @@ describe('Pages: ServiceItemComponent', () => {
       service: [],
       categoryUuid: ''
     });
+
+    component.createForm();
 
     component.submit();
 

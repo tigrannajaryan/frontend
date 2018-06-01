@@ -2,10 +2,10 @@ import { async, TestBed } from '@angular/core/testing';
 import { ServicesComponent } from './services.component';
 import { IonicModule, NavController, NavParams } from 'ionic-angular';
 import { HttpClient } from '@angular/common/http';
-import { SharedModule } from '../shared/shared.module';
-import { ServiceTemplatesResponse, StylistServiceProvider } from '../shared/stylist-service/stylist-service';
-import { ServicesTemplate } from '../shared/stylist-service/stylist-models';
-import { prepareSharedObjectsForTests } from '../shared/test-utils.spec';
+import { CoreModule } from '~/core/core.module';
+import { ServiceTemplatesResponse, StylistServiceProvider } from '~/core/stylist-service/stylist-service';
+import { ServicesTemplate } from '~/core/stylist-service/stylist-models';
+import { prepareSharedObjectsForTests } from '~/core/test-utils.spec';
 
 export class NavMock {
   push(): any {
@@ -26,7 +26,7 @@ describe('Pages: ServicesComponent', () => {
       declarations: [ServicesComponent],
       imports: [
         IonicModule.forRoot(ServicesComponent),
-        SharedModule
+        CoreModule
       ],
       providers: [
         StylistServiceProvider,

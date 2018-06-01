@@ -17,3 +17,8 @@ $browser-context: 16;
   $remSize: $size / #{$browser-context};
   @return #{$remSize}rem;
 }
+
+// for 10px base :root
+@function pxtorem10($size) {
+  @return pxtorem($size * 1.6);
+}

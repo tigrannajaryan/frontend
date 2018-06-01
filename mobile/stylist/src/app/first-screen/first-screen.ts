@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-import { AlertController, IonicPage, NavController } from 'ionic-angular';
+import { AlertController, IonicPage, LoadingController, NavController } from 'ionic-angular';
 import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook';
 
-import { profileStatusToPage } from '~/shared/functions';
-import { AuthApiService, FbAuthCredentials, UserRole } from '~/shared/auth-api-service/auth-api-service';
-import { PageNames } from '~/shared/page-names';
+import { profileStatusToPage } from '~/core/functions';
+import { AuthApiService, FbAuthCredentials, UserRole } from '~/core/auth-api-service/auth-api-service';
+import { PageNames } from '~/core/page-names';
 import { LoginOrRegisterType } from '~/login-register/login-register.component';
 
 // Permissions of Facebook Login
@@ -18,13 +18,15 @@ const connected = 'connected';
   templateUrl: 'first-screen.html'
 })
 export class FirstScreenComponent {
-  LoginOrRegisterType = LoginOrRegisterType;
+  // this should be here if we using enum in html
+  protected LoginOrRegisterType = LoginOrRegisterType;
 
   constructor(
     private navCtrl: NavController,
     private fb: Facebook,
     private authServiceProvider: AuthApiService,
-    private alertCtrl: AlertController
+    private alertCtrl: AlertController,
+    private loadingCtrl: LoadingController
   ) {
   }
 
@@ -33,7 +35,9 @@ export class FirstScreenComponent {
   }
 
   async loginByFb(): Promise<void>  {
+    const loader = this.loadingCtrl.create();
     try {
+      loader.present();
       const fbResponse: FacebookLoginResponse = await this.fb.login(permission);
 
       if (fbResponse.status === connected) {
@@ -57,6 +61,8 @@ export class FirstScreenComponent {
         buttons: ['Dismiss']
       });
       alert.present();
+    } finally {
+      loader.dismiss();
     }
   }
 }

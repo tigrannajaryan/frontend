@@ -10,16 +10,15 @@
 </ion-header>
 
 <ion-content padding>
-  <bb-nav [activePageIndex]="0"></bb-nav>
+  <bb-nav *ngIf="!isProfile" [activePageIndex]="0"></bb-nav>
 
 
-  <form class="form" [formGroup]="form" (ngSubmit)="next()">
+  <form class="form" [formGroup]="form" (ngSubmit)="submit()">
     <ion-list>
       <div class="p-rs-circle">
         <div [style.backgroundImage]="form.get('vars.image').value" class="p-rs-circle-photo"></div>
-        <label class="p-rs-circle-add">
+        <label (click)="processPhoto()" class="p-rs-circle-add">
           <i class="bb-icon-camera p-rs-circle-add-icon"></i>
-          <input (change)="processWebImage($event)" type="file" style="display: none;">
         </label>
       </div>
 
@@ -59,7 +58,7 @@
       </ion-item>
 
       <br />
-      <button ion-button color="dark" full type="submit" [disabled]="!form.valid">Next step</button>
+      <button ion-button color="dark" full type="submit" [disabled]="!form.valid">{{ isProfile ? 'Save' : 'Next step' }}</button>
     </ion-list>
   </form>
 </ion-content>

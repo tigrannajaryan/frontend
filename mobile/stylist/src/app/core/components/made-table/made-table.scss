@@ -1,0 +1,24 @@
+made-table .Table {
+  width: 100%;
+  font-size: $t-base;
+
+  .Table-col {
+    padding: pxtorem10(20) pxtorem10(16) pxtorem10(16);
+    color: color($colors, dark);
+    border-bottom: 1px solid color($grayscale, 200);
+
+    &:first-child { padding-left: 0; }
+    &:last-child { padding-right: 0; }
+  }
+
+  .Table-header {
+    .Table-col {
+      padding-top: 0;
+      padding-bottom: 0;
+      font-weight: normal;
+      color: color($grayscale, 400);
+      text-align: left;
+      border-bottom: none;
+    }
+  }
+}
