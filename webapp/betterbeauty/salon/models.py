@@ -8,7 +8,8 @@ from django.conf import settings
 from django.contrib.postgres.fields import DateRangeField
 from django.core.validators import MaxValueValidator
 from django.db import models
-from django.db.models import F
+from django.db.models import F, Sum
+from django.db.models.functions import Coalesce
 
 from timezone_field import TimeZoneField
 
@@ -214,8 +215,10 @@ class Stylist(models.Model):
         ).order_by('datetime_start_at')
 
         if datetime_from is not None:
-            appointments = appointments.filter(
-                datetime_start_at__gte=datetime_from - F('duration')
+            appointments = appointments.annotate(
+                services_duration=Coalesce(Sum('services__duration'), datetime.timedelta(0))
+            ).filter(
+                datetime_start_at__gte=datetime_from - F('services_duration')
             )
 
         if datetime_to is not None:
@@ -242,7 +245,7 @@ class Stylist(models.Model):
 
         datetime_from = current_now.replace(hour=0, minute=0, second=0)
         if upcoming_only is True:
-            datetime_from = current_now - F('duration')
+            datetime_from = current_now
 
         next_midnight = (
             current_now + datetime.timedelta(days=1)

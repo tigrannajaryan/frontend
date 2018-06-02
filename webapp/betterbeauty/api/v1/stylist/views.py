@@ -1,4 +1,5 @@
 import datetime
+from decimal import Decimal
 from typing import Optional
 
 from annoying.functions import get_object_or_None
@@ -17,7 +18,7 @@ from api.common.permissions import (
 from appointment.models import Appointment
 from appointment.types import AppointmentStatus
 from client.models import Client
-from core.utils import post_or_get
+from core.utils import calculate_card_fee, calculate_tax, post_or_get
 from salon.models import ServiceTemplateSet, Stylist, StylistService
 from .constants import MAX_APPOINTMENTS_PER_REQUEST
 from .serializers import (
@@ -252,24 +253,44 @@ class StylistAppointmentPreviewView(views.APIView):
             stylist: Stylist,
             preview_request: AppointmentPreviewRequest
     ) -> AppointmentPreviewResponse:
-        service: StylistService = stylist.services.get(
-            service_uuid=preview_request.service_uuid
-        )
+        # need to use comprehension to accommodate possible duplicated
+        # services, which is actually a valid case (e.g. double conditioning)
+        services = [
+            stylist.services.get(service_uuid=service['service_uuid'])
+            for service in preview_request.services
+        ]
         client: Optional[Client] = Client.objects.filter(
             uuid=preview_request.client_uuid
         ) if preview_request.client_uuid else None
 
+        total_client_price_before_tax = Decimal(sum(
+            [
+                service.calculate_price_for_client(
+                    datetime_start_at=preview_request.datetime_start_at,
+                    client=client
+                ) for service in services
+            ], Decimal(0))
+        )
+
+        total_tax = calculate_tax(total_client_price_before_tax)
+        total_card_fee = calculate_card_fee(total_client_price_before_tax + total_tax)
+
+        duration = sum(
+            [service.duration for service in services], datetime.timedelta(0)
+        )
+
+        # TODO: rework along with time gap check implementation
+        conflicts_with = stylist.get_appointments_in_datetime_range(
+            preview_request.datetime_start_at,
+            preview_request.datetime_start_at + duration
+        )
+
         return AppointmentPreviewResponse(
-            regular_price=service.base_price,
-            client_price=service.calculate_price_for_client(
-                datetime_start_at=preview_request.datetime_start_at,
-                client=client
-            ),
-            duration=service.duration,
-            conflicts_with=stylist.get_appointments_in_datetime_range(
-                preview_request.datetime_start_at,
-                preview_request.datetime_start_at + service.duration
-            )
+            total_client_price_before_tax=total_client_price_before_tax,
+            total_tax=total_tax,
+            total_card_fee=total_card_fee,
+            duration=duration,
+            conflicts_with=conflicts_with
         )
 
 

@@ -971,25 +971,41 @@ curl -X GET -H 'Authorization: Token jwt_token' \
         "uuid": "f9c736e1-2d0d-4daf-b30f-3225dd51a313",
         "client_first_name": "Fred",
         "client_last_name": "McBob",
-        "regular_price": 90,
-        "client_price": 90,
-        "service_name": "Haircut",
-        "service_uuid": "ca821ca4-3d34-454a-9aa7-daa291ce2840",
+        "total_client_price_before_tax": 90,
+        "total_card_fee": 2.7,
+        "total_tax": 7.98,
         "datetime_start_at": "2018-05-15T18:00:00-04:00",
         "duration_minutes": 30,
-        "status": "new"
+        "status": "new",
+        "services": [
+            {
+                "uuid": "ca821ca4-3d34-454a-9aa7-daa291ce2840",
+                "service_name": "Updos",
+                "client_price": 90,
+                "regular_price": 90,
+                "is_original": true
+            }
+        ]
     },
     {
         "uuid": "59636867-a7ba-4736-ac89-51aefeddec4e",
         "client_first_name": "John",
         "client_last_name": "Connor",
-        "regular_price": 90,
-        "client_price": 90,
-        "service_name": "Updos",
-        "service_uuid": "ca821ca4-3d34-454a-9aa7-daa291ce2840",
+        "total_client_price_before_tax": 90,
+        "total_card_fee": 2.7,
+        "total_tax": 7.98,
         "datetime_start_at": "2018-05-16T18:00:00-04:00",
         "duration_minutes": 60,
-        "status": "cancelled_by_stylist"
+        "status": "cancelled_by_stylist",
+        "services": [
+            {
+                "uuid": "ca821ca4-3d34-454a-9aa7-daa291ce2840",
+                "service_name": "Updos",
+                "client_price": 90,
+                "regular_price": 90,
+                "is_original": true
+            }
+        ]
     }
 ]
 ```
@@ -1006,18 +1022,33 @@ curl -X GET \
 **Response 200 OK**
 ```
 {
-    "uuid": "8cdc4851-62a6-4f91-9ff1-dba9d346f0a1",
-    "client_uuid": "5637ce6c-7efd-4a0f-a9e4-86d6324d3a5d",
-    "client_first_name": "Fred",
-    "client_last_name": "McBob",
-    "client_phone": "123456789",
-    "regular_price": 90,
-    "client_price": 90,
-    "service_name": "Updos",
-    "service_uuid": "ca821ca4-3d34-454a-9aa7-daa291ce2840",
-    "datetime_start_at": "2018-05-19T22:00:00-04:00",
-    "duration_minutes": 60,
-    "status": "new"
+    "uuid": "21ac69e7-70e9-4dbe-b550-f989c3a76e93",
+    "client_first_name": Fred,
+    "client_last_name": McBob,
+    "datetime_start_at": "2018-05-31T23:00:00-04:00",
+    "duration_minutes": 165,
+    "status": "new",
+    "total_tax": 26.18,
+    "total_card_fee": 8.83,
+    "total_client_price_before_tax": 295,
+    "services": [
+        {
+            "uuid": "48a468a3-6dc3-4236-b91f-1c6a92b911b4",
+            "service_name": "Balayage",
+            "service_uuid": "f23748c1-9201-4408-8114-72caeac291da",
+            "client_price": 250,
+            "regular_price": 250,
+            "is_original": true
+        },
+        {
+            "uuid": "55f5af77-5604-4285-8ce9-4751cf490142",
+            "service_name": "Blow out",
+            "service_uuid": "c037f7be-2d29-4c52-94c1-c3e328ec202b",
+            "client_price": 45,
+            "regular_price": 45,
+            "is_original": false
+        }
+    ]
 }
 ```
 
@@ -1038,29 +1069,52 @@ from the base price
 curl -X POST \
   http://apiserver/api/v1/stylist/appointments/preview \
   -H 'Authorization: Token jwt_token' \
-  -F service_uuid=ca821ca4-3d34-454a-9aa7-daa291ce2840 \
-  -F 'datetime_start_at=2018-05-28 16:00' \
-  -F client_uuid=5637ce6c-7efd-4a0f-a9e4-86d6324d3a5d
+  -H 'Content-Type: application/json' \
+  -d '{
+	"datetime_start_at": "2018-05-31 23:10",
+	"services": [
+		{"service_uuid": "f23748c1-9201-4408-8114-72caeac291da"},
+		{"service_uuid": "c037f7be-2d29-4c52-94c1-c3e328ec202b"}
+	]
+}'
 ```
 
 **Response 200 OK**
 
 ```
 {
-    "regular_price": 90,
-    "client_price": 90,
-    "duration_minutes": 60,
+    "duration_minutes": 165,
     "conflicts_with": [
         {
-            "uuid": "78d7ed13-d54e-4226-9bbc-85ff80251070",
+            "uuid": "21ac69e7-70e9-4dbe-b550-f989c3a76e93",
             "client_first_name": "Fred",
             "client_last_name": "McBob",
-            "service_name": "Haircut",
-            "datetime_start_at": "2018-05-28T16:15:00-04:00",
-            "datetime_end_at": "2018-05-28T16:35:00-04:00",
-            "duration_minutes": 20
+            "datetime_start_at": "2018-05-31T23:00:00-04:00",
+            "datetime_end_at": "2018-06-01T01:45:00-04:00",
+            "duration_minutes": 165,
+            "services": [
+                {
+                    "uuid": "48a468a3-6dc3-4236-b91f-1c6a92b911b4",
+                    "service_name": "Balayage",
+                    "service_uuid": "f23748c1-9201-4408-8114-72caeac291da",
+                    "client_price": 250,
+                    "regular_price": 250,
+                    "is_original": true
+                },
+                {
+                    "uuid": "55f5af77-5604-4285-8ce9-4751cf490142",
+                    "service_name": "Blow out",
+                    "service_uuid": "c037f7be-2d29-4c52-94c1-c3e328ec202b",
+                    "client_price": 45,
+                    "regular_price": 45,
+                    "is_original": false
+                }
+            ]
         }
-    ]
+    ],
+    "total_client_price_before_tax": 295,
+    "total_tax": 26.18,
+    "total_card_fee": 8.83
 }
 ```
 
@@ -1099,7 +1153,11 @@ curl -X POST \
   -d '{
         "client_first_name": "John",
         "client_last_name": "Connor",
-        "service_uuid": "ca821ca4-3d34-454a-9aa7-daa291ce2840",
+        "services": [
+            {
+                "service_uuid": "ca821ca4-3d34-454a-9aa7-daa291ce2840",
+            }
+        ],
         "datetime_start_at": "2018-05-20T18:00:00-04:00"
        }'
 ```
@@ -1114,7 +1172,11 @@ curl -X POST \
   -d '{
 
         "client_uuid": "5637ce6c-7efd-4a0f-a9e4-86d6324d3a5d",
-        "service_uuid": "ca821ca4-3d34-454a-9aa7-daa291ce2840",
+        "services": [
+            {
+                "service_uuid": "ca821ca4-3d34-454a-9aa7-daa291ce2840",
+            }
+        ],
         "datetime_start_at": "2018-05-20T14:00:00-04:00"
        }'
 ```
@@ -1126,13 +1188,21 @@ curl -X POST \
     "uuid": "a406c7cc-17c2-493a-90e0-9091f740be37",
     "client_first_name": "Fred",
     "client_last_name": "McBob",
-    "regular_price": 90,
-    "client_price": 90,
-    "service_name": "Updos",
-    "service_uuid": "ca821ca4-3d34-454a-9aa7-daa291ce2840",
+    "total_client_price_before_tax": 90,
+    "total_card_fee": 2.7,
+    "total_tax": 7.98,
     "datetime_start_at": "2018-05-20T18:00:00-04:00",
     "duration_minutes": 60,
-    "status": "new"
+    "status": "new",
+    "services": [
+        {
+            "uuid": "ca821ca4-3d34-454a-9aa7-daa291ce2840",
+            "service_name": "Updos",
+            "client_price": 90,
+            "regular_price": 90,
+            "is_original": true
+        }
+    ]
 }
 ```
 
@@ -1228,29 +1298,33 @@ to specify some extra information about checking out, etc.
             "client_first_name": "Fred",
             "client_last_name": "McBob",
             "client_phone": "",
-            "regular_price": 90,
-            "client_price": 90,
-            "service_name": "Haircut",
-            "service_uuid": "ca821ca4-3d34-454a-9aa7-daa291ce2840",
-            "datetime_start_at": "2018-05-15T16:00:00-04:00",
-            "duration_minutes": 30,
-            "status": "new"
-        },
-        {
-            "uuid": "59636867-a7ba-4736-ac89-51aefeddec4e",
-            "client_first_name": "John",
-            "client_last_name": "Connor",
-            "client_phone": "",
-            "regular_price": 90,
-            "client_price": 90,
-            "service_name": "Updos",
-            "service_uuid": "ca821ca4-3d34-454a-9aa7-daa291ce2840",
-            "datetime_start_at": "2018-05-15T18:00:00-04:00",
-            "duration_minutes": 60,
-            "status": "new"
+            "datetime_start_at": "2018-05-31T23:00:00-04:00",
+            "duration_minutes": 165,
+            "status": "new",
+            "total_tax": 26.18,
+            "total_card_fee": 8.83,
+            "total_client_price_before_tax": 295,
+            "services": [
+                {
+                    "uuid": "48a468a3-6dc3-4236-b91f-1c6a92b911b4",
+                    "service_name": "Balayage",
+                    "service_uuid": "f23748c1-9201-4408-8114-72caeac291da",
+                    "client_price": 250,
+                    "regular_price": 250,
+                    "is_original": true
+                },
+                {
+                    "uuid": "55f5af77-5604-4285-8ce9-4751cf490142",
+                    "service_name": "Blow out",
+                    "service_uuid": "c037f7be-2d29-4c52-94c1-c3e328ec202b",
+                    "client_price": 45,
+                    "regular_price": 45,
+                    "is_original": true
+                }
+            ]
         }
     ],
-    "today_visits_count": 2,
+    "today_visits_count": 1,
     "week_visits_count": 7,
     "past_visits_count": 2
 }

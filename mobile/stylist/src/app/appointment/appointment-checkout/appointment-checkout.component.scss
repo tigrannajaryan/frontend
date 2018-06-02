@@ -1,0 +1,328 @@
+page-checkout {
+  .p-c{
+    &-top{
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: color($colors, white);
+      box-shadow: 0 0 10px 5px color($colors, color7);
+      border-radius: 25px;
+      padding: pxtorem(55) pxtorem(65);
+
+      @media ($tablet) {
+        border-radius: 20px;
+        padding: pxtorem(44) pxtorem(50);
+      }
+      @media ($phone) {
+        border-radius: 15px;
+        padding: pxtorem(32) pxtorem(40);
+      }
+
+      &-time{
+        font-size: pxtorem(66);
+        font-weight: 700;
+        color: color($colors, dark);
+
+        @media ($tablet) {
+          font-size: pxtorem(46);
+        }
+        @media ($phone) {
+          font-size: pxtorem(24);
+        }
+
+        &-sup{
+          display: inline-block;
+          font-weight: 400;
+          margin-left: pxtorem(0);
+          font-size: pxtorem(36);
+          top: pxtorem(-22);
+          color: color($colors, color12);
+
+          @media ($tablet) {
+            font-size: pxtorem(26);
+            top: pxtorem(-14);
+          }
+          @media ($phone) {
+            margin-left: pxtorem(5);
+            font-size: pxtorem(18);
+            top: pxtorem(-6);
+          }
+        }
+      }
+
+      &-user{
+        &-ava{
+          width: 33px;
+          height: 33px;
+          border-radius: 50%;
+          background-size: cover !important;
+          background-repeat: no-repeat;
+          background-position: center;
+          display: inline-block;
+          vertical-align: middle;
+          margin-right: pxtorem(20);
+          margin-top: -5px;
+
+          @media ($tablet) {
+            margin-right: pxtorem(15);
+            width: 25px;
+            height: 25px;
+          }
+          @media ($phone) {
+            margin-right: pxtorem(7);
+            width: 16px;
+            height: 16px;
+          }
+        }
+
+        &-name{
+          display: inline-block;
+          vertical-align: middle;
+          color: color($colors, color12);
+          font-size: pxtorem(40);
+
+          @media ($tablet) {
+            font-size: pxtorem(30);
+          }
+          @media ($phone) {
+            font-size: pxtorem(18);
+          }
+        }
+      }
+    }
+
+    &-box{
+      background: color($colors, white);
+      box-shadow: 0 10px 10px 5px color($colors, color7);
+      padding: 0 0 pxtorem(80);
+      border-radius: 25px;
+      text-align: center;
+
+      @media ($tablet) {
+        border-radius: 20px;
+        padding: 0 0 pxtorem(50);
+      }
+      @media ($phone) {
+        border-radius: 15px;
+        padding: 0 0 pxtorem(30);
+      }
+
+      &-title{
+        font-size: pxtorem(37);
+        padding: pxtorem(80) 0 pxtorem(60);
+        color: rgb(166, 163, 176);
+
+        @media ($tablet) {
+          font-size: pxtorem(27);
+          padding: pxtorem(50) 0 pxtorem(40);
+        }
+        @media ($phone) {
+          font-size: pxtorem(17);
+          padding: pxtorem(28) 0 pxtorem(25);
+        }
+      }
+
+      &-price{
+        margin-bottom: pxtorem(100);
+
+        @media ($tablet) {
+          margin-bottom: pxtorem(80);
+        }
+        @media ($phone) {
+          margin-bottom: pxtorem(45);
+        }
+
+        &-sign{
+          display: inline-block;
+          vertical-align: top;
+          font-size: pxtorem(66);
+          font-weight: 700;
+          color: color($colors, dark);
+
+          @media ($tablet) {
+            font-size: pxtorem(48);
+          }
+          @media ($phone) {
+            font-size: pxtorem(32);
+          }
+        }
+
+        &-num{
+          display: inline-block;
+          font-size: pxtorem(210);
+          line-height: pxtorem(210 - 50);
+          color: color($colors, dark);
+          font-weight: 700;
+
+          @media ($tablet) {
+            font-size: pxtorem(150);
+            line-height: pxtorem(150 - 40);
+          }
+          @media ($phone) {
+            font-size: pxtorem(96);
+            line-height: pxtorem(96 - 30);
+          }
+        }
+
+        &-last{
+          padding: pxtorem(12) pxtorem(20);
+          font-size: pxtorem(28);
+          display: inline-block;
+          vertical-align: top;
+          background: red;
+          border-radius: 10px;
+          text-transform: uppercase;
+          color: color($colors, white);
+
+          @media ($tablet) {
+            padding: pxtorem(10) pxtorem(15);
+            font-size: pxtorem(20);
+          }
+          @media ($phone) {
+            padding: pxtorem(7) pxtorem(10);
+            font-size: pxtorem(12);
+          }
+        }
+      }
+
+      &-change{
+        padding: 0 pxtorem(80) pxtorem(40) !important;
+        margin-bottom: pxtorem(86);
+        text-align: left;
+        border-bottom: 1px solid color($colors, color12);
+
+        @media ($tablet) {
+          padding: 0 pxtorem(50) pxtorem(20) !important;
+          margin-bottom: pxtorem(50);
+        }
+        @media ($phone) {
+          padding: 0 pxtorem(30) pxtorem(10) !important;
+          margin-bottom: pxtorem(35);
+        }
+
+
+        &-title{
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          font-size: pxtorem(36);
+          color: color($colors, color12);
+
+          @media ($tablet) {
+            font-size: pxtorem(26);
+          }
+          @media ($phone) {
+            font-size: pxtorem(17);
+          }
+        }
+
+        &-num{
+          font-size: pxtorem(60);
+          min-height: pxtorem(130);
+          display: flex;
+          align-items: center;
+          font-weight: 700;
+          color: color($colors, dark);
+
+          @media ($tablet) {
+            font-size: pxtorem(40);
+            min-height: pxtorem(90);
+          }
+          @media ($phone) {
+            font-size: pxtorem(24);
+            min-height: pxtorem(65);
+          }
+        }
+      }
+
+      &-service{
+        text-align: left;
+        padding: 0 pxtorem(80) !important;
+        margin: 0 0 pxtorem(90);
+
+        @media ($tablet) {
+          padding: 0 pxtorem(50) !important;
+          margin: 0 0 pxtorem(50);
+        }
+        @media ($phone) {
+          padding: 0 pxtorem(30) !important;
+          margin: 0 0 pxtorem(20);
+        }
+
+        .row{
+          border-bottom: 1px solid color($colors, color12);
+
+          @media ($tablet) {
+            padding: 0 0 pxtorem(3);
+          }
+          @media ($phone) {
+            padding: 0 0 pxtorem(5);
+          }
+        }
+
+        &-title{
+          font-size: pxtorem(36);
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          color: color($colors, color12);
+
+          @media ($tablet) {
+            font-size: pxtorem(26);
+          }
+          @media ($phone) {
+            font-size: pxtorem(17);
+          }
+        }
+
+        &-text{
+          font-size: pxtorem(36);
+          min-height: pxtorem(140);
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          color: color($colors, dark);
+
+          @media ($tablet) {
+            font-size: pxtorem(26);
+            min-height: pxtorem(96);
+          }
+          @media ($phone) {
+            font-size: pxtorem(17);
+            min-height: pxtorem(66);
+          }
+
+
+          .button-inner ion-icon{
+            font-size: pxtorem(70);
+
+            @media ($tablet) {
+              font-size: pxtorem(45);
+            }
+            @media ($phone) {
+              font-size: pxtorem(20);
+            }
+          }
+        }
+
+        &-btn{
+          background: none;
+          color: rgb(173, 169, 188);
+          box-shadow: none;
+        }
+      }
+    }
+
+    &-fin{
+      text-align: center;
+      padding: pxtorem(100) 0;
+
+      @media ($tablet) {
+        padding: pxtorem(66) 0;
+      }
+      @media ($phone) {
+        padding: pxtorem(44) 0;
+      }
+    }
+  }
+}

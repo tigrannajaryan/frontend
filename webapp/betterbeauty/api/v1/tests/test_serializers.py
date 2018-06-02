@@ -427,42 +427,36 @@ class TestStylistTodaySerializer(object):
                     Appointment, client=client, stylist=stylist_data,
                     datetime_start_at=stylist_data.salon.timezone.localize(
                         datetime.datetime(2018, 5, 14, 10, 20)),
-                    duration=datetime.timedelta(minutes=30),
                     status=AppointmentStatus.NEW,
                 ),
                 'cancelled_by_client_past': G(
                     Appointment, client=client, stylist=stylist_data,
                     datetime_start_at=stylist_data.salon.timezone.localize(
                         datetime.datetime(2018, 5, 14, 10, 20)),
-                    duration=datetime.timedelta(minutes=30),
                     status=AppointmentStatus.CANCELLED_BY_CLIENT,
                 ),
                 'cancelled_by_client_future': G(
                     Appointment, client=client, stylist=stylist_data,
                     datetime_start_at=stylist_data.salon.timezone.localize(
                         datetime.datetime(2018, 5, 14, 18, 20)),
-                    duration=datetime.timedelta(minutes=30),
                     status=AppointmentStatus.CANCELLED_BY_CLIENT,
                 ),
                 'cancelled_by_stylist': G(
                     Appointment, client=client, stylist=stylist_data,
                     datetime_start_at=stylist_data.salon.timezone.localize(
                         datetime.datetime(2018, 5, 14, 15, 20)),
-                    duration=datetime.timedelta(minutes=30),
                     status=AppointmentStatus.CANCELLED_BY_STYLIST,
                 ),
                 'past_paid_appointment': G(
                     Appointment, client=client, stylist=stylist_data,
                     datetime_start_at=stylist_data.salon.timezone.localize(
                         datetime.datetime(2018, 5, 14, 10, 20)),
-                    duration=datetime.timedelta(minutes=30),
                     status=AppointmentStatus.CHECKED_OUT,
                 ),
                 'no_call_no_show': G(
                     Appointment, client=client, stylist=stylist_data,
                     datetime_start_at=stylist_data.salon.timezone.localize(
                         datetime.datetime(2018, 5, 14, 10, 20)),
-                    duration=datetime.timedelta(minutes=30),
                     status=AppointmentStatus.NO_SHOW,
                 )
             }
@@ -503,7 +497,11 @@ class TestAppointmentSerializer(object):
         data = {
             'client_first_name': 'Fred',
             'client_last_name': 'McBob',
-            'service_uuid': service.service_uuid,
+            'services': [
+                {
+                    'service_uuid': service.service_uuid,
+                }
+            ],
             'datetime_start_at': past_datetime.isoformat()
         }
         serializer = AppointmentSerializer(data=data, context={'stylist': stylist_data})
@@ -519,7 +517,11 @@ class TestAppointmentSerializer(object):
         data = {
             'client_first_name': 'Fred',
             'client_last_name': 'McBob',
-            'service_uuid': service.service_uuid,
+            'services': [
+                {
+                    'service_uuid': service.service_uuid,
+                }
+            ],
             'datetime_start_at': outside_working_hours.isoformat()
         }
         serializer = AppointmentSerializer(data=data, context={'stylist': stylist_data})
@@ -535,7 +537,11 @@ class TestAppointmentSerializer(object):
         data = {
             'client_first_name': 'Fred',
             'client_last_name': 'McBob',
-            'service_uuid': service.service_uuid,
+            'services': [
+                {
+                    'service_uuid': service.service_uuid,
+                }
+            ],
             'datetime_start_at': available_time.isoformat()
         }
         serializer = AppointmentSerializer(data=data, context={'stylist': stylist_data})
@@ -545,7 +551,11 @@ class TestAppointmentSerializer(object):
         previous_appointment = G(
             Appointment, stylist=stylist_data,
             datetime_start_at=datetime.datetime(2018, 5, 17, 15, 50, tzinfo=pytz.utc),
-            status=AppointmentStatus.NEW, duration=datetime.timedelta(minutes=30)
+            status=AppointmentStatus.NEW
+        )
+        G(
+            AppointmentService,
+            appointment=previous_appointment, duration=datetime.timedelta(minutes=30)
         )
         serializer = AppointmentSerializer(data=data, context={'stylist': stylist_data})
         assert (serializer.is_valid(raise_exception=False) is False)
@@ -605,16 +615,20 @@ class TestAppointmentSerializer(object):
         data = {
             'client_first_name': 'Fred',
             'client_last_name': 'McBob',
-            'service_uuid': service.service_uuid,
+            'services': [
+                {
+                    'service_uuid': service.service_uuid,
+                },
+            ],
             'datetime_start_at': available_time.isoformat()
         }
         serializer = AppointmentSerializer(data=data, context={'stylist': stylist_data})
         assert(serializer.is_valid() is True)
         appointment: Appointment = serializer.save()
 
-        assert(appointment.service_name == service.name)
-        assert(appointment.service_uuid == service.service_uuid)
-        assert(appointment.regular_price == service.base_price)
+        assert(appointment.total_client_price_before_tax == service.calculate_price_for_client(
+            available_time
+        ))
         assert(appointment.duration == service.duration)
         assert(appointment.client_first_name == 'Fred')
         assert(appointment.client is None)
@@ -643,16 +657,20 @@ class TestAppointmentSerializer(object):
         client: Client = G(Client)
         data = {
             'client_uuid': client.uuid,
-            'service_uuid': service.service_uuid,
+            'services': [
+                {
+                    'service_uuid': service.service_uuid,
+                },
+            ],
             'datetime_start_at': available_time.isoformat()
         }
         serializer = AppointmentSerializer(data=data, context={'stylist': stylist_data})
         assert(serializer.is_valid() is True)
         appointment: Appointment = serializer.save()
 
-        assert(appointment.service_name == service.name)
-        assert(appointment.service_uuid == service.service_uuid)
-        assert(appointment.regular_price == service.base_price)
+        assert (appointment.total_client_price_before_tax == service.calculate_price_for_client(
+            available_time
+        ))
         assert(appointment.duration == service.duration)
         assert(appointment.client_first_name == client.user.first_name)
         assert(appointment.client == client)

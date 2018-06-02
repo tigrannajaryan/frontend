@@ -407,8 +407,10 @@ class StylistAvailableWeekDayWithBookedTimeSerializer(serializers.ModelSerialize
             weekday=ExtractWeekDay('datetime_start_at')
         ).filter(
             weekday=current_non_iso_week_day
+        ).annotate(
+            services_duration=Coalesce(Sum('services__duration'), datetime.timedelta(0))
         ).aggregate(
-            total_duration=Coalesce(Sum('duration'), datetime.timedelta(0))
+            total_duration=Coalesce(Sum('services_duration'), datetime.timedelta(0))
         )['total_duration']
 
         return int(total_week_duration.total_seconds() / 60)
@@ -492,21 +494,19 @@ class AppointmentValidationMixin(object):
                 appointment_errors.ERR_APPOINTMENT_IN_THE_PAST
             )
         # check if appointment doesn't fit working hours
-        service: Optional[StylistService] = stylist.services.filter(
-            service_uuid=initial_data['service_uuid']
-        ).last()
+        duration: datetime.timedelta = sum(
+            [StylistService.objects.get(service_uuid=service['service_uuid']).duration
+             for service in initial_data['services']], datetime.timedelta(0)
+        )
 
-        # if service is not found (which must be checked elsewhere) - just return
-        if not service:
-            return datetime_start_at
-
-        if not stylist.is_working_time(datetime_start_at, service.duration):
+        if not stylist.is_working_time(datetime_start_at, duration):
             raise serializers.ValidationError(
                 appointment_errors.ERR_APPOINTMENT_OUTSIDE_WORKING_HOURS
             )
         # check if there are intersecting appointments
+        # TODO: rework this based on time gap
         if stylist.get_appointments_in_datetime_range(
-            datetime_start_at, datetime_start_at + service.duration
+            datetime_start_at, datetime_start_at + duration
         ).exists():
             raise serializers.ValidationError(
                 appointment_errors.ERR_APPOINTMENT_INTERSECTION
@@ -525,6 +525,17 @@ class AppointmentValidationMixin(object):
             )
         return service_uuid
 
+    def validate_services(self, services):
+        if len(services) == 0:
+            raise serializers.ValidationError(
+                appointment_errors.ERR_SERVICE_REQUIRED
+            )
+        for service in services:
+            self.validate_service_uuid(
+                str(service['service_uuid'])
+            )
+        return services
+
     def validate_client_uuid(self, client_uuid: Optional[str]):
         if client_uuid:
             if not Client.objects.filter(uuid=client_uuid).exists():
@@ -532,6 +543,24 @@ class AppointmentValidationMixin(object):
                     appointment_errors.ERR_CLIENT_DOES_NOT_EXIST
                 )
         return client_uuid
+
+
+class AppointmentServiceSerializer(serializers.ModelSerializer):
+    uuid = serializers.UUIDField(read_only=True)
+    service_name = serializers.CharField(read_only=True)
+    regular_price = serializers.DecimalField(
+        max_digits=6, decimal_places=2, coerce_to_string=False, read_only=True
+    )
+    client_price = serializers.DecimalField(
+        max_digits=6, decimal_places=2, coerce_to_string=False, read_only=True
+    )
+
+    class Meta:
+        model = AppointmentService
+        fields = [
+            'uuid', 'service_name', 'service_uuid', 'client_price', 'regular_price',
+            'is_original',
+        ]
 
 
 class AppointmentSerializer(AppointmentValidationMixin, serializers.ModelSerializer):
@@ -548,15 +577,17 @@ class AppointmentSerializer(AppointmentValidationMixin, serializers.ModelSeriali
         source='client.user.phone', allow_null=True, allow_blank=True, read_only=True
     )
 
-    regular_price = serializers.DecimalField(
+    total_client_price_before_tax = serializers.DecimalField(
         max_digits=6, decimal_places=2, coerce_to_string=False, read_only=True
     )
-    client_price = serializers.DecimalField(
+    total_tax = serializers.DecimalField(
+        max_digits=6, decimal_places=2, coerce_to_string=False, read_only=True
+    )
+    total_card_fee = serializers.DecimalField(
         max_digits=6, decimal_places=2, coerce_to_string=False, read_only=True
     )
 
-    service_name = serializers.CharField(allow_null=True, allow_blank=True, read_only=True)
-    service_uuid = serializers.UUIDField(required=True)
+    services = AppointmentServiceSerializer(many=True)
 
     datetime_start_at = serializers.DateTimeField()
     duration_minutes = DurationMinuteField(source='duration', read_only=True)
@@ -568,16 +599,14 @@ class AppointmentSerializer(AppointmentValidationMixin, serializers.ModelSeriali
         model = Appointment
         fields = [
             'uuid', 'client_uuid', 'client_first_name', 'client_last_name',
-            'client_phone', 'regular_price', 'client_price', 'service_name',
-            'service_uuid', 'datetime_start_at', 'duration_minutes', 'status',
+            'client_phone', 'datetime_start_at', 'duration_minutes', 'status',
+            'total_tax', 'total_card_fee', 'total_client_price_before_tax',
+            'services',
         ]
 
     def create(self, validated_data):
         data = validated_data.copy()
         stylist: Stylist = self.context['stylist']
-        service: StylistService = stylist.services.get(
-            service_uuid=data['service_uuid']
-        )
 
         client = None
         client_data = validated_data.pop('client', {})
@@ -595,29 +624,30 @@ class AppointmentSerializer(AppointmentValidationMixin, serializers.ModelSeriali
         data['created_by'] = stylist.user
         data['stylist'] = stylist
 
-        # regular price copied from service, client's price is calculated
-        data['regular_price'] = service.base_price
         datetime_start_at: datetime.datetime = data['datetime_start_at']
-        client_price = int(service.calculate_price_for_client(
-            datetime_start_at=datetime_start_at,
-            client=client
-        ))
-        data['client_price'] = client_price
-        data['service_name'] = service.name
-        data['duration'] = service.duration
 
         # create first AppointmentService
         with transaction.atomic():
+            appointment_services = data.pop('services', [])
             appointment: Appointment = super(AppointmentSerializer, self).create(data)
-            AppointmentService.objects.create(
-                appointment=appointment,
-                service_name=service.name,
-                service_uuid=service.service_uuid,
-                regular_price=service.base_price,
-                client_price=client_price,
-                is_original=True,
-                duration=service.duration,
-            )
+            for appointment_service in appointment_services:
+                service: StylistService = stylist.services.get(
+                    service_uuid=appointment_service['service_uuid']
+                )
+                # regular price copied from service, client's price is calculated
+                client_price = int(service.calculate_price_for_client(
+                    datetime_start_at=datetime_start_at,
+                    client=client
+                ))
+                AppointmentService.objects.create(
+                    appointment=appointment,
+                    service_name=service.name,
+                    service_uuid=service.service_uuid,
+                    duration=service.duration,
+                    regular_price=service.base_price,
+                    client_price=client_price,
+                    is_original=True
+                )
 
         return appointment
 
@@ -625,12 +655,13 @@ class AppointmentSerializer(AppointmentValidationMixin, serializers.ModelSeriali
 class AppointmentPreviewSerializer(serializers.ModelSerializer):
     datetime_end_at = serializers.SerializerMethodField()
     duration_minutes = DurationMinuteField(source='duration', read_only=True)
+    services = AppointmentServiceSerializer(many=True)
 
     class Meta:
         model = Appointment
         fields = [
-            'uuid', 'client_first_name', 'client_last_name', 'service_name',
-            'datetime_start_at', 'datetime_end_at', 'duration_minutes',
+            'uuid', 'client_first_name', 'client_last_name', 'datetime_start_at',
+            'datetime_end_at', 'duration_minutes', 'services',
         ]
 
     def get_datetime_end_at(self, appointment: Appointment):
@@ -642,7 +673,7 @@ class AppointmentPreviewRequestSerializer(AppointmentValidationMixin, serializer
     client_uuid = serializers.UUIDField(
         allow_null=True, required=False
     )
-    service_uuid = serializers.UUIDField(required=True)
+    services = AppointmentServiceSerializer(many=True, required=True)
     datetime_start_at = serializers.DateTimeField()
 
 
@@ -655,6 +686,15 @@ class AppointmentPreviewResponseSerializer(serializers.Serializer):
     )
     duration_minutes = DurationMinuteField(source='duration', read_only=True)
     conflicts_with = AppointmentPreviewSerializer(many=True)
+    total_client_price_before_tax = serializers.DecimalField(
+        max_digits=6, decimal_places=2, coerce_to_string=False, read_only=True
+    )
+    total_tax = serializers.DecimalField(
+        max_digits=6, decimal_places=2, coerce_to_string=False, read_only=True
+    )
+    total_card_fee = serializers.DecimalField(
+        max_digits=6, decimal_places=2, coerce_to_string=False, read_only=True
+    )
 
 
 class StylistAppointmentStatusSerializer(serializers.ModelSerializer):
@@ -722,8 +762,10 @@ class StylistTodaySerializer(serializers.ModelSerializer):
             datetime_from=None,
             datetime_to=stylist.get_current_now(),
             include_cancelled=False
+        ).annotate(
+            services_duration=Coalesce(Sum('services__duration'), datetime.timedelta(0))
         ).exclude(
-            datetime_start_at__gt=stylist.get_current_now() - F('duration')
+            datetime_start_at__gt=stylist.get_current_now() - F('services_duration')
         ).count()
 
 
@@ -759,8 +801,10 @@ class StylistSettingsRetrieveSerializer(serializers.ModelSerializer):
     def get_total_week_booked_minutes(self, stylist: Stylist) -> int:
         total_week_duration: datetime.timedelta = stylist.get_current_week_appointments(
             include_cancelled=False
+        ).annotate(
+            services_duration=Coalesce(Sum('services__duration'), datetime.timedelta(0))
         ).aggregate(
-            total_duration=Coalesce(Sum('duration'), datetime.timedelta(0))
+            total_duration=Coalesce(Sum('services_duration'), datetime.timedelta(0))
         )['total_duration']
 
         return int(total_week_duration.total_seconds() / 60)

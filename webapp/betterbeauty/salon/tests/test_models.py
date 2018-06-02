@@ -8,7 +8,7 @@ from django_dynamic_fixture import G
 from freezegun import freeze_time
 from psycopg2.extras import DateRange
 
-from appointment.models import Appointment
+from appointment.models import Appointment, AppointmentService
 from appointment.types import AppointmentStatus
 from client.models import Client
 from core.models import User
@@ -60,52 +60,45 @@ def stylist_appointments_data(stylist: Stylist) -> Dict[str, Appointment]:
         Appointment, client=client, stylist=stylist,
         datetime_start_at=stylist.salon.timezone.localize(
             datetime.datetime(2018, 5, 14, 13, 20)),
-        duration=datetime.timedelta(minutes=30)
     )
 
     past_appointment = G(
         Appointment, client=client, stylist=stylist,
         datetime_start_at=stylist.salon.timezone.localize(
             datetime.datetime(2018, 5, 14, 12, 20)),
-        duration=datetime.timedelta(minutes=30)
     )
 
     last_week_appointment = G(
         Appointment, client=client, stylist=stylist,
         datetime_start_at=stylist.salon.timezone.localize(
             datetime.datetime(2018, 5, 7, 12, 20)),
-        duration=datetime.timedelta(minutes=30)
     )
 
     next_week_appointment = G(
         Appointment, client=client, stylist=stylist,
         datetime_start_at=stylist.salon.timezone.localize(
             datetime.datetime(2018, 5, 21, 12, 20)),
-        duration=datetime.timedelta(minutes=30)
     )
 
     future_appointment = G(
         Appointment, client=client, stylist=stylist,
         datetime_start_at=stylist.salon.timezone.localize(
             datetime.datetime(2018, 5, 14, 14, 20)),
-        duration=datetime.timedelta(minutes=30)
     )
 
     late_night_appointment = G(
         Appointment, client=client, stylist=stylist,
         datetime_start_at=stylist.salon.timezone.localize(
             datetime.datetime(2018, 5, 14, 23, 50)),
-        duration=datetime.timedelta(minutes=30)
     )
 
     next_day_appointment = G(
         Appointment, client=client, stylist=stylist,
         datetime_start_at=stylist.salon.timezone.localize(
             datetime.datetime(2018, 5, 15, 13, 20)),
-        duration=datetime.timedelta(minutes=30)
     )
 
-    return {
+    appointments = {
         'current_appointment': current_appointment,
         'past_appointment': past_appointment,
         'future_appointment': future_appointment,
@@ -114,6 +107,17 @@ def stylist_appointments_data(stylist: Stylist) -> Dict[str, Appointment]:
         'last_week_appointment': last_week_appointment,
         'next_week_appointment': next_week_appointment,
     }
+    service = G(StylistService, stylist=stylist, duration=datetime.timedelta(minutes=30))
+    for appointment in appointments.values():
+        G(
+            AppointmentService,
+            appointment=appointment,
+            duration=service.duration,
+            service_name=service.name,
+            service_uuid=service.service_uuid,
+            is_original=True
+        )
+    return appointments
 
 
 class TestStylist(object):
