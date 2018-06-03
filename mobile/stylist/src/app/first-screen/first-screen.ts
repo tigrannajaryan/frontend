@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import { AlertController, IonicPage, LoadingController, NavController } from 'ionic-angular';
+import { AlertController, IonicPage, NavController } from 'ionic-angular';
 import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook';
 
+import { loading } from '~/core/utils/loading';
 import { profileStatusToPage } from '~/core/functions';
 import { AuthApiService, FbAuthCredentials, UserRole } from '~/core/auth-api-service/auth-api-service';
 import { PageNames } from '~/core/page-names';
@@ -25,8 +26,7 @@ export class FirstScreenComponent {
     private navCtrl: NavController,
     private fb: Facebook,
     private authServiceProvider: AuthApiService,
-    private alertCtrl: AlertController,
-    private loadingCtrl: LoadingController
+    private alertCtrl: AlertController
   ) {
   }
 
@@ -34,10 +34,9 @@ export class FirstScreenComponent {
     this.navCtrl.push(PageNames.LoginRegister, {pageType: choosePageType}, {animate: false});
   }
 
+  @loading
   async loginByFb(): Promise<void>  {
-    const loader = this.loadingCtrl.create();
     try {
-      loader.present();
       const fbResponse: FacebookLoginResponse = await this.fb.login(permission);
 
       if (fbResponse.status === connected) {
@@ -61,8 +60,6 @@ export class FirstScreenComponent {
         buttons: ['Dismiss']
       });
       alert.present();
-    } finally {
-      loader.dismiss();
     }
   }
 }

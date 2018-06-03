@@ -7,13 +7,13 @@ import {
   ActionSheetController,
   AlertController,
   IonicPage,
-  LoadingController,
   NavController,
   NavParams
 } from 'ionic-angular';
 
 import 'rxjs/add/operator/pluck';
 
+import { loading } from '~/core/utils/loading';
 import { PageNames } from '~/core/page-names';
 import { StylistServiceProvider } from '~/core/stylist-service/stylist-service';
 import { BaseApiService } from '~/shared/base-api-service';
@@ -42,7 +42,6 @@ export class RegisterSalonComponent {
     private apiService: StylistServiceProvider,
     private baseService: BaseApiService,
     private alertCtrl: AlertController,
-    private loadingCtrl: LoadingController,
     private domSanitizer: DomSanitizer,
     private camera: Camera,
     private actionSheetCtrl: ActionSheetController) {
@@ -84,10 +83,8 @@ export class RegisterSalonComponent {
     this.loadFormInitialData();
   }
 
+  @loading
   async loadFormInitialData(): Promise<void> {
-    const loader = this.loadingCtrl.create();
-    loader.present();
-
     try {
       const {
         profile_photo_url,
@@ -115,8 +112,6 @@ export class RegisterSalonComponent {
         buttons: ['Dismiss']
       });
       alert.present();
-    } finally {
-      loader.dismiss();
     }
   }
 
@@ -129,18 +124,12 @@ export class RegisterSalonComponent {
     this.navCtrl.push(PageNames.RegisterServices, {}, { animate: false });
   }
 
+  @loading
   async submit(): Promise<void> {
-    const loading = this.loadingCtrl.create();
-    try {
-      loading.present();
+    const { vars, ...profile } = this.form.value;
+    await this.apiService.setProfile(profile);
 
-      const { vars, ...profile } = this.form.value;
-      await this.apiService.setProfile(profile);
-
-      this.nextRoute();
-    } finally {
-      loading.dismiss();
-    }
+    this.nextRoute();
   }
 
   processPhoto(): void {
@@ -184,12 +173,9 @@ export class RegisterSalonComponent {
       .then(buf => new File([buf], filename, {type: mimeType})));
   }
 
-  private takePhoto(sourceType: PhotoSourceType): void {
-    const loading = this.loadingCtrl.create();
-
+  @loading
+  private async takePhoto(sourceType: PhotoSourceType): Promise<void> {
     try {
-      loading.present();
-
       const options: CameraOptions = {
         quality: 50,
         destinationType: this.camera.DestinationType.DATA_URL,
@@ -199,27 +185,24 @@ export class RegisterSalonComponent {
         sourceType // PHOTOLIBRARY = 0, CAMERA = 1
       };
 
-      this.camera.getPicture(options).then(imageData => {
-        // imageData is either a base64 encoded string or a file URI
-        // If it's base64:
-        const base64Image = `data:image/jpeg;base64,${imageData}`;
+      const imageData = await this.camera.getPicture(options);
+      // imageData is either a base64 encoded string or a file URI
+      // If it's base64:
+      const base64Image = `data:image/jpeg;base64,${imageData}`;
 
-        // set image preview
-        this.form.get('vars.image')
-          .setValue(this.domSanitizer.bypassSecurityTrustStyle(`url(${base64Image})`));
+      // set image preview
+      this.form.get('vars.image')
+        .setValue(this.domSanitizer.bypassSecurityTrustStyle(`url(${base64Image})`));
 
-        // convert base64 to File after to formData and send it to server
-        this.urlToFile(base64Image, 'file.png')
-          .then(file => {
-            const formData = new FormData();
-            formData.append('file', file);
-            this.baseService.uploadFile(formData)
-              .then((res: any) => {
-                this.form.get('profile_photo_id')
-                  .setValue(res.uuid);
-              });
-          });
-      });
+      // convert base64 to File after to formData and send it to server
+      const file = await this.urlToFile(base64Image, 'file.png');
+      const formData = new FormData();
+      formData.append('file', file);
+
+      const response: any = await this.baseService.uploadFile(formData);
+      this.form.get('profile_photo_id')
+        .setValue(response.uuid);
+
     } catch (e) {
       const alert = this.alertCtrl.create({
         title: 'Saving photo failed',
@@ -227,8 +210,6 @@ export class RegisterSalonComponent {
         buttons: ['Dismiss']
       });
       alert.present();
-    } finally {
-      loading.dismiss();
     }
   }
 }

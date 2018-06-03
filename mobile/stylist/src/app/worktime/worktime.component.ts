@@ -1,10 +1,11 @@
 import { Component, Input } from '@angular/core';
-import { AlertController, IonicPage, LoadingController, NavController, NavParams } from 'ionic-angular';
+import { AlertController, IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Workday, Worktime } from './worktime.models';
 import { WorktimeApi } from './worktime.api';
 import { convertMinsToHrsMins, Time, TimeRange } from '~/shared/time';
 import { Logger } from '~/shared/logger';
 import { PageNames } from '~/core/page-names';
+import { loading } from '~/core/utils/loading';
 
 export enum WeekdayIso {
   Mon = 1, Tue, Wed, Thu, Fri, Sat, Sun
@@ -113,7 +114,6 @@ export class WorktimeComponent {
   constructor(
     private alertCtrl: AlertController,
     private api: WorktimeApi,
-    private loadingCtrl: LoadingController,
     private navCtrl: NavController,
     private navParams: NavParams,
     private logger: Logger) {}
@@ -124,10 +124,8 @@ export class WorktimeComponent {
     this.loadInitialData();
   }
 
+  @loading
   async loadInitialData(): Promise<void> {
-    const loader = this.loadingCtrl.create();
-    loader.present();
-
     try {
       // Load data from backend and show it
       const worktime = await this.api.getWorktime();
@@ -139,8 +137,6 @@ export class WorktimeComponent {
         buttons: ['Dismiss']
       });
       alert.present();
-    } finally {
-      loader.dismiss();
     }
   }
 
@@ -195,25 +191,17 @@ export class WorktimeComponent {
     this.navCtrl.push(PageNames.Discounts, {}, { animate: false });
   }
 
+  @loading
   async saveChanges(): Promise<void> {
-    // Show loader
-    const loading = this.loadingCtrl.create();
-    loading.present();
+    // Save to backend
+    const worktime = await this.api.setWorktime(this.presentation2api(this.cards));
 
-    try {
-      // Save to backend
-      const worktime = await this.api.setWorktime(this.presentation2api(this.cards));
-
-      if (this.registrationMode) {
-        // Continue registration on the next page
-        this.nextRoute();
-      } else {
-        // And load the response back to make sure client shows what backend understood.
-        this.cards = this.api2presentation(worktime);
-      }
-
-    } finally {
-      loading.dismiss();
+    if (this.registrationMode) {
+      // Continue registration on the next page
+      this.nextRoute();
+    } else {
+      // And load the response back to make sure client shows what backend understood.
+      this.cards = this.api2presentation(worktime);
     }
   }
 

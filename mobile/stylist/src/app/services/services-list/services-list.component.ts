@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import {
   AlertController,
   IonicPage,
-  LoadingController,
   ModalController,
   NavController,
   NavParams
@@ -14,6 +13,7 @@ import {
   ServiceTemplateSet
 } from '~/core/stylist-service/stylist-models';
 
+import { loading } from '~/core/utils/loading';
 import { StylistServiceProvider } from '~/core/stylist-service/stylist-service';
 import { PageNames } from '~/core/page-names';
 import { ServiceItemComponentData } from '../services-item/services-item.component';
@@ -36,7 +36,6 @@ export class ServicesListComponent {
     public navCtrl: NavController,
     public navParams: NavParams,
     public modalCtrl: ModalController,
-    public loadingCtrl: LoadingController,
     private alertCtrl: AlertController,
     private stylistService: StylistServiceProvider
   ) {
@@ -44,16 +43,10 @@ export class ServicesListComponent {
 
   async ionViewWillLoad(): Promise<void> {
     this.isProfile = Boolean(this.navParams.get('isProfile'));
-
-    const loader = this.loadingCtrl.create();
-    loader.present();
-    try {
-      await this.loadInitialData();
-    } finally {
-      loader.dismiss();
-    }
+    this.loadInitialData();
   }
 
+  @loading
   async loadInitialData(): Promise<void> {
     try {
       const uuid = this.navParams.get('uuid');
@@ -125,6 +118,7 @@ export class ServicesListComponent {
     profileModal.present();
   }
 
+  @loading
   async saveChanges(): Promise<void> {
     const categoriesServices =
       this.templateSet.categories.reduce((services, category) => (
@@ -136,9 +130,6 @@ export class ServicesListComponent {
           }))
         )
       ), []);
-
-    const loader = this.loadingCtrl.create();
-    loader.present();
 
     try {
       await this.stylistService.setStylistServices(categoriesServices);
@@ -155,8 +146,6 @@ export class ServicesListComponent {
         buttons: ['Dismiss']
       });
       alert.present();
-    } finally {
-      loader.dismiss();
     }
   }
 

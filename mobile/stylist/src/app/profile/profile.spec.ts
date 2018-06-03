@@ -160,7 +160,7 @@ describe('Pages: Profile / Settings', () => {
   it('should create loader when data is loading', async () => {
     const loadingControl = fixture.debugElement.injector.get(LoadingController);
 
-    await instance.ionViewWillEnter();
+    await instance.loadStylistSummary();
 
     expect(loadingControl.create)
       .toHaveBeenCalledTimes(1);

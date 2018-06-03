@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AlertController, IonicPage, LoadingController, NavController, NavParams, ViewController } from 'ionic-angular';
+import { AlertController, IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
 import {
@@ -7,6 +7,7 @@ import {
   ServiceTemplateItem
 } from '~/core/stylist-service/stylist-models';
 
+import { loading } from '~/core/utils/loading';
 import { StylistServiceProvider } from '~/core/stylist-service/stylist-service';
 
 /**
@@ -38,7 +39,6 @@ export class ServiceItemComponent {
     public navParams: NavParams,
     public viewCtrl: ViewController,
     private stylistService: StylistServiceProvider,
-    private loadingCtrl: LoadingController,
     private alertCtrl: AlertController
   ) {
   }
@@ -53,28 +53,28 @@ export class ServiceItemComponent {
   async onServiceDelete(): Promise<void> {
     const {service} = this.data;
 
-    if (service && service.id === undefined) {
-      const loading = this.loadingCtrl.create();
-      loading.present();
-
-      try {
-        await this.stylistService.deleteStylistService(service.id);
-      } catch (e) {
-        const alert = this.alertCtrl.create({
-          title: 'Error',
-          subTitle: e,
-          buttons: ['Dismiss']
-        });
-        alert.present();
-      } finally {
-        loading.dismiss();
-      }
+    if (service && service.id !== undefined) {
+      await this.deleteService(service);
     }
 
     // Empty data indicates deleted item.
     const newData: ServiceItemComponentData = {};
 
     this.viewCtrl.dismiss(newData);
+  }
+
+  @loading
+  async deleteService(service: ServiceTemplateItem): Promise<void> {
+    try {
+      await this.stylistService.deleteStylistService(service.id);
+    } catch (e) {
+      const alert = this.alertCtrl.create({
+        title: 'Error',
+        subTitle: e,
+        buttons: ['Dismiss']
+      });
+      alert.present();
+    }
   }
 
   /**

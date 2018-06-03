@@ -2,8 +2,9 @@ import * as moment from 'moment';
 
 import { Component } from '@angular/core';
 import { DatePipe } from '@angular/common';
-import { AlertController, IonicPage, LoadingController } from 'ionic-angular';
+import { AlertController, IonicPage } from 'ionic-angular';
 
+import { loading } from '~/core/utils/loading';
 import { StylistServiceProvider } from '~/core/stylist-service/stylist-service';
 import { TableData } from '~/core/components/made-table/made-table';
 import { StylistProfile } from '~/core/stylist-service/stylist-models';
@@ -27,20 +28,13 @@ export class ProfileComponent {
 
   constructor(
     private alertCtrl: AlertController,
-    private loadingCtrl: LoadingController,
     private stylistService: StylistServiceProvider,
     private datePipe: DatePipe
   ) {
   }
 
-  async ionViewWillEnter(): Promise<void> {
-    const loader = this.loadingCtrl.create();
-    loader.present();
-    try {
-      await this.loadStylistSummary();
-    } finally {
-      loader.dismiss();
-    }
+  ionViewWillEnter(): void {
+    this.loadStylistSummary();
   }
 
   getServicesTableData(services): TableData {
@@ -77,6 +71,7 @@ export class ProfileComponent {
     return this.datePipe.transform(moment(time, 'hh:mm'), 'h:mmaaaaa');
   }
 
+  @loading
   async loadStylistSummary(): Promise<void> {
     try {
       const data = await this.stylistService.getStylistSummary();

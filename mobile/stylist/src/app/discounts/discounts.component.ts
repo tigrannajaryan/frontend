@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
-import { AlertController, IonicPage, LoadingController, ModalController, NavController, NavParams } from 'ionic-angular';
+import { AlertController, IonicPage, ModalController, NavController, NavParams } from 'ionic-angular';
 import { DiscountsApi } from './discounts.api';
 import { Discounts } from './discounts.models';
 import { PageNames } from '~/core/page-names';
 import { ChangePercent } from '~/core/popups/change-percent/change-percent.component';
+import { loading } from '~/core/utils/loading';
 
 export enum DiscountsTypes {
   weekday = 'weekday',
@@ -31,23 +32,16 @@ export class DiscountsComponent {
     public navCtrl: NavController,
     public navParams: NavParams,
     public modalCtrl: ModalController,
-    public discountsApi: DiscountsApi,
-    public loadingCtrl: LoadingController
+    public discountsApi: DiscountsApi
     ) {
   }
 
-  async ionViewWillLoad(): Promise<void> {
+  ionViewWillLoad(): void {
     this.isProfile = Boolean(this.navParams.get('isProfile'));
-
-    const loader = this.loadingCtrl.create();
-    loader.present();
-    try {
-      await this.loadInitialData();
-    } finally {
-      loader.dismiss();
-    }
+    this.loadInitialData();
   }
 
+  @loading
   async loadInitialData(): Promise<void> {
     try {
       this.discounts = await this.discountsApi.getDiscounts() as Discounts;
