@@ -1,0 +1,33 @@
+{
+    "stylists": 3,
+    "clients_per_stylist": 50,
+    "days_to_generate": 200,
+    "services":
+    [
+        {
+            "name": "Haircut",
+            "visit_avg_interval_days": 100,
+            "percent_of_clients_using": 70
+        },
+        {
+            "name": "Nails",
+            "visit_avg_interval_days": 21,
+            "percent_of_clients_using": 70
+        },
+        {
+            "name": "Color",
+            "visit_avg_interval_days": 30,
+            "percent_of_clients_using": 30
+        }
+    ],
+    "weekdays_relative_demand":
+    {
+        "Mon": 0.5,
+        "Tue": 0.5,
+        "Wed": 0.5,
+        "Thu": 0.5,
+        "Fri": 1.0,
+        "Sat": 1.5,
+        "Sun": 1.5
+    }
+}
