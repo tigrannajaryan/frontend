@@ -1,10 +1,10 @@
-<ion-header [class.p-t-blur]="hasBlur" class="ion-bb-header">
+<ion-header class="ion-bb-header">
   <user-header [hasBackButton]="false"></user-header>
 </ion-header>
 
 <ion-content padding>
   <div *ngIf="today" class="bb-wp-a">
-    <div [class.p-t-blur]="hasBlur">
+    <div>
       <div class="p-t-top">
         <div class="p-t-top-info">
           Available time <span>45 min</span>
@@ -44,14 +44,12 @@
     <div class="p-t-items">
       <div
         *ngFor="let appointment of today.today_appointments"
-        #appointmentNode
-        (ngxClickOutside)="changeCheckedStatus(appointmentNode, false)"
-        [class.p-t-blur]="hasBlur && !appointmentNode.isChecked"
+        (click)="onAppointmentClick(appointment)"
         class="p-t-items-item"
       >
         <div [class.notpaid]="appointment.status !== AppointmentStatuses.checked_out" class="p-t-items-item-status">{{ appointment.status }}</div>
 
-        <div (click)="changeCheckedStatus(appointmentNode, true)" [class.isChecked]="appointmentNode.isChecked" class="p-t-items-item-wp">
+        <div class="p-t-items-item-wp">
           <div class="p-t-items-item-info">
             <div class="p-t-items-item-info-time">
               {{ appointment.datetime_start_at | date: 'h:mmaaaaa' }}
@@ -69,11 +67,6 @@
             {{ appointment.client_first_name }}
             {{ appointment.client_last_name }}
           </div>
-        </div>
-
-        <div *ngIf="appointmentNode.isChecked" class="p-t-items-item-btns">
-          <button (click)="checkOutAppointment(appointment, appointmentNode)" col-5 ion-button color="bb_honey" class="bb-btn-a black">Checkout</button>
-          <button (click)="cancelAppointment(appointment, appointmentNode)" col-5 ion-button outline color="bb_warn" class="bb-btn-a">Delete</button>
         </div>
       </div>
     </div>

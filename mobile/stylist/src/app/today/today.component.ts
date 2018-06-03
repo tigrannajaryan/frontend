@@ -1,5 +1,12 @@
 import { Component } from '@angular/core';
-import { AlertController, IonicPage, LoadingController, ModalController, NavController } from 'ionic-angular';
+import {
+  ActionSheetController,
+  AlertController,
+  IonicPage,
+  LoadingController,
+  ModalController,
+  NavController, NavParams
+} from 'ionic-angular';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs/Subscription';
 import { Loading } from 'ionic-angular/components/loading/loading';
@@ -30,22 +37,25 @@ export enum AppointmentStatuses {
 export class TodayComponent {
   // this should be here if we using enum in html
   protected AppointmentStatuses = AppointmentStatuses;
-  hasBlur = false;
   today: Today;
 
   private stateSubscription: Subscription;
 
   constructor(
     public navCtrl: NavController,
+    public navParams: NavParams,
     public todayService: TodayService,
     public modalCtrl: ModalController,
     public alertCtrl: AlertController,
     private loadingCtrl: LoadingController,
-    private store: Store<TodayState>
+    private store: Store<TodayState>,
+    private actionSheetCtrl: ActionSheetController
   ) {
   }
 
-  ionViewDidEnter(): void {
+  async ionViewDidEnter(): Promise<void> {
+    await this.checkedOutProcess(this.navParams.get('appointmentUuid'));
+
     this.updateTodayPage();
   }
 
@@ -53,9 +63,6 @@ export class TodayComponent {
     // Unsubscribe from observer when this view is no longer visible
     // to avoid unneccessary processing.
     this.stateSubscription.unsubscribe();
-
-    // unblur on ionViewDidLeave
-    this.hasBlur = false;
   }
 
   /***
@@ -92,45 +99,51 @@ export class TodayComponent {
     }
   }
 
-  /**
-   * Handler for appointment card click event.
-   */
-  changeCheckedStatus(appointmentNode: Element, status: boolean): void {
-    appointmentNode['isChecked'] = status;
-    this.hasBlur = status;
+  onAppointmentClick(appointment: Appointment): void {
+    const buttons = [
+      {
+        text: 'Checkout Client',
+        handler: () => {
+          this.checkOutAppointment(appointment);
+        }
+      }, {
+        text: 'Delete Appointment',
+        role: 'destructive',
+        handler: () => {
+          this.cancelAppointment(appointment);
+        }
+      }, {
+        text: 'Cancel',
+        role: 'cancel'
+      }
+    ];
+
+    const actionSheet = this.actionSheetCtrl.create({ buttons });
+    actionSheet.present();
   }
 
   /**
    * Handler for appointment-checkout appointment event.
    */
-  async checkOutAppointment(appointment: Appointment, appointmentNode: Element): Promise<void> {
-    const loader = this.loadingCtrl.create();
-    loader.present();
+  async checkOutAppointment(appointment: Appointment): Promise<void> {
+    this.navCtrl.push(PageNames.AppointmentCheckout, { appointmentUuid: appointment.uuid });
+  }
 
-    const checkoutModal = this.modalCtrl.create(PageNames.AppointmentCheckout, { uuid: appointment.uuid });
-    await checkoutModal.present();
-
-    this.changeCheckedStatus(appointmentNode, false);
-
-    checkoutModal.onDidDismiss(async (isCheckedOut: boolean) => {
-      if (isCheckedOut) {
-        await this.todayService.setAppointment(appointment.uuid, { status: AppointmentStatuses.checked_out });
-
-        await this.updateTodayPage(false);
-      }
-
-      loader.dismiss();
-    });
+  /**
+   * Handler for appointment-checkout appointment when we come back from check out page.
+   */
+  checkedOutProcess(appointmentUuid: string): void {
+    if (appointmentUuid) {
+      this.todayService.setAppointment(appointmentUuid, { status: AppointmentStatuses.checked_out });
+    }
   }
 
   /**
    * Handler for cancel appointment event
    */
-  async cancelAppointment(appointment: Appointment, appointmentNode: Element): Promise<void> {
+  async cancelAppointment(appointment: Appointment): Promise<void> {
     const loader = this.loadingCtrl.create();
     loader.present();
-
-    this.changeCheckedStatus(appointmentNode, false);
 
     await this.todayService.setAppointment(appointment.uuid, { status: AppointmentStatuses.cancelled_by_stylist });
 

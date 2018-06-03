@@ -22,41 +22,34 @@
       <div class="p-c-box-title">Your total price is</div>
 
 
-      <ion-grid no-padding class="p-c-box-price">
-        <ion-row>
-          <ion-col col-4 text-right>
-            <div class="p-c-box-price-sign">$</div>
-          </ion-col>
-          <ion-col col-4>
-            <div class="p-c-box-price-num">256</div>
-          </ion-col>
-          <ion-col col-4>
-            <div class="p-c-box-price-last">
-              WAS $ 310
-            </div>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
+      <div no-padding class="p-c-box-price">
+        <div class="p-c-box-price-sign">$</div>
+        <div class="p-c-box-price-num">{{ totalPrice }}</div>
+        <!--hide it for now-->
+        <!--<div class="p-c-box-price-last">-->
+        <!--WAS $ 310-->
+        <!--</div>-->
+      </div>
 
 
       <ion-grid no-padding class="p-c-box-change">
         <ion-row>
-          <ion-col col-5>
+          <ion-col>
             <div class="p-c-box-change-title">Base price</div>
-            <div class="p-c-box-change-num">210</div>
+            <div class="p-c-box-change-num">{{ appointment.total_client_price_before_tax }}</div>
           </ion-col>
-          <ion-col col-4>
+          <ion-col>
             <div class="p-c-box-change-title">Tax incl.</div>
             <div class="p-c-box-change-num">
-              40
-              <ion-toggle></ion-toggle>
+              {{ appointment.total_tax }}
+              <ion-toggle (ionChange)="calcTotalPrice()" [(ngModel)]="withTax" class="ion-bb-toggle"></ion-toggle>
             </div>
           </ion-col>
-          <ion-col col-3>
+          <ion-col>
             <div class="p-c-box-change-title">Card fee</div>
             <div class="p-c-box-change-num">
-              6
-              <ion-toggle></ion-toggle>
+              {{ appointment.total_card_fee }}
+              <ion-toggle (ionChange)="calcTotalPrice()" [(ngModel)]="withCardFee" class="ion-bb-toggle"></ion-toggle>
             </div>
           </ion-col>
         </ion-row>
@@ -64,20 +57,20 @@
 
 
 
-      <ion-grid no-padding class="p-c-box-service">
+      <ion-grid *ngFor="let service of appointment.services" no-padding class="p-c-box-service">
         <ion-row>
           <ion-col col-5>
             <div class="p-c-box-service-title">Service</div>
-            <div class="p-c-box-service-text">Colouring</div>
+            <div class="p-c-box-service-text">{{ service.service_name }}</div>
           </ion-col>
           <ion-col col-3>
             <div class="p-c-box-service-title">Price</div>
-            <div class="p-c-box-service-text">$ 210</div>
+            <div class="p-c-box-service-text">$ {{ service.client_price }}</div>
           </ion-col>
           <ion-col col-4>
             <div class="p-c-box-service-title">Was</div>
             <div class="p-c-box-service-text">
-              $ 310
+              $ {{ service.regular_price }}
               <button menuToggle ion-button icon-only class="p-c-box-service-btn">
                 <ion-icon name="ios-more-outline"></ion-icon>
               </button>

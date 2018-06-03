@@ -237,4 +237,10 @@ ion-input > input {
       }
     }
   }
+
+  &-toggle{
+    vertical-align: middle;
+    display: inline-block;
+    padding: 6px;
+  }
 }

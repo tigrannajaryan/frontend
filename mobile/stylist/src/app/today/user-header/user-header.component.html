@@ -9,18 +9,19 @@
     </button>
   </ion-buttons>
 
+  
 
-  <ion-title *ngIf="!hasBackButton" madeLink to="Profile" class="u-h-header-title">
-    Hello Sharon,
-    <span class="u-h-header-title-sub">Thursday, 18 May</span>
+  <ion-title *ngIf="!hasBackButton && profile" madeLink [to]="PageNames.Profile" class="u-h-header-title">
+    {{ profile.first_name }} {{ profile.last_name }},
+    <span class="u-h-header-title-sub">{{ today | date: 'EEEE, dd LLL' }}</span>
   </ion-title>
 
   <ion-buttons end class="u-h-header-btns">
-    <button  madeLink to="Profile" [style.background-image]="" ion-button icon-only class="u-h-header-btns-user hasAva">
+    <button madeLink to="Profile" [style.background-image]="profile ? profile.profile_photo_url : ''" ion-button icon-only class="u-h-header-btns-user hasAva">
       <ion-icon *ngIf="false" name="ios-contact-outline"></ion-icon>
     </button>
     <div class="u-h-header-btns-del"></div>
-    <button ion-button icon-only class="u-h-header-btns-menu">
+    <button (click)="openMenu()" ion-button icon-only class="u-h-header-btns-menu">
       <ion-icon name="ios-more-outline"></ion-icon>
     </button>
   </ion-buttons>
