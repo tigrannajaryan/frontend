@@ -27,10 +27,10 @@ page-invitations {
       margin: auto;
       display: block;
       padding: pxtoem(10) pxtoem(20);
-      font-size: pxtoem(36);
+      font-size: pxtoem(32);
 
       @media ($phone) {
-        font-size: pxtoem(30);
+        font-size: pxtoem(24);
       }
 
     }
@@ -137,4 +137,12 @@ page-invitations {
     }
   }
 
+}
+
+.alert-radio-label {
+  font-size: pxtoem(24) !important;
+
+  @media ($phone) {
+    font-size: pxtoem(20) !important;
+  }
 }

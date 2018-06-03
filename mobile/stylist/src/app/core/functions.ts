@@ -28,6 +28,9 @@ export function profileStatusToPage(profileStatus: ProfileStatus): string {
   if (!profileStatus.has_weekday_discounts_set && !profileStatus.has_other_discounts_set) {
     return PageNames.Discounts;
   }
+  if (!profileStatus.has_invited_clients) {
+    return PageNames.Invitations;
+  }
 
   // TODO: check the remaining has_ flags and return the appropriate
   // page name once the pages are implemented.

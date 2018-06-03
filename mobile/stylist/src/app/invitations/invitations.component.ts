@@ -10,6 +10,7 @@ import { Component } from '@angular/core';
 import { Contacts } from '@ionic-native/contacts';
 import { ClientInvitation } from './invitations.models';
 import { InvitationsApi } from './invitations.api';
+import { PageNames } from '~/core/page-names';
 
 @IonicPage({
   segment: 'invitations'
@@ -92,7 +93,7 @@ export class InvitationsComponent {
 
       await this.invitationsApi.sendInvitations(this.invitations);
 
-      // Go to Summary Page when it is created
+      this.navCtrl.push(PageNames.Today);
     } finally {
       loading.dismiss();
     }
