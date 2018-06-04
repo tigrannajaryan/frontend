@@ -38,7 +38,7 @@ describe('Pages: Profile / Settings', () => {
       .toBeTruthy();
   }));
 
-  it('should call the API', async () => {
+  it('should call the API', async(async () => {
     // get injected Stylist API
     const stylistService = fixture.debugElement.injector.get(StylistServiceProvider);
 
@@ -49,9 +49,9 @@ describe('Pages: Profile / Settings', () => {
 
     expect(stylistService.getStylistSummary)
       .toHaveBeenCalledTimes(1);
-  });
+  }));
 
-  it('should show stylist info: name and salon address', async () => {
+  it('should show stylist info: name and salon address', async(async () => {
     await instance.loadStylistSummary();
 
     // update html
@@ -66,22 +66,22 @@ describe('Pages: Profile / Settings', () => {
 
     expect(fixture.nativeElement.textContent)
       .toContain(mock.profile.salon_address);
-  });
+  }));
 
-  it('should have edit page button', async () => {
+  it('should have edit page button', async(() => {
     expect(fixture.nativeElement.querySelector('[madeLink][to="RegisterSalon"]'))
       .toBeTruthy();
-  });
+  }));
 
-  it('should show all services count', async () => {
+  it('should show all services count', async(async () => {
     await instance.loadStylistSummary();
     fixture.detectChanges();
 
     expect(fixture.nativeElement.textContent)
       .toContain(mock.services_count);
-  });
+  }));
 
-  it('should show services data', async () => {
+  it('should show services data', async(async () => {
     await instance.loadStylistSummary();
     fixture.detectChanges();
 
@@ -92,14 +92,14 @@ describe('Pages: Profile / Settings', () => {
       expect(fixture.nativeElement.textContent)
         .toContain(`$${service.base_price}`);
     });
-  });
+  }));
 
-  it('should have services edit button', async () => {
+  it('should have services edit button', async(() => {
     expect(fixture.nativeElement.querySelector('[madeLink][to="RegisterServicesItem"]'))
       .toBeTruthy();
-  });
+  }));
 
-  it('should show booked time summary for this week', async () => {
+  it('should show booked time summary for this week', async(async () => {
     const hours = Math.floor(mock.total_week_booked_minutes / 60);
     const minutes = mock.total_week_booked_minutes % 60;
 
@@ -115,9 +115,9 @@ describe('Pages: Profile / Settings', () => {
       expect(fixture.nativeElement.textContent)
         .toContain(`${minutes} minutes`);
     }
-  });
+  }));
 
-  it('should show working hours data', async () => {
+  it('should show working hours data', async(async () => {
     await instance.loadStylistSummary();
     fixture.detectChanges();
 
@@ -133,9 +133,9 @@ describe('Pages: Profile / Settings', () => {
         expect(fixture.nativeElement.textContent)
           .toContain(convertMinsToHrsMins(worktime.booked_time_minutes, FormatType.ShortForm));
       });
-  });
+  }));
 
-  it('should not show unavailable working hours data', async () => {
+  it('should not show unavailable working hours data', async(async () => {
     // because the API returns all days
 
     await instance.loadStylistSummary();
@@ -147,23 +147,23 @@ describe('Pages: Profile / Settings', () => {
         expect(fixture.nativeElement.textContent)
           .not.toContain(WEEKDAY_FULL_NAMES[worktime.weekday_iso]);
       });
-  });
+  }));
 
-  it('should show working hours edit button', async () => {
+  it('should show working hours edit button', async(() => {
     expect(fixture.nativeElement.querySelector('[madeLink][to="Worktime"]'))
       .toBeTruthy();
-  });
+  }));
 
-  it('should create loader when data is loading', async () => {
+  it('should create loader when data is loading', async(async () => {
     const loadingControl = fixture.debugElement.injector.get(LoadingController);
 
     await instance.loadStylistSummary();
 
     expect(loadingControl.create)
       .toHaveBeenCalledTimes(1);
-  });
+  }));
 
-  it('should create alert when data failed to load', async () => {
+  it('should create alert when data failed to load', async(async () => {
     const alertControl = fixture.debugElement.injector.get(AlertController);
 
     const stylistService = fixture.debugElement.injector.get(StylistServiceProvider);
@@ -175,5 +175,5 @@ describe('Pages: Profile / Settings', () => {
 
     expect(alertControl.create)
       .toHaveBeenCalledTimes(1);
-  });
+  }));
 });
