@@ -44,7 +44,11 @@ export class DiscountsComponent {
   @loading
   async loadInitialData(): Promise<void> {
     try {
-      this.discounts = await this.discountsApi.getDiscounts() as Discounts;
+      const discounts = await this.discountsApi.getDiscounts() as Discounts;
+      this.discounts = {
+        ...discounts,
+        weekdays: discounts.weekdays.sort((a, b) => a.weekday - b.weekday) // from 1 (Monday) to 7 (Sunday)
+      };
     } catch (e) {
       const alert = this.alertCtrl.create({
         title: 'Loading discounts failed',
