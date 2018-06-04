@@ -39,12 +39,8 @@ export class ProfileComponent {
 
   getServicesTableData(services): TableData {
     return {
-      header: ['Service', 'Duration', 'Price'],
-      body: services.map(({name, duration_minutes, base_price}) => ([
-        name,
-        convertMinsToHrsMins(duration_minutes, FormatType.ShortForm),
-        `$${base_price}`
-      ]))
+      header: ['Service', 'Price'],
+      body: services.map(({name, base_price}) => ([name, `$${base_price}`]))
     };
   }
 

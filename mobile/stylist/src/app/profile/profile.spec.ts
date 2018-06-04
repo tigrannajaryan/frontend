@@ -90,9 +90,6 @@ describe('Pages: Profile / Settings', () => {
         .toContain(service.name);
 
       expect(fixture.nativeElement.textContent)
-        .toContain(convertMinsToHrsMins(service.duration_minutes, FormatType.ShortForm));
-
-      expect(fixture.nativeElement.textContent)
         .toContain(`$${service.base_price}`);
     });
   });
