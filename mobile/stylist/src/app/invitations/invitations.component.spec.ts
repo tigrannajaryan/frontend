@@ -1,40 +1,54 @@
-import {async, ComponentFixture, getTestBed, TestBed} from '@angular/core/testing';
-import {InvitationsComponent} from './invitations.component';
-import {TestUtils} from '../../test';
-import {InvitationsApi} from './invitations.api';
-import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
-
-let injector: TestBed;
-let fixture: ComponentFixture<InvitationsComponent>;
-let instance: InvitationsComponent;
-let invitationsApi: InvitationsApi;
-let httpMock: HttpTestingController;
+import {
+  async,
+  ComponentFixture,
+  getTestBed,
+  TestBed
+  } from '@angular/core/testing';
+import { Contacts } from '@ionic-native/contacts';
+import { HttpClient } from '@angular/common/http';
+import { InvitationsApi } from './invitations.api';
+import { InvitationsComponent } from './invitations.component';
+import {
+  IonicModule,
+  ModalController,
+  NavController,
+  NavParams,
+  ViewController
+  } from 'ionic-angular';
+import { CoreModule } from '~/core/core.module';
+import { prepareSharedObjectsForTests } from '~/core/test-utils.spec';
 
 describe('Pages: InvitationsComponent', () => {
+  let fixture;
+  let component;
 
-  // beforeEach(async(() => {
-  //   TestBed.configureTestingModule({
-  //     imports: [
-  //       HttpClientTestingModule
-  //     ],
-  //     providers: [
-  //       InvitationsApi
-  //     ]
-  //   });
-  // }));
+  prepareSharedObjectsForTests();
 
-  // beforeEach(async(() => TestUtils.beforeEachCompiler([InvitationsComponent])
-  //   .then(compiled => {
-  //     fixture = compiled.fixture;
-  //     instance = compiled.instance;
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [InvitationsComponent],
+      imports: [
+        IonicModule.forRoot(InvitationsComponent),
+        CoreModule
+      ],
+      providers: [
+        NavController,
+        NavParams,
+        ModalController,
+        InvitationsApi,
+        Contacts,
+        { provide: HttpClient, useClass: class { httpClient = jasmine.createSpy('HttpClient'); } }
+      ]
+    });
+  }));
 
-  //     injector = getTestBed();
-  //     invitationsApi = injector.get(invitationsApi);
-  //     httpMock = injector.get(HttpTestingController);
-  //   })));
+  beforeEach(() => {
+    fixture = TestBed.createComponent(InvitationsComponent);
+    component = fixture.componentInstance;
+  });
 
-  // it('should create the page', async(() => {
-  //   expect(instance).toBeTruthy();
-  // }));
+  it('should create the page', async(() => {
+    expect(component).toBeTruthy();
+  }));
 
 });
