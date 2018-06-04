@@ -11,6 +11,8 @@
     "stylelint": "stylelint src/**/*.scss",
     "ionic:build": "cross-env BB_ENV=prod ionic-app-scripts build --prod",
     "ionic:serve": "cross-env BB_ENV=dev ionic-app-scripts serve",
+    "ionic:serve-ios": "cross-env BB_ENV=dev ionic cordova emulate ios --livereload",
+    "ionic:serve-android": "cross-env BB_ENV=dev ionic cordova emulate android --livereload",
     "mobserve": "ionic serve -c",
     "test-coverage": "ng test --code-coverage --preserve-symlinks",
     "test": "ng test --preserve-symlinks",
