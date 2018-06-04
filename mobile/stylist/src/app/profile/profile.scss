@@ -101,6 +101,10 @@ page-profile {
     .Table-col:first-child {
       width: 100%; // shift all cols after the first one to right
     }
+
+    .Table-col:last-child { // prices
+      text-align: right;
+    }
   }
 
   .Button.Button--offset {
