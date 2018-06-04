@@ -23,7 +23,7 @@ export function loading(target: any, name: string, descriptor: LoadingDescriptor
     const loader: Loading = loadingCtrl.create();
     loader.present();
     try {
-      await original.call(this, ...args);
+      return await original.call(this, ...args);
     } finally {
       loader.dismiss();
     }
