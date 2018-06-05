@@ -3,7 +3,7 @@ import { AlertController, IonicPage, NavController } from 'ionic-angular';
 import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook';
 
 import { loading } from '~/core/utils/loading';
-import { profileStatusToPage } from '~/core/functions';
+import { createNavHistoryList } from '~/core/functions';
 import { AuthApiService, FbAuthCredentials, UserRole } from '~/core/auth-api-service/auth-api-service';
 import { PageNames } from '~/core/page-names';
 import { LoginOrRegisterType } from '~/login-register/login-register.component';
@@ -31,11 +31,11 @@ export class FirstScreenComponent {
   }
 
   goToPage(choosePageType: LoginOrRegisterType): void {
-    this.navCtrl.push(PageNames.LoginRegister, {pageType: choosePageType}, {animate: false});
+    this.navCtrl.push(PageNames.LoginRegister, { pageType: choosePageType }, { animate: false });
   }
 
   @loading
-  async loginByFb(): Promise<void>  {
+  async loginByFb(): Promise<void> {
     try {
       const fbResponse: FacebookLoginResponse = await this.fb.login(permission);
 
@@ -48,9 +48,10 @@ export class FirstScreenComponent {
 
         const authResponse = await this.authServiceProvider.loginByFb(credentials);
 
-        // Erase all previous navigation history and go the next
-        // page that must be shown to this user.
-        this.navCtrl.setRoot(profileStatusToPage(authResponse.profile_status));
+        // Find out what page should be shown to the user and navigate to
+        // it while also properly populating the navigation history
+        // so that Back buttons work correctly.
+        this.navCtrl.setPages(createNavHistoryList(authResponse.profile_status));
       }
     } catch (e) {
       // Show an error message

@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 import { loading } from '~/core/utils/loading';
-import { profileStatusToPage } from '~/core/functions';
+import { createNavHistoryList, PageDescr } from '~/core/functions';
 import { AuthApiService, AuthCredentials, UserRole } from '~/core/auth-api-service/auth-api-service';
 import { ServerFieldError } from '~/shared/api-errors';
 import { PageNames } from '~/core/page-names';
@@ -46,9 +46,16 @@ export class LoginRegisterComponent {
       };
       const authResponse = await this.authService.doAuth(authCredentials);
 
-      // process authResponse and move to needed page
-      this.navCtrl.setRoot(profileStatusToPage(authResponse.profile_status));
-
+      // Find out what page should be shown to the user and navigate to
+      // it while also properly populating the navigation history
+      // so that Back buttons work correctly. The Login page should
+      // be the first in this list.
+      const loginPage: PageDescr = {
+        page: PageNames.LoginRegister,
+        params: { pageType: LoginOrRegisterType.login }
+      };
+      const pages = [loginPage, ...createNavHistoryList(authResponse.profile_status)];
+      this.navCtrl.setPages(pages);
     } catch (e) {
       if (e instanceof ServerFieldError) {
         // TODO: Iterate over e.errors Map and show all errors on the form.
