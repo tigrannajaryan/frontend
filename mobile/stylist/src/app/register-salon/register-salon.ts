@@ -17,6 +17,7 @@ import { loading } from '~/core/utils/loading';
 import { PageNames } from '~/core/page-names';
 import { StylistServiceProvider } from '~/core/stylist-service/stylist-service';
 import { BaseApiService } from '~/shared/base-api-service';
+import { showAlert } from '~/core/utils/alert';
 
 enum PhotoSourceType {
   photoLibrary = 0,
@@ -106,12 +107,7 @@ export class RegisterSalonComponent {
         profile_photo_id
       });
     } catch (e) {
-      const alert = this.alertCtrl.create({
-        title: 'Loading profile failed',
-        subTitle: e.message,
-        buttons: ['Dismiss']
-      });
-      alert.present();
+      showAlert(this.alertCtrl, 'Loading profile failed', e.message);
     }
   }
 
@@ -210,12 +206,7 @@ export class RegisterSalonComponent {
         .setValue(response.uuid);
 
     } catch (e) {
-      const alert = this.alertCtrl.create({
-        title: 'Saving photo failed',
-        subTitle: e.message,
-        buttons: ['Dismiss']
-      });
-      alert.present();
+      showAlert(this.alertCtrl, 'Saving photo failed', e.message);
     }
   }
 }

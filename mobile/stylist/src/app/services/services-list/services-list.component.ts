@@ -19,6 +19,7 @@ import { PageNames } from '~/core/page-names';
 import { ServiceItemComponentData } from '../services-item/services-item.component';
 
 import * as time from '~/shared/time';
+import { showAlert } from '~/core/utils/alert';
 
 // this is required for saving uuid (page refresh will not remove it)
 @IonicPage({ segment: 'services/:uuid' })
@@ -76,12 +77,7 @@ export class ServicesListComponent {
 
       this.isEmptyCategories = ServicesListComponent.checkIfEmptyCategories(this.templateSet.categories);
     } catch (e) {
-      const alert = this.alertCtrl.create({
-        title: 'Loading services failed',
-        subTitle: e.message,
-        buttons: ['Dismiss']
-      });
-      alert.present();
+      showAlert(this.alertCtrl, 'Loading services failed', e.message);
     }
   }
 
@@ -149,12 +145,7 @@ export class ServicesListComponent {
       }
     } catch (e) {
       // Show an error message
-      const alert = this.alertCtrl.create({
-        title: 'Error',
-        subTitle: e,
-        buttons: ['Dismiss']
-      });
-      alert.present();
+      showAlert(this.alertCtrl, 'Error', e);
     }
   }
 
@@ -176,12 +167,7 @@ export class ServicesListComponent {
       try {
         await this.stylistService.deleteStylistService(service.id);
       } catch (e) {
-        const alert = this.alertCtrl.create({
-          title: 'Error',
-          subTitle: e,
-          buttons: ['Dismiss']
-        });
-        alert.present();
+        showAlert(this.alertCtrl, 'Error', e);
 
         // put service back if error occurred
         category.services.splice(idx, 0, service);

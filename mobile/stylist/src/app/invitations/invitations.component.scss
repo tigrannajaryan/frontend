@@ -1,0 +1,148 @@
+page-invitations {
+
+  .p-i {
+
+    &-title{
+      font-size: pxtoem(40);
+      font-weight: bold;
+      padding: pxtoem(20) 0px pxtoem(4);
+
+      @media ($phone) {
+        font-size: pxtoem(30);
+      }
+    }
+
+    &-text{
+      font-size: pxtoem(30);
+      padding: pxtoem(10) 0px pxtoem(8);
+      color: color($colors, color6, default);
+
+      @media ($phone) {
+        font-size: pxtoem(20);
+      }
+    }
+
+    &-button {
+
+      margin: auto;
+      display: block;
+      padding: pxtoem(10) pxtoem(20);
+      font-size: pxtoem(32);
+
+      @media ($phone) {
+        font-size: pxtoem(24);
+      }
+
+    }
+
+    &-box{
+
+      box-shadow: 0px 0px 25px 3px color($colors, light, default);
+      border-radius: 10px;
+      padding: 10px 0px;
+      margin: 10px 0px;
+
+      &-title{
+        font-size: pxtoem(24);
+        padding: pxtoem(5) 0px 0px pxtoem(25);
+        color: color($colors, color9, default);
+
+        @media ($phone) {
+          font-size: pxtoem(18);
+        }
+      }
+
+      &-item {
+
+        padding: pxtoem(0) pxtoem(20);
+
+        .item-inner{
+          padding: 0;
+          border-bottom: 1px solid color($colors, bb_skin, default) !important;
+        }
+
+        &-button {
+          font-size: pxtoem(24);
+          background: none;
+          color: color($colors, bb_orange, default);
+          margin-top: 24px !important;
+
+          @media ($phone) {
+            font-size: pxtoem(14);
+          }
+        }
+
+      }
+
+      &-button {
+
+        margin: auto;
+        display: block;
+        padding: pxtoem(10) pxtoem(40);
+        font-size: pxtoem(24);
+  
+        @media ($phone) {
+          font-size: pxtoem(20);
+        }
+  
+      }
+
+    }
+
+    &-table{
+      padding: 0 20px;
+      height: 160px;
+      max-height: 160px;
+      overflow-y: auto;
+
+      &-row{
+        
+        display: grid;
+        padding: pxtoem(25) 0;
+        border-bottom: 2px solid color($colors, light, default);
+
+        @media ($phone) {
+          padding: pxtoem(18) 0;
+        }
+
+        &-col{
+          white-space: normal;
+          font-size: pxtoem(24);
+
+          @media ($phone) {
+            font-size: pxtoem(20);
+          }
+
+          &:first-child{
+            padding-left: 0;
+          }
+
+          &:last-child{
+            padding-right: 0;
+            display: flex;
+            justify-content: space-between;
+          }
+        }
+
+        &-button {
+          font-size: pxtoem(22);
+          background: none;
+          color: color($colors, bb_warn, default);
+
+          @media ($phone) {
+            font-size: pxtoem(18);
+          }
+        }
+      }
+    }
+  }
+
+}
+
+.alert-radio-label {
+  font-size: pxtoem(24) !important;
+
+  @media ($phone) {
+    font-size: pxtoem(20) !important;
+  }
+}

@@ -10,6 +10,7 @@ import {
 import { loading } from '~/core/utils/loading';
 import { StylistServiceProvider } from '~/core/stylist-service/stylist-service';
 import { PageNames } from '~/core/page-names';
+import { showAlert } from '~/core/utils/alert';
 
 /**
  * Represents the data that is passed in and out of
@@ -69,12 +70,7 @@ export class ServiceItemComponent {
     try {
       await this.stylistService.deleteStylistService(service.id);
     } catch (e) {
-      const alert = this.alertCtrl.create({
-        title: 'Error',
-        subTitle: e,
-        buttons: ['Dismiss']
-      });
-      alert.present();
+      showAlert(this.alertCtrl, 'Error', e);
     }
   }
 

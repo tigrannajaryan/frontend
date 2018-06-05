@@ -85,9 +85,9 @@ using feature flags. For mobile app the easiest way would be
 to do something like this:
 
 ```
-if (!ENV.production) {
+if (!ENV.ffEnableIncomplete) {
   // code for your new feature that should not be
-  // exposed to production
+  // exposed to for the particular environment
 }
 ```
 

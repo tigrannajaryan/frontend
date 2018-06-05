@@ -7,6 +7,7 @@ import { StylistProfile } from '~/core/stylist-service/stylist-models';
 
 import { TodayComponent } from '~/today/today.component';
 import { UserHeaderMenuComponent } from '~/today/user-header/user-header-menu/user-header-menu.component';
+import { showAlert } from '~/core/utils/alert';
 
 @Component({
   selector: '[madeUserHeader]',
@@ -22,7 +23,7 @@ export class UserHeaderComponent implements OnInit {
 
   constructor(
     public popoverCtrl: PopoverController,
-    private navCtrl: NavController,
+    protected navCtrl: NavController,
     private alertCtrl: AlertController,
     private apiService: StylistServiceProvider
   ) {
@@ -47,12 +48,7 @@ export class UserHeaderComponent implements OnInit {
       this.profile = await this.apiService.getProfile();
       this.profile.profile_photo_url = `url(${this.profile.profile_photo_url})`;
     } catch (e) {
-      const alert = this.alertCtrl.create({
-        title: 'Loading profile failed',
-        subTitle: e.message,
-        buttons: ['Dismiss']
-      });
-      alert.present();
+      showAlert(this.alertCtrl, 'Loading profile failed', e.message);
     }
   }
 

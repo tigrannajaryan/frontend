@@ -13,6 +13,7 @@ export enum PageNames {
     DiscountsAlert = 'DiscountsAlertComponent',
     DiscountsChange = 'DiscountsChangeComponent',
     FirstScreen = 'FirstScreenComponent',
+    Invitations = 'InvitationsComponent',
     Login = 'LoginComponent',
     LoginRegister = 'LoginRegisterComponent',
     Profile = 'ProfileComponent',
