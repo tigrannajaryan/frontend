@@ -9,13 +9,13 @@
     </button>
   </ion-buttons>
 
-  <ion-title *ngIf="!hasBackButton && profile" madeLink to="Profile" class="UserHeader-title">
+  <ion-title *ngIf="!hasBackButton && profile" [madeLink]="[PageNames.Profile]" class="UserHeader-title">
     {{ profile.first_name }} {{ profile.last_name }}
     <span class="UserHeader-subtitle">{{ today | date: 'EEEE, dd LLL' }}</span>
   </ion-title>
 
   <ion-buttons end>
-    <button *ngIf="!hasBackButton" class="UserHeader-btnUser is-withPic" madeLink to="Profile" [style.background-image]="" ion-button icon-only>
+    <button *ngIf="!hasBackButton" [madeLink]="[PageNames.Profile]" [style.background-image]="" ion-button icon-only class="UserHeader-btnUser is-withPic">
       <ion-icon *ngIf="false" name="ios-contact-outline"></ion-icon>
     </button>
     <div class="UserHeader-delimeter"></div>

@@ -2,11 +2,10 @@ import { async, ComponentFixture } from '@angular/core/testing';
 import {
   AlertController,
   LoadingController,
-  NavController,
-  PopoverController
+  NavController
 } from 'ionic-angular';
-import { HttpClientModule } from '@angular/common/http';
 import { DatePipe } from '@angular/common';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 import { prepareSharedObjectsForTests } from '~/core/test-utils.spec';
 import { TestUtils } from '../../test';
@@ -17,8 +16,6 @@ import { ProfileComponent } from './profile';
 import { ProfileInfoComponent } from './profile-info/profile-info';
 
 import { profileSummaryMock as mock } from '~/core/stylist-service/stylist-service-mock';
-import { convertMinsToHrsMins, FormatType } from '~/shared/time';
-import { PopoverControllerMock } from 'ionic-mocks';
 import { WEEKDAY_FULL_NAMES, WeekdayIso } from '~/shared/weekday';
 
 let fixture: ComponentFixture<ProfileComponent>;
@@ -33,10 +30,7 @@ describe('Pages: Profile / Settings', () => {
   beforeEach(async(() => TestUtils.beforeEachCompiler([
     ProfileComponent,
     ProfileInfoComponent
-  ], [
-    DatePipe,
-    { provide: PopoverController, useClass: PopoverControllerMock }
-  ], [HttpClientModule]).then(compiled => {
+  ], [DatePipe], [HttpClientTestingModule]).then(compiled => {
     fixture = compiled.fixture; // https://angular.io/api/core/testing/ComponentFixture
     instance = compiled.instance;
   })));
@@ -78,7 +72,10 @@ describe('Pages: Profile / Settings', () => {
   }));
 
   it('should have edit page button', async(() => {
-    expect(fixture.nativeElement.querySelector('[madeLink][to="RegisterSalon"]'))
+    // update html
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.querySelector(`[ng-reflect-made-link^="RegisterSalonComponent"]`))
       .toBeTruthy();
   }));
 
@@ -104,7 +101,10 @@ describe('Pages: Profile / Settings', () => {
   }));
 
   it('should have services edit button', async(() => {
-    expect(fixture.nativeElement.querySelector('[madeLink][to="RegisterServicesItem"]'))
+    // update html
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.querySelector(`[ng-reflect-made-link^="ServicesListComponent"]`))
       .toBeTruthy();
   }));
 
@@ -158,7 +158,10 @@ describe('Pages: Profile / Settings', () => {
   }));
 
   it('should show working hours edit button', async(() => {
-    expect(fixture.nativeElement.querySelector('[madeLink][to="Worktime"]'))
+    // update html
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.querySelector(`[ng-reflect-made-link^="Worktime"]`))
       .toBeTruthy();
   }));
 

@@ -10,6 +10,7 @@ import { loading } from '~/core/utils/loading';
 import { StylistServiceProvider } from '~/core/stylist-service/stylist-service';
 import { TableData } from '~/core/components/made-table/made-table';
 import { StylistProfile, WorkdayInSummary } from '~/core/stylist-service/stylist-models';
+import { PageNames } from '~/core/page-names';
 
 @IonicPage()
 @Component({
@@ -17,6 +18,7 @@ import { StylistProfile, WorkdayInSummary } from '~/core/stylist-service/stylist
   templateUrl: 'profile.html'
 })
 export class ProfileComponent {
+  protected PageNames = PageNames;
   profile?: StylistProfile;
   services?: TableData;
   worktime?: TableData;

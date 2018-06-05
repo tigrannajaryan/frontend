@@ -31,7 +31,8 @@ import {
   MenuController,
   NavController,
   NavParams,
-  Platform
+  Platform,
+  PopoverController
 } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 
@@ -41,6 +42,7 @@ import {
   LoadingControllerMock,
   NavControllerMock,
   PlatformMock,
+  PopoverControllerMock,
   StatusBarMock
 } from 'ionic-mocks';
 
@@ -102,6 +104,7 @@ export class TestUtils {
         { provide: AuthApiService, useClass: AuthApiServiceMock },
         { provide: WorktimeApi, useClass: WorktimeApiMock },
         { provide: StylistServiceProvider, useClass: StylistServiceMock },
+        { provide: PopoverController, useClass: PopoverControllerMock },
         ...providers
       ],
       imports: [
