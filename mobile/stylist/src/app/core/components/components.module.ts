@@ -10,6 +10,7 @@ import { UserFooterComponent } from '~/today/user-footer/user-footer.component';
 import { MadeNavComponent } from './made-nav/made-nav.component';
 import { MadeTableComponent } from './made-table/made-table';
 import { MadeLinkDirective } from './made-link/made-link';
+import { UserHeaderMenuComponent } from '~/today/user-header/user-header-menu/user-header-menu.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,10 @@ import { MadeLinkDirective } from './made-link/made-link';
     UserFooterComponent,
     MadeTableComponent,
     MadeLinkDirective,
-    ServerStatusComponent
+    UserHeaderMenuComponent
+  ],
+  entryComponents: [
+    UserHeaderMenuComponent
   ],
   imports: [
     IonicModule,
@@ -34,7 +38,7 @@ import { MadeLinkDirective } from './made-link/made-link';
     UserFooterComponent,
     MadeTableComponent,
     MadeLinkDirective,
-    ServerStatusComponent
+    UserHeaderMenuComponent
   ]
 })
 export class ComponentsModule { }

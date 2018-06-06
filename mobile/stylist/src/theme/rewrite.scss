@@ -56,6 +56,11 @@ ion-input > input {
   transform: translateZ(0px)
 }
 
+// this need for fixing known bug https://github.com/ionic-team/ionic/issues/10629
+ion-col.col {
+  position: initial;
+}
+
 
 
 // wrap and rewrite ionic def style

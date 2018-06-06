@@ -1,15 +1,16 @@
-import {async, ComponentFixture, getTestBed, TestBed} from '@angular/core/testing';
+import { async, ComponentFixture, getTestBed, TestBed } from '@angular/core/testing';
 import { HttpClient } from '@angular/common/http';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 import { TestUtils } from '../../test';
 import { prepareSharedObjectsForTests } from '~/core/test-utils.spec';
 import { TodayComponent } from '~/today/today.component';
-import { ActionSheetController, ModalController } from 'ionic-angular';
+import { ActionSheetController, ModalController, PopoverController } from 'ionic-angular';
 import { TodayService } from '~/today/today.service';
 import { TodayState } from '~/today/today.reducer';
 import { Store } from '@ngrx/store';
 import { CoreModule } from '~/core/core.module';
+import { PopoverControllerMock } from 'ionic-mocks';
 
 let fixture: ComponentFixture<TodayComponent>;
 let instance: TodayComponent;
@@ -33,6 +34,7 @@ describe('Pages: TodayComponent', () => {
         ActionSheetController,
         TodayService,
         ModalController,
+        { provide: PopoverController, useClass: PopoverControllerMock },
         { provide: HttpClient, useClass: class { httpClient = jasmine.createSpy('HttpClient'); } }
       ]
     });

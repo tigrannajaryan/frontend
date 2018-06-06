@@ -12,9 +12,20 @@
     <div class="p-sl-title">Now let’s set your services</div>
     <div class="p-sl-title-a">Just click, we got what you need</div>
 
+    <ion-row class="bb-table-add">
+      <ion-col col-3>
+      </ion-col>
+      <ion-col col-6>
+        <button *ngIf="isEmptyCategories" (click)="openServiceModal()" ion-button full color="bb_skin" class="bb-btn-a">
+          Add service
+        </button>
+      </ion-col>
+      <ion-col col-3>
+      </ion-col>
+    </ion-row>
 
     <div *ngIf="templateSet && templateSet.categories" class="bb-table">
-      <div *ngFor="let category of templateSet.categories">
+      <div *ngFor="let category of templateSet.categories" [hidden]="category.services.length === 0">
         <div class="bb-table-title">{{ category.name }} <sup class="bb-table-title-sup">{{ category.services.length }}</sup></div>
 
         <ion-grid>

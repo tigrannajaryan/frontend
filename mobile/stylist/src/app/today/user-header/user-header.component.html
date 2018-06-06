@@ -19,7 +19,7 @@
       <ion-icon *ngIf="false" name="ios-contact-outline"></ion-icon>
     </button>
     <div class="UserHeader-delimeter"></div>
-    <button ion-button icon-only class="UserHeader-btnMenu">
+    <button (click)="openPopover($event)" ion-button icon-only class="UserHeader-btnMenu">
       <ion-icon name="ios-more"></ion-icon>
     </button>
   </ion-buttons>

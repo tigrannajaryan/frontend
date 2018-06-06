@@ -1,11 +1,12 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { AlertController, MenuController, NavController } from 'ionic-angular';
+import { AlertController, NavController, PopoverController } from 'ionic-angular';
 
 import { PageNames } from '~/core/page-names';
 import { StylistServiceProvider } from '~/core/stylist-service/stylist-service';
 import { StylistProfile } from '~/core/stylist-service/stylist-models';
 
 import { TodayComponent } from '~/today/today.component';
+import { UserHeaderMenuComponent } from '~/today/user-header/user-header-menu/user-header-menu.component';
 
 @Component({
   selector: '[madeUserHeader]',
@@ -20,10 +21,10 @@ export class UserHeaderComponent implements OnInit {
   protected today = new Date();
 
   constructor(
+    public popoverCtrl: PopoverController,
     private navCtrl: NavController,
     private alertCtrl: AlertController,
-    private apiService: StylistServiceProvider,
-    private menuCtrl: MenuController
+    private apiService: StylistServiceProvider
   ) {
   }
 
@@ -55,7 +56,10 @@ export class UserHeaderComponent implements OnInit {
     }
   }
 
-  protected openMenu(): void {
-    this.menuCtrl.open();
+  protected openPopover(myEvent: Event): void {
+    const popover = this.popoverCtrl.create(UserHeaderMenuComponent);
+    popover.present({
+      ev: myEvent
+    });
   }
 }

@@ -1,10 +1,13 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { AlertController, IonicModule, LoadingController, NavController, NavParams, ViewController } from 'ionic-angular';
+import { async, ComponentFixture } from '@angular/core/testing';
+import {
+  AlertController,
+  LoadingController,
+  NavController,
+  PopoverController,
+} from 'ionic-angular';
 import { HttpClientModule } from '@angular/common/http';
 import { DatePipe } from '@angular/common';
 
-import { NavMock } from '~/services/services.component.spec';
-import { ViewControllerMock } from '~/shared/view-controller-mock';
 import { prepareSharedObjectsForTests } from '~/core/test-utils.spec';
 import { TestUtils } from '../../test';
 
@@ -15,6 +18,7 @@ import { ProfileInfoComponent } from './profile-info/profile-info';
 
 import { profileSummaryMock as mock } from '~/core/stylist-service/stylist-service-mock';
 import { convertMinsToHrsMins, FormatType } from '~/shared/time';
+import {PopoverControllerMock} from 'ionic-mocks';
 
 let fixture: ComponentFixture<ProfileComponent>;
 let instance: ProfileComponent;
@@ -28,7 +32,10 @@ describe('Pages: Profile / Settings', () => {
   beforeEach(async(() => TestUtils.beforeEachCompiler([
     ProfileComponent,
     ProfileInfoComponent
-  ], [DatePipe], [HttpClientModule]).then(compiled => {
+  ], [
+    DatePipe,
+    { provide: PopoverController, useClass: PopoverControllerMock }
+  ], [HttpClientModule]).then(compiled => {
     fixture = compiled.fixture; // https://angular.io/api/core/testing/ComponentFixture
     instance = compiled.instance;
   })));

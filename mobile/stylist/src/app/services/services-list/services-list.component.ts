@@ -28,10 +28,16 @@ import * as time from '~/shared/time';
 })
 export class ServicesListComponent {
   protected PageNames = PageNames;
-  isProfile?: Boolean;
-  uuid: string;
-  timeGap = 15;
-  templateSet: ServiceTemplateSet;
+  protected isEmptyCategories = false;
+  protected isProfile?: Boolean;
+  protected timeGap = 15;
+  protected templateSet: ServiceTemplateSet;
+
+  static checkIfEmptyCategories(categories: ServiceCategory[]): boolean {
+    return categories.every((cat: ServiceCategory) => {
+      return cat.services.length === 0;
+    });
+  }
 
   constructor(
     public navCtrl: NavController,
@@ -67,6 +73,8 @@ export class ServicesListComponent {
           categories: this.getCategorisedServices(response.services)
         };
       }
+
+      this.isEmptyCategories = ServicesListComponent.checkIfEmptyCategories(this.templateSet.categories);
     } catch (e) {
       const alert = this.alertCtrl.create({
         title: 'Loading services failed',
@@ -161,7 +169,7 @@ export class ServicesListComponent {
     return time.convertMinsToHrsMins(mins);
   }
 
-  async deleteService(category, idx): Promise<void> {
+  async deleteService(category: ServiceCategory, idx: number): Promise<void> {
     const [service] = category.services.splice(idx, 1);
 
     if (service.id !== undefined) {
@@ -179,6 +187,8 @@ export class ServicesListComponent {
         category.services.splice(idx, 0, service);
       }
     }
+
+    this.isEmptyCategories = ServicesListComponent.checkIfEmptyCategories(this.templateSet.categories);
   }
 
   /**
@@ -218,5 +228,7 @@ export class ServicesListComponent {
       }
       category.services[serviceIndex] = editedItem.service;
     }
+
+    this.isEmptyCategories = ServicesListComponent.checkIfEmptyCategories(this.templateSet.categories);
   }
 }
