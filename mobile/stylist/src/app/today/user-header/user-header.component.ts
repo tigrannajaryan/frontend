@@ -32,8 +32,8 @@ export class UserHeaderComponent implements OnInit {
   }
 
   goToHome(): void {
-    const previous = this.navCtrl.getPrevious(this.navCtrl.getActive());
-    if (previous.component === TodayComponent) {
+    const previous = this.navCtrl.getPrevious();
+    if (previous && previous.component === TodayComponent) {
       // When click on house icon navigate back if previous route is Today
       this.navCtrl.pop();
     } else {
