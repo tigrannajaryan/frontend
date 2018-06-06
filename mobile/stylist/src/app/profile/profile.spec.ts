@@ -8,6 +8,7 @@ import { ViewControllerMock } from '~/shared/view-controller-mock';
 import { prepareSharedObjectsForTests } from '~/core/test-utils.spec';
 import { TestUtils } from '../../test';
 
+import { PageNames } from '~/core/page-names';
 import { StylistServiceProvider } from '~/core/stylist-service/stylist-service';
 import { ProfileComponent, WEEKDAY_FULL_NAMES } from './profile';
 import { ProfileInfoComponent } from './profile-info/profile-info';
@@ -175,5 +176,26 @@ describe('Pages: Profile / Settings', () => {
 
     expect(alertControl.create)
       .toHaveBeenCalledTimes(1);
+  }));
+
+  it('should have proper header', async(() => {
+    const navControl = fixture.debugElement.injector.get(NavController);
+
+    // Profile is navigated from Today, set pages
+    navControl.setPages([
+      { page: PageNames.Today },
+      { page: PageNames.Profile }
+    ]);
+
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.querySelector('ion-navbar [navPop] ion-icon[name="ios-arrow-round-back-outline"]'))
+      .toBeTruthy();
+
+    expect(fixture.nativeElement.querySelector('ion-navbar ion-icon[name="ios-home-outline"]'))
+      .toBeTruthy();
+
+    expect(fixture.nativeElement.querySelector('ion-navbar ion-icon[name="ios-more"]'))
+      .toBeTruthy();
   }));
 });
