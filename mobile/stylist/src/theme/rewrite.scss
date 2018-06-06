@@ -29,10 +29,6 @@ button[color="bb_skin"]{
   color: #000;
 }
 
-ion-header ion-icon.back-button-icon.icon {
-  color: map-get($colors, dark);
-}
-
 .range-md{
   .range-knob{
     transform: scale(1.8);

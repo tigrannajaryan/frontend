@@ -1,16 +1,20 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { AlertController, MenuController, NavController } from 'ionic-angular';
 
 import { PageNames } from '~/core/page-names';
 import { StylistServiceProvider } from '~/core/stylist-service/stylist-service';
 import { StylistProfile } from '~/core/stylist-service/stylist-models';
 
+import { TodayComponent } from '~/today/today.component';
+
 @Component({
-  selector: 'user-header',
+  selector: '[madeUserHeader]',
   templateUrl: 'user-header.component.html'
 })
-export class UserHeaderComponent {
+export class UserHeaderComponent implements OnInit {
   @Input() hasBackButton: boolean;
+  @Input() hasShadow: boolean;
+
   protected profile: StylistProfile;
   protected PageNames = PageNames;
   protected today = new Date();
@@ -21,11 +25,20 @@ export class UserHeaderComponent {
     private apiService: StylistServiceProvider,
     private menuCtrl: MenuController
   ) {
+  }
+
+  ngOnInit(): void {
     this.loadUserData();
   }
 
   goToHome(): void {
-    this.navCtrl.push(PageNames.Today);
+    const previous = this.navCtrl.getPrevious(this.navCtrl.getActive());
+    if (previous.component === TodayComponent) {
+      // When click on house icon navigate back if previous route is Today
+      this.navCtrl.pop();
+    } else {
+      this.navCtrl.push(PageNames.Today);
+    }
   }
 
   async loadUserData(): Promise<void> {

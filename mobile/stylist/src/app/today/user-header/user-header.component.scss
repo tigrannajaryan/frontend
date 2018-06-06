@@ -1,103 +1,124 @@
-user-header{
-  .u-h{
-    &-header{
-      &-title{
-        .toolbar-title{
-          font-size: pxtorem(45);
-          padding: 0;
+// Rewrite ionic’s rules
+ion-header ion-icon.back-button-icon.icon {
+  color: map-get($colors, dark);
+}
 
-          @media ($smartphone) {
-            font-size: pxtorem(36);
-            padding: 0 12px;
-          }
-          @media ($phone) {
-            font-size: pxtorem(22);
-            padding: 0 10px;
-          }
-        }
+.UserHeader {
+  // Add padding to be aligned with context.
+  // Context padding is 16px + 5px.
+  padding-right: 18px;
+  padding-left: 14px;
 
-        &-sub{
-          display: block;
-          font-size: pxtorem(34);
-          color: rgba(0, 0, 0, 0.4);
-          padding: pxtorem(10) 0 0;
+  &.UserHeader--shadow {
+    box-shadow: 0 0 18px 18px white;
+  }
 
-          @media ($smartphone) {
-            font-size: pxtorem(24);
-          }
-          @media ($phone) {
-            font-size: pxtorem(18);
-          }
-        }
+  .UserHeader-title {
+    .toolbar-title { // ionic’s navbar title
+      padding: 0;
+      font-size: pxtorem(45);
+
+      @media ($smartphone) {
+        padding: 0 12px;
+        font-size: pxtorem(36);
       }
 
-      &-btns{
-        &-user{
-          display: inline-block;
-          vertical-align: middle;
-          font-size: pxtorem(40);
-          background: transparent;
-
-          width: 90px;
-          height: 90px;
-          border-radius: 50%;
-          background-size: cover !important;
-          background-repeat: no-repeat;
-          background-position: center;
-
-          @media ($smartphone) {
-            width: 80px;
-            height: 80px;
-          }
-          @media ($phone) {
-            width: 50px;
-            height: 50px;
-          }
-
-
-
-          &.hasAva{
-            border: 1px solid color($colors, color10);
-          }
-        }
-
-        &-del{
-          display: inline-block;
-          vertical-align: middle;
-          width: 1px;
-          height: 60px;
-          background: color($colors, color10);
-          margin: 0 pxtoem(10) auto;
-
-          @media ($smartphone) {
-            margin: 0 pxtoem(20) auto;
-            height: 50px;
-          }
-          @media ($phone) {
-            margin: 0 pxtoem(10) auto;
-            height: 30px;
-          }
-        }
-
-        &-menu{
-          display: inline-block;
-          vertical-align: middle;
-          color: color($colors, color11);
-          font-size: pxtorem(50);
-
-          @media ($smartphone) {
-            font-size: pxtorem(40);
-          }
-          @media ($phone) {
-            font-size: pxtorem(30);
-            margin: 0;
-          }
-
-          &.dark{
-            color: color($colors, dark);
-          }
-        }
+      @media ($phone) {
+        padding: 0 10px;
+        font-size: pxtorem(22);
       }
+    }
+  }
+
+  .UserHeader-subtitle {
+    display: block;
+    padding: pxtorem(10) 0 0;
+    font-size: pxtorem(34);
+    color: rgba(0, 0, 0, 0.4);
+
+    @media ($smartphone) {
+      font-size: pxtorem(24);
+    }
+
+    @media ($phone) {
+      font-size: pxtorem(18);
+    }
+  }
+
+  .UserHeader-btnUser {
+    $button-size: 90px;
+
+    display: inline-block;
+    width: $button-size;
+    height: $button-size;
+    font-size: pxtorem(40);
+    vertical-align: middle;
+    background: no-repeat center transparent;
+    background-size: cover !important;
+    border-radius: 50%;
+
+    &.is-withPic {
+      border: 1px solid color($colors, color10);
+    }
+
+    @media ($smartphone) {
+      $button-size: 80px;
+
+      width: $button-size;
+      height: $button-size;
+    }
+
+    @media ($phone) {
+      $button-size: 50px;
+
+      width: $button-size;
+      height: $button-size;
+    }
+
+    @media ($phone-sm) {
+      $button-size: 36px;
+
+      width: $button-size;
+      height: $button-size;
+    }
+  }
+
+  .UserHeader-btnMenu {
+    display: inline-block;
+    font-size: pxtorem(50);
+    color: color($grayscale, 600);
+    vertical-align: middle;
+
+    @media ($smartphone) {
+      font-size: pxtorem(40);
+    }
+
+    @media ($phone) {
+      margin: 0;
+      font-size: pxtorem(30);
+    }
+
+    &.UserHeader-btnMenu--dark {
+      color: color($colors, dark);
+    }
+  }
+
+  .UserHeader-delimeter {
+    display: inline-block;
+    width: 1px;
+    height: 60px;
+    margin: 0 10px auto;
+    vertical-align: middle;
+    background: darken(color($grayscale, 200), 1%);
+
+    @media ($smartphone) {
+      height: 50px;
+      margin: 0 pxtoem(20) auto;
+    }
+
+    @media ($phone) {
+      height: 30px;
+      margin: 0 pxtoem(10) auto;
     }
   }
 }

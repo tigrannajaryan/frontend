@@ -39,6 +39,7 @@ $grayscale: (
   200: #ECECEC,
   300: #CCCCCC,
   400: #B8B8B8,
+  600: #7A7A7A,
   800: black,
 );
 
@@ -151,4 +152,4 @@ $t-small: pxtorem10(10) !default;
 $tablet: 'max-width: 600px';
 $smartphone: 'max-width: 500px';
 $phone: 'max-width: 415px';
-
+$phone-sm: 'max-width: 320px';

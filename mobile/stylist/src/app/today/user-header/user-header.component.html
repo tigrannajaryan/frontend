@@ -1,27 +1,26 @@
-<ion-navbar [hideBackButton]="true" class="u-h-header bb-wp-a">
-  <ion-buttons *ngIf="hasBackButton" left>
-    <button navPop ion-button icon-only class="u-h-header-btns-menu dark">
-      <ion-icon name="md-arrow-back"></ion-icon>
+<ion-navbar [hideBackButton]="true" class="UserHeader bb-wp-a" [ngClass]="{'UserHeader--shadow': hasShadow}">
+  <ion-buttons *ngIf="hasBackButton && navCtrl.canGoBack()" left>
+    <button navPop ion-button icon-only class="UserHeader-btnMenu UserHeader-btnMenu--dark">
+      <ion-icon name="ios-arrow-round-back-outline"></ion-icon>
     </button>
-    <div class="u-h-header-btns-del"></div>
-    <button (click)="goToHome()" ion-button icon-only class="u-h-header-btns-menu dark">
+    <div class="UserHeader-delimeter"></div>
+    <button (click)="goToHome()" ion-button icon-only class="UserHeader-btnMenu UserHeader-btnMenu--dark">
       <ion-icon name="ios-home-outline"></ion-icon>
     </button>
   </ion-buttons>
 
-
-  <ion-title *ngIf="!hasBackButton && profile" madeLink to="Profile" class="u-h-header-title">
-    {{ profile.first_name }} {{ profile.last_name }},
-    <span class="u-h-header-title-sub">{{ today | date: 'EEEE, dd LLL' }}</span>
+  <ion-title *ngIf="!hasBackButton && profile" madeLink to="Profile" class="UserHeader-title">
+    {{ profile.first_name }} {{ profile.last_name }}
+    <span class="UserHeader-subtitle">{{ today | date: 'EEEE, dd LLL' }}</span>
   </ion-title>
 
-  <ion-buttons end class="u-h-header-btns">
-    <button madeLink to="Profile" [style.background-image]="profile ? profile.profile_photo_url : ''" ion-button icon-only class="u-h-header-btns-user hasAva">
+  <ion-buttons end>
+    <button *ngIf="!hasBackButton" class="UserHeader-btnUser is-withPic" madeLink to="Profile" [style.background-image]="" ion-button icon-only>
       <ion-icon *ngIf="false" name="ios-contact-outline"></ion-icon>
     </button>
-    <div class="u-h-header-btns-del"></div>
-    <button (click)="openMenu()" ion-button icon-only class="u-h-header-btns-menu">
-      <ion-icon name="ios-more-outline"></ion-icon>
+    <div class="UserHeader-delimeter"></div>
+    <button ion-button icon-only class="UserHeader-btnMenu">
+      <ion-icon name="ios-more"></ion-icon>
     </button>
   </ion-buttons>
 </ion-navbar>
