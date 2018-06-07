@@ -5,6 +5,7 @@ profile-info .ProfileInfo {
     width: $pic-size;
     height: $pic-size;
     margin-right: pxtorem10(16);
+    background-position: center;
     background-size: cover;
     border-radius: 100%;
     box-shadow: 0 2px 16px color($grayscale, 300);
