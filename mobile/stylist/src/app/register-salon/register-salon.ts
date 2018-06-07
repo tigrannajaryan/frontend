@@ -130,6 +130,7 @@ export class RegisterSalonComponent {
     const data = {
       ...profile,
       // the API requires null if empty salon_name
+      // tslint:disable-next-line:no-null-keyword
       salon_name: profile.salon_name || null
     };
     await this.apiService.setProfile(data);
