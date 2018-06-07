@@ -34,13 +34,12 @@
       <div class="Profile-title">Working hours</div>
     </ion-row>
     <ion-row>
-      <div *ngIf="bookedHours || bookedMinutes" class="Profile-tableSummary">
-        <span *ngIf="bookedHours"><strong>{{ bookedHours }}</strong> {{ bookedHours === 1 ? 'hour' : 'hours' }}</span>
-        <span *ngIf="bookedMinutes"><strong>{{ bookedMinutes }}</strong> minutes</span>
-        <span>booked this week</span>
+      <div *ngIf="today" class="Profile-tableSummary">
+        <span><strong>{{ today.booked_appointments_count }}</strong> {{ today.booked_appointments_count === 1 ? 'visit' : 'visits' }} today </span>
+        <span><strong>{{ totalAppointmentsThisWeek }}</strong> {{ today.totalAppointmentsThisWeek === 1 ? 'visit' : 'visits' }} this week</span>
       </div>
     </ion-row>
-    <made-table *ngIf="worktime" [data]="worktime"></made-table>
+    <made-table class="Profile-worktime" *ngIf="worktime" [data]="worktime"></made-table>
     <ion-row justify-content-center>
       <button class="Button Button--offset" ion-button madeLink to="Worktime" [params]="{isProfile: true}">Edit working hours</button>
     </ion-row>

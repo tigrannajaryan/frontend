@@ -107,6 +107,13 @@ page-profile {
     }
   }
 
+  .Profile-worktime .Table {
+    .Table-col:last-child { // appointments count
+      max-width: 60px; // for better aligning to right
+      text-align: right;
+    }
+  }
+
   .Button.Button--offset {
     margin-top: 32px;
   }

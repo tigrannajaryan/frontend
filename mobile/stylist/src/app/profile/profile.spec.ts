@@ -107,22 +107,22 @@ describe('Pages: Profile / Settings', () => {
       .toBeTruthy();
   }));
 
-  it('should show booked time summary for this week', async(async () => {
-    const hours = Math.floor(mock.total_week_booked_minutes / 60);
-    const minutes = mock.total_week_booked_minutes % 60;
+  it('should show appointments count summary', async(async () => {
+    const TODAY_WEEKDAY = 5; // TGI Friday
+    const total = mock.total_week_appointments_count;
+    const today = mock.worktime.find(day => day.weekday_iso === TODAY_WEEKDAY);
+    const todayBooked = today.booked_appointments_count;
 
     await instance.loadStylistSummary();
+    instance.today = today; // set today manually
+
     fixture.detectChanges();
 
-    if (hours > 0) {
-      expect(fixture.nativeElement.textContent)
-        .toContain(`${hours} ${hours === 1 ? 'hour' : 'hours'}`);
-    }
+    expect(fixture.nativeElement.textContent)
+      .toContain(`${todayBooked} ${todayBooked === 1 ? 'visit' : 'visits'} today`);
 
-    if (minutes > 0) {
-      expect(fixture.nativeElement.textContent)
-        .toContain(`${minutes} minutes`);
-    }
+    expect(fixture.nativeElement.textContent)
+      .toContain(`${total} ${total === 1 ? 'visit' : 'visits'} this week`);
   }));
 
   it('should show working hours data', async(async () => {
@@ -138,8 +138,8 @@ describe('Pages: Profile / Settings', () => {
         expect(fixture.nativeElement.textContent)
           .toContain(`${instance.formatTime(worktime.work_start_at)} – ${instance.formatTime(worktime.work_end_at)}`);
 
-        expect(fixture.nativeElement.textContent)
-          .toContain(convertMinsToHrsMins(worktime.booked_time_minutes, FormatType.ShortForm));
+        expect(fixture.nativeElement.querySelector('made-table.Profile-worktime').textContent)
+          .toContain(worktime.booked_appointments_count);
       });
   }));
 
