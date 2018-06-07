@@ -195,7 +195,7 @@ export class ServicesListComponent {
     // Find old item
     let categoryIndex = this.templateSet.categories.findIndex(x => x.uuid === itemToEdit.categoryUuid);
     let category: ServiceCategory = this.templateSet.categories[categoryIndex];
-    let serviceIndex: number = itemToEdit.service ? category.services.findIndex(x => x.id === itemToEdit.service.id) : -1;
+    let serviceIndex: number = itemToEdit.service ? category.services.findIndex(x => x === itemToEdit.service) : -1;
 
     if (itemToEdit.categoryUuid !== editedItem.categoryUuid) {
       // Remove from old category
