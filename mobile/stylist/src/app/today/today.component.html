@@ -21,7 +21,6 @@
         </button>
       </div>
 
-
       <div class="p-t-history">
         <button ion-button icon-only clear color="dark" class="p-t-history-item">
           Today you have
@@ -40,6 +39,8 @@
 
 
     <div class="p-t-items">
+      <div *ngIf="today.today_appointments.length === 0" class="p-t-items-null">No more appointments scheduled for today</div>
+
       <div
         *ngFor="let appointment of today.today_appointments"
         (click)="onAppointmentClick(appointment)"
