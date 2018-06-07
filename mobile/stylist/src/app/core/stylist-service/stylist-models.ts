@@ -22,7 +22,6 @@ export interface WorkdayInSummary {
   is_available: boolean;
   work_start_at: string; // time of day formatted as hh:mm:ss
   work_end_at: string;   // time of day formatted as hh:mm:ss
-  booked_time_minutes: number;
   booked_appointments_count: number;
 }
 
@@ -31,7 +30,6 @@ export interface StylistSummary {
   services: ServiceInSummary[];
   services_count: number;
   worktime: WorkdayInSummary[];
-  total_week_booked_minutes: number;
   total_week_appointments_count: number;
 }
 

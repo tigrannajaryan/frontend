@@ -3,7 +3,7 @@ import {
   AlertController,
   LoadingController,
   NavController,
-  PopoverController,
+  PopoverController
 } from 'ionic-angular';
 import { HttpClientModule } from '@angular/common/http';
 import { DatePipe } from '@angular/common';
@@ -13,12 +13,13 @@ import { TestUtils } from '../../test';
 
 import { PageNames } from '~/core/page-names';
 import { StylistServiceProvider } from '~/core/stylist-service/stylist-service';
-import { ProfileComponent, WEEKDAY_FULL_NAMES } from './profile';
+import { ProfileComponent } from './profile';
 import { ProfileInfoComponent } from './profile-info/profile-info';
 
 import { profileSummaryMock as mock } from '~/core/stylist-service/stylist-service-mock';
 import { convertMinsToHrsMins, FormatType } from '~/shared/time';
-import {PopoverControllerMock} from 'ionic-mocks';
+import { PopoverControllerMock } from 'ionic-mocks';
+import { WEEKDAY_FULL_NAMES, WeekdayIso } from '~/shared/weekday';
 
 let fixture: ComponentFixture<ProfileComponent>;
 let instance: ProfileComponent;
@@ -108,9 +109,8 @@ describe('Pages: Profile / Settings', () => {
   }));
 
   it('should show appointments count summary', async(async () => {
-    const TODAY_WEEKDAY = 5; // TGI Friday
     const total = mock.total_week_appointments_count;
-    const today = mock.worktime.find(day => day.weekday_iso === TODAY_WEEKDAY);
+    const today = mock.worktime.find(day => day.weekday_iso === WeekdayIso.Fri); // TGI Friday
     const todayBooked = today.booked_appointments_count;
 
     await instance.loadStylistSummary();

@@ -4,13 +4,12 @@ import { Component } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { AlertController, IonicPage } from 'ionic-angular';
 
+import { getTodayWeekdayISO, WEEKDAY_FULL_NAMES } from '~/shared/weekday';
+
 import { loading } from '~/core/utils/loading';
 import { StylistServiceProvider } from '~/core/stylist-service/stylist-service';
 import { TableData } from '~/core/components/made-table/made-table';
 import { StylistProfile, WorkdayInSummary } from '~/core/stylist-service/stylist-models';
-
-export const TODAY_WEEKDAY = (new Date()).getDay() || 7; // JS 0(Sun)..6(Sat) –> ISO 1(Mon)..7(Sun)
-export const WEEKDAY_FULL_NAMES = ['', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
 @IonicPage()
 @Component({
@@ -80,7 +79,9 @@ export class ProfileComponent {
 
       this.worktime = this.getWorktimeTableData(data.worktime);
 
-      this.today = data.worktime.find(day => day.weekday_iso === TODAY_WEEKDAY);
+      const todayWeekdayISO = getTodayWeekdayISO();
+
+      this.today = data.worktime.find(day => day.weekday_iso === todayWeekdayISO);
       this.totalAppointmentsThisWeek = data.total_week_appointments_count;
     } catch (e) {
       const alert = this.alertCtrl.create({

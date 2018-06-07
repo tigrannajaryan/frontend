@@ -3,13 +3,10 @@ import { AlertController, IonicPage, NavController, NavParams } from 'ionic-angu
 import { Workday, Worktime } from './worktime.models';
 import { WorktimeApi } from './worktime.api';
 import { convertMinsToHrsMins, Time, TimeRange } from '~/shared/time';
+import { WeekdayIso } from '~/shared/weekday';
 import { Logger } from '~/shared/logger';
 import { PageNames } from '~/core/page-names';
 import { loading } from '~/core/utils/loading';
-
-export enum WeekdayIso {
-  Mon = 1, Tue, Wed, Thu, Fri, Sat, Sun
-}
 
 const firstWeekday = WeekdayIso.Mon;
 const lastWeekday = WeekdayIso.Sun;
