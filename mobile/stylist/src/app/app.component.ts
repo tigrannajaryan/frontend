@@ -77,7 +77,7 @@ export class MyAppComponent {
     this.logger.info('No valid authenticated session. Start from first screen.');
 
     // No valid saved authentication, just show the first screen.
-    this.nav.setRoot(PageNames.FirstScreen);
+    this.nav.setRoot(PageNames.FirstScreen, {}, { animate: false }, () => this.statusBar.hide());
   }
 
   openPage(page): void {

@@ -33,13 +33,15 @@ import {
   NavParams,
   Platform
 } from 'ionic-angular';
+import { StatusBar } from '@ionic-native/status-bar';
 
 import {
   AlertControllerMock,
   ConfigMock,
   LoadingControllerMock,
   NavControllerMock,
-  PlatformMock
+  PlatformMock,
+  StatusBarMock
 } from 'ionic-mocks';
 
 import { AppModule } from '~/app.module';
@@ -91,6 +93,7 @@ export class TestUtils {
         App, Form, Keyboard, DomController, MenuController, NavController,
         NavParams, GestureController, AlertControllerMock, LoadingControllerMock,
         { provide: Platform, useFactory: () => PlatformMock.instance() },
+        { provide: StatusBar, useFactory: () => StatusBarMock.instance() },
         { provide: Config, useFactory: () => ConfigMock.instance() },
         { provide: DeepLinker, useFactory: () => ConfigMock.instance() },
         { provide: AlertController, useFactory: () => AlertControllerMock.instance() },

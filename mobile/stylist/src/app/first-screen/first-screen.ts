@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { AlertController, IonicPage, NavController } from 'ionic-angular';
 import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook';
+import { StatusBar } from '@ionic-native/status-bar';
 
 import { loading } from '~/core/utils/loading';
 import { createNavHistoryList } from '~/core/functions';
@@ -26,8 +27,17 @@ export class FirstScreenComponent {
     private navCtrl: NavController,
     private fb: Facebook,
     private authServiceProvider: AuthApiService,
-    private alertCtrl: AlertController
+    private alertCtrl: AlertController,
+    private statusBar: StatusBar
   ) {
+  }
+
+  ionViewWillEnter(): void {
+    this.statusBar.hide();
+  }
+
+  ionViewDidLeave(): void {
+    this.statusBar.show();
   }
 
   goToPage(choosePageType: LoginOrRegisterType): void {

@@ -61,6 +61,10 @@ ion-col.col {
   position: initial;
 }
 
+// this need for fixing known bug https://github.com/ionic-team/ionic/issues/7476
+ion-datetime {
+  position: relative;
+}
 
 
 // wrap and rewrite ionic def style
