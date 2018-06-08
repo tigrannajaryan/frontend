@@ -120,7 +120,7 @@ export class DiscountsComponent {
       return;
     }
 
-    this.navCtrl.setRoot(PageNames.Profile, {}, { animate: false });
+    this.navCtrl.setRoot(PageNames.Today, {}, { animate: false });
   }
 
   /**
