@@ -98,7 +98,7 @@
     <plugin name="cordova-ios-plugin-no-export-compliance" spec="0.0.5" />
     <plugin name="cordova-plugin-facebook4" spec="2.1.0" />
     <plugin name="cordova-plugin-camera" spec="4.0.3" />
-    <plugin name="cordova-plugin-statusbar" spec="^2.4.2" />
+    <plugin name="cordova-plugin-statusbar" spec="2.4.2" />
     <engine name="android" spec="7.0.0" />
     <engine name="ios" spec="4.5.4" />
 </widget>
