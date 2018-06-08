@@ -98,7 +98,8 @@ export class AuthApiService extends BaseApiService {
    * and token which can be later obtained via getAuthToken().
    */
   async loginByFb(credentials: FbAuthCredentials): Promise<AuthResponse> {
-    return this.post<AuthResponse>('auth/get-token-fb', credentials);
+    return this.processAuthResponse(
+      () => this.post<AuthResponse>('auth/get-token-fb', credentials));
   }
 
   logout(): void {
