@@ -89,6 +89,13 @@ page-profile {
       font-weight: bold;
       color: color($colors, dark);
     }
+    span {
+      display: inline-block;
+      margin-right: 20px;
+    }
+    span:last-child {
+      margin-right: 0px;
+    }
   }
 
   .Table {
@@ -104,13 +111,14 @@ page-profile {
 
     .Table-col:last-child { // prices
       text-align: right;
+      padding-right: 8px;
     }
   }
 
   .Profile-worktime .Table {
     .Table-col:last-child { // appointments count
-      max-width: 60px; // for better aligning to right
       text-align: right;
+      padding-right: 8px;
     }
   }
 
