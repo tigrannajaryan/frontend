@@ -1262,14 +1262,61 @@ Statuses available for stylists to set on appointments:
 
 `new`, `no_show`, `cancelled_by_stylist`, `checked_out`.
 
-Note: at later stages we may want to add more fields to the request, e.g.
-to specify some extra information about checking out, etc.
+In case if the status is `checked_out` (checkout), client application must pass final list of
+services that are ultimately saved to the appointment:
+
+```
+curl -X POST \
+  http://apiserver/api/v1/stylist/appointments/21ac69e7-70e9-4dbe-b550-f989c3a76e93 \
+  -H 'Authorization: Token jwt_token' \
+  -H 'Content-Type: application/json' \
+  -d '{
+	"status": "checked_out",
+	"services": [
+        {
+          "service_uuid": "f23748c1-9201-4408-8114-72caeac291da"
+        },
+        {
+          "service_uuid": "c037f7be-2d29-4c52-94c1-c3e328ec202b"
+        }
+
+    ]
+}'
+```
+
+Services will be saved to the appointment, preserving `is_original` flag.
 
 **Response 200 OK**
 
 ```
 {
-    "status": "new"
+    "uuid": "21ac69e7-70e9-4dbe-b550-f989c3a76e93",
+    "client_first_name": "Jane",
+    "client_last_name": "McBob",
+    "datetime_start_at": "2018-05-31T23:00:00-04:00",
+    "duration_minutes": 165,
+    "status": "checked_out",
+    "total_tax": 26.18,
+    "total_card_fee": 8.83,
+    "total_client_price_before_tax": 295,
+    "services": [
+        {
+            "uuid": "50701ff2-4774-4457-8078-5b956a16bd61",
+            "service_name": "Blow out",
+            "service_uuid": "c037f7be-2d29-4c52-94c1-c3e328ec202b",
+            "client_price": 45,
+            "regular_price": 45,
+            "is_original": false
+        },
+        {
+            "uuid": "1400418c-0690-49d9-b603-85132c7816e4",
+            "service_name": "Balayage",
+            "service_uuid": "f23748c1-9201-4408-8114-72caeac291da",
+            "client_price": 250,
+            "regular_price": 250,
+            "is_original": true
+        }
+    ]
 }
 ```
 
@@ -1371,52 +1418,60 @@ in one gulp for the Stylist app's Settings screen.
             "work_start_at": "08:00:00",
             "work_end_at": "17:00:00",
             "is_available": true,
-            "booked_time_minutes": 20
+            "booked_time_minutes": 20,
+            "booked_appointments_count": 1
         },
         {
             "weekday_iso": 2,
             "work_start_at": "08:00:00",
             "work_end_at": "17:00:00",
             "is_available": true,
-            "booked_time_minutes": 20
+            "booked_time_minutes": 20,
+            "booked_appointments_count": 1
         },
         {
             "weekday_iso": 3,
             "work_start_at": "08:00:00",
             "work_end_at": "17:00:00",
             "is_available": true,
-            "booked_time_minutes": 0
+            "booked_time_minutes": 0,
+            "booked_appointments_count": 0
         },
         {
             "weekday_iso": 4,
             "work_start_at": "08:00:00",
             "work_end_at": "17:00:00",
             "is_available": true,
-            "booked_time_minutes": 0
+            "booked_time_minutes": 0,
+            "booked_appointments_count": 0
         },
         {
             "weekday_iso": 5,
             "work_start_at": "08:00:00",
             "work_end_at": "17:00:00",
             "is_available": true,
-            "booked_time_minutes": 0
+            "booked_time_minutes": 0,
+            "booked_appointments_count": 0
         },
         {
             "weekday_iso": 6,
             "work_start_at": null,
             "work_end_at": null,
             "is_available": false,
-            "booked_time_minutes": 0
+            "booked_time_minutes": 0,
+            "booked_appointments_count": 0
         },
         {
             "weekday_iso": 7,
             "work_start_at": null,
             "work_end_at": null,
             "is_available": false,
-            "booked_time_minutes": 0
+            "booked_time_minutes": 0,
+            "booked_appointments_count": 0
         }
     ],
-    "total_week_booked_minutes": 40
+    "total_week_booked_minutes": 40,
+    "total_week_appointments_count: 2
 }
 ```
 

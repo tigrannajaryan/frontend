@@ -5,7 +5,8 @@
 
 
 <ion-content padding class="bb-bg-gold">
-  <bb-nav [activePageIndex]="1"></bb-nav>
+  <made-nav [activePage]="PageNames.RegisterServices"></made-nav>
+
 
   <form [formGroup]="form" (ngSubmit)="submit()">
     <ion-item class="ion-bb-input">
@@ -40,7 +41,7 @@
     <ion-row *ngIf="form.get('categoryUuid').value" justify-content-center align-items-center class="p-si-btns">
       <button ion-button color="danger" clear style="visibility: hidden;">Delete</button>
 
-      <button [disabled]="form.invalid" ion-button type="submit" class="bb-btn-circle">
+      <button [disabled]="form.invalid" ion-button type="submit" class="bb-btn-circle white">
         <ion-icon name="ios-checkmark-outline"></ion-icon>
       </button>
 

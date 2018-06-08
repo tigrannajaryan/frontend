@@ -42,6 +42,8 @@ import {
   PlatformMock
 } from 'ionic-mocks';
 
+import { AppModule } from '~/app.module';
+
 import { WorktimeApi } from './app/worktime/worktime.api';
 import { WorktimeApiMock } from './app/worktime/worktime.api.mock';
 import { AuthApiService } from './app/core/auth-api-service/auth-api-service';
@@ -70,6 +72,8 @@ export class TestUtils {
       .compileComponents()
       .then(() => {
         const fixture: any = TestBed.createComponent(components[0]);
+
+        AppModule.injector = fixture.debugElement.injector;
 
         return {
           fixture,

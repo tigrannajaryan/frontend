@@ -1,7 +1,8 @@
 import { async, ComponentFixture, getTestBed } from '@angular/core/testing';
 
 import { TestUtils } from '../../test';
-import { defaultEndTime, defaultStartTime, WeekdayIso, WorktimeComponent } from './worktime.component';
+import { WeekdayIso } from '~/shared/weekday';
+import { defaultEndTime, defaultStartTime, WorktimeComponent } from './worktime.component';
 import { WorktimeApi } from './worktime.api';
 import { WorktimeApiMock } from './worktime.api.mock';
 import { prepareSharedObjectsForTests } from '~/core/test-utils.spec';

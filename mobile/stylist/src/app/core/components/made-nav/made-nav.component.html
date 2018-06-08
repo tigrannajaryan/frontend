@@ -1,0 +1,17 @@
+<div class="nav bb-wp">
+  <div class="nav-item right">
+    <div *ngFor="let i of nav.left" class="nav-item-el">
+      <div class="nav-item-el-line"></div>
+      <div class="nav-item-el-dot plus"></div>
+    </div>
+  </div>
+
+  <div class="nav-active">{{ nav.active }}</div>
+
+  <div class="nav-item">
+    <div *ngFor="let i of nav.right" class="nav-item-el">
+      <div class="nav-item-el-line"></div>
+      <div class="nav-item-el-dot white"></div>
+    </div>
+  </div>
+</div>

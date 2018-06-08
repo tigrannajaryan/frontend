@@ -41,9 +41,6 @@ class Appointment(models.Model):
     client_first_name = models.CharField(max_length=255, null=True, blank=True)
     client_last_name = models.CharField(max_length=255, null=True, blank=True)
 
-    service_uuid = models.UUIDField(null=True)
-    service_name = models.CharField(max_length=255)
-
     datetime_start_at = models.DateTimeField()
 
     status = models.CharField(
@@ -72,8 +69,7 @@ class Appointment(models.Model):
         db_table = 'appointment'
 
     def __str__(self):
-        return '{0} at {1}: {2} - {3}'.format(
-            self.service_name,
+        return '{0}: {1} - {2}'.format(
             self.datetime_start_at,
             self.get_client_full_name(),
             self.stylist.get_full_name()

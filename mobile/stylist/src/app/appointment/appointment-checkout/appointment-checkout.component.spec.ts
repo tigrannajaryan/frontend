@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 import { TestUtils } from '../../../test';
-import { ActionSheetController, Haptic, ViewController } from 'ionic-angular';
+import { ActionSheetController, Haptic, PopoverController, ViewController } from 'ionic-angular';
 import { TodayService } from 'app/today/today.service';
 import { TodayState } from 'app/today/today.reducer';
 import { Store } from '@ngrx/store';
@@ -11,6 +11,7 @@ import { AppointmentCheckoutComponent } from './appointment-checkout.component';
 import { prepareSharedObjectsForTests } from 'app/core/test-utils.spec';
 import { CoreModule } from 'app/core/core.module';
 import { ViewControllerMock } from '~/shared/view-controller-mock';
+import { PopoverControllerMock } from 'ionic-mocks';
 
 let fixture: ComponentFixture<AppointmentCheckoutComponent>;
 let instance: AppointmentCheckoutComponent;
@@ -35,6 +36,7 @@ describe('Pages: AppointmentCheckoutComponent', () => {
         TodayService,
         Haptic,
         { provide: ViewController, useClass: ViewControllerMock },
+        { provide: PopoverController, useClass: PopoverControllerMock },
         { provide: HttpClient, useClass: class { httpClient = jasmine.createSpy('HttpClient'); } }
       ]
     });

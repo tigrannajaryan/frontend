@@ -35,7 +35,7 @@ class StylistServiceWithDeletedManager(models.Manager):
 
 
 class Salon(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, null=True)
     timezone = TimeZoneField(default=settings.TIME_ZONE)
     address = models.CharField(max_length=255)
     # TODO: Remove null/blank on address sub-fields as soon as we have
@@ -50,7 +50,9 @@ class Salon(models.Model):
         db_table = 'salon'
 
     def __str__(self) -> str:
-        return '{0} ({1})'.format(self.name, self.get_full_address())
+        if self.name is not None:
+            return '{0} ({1})'.format(self.name, self.get_full_address())
+        return '[No name] ({0})'.format(self.get_full_address())
 
     def get_full_address(self) -> str:
         # TODO: change this to proper address generation
@@ -109,6 +111,8 @@ class Stylist(models.Model):
     first_time_book_discount_percent = models.PositiveIntegerField(
         default=0, validators=[MaxValueValidator(100)]
     )
+
+    is_discount_configured = models.BooleanField(default=False)
 
     class Meta:
         db_table = 'stylist'

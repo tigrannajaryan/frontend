@@ -2,15 +2,14 @@ import * as moment from 'moment';
 
 import { Component } from '@angular/core';
 import { DatePipe } from '@angular/common';
-import { AlertController, IonicPage, LoadingController } from 'ionic-angular';
+import { AlertController, IonicPage } from 'ionic-angular';
 
+import { getTodayWeekdayISO, WEEKDAY_FULL_NAMES } from '~/shared/weekday';
+
+import { loading } from '~/core/utils/loading';
 import { StylistServiceProvider } from '~/core/stylist-service/stylist-service';
 import { TableData } from '~/core/components/made-table/made-table';
-import { StylistProfile } from '~/core/stylist-service/stylist-models';
-
-import { convertMinsToHrsMins, FormatType } from '~/shared/time';
-
-export const WEEKDAY_FULL_NAMES = ['', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+import { StylistProfile, WorkdayInSummary } from '~/core/stylist-service/stylist-models';
 
 @IonicPage()
 @Component({
@@ -18,52 +17,42 @@ export const WEEKDAY_FULL_NAMES = ['', 'Monday', 'Tuesday', 'Wednesday', 'Thursd
   templateUrl: 'profile.html'
 })
 export class ProfileComponent {
-  profile: StylistProfile;
-  services: TableData;
-  worktime: TableData;
-  allServicesCount: number;
-  bookedHours: number;
-  bookedMinutes: number;
+  profile?: StylistProfile;
+  services?: TableData;
+  worktime?: TableData;
+  allServicesCount?: number;
+  today?: WorkdayInSummary;
+  totalAppointmentsThisWeek?: number;
 
   constructor(
     private alertCtrl: AlertController,
-    private loadingCtrl: LoadingController,
     private stylistService: StylistServiceProvider,
     private datePipe: DatePipe
   ) {
   }
 
-  async ionViewWillEnter(): Promise<void> {
-    const loader = this.loadingCtrl.create();
-    loader.present();
-    try {
-      await this.loadStylistSummary();
-    } finally {
-      loader.dismiss();
-    }
+  ionViewWillEnter(): void {
+    this.loadStylistSummary();
   }
 
   getServicesTableData(services): TableData {
     return {
-      header: ['Service', 'Duration', 'Price'],
-      body: services.map(({name, duration_minutes, base_price}) => ([
-        name,
-        convertMinsToHrsMins(duration_minutes, FormatType.ShortForm),
-        `$${base_price}`
-      ]))
+      header: ['Service', 'Price'],
+      body: services.map(({name, base_price}) => ([name, `$${base_price}`]))
     };
   }
 
   getWorktimeTableData(worktime): TableData {
     return {
-      header: ['Day', 'Working hours', 'Booked time'],
+      header: ['Day', 'Working hours', 'Visits count'],
       body:
         worktime
           .filter(day => day.is_available)
-          .map(({weekday_iso, work_end_at, work_start_at, booked_time_minutes}) => ([
+          .sort((a, b) => a.weekday_iso - b.weekday_iso) // from 1 (Monday) to 7 (Sunday)
+          .map(({weekday_iso, work_end_at, work_start_at, booked_appointments_count}) => ([
             WEEKDAY_FULL_NAMES[weekday_iso],
             `${this.formatTime(work_start_at)} – ${this.formatTime(work_end_at)}`,
-            convertMinsToHrsMins(booked_time_minutes, FormatType.ShortForm)
+            booked_appointments_count
           ]))
     };
   }
@@ -77,6 +66,7 @@ export class ProfileComponent {
     return this.datePipe.transform(moment(time, 'hh:mm'), 'h:mmaaaaa');
   }
 
+  @loading
   async loadStylistSummary(): Promise<void> {
     try {
       const data = await this.stylistService.getStylistSummary();
@@ -89,9 +79,10 @@ export class ProfileComponent {
 
       this.worktime = this.getWorktimeTableData(data.worktime);
 
-      this.bookedHours = Math.floor(data.total_week_booked_minutes / 60);
-      this.bookedMinutes = data.total_week_booked_minutes % 60;
+      const todayWeekdayISO = getTodayWeekdayISO();
 
+      this.today = data.worktime.find(day => day.weekday_iso === todayWeekdayISO);
+      this.totalAppointmentsThisWeek = data.total_week_appointments_count;
     } catch (e) {
       const alert = this.alertCtrl.create({
         title: 'Loading stylist summary failed',

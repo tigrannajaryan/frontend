@@ -13,12 +13,27 @@ page-login {
     text-align: center;
     justify-content: center;
 
-
-    &-wp{
+    &-bg{
+      background: color($colors, color4);
     }
 
-    &-btn{
-      margin: pxtoem(40) 0;
+    &-buttons{
+      max-width: 380px;
+      margin: pxtoem(50) auto pxtoem(40);
+
+      @media ($tablet) {
+        max-width: 340px;
+      }
+      @media ($smartphone) {
+        max-width: 290px;
+      }
+      @media ($phone) {
+        max-width: 240px;
+      }
+    }
+
+    &-icon{
+      margin: 0 0 pxtoem(50);
     }
   }
 }

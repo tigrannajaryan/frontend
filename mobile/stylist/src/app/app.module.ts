@@ -2,7 +2,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { BrowserModule } from '@angular/platform-browser';
-import { ErrorHandler, NgModule } from '@angular/core';
+import { ErrorHandler, Injector, NgModule } from '@angular/core';
 import { META_REDUCERS, StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { IonicApp, IonicModule } from 'ionic-angular';
@@ -71,4 +71,14 @@ import { UnhandledErrorHandler } from '~/shared/unhandled-error-handler';
     }
   ]
 })
-export class AppModule { }
+export class AppModule {
+  /**
+   * Allows for retrieving singletons using `AppModule.injector.get(MyService)`
+   * This is good to prevent injecting the service as constructor parameter.
+   */
+  static injector: Injector;
+
+  constructor(injector: Injector) {
+    AppModule.injector = injector;
+  }
+}

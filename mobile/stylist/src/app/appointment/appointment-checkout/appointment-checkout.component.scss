@@ -218,19 +218,18 @@ page-checkout {
 
         &-num{
           font-size: pxtorem(60);
-          min-height: pxtorem(130);
-          display: flex;
-          align-items: center;
           font-weight: 700;
           color: color($colors, dark);
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
 
           @media ($tablet) {
             font-size: pxtorem(40);
-            min-height: pxtorem(90);
           }
           @media ($phone) {
             font-size: pxtorem(24);
-            min-height: pxtorem(65);
+            min-height: 26px;
           }
         }
       }

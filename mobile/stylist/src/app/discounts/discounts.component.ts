@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
-import { AlertController, IonicPage, LoadingController, ModalController, NavController, NavParams } from 'ionic-angular';
+import { AlertController, IonicPage, ModalController, NavController, NavParams } from 'ionic-angular';
 import { DiscountsApi } from './discounts.api';
 import { Discounts } from './discounts.models';
 import { PageNames } from '~/core/page-names';
 import { ChangePercent } from '~/core/popups/change-percent/change-percent.component';
+import { loading } from '~/core/utils/loading';
 
 export enum DiscountsTypes {
   weekday = 'weekday',
@@ -22,6 +23,7 @@ export enum DiscountsTypes {
 export class DiscountsComponent {
   // this should be here if we using enum in html
   protected DiscountsTypes = DiscountsTypes;
+  protected PageNames = PageNames;
 
   discounts: Discounts;
   isProfile?: Boolean;
@@ -31,26 +33,23 @@ export class DiscountsComponent {
     public navCtrl: NavController,
     public navParams: NavParams,
     public modalCtrl: ModalController,
-    public discountsApi: DiscountsApi,
-    public loadingCtrl: LoadingController
+    public discountsApi: DiscountsApi
     ) {
   }
 
-  async ionViewWillLoad(): Promise<void> {
+  ionViewWillLoad(): void {
     this.isProfile = Boolean(this.navParams.get('isProfile'));
-
-    const loader = this.loadingCtrl.create();
-    loader.present();
-    try {
-      await this.loadInitialData();
-    } finally {
-      loader.dismiss();
-    }
+    this.loadInitialData();
   }
 
+  @loading
   async loadInitialData(): Promise<void> {
     try {
-      this.discounts = await this.discountsApi.getDiscounts() as Discounts;
+      const discounts = await this.discountsApi.getDiscounts() as Discounts;
+      this.discounts = {
+        ...discounts,
+        weekdays: discounts.weekdays.sort((a, b) => a.weekday - b.weekday) // from 1 (Monday) to 7 (Sunday)
+      };
     } catch (e) {
       const alert = this.alertCtrl.create({
         title: 'Loading discounts failed',
@@ -121,7 +120,7 @@ export class DiscountsComponent {
       return;
     }
 
-    this.navCtrl.setRoot(PageNames.Profile, {}, { animate: false });
+    this.navCtrl.setRoot(PageNames.Today, {}, { animate: false });
   }
 
   /**

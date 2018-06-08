@@ -24,54 +24,50 @@
     padding: 0 44px;
     font-size: 20px;
     text-transform: unset;
+    box-shadow: none;
 
     @media ($phone) {
-      font-size: pxtoem(14);
+      font-size: pxtorem10(14);
       border-width: 1px;
-      height: 30px;
+      height: 40px;
       padding: 0 20px;
     }
 
     &-circle{
-      border-radius: 50%;
-      background: none;
-      border: 2px solid rgba(181, 149, 191, 0.1);
-      padding: 20px;
-      width: 174px;
-      height: 174px;
-      box-shadow: none;
       margin: 0 20px;
+      width: 110px;
+      height: 110px;
+      background: none;
+      padding: 0;
+      box-shadow: 0 0 30px 10px rgba(255, 224, 208, 0.46);
+      border-radius: 50%;
 
       @media ($smartphone) {
-        width: 110px;
-        height: 110px;
-      }
-
-      @media ($phone) {
-        width: 85px;
-        height: 85px;
-        margin: 0;
+        width: 60px;
+        height: 60px;
       }
 
       .button-inner{
-        background: #000;
         border-radius: 50%;
-        width: 79px;
-        height: 79px;
+        width: 110px;
+        height: 110px;
         margin: auto;
-        font-size: pxtoem(60);
+        font-size: pxtoem(40);
+        background: color($colors, bb_skin);
+        color: color($colors, dark);
 
         @media ($smartphone) {
-          font-size: pxtoem(40);
-          width: 55px;
-          height: 55px;
+          width: 60px;
+          height: 60px;
         }
+      }
 
-        @media ($phone) {
-          font-size: pxtoem(30);
-          width: 40px;
-          height: 40px;
-        }
+      &.activated{
+        box-shadow: none;
+      }
+
+      &.white .button-inner{
+        background: color($colors, white);
       }
     }
 
@@ -80,10 +76,10 @@
       border: none;
     }
 
-
     &-a{
       @extend .bb-btn;
       height: 89px;
+      box-shadow: none;
       font-size: pxtoem(22);
 
       @media ($smartphone) {
@@ -122,11 +118,17 @@
 
   &-table{
     padding: 0 10px;
+    margin-bottom: 0;
 
     &-head{
       font-size: pxtoem(20);
       color: rgba(0, 0, 0, 0.5);
+      padding-top: pxtoem(20);
+      border-top: 1px solid rgba(0, 0, 0, 0.1);
 
+      @media ($smartphone) {
+        font-size: pxtoem(18);
+      }
       @media ($phone) {
         font-size: pxtoem(15);
       }
@@ -134,17 +136,35 @@
 
     &-title{
       font-size: pxtoem(36);
-      padding: pxtoem(20) 10px pxtoem(8);
+      padding: pxtoem(20) 10px pxtoem(10);
 
+      @media ($smartphone) {
+        font-size: pxtoem(28);
+      }
       @media ($phone) {
         font-size: pxtoem(23);
+      }
+
+      &-sup{
+        color: rgba(0, 0, 0, 0.3);
+        font-size: pxtorem(30);
+
+        @media ($smartphone) {
+          font-size: pxtorem(24);
+        }
+        @media ($phone) {
+          font-size: pxtorem(19);
+        }
       }
     }
 
     &-row{
       padding: pxtoem(25) 0;
-      border-bottom: 1px solid black;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 
+      @media ($smartphone) {
+        padding: pxtoem(15) 0;
+      }
       @media ($phone) {
         padding: pxtoem(7) 0;
       }
@@ -154,6 +174,9 @@
         white-space: normal;
         font-size: pxtoem(24);
 
+        @media ($smartphone) {
+          font-size: pxtoem(18);
+        }
         @media ($phone) {
           font-size: pxtoem(12);
         }
@@ -172,9 +195,23 @@
 
     &-swipe{
       .button-inner{
+        @media ($smartphone) {
+          font-size: pxtoem(14);
+        }
         @media ($phone) {
           font-size: pxtoem(12);
         }
+      }
+    }
+
+    &-add{
+      margin: pxtorem(60) 0 0;
+
+      @media ($smartphone) {
+        margin: pxtorem(40) 0 0;
+      }
+      @media ($phone) {
+        margin: pxtorem(30) 0 0;
       }
     }
   }
@@ -206,5 +243,6 @@
   &-text{
     font-size: pxtoem(24);
     line-height: pxtoem(26);
+    color: color($colors, color21);
   }
 }

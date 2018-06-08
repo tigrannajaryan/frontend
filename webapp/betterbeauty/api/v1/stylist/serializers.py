@@ -1,7 +1,7 @@
 import datetime
 
 import uuid
-from typing import Dict, Optional
+from typing import Dict, List, Optional
 
 from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
@@ -133,7 +133,9 @@ class StylistServiceSerializer(serializers.ModelSerializer):
 class StylistSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(read_only=True)
 
-    salon_name = serializers.CharField(source='salon.name', allow_null=True)
+    salon_name = serializers.CharField(
+        source='salon.name', allow_null=True, required=False
+    )
     salon_address = serializers.CharField(source='salon.address', allow_null=True)
 
     # TODO: Enable address sub-fields as soon as we have proper address splitting mechanics
@@ -155,11 +157,6 @@ class StylistSerializer(serializers.ModelSerializer):
             'id', 'first_name', 'last_name', 'phone', 'profile_photo_url',
             'salon_name', 'salon_address', 'profile_photo_id',
         ]
-
-    def validate_salon_name(self, salon_name: str) -> str:
-        if not salon_name:
-            raise serializers.ValidationError('This field is required')
-        return salon_name
 
     def validate_salon_address(self, salon_address: str) -> str:
         if not salon_address:
@@ -341,16 +338,10 @@ class StylistProfileStatusSerializer(serializers.ModelSerializer):
         ).exists()
 
     def get_has_weekday_discounts_set(self, stylist: Stylist) -> bool:
-        return stylist.weekday_discounts.filter(discount_percent__gt=0).exists()
+        return stylist.is_discount_configured
 
     def get_has_other_discounts_set(self, stylist: Stylist) -> bool:
-        """Returns True if any of the miscellaneous discounts is set"""
-        return any([
-            stylist.first_time_book_discount_percent > 0,
-            stylist.rebook_within_1_week_discount_percent > 0,
-            stylist.rebook_within_2_weeks_discount_percent > 0,
-            stylist.date_range_discounts.exists()
-        ])
+        return stylist.is_discount_configured
 
     def get_has_invited_clients(self, stylist: Stylist) -> bool:
         return stylist.invites.exists()
@@ -389,11 +380,13 @@ class StylistAvailableWeekDaySerializer(serializers.ModelSerializer):
 class StylistAvailableWeekDayWithBookedTimeSerializer(serializers.ModelSerializer):
     weekday_iso = serializers.IntegerField(source='weekday')
     booked_time_minutes = serializers.SerializerMethodField()
+    booked_appointments_count = serializers.SerializerMethodField()
 
     class Meta:
         model = StylistAvailableWeekDay
         fields = [
             'weekday_iso', 'work_start_at', 'work_end_at', 'is_available', 'booked_time_minutes',
+            'booked_appointments_count',
         ]
 
     def get_booked_time_minutes(self, weekday: StylistAvailableWeekDay) -> int:
@@ -414,6 +407,18 @@ class StylistAvailableWeekDayWithBookedTimeSerializer(serializers.ModelSerialize
         )['total_duration']
 
         return int(total_week_duration.total_seconds() / 60)
+
+    def get_booked_appointments_count(self, weekday: StylistAvailableWeekDay) -> int:
+        stylist: Stylist = weekday.stylist
+        # ExtractWeekDay returns non-iso weekday, e.g. Sunday == 1, so need to cast
+        current_non_iso_week_day = (weekday.weekday % 7) + 1
+        return stylist.get_current_week_appointments(
+            include_cancelled=False
+        ).annotate(
+            weekday=ExtractWeekDay('datetime_start_at')
+        ).filter(
+            weekday=current_non_iso_week_day
+        ).count()
 
 
 class StylistAvailableWeekDayListSerializer(serializers.ModelSerializer):
@@ -470,6 +475,7 @@ class StylistDiscountsSerializer(serializers.ModelSerializer):
                         instance=instance, data=weekday_discount)
                     discount_serializer.is_valid(raise_exception=True)
                     discount_serializer.save(stylist=stylist)
+            stylist.is_discount_configured = True
             return super(StylistDiscountsSerializer, self).update(stylist, validated_data)
 
     class Meta:
@@ -697,11 +703,35 @@ class AppointmentPreviewResponseSerializer(serializers.Serializer):
     )
 
 
-class StylistAppointmentStatusSerializer(serializers.ModelSerializer):
+class AppointmentUpdateSerializer(
+    AppointmentValidationMixin, serializers.ModelSerializer
+):
+
+    services = AppointmentServiceSerializer(many=True, required=False)
 
     class Meta:
         model = Appointment
-        fields = ['status', ]
+        fields = ['status', 'services', ]
+
+    def validate(self, attrs):
+        status = self.initial_data['status']
+        if status == AppointmentStatus.CHECKED_OUT and 'services' not in self.initial_data:
+            raise serializers.ValidationError({
+                'services': appointment_errors.ERR_SERVICE_REQUIRED
+            })
+        return attrs
+
+    def validate_services(self, services):
+        status = self.initial_data['status']
+        if status == AppointmentStatus.CHECKED_OUT:
+            services = self.initial_data.get('services', [])
+            if len(services) == 0:
+                raise serializers.ValidationError(appointment_errors.ERR_SERVICE_REQUIRED)
+            for service in services:
+                self.validate_service_uuid(
+                    str(service['service_uuid'])
+                )
+        return services
 
     def validate_status(self, status: AppointmentStatus) -> AppointmentStatus:
         if status not in APPOINTMENT_STYLIST_SETTABLE_STATUSES:
@@ -710,11 +740,42 @@ class StylistAppointmentStatusSerializer(serializers.ModelSerializer):
             )
         return status
 
+    @staticmethod
+    def _update_appointment_services(
+            appointment: Appointment, service_records: List[Dict[str, uuid.UUID]]
+    ) -> None:
+        """Replace existing appointment services preserving `is_original` field"""
+        stylist_services = appointment.stylist.services
+        original_services_uuids: List[uuid.UUID] = [
+            service.service_uuid
+            for service in appointment.services.filter(is_original=True)
+        ]
+        appointment.services.all().delete()
+        for service_record in service_records:
+            service_uuid: uuid.UUID = service_record['service_uuid']
+            service: StylistService = stylist_services.get(service_uuid=service_uuid)
+            AppointmentService.objects.create(
+                appointment=appointment,
+                service_uuid=service.service_uuid,
+                service_name=service.name,
+                duration=service.duration,
+                regular_price=service.base_price,
+                client_price=service.calculate_price_for_client(
+                    appointment.datetime_start_at,
+                    client=appointment.client),
+                is_original=service.service_uuid in original_services_uuids
+            )
+
     def save(self, **kwargs):
         status = self.validated_data['status']
         user: User = self.context['user']
         appointment: Appointment = self.instance
-        appointment.set_status(status, user)
+        with transaction.atomic():
+            if status == AppointmentStatus.CHECKED_OUT:
+                self._update_appointment_services(
+                    appointment, self.validated_data['services']
+                )
+            appointment.set_status(status, user)
         return appointment
 
 
@@ -786,11 +847,13 @@ class StylistSettingsRetrieveSerializer(serializers.ModelSerializer):
         source='available_days', many=True
     )
     total_week_booked_minutes = serializers.SerializerMethodField()
+    total_week_appointments_count = serializers.SerializerMethodField()
 
     class Meta:
         model = Stylist
         fields = [
             'profile', 'services_count', 'services', 'worktime', 'total_week_booked_minutes',
+            'total_week_appointments_count',
         ]
 
     def get_services(self, stylist: Stylist):
@@ -808,3 +871,8 @@ class StylistSettingsRetrieveSerializer(serializers.ModelSerializer):
         )['total_duration']
 
         return int(total_week_duration.total_seconds() / 60)
+
+    def get_total_week_appointments_count(self, stylist: Stylist) -> int:
+        return stylist.get_current_week_appointments(
+            include_cancelled=False
+        ).count()

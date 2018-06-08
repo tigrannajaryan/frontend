@@ -101,6 +101,17 @@ page-profile {
     .Table-col:first-child {
       width: 100%; // shift all cols after the first one to right
     }
+
+    .Table-col:last-child { // prices
+      text-align: right;
+    }
+  }
+
+  .Profile-worktime .Table {
+    .Table-col:last-child { // appointments count
+      max-width: 60px; // for better aligning to right
+      text-align: right;
+    }
   }
 
   .Button.Button--offset {

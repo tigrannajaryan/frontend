@@ -5,7 +5,7 @@
 
 
 <ion-content padding>
-  <bb-nav [activePageIndex]="1"></bb-nav>
+  <made-nav [activePage]="PageNames.RegisterServices"></made-nav>
 
   <div class="p-s-def p-s-wp">
     <div class="p-s-def-title">Now let’s set your services</div>
@@ -14,22 +14,22 @@
     <div class="p-s-def-box">
       <div *ngFor="let item of serviceTemplates; let odd = odd"
            (click)="openService(item)"
-           [style.backgroundImage]="item.image_url"
-           [class.violet]="odd"
+           [style.backgroundImage]="'url(' + item.image_url + ')'"
            class="p-s-def-box-item">
-        <i *ngIf="!odd" class="bb-icon-black p-s-def-box-item-icon"></i>
-        <i *ngIf="odd" class="bb-icon-white p-s-def-box-item-icon"></i>
-
-        <div [innerHtml]="item.name" class="p-s-def-box-item-text"></div>
+        <div class="p-s-def-box-item-footer">
+          <div class="p-s-def-box-item-footer-title">
+            {{ item.name }}
+          </div>
+          {{ item.description }}
+        </div>
       </div>
     </div>
 
     <div class="p-s-list">
       <div class="p-s-list-empty">
-        <i class="bb-icon-services p-s-list-empty-icon"></i>
         <div class="p-s-list-empty-text">Let me do it, I run this like cardio</div>
 
-        <button ion-button outline color="bb_violet" class="bb-btn">Start from scratch</button>
+        <button ion-button color="white" class="bb-btn">Start from scratch</button>
       </div>
     </div>
   </div>

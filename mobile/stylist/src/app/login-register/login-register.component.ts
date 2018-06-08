@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import { IonicPage, LoadingController, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
-import { profileStatusToPage } from '~/core/functions';
+import { loading } from '~/core/utils/loading';
+import { createNavHistoryList, PageDescr } from '~/core/functions';
 import { AuthApiService, AuthCredentials, UserRole } from '~/core/auth-api-service/auth-api-service';
 import { ServerFieldError } from '~/shared/api-errors';
 import { PageNames } from '~/core/page-names';
@@ -29,17 +30,14 @@ export class LoginRegisterComponent {
   constructor(
     public navParams: NavParams,
     private navCtrl: NavController,
-    private loadingCtrl: LoadingController,
     private authService: AuthApiService
   ) {
     this.pageType = this.navParams.get('pageType') as LoginOrRegisterType;
   }
 
+  @loading
   async login(): Promise<void> {
-    const loading = this.loadingCtrl.create();
     try {
-      loading.present();
-
       // Call auth API
       const authCredentials: AuthCredentials = {
         email: this.formData.email,
@@ -48,35 +46,34 @@ export class LoginRegisterComponent {
       };
       const authResponse = await this.authService.doAuth(authCredentials);
 
-      // process authResponse and move to needed page
-      this.navCtrl.setRoot(profileStatusToPage(authResponse.profile_status));
-
+      // Find out what page should be shown to the user and navigate to
+      // it while also properly populating the navigation history
+      // so that Back buttons work correctly. The Login page should
+      // be the first in this list.
+      const loginPage: PageDescr = {
+        page: PageNames.LoginRegister,
+        params: { pageType: LoginOrRegisterType.login }
+      };
+      const pages = [loginPage, ...createNavHistoryList(authResponse.profile_status)];
+      this.navCtrl.setPages(pages);
     } catch (e) {
       if (e instanceof ServerFieldError) {
         // TODO: Iterate over e.errors Map and show all errors on the form.
       }
       throw e;
-    } finally {
-      loading.dismiss();
     }
   }
 
+  @loading
   async register(): Promise<void> {
-    const loading = this.loadingCtrl.create();
-    try {
-      loading.present();
+    const authCredentialsRecord: AuthCredentials = {
+      email: this.formData.email,
+      password: this.formData.password,
+      role: UserRole.stylist
+    };
+    await this.authService.registerByEmail(authCredentialsRecord);
 
-      const authCredentialsRecord: AuthCredentials = {
-        email: this.formData.email,
-        password: this.formData.password,
-        role: UserRole.stylist
-      };
-      await this.authService.registerByEmail(authCredentialsRecord);
-
-      this.navCtrl.push(PageNames.RegisterSalon, {}, { animate: false });
-    } finally {
-      loading.dismiss();
-    }
+    this.navCtrl.push(PageNames.RegisterSalon, {}, { animate: false });
   }
 
   onLoginOrRegister(): void {

@@ -1,4 +1,4 @@
-import { Directive, ElementRef, HostListener } from '@angular/core';
+import { Directive, HostListener } from '@angular/core';
 
 /**
  * ngxInputNumber attribute need for input
@@ -12,22 +12,15 @@ import { Directive, ElementRef, HostListener } from '@angular/core';
   selector: '[ngxInputNumber]'
 })
 export class InputNumberDirective {
-  // Allow decimal numbers and negative values
-  private regex: RegExp = /^-?[0-9]+(\.[0-9]*){0,1}$/g;
-
-  constructor(private el: ElementRef) {
-  }
+  private regexp = /\d|\./;
 
   @HostListener('keydown', [ '$event' ])
   keydown(event: KeyboardEvent): void {
-    let element = this.el.nativeElement;
+    const charCode = (event.which) ? event.which : event.keyCode;
+    const key = event.key;
+    const isSpecialChar = charCode <= 31;
 
-    if (element.tagName !== 'INPUT') {
-      element = element.querySelector('input');
-    }
-
-    const next = `${element.value}${event.key}`;
-    if (next && !next.match(this.regex)) {
+    if (!(isSpecialChar || this.regexp.test(key))) {
       event.preventDefault();
     }
   }

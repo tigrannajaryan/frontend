@@ -112,6 +112,12 @@ export class AuthApiService extends BaseApiService {
     return this.authResponse ? this.authResponse.token : undefined;
   }
 
+  async refreshAuth(): Promise<AuthResponse> {
+    const request = { token: this.authResponse.token };
+    return this.processAuthResponse(
+      () => this.post<AuthResponse>('auth/refresh-token', request));
+  }
+
   /**
    * Process a response to authentication API call. If the response is successfull
    * remember it. If the call failed clear previously rememebered response.

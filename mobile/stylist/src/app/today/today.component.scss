@@ -204,6 +204,18 @@ page-today {
         margin-bottom: pxtorem(80);
       }
 
+      &-null{
+        text-align: center;
+        font-size: pxtorem10(40);
+
+        @media ($smartphone) {
+          font-size: pxtorem10(30);
+        }
+        @media ($phone) {
+          font-size: pxtorem10(20);
+        }
+      }
+
       &-item{
         position: relative;
         background: color($colors, white);

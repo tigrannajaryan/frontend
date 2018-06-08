@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import {
   AlertController,
   IonicPage,
-  LoadingController,
   ModalController,
   NavController,
   NavParams
@@ -14,6 +13,7 @@ import {
   ServiceTemplateSet
 } from '~/core/stylist-service/stylist-models';
 
+import { loading } from '~/core/utils/loading';
 import { StylistServiceProvider } from '~/core/stylist-service/stylist-service';
 import { PageNames } from '~/core/page-names';
 import { ServiceItemComponentData } from '../services-item/services-item.component';
@@ -27,16 +27,22 @@ import * as time from '~/shared/time';
   templateUrl: 'services-list.component.html'
 })
 export class ServicesListComponent {
-  isProfile?: Boolean;
-  uuid: string;
-  timeGap = 15;
-  templateSet: ServiceTemplateSet;
+  protected PageNames = PageNames;
+  protected isEmptyCategories = false;
+  protected isProfile?: Boolean;
+  protected timeGap = 15;
+  protected templateSet: ServiceTemplateSet;
+
+  static checkIfEmptyCategories(categories: ServiceCategory[]): boolean {
+    return categories.every((cat: ServiceCategory) => {
+      return cat.services.length === 0;
+    });
+  }
 
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
     public modalCtrl: ModalController,
-    public loadingCtrl: LoadingController,
     private alertCtrl: AlertController,
     private stylistService: StylistServiceProvider
   ) {
@@ -44,16 +50,10 @@ export class ServicesListComponent {
 
   async ionViewWillLoad(): Promise<void> {
     this.isProfile = Boolean(this.navParams.get('isProfile'));
-
-    const loader = this.loadingCtrl.create();
-    loader.present();
-    try {
-      await this.loadInitialData();
-    } finally {
-      loader.dismiss();
-    }
+    this.loadInitialData();
   }
 
+  @loading
   async loadInitialData(): Promise<void> {
     try {
       const uuid = this.navParams.get('uuid');
@@ -73,6 +73,8 @@ export class ServicesListComponent {
           categories: this.getCategorisedServices(response.services)
         };
       }
+
+      this.isEmptyCategories = ServicesListComponent.checkIfEmptyCategories(this.templateSet.categories);
     } catch (e) {
       const alert = this.alertCtrl.create({
         title: 'Loading services failed',
@@ -125,6 +127,7 @@ export class ServicesListComponent {
     profileModal.present();
   }
 
+  @loading
   async saveChanges(): Promise<void> {
     const categoriesServices =
       this.templateSet.categories.reduce((services, category) => (
@@ -136,9 +139,6 @@ export class ServicesListComponent {
           }))
         )
       ), []);
-
-    const loader = this.loadingCtrl.create();
-    loader.present();
 
     try {
       await this.stylistService.setStylistServices(categoriesServices);
@@ -155,8 +155,6 @@ export class ServicesListComponent {
         buttons: ['Dismiss']
       });
       alert.present();
-    } finally {
-      loader.dismiss();
     }
   }
 
@@ -171,7 +169,7 @@ export class ServicesListComponent {
     return time.convertMinsToHrsMins(mins);
   }
 
-  async deleteService(category, idx): Promise<void> {
+  async deleteService(category: ServiceCategory, idx: number): Promise<void> {
     const [service] = category.services.splice(idx, 1);
 
     if (service.id !== undefined) {
@@ -189,6 +187,8 @@ export class ServicesListComponent {
         category.services.splice(idx, 0, service);
       }
     }
+
+    this.isEmptyCategories = ServicesListComponent.checkIfEmptyCategories(this.templateSet.categories);
   }
 
   /**
@@ -205,7 +205,7 @@ export class ServicesListComponent {
     // Find old item
     let categoryIndex = this.templateSet.categories.findIndex(x => x.uuid === itemToEdit.categoryUuid);
     let category: ServiceCategory = this.templateSet.categories[categoryIndex];
-    let serviceIndex: number = itemToEdit.service ? category.services.findIndex(x => x.id === itemToEdit.service.id) : -1;
+    let serviceIndex: number = itemToEdit.service ? category.services.findIndex(x => x === itemToEdit.service) : -1;
 
     if (itemToEdit.categoryUuid !== editedItem.categoryUuid) {
       // Remove from old category
@@ -228,5 +228,7 @@ export class ServicesListComponent {
       }
       category.services[serviceIndex] = editedItem.service;
     }
+
+    this.isEmptyCategories = ServicesListComponent.checkIfEmptyCategories(this.templateSet.categories);
   }
 }

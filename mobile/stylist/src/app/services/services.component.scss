@@ -41,54 +41,63 @@ page-services {
         display: flex;
         justify-content: space-between;
         align-items: flex-start;
-        margin-bottom: pxtoem(50);
+        margin-bottom: pxtorem(70);
 
         @media ($phone) {
-          margin-bottom: pxtoem(40);
+          margin-bottom: pxtorem(50);
         }
 
         &-item{
           position: relative;
           z-index: 1;
           width: 46%;
-          min-height: pxtoem(420);
-          border-radius: 7px;
+          min-height: pxtorem(800);
+          border-radius: 30px;
           display: flex;
           flex-direction: column;
           justify-content: flex-end;
-          color: #ffffff;
-          background: #000000;
+          color: color($colors, white);
+          background: color($colors, dark);
           background-size: cover;
           background-repeat: no-repeat;
           background-position: center;
+          box-shadow: 0 10px 25px -7px rgba(0, 0, 0, 0.13);
+          overflow: hidden;
 
+          @media ($smartphone) {
+            min-height: pxtorem(600);
+            border-radius: 20px;
+          }
           @media ($phone) {
-            min-height: pxtoem(350);
+            min-height: pxtorem(350);
+            border-radius: 10px;
           }
 
-          &-text{
-            font-size: pxtoem(24);
-            padding: 0 0 pxtoem(36);
-            text-align: center;
+          &-footer{
+            font-size: pxtorem(30);
+            padding: pxtoem(20) pxtoem(25);
+            background: color($colors, white);
+            color: rgba(0, 0, 0, 0.4);
 
-            @media ($phone) {
-              font-size: pxtoem(20);
-              padding: 0 0 pxtoem(34);
+            @media ($smartphone) {
+              font-size: pxtorem(20);
             }
-          }
+            @media ($phone) {
+              font-size: pxtorem(18);
+            }
 
-          &-icon{
-            position: absolute;
-            left: 50%;
-            top: 43%;
-            transform: translate(-50%, -50%);
-            font-size: pxtoem(144);
-          }
+            &-title{
+              font-size: pxtorem(36);
+              margin-bottom: pxtoem(3);
+              color: color($colors, dark);
 
-          &.violet{
-            background: transparent;
-            border: 2px solid #e6dce9;
-            color: #000000;
+              @media ($smartphone) {
+                font-size: pxtorem(24);
+              }
+              @media ($phone) {
+                font-size: pxtorem(22);
+              }
+            }
           }
         }
       }
@@ -96,24 +105,29 @@ page-services {
 
 
     &-list{
-      margin-bottom: pxtoem(40);
+      margin-bottom: pxtorem(40);
 
       &-empty{
         text-align: center;
+        border-radius: 30px;
+        background: color($colors, bb_skin);
+        padding: pxtorem(50) 0;
+        box-shadow: 0 10px 32px 0 rgba(0, 0, 0, 0.06);
 
-        &-icon{
-          font-size: pxtoem(140);
-
-          @media ($phone) {
-            font-size: pxtoem(110);
-          }
+        @media ($smartphone) {
+          border-radius: 20px;
         }
+        @media ($phone) {
+          padding: pxtorem(35) 0;
+          border-radius: 10px;
+        }
+
         &-text{
-          font-size: pxtoem(34);
-          margin-bottom: pxtoem(15);
+          font-size: pxtorem(34);
+          margin-bottom: pxtorem(25);
 
           @media ($phone) {
-            font-size: pxtoem(27);
+            font-size: pxtorem(26);
           }
         }
       }
