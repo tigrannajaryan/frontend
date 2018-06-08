@@ -74,7 +74,6 @@ page-services {
           }
 
           &-footer{
-            font-size: pxtorem(30);
             padding: pxtoem(20) pxtoem(25);
             background: color($colors, white);
             color: rgba(0, 0, 0, 0.4);
@@ -88,7 +87,6 @@ page-services {
 
             &-title{
               font-size: pxtorem(36);
-              margin-bottom: pxtoem(3);
               color: color($colors, dark);
 
               @media ($smartphone) {
