@@ -23,7 +23,7 @@ all: build
 
 build: install-py migrate
 
-manage: 
+manage:
 	$(PYTHON) $(PROJECT)/manage.py $(COMMAND)
 
 setup-db:
@@ -58,7 +58,9 @@ mypy:
 	MYPYPATH=$(MYPYPATH) $(MYPY) --ignore-missing-imports $(PROJECT)/
 
 pytest:
-	$(PYTEST) --ds=core.settings.tests --junit-xml=test-reports/junit/testresults.xml --cov=$(PROJECT) --cov-report term --cov-report xml $(TEST_ARGS) $(PROJECT)
+	$(PYTEST) --ds=core.settings.tests --junit-xml=test-reports/junit/testresults.xml \
+		--cov=$(PROJECT) --cov-report term --cov-report xml \
+		--cov-report html:test-reports/coverage-html $(TEST_ARGS) $(PROJECT)
 
 test: clean lint pytest
 
