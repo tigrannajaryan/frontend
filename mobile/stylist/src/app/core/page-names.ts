@@ -7,6 +7,9 @@
 // (!) please stick to alphabetical order
 
 export enum PageNames {
+    AppointmentAdd = 'AppointmentAddComponent',
+    AppointmentDateTime = 'AppointmentDateTimeComponent',
+    AppointmentService = 'AppointmentServicesComponent',
     AppointmentCheckout = 'AppointmentCheckoutComponent',
     ChangePercent = 'ChangePercentComponent',
     Discounts = 'DiscountsComponent',

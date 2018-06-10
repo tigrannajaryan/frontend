@@ -1,0 +1,23 @@
+page-appointment-services {
+  .Appointment-servicesTitle {
+    margin: pxtorem10(30) 0 pxtorem10(20);
+    font-size: $t-h4;
+    font-weight: bold;
+
+    sup {
+      font-weight: normal;
+      color: color($grayscale, 400);
+    }
+  }
+
+  .Table .Table-col {
+    // fix all except name (first column)
+    $fixed-column-width: 60px;
+
+    width: $fixed-column-width;
+
+    &:first-child {
+      width: auto;
+    }
+  }
+}

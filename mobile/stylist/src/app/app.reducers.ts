@@ -3,6 +3,7 @@ import {
   ActionReducerMap,
   MetaReducer
 } from '@ngrx/store';
+import { storeLogger } from 'ngrx-store-logger';
 
 import { ENV } from '../environments/environment.default';
 
@@ -12,7 +13,6 @@ import { ENV } from '../environments/environment.default';
  * ensure that none of the reducers accidentally mutates the state.
  */
 import { storeFreeze } from 'ngrx-store-freeze';
-import { Logger } from './shared/logger';
 
 /**
  * Every reducer module's default export is the reducer function itself. In
@@ -40,12 +40,8 @@ export const reducers: ActionReducerMap<State> = {
 /**
  * Use meta reducer to log all actions.
  */
-export function loggerReducer(logger: Logger, reducer: ActionReducer<State>): ActionReducer<State> {
-  return (state: State, action: any): State => {
-    logger.info('>>>> Action:', action.constructor.name + JSON.stringify(action));
-
-    return reducer(state, action);
-  };
+export function logger(reducer: ActionReducer<State>): any {
+  return storeLogger()(reducer);
 }
 
 /**
@@ -53,9 +49,9 @@ export function loggerReducer(logger: Logger, reducer: ActionReducer<State>): Ac
  * the root meta-reducer. To add more meta-reducers, provide an array of meta-reducers
  * that will be composed to form the root meta-reducer.
  */
-export function getMetaReducers(logger: Logger): Array<MetaReducer<State>> {
+export function getMetaReducers(): Array<MetaReducer<State>> {
   const metaReducers: Array<MetaReducer<State>> = !ENV.production
-    ? [reducer => loggerReducer(logger, reducer),
+    ? [reducer => logger(reducer),
        storeFreeze]
     : [];
 

@@ -1,3 +1,5 @@
+import { ServiceUuid } from '~/core/stylist-service/stylist-models';
+
 export interface AppointmentStatus {
   status: string;
 }
@@ -9,6 +11,13 @@ export interface AppointmentService {
   client_price: number;
   regular_price: number;
   is_original: boolean;
+}
+
+export interface NewAppointment {
+  client_first_name: string;
+  client_last_name: string;
+  services: ServiceUuid[];
+  datetime_start_at: string; // ISO 8601: 2018-05-20T18:00:00-04:00
 }
 
 export interface Appointment {

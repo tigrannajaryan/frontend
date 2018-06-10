@@ -1,0 +1,7 @@
+<ion-navbar [hideBackButton]="true" class="SimpleHeader bb-wp-a">
+  <ion-buttons *ngIf="navCtrl.canGoBack()" left>
+    <button navPop ion-button icon-only class="SimpleHeader-btnBack">
+      <ion-icon name="ios-arrow-round-back-outline"></ion-icon>
+    </button>
+  </ion-buttons>
+</ion-navbar>

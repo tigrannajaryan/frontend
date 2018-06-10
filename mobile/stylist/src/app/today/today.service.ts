@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { BaseApiService } from '~/shared/base-api-service';
 import { Logger } from '~/shared/logger';
 import { ServerStatusTracker } from '~/shared/server-status-tracker';
-import { Appointment, AppointmentStatus, Today } from '~/today/today.models';
+import { Appointment, AppointmentStatus, NewAppointment, Today } from '~/today/today.models';
 
 @Injectable()
 export class TodayService extends BaseApiService {
@@ -28,6 +28,13 @@ export class TodayService extends BaseApiService {
    */
   getAppointments(): Promise<Appointment[]> {
     return this.get<Appointment[]>('stylist/appointments');
+  }
+
+  /**
+   * Creates new appointment. The stylist must be already authenticated as a user.
+   */
+  createAppointment(data: NewAppointment): Promise<Appointment> {
+    return this.post<Appointment>('stylist/appointments', data);
   }
 
   /**

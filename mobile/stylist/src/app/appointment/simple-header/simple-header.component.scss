@@ -1,0 +1,22 @@
+.SimpleHeader { // TODO: combine with UserHeader
+  // Add padding to be aligned with context.
+  // Context padding is 16px + 5px.
+  padding-right: 18px;
+  padding-left: 14px;
+
+  .SimpleHeader-btnBack {
+    display: inline-block;
+    font-size: pxtorem(50);
+    color: color($colors, dark);
+    vertical-align: middle;
+
+    @media ($smartphone) {
+      font-size: pxtorem(40);
+    }
+
+    @media ($phone) {
+      margin: 0;
+      font-size: pxtorem(30);
+    }
+  }
+}

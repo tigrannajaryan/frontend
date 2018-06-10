@@ -29,6 +29,10 @@ button[color="bb_skin"]{
   color: #000;
 }
 
+a { // all links
+  color: color($colors, blush);
+}
+
 .range-md{
   .range-knob{
     transform: scale(1.8);

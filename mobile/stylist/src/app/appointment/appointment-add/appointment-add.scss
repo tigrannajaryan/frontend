@@ -1,0 +1,117 @@
+page-appointment-add {
+  .Appointment-content {
+    background: color($colors, bb_skin);
+  }
+
+  .Appointment-pic {
+    $pic-size: 140px;
+
+    width: $pic-size;
+    height: $pic-size;
+    padding: pxtorem10(19);
+    margin-bottom: pxtorem10(30);
+    border: 1px solid color($colors, bb_honey);
+    border-radius: 50%;
+
+    ion-icon {
+      $icon-size: 102px;
+
+      width: $icon-size;
+      height: $icon-size;
+      font-size: pxtorem10(48);
+      line-height: $icon-size;
+      text-align: center;
+      background: white;
+      border-radius: 50%;
+    }
+  }
+
+  .Appointment-form {
+    position: relative;
+  }
+
+  .Appointment-customersList {
+    position: absolute;
+    z-index: 1;
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+    background: white;
+    border-radius: 0 0 10px 10px;
+    transform: translateY(-30px);
+  }
+
+  .Appointment-customersListItem {
+    padding: pxtorem10(16) pxtorem10(14);
+    font-size: $t-base;
+    border-bottom: 1px solid color($grayscale, 200);
+  }
+
+  .Appointment-submit {
+    background: transparent;
+
+    .item-inner {
+      border: none;
+    }
+
+    button[type="submit"] {
+      $btn-size: 58px;
+
+      width: $btn-size;
+      height: $btn-size;
+      font-size: $t-h2;
+      color: color($grayscale, 800);
+      background: white;
+      border-radius: 50%;
+      box-shadow: 0 0 30px darken(color($colors, bb_skin), 2%);
+    }
+
+    &.item .item-inner {
+      // remove ionic’s border
+      border: 0;
+    }
+  }
+}
+
+.Input {
+  padding: 0;
+  margin-bottom: pxtorem10(30);
+  background: transparent;
+
+  &.item-block .item-inner {
+    padding: 0 0 pxtorem10(10);
+    border-bottom-color: color($colors, bb_skin_dark);
+  }
+
+  &.is-withoutPointerEvents input {
+    // disable keyboard triggering, make it just like button
+    pointer-events: none;
+  }
+
+  .input-wrapper {
+    display: block;
+  }
+
+  .label {
+    font-size: $t-small;
+
+    + ion-input .text-input {
+      margin: 0;
+    }
+  }
+
+  input,
+  ion-datetime {
+    padding: 0;
+    font-size: $t-h3;
+
+    .datetime-placeholder,
+    &::-webkit-input-placeholder {
+      color: color($colors, bb_skin_dark);
+    }
+
+    &:focus::-webkit-input-placeholder {
+      color: transparent;
+    }
+  }
+}

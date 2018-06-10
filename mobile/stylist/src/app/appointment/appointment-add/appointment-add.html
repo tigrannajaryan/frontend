@@ -1,0 +1,43 @@
+<ion-header class="ion-bb-header" madeSimpleHeader></ion-header>
+
+<ion-content padding class="Appointment-content">
+  <ion-row justify-content-center align-items-center>
+    <div class="Appointment-pic">
+      <ion-icon name="ios-calendar-outline"></ion-icon>
+    </div>
+  </ion-row>
+
+  <form [formGroup]="form" class="Appointment-form" (ngSubmit)="submit()">
+    <ion-item class="Input">
+      <ion-label>Client’s name</ion-label>
+      <ion-input type="text" placeholder="Enter full name" formControlName="client" (input)="search()"></ion-input>
+    </ion-item>
+
+    <div class="Appointment-customersList" *ngIf="clientsList">
+      <div *ngFor="let client of clientsList" (click)="selectClient(client)" class="Appointment-customersListItem">
+        {{ client.first_name }} {{ client.last_name }}
+      </div>
+    </div>
+
+    <ion-item class="Input is-withoutPointerEvents">
+      <ion-label>Service</ion-label>
+      <ion-input type="text" placeholder="Select from service list" formControlName="service" (click)="selectService()"></ion-input>
+    </ion-item>
+
+    <ion-item class="Input">
+      <ion-label>Date</ion-label>
+      <ion-datetime displayFormat="D MMMM, YYYY" placeholder="Choose date" formControlName="date" [min]="moment().format()"></ion-datetime>
+    </ion-item>
+
+    <ion-item class="Input">
+      <ion-label>Time</ion-label>
+      <ion-datetime displayFormat="h:mm a" pickerFormat="h mm A" placeholder="Select time" formControlName="time" [min]="moment().format()" [minuteValues]="minuteValues"></ion-datetime>
+    </ion-item>
+
+    <ion-item class="Appointment-submit" text-center>
+      <button type="submit" [disabled]="form.invalid" ion-button icon-only clear>
+        <ion-icon name="ios-checkmark-outline"></ion-icon>
+      </button>
+    </ion-item>
+  </form>
+</ion-content>
