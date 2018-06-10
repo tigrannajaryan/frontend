@@ -1,7 +1,10 @@
 import { ComponentFixture } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 import { prepareSharedObjectsForTests } from '~/core/test-utils.spec';
 import { TestUtils } from '~/../test';
+
+import { TodayService } from '~/today/today.service';
 
 import { AppointmentAddComponent } from './appointment-add';
 
@@ -14,7 +17,7 @@ describe('Pages: Add Appointment', () => {
 
   beforeEach(async () => TestUtils.beforeEachCompiler([
     AppointmentAddComponent
-  ]).then(compiled => {
+  ], [TodayService], [HttpClientTestingModule]).then(compiled => {
     fixture = compiled.fixture;
     instance = compiled.instance;
   }));
