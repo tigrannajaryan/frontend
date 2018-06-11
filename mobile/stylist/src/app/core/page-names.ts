@@ -8,7 +8,6 @@
 
 export enum PageNames {
     AppointmentAdd = 'AppointmentAddComponent',
-    AppointmentDateTime = 'AppointmentDateTimeComponent',
     AppointmentService = 'AppointmentServicesComponent',
     AppointmentCheckout = 'AppointmentCheckoutComponent',
     ChangePercent = 'ChangePercentComponent',
