@@ -73,8 +73,19 @@ export const selectServices = createSelector(
   (state: ServicesState): ServiceItem[] => state.services
 );
 
-export const selectCategorisedServices = createSelector(
+export const selectSortedServices = createSelector(
   selectServices,
+  (services): ServiceItem[] =>
+    services
+      .slice() // remove freeze from services
+      .sort((serviceA, serviceB) => {
+        // from lowest to highest price
+        return serviceA.base_price - serviceB.base_price;
+      })
+);
+
+export const selectCategorisedServices = createSelector(
+  selectSortedServices,
   (state: ServiceItem[]) => state.reduce((categories, service) => {
     let category = categories.find(({uuid}) => uuid === service.category_uuid);
     if (!category) {
