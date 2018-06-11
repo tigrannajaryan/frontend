@@ -75,7 +75,7 @@ describe('Pages: Profile / Settings', () => {
     // update html
     fixture.detectChanges();
 
-    expect(fixture.nativeElement.querySelector(`[ng-reflect-made-link^="RegisterSalonComponent"]`))
+    expect(fixture.nativeElement.querySelector('[ng-reflect-made-link^="RegisterSalonComponent"]'))
       .toBeTruthy();
   }));
 
@@ -104,7 +104,7 @@ describe('Pages: Profile / Settings', () => {
     // update html
     fixture.detectChanges();
 
-    expect(fixture.nativeElement.querySelector(`[ng-reflect-made-link^="ServicesListComponent"]`))
+    expect(fixture.nativeElement.querySelector('[ng-reflect-made-link^="ServicesListComponent"]'))
       .toBeTruthy();
   }));
 
@@ -161,7 +161,7 @@ describe('Pages: Profile / Settings', () => {
     // update html
     fixture.detectChanges();
 
-    expect(fixture.nativeElement.querySelector(`[ng-reflect-made-link^="Worktime"]`))
+    expect(fixture.nativeElement.querySelector('[ng-reflect-made-link^="Worktime"]'))
       .toBeTruthy();
   }));
 

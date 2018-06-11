@@ -30,13 +30,14 @@ import {
   templateUrl: 'appointment-add.html'
 })
 export class AppointmentAddComponent {
+  form: FormGroup;
+  selectedClient?: Client;
+  selectedService?: ServiceItem;
+
+  protected clientsList?: Client[];
+
   protected moment = moment; // use directly in template
   protected minuteValues = Array(12).fill(undefined).map((_, idx) => idx * 5).toString(); // every 5 minutes
-
-  protected form: FormGroup;
-  protected clientsList?: Client[];
-  protected selectedClient?: Client;
-  protected selectedService?: ServiceItem;
 
   constructor(
     private alertCtrl: AlertController,
