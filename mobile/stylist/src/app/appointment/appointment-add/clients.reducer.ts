@@ -43,7 +43,7 @@ export function clientsReducer(state: ClientsState = initialState, action: Actio
 
 export const selectClients = createFeatureSelector<ClientsState>('clients');
 
-export const selectAllClients = createSelector(
+export const selectFoundClients = createSelector(
   selectClients,
   (state: ClientsState): Client[] => state.all
 );

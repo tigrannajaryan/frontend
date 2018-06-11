@@ -6,6 +6,7 @@ import { AlertController, IonicPage, NavController } from 'ionic-angular';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { loading } from '~/core/utils/loading';
+import { componentUnloaded } from '~/core/utils/component-unloaded';
 import { PageNames } from '~/core/page-names';
 import { ServiceItem } from '~/core/stylist-service/stylist-models';
 
@@ -15,7 +16,7 @@ import { TodayService as AppointmentService } from '~/today/today.service';
 import {
   ClientsState,
   SearchAction,
-  selectAllClients
+  selectFoundClients
 } from '~/appointment/appointment-add/clients.reducer';
 
 import {
@@ -29,13 +30,13 @@ import {
   templateUrl: 'appointment-add.html'
 })
 export class AppointmentAddComponent {
-  moment = moment; // use directly in template
-  minuteValues = Array(12).fill(undefined).map((_, idx) => idx * 5).toString(); // every 5 minutes
+  protected moment = moment; // use directly in template
+  protected minuteValues = Array(12).fill(undefined).map((_, idx) => idx * 5).toString(); // every 5 minutes
 
-  form: FormGroup;
-  clientsList?: Client[];
-  selectedClient?: Client;
-  selectedService?: ServiceItem;
+  protected form: FormGroup;
+  protected clientsList?: Client[];
+  protected selectedClient?: Client;
+  protected selectedService?: ServiceItem;
 
   constructor(
     private alertCtrl: AlertController,
@@ -51,6 +52,7 @@ export class AppointmentAddComponent {
 
     this.store
       .select(selectSelectedService)
+      .takeUntil(componentUnloaded(this))
       .subscribe(service => {
         if (service !== undefined) {
           this.selectedService = service;
@@ -59,7 +61,8 @@ export class AppointmentAddComponent {
       });
 
     this.store
-      .select(selectAllClients)
+      .select(selectFoundClients)
+      .takeUntil(componentUnloaded(this))
       .subscribe(clients => {
         this.clientsList = clients;
       });
