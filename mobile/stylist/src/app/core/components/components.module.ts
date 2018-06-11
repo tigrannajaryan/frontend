@@ -11,12 +11,10 @@ import { IonicModule } from 'ionic-angular';
 import { StoreModule } from '@ngrx/store';
 import { serverStatusReducer, serverStatusStateName } from '~/shared/server-status/server-status.reducer';
 import { UserHeaderMenuComponent } from '~/today/user-header/user-header-menu/user-header-menu.component';
-import { SimpleHeaderComponent } from '~/appointment/simple-header/simple-header.component';
 
 const components = [
   MadeNavComponent,
   ServerStatusComponent,
-  SimpleHeaderComponent,
   UserHeaderComponent,
   UserFooterComponent,
   MadeTableComponent,
