@@ -69,11 +69,6 @@ export class AppointmentAddComponent {
       });
   }
 
-  search(): void {
-    const { client: query } = this.form.value;
-    this.store.dispatch(new SearchAction(query));
-  }
-
   selectClient(client: Client): void {
     this.selectedClient = client;
     this.form.patchValue({ client: `${client.first_name} ${client.last_name}` });
