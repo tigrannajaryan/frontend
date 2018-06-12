@@ -1150,7 +1150,7 @@ curl -X GET \
 This API does not actually create any parameter, but allows
 to preview resulting price and conflicting appointments (if any).
 
-**POST /api/v1/appointments/preview**
+**POST /api/v1/stylist/appointments/preview**
 
 - **service_uuid** (required) - uuid of a service to create appointment for
 - **datetime_start_at** (required) - datetime when appointment is to start

@@ -833,6 +833,15 @@ class AppointmentUpdateSerializer(
 
 
 class StylistTodaySerializer(serializers.ModelSerializer):
+    stylist_first_name = serializers.CharField(
+        read_only=True, source='user.first_name', allow_null=True
+    )
+    stylist_last_name = serializers.CharField(
+        read_only=True, source='user.last_name', allow_null=True
+    )
+    stylist_profile_photo_url = serializers.CharField(
+        read_only=True, source='get_profile_photo_url',
+    )
     today_appointments = serializers.SerializerMethodField()
     today_visits_count = serializers.SerializerMethodField()
     week_visits_count = serializers.SerializerMethodField()
@@ -842,6 +851,7 @@ class StylistTodaySerializer(serializers.ModelSerializer):
         model = Stylist
         fields = [
             'today_appointments', 'today_visits_count', 'week_visits_count', 'past_visits_count',
+            'stylist_first_name', 'stylist_last_name', 'stylist_profile_photo_url',
         ]
 
     def get_today_appointments(self, stylist: Stylist):

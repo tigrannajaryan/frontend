@@ -147,4 +147,6 @@ STATIC_URL = '/static/'
 
 MAX_FILE_UPLOAD_SIZE = 1024 * 1024 * 5  # 5MB
 
+AWS_S3_FILE_OVERWRITE = False
+
 DEBUG = False

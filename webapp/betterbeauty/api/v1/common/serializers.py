@@ -22,6 +22,6 @@ class TemporaryImageSerializer(serializers.ModelSerializer):
 
     def save(self, **kwargs):
         uploaded_by: User = self.context['user']
-        super(TemporaryImageSerializer, self).save(
+        return super(TemporaryImageSerializer, self).save(
             uploaded_by=uploaded_by, **kwargs
         )

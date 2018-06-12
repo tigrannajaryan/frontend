@@ -86,6 +86,8 @@ class User(BaseEmailUser):
 
     date_joined = models.DateTimeField(_('date joined'), auto_now_add=True)
 
+    uuid = models.UUIDField(unique=True, editable=False, default=uuid.uuid4)
+
     EMAIL_FIELD = 'email'
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS: List[str] = []
@@ -100,9 +102,15 @@ class User(BaseEmailUser):
         db_table = 'user'
 
 
+def generate_upload_file_name(instance: 'TemporaryFile', filename: str) -> str:
+    uploaded_by: User = instance.uploaded_by
+    path = 'user_uploads/{0}/{1}-{2}'.format(uploaded_by.uuid, instance.uuid, filename)
+    return path
+
+
 class TemporaryFile(models.Model):
     uploaded_at = models.DateTimeField(auto_now_add=True)
     uploaded_by = models.ForeignKey(User, on_delete=models.CASCADE)
 
-    uuid = models.UUIDField(default=uuid.uuid4, editable=False)
-    file = models.FileField(upload_to='user_uploads')
+    uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
+    file = models.FileField(upload_to=generate_upload_file_name)
