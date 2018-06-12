@@ -96,6 +96,7 @@ describe('Pages: Add Appointment', () => {
       services: [{ service_uuid: fakeService.uuid }],
       datetime_start_at: nextWeek.format('YYYY-MM-DDTHH:mm:00')
     };
+    const forced = false;
 
     const appointmentsService = fixture.debugElement.injector.get(AppointmentService);
     spyOn(appointmentsService, 'createAppointment');
@@ -106,6 +107,6 @@ describe('Pages: Add Appointment', () => {
     fixture.nativeElement.querySelector('[type="submit"]').click();
 
     expect(appointmentsService.createAppointment)
-      .toHaveBeenCalledWith(data);
+      .toHaveBeenCalledWith(data, forced);
   }));
 });
