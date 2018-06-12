@@ -6,7 +6,8 @@ export enum servicesActionTypes {
   LOAD = 'SERVICES_LOAD',
   LOAD_SUCCESS = 'SERVICES_LOAD_SUCCESS',
   LOAD_ERROR = 'SERVICES_LOAD_ERROR',
-  SELECT_SERVICE = 'SERVICES_SELECT_SERVICE'
+  SELECT_SERVICE = 'SERVICES_SELECT_SERVICE',
+  CLEAR_SELECTED_SERVICE = 'SERVICES_CLEAR_SELECTED_SERVICE'
 }
 
 export interface ServicesState {
@@ -40,11 +41,16 @@ export class SelectServiceAction implements Action {
   constructor(public service: ServiceItem) { }
 }
 
+export class ClearSelectedServiceAction implements Action {
+  readonly type = servicesActionTypes.CLEAR_SELECTED_SERVICE;
+}
+
 type Actions =
   | LoadAction
   | LoadSuccessAction
   | LoadErrorAction
-  | SelectServiceAction;
+  | SelectServiceAction
+  | ClearSelectedServiceAction;
 
 export function servicesReducer(state: ServicesState = initialState, action: Actions): ServicesState {
   switch (action.type) {
@@ -59,6 +65,12 @@ export function servicesReducer(state: ServicesState = initialState, action: Act
       return {
         ...state,
         selectedService: action.service
+      };
+
+    case servicesActionTypes.CLEAR_SELECTED_SERVICE:
+      return {
+        ...state,
+        selectedService: undefined
       };
 
     default:

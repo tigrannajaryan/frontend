@@ -94,7 +94,7 @@ describe('Pages: Add Appointment', () => {
       client_first_name: client.first_name,
       client_last_name: client.last_name,
       services: [{ service_uuid: fakeService.uuid }],
-      datetime_start_at: nextWeek.format('YYYY-MM-DDTHH:mm:00Z')
+      datetime_start_at: nextWeek.format('YYYY-MM-DDTHH:mm:00')
     };
 
     const appointmentsService = fixture.debugElement.injector.get(AppointmentService);

@@ -33,8 +33,8 @@ export class TodayService extends BaseApiService {
   /**
    * Creates new appointment. The stylist must be already authenticated as a user.
    */
-  createAppointment(data: NewAppointment): Promise<Appointment> {
-    return this.post<Appointment>('stylist/appointments', data);
+  createAppointment(data: NewAppointment, forced = false): Promise<Appointment> {
+    return this.post<Appointment>(`stylist/appointments?force_start=${forced}`, data);
   }
 
   /**

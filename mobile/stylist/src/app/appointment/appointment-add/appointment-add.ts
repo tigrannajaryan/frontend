@@ -1,5 +1,3 @@
-import * as moment from 'moment';
-
 import { Store } from '@ngrx/store';
 import { Component } from '@angular/core';
 import { AlertController, IonicPage, NavController } from 'ionic-angular';
@@ -19,6 +17,7 @@ import {
 } from '~/appointment/appointment-add/clients.reducer';
 
 import {
+  ClearSelectedServiceAction,
   selectSelectedService,
   ServicesState
 } from '~/appointment/appointment-services/services.reducer';
@@ -34,8 +33,6 @@ export class AppointmentAddComponent {
   selectedService?: ServiceItem;
 
   protected clientsList?: Client[];
-
-  protected moment = moment; // use directly in template
   protected minuteValues = Array(12).fill(undefined).map((_, idx) => idx * 5).toString(); // every 5 minutes
 
   constructor(
@@ -78,35 +75,56 @@ export class AppointmentAddComponent {
     this.navCtrl.push(PageNames.AppointmentService);
   }
 
-  @loading
-  async submit(): Promise<void> {
+  async submit(forced = false): Promise<void> {
     const { client, date, time } = this.form.value;
     const [ firstName, lastName ] = client.trim().split(/(^[^\s]+)/).slice(-2);
-    const tz = (new Date()).getTimezoneOffset() / 60 * -1;
-    const tzAbs = `0${Math.abs(tz)}`.slice(-2);
     const data = {
       client_first_name: firstName,
       client_last_name: lastName.trim(), // remove leading \s
       services: [{ service_uuid: this.selectedService.uuid }],
-      datetime_start_at: `${date}T${time}:00${tz < 0 ? '-' : '+'}${tzAbs}:00`
+      datetime_start_at: `${date}T${time}:00`
     };
-    try {
-      await this.appointmentService.createAppointment(data);
-      this.navCtrl.pop();
-    } catch (e) {
-      let errorMessage = e.message;
 
-      const dateTimeError = e.errors && e.errors.get('datetime_start_at');
-      if (dateTimeError) {
-        errorMessage = dateTimeError[0] && dateTimeError[0].code;
+    const errorMessage = await this.createAppointment(data, forced);
+
+    if (errorMessage) {
+      const validAddAppointmentErrors = [
+        // TODO: check on some error code, not error text msg
+        'Cannot add appointment for a past date and time',
+        'Cannot add appointment intersecting with another',
+        'Cannot add appointment outside working hours'
+      ];
+      const hasAddAnyway = validAddAppointmentErrors.indexOf(errorMessage) !== -1;
+      const alertAdditionalBtns = [];
+
+      if (hasAddAnyway) {
+        alertAdditionalBtns.push({
+          text: 'Add anyway',
+          handler: () => this.submit(true)
+        });
       }
 
       const alert = this.alertCtrl.create({
         title: 'Adding appointment failed',
         subTitle: errorMessage,
-        buttons: ['Dismiss']
+        buttons: ['Dismiss', ...alertAdditionalBtns]
       });
       alert.present();
+    }
+  }
+
+  @loading
+  private async createAppointment(data, forced): Promise<any> {
+    try {
+      await this.appointmentService.createAppointment(data, forced);
+      this.store.dispatch(new ClearSelectedServiceAction());
+      this.navCtrl.pop();
+    } catch (e) {
+      const dateTimeError = e.errors && e.errors.get('datetime_start_at');
+      if (dateTimeError) {
+        return dateTimeError[0] ? dateTimeError[0].code : e.message;
+      }
+      return e.message;
     }
   }
 
