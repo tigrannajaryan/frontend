@@ -16,21 +16,18 @@ let instance: AppointmentServicesComponent;
 let store: Store<ServicesState>;
 
 const fakeCategory = {
-  category_name: faker.commerce.productMaterial(),
-  category_uuid: faker.random.uuid()
+  uuid: faker.random.uuid(),
+  name: faker.commerce.productMaterial(),
+  services: Array(5).fill(undefined).map(() => ({
+    uuid: faker.random.uuid(),
+    name: faker.commerce.productName(),
+    description: faker.lorem.sentence(),
+    base_price: faker.commerce.price(),
+    duration_minutes: faker.random.number(),
+    is_enabled: true,
+    photo_samples: []
+  }))
 };
-
-const fakeServices: ServiceItem[] = Array(5).fill(undefined).map(() => ({
-  service_uuid: faker.random.uuid(),
-  name: faker.commerce.productName(),
-  description: faker.lorem.sentence(),
-  base_price: faker.commerce.price(),
-  duration_minutes: faker.random.number(),
-  is_enabled: true,
-  photo_samples: [],
-  category_name: fakeCategory.category_name,
-  category_uuid: fakeCategory.category_uuid
-}));
 
 describe('Pages: Choose date and time of the Appointment', () => {
 
@@ -56,23 +53,23 @@ describe('Pages: Choose date and time of the Appointment', () => {
   }));
 
   it('should show stylist services', async(() => {
-    store.dispatch(new LoadSuccessAction(fakeServices));
+    store.dispatch(new LoadSuccessAction([fakeCategory]));
 
     fixture.detectChanges();
 
     // contains category with services amount
     expect(fixture.nativeElement.textContent)
-      .toContain(`${fakeCategory.category_name} ${fakeServices.length}`);
+      .toContain(`${fakeCategory.name} ${fakeCategory.services.length}`);
 
     // contains services
-    fakeServices.forEach(service => {
+    fakeCategory.services.forEach(service => {
       expect(fixture.nativeElement.textContent)
         .toContain(service.name);
     });
   }));
 
   it('should allow to select a service', async(() => {
-    store.dispatch(new LoadSuccessAction(fakeServices));
+    store.dispatch(new LoadSuccessAction([fakeCategory]));
 
     fixture.detectChanges();
 

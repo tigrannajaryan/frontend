@@ -22,7 +22,7 @@ let instance: AppointmentAddComponent;
 let store: Store<ServicesState & ClientsState>;
 
 const fakeService: ServiceItem = {
-  service_uuid: faker.random.uuid(),
+  uuid: faker.random.uuid(),
   name: faker.commerce.productName(),
   description: faker.lorem.sentence(),
   base_price: faker.commerce.price(),
@@ -70,8 +70,8 @@ describe('Pages: Add Appointment', () => {
       .toEqual(fixture.nativeElement.querySelector('[formcontrolname="service"] input').value);
 
     // check selected service property updated
-    expect(instance.selectedService.service_uuid)
-      .toEqual(fakeService.service_uuid);
+    expect(instance.selectedService.uuid)
+      .toEqual(fakeService.uuid);
   }));
 
   it('should submit form', async(() => {
@@ -93,7 +93,7 @@ describe('Pages: Add Appointment', () => {
     const data = {
       client_first_name: client.first_name,
       client_last_name: client.last_name,
-      services: [{ service_uuid: fakeService.service_uuid }],
+      services: [{ service_uuid: fakeService.uuid }],
       datetime_start_at: nextWeek.format('YYYY-MM-DDTHH:mm:00Z')
     };
 
