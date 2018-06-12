@@ -15,6 +15,7 @@ import { TodayService as AppointmentService } from '~/today/today.service';
 
 import {
   ClientsState,
+  SearchAction,
   selectFoundClients
 } from '~/appointment/appointment-add/clients.reducer';
 
