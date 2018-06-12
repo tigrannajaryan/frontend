@@ -42,7 +42,7 @@ export class AppointmentServicesComponent {
     this.store.dispatch(new LoadAction());
   }
 
-  selectService(service): void {
+  selectService(service: ServiceItem): void {
     this.store.dispatch(new SelectServiceAction(service));
     this.navCtrl.pop();
   }

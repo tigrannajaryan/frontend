@@ -74,7 +74,7 @@ export class AppointmentAddComponent {
     this.store.dispatch(new SearchAction(query));
   }
 
-  selectClient(client): void {
+  selectClient(client: Client): void {
     this.selectedClient = client;
     this.form.patchValue({ client: `${client.first_name} ${client.last_name}` });
     delete this.clientsList;
