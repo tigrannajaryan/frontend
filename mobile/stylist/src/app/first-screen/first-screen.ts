@@ -8,6 +8,7 @@ import { createNavHistoryList } from '~/core/functions';
 import { AuthApiService, FbAuthCredentials, UserRole } from '~/core/auth-api-service/auth-api-service';
 import { PageNames } from '~/core/page-names';
 import { LoginOrRegisterType } from '~/login-register/login-register.component';
+import { showAlert } from '~/core/utils/alert';
 
 // Permissions of Facebook Login
 // https://developers.facebook.com/docs/facebook-login/permissions/v3.0
@@ -65,12 +66,7 @@ export class FirstScreenComponent {
       }
     } catch (e) {
       // Show an error message
-      const alert = this.alertCtrl.create({
-        title: 'Login failed',
-        subTitle: 'Invalid email or password',
-        buttons: ['Dismiss']
-      });
-      alert.present();
+      showAlert(this.alertCtrl, 'Login failed', 'Invalid email or password');
     }
   }
 }

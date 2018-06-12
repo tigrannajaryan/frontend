@@ -24,8 +24,8 @@
       </ion-col>
     </ion-row>
 
-    <div *ngIf="templateSet && templateSet.categories" class="bb-table">
-      <div *ngFor="let category of templateSet.categories" [hidden]="category.services.length === 0">
+    <div *ngIf="categories" class="bb-table">
+      <div *ngFor="let category of categories" [hidden]="category.services.length === 0">
         <div class="bb-table-title">{{ category.name }} <sup class="bb-table-title-sup">{{ category.services.length }}</sup></div>
 
         <ion-grid>

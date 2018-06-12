@@ -1,0 +1,47 @@
+<ion-header class="ion-bb-header">
+  <ion-navbar>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+  <made-nav [activePage]="PageNames.Invitations"></made-nav>
+
+  <div class="p-i-top">
+    <div class="p-i-title">Invite clients</div>
+  </div>
+
+  <div class="p-i-box">
+    <div class="p-i-box-title">
+      Number
+    </div>
+    <ion-grid class="p-i-table">
+      <ion-row class="p-i-table-row" *ngFor="let invitation of invitations">
+        <ion-col col-12 class="p-i-table-row-col">
+          {{ invitation.phone }}
+          <button class="p-i-table-row-button" ion-button item-right (click)="removeInvitation(invitation)">Delete</button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+
+  <div class="p-i-box">
+    <ion-item class="p-i-box-item">
+      <ion-label color="color9" stacked>Customer's mobile phone</ion-label>
+      <ion-input type='tel' [(ngModel)]="phoneNumber"></ion-input>
+      <button class="p-i-box-item-button" ion-button item-right (click)="addContact()">Add</button>
+    </ion-item>
+    <br/>
+    <button class="p-i-box-button" ion-button color="bb_skin" (click)="pickContactPhone()">Add from contacts</button>
+  </div>
+
+  <br/>
+
+
+  <div padding-top>
+    <button class="p-i-button" round ion-button color="bb_skin" (click)="sendInvitations()">
+      Invite Clients
+    </button>
+  </div>
+
+</ion-content>

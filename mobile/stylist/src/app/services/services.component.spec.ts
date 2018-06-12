@@ -3,8 +3,7 @@ import { ServicesComponent } from './services.component';
 import { IonicModule, NavController, NavParams } from 'ionic-angular';
 import { HttpClient } from '@angular/common/http';
 import { CoreModule } from '~/core/core.module';
-import { ServiceTemplatesResponse, StylistServiceProvider } from '~/core/stylist-service/stylist-service';
-import { ServicesTemplate } from '~/core/stylist-service/stylist-models';
+import { StylistServiceProvider } from '~/core/stylist-service/stylist-service';
 import { prepareSharedObjectsForTests } from '~/core/test-utils.spec';
 
 export class NavMock {
@@ -47,17 +46,17 @@ describe('Pages: ServicesComponent', () => {
   //   expect(component instanceof ServicesComponent).toBe(true);
   // });
 
-  // it('should not have serviceTemplates after construction', () => {
-  //   expect(component.serviceTemplates).toBeUndefined();
+  // it('should not have serviceTemplateSets after construction', () => {
+  //   expect(component.serviceTemplateSets).toBeUndefined();
   // });
   //
-  // it('should have serviceTemplates after init', () => {
-  //   // create `getServiceTemplateSets` spy on an object representing the StylistServiceProvider
-  //   const stylistServiceProvider = jasmine.createSpyObj('StylistServiceProvider', ['getServiceTemplateSets']);
+  // it('should have serviceTemplateSets after init', () => {
+  //   // create `getServiceTemplateSetsList` spy on an object representing the StylistServiceProvider
+  //   const stylistServiceProvider = jasmine.createSpyObj('StylistServiceProvider', ['getServiceTemplateSetsList']);
   //
-  //   // set the value to return when the `getServiceTemplateSets` spy is called.
-  //   const serviceTemplatesResponse: ServiceTemplatesResponse = {
-  //     service_templates: [
+  //   // set the value to return when the `getServiceTemplateSetsList` spy is called.
+  //   const serviceTemplatesResponse: ServiceTemplateSetListResponse = {
+  //     service_template_sets: [
   //       {
   //         uuid: 'string',
   //         name: '',
@@ -67,14 +66,14 @@ describe('Pages: ServicesComponent', () => {
   //       }
   //     ]
   //   };
-  //   stylistServiceProvider.getServiceTemplateSets.and.returnValue(serviceTemplatesResponse);
+  //   stylistServiceProvider.getServiceTemplateSetsList.and.returnValue(serviceTemplatesResponse);
   //
   //
-  //   expect(stylistServiceProvider.getServiceTemplateSets())
-  //     .toBe(serviceTemplatesResponse, 'ServiceTemplatesResponse');
+  //   expect(stylistServiceProvider.getServiceTemplateSetsList())
+  //     .toBe(serviceTemplatesResponse, 'ServiceTemplateSetListResponse');
   //
   //   // component.init();
-  //   // expect(component.serviceTemplates).toBeDefined();
+  //   // expect(component.serviceTemplateSets).toBeDefined();
   // });
   //
   // it('the openService() function should push the RegisterServicesItem page onto the navigation stack with params uuid', () => {

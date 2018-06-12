@@ -408,32 +408,13 @@ curl http://apiserver/api/v1/stylist/service-template-sets \
             "uuid": "f2f0d141-47a8-4393-9c8e-c79126502c41",
             "name": "set 1",
             "description": "",
-            "image_url": "http://example.com/image_set_1.png",
-            "services": [
-                {
-                    "name": "Custom wigs"
-                },
-                {
-                    "name": "Full sew-in with lace/closure"
-                },
-                {
-                    "name": "Full sew-in"
-                }
-            ]
+            "image_url": "http://example.com/image_set_1.png"
         },
         {
             "uuid": "44f049c3-1a3a-46c7-ade1-1c1cf1bd6c7e",
             "name": "set 2",
             "description": "",
-            "image_url": "http://example.com/image_set_2.png",
-            "services": [
-                {
-                    "name": "Balayage"
-                },
-                {
-                    "name": "Full highlights"
-                }
-            ]
+            "image_url": "http://example.com/image_set_2.png"
         }
     ]
 }
@@ -461,14 +442,12 @@ curl http://apiserver/api/v1/stylist/service-template-sets/{template_set_uuid} \
                 "uuid": "01899abd-89d9-4776-a74c-7e7d155b58af",
                 "services": [
                     {
-                        "id": 31,
                         "name": "Bridal/special events",
                         "description": "",
                         "base_price": 500,
                         "duration_minutes": 240
                     },
                     {
-                        "id": 32,
                         "name": "Ponytails",
                         "description": "",
                         "base_price": 65,
@@ -481,14 +460,12 @@ curl http://apiserver/api/v1/stylist/service-template-sets/{template_set_uuid} \
                 "uuid": "25a87cf1-ec92-4723-8e97-c5dbe9de4f48",
                 "services": [
                     {
-                        "id": 17,
                         "name": "Color correction",
                         "description": "",
                         "base_price": 200,
                         "duration_minutes": 120
                     },
                     {
-                        "id": 18,
                         "name": "Full highlights",
                         "description": "",
                         "base_price": 140,
@@ -516,33 +493,89 @@ curl http://apiserver/api/v1/stylist/services \
 **Response 200 OK**
 ```
 {
-    "services": [
-        {
-            "id": 1,
-            "name": "Service 1",
-            "description": "Great service",
-            "duration_minutes": 25,
-            "base_price": 25.0,
-            "is_enabled": true,
-            "photo_samples": []
-        },
-        {
-            "id": 2,
-            "name": "Service 2",
-            "description": "Even better service",
-            "duration_minutes": 35,
-            "base_price": 35.0,
-            "is_enabled": false,
-            "photo_samples": [
-                {
-                    "url": "http://example.com/photo_1.jpg"
-                },
-                {
-                    "url": "http://example.com/photo_1.jpg"
-                }
-            ]
-        },
-    ]
+   "service_time_gap_minutes":40,
+   "categories":[
+      {
+         "name":"Braids and Locs",
+         "uuid":"15610c0a-a819-4731-b503-1e5e3f4fdbee",
+         "services":[
+
+         ]
+      },
+      {
+         "name":"Color",
+         "uuid":"3a9e6529-d380-4f73-8759-731e53e2058d",
+         "services":[
+            {
+               "name":"Gloss",
+               "description":"",
+               "base_price":45.0,
+               "duration_minutes":30,
+               "is_enabled":true,
+               "photo_samples":[
+
+               ],
+               "category_uuid":"3a9e6529-d380-4f73-8759-731e53e2058d",
+               "category_name":"Color",
+               "uuid":"62b802b0-8dbb-45f0-915a-78a97c044df7"
+            }
+         ]
+      },
+      {
+         "name":"Conditioners",
+         "uuid":"8dd74735-72a1-4590-bc0f-70464dcc8f61",
+         "services":[
+            {
+               "name":"Conditioning treatment",
+               "description":"",
+               "base_price":30.0,
+               "duration_minutes":20,
+               "is_enabled":true,
+               "photo_samples":[
+
+               ],
+               "category_uuid":"8dd74735-72a1-4590-bc0f-70464dcc8f61",
+               "category_name":"Conditioners",
+               "uuid":"6e3148fe-b6c9-46f8-b79b-7568f24a17b8"
+            }
+         ]
+      },
+      {
+         "name":"Cuts",
+         "uuid":"724d837f-ed4e-4f0c-9f4e-b2381785f52b",
+         "services":[
+
+         ]
+      },
+      {
+         "name":"Extensions",
+         "uuid":"73b9b7f8-9719-422b-9d76-92c67bc15995",
+         "services":[
+
+         ]
+      },
+      {
+         "name":"Special Occassions",
+         "uuid":"9adadbcb-4994-4ceb-baf6-48f1f286dfed",
+         "services":[
+
+         ]
+      },
+      {
+         "name":"Treatments",
+         "uuid":"9989737d-93de-47a0-aeb4-3616b696e48f",
+         "services":[
+
+         ]
+      },
+      {
+         "name":"Wash and Style",
+         "uuid":"b0605fd7-3afe-451e-89c7-994407674f7a",
+         "services":[
+
+         ]
+      }
+   ]
 }
 ```
 
@@ -565,55 +598,126 @@ new object will be created.
 curl -X POST http://apiserver/api/v1/stylist/services \
   -H 'Authorization: Token jwt_token' \
   -H 'Content-Type: application/json' \
-  -d '[
-    {
-        "name": "Nail polish",
-        "description": "We're adding new service here",
-        "base_price": 25.0,
-        "duration_minutes": 25,
-        "is_enabled": true,
-        "category_uuid": "01899abd-89d9-4776-a74c-7e7d155b58af"
-    },
-    {
-        "id": 25,
-        "name": "Hair cut",
-        "description": "Updating existing service here",
-        "base_price": 35.0,
-        "duration_minutes": 45,
-        "is_enabled": false,
-        "category_uuid": "01899abd-89d9-4776-a74c-7e7d155b58af"
-    }
-]'
+  -d '{
+   "services":[
+      {
+         "name":"Gloss",
+         "description":"",
+         "base_price":45,
+         "duration_minutes":30,
+         "is_enabled":true,
+         "photo_samples":[
+
+         ],
+         "category_uuid":"3a9e6529-d380-4f73-8759-731e53e2058d",
+         "category_name":"Color",
+         "uuid":"62b802b0-8dbb-45f0-915a-78a97c044df7"
+      },
+      {
+         "name":"Conditioning treatment",
+         "description":"",
+         "base_price":30,
+         "duration_minutes":20,
+         "is_enabled":true,
+         "photo_samples":[
+
+         ],
+         "category_uuid":"8dd74735-72a1-4590-bc0f-70464dcc8f61",
+         "category_name":"Conditioners",
+         "uuid":"6e3148fe-b6c9-46f8-b79b-7568f24a17b8"
+      }
+   ],
+   "service_time_gap_minutes":40
+}'
 ```
 
 
-**Response 200/201 OK** (200 if no new objects were created, 201 if new objects created)
+**Response 200 OK**
 ```
 {
-    "services": [
-        {
-            "id": 26, // note: DB object was created, hence the id
-            "name": "Nail polish",
-            "description": "We're adding new service here",
-            "base_price": 25.0,
-            "duration_minutes": 25,
-            "is_enabled": true,
-            "photo_samples": [],
-            "category_uuid": "01899abd-89d9-4776-a74c-7e7d155b58af",
-            "category_name": "Special Occassions"
-        },
-        {
-            "id": 25, // note: it was an existing object, so id is unchanged
-            "name": "Hair cut",
-            "description": "Updating existing service here",
-            "base_price": 35.0,
-            "duration_minutes": 45,
-            "is_enabled": false,
-            "photo_samples": [],
-            "category_uuid": "01899abd-89d9-4776-a74c-7e7d155b58af",
-            "category_name": "Special Occassions"
-        }
-    ]
+   "service_time_gap_minutes":40,
+   "categories":[
+      {
+         "name":"Braids and Locs",
+         "uuid":"15610c0a-a819-4731-b503-1e5e3f4fdbee",
+         "services":[
+
+         ]
+      },
+      {
+         "name":"Color",
+         "uuid":"3a9e6529-d380-4f73-8759-731e53e2058d",
+         "services":[
+            {
+               "name":"Gloss",
+               "description":"",
+               "base_price":45.0,
+               "duration_minutes":30,
+               "is_enabled":true,
+               "photo_samples":[
+
+               ],
+               "category_uuid":"3a9e6529-d380-4f73-8759-731e53e2058d",
+               "category_name":"Color",
+               "uuid":"62b802b0-8dbb-45f0-915a-78a97c044df7"
+            }
+         ]
+      },
+      {
+         "name":"Conditioners",
+         "uuid":"8dd74735-72a1-4590-bc0f-70464dcc8f61",
+         "services":[
+            {
+               "name":"Conditioning treatment",
+               "description":"",
+               "base_price":30.0,
+               "duration_minutes":20,
+               "is_enabled":true,
+               "photo_samples":[
+
+               ],
+               "category_uuid":"8dd74735-72a1-4590-bc0f-70464dcc8f61",
+               "category_name":"Conditioners",
+               "uuid":"6e3148fe-b6c9-46f8-b79b-7568f24a17b8"
+            }
+         ]
+      },
+      {
+         "name":"Cuts",
+         "uuid":"724d837f-ed4e-4f0c-9f4e-b2381785f52b",
+         "services":[
+
+         ]
+      },
+      {
+         "name":"Extensions",
+         "uuid":"73b9b7f8-9719-422b-9d76-92c67bc15995",
+         "services":[
+
+         ]
+      },
+      {
+         "name":"Special Occassions",
+         "uuid":"9adadbcb-4994-4ceb-baf6-48f1f286dfed",
+         "services":[
+
+         ]
+      },
+      {
+         "name":"Treatments",
+         "uuid":"9989737d-93de-47a0-aeb4-3616b696e48f",
+         "services":[
+
+         ]
+      },
+      {
+         "name":"Wash and Style",
+         "uuid":"b0605fd7-3afe-451e-89c7-994407674f7a",
+         "services":[
+
+         ]
+      }
+   ]
 }
 ```
 
@@ -621,25 +725,13 @@ curl -X POST http://apiserver/api/v1/stylist/services \
 Note: this will actually delete it from list, rather than just disable.
 Actual `salon.StylistService` object will be kept in the DB, but `deleted_at` field will be non-null
 
-**DELETE /api/v1/stylist/services/{service_id}**
+**DELETE /api/v1/stylist/services/{service_uuid}**
 (ex. if we have `26` for service id, will delete the last one from previous example)
 
 
-**Response 200 OK**
+**Response 204 No content**
 ```
-[
-    {
-        "id": 25,
-        "name": "Hair cut",
-        "description": "Updating existing service here",
-        "base_price": 35.0,
-        "duration_minutes": 45,
-        "is_enabled": false,
-        "photo_samples": [],
-        "category_uuid": "01899abd-89d9-4776-a74c-7e7d155b58af",
-        "category_name": "Special Occassions"
-    }
-]
+
 ```
 
 ## Availability
@@ -1400,7 +1492,6 @@ in one gulp for the Stylist app's Settings screen.
     "services_count": 1,
     "services": [
         {
-            "id": 3,
             "name": "Updos",
             "description": "",
             "base_price": 90,
@@ -1409,7 +1500,7 @@ in one gulp for the Stylist app's Settings screen.
             "photo_samples": [],
             "category_uuid": "a8e74fbd-3385-492e-9fb4-44d632b5991a",
             "category_name": "Special Occassions",
-            "service_uuid": "ca821ca4-3d34-454a-9aa7-daa291ce2840"
+            "uuid": "ca821ca4-3d34-454a-9aa7-daa291ce2840"
         }
     ],
     "worktime": [

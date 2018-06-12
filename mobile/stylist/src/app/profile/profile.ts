@@ -9,8 +9,9 @@ import { getTodayWeekdayISO, WEEKDAY_FULL_NAMES } from '~/shared/weekday';
 import { loading } from '~/core/utils/loading';
 import { StylistServiceProvider } from '~/core/stylist-service/stylist-service';
 import { TableData } from '~/core/components/made-table/made-table';
-import { StylistProfile, WorkdayInSummary } from '~/core/stylist-service/stylist-models';
 import { PageNames } from '~/core/page-names';
+import { StylistProfile, WorkdayInSummary } from '~/core/stylist-service/stylist-models';
+import { showAlert } from '~/core/utils/alert';
 
 @IonicPage()
 @Component({
@@ -86,12 +87,7 @@ export class ProfileComponent {
       this.today = data.worktime.find(day => day.weekday_iso === todayWeekdayISO);
       this.totalAppointmentsThisWeek = data.total_week_appointments_count;
     } catch (e) {
-      const alert = this.alertCtrl.create({
-        title: 'Loading stylist summary failed',
-        subTitle: e.message,
-        buttons: ['Dismiss']
-      });
-      alert.present();
+      showAlert(this.alertCtrl, 'Loading stylist summary failed', e.message);
     }
   }
 }

@@ -12,7 +12,7 @@
     <div class="p-s-def-title-a">Just click, we got what you need</div>
 
     <div class="p-s-def-box">
-      <div *ngFor="let item of serviceTemplates; let odd = odd"
+      <div *ngFor="let item of serviceTemplateSets; let odd = odd"
            (click)="openService(item)"
            [style.backgroundImage]="'url(' + item.image_url + ')'"
            class="p-s-def-box-item">

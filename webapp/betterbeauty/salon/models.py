@@ -114,6 +114,8 @@ class Stylist(models.Model):
 
     is_discount_configured = models.BooleanField(default=False)
 
+    service_time_gap = models.DurationField(default=datetime.timedelta(minutes=15))
+
     class Meta:
         db_table = 'stylist'
 
@@ -345,7 +347,13 @@ class ServiceTemplate(models.Model):
 class StylistService(models.Model):
     stylist = models.ForeignKey(Stylist, on_delete=models.CASCADE, related_name='services')
     category = models.ForeignKey(ServiceCategory, on_delete=models.PROTECT, null=True)
+
+    # TODO: remove this field in a separate PR
     service_uuid = models.UUIDField(default=uuid.uuid4, editable=False)
+
+    service_origin_uuid = models.UUIDField(default=uuid.uuid4, editable=False)
+    uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
+
     name = models.CharField(max_length=255)
     description = models.TextField(blank=True)
     base_price = models.DecimalField(max_digits=6, decimal_places=2)

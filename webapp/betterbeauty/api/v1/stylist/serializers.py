@@ -69,64 +69,62 @@ class StylistServicePhotoSampleSerializer(serializers.ModelSerializer):
 
 
 class StylistServiceSerializer(serializers.ModelSerializer):
-    id = serializers.IntegerField(required=False)
     duration_minutes = DurationMinuteField(source='duration')
     photo_samples = StylistServicePhotoSampleSerializer(
         many=True, read_only=True)
     base_price = serializers.DecimalField(
         coerce_to_string=False, max_digits=6, decimal_places=2
     )
+    uuid = serializers.UUIDField(required=False, allow_null=True)
     category_uuid = serializers.UUIDField(source='category.uuid')
     category_name = serializers.CharField(source='category.name', read_only=True)
 
-    def validate_id(self, pk: Optional[int]) -> Optional[int]:
-        if pk is not None:
-            stylist = self.context['stylist']
-            if not stylist.services.filter(pk=pk).exists():
-                raise serializers.ValidationError(
-                    'Stylist does not have service with id == {0}'.format(pk)
-                )
-        return pk
+    def create(self, validated_data):
+        stylist = self.context['stylist']
+        uuid = validated_data.pop('uuid', None)
+        if uuid:
+            instance = stylist.services.filter(uuid=uuid).first()
+        else:
+            instance = None
+        return self.update(instance, validated_data)
 
-    def create(self, validated_data: Dict):
+    def update(self, instance, validated_data):
         stylist = self.context['stylist']
         data_to_save = validated_data.copy()
         data_to_save.update({'stylist': stylist})
-        pk = data_to_save.pop('id', None)
-
         category_data = data_to_save.pop('category', {})
         category_uuid = category_data.get('uuid', None)
         category = get_object_or_404(ServiceCategory, uuid=category_uuid)
 
         # check if date from client actually matches a service template
-        # if it does not - generate service uuid from scratch, otherwise assign from template
-        service_uuid = uuid.uuid4()
+        # if it does not - generate service origin uuid from scratch, otherwise
+        # assign from template
 
-        service_template = ServiceTemplate.objects.filter(
+        service_templates = ServiceTemplate.objects.filter(
             name=data_to_save['name'],
-            category=category
-        ).last()
+            base_price=data_to_save['base_price'],
+            category=category,
+        )
 
-        if service_template:
-            service_uuid = service_template.uuid
+        service_origin_uuid = uuid.uuid4()
+        if instance:
+            if service_templates.filter(uuid=instance.service_origin_uuid).exists():
+                service_origin_uuid = instance.service_origin_uuid
+        else:
+            instance = StylistService(stylist=stylist)
+            if service_templates.exists():
+                service_origin_uuid = service_templates.last().uuid
 
-        data_to_save.update({'category': category, 'service_uuid': service_uuid})
+        data_to_save.update({'category': category, 'service_origin_uuid': service_origin_uuid})
 
-        # FIXME: we need to replace `id` with `uuid` here and on frontend,
-        # FIXME: and subsequently remove `id` field from serializer
-
-        try:
-            service = stylist.services.get(pk=pk)
-            return self.update(service, data_to_save)
-        except StylistService.DoesNotExist:
-            return StylistService.objects.create(**data_to_save)
+        return super(StylistServiceSerializer, self).update(instance, data_to_save)
 
     class Meta:
         model = StylistService
         fields = [
-            'id', 'name', 'description', 'base_price', 'duration_minutes',
+            'name', 'description', 'base_price', 'duration_minutes',
             'is_enabled', 'photo_samples', 'category_uuid', 'category_name',
-            'service_uuid',
+            'uuid'
         ]
 
 
@@ -245,23 +243,22 @@ class ServiceTemplateDetailsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ServiceTemplate
-        fields = ['id', 'name', 'description', 'base_price', 'duration_minutes', ]
+        fields = ['name', 'description', 'base_price', 'duration_minutes', ]
 
 
 class ServiceTemplateSetListSerializer(serializers.ModelSerializer):
-    services = serializers.SerializerMethodField()
     image_url = serializers.CharField(read_only=True, source='get_image_url')
 
     class Meta:
         model = ServiceTemplateSet
-        fields = ['uuid', 'name', 'description', 'services', 'image_url', ]
+        fields = ['uuid', 'name', 'description', 'image_url', ]
 
     def get_services(self, template_set: ServiceTemplateSet):
         templates = template_set.templates.all()[:MAX_SERVICE_TEMPLATE_PREVIEW_COUNT]
         return ServiceTemplateSerializer(templates, many=True).data
 
 
-class ServiceCategoryDetailsSerializer(serializers.ModelSerializer):
+class ServiceTemplateCategoryDetailsSerializer(serializers.ModelSerializer):
 
     services = serializers.SerializerMethodField()
 
@@ -276,28 +273,84 @@ class ServiceCategoryDetailsSerializer(serializers.ModelSerializer):
         return ServiceTemplateDetailsSerializer(templates, many=True).data
 
 
+class StylistServiceCategoryDetailsSerializer(serializers.ModelSerializer):
+
+    services = serializers.SerializerMethodField()
+
+    class Meta:
+        model = ServiceCategory
+        fields = ['name', 'uuid', 'services']
+
+    def get_services(self, service_category: ServiceCategory):
+        stylist: Stylist = self.context['stylist']
+        services = stylist.services.filter(category=service_category).order_by('-base_price')
+        return StylistServiceSerializer(services, many=True).data
+
+
 class ServiceTemplateSetDetailsSerializer(serializers.ModelSerializer):
     categories = serializers.SerializerMethodField()
     image_url = serializers.CharField(read_only=True, source='get_image_url')
+    service_time_gap_minutes = serializers.SerializerMethodField()
 
     class Meta:
         model = ServiceTemplateSet
-        fields = ['id', 'name', 'description', 'categories', 'image_url']
+        fields = [
+            'uuid', 'name', 'description', 'categories', 'image_url', 'service_time_gap_minutes',
+        ]
 
     def get_categories(self, service_template_set: ServiceTemplateSet):
         category_queryset = ServiceCategory.objects.all().order_by(
             'name', 'uuid'
         ).distinct('name', 'uuid')
-        return ServiceCategoryDetailsSerializer(
+        return ServiceTemplateCategoryDetailsSerializer(
             category_queryset,
             context={'service_template_set': service_template_set},
             many=True
         ).data
 
+    def get_service_time_gap_minutes(self, instance):
+        stylist: Stylist = self.context['stylist']
+        return DurationMinuteField().to_representation(
+            stylist.service_time_gap
+        )
 
-class StylistServiceListSerializer(serializers.Serializer):
+
+class StylistServiceListSerializer(serializers.ModelSerializer):
     """Serves for convenience of packing services under dictionary key"""
-    services = StylistServiceSerializer(many=True)
+    services = StylistServiceSerializer(many=True, write_only=True, required=False)
+    categories = serializers.SerializerMethodField(read_only=True)
+    service_time_gap_minutes = DurationMinuteField(source='service_time_gap')
+
+    class Meta:
+        fields = ['services', 'service_time_gap_minutes', 'categories', ]
+        model = Stylist
+
+    def get_categories(self, stylist: Stylist):
+        category_queryset = ServiceCategory.objects.all().order_by(
+            'name', 'uuid'
+        ).distinct('name', 'uuid')
+        return StylistServiceCategoryDetailsSerializer(
+            category_queryset,
+            context={'stylist': stylist},
+            many=True
+        ).data
+
+    def update(self, instance: Stylist, validated_data: Dict):
+        services = self.initial_data.pop('services')
+        validated_data.pop('services', [])
+        with transaction.atomic():
+            for service_item in services:
+                service_object = None
+                uuid = service_item.pop('uuid', None)
+                if uuid:
+                    service_object = instance.services.filter(uuid=uuid).last()
+                if not uuid or not service_object:
+                    service_object = StylistService(stylist=instance)
+                service_serializer = StylistServiceSerializer(
+                    instance=service_object, data=service_item, context={'stylist': instance})
+                service_serializer.is_valid(raise_exception=True)
+                service_serializer.save()
+            return super(StylistServiceListSerializer, self).update(instance, validated_data)
 
 
 class StylistProfileStatusSerializer(serializers.ModelSerializer):
@@ -501,7 +554,7 @@ class AppointmentValidationMixin(object):
             )
         # check if appointment doesn't fit working hours
         duration: datetime.timedelta = sum(
-            [StylistService.objects.get(service_uuid=service['service_uuid']).duration
+            [StylistService.objects.get(uuid=service['service_uuid']).duration
              for service in initial_data['services']], datetime.timedelta(0)
         )
 
@@ -523,13 +576,13 @@ class AppointmentValidationMixin(object):
         context: Dict = getattr(self, 'context', {})
         stylist: Stylist = context['stylist']
         service = stylist.services.filter(
-            service_uuid=service_uuid
+            uuid=service_uuid
         ).last()
         if not service:
             raise serializers.ValidationError(
                 appointment_errors.ERR_SERVICE_DOES_NOT_EXIST
             )
-        return service_uuid
+        return uuid
 
     def validate_services(self, services):
         if len(services) == 0:
@@ -638,7 +691,7 @@ class AppointmentSerializer(AppointmentValidationMixin, serializers.ModelSeriali
             appointment: Appointment = super(AppointmentSerializer, self).create(data)
             for appointment_service in appointment_services:
                 service: StylistService = stylist.services.get(
-                    service_uuid=appointment_service['service_uuid']
+                    uuid=appointment_service['service_uuid']
                 )
                 # regular price copied from service, client's price is calculated
                 client_price = int(service.calculate_price_for_client(
@@ -648,7 +701,7 @@ class AppointmentSerializer(AppointmentValidationMixin, serializers.ModelSeriali
                 AppointmentService.objects.create(
                     appointment=appointment,
                     service_name=service.name,
-                    service_uuid=service.service_uuid,
+                    service_uuid=service.uuid,
                     duration=service.duration,
                     regular_price=service.base_price,
                     client_price=client_price,
@@ -756,14 +809,14 @@ class AppointmentUpdateSerializer(
             service: StylistService = stylist_services.get(service_uuid=service_uuid)
             AppointmentService.objects.create(
                 appointment=appointment,
-                service_uuid=service.service_uuid,
+                service_uuid=service.uuid,
                 service_name=service.name,
                 duration=service.duration,
                 regular_price=service.base_price,
                 client_price=service.calculate_price_for_client(
                     appointment.datetime_start_at,
                     client=appointment.client),
-                is_original=service.service_uuid in original_services_uuids
+                is_original=service.uuid in original_services_uuids
             )
 
     def save(self, **kwargs):

@@ -64,7 +64,7 @@ describe('Pages: ServicesListComponent', () => {
   //   const stylistServiceProvider = TestBed.get(StylistServiceProvider);
   //   const uuid = 'string';
   //
-  //   expect(stylistServiceProvider.getServiceTemplateSetById(uuid)).toBeDefined();
+  //   expect(stylistServiceProvider.getServiceTemplateSetByUuid(uuid)).toBeDefined();
   // });
 
   // it('should openServiceModal', () => {

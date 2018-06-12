@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { AlertController, IonicPage, NavController, NavParams } from 'ionic-angular';
+
 import { Workday, Worktime } from './worktime.models';
 import { WorktimeApi } from './worktime.api';
 import { convertMinsToHrsMins, Time, TimeRange } from '~/shared/time';
@@ -7,6 +8,7 @@ import { WeekdayIso } from '~/shared/weekday';
 import { Logger } from '~/shared/logger';
 import { PageNames } from '~/core/page-names';
 import { loading } from '~/core/utils/loading';
+import { showAlert } from '~/core/utils/alert';
 
 const firstWeekday = WeekdayIso.Mon;
 const lastWeekday = WeekdayIso.Sun;
@@ -129,12 +131,7 @@ export class WorktimeComponent {
       const worktime = await this.api.getWorktime();
       this.cards = this.api2presentation(worktime);
     } catch (e) {
-      const alert = this.alertCtrl.create({
-        title: 'Loading wroking hours failed',
-        subTitle: e.message,
-        buttons: ['Dismiss']
-      });
-      alert.present();
+      showAlert(this.alertCtrl, 'Loading wroking hours failed', e.message);
     }
   }
 

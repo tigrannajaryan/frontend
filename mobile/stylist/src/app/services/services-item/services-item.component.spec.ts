@@ -47,8 +47,8 @@ describe('Pages: ServiceItemComponent', () => {
 
   it('should set form control', () => {
     component.createForm();
-    component.setFormControl('id', 0);
-    expect(component.form.get('id').value).toEqual(0);
+    component.setFormControl('uuid', 'uuid');
+    expect(component.form.get('uuid').value).toEqual('uuid');
   });
 
   it('should set up data from the passed it from ServicesListComponent', () => {

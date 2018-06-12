@@ -1,10 +1,13 @@
 import { Component } from '@angular/core';
 import { AlertController, IonicPage, ModalController, NavController, NavParams } from 'ionic-angular';
+
 import { DiscountsApi } from './discounts.api';
 import { Discounts } from './discounts.models';
 import { PageNames } from '~/core/page-names';
 import { ChangePercent } from '~/core/popups/change-percent/change-percent.component';
 import { loading } from '~/core/utils/loading';
+import { showAlert } from '~/core/utils/alert';
+import { ENV } from '../../environments/environment.default';
 
 export enum DiscountsTypes {
   weekday = 'weekday',
@@ -51,12 +54,7 @@ export class DiscountsComponent {
         weekdays: discounts.weekdays.sort((a, b) => a.weekday - b.weekday) // from 1 (Monday) to 7 (Sunday)
       };
     } catch (e) {
-      const alert = this.alertCtrl.create({
-        title: 'Loading discounts failed',
-        subTitle: e.message,
-        buttons: ['Dismiss']
-      });
-      alert.present();
+      showAlert(this.alertCtrl, 'Loading discounts failed', e.message);
     }
   }
 
@@ -120,7 +118,11 @@ export class DiscountsComponent {
       return;
     }
 
-    this.navCtrl.setRoot(PageNames.Today, {}, { animate: false });
+    if (ENV.ffEnableIncomplete) {
+      this.navCtrl.push(PageNames.Invitations);
+    } else {
+      this.navCtrl.push(PageNames.Today);
+    }
   }
 
   /**

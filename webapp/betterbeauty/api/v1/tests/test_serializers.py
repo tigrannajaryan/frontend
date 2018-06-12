@@ -153,8 +153,9 @@ class TestStylistServiceSerializer(object):
         category: ServiceCategory = G(ServiceCategory)
         template: ServiceTemplate = G(
             ServiceTemplate,
-            duration=datetime.timedelta(),
             name='service 1', category=category,
+            duration=datetime.timedelta(minutes=10),
+            base_price=20
         )
         data = [
             {
@@ -168,7 +169,7 @@ class TestStylistServiceSerializer(object):
         serializer = StylistServiceSerializer(
             data=data,
             context={'stylist': stylist},
-            many=True
+            many=True,
         )
         assert(serializer.is_valid(raise_exception=True))
 
@@ -178,26 +179,34 @@ class TestStylistServiceSerializer(object):
         assert(service.name == 'service 1')
         assert(service.duration == datetime.timedelta(minutes=10))
         assert(service.base_price == 20)
-        assert(service.service_uuid == template.uuid)
+        assert(service.service_origin_uuid == template.uuid)
 
     @pytest.mark.django_db
     def test_update(self):
         stylist = G(Stylist)
         category: ServiceCategory = G(ServiceCategory)
+        template: ServiceTemplate = G(
+            ServiceTemplate,
+            name='old_name', category=category,
+            duration=datetime.timedelta(minutes=10),
+            base_price=20
+        )
         stylist_service = G(
             StylistService,
             stylist=stylist,
             category=category,
             name='old name',
-            duration=datetime.timedelta(0),
-            base_price=10,
+            duration=datetime.timedelta(10),
+            base_price=20,
             is_enabled=True,
-            deleted_at=None
+            deleted_at=None,
+            service_origin_uuid=template.uuid
         )
-        old_service_uuid = stylist_service.service_uuid
+        old_service_uuid = stylist_service.uuid
+        old_service_origin_uuid = stylist_service.service_origin_uuid
         data = [
             {
-                'id': stylist_service.id,
+                'uuid': stylist_service.uuid,
                 'name': 'new name',
                 'duration_minutes': 10,
                 'base_price': 20,
@@ -218,7 +227,8 @@ class TestStylistServiceSerializer(object):
         assert (service.name == 'new name')
         assert (service.duration == datetime.timedelta(minutes=10))
         assert (service.base_price == 20)
-        assert(old_service_uuid != service.service_uuid)
+        assert (old_service_uuid == service.uuid)
+        assert (old_service_origin_uuid != service.service_origin_uuid)
 
 
 class TestStylistProfileCompletenessSerializer(object):
@@ -518,7 +528,7 @@ class TestAppointmentSerializer(object):
             'client_last_name': 'McBob',
             'services': [
                 {
-                    'service_uuid': service.service_uuid,
+                    'service_uuid': service.uuid,
                 }
             ],
             'datetime_start_at': past_datetime.isoformat()
@@ -538,7 +548,7 @@ class TestAppointmentSerializer(object):
             'client_last_name': 'McBob',
             'services': [
                 {
-                    'service_uuid': service.service_uuid,
+                    'service_uuid': service.uuid,
                 }
             ],
             'datetime_start_at': outside_working_hours.isoformat()
@@ -558,7 +568,7 @@ class TestAppointmentSerializer(object):
             'client_last_name': 'McBob',
             'services': [
                 {
-                    'service_uuid': service.service_uuid,
+                    'service_uuid': service.uuid,
                 }
             ],
             'datetime_start_at': available_time.isoformat()
@@ -636,7 +646,7 @@ class TestAppointmentSerializer(object):
             'client_last_name': 'McBob',
             'services': [
                 {
-                    'service_uuid': service.service_uuid,
+                    'service_uuid': service.uuid,
                 },
             ],
             'datetime_start_at': available_time.isoformat()
@@ -655,7 +665,7 @@ class TestAppointmentSerializer(object):
         original_service: AppointmentService = appointment.services.first()
         assert(original_service.is_original is True)
         assert(original_service.regular_price == service.base_price)
-        assert(original_service.service_uuid == service.service_uuid)
+        assert(original_service.service_uuid == service.uuid)
         assert(original_service.service_name == service.name)
 
     @freeze_time('2018-05-17 15:30:00 UTC')
@@ -678,7 +688,7 @@ class TestAppointmentSerializer(object):
             'client_uuid': client.uuid,
             'services': [
                 {
-                    'service_uuid': service.service_uuid,
+                    'service_uuid': service.uuid,
                 },
             ],
             'datetime_start_at': available_time.isoformat()
@@ -698,7 +708,7 @@ class TestAppointmentSerializer(object):
         original_service: AppointmentService = appointment.services.first()
         assert (original_service.is_original is True)
         assert (original_service.regular_price == service.base_price)
-        assert (original_service.service_uuid == service.service_uuid)
+        assert (original_service.service_uuid == service.uuid)
         assert (original_service.service_name == service.name)
 
 
@@ -748,7 +758,7 @@ class TestAppointmentUpdateSerializer(object):
         appointment_service_valid = G(
             AppointmentService,
             duration=stylist_service.duration,
-            service_uuid=stylist_service.service_uuid,
+            service_uuid=stylist_service.uuid,
         )
         appointment_service_invalid = G(
             AppointmentService,
@@ -821,7 +831,7 @@ class TestAppointmentUpdateSerializer(object):
         )
         G(
             AppointmentService, appointment=appointment,
-            service_uuid=original_service.service_uuid, service_name=original_service.name,
+            service_uuid=original_service.uuid, service_name=original_service.name,
             duration=original_service.duration, is_original=True
         )
 
@@ -836,10 +846,10 @@ class TestAppointmentUpdateSerializer(object):
             'status': AppointmentStatus.CHECKED_OUT.value,
             'services': [
                 {
-                    'service_uuid': original_service.service_uuid
+                    'service_uuid': original_service.uuid
                 },
                 {
-                    'service_uuid': new_service.service_uuid
+                    'service_uuid': new_service.uuid
                 }
             ]
         }
@@ -852,11 +862,11 @@ class TestAppointmentUpdateSerializer(object):
         assert(saved_appointment.services.count() == 2)
         assert(
             saved_appointment.services.filter(is_original=True).first().service_uuid ==
-            original_service.service_uuid
+            original_service.uuid
         )
         assert (
             saved_appointment.services.filter(is_original=False).first().service_uuid ==
-            new_service.service_uuid
+            new_service.uuid
         )
 
 

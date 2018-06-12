@@ -22,5 +22,9 @@ profile-info .ProfileInfo {
   .ProfileInfo-subtitle {
     font-size: $t-base;
     color: color($grayscale, 400);
+    max-width: 170px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 }

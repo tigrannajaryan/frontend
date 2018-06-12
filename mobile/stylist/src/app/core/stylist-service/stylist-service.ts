@@ -5,18 +5,21 @@ import { BaseApiService } from '~/shared/base-api-service';
 import { Logger } from '~/shared/logger';
 import { ServerStatusTracker } from '~/shared/server-status-tracker';
 
-import { ServiceItem, ServicesTemplate, ServiceTemplateSet, StylistProfile, StylistSummary } from './stylist-models';
+import {
+  ServiceItem, ServiceTemplateSet, ServiceTemplateSetBase, StylistProfile,
+  StylistServicesList, StylistSummary
+} from './stylist-models';
 
-export interface ServicesResponse {
-  services: ServiceItem[];
+export interface ServiceTemplateSetListResponse {
+  service_template_sets: ServiceTemplateSetBase[];
 }
 
-export interface ServiceTemplatesResponse {
-  service_templates: ServicesTemplate[];
+export interface StylistServicesListResponse extends StylistServicesList {
+  service_time_gap_minutes: number;
 }
 
-export interface ServiceTemplateSetResponse {
-  template_set: ServiceTemplateSet;
+export interface ServiceTemplateSetResponse extends ServiceTemplateSet {
+  service_time_gap_minutes: number;
 }
 
 /**
@@ -58,22 +61,22 @@ export class StylistServiceProvider extends BaseApiService {
   /**
    * Get default service Templates. The stylist must be already authenticated as a user.
    */
-  async getServiceTemplateSets(): Promise<ServiceTemplatesResponse> {
-    return this.get<ServiceTemplatesResponse>('stylist/service-template-sets');
+  async getServiceTemplateSetsList(): Promise<ServiceTemplateSetListResponse> {
+    return this.get<ServiceTemplateSetListResponse>('stylist/service-template-sets');
   }
 
   /**
    * Get default service Templates by Id. The stylist must be already authenticated as a user.
    */
-  async getServiceTemplateSetById(uuid: string): Promise<ServiceTemplateSetResponse> {
+  async getServiceTemplateSetByUuid(uuid: string): Promise<ServiceTemplateSetResponse> {
     return this.get<ServiceTemplateSetResponse>(`stylist/service-template-sets/${uuid}`);
   }
 
   /**
    * Get stylist services. The stylist must be already authenticated as a user.
    */
-  async getStylistServices(): Promise<ServicesResponse> {
-    return this.get<ServicesResponse>('stylist/services');
+  async getStylistServices(): Promise<StylistServicesListResponse> {
+    return this.get<StylistServicesListResponse>('stylist/services');
   }
 
   /**
@@ -86,7 +89,7 @@ export class StylistServiceProvider extends BaseApiService {
   /**
    * Deletes service of a stylist. The stylist must be already authenticated as a user.
    */
-  async deleteStylistService(id: number): Promise<ServiceItem> {
-    return this.delete<ServiceItem>(`stylist/services/${id}`);
+  async deleteStylistService(uuid: string): Promise<ServiceItem> {
+    return this.delete<ServiceItem>(`stylist/services/${uuid}`);
   }
 }

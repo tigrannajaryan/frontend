@@ -55,22 +55,22 @@ export interface SimpleDiscounts {
 
 // Service templates
 
-export interface ServicesTemplate {
-  uuid?: string;
-  name: string;
-  description: string;
-  image_url: string;
-  services: ServiceName[];
-}
-
 export interface ServiceName {
   name: string;
 }
 
-export interface ServiceTemplateSet {
-  id?: number;
+export interface ServiceTemplateSetBase {
+  uuid: string;
   name: string;
   description: string;
+  image_url?: string;
+}
+
+export interface ServiceTemplateSet extends ServiceTemplateSetBase {
+  categories: ServiceCategory[];
+}
+
+export interface StylistServicesList {
   categories: ServiceCategory[];
 }
 
@@ -82,16 +82,11 @@ export interface ServiceCategory {
 
 export interface ServiceTemplateItem {
   categoryUuid?: string;
-
-  id?: number;
+  uuid?: string;
   name: string;
   description: string;
   base_price: number;
   duration_minutes: number;
-}
-
-export interface ServiceTemplateSets {
-  sets: ServiceTemplateSet[];
 }
 
 // Services

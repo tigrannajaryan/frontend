@@ -5,9 +5,6 @@ from typing import Optional
 from annoying.functions import get_object_or_None
 from dateutil.parser import parse
 
-from django.db import transaction
-from django.shortcuts import get_object_or_404
-
 from rest_framework import generics, permissions, status, views
 from rest_framework.response import Response
 
@@ -66,7 +63,7 @@ class ServiceTemplateSetListView(views.APIView):
     def get(self, request):
         return Response(
             {
-                'service_templates': self.serializer_class(self.get_queryset(), many=True).data
+                'service_template_sets': self.serializer_class(self.get_queryset(), many=True).data
             }
         )
 
@@ -74,48 +71,29 @@ class ServiceTemplateSetListView(views.APIView):
         return ServiceTemplateSet.objects.all()
 
 
-class ServiceTemplateSetDetailsView(views.APIView):
+class ServiceTemplateSetDetailsView(generics.RetrieveAPIView):
     permission_classes = [StylistPermission, permissions.IsAuthenticated]
+    serializer_class = ServiceTemplateSetDetailsSerializer
+    lookup_field = 'uuid'
+    lookup_url_kwarg = 'template_set_uuid'
 
-    def get(self, request, template_set_uuid):
-        template_set = get_object_or_404(ServiceTemplateSet, uuid=template_set_uuid)
-        return Response(
-            {
-                'template_set': ServiceTemplateSetDetailsSerializer(template_set).data,
-            }
-        )
+    def get_queryset(self):
+        return ServiceTemplateSet.objects.all()
+
+    def get_serializer_context(self):
+        return {'stylist': self.request.user.stylist}
 
 
-class StylistServiceListView(views.APIView):
+class StylistServiceListView(generics.RetrieveUpdateAPIView):
     permission_classes = [StylistPermission, permissions.IsAuthenticated]
+    serializer_class = StylistServiceListSerializer
 
-    def get(self, *args, **kwargs):
-        return Response(
-            StylistServiceListSerializer(
-                {
-                    'services': self.get_queryset(),
-                }).data
-        )
+    def post(self, request, *args, **kwargs):
+        """Use this merely to allow using POST as PATCH"""
+        return self.partial_update(request, *args, **kwargs)
 
-    def post(self, request):
-        stylist = self.request.user.stylist
-        serializer = StylistServiceSerializer(
-            data=request.data, context={'stylist': stylist}, many=True
-        )
-        serializer.is_valid(raise_exception=True)
-        new_entries = [item for item in serializer.validated_data if 'id' not in item]
-
-        with transaction.atomic():
-            serializer.save()
-
-        response_status = status.HTTP_200_OK if not new_entries else status.HTTP_201_CREATED
-        return Response(
-            StylistServiceListSerializer(
-                {
-                    'services': self.get_queryset(),
-                }).data,
-            status=response_status
-        )
+    def get_object(self):
+        return self.request.user.stylist
 
     def get_queryset(self):
         return self.request.user.stylist.services.all()
@@ -124,18 +102,14 @@ class StylistServiceListView(views.APIView):
 class StylistServiceView(generics.DestroyAPIView):
     serializer_class = StylistServiceSerializer
     permission_classes = [StylistPermission, permissions.IsAuthenticated]
-    lookup_url_kwarg = 'service_pk'
+    lookup_url_kwarg = 'uuid'
+    lookup_field = 'uuid'
 
     def delete(self, request, *args, **kwargs):
         service: StylistService = self.get_object()
         service.deleted_at = service.stylist.get_current_now()
         service.save(update_fields=['deleted_at', ])
-        return Response(
-            StylistServiceListSerializer(
-                {
-                    'services': self.get_queryset(),
-                }).data
-        )
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
     def get_queryset(self):
         return self.request.user.stylist.services.all()

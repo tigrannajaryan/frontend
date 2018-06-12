@@ -114,7 +114,7 @@ def stylist_appointments_data(stylist: Stylist) -> Dict[str, Appointment]:
             appointment=appointment,
             duration=service.duration,
             service_name=service.name,
-            service_uuid=service.service_uuid,
+            service_uuid=service.uuid,
             is_original=True
         )
     return appointments

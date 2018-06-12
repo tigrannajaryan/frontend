@@ -2,9 +2,9 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 import { loading } from '~/core/utils/loading';
-import { ServicesTemplate } from '~/core/stylist-service/stylist-models';
 import { StylistServiceProvider } from '~/core/stylist-service/stylist-service';
 import { PageNames } from '~/core/page-names';
+import { ServiceTemplateSetBase } from '~/core/stylist-service/stylist-models';
 
 @IonicPage({
   segment: 'services'
@@ -16,7 +16,7 @@ import { PageNames } from '~/core/page-names';
 export class ServicesComponent {
   // to use in html
   protected PageNames = PageNames;
-  serviceTemplates: ServicesTemplate[];
+  serviceTemplateSets: ServiceTemplateSetBase[];
 
   constructor(
     public navCtrl: NavController,
@@ -27,10 +27,10 @@ export class ServicesComponent {
 
   @loading
   async ionViewWillLoad(): Promise<void> {
-    this.serviceTemplates = (await this.stylistService.getServiceTemplateSets()).service_templates;
+    this.serviceTemplateSets = (await this.stylistService.getServiceTemplateSetsList()).service_template_sets;
   }
 
-  openService(serviceItem: ServicesTemplate): void {
+  openService(serviceItem: ServiceTemplateSetBase): void {
     this.navCtrl.push(PageNames.RegisterServicesItem, { uuid: serviceItem.uuid });
   }
 }
