@@ -1,6 +1,6 @@
 import { Action, createFeatureSelector, createSelector } from '@ngrx/store';
 
-import { ServiceItem } from '~/core/stylist-service/stylist-models';
+import { ServiceCategory, ServiceItem } from '~/core/stylist-service/stylist-models';
 
 export enum servicesActionTypes {
   LOAD = 'SERVICES_LOAD',
@@ -11,13 +11,13 @@ export enum servicesActionTypes {
 
 export interface ServicesState {
   loaded: boolean;
-  services: ServiceItem[];
+  categories: ServiceCategory[];
   selectedService?: ServiceItem;
 }
 
 const initialState: ServicesState = {
   loaded: false,
-  services: [],
+  categories: [],
   selectedService: undefined
 };
 
@@ -27,7 +27,7 @@ export class LoadAction implements Action {
 
 export class LoadSuccessAction implements Action {
   readonly type = servicesActionTypes.LOAD_SUCCESS;
-  constructor(public services: ServiceItem[]) { }
+  constructor(public categories: ServiceCategory[]) { }
 }
 
 export class LoadErrorAction implements Action {
@@ -52,7 +52,7 @@ export function servicesReducer(state: ServicesState = initialState, action: Act
       return {
         ...state,
         loaded: true,
-        services: action.services
+        categories: action.categories
       };
 
     case servicesActionTypes.SELECT_SERVICE:
@@ -68,34 +68,29 @@ export function servicesReducer(state: ServicesState = initialState, action: Act
 
 export const selectService = createFeatureSelector<ServicesState>('service');
 
-export const selectServices = createSelector(
+export const selectCategories = createSelector(
   selectService,
-  (state: ServicesState): ServiceItem[] => state.services
+  (state: ServicesState): ServiceCategory[] => state.categories
 );
 
 export const selectSortedServices = createSelector(
-  selectServices,
-  (services): ServiceItem[] =>
-    services
-      .slice() // remove freeze from services
-      .sort((serviceA, serviceB) => {
-        // from lowest to highest price
-        return serviceA.base_price - serviceB.base_price;
-      })
+  selectCategories,
+  (categories: ServiceCategory[]): ServiceCategory[] =>
+    categories.map(category => ({
+      ...category,
+      services:
+        category.services
+          .slice() // remove freeze from services
+          .sort((serviceA, serviceB) => {
+            // from lowest to highest price
+            return serviceA.base_price - serviceB.base_price;
+          })
+    }))
 );
 
 export const selectCategorisedServices = createSelector(
   selectSortedServices,
-  (state: ServiceItem[]) => state.reduce((categories, service) => {
-    let category = categories.find(({uuid}) => uuid === service.category_uuid);
-    if (!category) {
-      const {category_name: name, category_uuid: uuid} = service;
-      category = {name, uuid, services: []};
-      categories.push(category);
-    }
-    category.services.push(service);
-    return categories;
-  }, [])
+  (categories: ServiceCategory[]) => categories
 );
 
 export const selectSelectedService = createSelector(

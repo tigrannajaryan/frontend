@@ -78,7 +78,7 @@ export interface StylistServicesList {
 export interface ServiceCategory {
   uuid: string;
   name: string;
-  services: ServiceTemplateItem[];
+  services: ServiceTemplateItem[] | ServiceItem[];
 }
 
 export interface ServiceTemplateItem {

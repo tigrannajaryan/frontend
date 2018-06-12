@@ -28,8 +28,8 @@ export class ServicesEffects {
       const loader = this.loadingCtrl.create();
       loader.present();
       try {
-        const { services } = await this.stylistService.getStylistServices();
-        return new LoadSuccessAction(services);
+        const { categories } = await this.stylistService.getStylistServices();
+        return new LoadSuccessAction(categories);
       } catch (error) {
         const logger = new Logger();
         logger.error(error);
