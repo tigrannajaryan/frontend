@@ -88,16 +88,23 @@ export class AppointmentAddComponent {
     const data = {
       client_first_name: firstName,
       client_last_name: lastName.trim(), // remove leading \s
-      services: [{ service_uuid: this.selectedService.service_uuid }],
+      services: [{ service_uuid: this.selectedService.uuid }],
       datetime_start_at: `${date}T${time}:00${tz < 0 ? '-' : '+'}${tzAbs}:00`
     };
     try {
       await this.appointmentService.createAppointment(data);
       this.navCtrl.pop();
     } catch (e) {
+      let errorMessage = e.message;
+
+      const dateTimeError = e.errors && e.errors.get('datetime_start_at');
+      if (dateTimeError) {
+        errorMessage = dateTimeError[0] && dateTimeError[0].code;
+      }
+
       const alert = this.alertCtrl.create({
         title: 'Adding appointment failed',
-        subTitle: e.message,
+        subTitle: errorMessage,
         buttons: ['Dismiss']
       });
       alert.present();
