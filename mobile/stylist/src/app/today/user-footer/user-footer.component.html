@@ -5,9 +5,9 @@
         <ion-icon name="ios-home-outline"></ion-icon>
         Home
       </ion-col>
-      <ion-col class="u-f-footer-item">
+      <ion-col [madeLink]="[PageNames.Worktime]" class="u-f-footer-item">
         <ion-icon name="ios-clock-outline"></ion-icon>
-        History
+        Hours
       </ion-col>
       <ion-col [madeLink]="[PageNames.AppointmentAdd]" text-center>
         <button ion-button icon-only clear class="u-f-footer-circle">
@@ -18,9 +18,9 @@
         <ion-icon name="ios-pricetag-outline"></ion-icon>
         Pricing
       </ion-col>
-      <ion-col class="u-f-footer-item">
+      <ion-col [madeLink]="[PageNames.Profile]" class="u-f-footer-item">
         <ion-icon name="ios-contact-outline"></ion-icon>
-        Invite
+        Profile
       </ion-col>
     </ion-row>
   </ion-grid>

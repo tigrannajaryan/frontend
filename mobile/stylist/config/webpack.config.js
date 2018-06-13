@@ -14,16 +14,26 @@ const config = {
         let env = process.env.BB_ENV.trim();
 
         if (process.env.BB_ENV === 'dev' && fs.existsSync(path.resolve('./src/environments/environment.local.ts'))) {
-          console.warn('\033[1;33mReplacing .dev env config with .local\033[0m');
+          if (!global.environmentNameLogged) {
+            console.warn('\033[1;33mReplacing "dev" env config with "local"\033[0m');
+          }
           env = 'local';
         }
 
-        console.log('Rewriting ', resource.request);
+        if (!global.environmentNameLogged) {
+          console.log('Rewriting ', resource.request);
+        }
         // @TODO try to generalise the regex using negative lookaheads https://stackoverflow.com/questions/977251/regular-expressions-and-negating-a-whole-character-group
         resource.request = resource.request.replace(/\.\/environments\/environment\.default/, '\.\/environments/environment.' + env);
-        console.log('to        ', resource.request);
+        if (!global.environmentNameLogged) {
+          console.log('to        ', resource.request);
+        }
+        global.environmentNameLogged = true;
       } else {
-        console.log('No environment specified. Using `default`');
+        if (!global.environmentNameLogged) {
+          console.log('No environment specified. Using `default`');
+        }
+        global.environmentNameLogged = true;
       }
     })
   ],
