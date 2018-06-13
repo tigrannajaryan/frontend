@@ -11,6 +11,7 @@ import { IonicModule } from 'ionic-angular';
 import { StoreModule } from '@ngrx/store';
 import { serverStatusReducer, serverStatusStateName } from '~/shared/server-status/server-status.reducer';
 import { UserHeaderMenuComponent } from '~/today/user-header/user-header-menu/user-header-menu.component';
+import { ServicesPickComponent } from '~/core/components/services-pick/services-pick.component';
 
 const components = [
   MadeNavComponent,
@@ -18,7 +19,8 @@ const components = [
   UserHeaderComponent,
   UserFooterComponent,
   MadeTableComponent,
-  UserHeaderMenuComponent
+  UserHeaderMenuComponent,
+  ServicesPickComponent
 ];
 
 @NgModule({
@@ -26,7 +28,9 @@ const components = [
     ...components
   ],
   entryComponents: [
-    UserHeaderMenuComponent
+    UserHeaderMenuComponent,
+    ServerStatusComponent,
+    ServicesPickComponent
   ],
   imports: [
     IonicModule,

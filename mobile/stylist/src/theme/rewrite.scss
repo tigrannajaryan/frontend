@@ -55,6 +55,10 @@ button[color='bb_honey']{
   border: none;
 }
 
+[no-border]{
+  border: none !important;
+}
+
 // this need for fixing known bug https://forum.ionicframework.com/t/ion-input-shows-only-the-first-entered-character-on-ios/73107/4
 ion-input > input {
   transform: translateZ(0px)
@@ -251,5 +255,33 @@ ion-datetime {
     vertical-align: middle;
     display: inline-block;
     padding: 6px;
+    height: 24px;
+    width: 40px;
+
+
+    .toggle{
+      &-icon {
+        background-color: color($colors, color13);
+      }
+
+      &-inner {
+        top: 2px;
+        width: 20px;
+        height: 20px;
+      }
+    }
+
+
+    &.toggle-checked{
+      .toggle{
+        &-icon {
+          background-color: color($colors, bb_honey);
+        }
+
+        &-inner {
+          background-color: color($colors, white);
+        }
+      }
+    }
   }
 }

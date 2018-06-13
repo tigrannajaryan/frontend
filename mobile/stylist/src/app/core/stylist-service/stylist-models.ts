@@ -73,6 +73,7 @@ export interface ServiceTemplateSet extends ServiceTemplateSetBase {
 
 export interface StylistServicesList {
   categories: ServiceCategory[];
+  service_time_gap_minutes?: number;
 }
 
 export interface ServiceCategory {
@@ -82,7 +83,11 @@ export interface ServiceCategory {
 }
 
 export interface ServiceTemplateItem {
-  categoryUuid?: string;
+  isChecked?: boolean;
+  category_name?: string;
+  category_uuid?: string;
+  service_uuid?: string;
+
   uuid?: string;
   name: string;
   description: string;

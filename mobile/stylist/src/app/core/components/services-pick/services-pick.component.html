@@ -1,0 +1,41 @@
+<div *ngIf="serviceCategory" class="bb-table bb-wp-a">
+  <div *ngFor="let category of serviceCategory" [hidden]="category.services.length === 0">
+    <div class="bb-table-title">{{ category.name }} <sup class="bb-table-title-sup">{{ category.services.length }}</sup></div>
+
+    <ion-grid>
+      <ion-row class="bb-table-head noborder">
+        <ion-col col-6>
+          Service
+        </ion-col>
+        <ion-col col-3>
+          Price
+        </ion-col>
+        <ion-col col-3></ion-col>
+      </ion-row>
+    </ion-grid>
+
+    <ion-list class="bb-table ion-bb-sliding">
+      <ion-item *ngFor="let service of category.services" class="bb-table-row">
+        <ion-item>
+          <ion-row align-items-center>
+            <ion-col col-6 class="bb-table-row-col">
+              {{ service.name }}
+            </ion-col>
+            <ion-col col-3 class="bb-table-row-col">
+              ${{ service.base_price }}
+            </ion-col>
+            <ion-col (click)="onServiceChange(service)" col-3 class="bb-table-row-col">
+              <button text-right ion-button full clear color="bb_orange">
+                <span *ngIf="!service.isChecked">
+                  Add item
+                </span>
+
+                <ion-icon *ngIf="service.isChecked" name="ios-checkmark-circle-outline" style="color: #FF6161;"></ion-icon>
+              </button>
+            </ion-col>
+          </ion-row>
+        </ion-item>
+      </ion-item>
+    </ion-list>
+  </div>
+</div>

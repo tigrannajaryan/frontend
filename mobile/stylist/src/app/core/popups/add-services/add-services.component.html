@@ -1,0 +1,19 @@
+<ion-header class="ion-bb-header" madeUserHeader [hasBackButton]="true" [hasShadow]="true"></ion-header>
+
+<ion-content>
+  <services-pick *ngIf="serviceCategories" [services]="serviceCategories" (serviceAdd)="onServiceAdd($event)"></services-pick>
+</ion-content>
+
+<ion-footer class="Services-footer">
+  <ion-toolbar>
+    <ion-row align-items-center>
+      <ion-col col-4></ion-col>
+      <ion-col col-4>
+        <button (click)="addServices()" ion-button full color="bb_skin" class="bb-btn-a">
+          Add services
+        </button>
+      </ion-col>
+      <ion-col col-4></ion-col>
+    </ion-row>
+  </ion-toolbar>
+</ion-footer>

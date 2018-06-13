@@ -1,0 +1,34 @@
+pop-confirm-checkout{
+  .Checkout-title{
+    text-align: center;
+    font-size: pxtorem10(42);
+    color: color($colors, dark);
+    margin: pxtorem10(15) 0 pxtorem10(40);
+
+    @media ($phone) {
+      font-size: pxtorem10(24);
+    }
+
+    &.small{
+      text-align: center;
+      font-size: pxtorem10(24);
+      color: color($colors, color14);
+      margin: pxtorem10(40) 0 0;
+
+      @media ($phone) {
+        font-size: pxtorem10(18);
+      }
+    }
+  }
+
+  .Checkout-rate{
+    text-align: center;
+    font-size: pxtorem10(24);
+    color: color($colors, color15);
+    margin: 0 0 pxtorem10(15);
+
+    @media ($phone) {
+      font-size: pxtorem10(18);
+    }
+  }
+}

@@ -221,7 +221,6 @@ page-checkout {
           font-weight: 700;
           color: color($colors, dark);
           display: flex;
-          justify-content: space-between;
           align-items: center;
 
           @media ($tablet) {
@@ -229,7 +228,7 @@ page-checkout {
           }
           @media ($phone) {
             font-size: pxtorem(24);
-            min-height: 26px;
+            min-height: 36px;
           }
         }
       }
@@ -237,15 +236,24 @@ page-checkout {
       &-service{
         text-align: left;
         padding: 0 pxtorem(80) !important;
-        margin: 0 0 pxtorem(90);
+
+        &.withmargin{
+          margin: 0 0 pxtorem(90);
+        }
 
         @media ($tablet) {
           padding: 0 pxtorem(50) !important;
-          margin: 0 0 pxtorem(50);
+
+          &.withmargin{
+            margin: 0 0 pxtorem(50);
+          }
         }
         @media ($phone) {
           padding: 0 pxtorem(30) !important;
-          margin: 0 0 pxtorem(20);
+
+          &.withmargin{
+            margin: 0 0 pxtorem(20);
+          }
         }
 
         .row{
@@ -292,14 +300,19 @@ page-checkout {
           }
 
 
-          .button-inner ion-icon{
-            font-size: pxtorem(70);
+          [ion-button]{
+            height: pxtorem10(30);
 
-            @media ($tablet) {
-              font-size: pxtorem(45);
-            }
             @media ($phone) {
-              font-size: pxtorem(20);
+              height: pxtorem10(20);
+            }
+          }
+
+          .button-inner ion-icon{
+            font-size: pxtorem10(30);
+
+            @media ($phone) {
+              font-size: pxtorem10(20);
             }
           }
         }

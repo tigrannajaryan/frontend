@@ -69,6 +69,35 @@
       &.white .button-inner{
         background: color($colors, white);
       }
+
+      &.big{
+        width: 300px;
+        height: 300px;
+        box-shadow: none;
+        border: 1px solid color($colors, color16);
+        padding: pxtorem10(30);
+        box-sizing: content-box;
+
+        @media ($smartphone) {
+          width: 180px;
+          height: 180px;
+        }
+
+        .button-inner{
+          width: 300px;
+          height: 300px;
+          font-size: pxtorem10(140);
+
+          @media ($smartphone) {
+            width: 180px;
+            height: 180px;
+          }
+        }
+
+        &.activated{
+          background: color($colors, white);
+        }
+      }
     }
 
     &-o{
@@ -110,6 +139,9 @@
     &-gold{
       background: color($colors, bb_gold);
     }
+    &-orange{
+      background: color($colors, color17);
+    }
   }
 
   &-link{
@@ -131,6 +163,10 @@
       }
       @media ($phone) {
         font-size: pxtoem(15);
+      }
+
+      &.noborder{
+        border: none;
       }
     }
 

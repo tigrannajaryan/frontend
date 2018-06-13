@@ -4,7 +4,6 @@ import {
   AlertController,
   IonicPage,
   LoadingController,
-  ModalController,
   NavController, NavParams
 } from 'ionic-angular';
 import { Store } from '@ngrx/store';
@@ -17,17 +16,11 @@ import {
   TodayState
 } from './today.reducer';
 
-import { Today } from './today.models';
+import { AppointmentStatuses, Today } from './today.models';
 import { Appointment } from '~/today/today.models';
 import { TodayService } from '~/today/today.service';
 import { PageNames } from '~/core/page-names';
-
-export enum AppointmentStatuses {
-  new = 'new',
-  no_show = 'no_show',
-  cancelled_by_stylist = 'cancelled_by_stylist',
-  checked_out = 'checked_out'
-}
+import { AppointmentCheckoutParams } from '~/appointment/appointment-checkout/appointment-checkout.component';
 
 @IonicPage({ segment: 'today' })
 @Component({
@@ -45,7 +38,6 @@ export class TodayComponent {
     public navCtrl: NavController,
     public navParams: NavParams,
     public todayService: TodayService,
-    public modalCtrl: ModalController,
     public alertCtrl: AlertController,
     private loadingCtrl: LoadingController,
     private store: Store<TodayState>,
@@ -126,7 +118,8 @@ export class TodayComponent {
    * Handler for appointment-checkout appointment event.
    */
   async checkOutAppointment(appointment: Appointment): Promise<void> {
-    this.navCtrl.push(PageNames.AppointmentCheckout, { appointmentUuid: appointment.uuid });
+    const data: AppointmentCheckoutParams = { appointmentUuid: appointment.uuid };
+    this.navCtrl.push(PageNames.AppointmentCheckout, data);
   }
 
   /**

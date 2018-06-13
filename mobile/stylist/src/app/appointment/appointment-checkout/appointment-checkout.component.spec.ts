@@ -55,4 +55,25 @@ describe('Pages: AppointmentCheckoutComponent', () => {
     expect(instance)
       .toBeTruthy();
   }));
+
+  // TODO: fix errors and finish test
+  // it('should get appointmentUuid from AppointmentCheckout through nav params');
+  //
+  // it('should get services from AppointmentCheckout through nav params');
+  //
+  // it('should call getAppointmentById');
+  //
+  // it('should update preview');
+  //
+  // it('should open ConfirmCheckoutComponent modal');
+  //
+  // it('should calculate total price');
+  //
+  // it('should remove service item');
+  //
+  // it('should open AddServicesComponent modal');
+  //
+  // it('should open edit service actionSheet');
+  //
+  // it('should open edit service price prompt');
 });

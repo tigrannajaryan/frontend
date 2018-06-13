@@ -15,7 +15,7 @@
   </ion-title>
 
   <ion-buttons end>
-    <button *ngIf="!hasBackButton" [madeLink]="[PageNames.Profile]" [style.background-image]="" ion-button icon-only class="UserHeader-btnUser is-withPic">
+    <button *ngIf="!hasBackButton && profile" [madeLink]="[PageNames.Profile]" [style.background-image]="profile.profile_photo_url" ion-button icon-only class="UserHeader-btnUser is-withPic">
       <ion-icon *ngIf="false" name="ios-contact-outline"></ion-icon>
     </button>
     <div class="UserHeader-delimeter"></div>

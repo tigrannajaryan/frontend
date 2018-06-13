@@ -13,7 +13,6 @@
       <div class="p-t-up" ion-row justify-content-between align-items-center>
         <div>
           What's up
-          <span class="p-t-up-info">{{ today.past_visits_count + today.week_visits_count }}</span>
         </div>
 
         <button (click)="updateTodayPage()" ion-button icon-only outline clear color="dark" class="p-t-up-refresh">
@@ -29,10 +28,6 @@
         <button ion-button icon-only clear color="dark" class="p-t-history-item">
           This week
           <span class="p-t-history-item-num">{{ today.week_visits_count }}</span>
-        </button>
-        <button ion-button icon-only clear color="dark" class="p-t-history-item">
-          Later on
-          <span class="p-t-history-item-num">20</span>
         </button>
       </div>
     </div>
@@ -54,11 +49,9 @@
               {{ appointment.datetime_start_at | date: 'h:mmaaaaa' }}
             </div>
             <div class="p-t-items-item-info-desc">
-              <ng-container *ngFor="let service of appointment.services">
-                <ng-container *ngIf="service.is_original">
-                  {{ service.service_name }}
-                </ng-container>
-              </ng-container>
+              <span *ngFor="let service of appointment.services" [hidden]="!service.is_original">
+                {{ service.service_name }}
+              </span>
             </div>
           </div>
           <div class="p-t-items-item-name">

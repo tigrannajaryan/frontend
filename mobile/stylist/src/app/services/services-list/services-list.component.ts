@@ -34,7 +34,7 @@ export class ServicesListComponent {
   protected isEmptyCategories = false;
   protected isProfile?: Boolean;
   protected templateSet: ServiceTemplateSet;
-  protected timeGap = 15;
+  protected timeGap = 30;
 
   static checkIfEmptyCategories(categories: ServiceCategory[]): boolean {
     return categories.every((cat: ServiceCategory) => {
