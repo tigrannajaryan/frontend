@@ -13,6 +13,7 @@ import { TodayService as AppointmentService } from '~/today/today.service';
 
 import {
   ClientsState,
+  SearchAction,
   selectFoundClients
 } from '~/appointment/appointment-add/clients.reducer';
 
@@ -63,6 +64,11 @@ export class AppointmentAddComponent {
       .subscribe(clients => {
         this.clientsList = clients;
       });
+  }
+
+  search(): void {
+    const { client: query } = this.form.value;
+    this.store.dispatch(new SearchAction(query));
   }
 
   selectClient(client: Client): void {

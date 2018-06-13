@@ -60,6 +60,35 @@ describe('Pages: Add Appointment', () => {
       .toBeTruthy();
   }));
 
+  it('should search for clients', async(() => {
+    const clients = clientsMock.slice(0, 3);
+    store.dispatch(new SearchSuccessAction(clients));
+
+    fixture.detectChanges();
+
+    // expect menu show clients
+    clients.forEach(client => {
+      expect(fixture.nativeElement.textContent)
+        .toContain(`${client.first_name} ${client.last_name}`);
+    });
+
+    const client = fixture.nativeElement.querySelector('.Appointment-customersListItem');
+    expect(client)
+      .toBeTruthy();
+
+    client.click();
+
+    fixture.detectChanges();
+
+    // check value in input updated
+    expect(client.textContent)
+      .toContain(fixture.nativeElement.querySelector('[formcontrolname="client"] input').value);
+
+    // check selected client property updated
+    expect(client.textContent)
+      .toContain(`${instance.selectedClient.first_name} ${instance.selectedClient.last_name}`);
+  }));
+
   it('should receive selected service from store', async(() => {
     store.dispatch(new SelectServiceAction(fakeService));
 

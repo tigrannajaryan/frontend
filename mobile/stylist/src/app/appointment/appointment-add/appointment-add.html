@@ -10,8 +10,14 @@
   <form [formGroup]="form" class="Appointment-form" (ngSubmit)="submit()">
     <ion-item class="Input">
       <ion-label>Client’s name</ion-label>
-      <ion-input type="text" placeholder="Enter full name" formControlName="client"></ion-input>
+      <ion-input type="text" placeholder="Enter full name" formControlName="client" (input)="search()"></ion-input>
     </ion-item>
+
+    <div class="Appointment-customersList" *ngIf="clientsList">
+      <div *ngFor="let client of clientsList" (click)="selectClient(client)" class="Appointment-customersListItem">
+        {{ client.first_name }} {{ client.last_name }}
+      </div>
+    </div>
 
     <ion-item class="Input is-withoutPointerEvents">
       <ion-label>Service</ion-label>
