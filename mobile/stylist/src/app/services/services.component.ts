@@ -6,6 +6,10 @@ import { StylistServiceProvider } from '~/core/stylist-service/stylist-service';
 import { PageNames } from '~/core/page-names';
 import { ServiceTemplateSetBase } from '~/core/stylist-service/stylist-models';
 
+export enum ServiceListType {
+  blank
+}
+
 @IonicPage({
   segment: 'services'
 })
@@ -30,7 +34,9 @@ export class ServicesComponent {
     this.serviceTemplateSets = (await this.stylistService.getServiceTemplateSetsList()).service_template_sets;
   }
 
-  openService(serviceItem: ServiceTemplateSetBase): void {
-    this.navCtrl.push(PageNames.RegisterServicesItem, { uuid: serviceItem.uuid });
+  openService(serviceItem?: ServiceTemplateSetBase): void {
+    const serviceItemUuid = serviceItem ? serviceItem.uuid : ServiceListType.blank;
+
+    this.navCtrl.push(PageNames.RegisterServicesItem, { uuid: serviceItemUuid });
   }
 }

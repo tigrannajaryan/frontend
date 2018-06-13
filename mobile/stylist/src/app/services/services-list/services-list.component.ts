@@ -20,6 +20,7 @@ import { ServiceItemComponentData } from '../services-item/services-item.compone
 
 import * as time from '~/shared/time';
 import { showAlert } from '~/core/utils/alert';
+import { ServiceListType } from '~/services/services.component';
 
 // this is required for saving uuid (page refresh will not remove it)
 @IonicPage({ segment: 'services/:uuid' })
@@ -39,6 +40,13 @@ export class ServicesListComponent {
     return categories.every((cat: ServiceCategory) => {
       return cat.services.length === 0;
     });
+  }
+
+  static buildBlankCategoriesList(serviceCategory: ServiceCategory[]): ServiceCategory[] {
+    for (const category of serviceCategory) {
+      category.services = [];
+    }
+    return serviceCategory;
   }
 
   constructor(
@@ -61,8 +69,11 @@ export class ServicesListComponent {
       const uuid = this.navParams.get('uuid');
       let response;
 
-      if (uuid) {
+      if (uuid && uuid !== ServiceListType.blank) {
         response = await this.stylistService.getServiceTemplateSetByUuid(uuid);
+      } else if (uuid === ServiceListType.blank) {
+        response = await this.stylistService.getStylistServices();
+        response.categories = ServicesListComponent.buildBlankCategoriesList(response.categories);
       } else {
         response = await this.stylistService.getStylistServices();
       }
