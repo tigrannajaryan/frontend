@@ -13,6 +13,7 @@ export interface AppointmentStatus {
 }
 
 export interface AppointmentPreviewRequest {
+  appointment_uuid?: string;
   datetime_start_at: string;
   services: CheckOutService[];
   has_tax_included: boolean;
@@ -27,6 +28,7 @@ export interface AppointmentPreviewResponse {
   total_card_fee: number;
   has_tax_included: boolean;
   has_card_fee_included: boolean;
+  services: AppointmentService[];
 }
 
 export interface AppointmentService {

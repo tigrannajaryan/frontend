@@ -16,11 +16,11 @@
       </div>
     </div>
 
-    <div class="p-c-box">
+    <div *ngIf="previewResponse" class="p-c-box">
       <div class="p-c-box-title">Your total price is</div>
 
 
-      <div *ngIf="previewResponse" no-padding class="p-c-box-price">
+      <div no-padding class="p-c-box-price">
         <div class="p-c-box-price-sign">$</div>
         <div class="p-c-box-price-num">{{ previewResponse.grand_total }}</div>
       </div>
@@ -51,7 +51,7 @@
 
 
 
-      <div *ngIf="appointment && appointment.services.length > 0">
+      <div *ngIf="previewResponse.services.length > 0">
         <ion-grid no-padding no-margin class="p-c-box-service">
           <ion-row no-border>
             <ion-col col-5>
@@ -66,7 +66,7 @@
           </ion-row>
         </ion-grid>
         <ion-grid no-padding class="p-c-box-service withmargin">
-          <ion-row *ngFor="let service of appointment.services; let index = index;">
+          <ion-row *ngFor="let service of previewResponse.services; let index = index;">
             <ion-col col-5>
               <div class="p-c-box-service-text">{{ service.service_name }}</div>
             </ion-col>
@@ -77,7 +77,7 @@
               <div class="p-c-box-service-text">
                 ${{ service.regular_price }}
 
-                <ion-icon *ngIf="appointment.services.length > 1" (click)="removeServiceItem(appointment.services, index)" name="ios-close-outline"></ion-icon>
+                <ion-icon *ngIf="previewResponse.services.length > 1" (click)="removeServiceItem(previewResponse.services, index)" name="ios-close-outline"></ion-icon>
               </div>
             </ion-col>
           </ion-row>

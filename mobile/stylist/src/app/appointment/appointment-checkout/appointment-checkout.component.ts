@@ -65,9 +65,16 @@ export class AppointmentCheckoutComponent {
 
   @loading
   async updatePreview(): Promise<void> {
+    let services = [];
+    if (this.previewResponse && this.previewResponse.services) {
+      services = AppointmentCheckoutComponent.getServicesUuid(this.previewResponse.services);
+    } else {
+      services = AppointmentCheckoutComponent.getServicesUuid(this.appointment.services);
+    }
     const appointmentPreview: AppointmentPreviewRequest = {
+      appointment_uuid: this.params.appointmentUuid,
       datetime_start_at: this.appointment.datetime_start_at,
-      services: AppointmentCheckoutComponent.getServicesUuid(this.appointment.services),
+      services,
       has_tax_included: this.hasTaxIncluded,
       has_card_fee_included: this.hasCardFeeIncluded
     };
@@ -95,6 +102,8 @@ export class AppointmentCheckoutComponent {
 
   protected removeServiceItem(services: AppointmentService[], i: number): void {
     services.splice(i, 1);
+
+    this.updatePreview();
   }
 
   protected addServices(): void {
