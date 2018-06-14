@@ -13,6 +13,7 @@ import { TodayService as AppointmentService } from '~/today/today.service';
 
 import {
   ClientsState,
+  SearchAction,
   selectFoundClients
 } from '~/appointment/appointment-add/clients.reducer';
 
@@ -61,12 +62,21 @@ export class AppointmentAddComponent {
       .takeUntil(componentUnloaded(this))
       .subscribe(clients => {
         this.clientsList = clients;
+        this.selectedClient = undefined;
       });
+  }
+
+  search(): void {
+    const { client: query } = this.form.value;
+    this.store.dispatch(new SearchAction(query));
   }
 
   selectClient(client: Client): void {
     this.selectedClient = client;
-    this.form.patchValue({ client: `${client.first_name} ${client.last_name}` });
+    this.form.patchValue({
+      client: `${client.first_name} ${client.last_name}`,
+      phone: client.phone
+    });
     delete this.clientsList;
   }
 
@@ -131,6 +141,7 @@ export class AppointmentAddComponent {
   private createForm(): void {
     this.form = this.formBuilder.group({
       client: ['', [Validators.required]],
+      phone: ['', [Validators.required]],
       date: ['', [Validators.required]],
       time: ['', [Validators.required]]
     });

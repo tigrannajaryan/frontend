@@ -15,6 +15,9 @@ export const clientsMock: Client[] =
 export class ClientsServiceMock {
 
   async search(query: string): Promise<Client[]> {
-    return Promise.resolve(clientsMock);
+    const found = clientsMock.filter(client =>
+      `${client.first_name} ${client.last_name}`.includes(query.trim())
+    );
+    return Promise.resolve(found);
   }
 }

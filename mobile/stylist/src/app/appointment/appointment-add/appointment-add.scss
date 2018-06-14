@@ -30,6 +30,23 @@ page-appointment-add {
     position: relative;
   }
 
+  .Appointment-customersList {
+    position: absolute;
+    z-index: 1;
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+    background: white;
+    border-radius: 0 0 10px 10px;
+    transform: translateY(-30px);
+  }
+
+  .Appointment-customersListItem {
+    padding: pxtorem10(16) pxtorem10(14);
+    font-size: $t-base;
+    border-bottom: 1px solid color($grayscale, 200);
+  }
+
   .Appointment-submit {
     background: transparent;
 
