@@ -24,7 +24,7 @@ export function createNavHistoryList(profileStatus: ProfileStatus): PageDescr[] 
     return pages;
   }
 
-  if (!profileStatus.has_personal_data || !profileStatus.has_picture_set) {
+  if (!profileStatus.has_personal_data) {
     return pages;
   }
 
