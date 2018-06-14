@@ -1,0 +1,46 @@
+.DateCard {
+  padding: pxtorem10(14) pxtorem10(25);
+  margin-bottom: pxtorem10(18);
+  border-radius: 5px;
+  box-shadow: 0 4px 40px color($grayscale, 200);
+
+  .DateCard-price {
+    margin-bottom: pxtorem10(6);
+    font-size: $t-h2;
+  }
+
+  .DateCard-day {
+    font-size: $t-base;
+    color: color($grayscale, 500);
+
+    span {
+      $left-offset: 18;
+
+      position: relative;
+      margin-left: pxtorem10($left-offset);
+
+      &:before {
+        $size: 4px;
+
+        position: absolute;
+        top: 50%;
+        left: -1 * ($left-offset + $size + 2) / 2;
+        display: block;
+        width: $size;
+        height: $size;
+        margin-top: -1 * $size / 2;
+        content: ''; // to become visible
+        background: color($grayscale, 300);
+        border-radius: 50%;
+      }
+
+      &:first-child {
+        margin-left: 0;
+      }
+
+      &:first-child:before {
+        display: none;
+      }
+    }
+  }
+}

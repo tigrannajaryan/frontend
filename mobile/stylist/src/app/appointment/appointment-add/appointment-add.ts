@@ -105,6 +105,11 @@ export class AppointmentAddComponent {
     event.preventDefault(); // prevents submit
   }
 
+  selectDate(event): void {
+    this.navCtrl.push(PageNames.AppointmentDate);
+    event.preventDefault(); // prevents submit
+  }
+
   async submit(forced = false): Promise<void> {
     const { client, phone, date, time } = this.form.value;
 
