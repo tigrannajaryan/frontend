@@ -1,92 +1,94 @@
 page-register-salon {
-  .p-rs{
+  .p-rs {
     &-circle {
       position: relative;
       width: 396px;
       height: 396px;
-      border-radius: 50%;
-      margin: auto;
       padding: 8px;
+      margin: auto;
+      border-radius: 50%;
 
 
       @media ($smartphone) {
         width: 280px;
         height: 280px;
       }
+
       @media ($phone) {
         width: 220px;
         height: 220px;
       }
 
 
-      &-photo{
+      &-photo {
+        width: 100%;
+        height: 100%;
         background: color($colors, bb_skin);
         background-repeat: no-repeat;
         background-position: center;
         background-size: cover;
-        height: 100%;
-        width: 100%;
         border-radius: 50%;
       }
 
-      &:after{
-        content: '';
+      &:after {
         position: absolute;
-        z-index: -1;
-        left: 0;
-        right: 0;
         top: 0;
+        right: 0;
         bottom: 0;
+        left: 0;
+        z-index: -1;
+        content: '';
         background: white;
         border: 1px solid color($colors, bb_skin);
         border-radius: 50%;
         opacity: 0.2;
       }
 
-      &-add{
+      &-add {
         position: absolute;
+        top: 100%;
+        left: 50%;
         z-index: 1;
         display: block;
         width: 70px;
         height: 70px;
-        border-radius: 50%;
-        top: 100%;
-        left: 50%;
-        transform: translate(-50%, -40px);
-        text-align: center;
         overflow: hidden;
+        text-align: center;
+        border-radius: 50%;
+        transform: translate(-50%, -40px);
 
         @media ($smartphone) {
           width: 50px;
           height: 50px;
           transform: translate(-50%, -30px);
         }
+
         @media ($phone) {
           width: 36px;
           height: 36px;
           transform: translate(-50%, -20px);
         }
 
-        &:after{
-          content: '';
+        &:after {
           position: absolute;
-          left: 0;
-          right: 0;
           top: 0;
+          right: 0;
           bottom: 0;
-          border-radius: 50%;
+          left: 0;
+          content: '';
           background: rgba(0, 0, 0, 0.16);
           filter: blur(5px);
+          border-radius: 50%;
         }
 
         &-icon {
           position: absolute;
-          left: 50%;
           top: 45%;
+          left: 50%;
           z-index: 1;
-          transform: translate(-50%, -50%);
           font-size: pxtorem(45);
           color: white;
+          transform: translate(-50%, -50%);
 
           @media ($phone) {
             font-size: pxtorem(32);
@@ -96,45 +98,71 @@ page-register-salon {
     }
 
 
-    &-inputs{
+    &-inputs {
       padding: pxtorem(130) 0 pxtorem(60);
 
       @media ($smartphone) {
         padding: pxtorem(100) 0 pxtorem(50);
       }
+
       @media ($phone) {
         padding: pxtorem(70) 0 pxtorem(40);
       }
     }
 
 
-    &-input{
+    &-input {
       margin-bottom: pxtorem(18);
 
-      ion-item{
+      ion-item {
         padding: 0;
       }
-      ion-icon[item-right]{
-        margin-right: 0 !important;
-      }
-      //ion-icon{
-      //  color: color($colors, color22);
-      //}
 
-      .text-input{
+      ion-icon[item-right] {
+        margin-right: 0 !important;
+        color: color($colors, bb_honey);
+
+        @media ($smartphone) {
+          font-size: $t-h3;
+          line-height: pxtorem10(22);
+        }
+      }
+
+      .text-input {
         margin-left: 0 !important;
         font-size: pxtorem(46);
 
         @media ($smartphone) {
-          font-size: pxtorem(36);
+          font-size: $t-h1;
         }
+
         @media ($phone) {
-          font-size: pxtorem(26);
+          font-size: $t-h2;
         }
       }
 
-      &-label{
-        font-size: pxtorem10(20);
+      &-label {
+        font-size: $t-h3;
+
+        @media ($smartphone) {
+          font-size: $t-h4;
+        }
+
+        @media ($phone) {
+          font-size: $t-base;
+        }
+      }
+    }
+
+    &-reset {
+      text-transform: capitalize;
+
+      @media ($smartphone) {
+        font-size: $t-h4;
+      }
+
+      @media ($phone) {
+        font-size: $t-base;
       }
     }
   }

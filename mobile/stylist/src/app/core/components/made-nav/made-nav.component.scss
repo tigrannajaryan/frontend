@@ -1,78 +1,117 @@
 made-nav {
-  .nav{
+  .nav {
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
     margin-bottom: pxtorem10(25);
 
-    &-item{
-      flex: 1;
-      white-space: nowrap;
-      overflow: hidden;
+    @media ($smartphone) {
+      margin-bottom: pxtorem10(20);
+    }
 
-      &-el{
+    @media ($phone) {
+      margin-bottom: pxtorem10(15);
+    }
+
+    &-item {
+      flex: 1;
+      overflow: hidden;
+      white-space: nowrap;
+
+      &-el {
         display: inline-block;
         vertical-align: middle;
 
-        &-dot{
+        &-dot {
           position: relative;
+          display: inline-block;
           width: 10px;
           height: 10px;
-          border-radius: 50%;
-          background: color($colors, bb_skin);
-          display: inline-block;
-          vertical-align: middle;
-          border: 1px solid transparent;
           margin: 0 5px;
+          vertical-align: middle;
+          background: color($colors, bb_skin);
+          border: 1px solid transparent;
+          border-radius: 50%;
 
-          &.white{
+          @media ($smartphone) {
+            width: 8px;
+            height: 8px;
+            margin: 0 8px;
+          }
+
+          @media ($phone) {
+            width: 6px;
+            height: 6px;
+            margin: 0 6px;
+          }
+
+          &.white {
             background: color($colors, white);
             border-color: rgba(0, 0, 0, 0.2);
           }
-          &.plus:after{
-            content: "\f102";
+
+          &.plus:after {
+            position: absolute;
+            top: 50%;
+            left: 50%;
             display: inline-block;
-            font-family: "Ionicons";
-            speak: none;
+            font-family: "Ionicons", sans-serif;
+            font-size: $t-base;
             font-style: normal;
             font-weight: normal;
             font-variant: normal;
+            line-height: 1;
+            color: color($colors, color5);
+            speak: none;
             text-transform: none;
             text-rendering: auto;
-            line-height: 1;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
-            font-size: 12px;
-            position: absolute;
-            left: 50%;
-            top: 50%;
+            content: "\f102";
             transform: translate(-50%, -50%);
-            color: color($colors, color5);
           }
         }
-        &-line{
+
+        &-line {
+          display: inline-block;
           width: 90px;
           height: 1px;
-          background: color($colors, bb_skin);
-          display: inline-block;
-          vertical-align: middle;
           margin: 0 5px;
+          vertical-align: middle;
+          background: color($colors, bb_skin);
+
+          @media ($smartphone) {
+            width: pxtorem10(50);
+            margin: 0 4px;
+          }
+
+          @media ($phone) {
+            width: pxtorem10(30);
+            margin: 0 3px;
+          }
         }
       }
 
-
-      &.right{
+      &.right {
         direction: rtl;
       }
     }
 
-
-    &-active{
+    &-active {
       margin: 0 10px;
-      font-size: pxtorem10(20);
+      font-size: $t-h3;
 
+      @media ($smartphone) {
+        margin: 0 8px;
+        font-size: $t-h4;
+      }
+
+      @media ($phone) {
+        margin: 0 6px;
+        font-size: $t-base;
+      }
     }
   }
 }
