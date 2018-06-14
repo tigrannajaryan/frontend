@@ -53,7 +53,6 @@ export class AppointmentAddComponent {
       .subscribe(service => {
         if (service !== undefined) {
           this.selectedService = service;
-          this.form.patchValue({ service: service.name });
         }
       });
 
@@ -71,8 +70,9 @@ export class AppointmentAddComponent {
     delete this.clientsList;
   }
 
-  selectService(): void {
+  selectService(event): void {
     this.navCtrl.push(PageNames.AppointmentService);
+    event.preventDefault(); // prevents submit
   }
 
   async submit(forced = false): Promise<void> {
@@ -131,7 +131,6 @@ export class AppointmentAddComponent {
   private createForm(): void {
     this.form = this.formBuilder.group({
       client: ['', [Validators.required]],
-      service: ['', [Validators.required]],
       date: ['', [Validators.required]],
       time: ['', [Validators.required]]
     });

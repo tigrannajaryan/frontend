@@ -51,6 +51,10 @@ button[color='bb_honey']{
   color: #fff;
 }
 
+button.button-ios {
+  border-radius: 0;
+}
+
 [ion-button].noborder{
   border: none;
 }
