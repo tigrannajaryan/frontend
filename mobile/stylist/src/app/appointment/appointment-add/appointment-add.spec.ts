@@ -66,8 +66,8 @@ describe('Pages: Add Appointment', () => {
     fixture.detectChanges();
 
     // check value in input updated
-    expect(fakeService.name)
-      .toEqual(fixture.nativeElement.querySelector('[formcontrolname="service"] input').value);
+    expect(fixture.nativeElement.querySelector('.Appointment-service').textContent)
+      .toContain(fakeService.name);
 
     // check selected service property updated
     expect(instance.selectedService.uuid)

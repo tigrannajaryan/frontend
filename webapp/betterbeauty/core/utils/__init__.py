@@ -33,6 +33,6 @@ def calculate_appointment_prices(
         total_tax=total_tax,
         total_card_fee=card_fee,
         grand_total=grand_total,
-        has_tax_included=include_card_fee,
-        has_card_fee_included=include_tax
+        has_tax_included=include_tax,
+        has_card_fee_included=include_card_fee
     )

@@ -723,7 +723,8 @@ class AppointmentSerializer(AppointmentValidationMixin, serializers.ModelSeriali
 
             # set initial price settings
             appointment_prices: AppointmentPrices = calculate_appointment_prices(
-                total_client_price_before_tax, False, False
+                price_before_tax=total_client_price_before_tax,
+                include_card_fee=False, include_tax=False
             )
             for k, v in appointment_prices._asdict().items():
                 setattr(appointment, k, v)
@@ -882,9 +883,9 @@ class AppointmentUpdateSerializer(
             # update final prices and save appointment
 
             appointment_prices: AppointmentPrices = calculate_appointment_prices(
-                total_client_price_before_tax,
-                self.validated_data['has_card_fee_included'],
-                self.validated_data['has_tax_included']
+                price_before_tax=total_client_price_before_tax,
+                include_card_fee=self.validated_data['has_card_fee_included'],
+                include_tax=self.validated_data['has_tax_included']
             )
 
             for k, v in appointment_prices._asdict().items():

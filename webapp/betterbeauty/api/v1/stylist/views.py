@@ -250,9 +250,9 @@ class StylistAppointmentPreviewView(views.APIView):
             ], Decimal(0))
         )
         appointment_prices: AppointmentPrices = calculate_appointment_prices(
-            total_client_price_before_tax,
-            preview_request.has_card_fee_included,
-            preview_request.has_tax_included
+            price_before_tax=total_client_price_before_tax,
+            include_card_fee=preview_request.has_card_fee_included,
+            include_tax=preview_request.has_tax_included
         )
         duration = sum(
             [service.duration for service in services], datetime.timedelta(0)

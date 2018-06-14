@@ -13,10 +13,12 @@
       <ion-input type="text" placeholder="Enter full name" formControlName="client"></ion-input>
     </ion-item>
 
-    <ion-item class="Input is-withoutPointerEvents">
+    <div class="Input Appointment-service">
       <ion-label>Service</ion-label>
-      <ion-input type="text" placeholder="Select from service list" formControlName="service" (click)="selectService()"></ion-input>
-    </ion-item>
+      <button ion-button clear (click)="selectService($event)" class="Input-btn" [ngClass]="{ 'is-muted': !selectedService }">
+        {{ selectedService ? selectedService.name : 'Select from service list' }}
+      </button>
+    </div>
 
     <ion-item class="Input">
       <ion-label>Date</ion-label>
