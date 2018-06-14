@@ -2,23 +2,25 @@
 
 <ion-content padding>
   <div *ngFor="let category of categories">
-    <p class="Appointment-servicesTitle">{{ category.name }} <sup>{{ category.services.length }}</sup></p>
-    <table class="Table" *ngIf="category.services.length > 0">
-      <thead class="Table-header">
-        <tr class="Table-row">
-          <th class="Table-col">Service</th>
-          <th class="Table-col" colspan="2" >Price</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let service of category.services" (click)="selectService(service)">
-          <td class="Table-col">{{ service.name }}</td>
-          <td class="Table-col">{{ service.base_price }}</td>
-          <td class="Table-col">
-            <a>Choose</a>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <div *ngIf="category.services.length > 0">
+      <p class="Appointment-servicesTitle">{{ category.name }} <sup>{{ category.services.length }}</sup></p>
+      <table class="Table">
+        <thead class="Table-header">
+          <tr class="Table-row">
+            <th class="Table-col">Service</th>
+            <th class="Table-col" colspan="2" >Price</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let service of category.services" (click)="selectService(service)">
+            <td class="Table-col">{{ service.name }}</td>
+            <td class="Table-col">{{ service.base_price }}</td>
+            <td class="Table-col">
+              <a>Choose</a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </ion-content>
