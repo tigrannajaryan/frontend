@@ -30,9 +30,6 @@ export class MyAppComponent {
     private errorHandler: ErrorHandler,
     private logger: Logger
   ) {
-  }
-
-  ionViewWillLoad(): void {
     this.logger.info('App initializing...');
     this.initializeApp();
   }
