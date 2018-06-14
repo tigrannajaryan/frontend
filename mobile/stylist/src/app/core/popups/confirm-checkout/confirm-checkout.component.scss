@@ -2,34 +2,38 @@ pop-confirm-checkout {
   .Checkout-title {
     margin: pxtorem10(15) 0 pxtorem10(40);
     font-size: pxtorem10(42);
-    text-align: center;
     color: color($colors, dark);
+    text-align: center;
 
     @media ($phone) {
-      font-size: pxtorem10(24);
+      font-size: $t-h2;
     }
 
     &.small {
       margin: pxtorem10(40) 0 0;
-      font-size: pxtorem10(24);
-      text-align: center;
+      font-size: $t-h2;
       color: color($colors, color14);
+      text-align: center;
 
       @media ($phone) {
-        font-size: pxtorem10(18);
+        font-size: $t-h3;
       }
     }
   }
 
   .Checkout-rate {
     margin: 0 0 pxtorem10(15);
-    font-size: pxtorem10(24);
-    text-align: center;
+    font-size: $t-h2;
     color: color($colors, color15);
+    text-align: center;
 
     @media ($phone) {
-      font-size: pxtorem10(18);
+      font-size: $t-h3;
     }
+  }
+
+  .Checkout-vote {
+    font-size: $t-h2;
   }
 
   .Checkout-buttons {

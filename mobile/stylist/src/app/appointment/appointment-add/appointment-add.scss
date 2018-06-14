@@ -13,13 +13,13 @@ page-appointment-add {
     border: 1px solid color($colors, bb_honey);
     border-radius: 50%;
 
-    ion-icon {
+    .bb-icon {
       $icon-size: 102px;
 
       width: $icon-size;
       height: $icon-size;
+      padding-top: 25px;
       font-size: pxtorem10(48);
-      line-height: $icon-size;
       text-align: center;
       background: white;
       border-radius: 50%;

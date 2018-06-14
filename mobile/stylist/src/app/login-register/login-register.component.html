@@ -2,7 +2,7 @@
   <div class="p-l">
     <div class="bb-wp-b">
       <div class="p-l-icon">
-        <img src="assets/imgs/demo2.png" alt="">
+        <i class="bb-icon bb-icon-login"></i>
       </div>
 
       <div class="ion-bb-inputbox" [ngClass]="{'focus': formData.email || formData.password}">
@@ -13,7 +13,7 @@
         <ion-item class="ion-bb-inputbox-item">
           <ion-input [type]="passwordType" placeholder="Password" [(ngModel)]="formData.password"></ion-input>
 
-          <button (click)="switchPasswordType()" type="button" ion-button icon-start item-right outline color="dark" class="noborder"><ion-icon name="ios-eye-outline"></ion-icon></button>
+          <button (click)="switchPasswordType()" type="button" ion-button icon-start item-right outline color="bb_orange" class="noborder"><i class="bb-icon bb-icon-show-password"></i></button>
         </ion-item>
       </div>
 

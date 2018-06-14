@@ -199,10 +199,10 @@ describe('Pages: Profile / Settings', () => {
 
     fixture.detectChanges();
 
-    expect(fixture.nativeElement.querySelector('ion-navbar [navPop] ion-icon[name="ios-arrow-round-back-outline"]'))
+    expect(fixture.nativeElement.querySelector('ion-navbar [navPop] .bb-icon-back'))
       .toBeTruthy();
 
-    expect(fixture.nativeElement.querySelector('ion-navbar ion-icon[name="ios-home-outline"]'))
+    expect(fixture.nativeElement.querySelector('ion-navbar .bb-icon-home'))
       .toBeTruthy();
 
     expect(fixture.nativeElement.querySelector('ion-navbar ion-icon[name="ios-more"]'))

@@ -9,23 +9,27 @@
 // :root { font-size: 16px; }
 
 // rewrite ionic def style
-ion-app.md, ion-app.ios, ion-app.wp{
+ion-app.md,
+ion-app.ios,
+ion-app.wp {
   font-family: 'Arial', sans-serif;
   font-size: 16px;
 
   @media ($tablet) {
     font-size: 14px;
   }
+
   @media ($smartphone) {
     font-size: 12px;
   }
+
   @media ($phone) {
     font-size: 10px;
   }
 }
 
 button[color="bb_violet"],
-button[color="bb_skin"]{
+button[color="bb_skin"] {
   color: #000;
 }
 
@@ -33,25 +37,26 @@ a { // all links
   color: color($colors, blush);
 }
 
-.range-md{
-  .range-knob{
-    transform: scale(1.8);
+.range-md {
+  .range-knob {
     background: #ffffff;
+    transform: scale(1.8);
 
     @media ($phone) {
       transform: scale(1);
     }
   }
+
   [range-right] {
     margin: 0 0 0 30px;
   }
 }
 
-button[color='bb_honey']{
+button[color='bb_honey'] {
   color: #fff;
 }
 
-[ion-button].noborder{
+[ion-button].noborder {
   border: none;
 }
 
@@ -61,7 +66,7 @@ button[color='bb_honey']{
 
 // this need for fixing known bug https://forum.ionicframework.com/t/ion-input-shows-only-the-first-entered-character-on-ios/73107/4
 ion-input > input {
-  transform: translateZ(0px)
+  transform: translateZ(0);
 }
 
 // this need for fixing known bug https://github.com/ionic-team/ionic/issues/10629
@@ -74,45 +79,61 @@ ion-datetime {
   position: relative;
 }
 
+.back-button-icon {
+  &:before {
+    display: inline-block;
+    font-family: 'bb', sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    line-height: 1;
+    content: '\0043';
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
 
 // wrap and rewrite ionic def style
-.ion-bb{
-  &-header{
-    .toolbar{
-      &-title{
+.ion-bb {
+  &-header {
+    .toolbar {
+      &-title {
         color: #000;
       }
 
-      &-background{
-        border-color: transparent;
+      &-background {
         background: none;
+        border-color: transparent;
       }
     }
 
-    &:after{display: none;}
+    &:after {
+      display: none;
+    }
   }
 
-  &-input{
+  &-input {
     margin: 20px 0;
 
-    &-prefix{
+    &-prefix {
       position: absolute;
-      right: 0;
       top: 50%;
-      transform: translateY(-50%);
+      right: 0;
       margin: 0;
       font-size: pxtoem(20);
+      transform: translateY(-50%);
 
       @media ($smartphone) {
         font-size: pxtoem(18);
       }
+
       @media ($phone) {
         font-size: pxtoem(16);
       }
     }
 
 
-    &.item-block{
+    &.item-block {
       background: transparent;
     }
 
@@ -120,19 +141,22 @@ ion-datetime {
       font-size: 1.6rem;
     }
 
-    ion-label{
-      text-align: center;
+    ion-label {
+      margin: 0;
       font-size: 1.5rem !important;
       color: color($colors, dark) !important;
-      margin: 0;
-    }
-
-    .text-center, .select-text, .text-input {
       text-align: center;
     }
 
-    .select{
+    .text-center,
+    .select-text,
+    .text-input {
+      text-align: center;
+    }
+
+    .select {
       padding-right: 0;
+
       &-icon {
         position: absolute;
         right: 8px;
@@ -141,11 +165,11 @@ ion-datetime {
     }
   }
 
-  &-inputbox{
-    background: white;
-    border-radius: 10px;
+  &-inputbox {
     padding: 0 pxtorem(45);
+    background: white;
     border: 1px solid transparent;
+    border-radius: 10px;
     transition: all 100ms linear;
 
     @media ($smartphone) {
@@ -157,11 +181,11 @@ ion-datetime {
     }
 
 
-    &-item{
+    &-item {
       padding: 0;
       font-size: pxtoem(24);
 
-      .item-inner{
+      .item-inner {
         padding: pxtoem(10) 0;
         border-bottom: 1px solid #dedede !important;
         box-shadow: none !important;
@@ -170,21 +194,22 @@ ion-datetime {
           padding: 0;
         }
       }
-      .text-input{
+
+      .text-input {
         margin: 13px 0;
       }
 
-      &:last-child{
-        .item-inner{
+      &:last-child {
+        .item-inner {
           border-bottom-color: transparent !important;
           box-shadow: none !important;
         }
       }
 
-      button[item-right]{
+      button[item-right] {
+        padding: 0;
         margin: 9px 0 9px 0;
         font-size: pxtoem(20);
-        padding: 0;
 
         @media ($smartphone) {
           font-size: pxtoem(18);
@@ -194,42 +219,44 @@ ion-datetime {
           font-size: pxtoem(16);
         }
 
-        ion-icon{
+        ion-icon {
           padding: 0;
         }
       }
     }
 
-
-    &.focus{
+    &.focus {
       box-shadow: 0 0 90px -30px rgba(0, 0, 0, 0.4);
     }
   }
 
-  &-showback{
+  &-showback {
     .back-button {
       display: block !important;
     }
   }
 
-  &-sliding{
-    ion-label{
+  &-sliding {
+    ion-label {
       margin: 0;
     }
-    ion-item-sliding{
+
+    ion-item-sliding {
       padding: 0 !important;
       border: none !important;
     }
-    .item-inner{
-      border: none !important;
+
+    .item-inner {
       padding: 0 !important;
+      border: none !important;
     }
-    .item-block{
+
+    .item-block {
       padding: 0 !important;
     }
   }
 
-  &-range{
+  &-range {
     font-size: pxtoem(24);
 
     @media ($phone) {
@@ -237,29 +264,30 @@ ion-datetime {
     }
 
 
-    .range{
-      &-knob{
+    .range {
+      &-knob {
         background: color($colors, bb_skin);
       }
 
-      &-bar{
+      &-bar {
         background: rgba(0, 0, 0, 0.16);
-        &-active{
+
+        &-active {
           background: color($colors, bb_skin);
         }
       }
     }
   }
 
-  &-toggle{
-    vertical-align: middle;
+  &-toggle {
     display: inline-block;
-    padding: 6px;
-    height: 24px;
     width: 40px;
+    height: 24px;
+    padding: 6px;
+    vertical-align: middle;
 
 
-    .toggle{
+    .toggle {
       &-icon {
         background-color: color($colors, color13);
       }
@@ -272,8 +300,8 @@ ion-datetime {
     }
 
 
-    &.toggle-checked{
-      .toggle{
+    &.toggle-checked {
+      .toggle {
         &-icon {
           background-color: color($colors, bb_honey);
         }

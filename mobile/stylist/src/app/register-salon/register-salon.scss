@@ -33,11 +33,11 @@ page-register-salon {
       &:after {
         position: absolute;
         top: 0;
+        left: 0;
         right: 0;
         bottom: 0;
-        left: 0;
-        z-index: -1;
         content: '';
+        z-index: -1;
         background: white;
         border: 1px solid color($colors, bb_skin);
         border-radius: 50%;
@@ -118,7 +118,7 @@ page-register-salon {
         padding: 0;
       }
 
-      ion-icon[item-right] {
+      [item-right] {
         margin-right: 0 !important;
         color: color($colors, bb_honey);
 

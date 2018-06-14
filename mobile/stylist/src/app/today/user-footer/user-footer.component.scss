@@ -1,42 +1,45 @@
-user-footer{
-  .u-f{
-    &-footer{
+user-footer {
+  .u-f {
+    &-footer {
       background: white;
       box-shadow: 0 0 60px 35px color($colors, color7);
 
-      &:before{
+      &:before {
         display: none;
       }
 
-      &-item{
+      &-item {
         text-align: center;
 
-        ion-icon{
-          font-size: pxtorem(60);
+        .bb-icon {
           display: block;
+          margin-bottom: 5px;
+          font-size: $t-h1;
 
           @media ($smartphone) {
-            font-size: pxtorem(50);
+            font-size: $t-h2;
           }
+
           @media ($phone) {
-            font-size: pxtorem(40);
+            font-size: $t-h3;
           }
         }
       }
 
-      &-circle{
+      &-circle {
         position: relative;
+        display: inline-block;
         width: 70px;
         height: 70px;
-        cursor: pointer;
-        border-radius: 50%;
-        background: rgb(255, 218, 202);
-        text-align: center;
-        color: color($colors, dark);
         margin-top: -50px;
-        display: inline-block;
+        font-size: $t-h2;
+        color: color($colors, dark);
+        text-align: center;
+        cursor: pointer;
+        background: rgb(255, 218, 202);
+        border-radius: 50%;
 
-        &.activated{
+        &.activated {
           background: rgb(255, 218, 202);
         }
 
@@ -45,17 +48,18 @@ user-footer{
           height: 60px;
           margin-top: -40px;
         }
+
         @media ($phone) {
           width: 50px;
           height: 50px;
           margin-top: -35px;
         }
 
-        ion-icon{
-          font-size: pxtorem(70);
+        ion-icon {
           position: absolute;
-          left: 50%;
           top: 50%;
+          left: 50%;
+          font-size: pxtorem(70);
           transform: translate(-50%, -50%);
         }
       }

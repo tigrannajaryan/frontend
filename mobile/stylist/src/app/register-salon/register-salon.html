@@ -11,7 +11,7 @@
     <div class="p-rs-circle">
         <div [style.backgroundImage]="form.get('vars.image').value" class="p-rs-circle-photo"></div>
         <label (click)="processPhoto()" class="p-rs-circle-add">
-          <i class="bb-icon-camera p-rs-circle-add-icon"></i>
+          <i class="bb-icon bb-icon-add-photo p-rs-circle-add-icon"></i>
         </label>
       </div>
 
@@ -24,7 +24,7 @@
 
             <ion-item>
               <ion-input type="text" formControlName="first_name"></ion-input>
-              <ion-icon name="ios-person-outline" item-right></ion-icon>
+              <i class="bb-icon bb-icon-user" item-right></i>
             </ion-item>
           </div>
         </div>
@@ -34,7 +34,7 @@
 
             <ion-item>
               <ion-input type="text" formControlName="last_name"></ion-input>
-              <ion-icon name="ios-person-outline" item-right></ion-icon>
+              <i class="bb-icon bb-icon-user" item-right></i>
             </ion-item>
           </div>
         </div>
@@ -49,7 +49,7 @@
 
             <ion-item>
               <ion-input type="text" formControlName="salon_name"></ion-input>
-              <ion-icon name="ios-home-outline" item-right></ion-icon>
+              <i class="bb-icon bb-icon-home" item-right></i>
             </ion-item>
           </div>
         </ion-col>
@@ -64,7 +64,7 @@
 
             <ion-item>
               <ion-input type="text" formControlName="salon_address"></ion-input>
-              <ion-icon name="ios-flag-outline" item-right></ion-icon>
+              <i class="bb-icon bb-icon-location" item-right></i>
             </ion-item>
           </div>
         </ion-col>
@@ -79,7 +79,7 @@
 
             <ion-item>
               <ion-input type="tel" formControlName="phone"></ion-input>
-              <ion-icon name="ios-call-outline" item-right></ion-icon>
+              <i class="bb-icon bb-icon-phone" item-right></i>
             </ion-item>
           </div>
         </ion-col>
@@ -91,7 +91,7 @@
       <button ion-button color="danger" clear style="visibility: hidden;">Delete</button>
 
       <button [disabled]="form.invalid" ion-button type="submit" class="bb-btn-circle">
-        <ion-icon name="ios-checkmark-outline"></ion-icon>
+        <i class="bb-icon bb-icon-confirmation"></i>
       </button>
 
       <button type="reset" ion-button color="danger" class="p-rs-reset" clear>Reset</button>

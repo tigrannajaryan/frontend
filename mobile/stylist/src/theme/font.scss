@@ -1,56 +1,81 @@
 @font-face {
   font-family: 'bb';
-  src: url('../assets/fonts/bb-font/bb.eot');
-  src: url('../assets/fonts/bb-font/bb.eot?#iefix') format('embedded-opentype'),
-  url('../assets/fonts/bb-font/bb.woff') format('woff'),
-  url('../assets/fonts/bb-font/bb.ttf') format('truetype'),
-  url('../assets/fonts/bb-font/bb.svg#bb') format('svg');
-  font-weight: normal;
   font-style: normal;
+  font-weight: normal;
+  src: url('../assets/fonts/bb-font/bb.eot');
+  src: url('../assets/fonts/bb-font/bb.eot?#iefix') format('embedded-opentype'), url('../assets/fonts/bb-font/bb.woff') format('woff'), url('../assets/fonts/bb-font/bb.ttf') format('truetype'), url('../assets/fonts/bb-font/bb.svg#bb') format('svg');
 }
-[class*='bb-icon']{
+
+[class*='bb-icon'] {
   display: inline-block;
   vertical-align: middle;
-  &:before{
+  line-height: 1;
+
+  &:before {
     display: inline-block;
-    vertical-align: bottom;
-    font-family: 'bb';
+    font-family: 'bb', sans-serif;
     font-style: normal;
     font-weight: normal;
     line-height: 1;
+    vertical-align: bottom;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
 }
-.bb-icon-check:before{content:'\0041';}
-.bb-icon-add-user:before{content:'\0042';}
-.bb-icon-black:before{content:'\0043';}
-.bb-icon-camera:before{content:'\0044';}
-.bb-icon-discounts:before{content:'\0045';}
-.bb-icon-fb:before{content:'\0046';}
-.bb-icon-in:before{content:'\0047';}
-.bb-icon-key:before{content:'\0048';}
-.bb-icon-marker:before{content:'\0049';}
-.bb-icon-plus:before{content:'\004a';}
-.bb-icon-reset:before{content:'\004b';}
-.bb-icon-services:before{content:'\004c';}
-.bb-icon-timer:before{content:'\004d';}
-.bb-icon-white:before{content:'\004e';}
+
+
+.bb-icon-mail:before { content: '\0041'; }
+.bb-icon-add-appointment:before { content: '\0042'; }
+.bb-icon-back:before { content: '\0043'; }
+.bb-icon-plus:before { content: '\0044'; }
+.bb-icon-home:before { content: '\0045'; }
+.bb-icon-followers:before { content: '\0046'; }
+.bb-icon-rating:before { content: '\0047'; }
+.bb-icon-confirmation:before { content: '\0048'; }
+.bb-icon-vote-up:before { content: '\0049'; }
+.bb-icon-vote-down:before { content: '\004a'; }
+.bb-icon-phone:before { content: '\004b'; }
+.bb-icon-history:before { content: '\004c'; }
+.bb-icon-pricing:before { content: '\004d'; }
+.bb-icon-invite:before { content: '\004e'; }
+.bb-icon-filter:before { content: '\004f'; }
+.bb-icon-time-gap:before { content: '\0050'; }
+.bb-icon-login:before { content: '\0051'; }
+.bb-icon-show-password:before { content: '\0052'; }
+.bb-icon-accept-button:before { content: '\0053'; }
+.bb-icon-discounts:before { content: '\0054'; }
+.bb-icon-add:before { content: '\0055'; }
+.bb-icon-location:before { content: '\0056'; }
+.bb-icon-add-photo:before { content: '\0057'; }
+.bb-icon-salon-name:before { content: '\0058'; }
+.bb-icon-user:before { content: '\0059'; }
 
 
 
-
-//<i class="bb-icon-check"></i>
-//<i class="bb-icon-add"></i>
-//<i class="bb-icon-black"></i>
-//<i class="bb-icon-camera"></i>
-//<i class="bb-icon-discounts"></i>
-//<i class="bb-icon-fb"></i>
-//<i class="bb-icon-in"></i>
-//<i class="bb-icon-key"></i>
-//<i class="bb-icon-marker"></i>
-//<i class="bb-icon-plus"></i>
-//<i class="bb-icon-reset"></i>
-//<i class="bb-icon-services"></i>
-//<i class="bb-icon-timer"></i>
-//<i class="bb-icon-white"></i>
+//<div style="font-size: 50px; color: red;">
+//<i class="bb-icon bb-icon-mail"></i>
+//<i class="bb-icon bb-icon-add-appointment"></i>
+//<i class="bb-icon bb-icon-back"></i>
+//<i class="bb-icon bb-icon-plus"></i>
+//<i class="bb-icon bb-icon-home"></i>
+//<i class="bb-icon bb-icon-followers"></i>
+//<i class="bb-icon bb-icon-rating"></i>
+//<i class="bb-icon bb-icon-confirmation"></i>
+//<i class="bb-icon bb-icon-vote-up"></i>
+//<i class="bb-icon bb-icon-vote-down"></i>
+//<i class="bb-icon bb-icon-phone"></i>
+//<i class="bb-icon bb-icon-history"></i>
+//<i class="bb-icon bb-icon-pricing"></i>
+//<i class="bb-icon bb-icon-invite"></i>
+//<i class="bb-icon bb-icon-filter"></i>
+//<i class="bb-icon bb-icon-time-gap"></i>
+//<i class="bb-icon bb-icon-login"></i>
+//<i class="bb-icon bb-icon-show-password"></i>
+//<i class="bb-icon bb-icon-accept-button"></i>
+//<i class="bb-icon bb-icon-discounts"></i>
+//<i class="bb-icon bb-icon-add"></i>
+//<i class="bb-icon bb-icon-location"></i>
+//<i class="bb-icon bb-icon-add-photo"></i>
+//<i class="bb-icon bb-icon-salon-name"></i>
+//<i class="bb-icon bb-icon-user"></i>
+//</div>

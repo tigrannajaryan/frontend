@@ -1,11 +1,5 @@
 <ion-header class="ion-bb-header">
-  <ion-navbar color="white">
-    <server-status></server-status>
-    <ion-buttons end>
-      <button ion-button icon-only>
-        <ion-icon name="key"></ion-icon>
-      </button>
-    </ion-buttons>
+  <ion-navbar>
   </ion-navbar>
 </ion-header>
 
@@ -52,7 +46,9 @@
     <ion-row class="add_new_block">
       <ion-col>
         <div class="round_button">
-          <button (click)="addNewCard()">+</button>
+          <button (click)="addNewCard()">
+            <i class="bb-icon bb-icon-plus"></i>
+          </button>
         </div>
       </ion-col>
     </ion-row>

@@ -70,7 +70,7 @@ export const defaultEndTime = '17:00'; // 24 hour hh:mm format
  */
 type HourRange = [string, string];
 
-@IonicPage()
+@IonicPage({ segment: 'worktime' })
 @Component({
   selector: 'page-worktime-component',
   templateUrl: 'worktime.component.html'

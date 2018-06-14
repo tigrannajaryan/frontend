@@ -1,11 +1,11 @@
 <ion-navbar [hideBackButton]="true" class="UserHeader bb-wp-a" [ngClass]="{'UserHeader--shadow': hasShadow}">
   <ion-buttons *ngIf="hasBackButton && navCtrl.canGoBack()" left>
     <button navPop ion-button icon-only class="UserHeader-btnMenu UserHeader-btnMenu--dark">
-      <ion-icon name="ios-arrow-round-back-outline"></ion-icon>
+      <i class="bb-icon bb-icon-back"></i>
     </button>
     <div class="UserHeader-delimeter"></div>
     <button (click)="goToHome()" ion-button icon-only class="UserHeader-btnMenu UserHeader-btnMenu--dark">
-      <ion-icon name="ios-home-outline"></ion-icon>
+      <i class="bb-icon bb-icon-home"></i>
     </button>
   </ion-buttons>
 
