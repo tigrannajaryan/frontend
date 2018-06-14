@@ -92,6 +92,7 @@ page-appointment-add {
 
   .label {
     font-size: $t-small;
+    color: color($grayscale, 800);
 
     + ion-input .text-input {
       margin: 0;
