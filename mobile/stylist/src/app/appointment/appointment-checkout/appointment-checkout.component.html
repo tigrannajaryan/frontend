@@ -77,7 +77,7 @@
               <div class="p-c-box-service-text">
                 ${{ service.regular_price }}
 
-                <ion-icon (click)="removeServiceItem(appointment.services, index)" name="ios-close-outline"></ion-icon>
+                <ion-icon *ngIf="appointment.services.length > 1" (click)="removeServiceItem(appointment.services, index)" name="ios-close-outline"></ion-icon>
               </div>
             </ion-col>
           </ion-row>
