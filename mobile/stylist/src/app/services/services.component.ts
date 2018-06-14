@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { DomSanitizer } from '@angular/platform-browser';
+import { SafeStyle } from '@angular/platform-browser/src/security/dom_sanitization_service';
 
 import { loading } from '~/core/utils/loading';
 import { StylistServiceProvider } from '~/core/stylist-service/stylist-service';
@@ -20,13 +22,18 @@ export enum ServiceListType {
 export class ServicesComponent {
   // to use in html
   protected PageNames = PageNames;
-  serviceTemplateSets: ServiceTemplateSetBase[];
+  protected serviceTemplateSets: ServiceTemplateSetBase[];
+  protected whiteImage: SafeStyle;
+  protected blackImage: SafeStyle;
 
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
-    private stylistService: StylistServiceProvider
+    private stylistService: StylistServiceProvider,
+    private sanitizer: DomSanitizer
   ) {
+    this.whiteImage = this.sanitizer.bypassSecurityTrustStyle('url(assets/imgs/services/white.png)');
+    this.blackImage = this.sanitizer.bypassSecurityTrustStyle('url(assets/imgs/services/black.png)');
   }
 
   @loading

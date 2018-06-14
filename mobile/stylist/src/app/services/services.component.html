@@ -14,7 +14,7 @@
     <div class="p-s-def-box">
       <div *ngFor="let item of serviceTemplateSets; let odd = odd"
            (click)="openService(item)"
-           [style.backgroundImage]="'url(' + item.image_url + ')'"
+           [style.backgroundImage]="odd ? blackImage : whiteImage"
            class="p-s-def-box-item">
         <div class="p-s-def-box-item-footer">
           <div class="p-s-def-box-item-footer-title">
