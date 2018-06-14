@@ -29,6 +29,7 @@ export class MadeNavComponent {
     { name: 'Services', page: PageNames.RegisterServices },
     { name: 'Schedule', page: PageNames.Worktime },
     { name: 'Custom Price', page: PageNames.Discounts },
+    { name: 'Invite Clients', page: PageNames.Invitations },
     { name: 'Summary', page: PageNames.Profile }
   ];
 
