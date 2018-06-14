@@ -6,7 +6,7 @@
 
 <ion-content padding class="bb-bg-orange">
   <div class="tac">
-    <button (click)="onFinalizeCheckout()" ion-button type="submit" class="bb-btn-circle big white">
+    <button ion-button type="submit" class="bb-btn-circle big white">
       <ion-icon name="ios-checkmark-outline"></ion-icon>
     </button>
   </div>
@@ -17,8 +17,12 @@
 
   <div class="Checkout-rate">Rate Anastasia</div>
 
-  <div class="tac">
+  <div class="Checkout-buttons">
     <button class="dib" color="white" ion-fab><ion-icon name="ios-thumbs-up-outline"></ion-icon></button>
     <button class="dib" color="bb_honey" outline ion-fab><ion-icon name="ios-thumbs-down-outline"></ion-icon></button>
+  </div>
+
+  <div class="tac">
+    <button (click)="onFinalizeCheckout()" col-6 ion-button color="white" class="bb-btn-a">OK</button>
   </div>
 </ion-content>

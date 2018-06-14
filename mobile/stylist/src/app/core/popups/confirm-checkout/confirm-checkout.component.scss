@@ -1,19 +1,19 @@
-pop-confirm-checkout{
-  .Checkout-title{
-    text-align: center;
-    font-size: pxtorem10(42);
-    color: color($colors, dark);
+pop-confirm-checkout {
+  .Checkout-title {
     margin: pxtorem10(15) 0 pxtorem10(40);
+    font-size: pxtorem10(42);
+    text-align: center;
+    color: color($colors, dark);
 
     @media ($phone) {
       font-size: pxtorem10(24);
     }
 
-    &.small{
-      text-align: center;
-      font-size: pxtorem10(24);
-      color: color($colors, color14);
+    &.small {
       margin: pxtorem10(40) 0 0;
+      font-size: pxtorem10(24);
+      text-align: center;
+      color: color($colors, color14);
 
       @media ($phone) {
         font-size: pxtorem10(18);
@@ -21,14 +21,19 @@ pop-confirm-checkout{
     }
   }
 
-  .Checkout-rate{
-    text-align: center;
-    font-size: pxtorem10(24);
-    color: color($colors, color15);
+  .Checkout-rate {
     margin: 0 0 pxtorem10(15);
+    font-size: pxtorem10(24);
+    text-align: center;
+    color: color($colors, color15);
 
     @media ($phone) {
       font-size: pxtorem10(18);
     }
+  }
+
+  .Checkout-buttons {
+    margin: 0 0 pxtorem10(40);
+    text-align: center;
   }
 }
