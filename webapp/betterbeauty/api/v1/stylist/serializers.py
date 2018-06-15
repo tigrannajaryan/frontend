@@ -364,7 +364,6 @@ class StylistProfileStatusSerializer(serializers.ModelSerializer):
     has_business_hours_set = serializers.SerializerMethodField()
     has_weekday_discounts_set = serializers.SerializerMethodField()
     has_other_discounts_set = serializers.SerializerMethodField()
-    has_invited_clients = serializers.SerializerMethodField()
 
     class Meta:
         model = Stylist
@@ -399,9 +398,6 @@ class StylistProfileStatusSerializer(serializers.ModelSerializer):
 
     def get_has_other_discounts_set(self, stylist: Stylist) -> bool:
         return stylist.is_discount_configured
-
-    def get_has_invited_clients(self, stylist: Stylist) -> bool:
-        return stylist.invites.exists()
 
 
 class StylistAvailableWeekDaySerializer(serializers.ModelSerializer):

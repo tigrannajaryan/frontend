@@ -113,6 +113,7 @@ class Stylist(models.Model):
     )
 
     is_discount_configured = models.BooleanField(default=False)
+    has_invited_clients = models.BooleanField(default=False)
 
     service_time_gap = models.DurationField(default=datetime.timedelta(minutes=15))
 
