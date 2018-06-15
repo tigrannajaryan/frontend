@@ -6,8 +6,9 @@ import { StylistServiceProvider } from '~/core/stylist-service/stylist-service';
 import { StylistProfile } from '~/core/stylist-service/stylist-models';
 
 import { TodayComponent } from '~/today/today.component';
-import { UserHeaderMenuComponent } from '~/today/user-header/user-header-menu/user-header-menu.component';
+import { UserHeaderMenuActions, UserHeaderMenuComponent } from './user-header-menu/user-header-menu.component';
 import { showAlert } from '~/core/utils/alert';
+import { AuthApiService } from '~/core/auth-api-service/auth-api-service';
 
 @Component({
   selector: '[madeUserHeader]',
@@ -25,7 +26,8 @@ export class UserHeaderComponent implements OnInit {
     public popoverCtrl: PopoverController,
     protected navCtrl: NavController,
     private alertCtrl: AlertController,
-    private apiService: StylistServiceProvider
+    private apiService: StylistServiceProvider,
+    private authApiService: AuthApiService
   ) {
   }
 
@@ -54,6 +56,23 @@ export class UserHeaderComponent implements OnInit {
 
   protected openPopover(myEvent: Event): void {
     const popover = this.popoverCtrl.create(UserHeaderMenuComponent);
+
+    popover.onDidDismiss((action: UserHeaderMenuActions) => {
+
+      switch (action) {
+        case UserHeaderMenuActions.logout:
+          // Logout from backend
+          this.authApiService.logout();
+
+          // Erase all previous navigation history and make FirstScreen the root
+          this.navCtrl.setRoot(PageNames.FirstScreen);
+          break;
+
+        default:
+          break;
+      }
+    });
+
     popover.present({
       ev: myEvent
     });

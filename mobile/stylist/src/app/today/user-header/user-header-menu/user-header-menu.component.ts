@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
-import { NavController, ViewController } from 'ionic-angular';
-import { PageNames } from '~/core/page-names';
-import { AuthApiService } from '~/core/auth-api-service/auth-api-service';
+import { ViewController } from 'ionic-angular';
+
+export enum UserHeaderMenuActions {
+  logout
+}
 
 @Component({
   selector: '[madeUserHeaderMenu]',
@@ -10,19 +12,18 @@ import { AuthApiService } from '~/core/auth-api-service/auth-api-service';
 export class UserHeaderMenuComponent {
 
   constructor(
-    private nav: NavController,
-    private viewCtrl: ViewController,
-    private authApiService: AuthApiService
+    private viewCtrl: ViewController
   ) {}
 
   logout(): void {
-    // Hide popover
-    this.viewCtrl.dismiss();
+    // Note: do not attempt to work with NavController here.
+    // In popovers the NavController is a different instance
+    // and attempting to call NavController.setRoot() to
+    // return to FirstScreen will result in misterious and
+    // spurious errors.
+    // See solution here: https://github.com/ionic-team/ionic/issues/8437#issuecomment-260375966
 
-    // Logout from backend
-    this.authApiService.logout();
-
-    // Erase all previous navigation history and make FirstScreen the root
-    this.nav.setRoot(PageNames.FirstScreen);
+    // Hide popover and report selected action
+    this.viewCtrl.dismiss(UserHeaderMenuActions.logout);
   }
 }
