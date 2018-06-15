@@ -730,6 +730,8 @@ class AppointmentSerializer(AppointmentValidationMixin, serializers.ModelSeriali
                 setattr(appointment, k, v)
             appointment.save()
 
+        appointment.set_status(status=AppointmentStatus.NEW.value, updated_by=stylist.user)
+
         return appointment
 
 
@@ -894,7 +896,7 @@ class AppointmentUpdateSerializer(
             )['total_before_tax']
 
             # update final prices and save appointment
-
+            # TODO: Update appointment prices only if checkout
             appointment_prices: AppointmentPrices = calculate_appointment_prices(
                 price_before_tax=total_client_price_before_tax,
                 include_card_fee=self.validated_data['has_card_fee_included'],
