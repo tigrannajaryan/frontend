@@ -1,3 +1,5 @@
+import * as moment from 'moment';
+
 import { Store } from '@ngrx/store';
 import { Component } from '@angular/core';
 import { AlertController, IonicPage, NavController } from 'ionic-angular';
@@ -10,6 +12,7 @@ import { ServiceItem } from '~/core/stylist-service/stylist-models';
 
 import { Client } from '~/appointment/appointment-add/clients-models';
 import { TodayService as AppointmentService } from '~/today/today.service';
+import { AppointmentDate } from '~/appointment/appointment-date/appointment-dates-service-mock';
 
 import {
   ClearClientsAction,
@@ -24,14 +27,21 @@ import {
   ServicesState
 } from '~/appointment/appointment-services/services.reducer';
 
+import {
+  selectSelectedDate
+} from '~/appointment/appointment-date/appointment-dates.reducer';
+
 @IonicPage()
 @Component({
   selector: 'page-appointment-add',
   templateUrl: 'appointment-add.html'
 })
 export class AppointmentAddComponent {
+  moment = moment;
+
   form: FormGroup;
   selectedClient?: Client;
+  selectedDate?: AppointmentDate;
   selectedService?: ServiceItem;
 
   protected clientsList?: Client[];
@@ -63,6 +73,13 @@ export class AppointmentAddComponent {
       .takeUntil(componentUnloaded(this))
       .subscribe(clients => {
         this.clientsList = clients;
+      });
+
+    this.store
+      .select(selectSelectedDate)
+      .takeUntil(componentUnloaded(this))
+      .subscribe(selectedDate => {
+        this.selectedDate = selectedDate;
       });
   }
 

@@ -33,9 +33,8 @@
 
     <div class="Input">
       <ion-label>Date</ion-label>
-      <ion-datetime displayFormat="D MMMM, YYYY" placeholder="Choose date" formControlName="date"></ion-datetime>
-      <button ion-button clear (click)="selectDate($event)" class="Input-btn" [ngClass]="{ 'is-muted': true }">
-        Select date
+      <button ion-button clear (click)="selectDate($event)" class="Input-btn" [ngClass]="{ 'is-muted': !selectedDate }">
+        {{ selectedDate ? moment(selectedDate.date).format('D MMMM, YYYY') : 'Choose date'}}
       </button>
     </div>
 

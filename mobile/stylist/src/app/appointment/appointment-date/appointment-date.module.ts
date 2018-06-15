@@ -3,12 +3,16 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { IonicPageModule } from 'ionic-angular';
 
-import { servicesReducer } from '~/appointment/appointment-services/services.reducer';
-import { clientsReducer } from '~/appointment/appointment-add/clients.reducer';
-import { ClientsEffects } from '~/appointment/appointment-add/clients.effects';
-import { TodayService as AppointmentService } from '~/today/today.service';
+import {
+  appointmentDatesReducer,
+  appointmentDatesStatePath
+} from '~/appointment/appointment-date/appointment-dates.reducer';
+import {
+  AppointmentDatesEffects
+} from '~/appointment/appointment-date/appointment-dates.effects';
 
 import { AppointmentDateComponent } from '~/appointment/appointment-date/appointment-date';
+import { AppointmentDatesServiceMock } from '~/appointment/appointment-date/appointment-dates-service-mock';
 import { CoreModule } from '~/core/core.module';
 
 @NgModule({
@@ -18,14 +22,13 @@ import { CoreModule } from '~/core/core.module';
   imports: [
     IonicPageModule.forChild(AppointmentDateComponent),
 
-    // StoreModule.forFeature('service', servicesReducer),
-    // StoreModule.forFeature('clients', clientsReducer),
-    // EffectsModule.forFeature([ClientsEffects]),
+    StoreModule.forFeature(appointmentDatesStatePath, appointmentDatesReducer),
+    EffectsModule.forFeature([AppointmentDatesEffects]),
 
     CoreModule
   ],
   providers: [
-    AppointmentService
+    AppointmentDatesServiceMock
   ]
 })
 export class AppointmentAddComponentModule {}

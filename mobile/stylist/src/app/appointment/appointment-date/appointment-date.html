@@ -1,11 +1,11 @@
 <ion-header class="bb-wp-a ion-bb-header"><ion-navbar></ion-navbar></ion-header>
 
 <ion-content padding>
-  <div *ngFor="let day of testData; let i = index" class="DateCard">
-    <div class="DateCard-price">{{ day.price }}</div>
+  <div *ngFor="let day of days | async" class="DateCard" (click)="select(day)">
+    <div class="DateCard-price">{{ day.price }}<sup>USD</sup></div>
     <div class="DateCard-day">
-      <span>{{ moment().add(i, 'days').format('dddd') }}</span>
-      <span>{{ moment().add(i, 'days').format('D MMM') }}</span>
+      <span>{{ moment(day.date).format('dddd') }}</span>
+      <span>{{ moment(day.date).format('D MMM') }}</span>
     </div>
   </div>
 </ion-content>

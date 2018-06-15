@@ -7,6 +7,15 @@
   .DateCard-price {
     margin-bottom: pxtorem10(6);
     font-size: $t-h2;
+
+    sup {
+      position: relative;
+      top: pxtorem10(-4);
+      margin-left: pxtorem10(6);
+      font-size: $t-base;
+      font-weight: bold;
+      color: color($grayscale, 400);
+    }
   }
 
   .DateCard-day {
