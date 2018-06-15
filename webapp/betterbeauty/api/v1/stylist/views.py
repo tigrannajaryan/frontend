@@ -361,7 +361,10 @@ class InvitationView(views.APIView):
     def post(self, request):
         serializer = InvitationSerializer(data=request.data, many=True)
         serializer.is_valid(raise_exception=True)
-        created_objects = serializer.save(stylist=self.request.user.stylist)
+        stylist = self.request.user.stylist
+        created_objects = serializer.save(stylist=stylist)
+        stylist.has_invited_clients = True
+        stylist.save()
         response_status = status.HTTP_200_OK
         if len(created_objects) > 0:
             response_status = status.HTTP_201_CREATED
