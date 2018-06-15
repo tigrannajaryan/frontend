@@ -34,7 +34,7 @@
     <div class="Input">
       <ion-label>Date</ion-label>
       <button ion-button clear (click)="selectDate($event)" class="Input-btn" [ngClass]="{ 'is-muted': !selectedDate }">
-        {{ selectedDate ? moment(selectedDate.date).format('D MMMM, YYYY') : 'Choose date'}}
+        {{ selectedDate ? moment(selectedDate.date).format('D MMMM, YYYY') : 'Choose date' }}
       </button>
     </div>
 
