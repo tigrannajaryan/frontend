@@ -128,7 +128,8 @@ export class AppointmentAddComponent {
   }
 
   async submit(forced = false): Promise<void> {
-    const { client, phone, date, time } = this.form.value;
+    const { client, phone, time } = this.form.value;
+    const date = moment(this.selectedDate.date).format('YYYY-MM-DD');
 
     let clientData;
     if (this.selectedClient) {
@@ -196,7 +197,6 @@ export class AppointmentAddComponent {
     this.form = this.formBuilder.group({
       client: ['', [Validators.required]],
       phone: ['', [Validators.required]],
-      date: ['', [Validators.required]],
       time: ['', [Validators.required]]
     });
   }
