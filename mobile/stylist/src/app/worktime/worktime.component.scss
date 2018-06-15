@@ -1,144 +1,122 @@
 page-worktime-component {
-  .mb_h2{
-    font-size: 1.8em;
-    margin-bottom: 2rem;
+  .title{
+    font-size: pxtoem(30);
+    margin-bottom: 4rem;
+    padding: pxtoem(12) 0 0;
+     
+    p{
+        font-size: pxtoem(10);
+        color: color($grayscale, 400);
+        margin: 1rem 0px;
+        font-weight: normal;
+
+      }
   }
-  .mb_h3{
-    font-size: 1.5em;
-    margin: 3rem 7rem 0rem 7rem;
-    font-weight: normal;
-    text-align: center;
-    line-height: 2.5rem;
-  }
+  //Shifts block
   .workingtime_shifts_block{
     border-radius: 5px;
     padding: 0px;
     margin-bottom: 3rem;
     min-width: 240px;
-  }
+    background: color($colors, white);
+    box-shadow: 0 0 50px 15px color($colors, color7);
 
-  ion-grid.workingtime_shifts_block:nth-child(even){ background-color:#fff0e4;}
-  ion-grid.workingtime_shifts_block:nth-child(odd) { background-color: #e6dce9;}
+    .wd-row ion-col{ 
+      padding: 0px;
+    }
+    .wd-row:first-child ion-col{
+      padding-left: 10px;
+      width: 20%;
+    }
+    .wd-row ion-col:nth-child(2){
+      width: 20%;
+    }
+    .label-md{
+      margin: 13px 0px 0px 10px;
+    }
+    .datetime-md{
+      margin: 5px 8px 13px 10px;
+      border-bottom: 1px solid color($colors, bb_honey);
+      padding: 0px;
+      font-size: $t-h3;
+    }
+    span{
+      padding-top: 5px;
+      font-size: $t-h3;
+      display:inline-block;
+      margin-left: 10px;
+    }
+    // week days greed
+    .wd_greed{
+      width: 88%;
+      background-color: color($colors, white);
+      border-radius:5px;
+      border: 1px solid color($grayscale, 200);
+      box-shadow: 0 0 5px 1px color($colors, color7);
+      margin:10px auto 25px auto;
+    }
+    .wd_greed ion-grid.grid{
+      width: auto;
+      padding: 5px 5px 0px 5px;
+    }
+    .wd_greed a{
+      color: color($grayscale, 800);
+      font-size: $t-small;
+      display: inline-block;
+      padding: 0px 3px 3px 3px;
+      border-bottom:2px solid color($colors, bb_skin);
+      
+    }
+    .wd_greed ion-grid ion-col:nth-child(5) a{
+      padding: 0px 7px 3px 4px;
 
-  .workingtime_shifts_block ion-row ion-col{
-    padding: 0px;
+    }
+    .wd_greed a.disabled{
+      color: color($grayscale, 400);
+      border-bottom:none;
+      box-shadow:none;
+    }
+    .wd_greed ion-row ion-col{
+      padding: 0px 5px;
+    }  
+    //week days end
   }
-  .workingtime_shifts_block ion-row:first-child ion-col{
-    padding-left: 10px;
-    width: 20%;
-  }
-  .workingtime_shifts_block ion-row ion-col:nth-child(2){
-    width: 20%;
-    padding-right: 20px;
-  }
-  .workingtime_shifts_block .label-md{
-    margin: 13px 0px 0px 10px;
-  }
-  .workingtime_shifts_block span{
-    display: inline-block;
-    margin-left: 10px;
-  }
-  .workingtime_shifts_block .datetime-md{
-    margin: 5px 8px 13px 10px;
-    border-bottom: 1px solid #c0c0c0;
-    padding: 0px;
-    font-size: larger;
-  }
-  .workingtime_shifts_block span{
-    padding-top: 5px;
-    font-size:1.5rem;
-    display:inline-block;
-  }
-  .workingtime_shifts_block .wd_greed{
-    width: 88%;
-    background-color: #fff;
-    border-radius:5px;
-    margin:10px auto 25px auto;
-  }
-  .workingtime_shifts_block .wd_greed ion-grid.grid{
-    width: auto;
-    padding: 5px 5px 0px 5px;
-  }
+  //sifts block end
 
-  .workingtime_shifts_block .wd_greed a{
-    color: #000;
-    display: inline-block;
-    padding: 0px 3px 3px 3px;
-    margin-bottom: 1px;
-    border-bottom:1px solid #b26dff ;
-    box-shadow: 0px 1px #8519ff;
-  }
-  .workingtime_shifts_block .wd_greed ion-grid ion-col:nth-child(5) a{
-    padding: 0px 7px 3px 4px;
-
-  }
-  .workingtime_shifts_block .wd_greed a.disabled{
-    color: #c0c0c0;
-    border-bottom:none;
-    box-shadow:none;
-  }
-  .workingtime_shifts_block .wd_greed ion-row ion-col{
-    padding: 0px 5px;
-  }
-
-  div.round_button{
-    border: 1px solid #f5f1f5;
-    border-radius: 50%;
-    width: 100px;
-    height: 100px;
-    padding: auto;
-    margin: auto;
+  .wd-text{
+    font-size: 1.5em;
+    margin: 4rem 7rem 4rem 7rem;
+    font-weight: normal;
     text-align: center;
-
-
+    line-height: 2.5rem;
   }
-  .round_button button{
-    background-color: black;
-    color: #fff;
-    width: 55px;
-    height: 55px;
-    border-radius: 50%;
-    margin: 20% auto;
-    font-size: 2em;
-    -webkit-box-shadow: 2px 2px 25px 0px #0f0f0f;
-    -moz-box-shadow: 2px 2px 25px 0px #0f0f0f;
-    box-shadow: 2px 2px 25px 0px #0f0f0f;
-  }
+
+  //Last row
   .last_row {
     margin:3rem 0rem 2rem 0rem;
     padding-top: 5px;
-    border-top: 1px solid #c0c0c0;
+    border-top: 1px solid color($grayscale, 400);
    font-size: 1.25em;
-  }
-  .last_row ion-col:first-child{
-    min-width: 120px !important;
-  }
+  
+    ion-col:first-child{
+      min-width: 120px !important;
+    }
 
-  .last_row ion-col:nth-child(2){
-    text-align: center;
+    ion-col:nth-child(2){
+      text-align: center;
+    }
+    ion-col:last-child{
+      text-align: right;
+    }
   }
-  .last_row ion-col:last-child{
-    text-align: right;
-  }
-  .add_new_block ion-col:first-child{
+  //last row end
+  .add_new_block ion-col{
     padding-top: 30px;
-    text-align: right;
-
-  }
-  .add_new_block ion-col:last-child{
-    padding-top: 50px;
-    text-align: left;
+   text-align: center;
 
   }
   .button-md{
     text-transform: none;
   }
 
-
-@media (max-width: 500px) {
-  .bb-btn-a {
-    height: 60px;
-    font-size: 1.2em;
-  }
-}
 }

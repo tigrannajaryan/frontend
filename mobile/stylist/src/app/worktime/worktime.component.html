@@ -7,10 +7,13 @@
 <ion-content padding class="worktime">
   <made-nav *ngIf="!isProfile" [activePage]="PageNames.Worktime"></made-nav>
 
-  <h2 class="mb_h2">Hair is my hustle, let's set the schedule</h2>
+  <div class="title">
+      Hair is my hustle,
+     <p>let's set the schedule</p>
+  </div>
   <!--shifts block start -->
   <ion-grid *ngFor="let card of cards" class="workingtime_shifts_block" item-content>
-    <ion-row>
+    <ion-row class="wd-row">
       <ion-col>
         <ion-label>Start</ion-label>
         <ion-datetime displayFormat="h:mm a" pickerFormat="h mm A" [(ngModel)]="card.workStartAt"></ion-datetime>
@@ -24,7 +27,7 @@
         <span>{{ card.getDurationStr() }}</span>
       </ion-col>
     </ion-row>
-    <ion-row>
+    <ion-row  class="wd-row">
       <ion-col>
         <!--Week days grid start-->
         <div class="wd_greed">
@@ -41,17 +44,13 @@
     </ion-row>
   </ion-grid>
   <!--shifts block end -->
-  <h3 class="mb_h3">Add another shift</h3>
+  <h3 class="wd-text">Add another shift</h3>
+  
+  <div text-center> 
+       <button (click)="addNewCard()" ion-button  color="bb_skin" class="bb-btn-a">Add new shift</button>
+  </div>
+  
   <ion-grid>
-    <ion-row class="add_new_block">
-      <ion-col>
-        <div class="round_button">
-          <button (click)="addNewCard()">
-            <i class="bb-icon bb-icon-plus"></i>
-          </button>
-        </div>
-      </ion-col>
-    </ion-row>
     <ion-row class="last_row">
       <ion-col>Hours I slay ‘em</ion-col>
       <ion-col>{{ calcTotals().days }} days</ion-col>
@@ -60,7 +59,10 @@
   </ion-grid>
 
   <!-- TODO: This needs to be extracted as a common component -->
-  <div class="bb-wp-a">
-    <button (click)="saveChanges()" ion-button full color="dark" class="bb-btn-a">{{ isProfile ? 'Save' : 'Next step' }}</button>
-  </div>
+  <div text-center>
+      <button (click)="saveChanges()" ion-button class="bb-btn-circle">
+        <i class="bb-icon bb-icon-confirmation"></i>
+      </button>
+    </div>
+ 
 </ion-content>
