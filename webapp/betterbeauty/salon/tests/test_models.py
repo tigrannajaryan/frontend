@@ -230,8 +230,8 @@ class TestStylist(object):
         )
         appointment.refresh_from_db()
         assert(appointment.status == AppointmentStatus.CANCELLED_BY_CLIENT)
-        assert(appointment.status_updated_by == stylist_data.user)
-        assert(appointment.status_updated_at == stylist_data.get_current_now())
+        assert(appointment.history.latest('moved_at').moved_by == stylist_data.user)
+        assert(appointment.history.latest('moved_at').moved_at == stylist_data.get_current_now())
 
 
 class TestStylistService(object):
