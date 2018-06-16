@@ -15,7 +15,7 @@ from rest_framework import serializers
 
 import appointment.error_constants as appointment_errors
 from appointment.constants import APPOINTMENT_STYLIST_SETTABLE_STATUSES
-from appointment.models import Appointment, AppointmentService
+from appointment.models import Appointment, AppointmentService, AppointmentStatusHistory
 from appointment.types import AppointmentStatus
 from client.models import Client
 from core.models import TemporaryFile, User
@@ -731,8 +731,11 @@ class AppointmentSerializer(AppointmentValidationMixin, serializers.ModelSeriali
             for k, v in appointment_prices._asdict().items():
                 setattr(appointment, k, v)
             appointment.save()
-
-        appointment.set_status(status=AppointmentStatus.NEW.value, updated_by=stylist.user)
+            current_now = appointment.stylist.get_current_now()
+            AppointmentStatusHistory.objects.create(appointment=appointment,
+                                                    status=appointment.status,
+                                                    updated_at=current_now,
+                                                    updated_by=stylist.user)
 
         return appointment
 
@@ -892,7 +895,13 @@ class AppointmentUpdateSerializer(
                 self._update_appointment_services(
                     appointment, self.validated_data['services']
                 )
-            appointment.set_status(status, user)
+            if appointment.status != status:
+                appointment.status = status
+                current_now = appointment.stylist.get_current_now()
+                AppointmentStatusHistory.objects.create(appointment=appointment,
+                                                        status=status,
+                                                        updated_at=current_now,
+                                                        updated_by=user)
             total_client_price_before_tax: Decimal = appointment.services.aggregate(
                 total_before_tax=Coalesce(Sum('client_price'), 0)
             )['total_before_tax']
