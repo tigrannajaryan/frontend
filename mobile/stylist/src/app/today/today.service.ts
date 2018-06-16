@@ -5,9 +5,9 @@ import { Logger } from '~/shared/logger';
 import { ServerStatusTracker } from '~/shared/server-status-tracker';
 import {
   Appointment,
+  AppointmentChangeRequest,
   AppointmentPreviewRequest,
   AppointmentPreviewResponse,
-  AppointmentStatus,
   NewAppointment,
   Today
 } from '~/today/today.models';
@@ -59,9 +59,9 @@ export class TodayService extends BaseApiService {
   }
 
   /**
-   * Set appointment by id. The stylist must be already authenticated as a user.
+   * Change appointment by uuid.
    */
-  setAppointment(appointmentUuid: string, data: AppointmentStatus): Promise<AppointmentStatus[]> {
-    return this.post<AppointmentStatus[]>(`stylist/appointments/${appointmentUuid}`, data);
+  changeAppointment(appointmentUuid: string, data: AppointmentChangeRequest): Promise<Appointment> {
+    return this.post<Appointment>(`stylist/appointments/${appointmentUuid}`, data);
   }
 }

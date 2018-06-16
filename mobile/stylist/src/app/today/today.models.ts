@@ -7,8 +7,10 @@ export enum AppointmentStatuses {
   checked_out = 'checked_out'
 }
 
-export interface AppointmentStatus {
+export interface AppointmentChangeRequest {
   status: AppointmentStatuses;
+  has_tax_included?: boolean;
+  has_card_fee_included?: boolean;
   services?: CheckOutService[];
 }
 
@@ -37,7 +39,6 @@ export interface AppointmentService {
   client_price: number;
   regular_price: number;
   is_original: boolean;
-
   isChecked?: boolean;
 }
 
@@ -71,7 +72,7 @@ export interface Today {
   past_visits_count: number;
 }
 
-export interface CheckOut {
+export interface CheckoutRequest {
   status: AppointmentStatuses;
   services: CheckOutService[];
   has_tax_included: boolean;

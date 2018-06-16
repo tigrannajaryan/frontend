@@ -4,35 +4,51 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { TodayService } from '~/today/today.service';
 import {
   Appointment,
+  AppointmentChangeRequest,
   AppointmentPreviewRequest,
   AppointmentPreviewResponse,
   AppointmentService,
   AppointmentStatuses,
-  CheckOut,
   CheckOutService
 } from '~/today/today.models';
 import { loading } from '~/core/utils/loading';
+import { PageNames } from '~/core/page-names';
+import { AddServicesComponentParams } from '~/core/popups/add-services/add-services.component';
+import { ServiceItem } from '~/core/stylist-service/stylist-models';
 
 export interface AppointmentCheckoutParams {
   appointmentUuid: string;
-  services?: AppointmentService[];
 }
 
+/**
+ * This screen shows the appointment that we are about to checkout
+ * and shows the preview of total price, tax, card fee, the list
+ * of included services and allows modifying the list.
+ */
 @IonicPage({ segment: 'appointment-checkout/:appointmentUuid' })
 @Component({
   selector: 'page-checkout',
   templateUrl: 'appointment-checkout.component.html'
 })
 export class AppointmentCheckoutComponent {
-  protected appointment: Appointment;
+  // The following field is returned by the server as a result
+  // of us asking for a preview of what the appointment will look
+  // like if we checkout using provided list of services.
   protected previewResponse: AppointmentPreviewResponse;
-  private params: AppointmentCheckoutParams;
-  private hasTaxIncluded: boolean;
-  private hasCardFeeIncluded: boolean;
 
-  static getServicesUuid(services: AppointmentService[]): CheckOutService[] {
-    return services.map(item => ({ service_uuid: item.service_uuid }));
-  }
+  // The details of the appointment
+  protected appointment: Appointment;
+
+  // The state of 2 toggles for tax and card fee
+  protected hasTaxIncluded: boolean;
+  protected hasCardFeeIncluded: boolean;
+
+  // The initial state of this screen that we need to show
+  private params: AppointmentCheckoutParams;
+
+  // Services that are currently selected for this checkout
+  // and are visible on screen.
+  private selectedServices: CheckOutService[];
 
   constructor(
     private navCtrl: NavController,
@@ -41,40 +57,29 @@ export class AppointmentCheckoutComponent {
   ) {
   }
 
-  ionViewWillEnter(): void {
-    this.init();
-  }
-
-  async init(): Promise<void> {
-    this.params = await this.navParams.data as AppointmentCheckoutParams;
-
-    if (this.params) {
-      if (this.params.appointmentUuid) {
-        this.appointment = await this.todayService.getAppointmentById(this.params.appointmentUuid);
-        this.hasTaxIncluded = this.appointment.has_tax_included;
-        this.hasCardFeeIncluded = this.appointment.has_card_fee_included;
-      }
-
-      if (this.params.services) {
-        this.appointment.services = this.params.services;
-      }
+  async ionViewWillEnter(): Promise<void> {
+    if (!this.params) {
+      // Entering this view for the first time. Load the data.
+      this.params = this.navParams.get('data') as AppointmentCheckoutParams;
+      this.appointment = await this.todayService.getAppointmentById(this.params.appointmentUuid);
+      this.selectedServices = this.appointment.services.map(el => ({ service_uuid: el.service_uuid }));
+      this.hasTaxIncluded = this.appointment.has_tax_included;
+      this.hasCardFeeIncluded = this.appointment.has_card_fee_included;
     }
-
-    await this.updatePreview();
+    this.updatePreview();
   }
 
+  /**
+   * Sends currently selected set of services and calculation options
+   * to the backend and receives a preview of final total price, etc,
+   * then updates the screen with received data.
+   */
   @loading
   async updatePreview(): Promise<void> {
-    let services = [];
-    if (this.previewResponse && this.previewResponse.services) {
-      services = AppointmentCheckoutComponent.getServicesUuid(this.previewResponse.services);
-    } else {
-      services = AppointmentCheckoutComponent.getServicesUuid(this.appointment.services);
-    }
     const appointmentPreview: AppointmentPreviewRequest = {
       appointment_uuid: this.params.appointmentUuid,
       datetime_start_at: this.appointment.datetime_start_at,
-      services,
+      services: this.selectedServices,
       has_tax_included: this.hasTaxIncluded,
       has_card_fee_included: this.hasCardFeeIncluded
     };
@@ -84,83 +89,50 @@ export class AppointmentCheckoutComponent {
     this.hasCardFeeIncluded = this.previewResponse.has_card_fee_included;
   }
 
-  protected confirmCheckout(): void {
-    const checkOut: CheckOut = {
-      status: AppointmentStatuses.checked_out,
-      services: AppointmentCheckoutComponent.getServicesUuid(this.appointment.services),
-      has_tax_included: this.hasTaxIncluded,
-      has_card_fee_included: this.hasCardFeeIncluded
-    };
-
-    const data = {
-      appointmentUuid: this.params.appointmentUuid,
-      body: checkOut
-    };
-
-    this.navCtrl.push('ConfirmCheckoutComponent', data);
-  }
-
-  protected removeServiceItem(services: AppointmentService[], i: number): void {
-    services.splice(i, 1);
+  protected removeServiceClick(service: AppointmentService): void {
+    const i = this.selectedServices.findIndex(el => el.service_uuid === service.service_uuid);
+    if (i >= 0) {
+      this.selectedServices.splice(i, 1);
+    }
 
     this.updatePreview();
   }
 
-  protected addServices(): void {
-    const services: CheckOutService[] = AppointmentCheckoutComponent.getServicesUuid(this.appointment.services);
-
-    const data = {
+  protected addServicesClick(): void {
+    const data: AddServicesComponentParams = {
       appointmentUuid: this.params.appointmentUuid,
-      services
+      selectedServices: this.selectedServices,
+      onComplete: this.onAddServices.bind(this)
     };
 
-    this.navCtrl.push('AddServicesComponent', data);
+    this.navCtrl.push(PageNames.AddServicesComponent, { data });
   }
 
-  // TODO: uncomment when api will be ready
-  // protected changeServiceItem(services: AppointmentService[], i: number): void {
-  //   const buttons = [
-  //     {
-  //       text: 'Edit',
-  //       handler: () => {
-  //         this.editServiceIem(services[i]);
-  //       }
-  //     }, {
-  //       text: 'Delete Service',
-  //       role: 'destructive',
-  //       handler: () => {
-  //         this.removeServiceItem(services, i);
-  //       }
-  //     }, {
-  //       text: 'Cancel',
-  //       role: 'cancel'
-  //     }
-  //   ];
-  //
-  //   const actionSheet = this.actionSheetCtrl.create({ buttons });
-  //   actionSheet.present();
-  // }
-  //
-  // protected editServiceIem(services: AppointmentService): void {
-  //   const prompt = this.alertCtrl.create({
-  //     title: 'Edit service price',
-  //     inputs: [
-  //       {
-  //         name: 'client_price',
-  //         value: `${services.client_price}`,
-  //         placeholder: 'Price'
-  //       }
-  //     ],
-  //     buttons: [
-  //       { text: 'Cancel' },
-  //       {
-  //         text: 'Save',
-  //         handler: data => {
-  //           services.client_price = data.client_price;
-  //         }
-  //       }
-  //     ]
-  //   });
-  //   prompt.present();
-  // }
+  /**
+   * This callback is called by AddServicesComponent when it is about to close.
+   */
+  protected onAddServices(addedServices: ServiceItem[]): void {
+    // Update list of selected services
+    this.selectedServices = addedServices.map(serviceItem => ({ service_uuid: serviceItem.service_uuid }));
+
+    // Close AddServicesComponent page and show this page
+    this.navCtrl.pop();
+  }
+
+  protected async finalizeCheckoutClick(): Promise<void> {
+    const request: AppointmentChangeRequest = {
+      status: AppointmentStatuses.checked_out,
+      services: this.selectedServices,
+      has_card_fee_included: this.hasCardFeeIncluded,
+      has_tax_included: this.hasTaxIncluded
+    };
+
+    await this.todayService.changeAppointment(this.params.appointmentUuid, request);
+
+    // Replace current page with checkout confirmation page. We push the new page first
+    // and then remove the current page to avoid 2 UI transitions.
+    const current = this.navCtrl.length() - 1;
+    this.navCtrl.push(PageNames.ConfirmCheckoutComponent);
+    this.navCtrl.remove(current);
+  }
 }

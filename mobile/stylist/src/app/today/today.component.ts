@@ -3,12 +3,10 @@ import {
   ActionSheetController,
   AlertController,
   IonicPage,
-  LoadingController,
   NavController, NavParams
 } from 'ionic-angular';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs/Subscription';
-import { Loading } from 'ionic-angular/components/loading/loading';
 
 import {
   LoadAction,
@@ -21,6 +19,7 @@ import { Appointment } from '~/today/today.models';
 import { TodayService } from '~/today/today.service';
 import { PageNames } from '~/core/page-names';
 import { AppointmentCheckoutParams } from '~/appointment/appointment-checkout/appointment-checkout.component';
+import { loading } from '~/core/utils/loading';
 
 @IonicPage({ segment: 'today' })
 @Component({
@@ -39,16 +38,21 @@ export class TodayComponent {
     public navParams: NavParams,
     public todayService: TodayService,
     public alertCtrl: AlertController,
-    private loadingCtrl: LoadingController,
     private store: Store<TodayState>,
     private actionSheetCtrl: ActionSheetController
   ) {
   }
 
   async ionViewDidEnter(): Promise<void> {
-    await this.checkedOutProcess(this.navParams.get('appointmentUuid'));
+    // Subscribe to receive updates on todayState data.
+    this.stateSubscription = await this.store.select(selectTodayState)
+      .subscribe(todayState => {
+        // Received new state. Update the view.
+        this.today = todayState.today;
+      });
 
-    this.updateTodayPage();
+    // Initiate loading the today data.
+    this.store.dispatch(new LoadAction());
   }
 
   ionViewDidLeave(): void {
@@ -59,44 +63,17 @@ export class TodayComponent {
 
   /***
    * Update today page data
-   * @param {boolean} hasLoader if true loader will start in this function
-   * @param {() => void} callBack run in the end of function
-   * @returns {Promise<void>}
    */
-  async updateTodayPage(hasLoader = true, callBack?: () => void): Promise<void> {
-    let loader: Loading;
-    if (hasLoader) {
-      loader = this.loadingCtrl.create();
-      loader.present();
-    }
-
-    // Subscribe to receive updates on todayState data.
-    this.stateSubscription = await this.store.select(selectTodayState)
-      .subscribe(todayState => {
-        // Received new state. Update the view.
-        this.today = todayState.today;
-
-        // TODO: process the rest of the state
-      });
-
-    // Initiate loading the today data.
+  protected refresh(): void {
     this.store.dispatch(new LoadAction());
-
-    if (hasLoader) {
-      loader.dismiss();
-    }
-
-    if (callBack) {
-      callBack();
-    }
   }
 
-  onAppointmentClick(appointment: Appointment): void {
+  protected onAppointmentClick(appointment: Appointment): void {
     const buttons = [
       {
         text: 'Checkout Client',
         handler: () => {
-          this.checkOutAppointment(appointment);
+          this.checkOutAppointmentClick(appointment);
         }
       }, {
         text: 'Delete Appointment',
@@ -115,33 +92,19 @@ export class TodayComponent {
   }
 
   /**
-   * Handler for appointment-checkout appointment event.
+   * Handler for 'Checkout Client' action.
    */
-  async checkOutAppointment(appointment: Appointment): Promise<void> {
+  protected checkOutAppointmentClick(appointment: Appointment): void {
     const data: AppointmentCheckoutParams = { appointmentUuid: appointment.uuid };
-    this.navCtrl.push(PageNames.AppointmentCheckout, data);
+    this.navCtrl.push(PageNames.AppointmentCheckout, { data });
   }
 
   /**
-   * Handler for appointment-checkout appointment when we come back from check out page.
+   * Handler for 'Cancel' action.
    */
-  checkedOutProcess(appointmentUuid: string): void {
-    if (appointmentUuid) {
-      this.todayService.setAppointment(appointmentUuid, { status: AppointmentStatuses.checked_out });
-    }
-  }
-
-  /**
-   * Handler for cancel appointment event
-   */
-  async cancelAppointment(appointment: Appointment): Promise<void> {
-    const loader = this.loadingCtrl.create();
-    loader.present();
-
-    await this.todayService.setAppointment(appointment.uuid, { status: AppointmentStatuses.cancelled_by_stylist });
-
-    this.updateTodayPage(false, () => {
-      loader.dismiss();
-    });
+  @loading
+  protected async cancelAppointment(appointment: Appointment): Promise<void> {
+    await this.todayService.changeAppointment(appointment.uuid, { status: AppointmentStatuses.cancelled_by_stylist });
+    this.refresh();
   }
 }
