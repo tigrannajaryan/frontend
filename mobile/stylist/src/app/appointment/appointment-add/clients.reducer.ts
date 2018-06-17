@@ -3,7 +3,8 @@ import { Client } from '~/appointment/appointment-add/clients-models';
 
 export enum clientsActionTypes {
   SEARCH = 'CLIENTS_SEARCH',
-  SEARCH_SUCCESS = 'CLIENTS_SEARCH_SUCCESS'
+  SEARCH_SUCCESS = 'CLIENTS_SEARCH_SUCCESS',
+  CLEAR = 'CLIENTS_CLEAR'
 }
 
 export interface ClientsState {
@@ -24,9 +25,14 @@ export class SearchSuccessAction implements Action {
   constructor(public clients: Client[]) { }
 }
 
+export class ClearClientsAction implements Action {
+  readonly type = clientsActionTypes.CLEAR;
+}
+
 type Actions =
   | SearchAction
-  | SearchSuccessAction;
+  | SearchSuccessAction
+  | ClearClientsAction;
 
 export function clientsReducer(state: ClientsState = initialState, action: Actions): ClientsState {
   switch (action.type) {
@@ -34,6 +40,12 @@ export function clientsReducer(state: ClientsState = initialState, action: Actio
       return {
         ...state,
         all: action.clients
+      };
+
+    case clientsActionTypes.CLEAR:
+      return {
+        ...state,
+        all: []
       };
 
     default:

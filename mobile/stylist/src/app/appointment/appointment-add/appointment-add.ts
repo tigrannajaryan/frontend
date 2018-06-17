@@ -12,6 +12,7 @@ import { Client } from '~/appointment/appointment-add/clients-models';
 import { TodayService as AppointmentService } from '~/today/today.service';
 
 import {
+  ClearClientsAction,
   ClientsState,
   SearchAction,
   selectFoundClients
@@ -105,7 +106,7 @@ export class AppointmentAddComponent {
   }
 
   async submit(forced = false): Promise<void> {
-    const { client, date, time } = this.form.value;
+    const { client, phone, date, time } = this.form.value;
 
     let clientData;
     if (this.selectedClient) {
@@ -113,6 +114,7 @@ export class AppointmentAddComponent {
     } else {
       const [ firstName, lastName ] = client.trim().split(/(^[^\s]+)/).slice(-2);
       clientData = {
+        phone,
         client_first_name: firstName,
         client_last_name: lastName.trim() // remove leading \s
       };
@@ -157,6 +159,7 @@ export class AppointmentAddComponent {
     try {
       await this.appointmentService.createAppointment(data, forced);
       this.store.dispatch(new ClearSelectedServiceAction());
+      this.store.dispatch(new ClearClientsAction());
       this.navCtrl.pop();
     } catch (e) {
       const dateTimeError = e.errors && e.errors.get('datetime_start_at');
