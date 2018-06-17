@@ -63,8 +63,8 @@ class TestClientSearchView(object):
         # stray_client
         user_1 = G(
             User,
-            first_name='Fred',
-            last_name='McBob',
+            first_name='Jenny',
+            last_name='McDonald',
             phone='123456',
             role=UserRole.CLIENT
         )
@@ -76,8 +76,8 @@ class TestClientSearchView(object):
         # client that our stylist has appointments with
         user_2 = G(
             User,
-            first_name='Fred_ours',
-            last_name='McBob_ours',
+            first_name='Fred',
+            last_name='McBob',
             phone='123457',
             role=UserRole.CLIENT
         )
@@ -88,7 +88,7 @@ class TestClientSearchView(object):
         G(Appointment, stylist=stylist, client=our_client)
 
         no_results = ClientSearchView()._search_clients(
-            stylist, 'Gemma'
+            stylist, 'Jenny'
         )
         assert(no_results.count() == 0)
         results = ClientSearchView()._search_clients(
@@ -96,3 +96,15 @@ class TestClientSearchView(object):
         )
         assert(results.count() == 1)
         assert(results.last() == our_client)
+
+        results = ClientSearchView()._search_clients(
+            stylist, 'Fred mc'
+        )
+        assert (results.count() == 1)
+        assert (results.last() == our_client)
+
+        results = ClientSearchView()._search_clients(
+            stylist, 'mcbob fr'
+        )
+        assert (results.count() == 1)
+        assert (results.last() == our_client)
