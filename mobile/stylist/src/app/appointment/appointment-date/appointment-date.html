@@ -1,11 +1,13 @@
 <ion-header class="bb-wp-a ion-bb-header"><ion-navbar></ion-navbar></ion-header>
 
 <ion-content padding>
-  <div *ngFor="let day of days | async" class="DateCard" (click)="select(day)">
-    <div class="DateCard-price">{{ day.price }}<sup>USD</sup></div>
-    <div class="DateCard-day">
-      <span>{{ moment(day.date).format('dddd') }}</span>
-      <span>{{ moment(day.date).format('D MMM') }}</span>
+  <div class="AppointmentDate-dates">
+    <div *ngIf="days">
+      <div *ngFor="let day of days" class="DateCard" (click)="select(day)">
+        <div class="DateCard-price">${{ day.price }}</div>
+        <div class="DateCard-day">{{ moment(day.date).format('dddd, D MMM') }}</div>
+      </div>
     </div>
+    <canvas #canvas class="AppointmentDate-canvas"></canvas>
   </div>
 </ion-content>

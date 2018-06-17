@@ -1,55 +1,33 @@
-.DateCard {
-  padding: pxtorem10(14) pxtorem10(25);
-  margin-bottom: pxtorem10(18);
-  border-radius: 5px;
-  box-shadow: 0 4px 40px color($grayscale, 200);
-
-  .DateCard-price {
-    margin-bottom: pxtorem10(6);
-    font-size: $t-h2;
-
-    sup {
-      position: relative;
-      top: pxtorem10(-4);
-      margin-left: pxtorem10(6);
-      font-size: $t-base;
-      font-weight: bold;
-      color: color($grayscale, 400);
-    }
+page-appointment-date {
+  .AppointmentDate-dates {
+    position: relative;
   }
 
-  .DateCard-day {
-    font-size: $t-base;
-    color: color($grayscale, 500);
+  .AppointmentDate-canvas {
+    $date-card-size: 94px;
 
-    span {
-      $left-offset: 18;
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 200px;
+    height: $date-card-size * 14 - 18px;
+    pointer-events: none;
+  }
 
-      position: relative;
-      margin-left: pxtorem10($left-offset);
+  .DateCard {
+    padding: pxtorem10(14) pxtorem10(25);
+    margin-bottom: pxtorem10(18);
+    border-radius: 5px;
+    box-shadow: 0 4px 40px color($grayscale, 200);
 
-      &:before {
-        $size: 4px;
+    .DateCard-price {
+      margin-bottom: pxtorem10(6);
+      font-size: $t-h2;
+    }
 
-        position: absolute;
-        top: 50%;
-        left: -1 * ($left-offset + $size + 2) / 2;
-        display: block;
-        width: $size;
-        height: $size;
-        margin-top: -1 * $size / 2;
-        content: ''; // to become visible
-        background: color($grayscale, 300);
-        border-radius: 50%;
-      }
-
-      &:first-child {
-        margin-left: 0;
-      }
-
-      &:first-child:before {
-        display: none;
-      }
+    .DateCard-day {
+      font-size: $t-base;
+      color: color($grayscale, 500);
     }
   }
 }
