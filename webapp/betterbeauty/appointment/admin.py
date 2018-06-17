@@ -57,8 +57,7 @@ class AppointmentAdminForm(forms.ModelForm):
 
 class AppointmentAdmin(admin.ModelAdmin):
     readonly_fields = [
-        'deleted_at', 'deleted_by', 'status_updated_by', 'status_updated_at',
-        'created_at', 'created_by',
+        'deleted_at', 'deleted_by', 'created_at', 'created_by',
     ]
     form = AppointmentAdminForm
 

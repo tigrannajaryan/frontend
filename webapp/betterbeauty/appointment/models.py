@@ -2,7 +2,7 @@ import datetime
 
 from uuid import uuid4
 
-from django.db import models
+from django.db import models, transaction
 from django.db.models import Sum
 from django.db.models.functions import Coalesce
 
@@ -43,11 +43,6 @@ class Appointment(models.Model):
 
     status = models.CharField(
         max_length=30, choices=APPOINTMENT_STATUS_CHOICES, default=AppointmentStatus.NEW)
-    status_updated_at = models.DateTimeField(null=True, default=None)
-    status_updated_by = models.ForeignKey(
-        User, null=True, default=None, on_delete=models.PROTECT,
-        related_name='updated_appointments'
-    )
 
     created_at = models.DateTimeField(auto_now_add=True)
     created_by = models.ForeignKey(
@@ -89,18 +84,34 @@ class Appointment(models.Model):
         )
 
     def set_status(self, status: AppointmentStatus, updated_by: User):
-        current_now = self.stylist.get_current_now()
+        with transaction.atomic():
+            current_now = self.stylist.get_current_now()
 
-        self.status = status
-        self.status_updated_by = updated_by
-        self.status_updated_at = current_now
-        self.save(update_fields=['status', 'status_updated_by', 'status_updated_at', ])
+            self.status = status
+            self.save(update_fields=['status', ])
+            AppointmentStatusHistory.objects.create(appointment=self,
+                                                    status=status,
+                                                    updated_at=current_now,
+                                                    updated_by=updated_by)
 
     @property
     def duration(self) -> datetime.timedelta:
         return self.services.all().aggregate(
             total_duration=Coalesce(Sum('duration'), datetime.timedelta(0))
         )['total_duration']
+
+
+class AppointmentStatusHistory(models.Model):
+    appointment = models.ForeignKey(Appointment, related_name='history',
+                                    on_delete=models.CASCADE)
+    status = models.CharField(max_length=30, choices=APPOINTMENT_STATUS_CHOICES,
+                              default=AppointmentStatus.NEW)
+    updated_at = models.DateTimeField(auto_now_add=True)
+    updated_by = models.ForeignKey(User, related_name='appointment_updates',
+                                   on_delete=models.PROTECT)
+
+    class Meta:
+        db_table = 'appointment_status_history'
 
 
 class AppointmentService(models.Model):
