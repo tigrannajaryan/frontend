@@ -114,7 +114,7 @@ describe('Pages: Add Appointment', () => {
     // add missed values
     instance.form.patchValue({
       client: `${client.first_name} ${client.last_name}`,
-      phone: faker.phone.phoneNumber(),
+      phone: client.phone,
       date: nextWeek.format('YYYY-MM-DD'),
       time: nextWeek.format('HH:mm')
     });
@@ -123,6 +123,7 @@ describe('Pages: Add Appointment', () => {
     const data = {
       client_first_name: client.first_name,
       client_last_name: client.last_name,
+      phone: client.phone,
       services: [{ service_uuid: fakeService.uuid }],
       datetime_start_at: nextWeek.format('YYYY-MM-DDTHH:mm:00')
     };
