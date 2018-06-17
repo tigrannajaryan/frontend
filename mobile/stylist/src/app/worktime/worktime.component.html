@@ -8,8 +8,8 @@
   <made-nav *ngIf="!isProfile" [activePage]="PageNames.Worktime"></made-nav>
 
   <div class="title">
-      Hair is my hustle,
-     <p>let's set the schedule</p>
+    Hair is my hustle,
+    <p>let's set the schedule</p>
   </div>
   <!--shifts block start -->
   <ion-grid *ngFor="let card of cards" class="workingtime_shifts_block" item-content>
@@ -27,7 +27,7 @@
         <span>{{ card.getDurationStr() }}</span>
       </ion-col>
     </ion-row>
-    <ion-row  class="wd-row">
+    <ion-row class="wd-row">
       <ion-col>
         <!--Week days grid start-->
         <div class="wd_greed">
@@ -38,18 +38,18 @@
               </ion-col>
             </ion-row>
           </ion-grid>
-      </div>
+        </div>
         <!--Week days grid start-->
       </ion-col>
     </ion-row>
   </ion-grid>
   <!--shifts block end -->
   <h3 class="wd-text">Add another shift</h3>
-  
-  <div text-center> 
-       <button (click)="addNewCard()" ion-button  color="bb_skin" class="bb-btn-a">Add new shift</button>
+
+  <div text-center>
+    <button (click)="addNewCard()" ion-button color="bb_skin" class="bb-btn-a">Add new shift</button>
   </div>
-  
+
   <ion-grid>
     <ion-row class="last_row">
       <ion-col>Hours I slay ‘em</ion-col>
@@ -60,9 +60,9 @@
 
   <!-- TODO: This needs to be extracted as a common component -->
   <div text-center>
-      <button (click)="saveChanges()" ion-button class="bb-btn-circle">
-        <i class="bb-icon bb-icon-confirmation"></i>
-      </button>
-    </div>
- 
+    <button (click)="saveChanges()" ion-button class="bb-btn-circle">
+      <i class="bb-icon bb-icon-confirmation"></i>
+    </button>
+  </div>
+
 </ion-content>

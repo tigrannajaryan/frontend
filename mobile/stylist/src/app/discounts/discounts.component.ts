@@ -130,7 +130,7 @@ export class DiscountsComponent {
    * show alert if we have no discounts,
    * save data on server
    */
-  saveDiscounts(): void {
+  saveChanges(): void {
     if (!this.hasDiscounts()) { // TODO: use promise and one-directional flow
       const modal = this.modalCtrl.create(PageNames.DiscountsAlert);
       modal.onDidDismiss((confirmNoDiscount: boolean) => {

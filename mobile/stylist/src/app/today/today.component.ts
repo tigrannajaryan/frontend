@@ -82,7 +82,7 @@ export class TodayComponent {
           this.cancelAppointment(appointment);
         }
       }, {
-        text: 'Cancel',
+        text: 'Back',
         role: 'cancel'
       }
     ];

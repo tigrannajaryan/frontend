@@ -41,7 +41,8 @@
 
 
 
-    <div *ngIf="discounts.first_booking >= 0 || discounts.rebook_within_1_week >= 0 || discounts.rebook_within_2_weeks >= 0" class="bb-wp-a bb-table">
+    <div *ngIf="discounts.first_booking >= 0 || discounts.rebook_within_1_week >= 0 || discounts.rebook_within_2_weeks >= 0"
+      class="bb-wp-a bb-table">
       <div class="bb-table-title">More custom pricing</div>
 
       <ion-list class="bb-table ion-bb-sliding">
@@ -84,11 +85,12 @@
       </ion-list>
     </div>
 
+  </div>
 
-    <div class="bb-wp-a">
-      <button (click)="saveDiscounts()" ion-button full color="dark" class="bb-btn-a">
-        Save pricing
-      </button>
-    </div>
+  <!-- TODO: This needs to be extracted as a common component -->
+  <div text-center>
+    <button (click)="saveChanges()" ion-button class="bb-btn-circle">
+      <i class="bb-icon bb-icon-confirmation"></i>
+    </button>
   </div>
 </ion-content>
