@@ -4,6 +4,7 @@ from typing import List, Optional
 
 from annoying.functions import get_object_or_None
 from dateutil.parser import parse
+from django.db import transaction
 
 from django.db.models import Q, QuerySet
 
@@ -361,7 +362,11 @@ class InvitationView(views.APIView):
     def post(self, request):
         serializer = InvitationSerializer(data=request.data, many=True)
         serializer.is_valid(raise_exception=True)
-        created_objects = serializer.save(stylist=self.request.user.stylist)
+        stylist = self.request.user.stylist
+        with transaction.atomic():
+            created_objects = serializer.save(stylist=stylist)
+            stylist.has_invited_clients = True
+            stylist.save(update_fields=['has_invited_clients'])
         response_status = status.HTTP_200_OK
         if len(created_objects) > 0:
             response_status = status.HTTP_201_CREATED
