@@ -3,6 +3,8 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { IonicPageModule } from 'ionic-angular';
 
+import { ChartComponent } from '~/appointment/appointment-date/chart.component';
+
 import {
   appointmentDatesReducer,
   appointmentDatesStatePath
@@ -17,7 +19,8 @@ import { CoreModule } from '~/core/core.module';
 
 @NgModule({
   declarations: [
-    AppointmentDateComponent
+    AppointmentDateComponent,
+    ChartComponent
   ],
   imports: [
     IonicPageModule.forChild(AppointmentDateComponent),

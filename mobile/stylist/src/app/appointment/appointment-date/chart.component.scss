@@ -1,0 +1,10 @@
+made-chart .Chart-canvas {
+  $date-card-size: 94px;
+
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 200px;
+  height: $date-card-size * 14 - 18px;
+  pointer-events: none;
+}

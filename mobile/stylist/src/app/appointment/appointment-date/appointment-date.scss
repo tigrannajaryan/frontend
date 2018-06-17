@@ -3,17 +3,6 @@ page-appointment-date {
     position: relative;
   }
 
-  .AppointmentDate-canvas {
-    $date-card-size: 94px;
-
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 200px;
-    height: $date-card-size * 14 - 18px;
-    pointer-events: none;
-  }
-
   .DateCard {
     padding: pxtorem10(14) pxtorem10(25);
     margin-bottom: pxtorem10(18);
