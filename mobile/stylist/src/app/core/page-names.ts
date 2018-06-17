@@ -13,6 +13,7 @@ export enum PageNames {
   AppointmentDate = 'AppointmentDateComponent',
   AppointmentCheckout = 'AppointmentCheckoutComponent',
   ChangePercent = 'ChangePercentComponent',
+  ConfirmCheckoutComponent = 'ConfirmCheckoutComponent',
   Discounts = 'DiscountsComponent',
   DiscountsAlert = 'DiscountsAlertComponent',
   DiscountsChange = 'DiscountsChangeComponent',
