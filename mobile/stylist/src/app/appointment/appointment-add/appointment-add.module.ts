@@ -7,9 +7,9 @@ import { servicesReducer } from '~/appointment/appointment-services/services.red
 import { clientsReducer } from '~/appointment/appointment-add/clients.reducer';
 import { ClientsEffects } from '~/appointment/appointment-add/clients.effects';
 import { TodayService as AppointmentService } from '~/today/today.service';
-import { ClientsServiceMock } from './clients-service-mock';
+import { ClientsService } from '~/appointment/appointment-add/clients-service';
 
-import { AppointmentAddComponent } from './appointment-add';
+import { AppointmentAddComponent } from '~/appointment/appointment-add/appointment-add';
 import { CoreModule } from '~/core/core.module';
 
 @NgModule({
@@ -26,8 +26,8 @@ import { CoreModule } from '~/core/core.module';
     CoreModule
   ],
   providers: [
-    ClientsServiceMock,
-    AppointmentService
+    AppointmentService,
+    ClientsService
   ]
 })
 export class AppointmentAddComponentModule {}

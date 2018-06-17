@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { timer } from 'rxjs/observable/timer';
 import { debounce } from 'rxjs/operators';
 
-import { ClientsServiceMock } from '~/appointment/appointment-add/clients-service-mock';
+import { ClientsService } from '~/appointment/appointment-add/clients-service';
 
 import {
   clientsActionTypes,
@@ -20,14 +20,14 @@ export class ClientsEffects {
     .pipe(debounce(() => timer(400)))
     .map((action: SearchAction) => action)
     .switchMap(action => Observable.defer(async () => {
-      const clients = await this.clientsService.search(action.query);
+      const { clients } = await this.clientsService.search(action.query);
       const firstThreeOnly = clients.slice(0, 3);
       return new SearchSuccessAction(firstThreeOnly);
     }));
 
   constructor(
     private actions: Actions,
-    private clientsService: ClientsServiceMock
+    private clientsService: ClientsService
   ) {
   }
 }

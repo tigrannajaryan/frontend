@@ -62,22 +62,41 @@ export class AppointmentAddComponent {
       .takeUntil(componentUnloaded(this))
       .subscribe(clients => {
         this.clientsList = clients;
-        this.selectedClient = undefined;
       });
   }
 
   search(): void {
     const { client: query } = this.form.value;
-    this.store.dispatch(new SearchAction(query));
+    if (query.trim().length >= 2) { // type 2 symbols to search
+      this.store.dispatch(new SearchAction(query));
+    }
+  }
+
+  getClientFullName(client: Client): string | void {
+    return client && `${client.first_name} ${client.last_name}`;
+  }
+
+  clearSelectedClient(): void {
+    const { client: query } = this.form.value;
+    const isNewClient = this.selectedClient && this.getClientFullName(this.selectedClient) !== query.trim();
+    if (isNewClient) {
+      delete this.selectedClient;
+    }
+  }
+
+  clearClientsList(): void {
+    setTimeout(() => { // allows selecting client
+      delete this.clientsList;
+    });
   }
 
   selectClient(client: Client): void {
     this.selectedClient = client;
     this.form.patchValue({
-      client: `${client.first_name} ${client.last_name}`,
+      client: this.getClientFullName(client),
       phone: client.phone
     });
-    delete this.clientsList;
+    this.clearClientsList();
   }
 
   selectService(event): void {
@@ -87,10 +106,20 @@ export class AppointmentAddComponent {
 
   async submit(forced = false): Promise<void> {
     const { client, date, time } = this.form.value;
-    const [ firstName, lastName ] = client.trim().split(/(^[^\s]+)/).slice(-2);
+
+    let clientData;
+    if (this.selectedClient) {
+      clientData = { client_uuid: this.selectedClient.uuid };
+    } else {
+      const [ firstName, lastName ] = client.trim().split(/(^[^\s]+)/).slice(-2);
+      clientData = {
+        client_first_name: firstName,
+        client_last_name: lastName.trim() // remove leading \s
+      };
+    }
+
     const data = {
-      client_first_name: firstName,
-      client_last_name: lastName.trim(), // remove leading \s
+      ...clientData,
       services: [{ service_uuid: this.selectedService.uuid }],
       datetime_start_at: `${date}T${time}:00`
     };
