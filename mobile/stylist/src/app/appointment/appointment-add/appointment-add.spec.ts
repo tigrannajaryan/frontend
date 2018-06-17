@@ -114,6 +114,7 @@ describe('Pages: Add Appointment', () => {
     // add missed values
     instance.form.patchValue({
       client: `${client.first_name} ${client.last_name}`,
+      phone: faker.phone.phoneNumber(),
       date: nextWeek.format('YYYY-MM-DD'),
       time: nextWeek.format('HH:mm')
     });
