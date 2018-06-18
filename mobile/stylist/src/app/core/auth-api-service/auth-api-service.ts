@@ -113,6 +113,10 @@ export class AuthApiService extends BaseApiService {
     return this.authResponse ? this.authResponse.token : undefined;
   }
 
+  getLastAuthResponse(): AuthResponse {
+    return this.authResponse;
+  }
+
   async refreshAuth(): Promise<AuthResponse> {
     const request = { token: this.authResponse.token };
     return this.processAuthResponse(

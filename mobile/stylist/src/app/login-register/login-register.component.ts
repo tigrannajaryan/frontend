@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { GoogleAnalytics } from '@ionic-native/google-analytics';
 
 import { loading } from '~/core/utils/loading';
-import { createNavHistoryList, PageDescr } from '~/core/functions';
+import { createNavHistoryList } from '~/core/functions';
 import { AuthApiService, AuthCredentials, UserRole } from '~/core/auth-api-service/auth-api-service';
 import { ServerFieldError } from '~/shared/api-errors';
 import { PageNames } from '~/core/page-names';
@@ -30,7 +31,8 @@ export class LoginRegisterComponent {
   constructor(
     public navParams: NavParams,
     private navCtrl: NavController,
-    private authService: AuthApiService
+    private authService: AuthApiService,
+    private ga: GoogleAnalytics
   ) {
     this.pageType = this.navParams.get('pageType') as LoginOrRegisterType;
   }
@@ -46,15 +48,14 @@ export class LoginRegisterComponent {
       };
       const authResponse = await this.authService.doAuth(authCredentials);
 
+      if (authResponse && authResponse.profile) {
+        this.ga.setUserId(authResponse.profile.id.toString());
+      }
+
       // Find out what page should be shown to the user and navigate to
       // it while also properly populating the navigation history
-      // so that Back buttons work correctly. The Login page should
-      // be the first in this list.
-      const loginPage: PageDescr = {
-        page: PageNames.LoginRegister,
-        params: { pageType: LoginOrRegisterType.login }
-      };
-      const pages = [loginPage, ...createNavHistoryList(authResponse.profile_status)];
+      // so that Back buttons work correctly.
+      const pages = createNavHistoryList(authResponse.profile_status);
       this.navCtrl.setPages(pages);
     } catch (e) {
       if (e instanceof ServerFieldError) {
@@ -71,7 +72,10 @@ export class LoginRegisterComponent {
       password: this.formData.password,
       role: UserRole.stylist
     };
-    await this.authService.registerByEmail(authCredentialsRecord);
+    const authResponse = await this.authService.registerByEmail(authCredentialsRecord);
+    if (authResponse && authResponse.profile) {
+      this.ga.setUserId(authResponse.profile.id.toString());
+    }
 
     this.navCtrl.push(PageNames.RegisterSalon, {}, { animate: false });
   }

@@ -12,6 +12,7 @@ import {
 import { Logger } from '~/shared/logger';
 import { ServerStatusTracker } from '~/shared/server-status-tracker';
 import { ServerReachabilityAction } from '~/shared/server-status/server-status.reducer';
+import { GoogleAnalytics } from '@ionic-native/google-analytics';
 
 /**
  * Custom unhandled error handler.
@@ -27,7 +28,8 @@ export class UnhandledErrorHandler {
     private logger: Logger,
     private alertCtrl: AlertController,
     protected serverStatus: ServerStatusTracker,
-    private injector: Injector
+    private injector: Injector,
+    private ga: GoogleAnalytics
   ) { }
 
   init(nav: NavControllerBase, firstPageName: string): void {
@@ -55,10 +57,12 @@ export class UnhandledErrorHandler {
       error = error.rejection;
     }
 
-    this.logger.error('Unhandled exception:',
-      (error.constructor && error.constructor.name) ? `class=${error.constructor.name}` : 'Unknown class',
-      error.toString ? `(${error.toString()})` : '',
-      error);
+    const errorType = (error.constructor && error.constructor.name) ? `class=${error.constructor.name}` : 'Unknown class';
+    const errorDescription = error.toString ? `(${error.toString()})` : '';
+
+    this.logger.error('Unhandled exception:', errorType, errorDescription, error);
+
+    this.ga.trackException(`${errorType}: ${errorDescription}`, false);
 
     // Do updates via setTimeout to work around known Angular bug:
     // https://stackoverflow.com/questions/37836172/angular-2-doesnt-update-view-after-exception-is-thrown)

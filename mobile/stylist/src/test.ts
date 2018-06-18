@@ -39,6 +39,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 import {
   AlertControllerMock,
   ConfigMock,
+  GoogleAnalyticsMock,
   LoadingControllerMock,
   NavControllerMock,
   PlatformMock,
@@ -54,6 +55,7 @@ import { AuthApiService } from './app/core/auth-api-service/auth-api-service';
 import { AuthApiServiceMock } from './app/core/auth-api-service/auth-api-service-mock';
 import { StylistServiceProvider } from './app/core/stylist-service/stylist-service';
 import { StylistServiceMock } from './app/core/stylist-service/stylist-service-mock';
+import { GoogleAnalytics } from '@ionic-native/google-analytics';
 
 declare const require: any;
 
@@ -105,6 +107,7 @@ export class TestUtils {
         { provide: WorktimeApi, useClass: WorktimeApiMock },
         { provide: StylistServiceProvider, useClass: StylistServiceMock },
         { provide: PopoverController, useClass: PopoverControllerMock },
+        { provide: GoogleAnalytics, useClass: GoogleAnalyticsMock },
         ...providers
       ],
       imports: [

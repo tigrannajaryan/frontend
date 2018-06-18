@@ -3,7 +3,6 @@ import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
 
 import { selectServerStatusState, ServerStatusState } from './server-status.reducer';
-import { Logger } from '../logger';
 
 /**
  * A server status indicator component that visualizes the global state
@@ -21,14 +20,11 @@ export class ServerStatusComponent implements OnInit, OnDestroy {
   subscription: Subscription;
 
   constructor(
-    private logger: Logger,
     private store: Store<ServerStatusState>) {}
 
   ngOnInit(): void {
     this.subscription = this.store.select(selectServerStatusState).subscribe(
       state => {
-        this.logger.info('Server status changed:', state);
-
         if (!state.isServerReachable) {
           this.errorText = 'Service is currently unavailable.';
         } else if (!state.isOnline) {

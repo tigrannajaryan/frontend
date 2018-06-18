@@ -101,4 +101,5 @@
     <plugin name="cordova-plugin-statusbar" spec="2.4.2" />
     <engine name="android" spec="7.0.0" />
     <engine name="ios" spec="4.5.4" />
+    <plugin name="cordova-plugin-google-analytics" spec="1.8.3" />
 </widget>

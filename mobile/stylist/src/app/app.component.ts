@@ -2,6 +2,7 @@ import { Component, ErrorHandler, ViewChild } from '@angular/core';
 import { MenuController, Nav, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import { GoogleAnalytics } from '@ionic-native/google-analytics';
 
 import { PageNames } from '~/core/page-names';
 import { Logger } from './shared/logger';
@@ -9,6 +10,9 @@ import { AuthApiService } from '~/core/auth-api-service/auth-api-service';
 import { UnhandledErrorHandler } from '~/shared/unhandled-error-handler';
 import { createNavHistoryList } from '~/core/functions';
 import { loading } from '~/core/utils/loading';
+
+// Google Analytics Id
+const gaTrackingId = 'UA-120898935-1';
 
 @Component({
   templateUrl: 'app.component.html'
@@ -28,7 +32,8 @@ export class MyAppComponent {
     public menuCtrl: MenuController,
     private authApiService: AuthApiService,
     private errorHandler: ErrorHandler,
-    private logger: Logger
+    private logger: Logger,
+    private ga: GoogleAnalytics
   ) {
     this.logger.info('App initializing...');
     this.initializeApp();
@@ -36,6 +41,8 @@ export class MyAppComponent {
 
   @loading
   async initializeApp(): Promise<void> {
+    const startTime = Date.now();
+
     await this.platform.ready();
 
     // The platform is ready and the plugins are available.
@@ -47,6 +54,34 @@ export class MyAppComponent {
 
     this.statusBar.styleDefault();
     this.splashScreen.hide();
+
+    await this.initGa();
+
+    const loadTime = Date.now() - startTime;
+
+    this.ga.trackTiming('Loading', loadTime, 'AppInitialization', 'FirstLoad');
+  }
+
+  async initGa(): Promise<void> {
+    try {
+      await this.ga.startTrackerWithId(gaTrackingId);
+      this.logger.info('Google Analytics is ready now');
+
+      const lastAuth = this.authApiService.getLastAuthResponse();
+      if (lastAuth && lastAuth.profile && lastAuth.profile.id) {
+        // Set current user id
+        this.ga.setUserId(lastAuth.profile.id.toString());
+      }
+
+      // Track all screen changes
+      this.nav.viewDidEnter.subscribe(view => {
+        const viewName = view.instance.constructor.name;
+        this.logger.info(`Entered ${viewName}`);
+        this.ga.trackView(viewName);
+      });
+    } catch (e) {
+      this.logger.error('Error starting Google Analytics', e);
+    }
   }
 
   async showInitialPage(): Promise<void> {
