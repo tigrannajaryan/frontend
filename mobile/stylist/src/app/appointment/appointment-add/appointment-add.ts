@@ -212,7 +212,7 @@ export class AppointmentAddComponent {
     this.form = this.formBuilder.group({
       client: ['', [Validators.required]],
       phone: ['', [Validators.required]],
-      service: ['', [Validators.required]],
+      service: [this.selectServiceLabel, [Validators.required]],
       date: [this.selectDateLabel, [Validators.required]],
       time: ['', [Validators.required]]
     });
