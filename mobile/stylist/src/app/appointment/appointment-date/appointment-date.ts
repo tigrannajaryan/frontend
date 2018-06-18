@@ -15,7 +15,7 @@ import {
 import { selectSelectedService } from '~/appointment/appointment-services/services.reducer';
 import { selectSelectedClient } from '~/appointment/appointment-add/clients.reducer';
 
-import { AppointmentDate } from '~/appointment/appointment-date/appointment-dates-service-mock';
+import { AppointmentDate } from '~/today/today.models';
 import { Client } from '~/appointment/appointment-add/clients-models';
 import { ServiceItem } from '~/core/stylist-service/stylist-models';
 

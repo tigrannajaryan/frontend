@@ -14,6 +14,11 @@ import { ServiceItem } from '~/core/stylist-service/stylist-models';
 import { clientsMock } from '~/appointment/appointment-add/clients-service-mock';
 import { SelectServiceAction, servicesReducer, ServicesState } from '~/appointment/appointment-services/services.reducer';
 import { clientsReducer, ClientsState, SearchSuccessAction } from '~/appointment/appointment-add/clients.reducer';
+import {
+  appointmentDatesReducer,
+  appointmentDatesStatePath,
+  SelectDateAction
+} from '~/appointment/appointment-date/appointment-dates.reducer';
 
 import { AppointmentAddComponent } from './appointment-add';
 
@@ -44,7 +49,8 @@ describe('Pages: Add Appointment', () => {
   ], [
     HttpClientTestingModule,
     StoreModule.forFeature('service', servicesReducer),
-    StoreModule.forFeature('clients', clientsReducer)
+    StoreModule.forFeature('clients', clientsReducer),
+    StoreModule.forFeature(appointmentDatesStatePath, appointmentDatesReducer)
   ]).then(compiled => {
     fixture = compiled.fixture;
     instance = compiled.instance;
@@ -111,11 +117,15 @@ describe('Pages: Add Appointment', () => {
     const client = clientsMock[0];
     const nextWeek = moment().add(7, 'days');
 
+    store.dispatch(new SelectDateAction({
+      date: nextWeek.format('YYYY-MM-DD'),
+      price: faker.commerce.price()
+    }));
+
     // add missed values
     instance.form.patchValue({
       client: `${client.first_name} ${client.last_name}`,
       phone: client.phone,
-      date: nextWeek.format('YYYY-MM-DD'),
       time: nextWeek.format('HH:mm')
     });
 

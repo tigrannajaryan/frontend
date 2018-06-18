@@ -1,6 +1,6 @@
 import * as paper from 'paper';
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { AppointmentDate } from '~/appointment/appointment-date/appointment-dates-service-mock';
+import { AppointmentDate } from '~/today/today.models';
 
 /**
  * Project prices to px between 0 and width.

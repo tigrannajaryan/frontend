@@ -9,7 +9,7 @@ import {
   ServiceItem, ServiceTemplateSet, ServiceTemplateSetBase, StylistProfile,
   StylistServicesList, StylistSummary
 } from './stylist-models';
-import { AppointmentDate } from '~/appointment/appointment-date/appointment-dates-service-mock';
+import { AppointmentDate } from '~/today/today.models';
 
 export interface ServiceTemplateSetListResponse {
   service_template_sets: ServiceTemplateSetBase[];

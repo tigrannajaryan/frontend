@@ -64,7 +64,7 @@ export interface ServiceTemplateSetBase {
 }
 
 export interface ServiceUuid {
-  uuid: string;
+  uuid?: string;
 }
 
 export interface ServiceTemplateSet extends ServiceTemplateSetBase {

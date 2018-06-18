@@ -12,7 +12,7 @@ import { ServiceItem } from '~/core/stylist-service/stylist-models';
 
 import { Client } from '~/appointment/appointment-add/clients-models';
 import { TodayService as AppointmentService } from '~/today/today.service';
-import { AppointmentDate } from '~/appointment/appointment-date/appointment-dates-service-mock';
+import { AppointmentDate } from '~/today/today.models';
 
 import {
   ClearClientsAction,
