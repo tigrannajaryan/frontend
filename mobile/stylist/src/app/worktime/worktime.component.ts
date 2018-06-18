@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { AlertController, IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 import { Workday, Worktime } from './worktime.models';
 import { WorktimeApi } from './worktime.api';
@@ -112,7 +112,6 @@ export class WorktimeComponent {
   }
 
   constructor(
-    private alertCtrl: AlertController,
     private api: WorktimeApi,
     private navCtrl: NavController,
     private navParams: NavParams,
@@ -131,7 +130,7 @@ export class WorktimeComponent {
       const worktime = await this.api.getWorktime();
       this.cards = this.api2presentation(worktime);
     } catch (e) {
-      showAlert(this.alertCtrl, 'Loading wroking hours failed', e.message);
+      showAlert('Loading wroking hours failed', e.message);
     }
   }
 

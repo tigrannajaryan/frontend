@@ -1,5 +1,5 @@
 export interface Client {
-  uuid?: number;
+  uuid?: string;
   first_name: string;
   last_name: string;
   phone?: string;

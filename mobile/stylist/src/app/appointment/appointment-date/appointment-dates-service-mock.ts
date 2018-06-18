@@ -19,7 +19,7 @@ export const datesMock: AppointmentDate[] =
 @Injectable()
 export class AppointmentDatesServiceMock {
 
-  async getDates(client?: Client): Promise<AppointmentDate[]> {
+  async getDates(): Promise<AppointmentDate[]> {
     return Promise.resolve(datesMock);
   }
 }

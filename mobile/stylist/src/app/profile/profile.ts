@@ -2,7 +2,7 @@ import * as moment from 'moment';
 
 import { Component } from '@angular/core';
 import { DatePipe } from '@angular/common';
-import { AlertController, IonicPage } from 'ionic-angular';
+import { IonicPage } from 'ionic-angular';
 
 import { getTodayWeekdayISO, WEEKDAY_FULL_NAMES } from '~/shared/weekday';
 
@@ -28,7 +28,6 @@ export class ProfileComponent {
   totalAppointmentsThisWeek?: number;
 
   constructor(
-    private alertCtrl: AlertController,
     private stylistService: StylistServiceProvider,
     private datePipe: DatePipe
   ) {
@@ -87,7 +86,7 @@ export class ProfileComponent {
       this.today = data.worktime.find(day => day.weekday_iso === todayWeekdayISO);
       this.totalAppointmentsThisWeek = data.total_week_appointments_count;
     } catch (e) {
-      showAlert(this.alertCtrl, 'Loading stylist summary failed', e.message);
+      showAlert('Loading stylist summary failed', e.message);
     }
   }
 }

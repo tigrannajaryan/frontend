@@ -5,10 +5,12 @@ import { timer } from 'rxjs/observable/timer';
 import { debounce } from 'rxjs/operators';
 
 import { ClientsService } from '~/appointment/appointment-add/clients-service';
+import { Logger } from '~/shared/logger';
 
 import {
   clientsActionTypes,
   SearchAction,
+  SearchErrorAction,
   SearchSuccessAction
 } from './clients.reducer';
 
@@ -20,9 +22,15 @@ export class ClientsEffects {
     .pipe(debounce(() => timer(400)))
     .map((action: SearchAction) => action)
     .switchMap(action => Observable.defer(async () => {
-      const { clients } = await this.clientsService.search(action.query);
-      const firstThreeOnly = clients.slice(0, 3);
-      return new SearchSuccessAction(firstThreeOnly);
+      try {
+        const { clients } = await this.clientsService.search(action.query);
+        const firstThreeOnly = clients.slice(0, 3);
+        return new SearchSuccessAction(firstThreeOnly);
+      } catch (error) {
+        const logger = new Logger();
+        logger.error(error);
+        return new SearchErrorAction(error);
+      }
     }));
 
   constructor(

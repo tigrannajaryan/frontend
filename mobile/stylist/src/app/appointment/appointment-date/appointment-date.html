@@ -6,6 +6,6 @@
       <div class="DateCard-price">${{ day.price }}</div>
       <div class="DateCard-day">{{ moment(day.date).format('dddd, D MMM') }}</div>
     </div>
-    <made-chart [dates]="days"></made-chart>
+    <made-chart *ngIf="days.length > 0" [dates]="days"></made-chart>
   </div>
 </ion-content>

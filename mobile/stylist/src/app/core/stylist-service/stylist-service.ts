@@ -9,6 +9,7 @@ import {
   ServiceItem, ServiceTemplateSet, ServiceTemplateSetBase, StylistProfile,
   StylistServicesList, StylistSummary
 } from './stylist-models';
+import { AppointmentDate } from '~/appointment/appointment-date/appointment-dates-service-mock';
 
 export interface ServiceTemplateSetListResponse {
   service_template_sets: ServiceTemplateSetBase[];
@@ -20,6 +21,17 @@ export interface StylistServicesListResponse extends StylistServicesList {
 
 export interface ServiceTemplateSetResponse extends ServiceTemplateSet {
   service_time_gap_minutes: number;
+}
+
+export interface ServicesPricesParams {
+  service_uuid: string;
+  client_uuid?: string;
+}
+
+export interface ServicesPricesResponse {
+  service_uuid: string;
+  service_name: string;
+  prices: AppointmentDate[];
 }
 
 /**
@@ -91,5 +103,12 @@ export class StylistServiceProvider extends BaseApiService {
    */
   async deleteStylistService(uuid: string): Promise<ServiceItem> {
     return this.delete<ServiceItem>(`stylist/services/${uuid}`);
+  }
+
+  /**
+   * Get prices for 14 dates from now. The stylist must be already authenticated as a user.
+   */
+  async getServicesPricesByDate(data: ServicesPricesParams): Promise<ServicesPricesResponse> {
+    return this.post<ServicesPricesResponse>('stylist/services/pricing', data);
   }
 }

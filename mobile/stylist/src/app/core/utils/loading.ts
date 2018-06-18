@@ -31,3 +31,24 @@ export function loading(target: any, name: string, descriptor: LoadingDescriptor
 
   return descriptor;
 }
+
+/**
+ * This function is used as some async function decorator.
+ * It will show loader when attached.
+ * ```
+ * withLoader(() => {…})
+ * ```
+ */
+export function withLoader(original: AsyncFunction): AsyncFunction {
+  // tslint:disable:only-arrow-functions
+  return async function(...args): Promise<any> {
+    const loadingCtrl = AppModule.injector.get(LoadingController);
+    const loader: Loading = loadingCtrl.create();
+    loader.present();
+    try {
+      return await original(...args);
+    } finally {
+      loader.dismiss();
+    }
+  };
+}

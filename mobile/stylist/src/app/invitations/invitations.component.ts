@@ -44,7 +44,7 @@ export class InvitationsComponent {
     try {
       const contact = await this.contacts.pickContact();
       if (!contact.phoneNumbers || contact.phoneNumbers.length === 0) {
-        showAlert(this.alertCtrl, '', 'The contact has no phone numbers');
+        showAlert('', 'The contact has no phone numbers');
         return;
       }
 
@@ -72,7 +72,7 @@ export class InvitationsComponent {
         alert.present();
       }
     } catch (error) {
-      showAlert(this.alertCtrl, 'Error', error);
+      showAlert('Error', error);
     }
   }
 
@@ -99,7 +99,7 @@ export class InvitationsComponent {
 
     // Check for duplicates
     if (this.invitations.find(e => e.phone === phoneNumber)) {
-      showAlert(this.alertCtrl, '', `Phone number ${phoneNumber} is already added to the invitation list.`);
+      showAlert('', `Phone number ${phoneNumber} is already added to the invitation list.`);
       return;
     }
 

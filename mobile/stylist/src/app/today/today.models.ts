@@ -42,10 +42,14 @@ export interface AppointmentService {
   isChecked?: boolean;
 }
 
+export interface AppointmentServiceUuid {
+  service_uuid: string;
+}
+
 export interface NewAppointment {
   client_first_name: string;
   client_last_name: string;
-  services: ServiceUuid[];
+  services: AppointmentServiceUuid[];
   datetime_start_at: string; // ISO 8601: 2018-05-20T18:00:00-04:00
 }
 

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AlertController, IonicPage, ModalController, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, ModalController, NavController, NavParams } from 'ionic-angular';
 
 import { DiscountsApi } from './discounts.api';
 import { Discounts } from './discounts.models';
@@ -32,7 +32,6 @@ export class DiscountsComponent {
   isProfile?: Boolean;
 
   constructor(
-    private alertCtrl: AlertController,
     public navCtrl: NavController,
     public navParams: NavParams,
     public modalCtrl: ModalController,
@@ -54,7 +53,7 @@ export class DiscountsComponent {
         weekdays: discounts.weekdays.sort((a, b) => a.weekday - b.weekday) // from 1 (Monday) to 7 (Sunday)
       };
     } catch (e) {
-      showAlert(this.alertCtrl, 'Loading discounts failed', e.message);
+      showAlert('Loading discounts failed', e.message);
     }
   }
 

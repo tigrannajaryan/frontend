@@ -1,10 +1,12 @@
 import { Action, createFeatureSelector, createSelector } from '@ngrx/store';
 import { AppointmentDate } from '~/appointment/appointment-date/appointment-dates-service-mock';
 import { Client } from '~/appointment/appointment-add/clients-models';
+import { ServiceUuid } from '~/core/stylist-service/stylist-models.ts';
 
 export enum appointmentDatesActionTypes {
   GET_DATES = 'APPOINTMENT_GET_DATES',
   GET_DATES_SUCCESS = 'APPOINTMENT_GET_DATES_SUCCESS',
+  GET_DATES_ERROR = 'APPOINTMENT_GET_DATES_ERROR',
   SELECT_DATE = 'APPOINTMENT_SELECT_DATE',
   CLEAR_DATE = 'APPOINTMENT_CLEAR_DATE'
 }
@@ -23,12 +25,20 @@ const initialState: AppointmentDatesState = {
 
 export class GetDatesAction implements Action {
   readonly type = appointmentDatesActionTypes.GET_DATES;
-  constructor(public client?: Client) { }
+  constructor(
+    public service: ServiceUuid,
+    public client?: Client
+  ) { }
 }
 
 export class GetDatesSuccessAction implements Action {
   readonly type = appointmentDatesActionTypes.GET_DATES_SUCCESS;
   constructor(public days: AppointmentDate[]) { }
+}
+
+export class GetDatesErrorAction implements Action {
+  readonly type = appointmentDatesActionTypes.GET_DATES_ERROR;
+  constructor(public error: Error) { }
 }
 
 export class SelectDateAction implements Action {
@@ -43,6 +53,7 @@ export class ClearSelectedDateAction implements Action {
 type Actions =
   | GetDatesAction
   | GetDatesSuccessAction
+  | GetDatesErrorAction
   | SelectDateAction
   | ClearSelectedDateAction;
 

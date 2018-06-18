@@ -31,6 +31,11 @@ export class LoadedAction implements Action {
   constructor(public today: Today) { }
 }
 
+export class LoadErrorAction implements Action {
+  readonly type = todayActionTypes.LOAD_ERROR;
+  constructor(public error: Error) { }
+}
+
 export class CheckoutAction implements Action {
   readonly type = todayActionTypes.CHECKOUT;
   constructor(public appointmentUuid: string) { }

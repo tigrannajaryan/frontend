@@ -18,7 +18,9 @@ import {
   ClearClientsAction,
   ClientsState,
   SearchAction,
-  selectFoundClients
+  SelectClientAction,
+  selectFoundClients,
+  selectSelectedClient
 } from '~/appointment/appointment-add/clients.reducer';
 
 import {
@@ -76,6 +78,13 @@ export class AppointmentAddComponent {
       });
 
     this.store
+      .select(selectSelectedClient)
+      .takeUntil(componentUnloaded(this))
+      .subscribe(client => {
+        this.selectedClient = client;
+      });
+
+    this.store
       .select(selectSelectedDate)
       .takeUntil(componentUnloaded(this))
       .subscribe(selectedDate => {
@@ -109,7 +118,7 @@ export class AppointmentAddComponent {
   }
 
   selectClient(client: Client): void {
-    this.selectedClient = client;
+    this.store.dispatch(new SelectClientAction(client));
     this.form.patchValue({
       client: this.getClientFullName(client),
       phone: client.phone

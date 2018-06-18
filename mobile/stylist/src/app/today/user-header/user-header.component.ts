@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { AlertController, NavController, PopoverController } from 'ionic-angular';
+import { NavController, PopoverController } from 'ionic-angular';
 
 import { PageNames } from '~/core/page-names';
 import { StylistServiceProvider } from '~/core/stylist-service/stylist-service';
@@ -25,7 +25,6 @@ export class UserHeaderComponent implements OnInit {
   constructor(
     public popoverCtrl: PopoverController,
     protected navCtrl: NavController,
-    private alertCtrl: AlertController,
     private apiService: StylistServiceProvider,
     private authApiService: AuthApiService
   ) {
@@ -50,7 +49,7 @@ export class UserHeaderComponent implements OnInit {
       this.profile = await this.apiService.getProfile();
       this.profile.profile_photo_url = `url(${this.profile.profile_photo_url})`;
     } catch (e) {
-      showAlert(this.alertCtrl, 'Loading profile failed', e.message);
+      showAlert('Loading profile failed', e.message);
     }
   }
 

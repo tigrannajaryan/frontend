@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import {
-  AlertController,
   IonicPage,
   ModalController,
   NavController,
@@ -53,7 +52,6 @@ export class ServicesListComponent {
     public navCtrl: NavController,
     public navParams: NavParams,
     public modalCtrl: ModalController,
-    private alertCtrl: AlertController,
     private stylistService: StylistServiceProvider
   ) {
   }
@@ -81,7 +79,7 @@ export class ServicesListComponent {
       this.timeGap = response.service_time_gap_minutes;
       this.isEmptyCategories = ServicesListComponent.checkIfEmptyCategories(this.categories);
     } catch (e) {
-      showAlert(this.alertCtrl, 'Loading services failed', e.message);
+      showAlert('Loading services failed', e.message);
     }
   }
 
@@ -132,7 +130,7 @@ export class ServicesListComponent {
       }
     } catch (e) {
       // Show an error message
-      showAlert(this.alertCtrl, 'Error', e);
+      showAlert('Error', e);
     }
   }
 
@@ -154,7 +152,7 @@ export class ServicesListComponent {
       try {
         await this.stylistService.deleteStylistService(service.uuid);
       } catch (e) {
-        showAlert(this.alertCtrl, 'Error', e);
+        showAlert('Error', e);
 
         // put service back if error occurred
         category.services.splice(idx, 0, service);

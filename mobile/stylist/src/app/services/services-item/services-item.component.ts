@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AlertController, IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
 import {
@@ -40,8 +40,7 @@ export class ServiceItemComponent {
     public formBuilder: FormBuilder,
     public navParams: NavParams,
     public viewCtrl: ViewController,
-    private stylistService: StylistServiceProvider,
-    private alertCtrl: AlertController
+    private stylistService: StylistServiceProvider
   ) {
   }
 
@@ -70,7 +69,7 @@ export class ServiceItemComponent {
     try {
       await this.stylistService.deleteStylistService(service.uuid);
     } catch (e) {
-      showAlert(this.alertCtrl, 'Error', e);
+      showAlert('Error', e);
     }
   }
 

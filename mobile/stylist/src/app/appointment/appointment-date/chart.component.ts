@@ -19,6 +19,9 @@ function calculatePricePosition(prices: number[], width: number): (price?: numbe
     }
     return price < minPrice ? price : minPrice;
   });
+  if (min === max) {
+    return (): number => width / 2; // also centered
+  }
   const step = (max - min) / width; // price of one px from 0
   return (price: number): number => (price - min) / step; // in px
 }
@@ -37,7 +40,7 @@ export class ChartComponent implements OnInit {
   private color: string;
   private width: number;
   private drawingWidth: number;
-  private topOffset = -8; // px
+  private topOffset = -4; // px
   private cardSize = 94; // px
   private verticalStep = this.cardSize / 2;
 
@@ -54,10 +57,11 @@ export class ChartComponent implements OnInit {
    */
   initProject(): void {
     if (!this.project) {
+      this.canvas.nativeElement.style.height = `${this.cardSize * this.dates.length}px`;
       this.project = paper.setup(this.canvas.nativeElement);
       this.project.view.scale(this.project.view.pixelRatio);
     } else {
-      // TODO: find a way to clear canvas
+      // TODO: find a way to clear canvas, project.clear() doesn’t work
     }
   }
 

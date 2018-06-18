@@ -6,7 +6,6 @@ import { Camera, CameraOptions } from '@ionic-native/camera';
 import {
   ActionSheetController,
   ActionSheetOptions,
-  AlertController,
   IonicPage,
   NavController,
   NavParams
@@ -95,7 +94,6 @@ export class RegisterSalonComponent {
     public formBuilder: FormBuilder,
     private apiService: StylistServiceProvider,
     private baseService: BaseApiService,
-    private alertCtrl: AlertController,
     private domSanitizer: DomSanitizer,
     private camera: Camera,
     private actionSheetCtrl: ActionSheetController,
@@ -161,7 +159,7 @@ export class RegisterSalonComponent {
         profile_photo_id
       });
     } catch (e) {
-      showAlert(this.alertCtrl, 'Loading profile failed', e.message);
+      showAlert('Loading profile failed', e.message);
     }
   }
 
@@ -247,7 +245,7 @@ export class RegisterSalonComponent {
 
       imageData = await this.camera.getPicture(options);
     } catch (e) {
-      showAlert(this.alertCtrl, '', 'Cannot take or add photo. Please make sure the App has the neccessary permissions.');
+      showAlert('', 'Cannot take or add photo. Please make sure the App has the neccessary permissions.');
       return;
     }
 
@@ -272,7 +270,7 @@ export class RegisterSalonComponent {
         .setValue(response.uuid);
 
     } catch (e) {
-      showAlert(this.alertCtrl, 'Saving photo failed', e.message);
+      showAlert('Saving photo failed', e.message);
     }
   }
 }

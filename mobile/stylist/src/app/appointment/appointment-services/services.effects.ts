@@ -3,10 +3,10 @@ import { Store } from '@ngrx/store';
 import { Actions, Effect } from '@ngrx/effects';
 import { Observable } from 'rxjs';
 
-import { AlertController, LoadingController } from 'ionic-angular';
-
-import { Logger } from '~/shared/logger';
 import { StylistServiceProvider } from '~/core/stylist-service/stylist-service';
+import { withLoader } from '~/core/utils/loading';
+import { showAlert } from '~/core/utils/alert';
+import { Logger } from '~/shared/logger';
 
 import {
   LoadAction,
@@ -24,37 +24,27 @@ export class ServicesEffects {
     .ofType(servicesActionTypes.LOAD)
     .withLatestFrom(this.store.select(selectService))
     .filter(([action, { loaded }]) => !loaded)
-    .switchMap(() => Observable.defer(async () => {
-      const loader = this.loadingCtrl.create();
-      loader.present();
+    .switchMap(() => Observable.defer(withLoader(async () => {
       try {
         const { categories } = await this.stylistService.getStylistServices();
         return new LoadSuccessAction(categories);
       } catch (error) {
+        showAlert(
+          'An error occurred',
+          'Loading of services failed',
+          [{
+            text: 'Retry',
+            handler: () => this.store.dispatch(new LoadAction())
+          }]
+        );
         const logger = new Logger();
         logger.error(error);
-        const alert = this.alertCtrl.create({
-          title: 'An error occurred',
-          subTitle: 'Loading of services failed',
-          buttons: [
-            'Dismiss',
-            {
-              text: 'Retry',
-              handler: () => this.store.dispatch(new LoadAction())
-            }
-          ]
-        });
-        alert.present();
         return new LoadErrorAction(error);
-      } finally {
-        loader.dismiss();
       }
-    }));
+    })));
 
   constructor(
     private actions: Actions,
-    private alertCtrl: AlertController,
-    private loadingCtrl: LoadingController,
     private store: Store<ServicesState>,
     private stylistService: StylistServiceProvider
   ) {
