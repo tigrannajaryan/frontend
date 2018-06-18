@@ -27,14 +27,14 @@
     <div class="Input Appointment-service">
       <ion-label>Service</ion-label>
       <button ion-button clear (click)="selectService($event)" class="Input-btn" [ngClass]="{ 'is-muted': !selectedService }">
-        {{ selectedService ? selectedService.name : 'Select from service list' }}
+        {{ form.value.service }}
       </button>
     </div>
 
     <div class="Input">
       <ion-label>Date</ion-label>
-      <button ion-button clear (click)="selectDate($event)" class="Input-btn" [ngClass]="{ 'is-muted': !selectedDate }">
-        {{ selectedDate ? moment(selectedDate.date).format('D MMMM, YYYY') : 'Choose date' }}
+      <button ion-button clear (click)="selectDate($event)" class="Input-btn" [disabled]="!selectedService" [ngClass]="{ 'is-muted': !selectedDate }">
+        {{ form.value.date }}
       </button>
     </div>
 

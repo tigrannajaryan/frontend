@@ -39,12 +39,14 @@ import {
   templateUrl: 'appointment-add.html'
 })
 export class AppointmentAddComponent {
-  moment = moment;
-
   form: FormGroup;
   selectedClient?: Client;
   selectedDate?: AppointmentDate;
   selectedService?: ServiceItem;
+
+  // labels
+  protected selectServiceLabel = 'Select from service list';
+  protected selectDateLabel = 'Choose date';
 
   protected clientsList?: Client[];
   protected minuteValues = Array(12).fill(undefined).map((_, idx) => idx * 5).toString(); // every 5 minutes
@@ -64,10 +66,11 @@ export class AppointmentAddComponent {
     this.store
       .select(selectSelectedService)
       .takeUntil(componentUnloaded(this))
-      .subscribe(service => {
-        if (service !== undefined) {
-          this.selectedService = service;
-        }
+      .subscribe(selectedService => {
+        this.selectedService = selectedService;
+        this.form.patchValue({
+          service: selectedService ? selectedService.name : this.selectServiceLabel
+        });
       });
 
     this.store
@@ -89,6 +92,9 @@ export class AppointmentAddComponent {
       .takeUntil(componentUnloaded(this))
       .subscribe(selectedDate => {
         this.selectedDate = selectedDate;
+        this.form.patchValue({
+          date: selectedDate ? moment(selectedDate.date).format('D MMMM, YYYY') : this.selectDateLabel
+        });
       });
   }
 
@@ -206,6 +212,8 @@ export class AppointmentAddComponent {
     this.form = this.formBuilder.group({
       client: ['', [Validators.required]],
       phone: ['', [Validators.required]],
+      service: ['', [Validators.required]],
+      date: [this.selectDateLabel, [Validators.required]],
       time: ['', [Validators.required]]
     });
   }

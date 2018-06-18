@@ -62,7 +62,7 @@ export class AppointmentDateComponent {
     if (this.service) {
       this.store.dispatch(new GetDatesAction(this.service, this.client));
     }
-    // TODO: NB! if no service selected
+    // TODO: if no service selected
   }
 
   select(date: AppointmentDate): void {
