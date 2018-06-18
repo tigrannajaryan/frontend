@@ -8,8 +8,8 @@
   <made-nav *ngIf="!isProfile" [activePage]="PageNames.Worktime"></made-nav>
 
   <div class="title">
-    Hair is my hustle,
-    <p>let's set the schedule</p>
+    Hair is my hustle
+    <p>Block days you don’t work and adjust your work hours</p>
   </div>
   <!--shifts block start -->
   <ion-grid *ngFor="let card of cards" class="workingtime_shifts_block" item-content>
@@ -23,7 +23,7 @@
         <ion-datetime displayFormat="h:mm a" [(ngModel)]="card.workEndAt"></ion-datetime>
       </ion-col>
       <ion-col>
-        <ion-label>Duration</ion-label>
+        <ion-label>Daily work hours</ion-label>
         <span>{{ card.getDurationStr() }}</span>
       </ion-col>
     </ion-row>

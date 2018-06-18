@@ -7,6 +7,7 @@ import {
 } from 'ionic-angular';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs/Subscription';
+import * as moment from 'moment';
 
 import {
   LoadAction,
@@ -21,6 +22,13 @@ import { PageNames } from '~/core/page-names';
 import { AppointmentCheckoutParams } from '~/appointment/appointment-checkout/appointment-checkout.component';
 import { loading } from '~/core/utils/loading';
 
+enum AppointmentTag {
+  NotCheckedOut = 'Not checked out',
+  Now = 'Now',
+  Next = 'Next',
+  NoTag = ''
+}
+
 @IonicPage({ segment: 'today' })
 @Component({
   selector: 'page-today',
@@ -29,7 +37,9 @@ import { loading } from '~/core/utils/loading';
 export class TodayComponent {
   // this should be here if we using enum in html
   protected AppointmentStatuses = AppointmentStatuses;
-  today: Today;
+  protected today: Today;
+  protected appointmentTags: AppointmentTag[];
+  protected AppointmentTag = AppointmentTag;
 
   private stateSubscription: Subscription;
 
@@ -48,7 +58,7 @@ export class TodayComponent {
     this.stateSubscription = await this.store.select(selectTodayState)
       .subscribe(todayState => {
         // Received new state. Update the view.
-        this.today = todayState.today;
+        this.processTodayData(todayState.today);
       });
 
     // Initiate loading the today data.
@@ -59,6 +69,47 @@ export class TodayComponent {
     // Unsubscribe from observer when this view is no longer visible
     // to avoid unneccessary processing.
     this.stateSubscription.unsubscribe();
+  }
+
+  /**
+   * Processes today's data received from the backend and creates
+   * the tags for each appointment card.
+   */
+  protected processTodayData(today: Today): void {
+    this.today = today;
+    this.appointmentTags = [];
+
+    if (!this.today) {
+      return;
+    }
+
+    // Create tags for each appointment based on their start/end times
+    let metNext = false;
+    for (const appoinment of this.today.today_appointments) {
+      const startTime = moment(new Date(appoinment.datetime_start_at));
+
+      const endTime = startTime.clone();
+      endTime.add(appoinment.duration_minutes, 'minutes');
+
+      const now = moment();
+
+      let tag: AppointmentTag;
+      if (startTime < now) {
+        if (endTime > now) {
+          tag = AppointmentTag.Now;
+        } else {
+          tag = AppointmentTag.NotCheckedOut;
+        }
+      } else {
+        if (!metNext) {
+          tag = AppointmentTag.Next;
+          metNext = true;
+        } else {
+          tag = AppointmentTag.NoTag;
+        }
+      }
+      this.appointmentTags.push(tag);
+    }
   }
 
   /***

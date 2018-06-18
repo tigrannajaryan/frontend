@@ -47,7 +47,7 @@ export class ProfileComponent {
 
   getWorktimeTableData(worktime): TableData {
     return {
-      header: ['Day', 'Working hours', 'Visits count'],
+      header: ['Day', 'Working hours', 'Visit count'],
       body:
         worktime
           .filter(day => day.is_available)

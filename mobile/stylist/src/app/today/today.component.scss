@@ -255,13 +255,17 @@ page-today {
           left: 7%;
           top: -15px;
           padding: pxtorem(10);
-          background: color($colors, color8);
-          text-transform: uppercase;
           color: color($colors, white);
-          border-radius: 8px;
+          border-radius: 6px;
 
-          &.notpaid{
-            background: red;
+          &.tag-notcheckedout {
+            background: #ff3333;
+          }
+          &.tag-now {
+            background: color($colors, color8);
+          }
+          &.tag-next {
+            background: #b2d6ff;
           }
         }
 

@@ -38,7 +38,7 @@
     <ion-row>
       <div *ngIf="today" class="Profile-tableSummary">
         <span><strong>{{ today.booked_appointments_count }}</strong> {{ today.booked_appointments_count === 1 ? 'visit' : 'visits' }} today </span>
-        <span><strong>{{ totalAppointmentsThisWeek }}</strong> {{ today.totalAppointmentsThisWeek === 1 ? 'visit' : 'visits' }} this week</span>
+        <span><strong>{{ totalAppointmentsThisWeek }}</strong> {{ totalAppointmentsThisWeek === 1 ? 'visit' : 'visits' }} this week</span>
       </div>
     </ion-row>
     <made-table class="Profile-worktime" *ngIf="worktime" [data]="worktime"></made-table>
