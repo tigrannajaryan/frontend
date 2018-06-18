@@ -28,8 +28,8 @@ export class AppointmentDateComponent {
   service?: ServiceItem;
   client?: Client;
 
-  private moment = moment;
-  private days: AppointmentDate[];
+  protected moment = moment;
+  protected days: AppointmentDate[];
 
   constructor(
     private navCtrl: NavController,
