@@ -29,8 +29,12 @@
       <ion-grid *ngIf="previewResponse" no-padding class="p-c-box-change">
         <ion-row>
           <ion-col col-4>
-            <div class="p-c-box-change-title">Base price</div>
-            <div class="p-c-box-change-num">${{ previewResponse.total_client_price_before_tax.toFixed() }}</div>
+            <div class="p-c-box-change-title">Price before tax</div>
+            <div class="p-c-box-change-num">
+              <span class="p-c-box-change-num-regular-price">${{ subTotalRegularPrice.toFixed() }}</span>
+              &nbsp;
+              ${{ previewResponse.total_client_price_before_tax.toFixed() }}
+            </div>
           </ion-col>
           <ion-col col-4>
             <div class="p-c-box-change-title">Tax incl.</div>
@@ -67,7 +71,9 @@
               <div class="p-c-box-service-text">{{ service.service_name }}</div>
             </ion-col>
             <ion-col col-4>
-              <div class="p-c-box-service-text">${{ service.client_price }}</div>
+              <div class="p-c-box-service-text">
+                ${{ service.client_price }}
+              </div>
             </ion-col>
             <ion-col col-1>
               <div class="p-c-box-service-text">

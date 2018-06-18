@@ -43,6 +43,8 @@ export class AppointmentCheckoutComponent {
   protected hasTaxIncluded: boolean;
   protected hasCardFeeIncluded: boolean;
 
+  protected subTotalRegularPrice: number;
+
   // The initial state of this screen that we need to show
   private params: AppointmentCheckoutParams;
 
@@ -63,7 +65,7 @@ export class AppointmentCheckoutComponent {
       this.params = this.navParams.get('data') as AppointmentCheckoutParams;
       this.appointment = await this.todayService.getAppointmentById(this.params.appointmentUuid);
       this.selectedServices = this.appointment.services.map(el => ({ service_uuid: el.service_uuid }));
-      this.hasTaxIncluded = this.appointment.has_tax_included;
+      this.hasTaxIncluded = true; // Enable tax by default
       this.hasCardFeeIncluded = this.appointment.has_card_fee_included;
     }
     this.updatePreview();
@@ -87,6 +89,7 @@ export class AppointmentCheckoutComponent {
     this.previewResponse = await this.todayService.getAppointmentPreview(appointmentPreview) as AppointmentPreviewResponse;
     this.hasTaxIncluded = this.previewResponse.has_tax_included;
     this.hasCardFeeIncluded = this.previewResponse.has_card_fee_included;
+    this.subTotalRegularPrice = this.previewResponse.services.reduce((a, c) => (a + c.regular_price), 0);
   }
 
   protected removeServiceClick(service: AppointmentService): void {

@@ -45,6 +45,7 @@ $grayscale: (
 
 $colors: (
   light:      color($grayscale, 100),
+  medium-dark:color($grayscale, 600),
   dark:       color($grayscale, 800),
   white:      white,
 

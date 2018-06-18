@@ -223,6 +223,13 @@ page-checkout {
           display: flex;
           align-items: center;
 
+          &-regular-price {
+            text-decoration: line-through;
+            font-weight: normal;
+            color: color($colors, medium-dark);
+            font-size: 80%;
+          }
+
           @media ($tablet) {
             font-size: pxtorem(40);
           }
