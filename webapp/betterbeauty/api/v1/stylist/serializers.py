@@ -614,7 +614,7 @@ class AppointmentServiceSerializer(serializers.ModelSerializer):
         max_digits=6, decimal_places=2, coerce_to_string=False, read_only=True
     )
     client_price = serializers.DecimalField(
-        max_digits=6, decimal_places=2, coerce_to_string=False, read_only=True
+        max_digits=6, decimal_places=2, coerce_to_string=False, required=False
     )
 
     class Meta:
@@ -739,11 +739,13 @@ class AppointmentSerializer(AppointmentValidationMixin, serializers.ModelSeriali
                     duration=service.duration,
                     regular_price=service.regular_price,
                     client_price=client_price.price,
+                    calculated_price=client_price.price,
                     applied_discount=(
                         client_price.applied_discount.value
                         if client_price.applied_discount else None
                     ),
                     discount_percentage=client_price.discount_percentage,
+                    is_price_edited=False,
                     is_original=True
                 )
                 total_client_price_before_tax += Decimal(client_price.price)
@@ -883,16 +885,12 @@ class AppointmentUpdateSerializer(
     @staticmethod
     @transaction.atomic
     def _update_appointment_services(
-            appointment: Appointment, service_records: List[Dict[str, uuid.UUID]]
+            appointment: Appointment, service_records: List[Dict]
     ) -> None:
         """Replace existing appointment services preserving added on appointment creation"""
         stylist_services = appointment.stylist.services
         services_to_keep: List[uuid.UUID] = [
             service_record['service_uuid'] for service_record in service_records
-        ]
-        original_services_uuids: List[uuid.UUID] = [
-            service.service_uuid
-            for service in appointment.services.filter(is_original=True)
         ]
         # Delete services which may have been added during appointment creation,
         # but are removed during the checkout. E.g. client had decided to change the
@@ -905,20 +903,30 @@ class AppointmentUpdateSerializer(
 
         for service_record in service_records:
             service_uuid: uuid.UUID = service_record['service_uuid']
-            if appointment.services.filter(service_uuid=service_uuid).exists():
+            service_client_price: Optional[Decimal] = (
+                service_record['client_price'] if 'client_price' in service_record else None)
+            try:
+                appointment_service: AppointmentService = (
+                    appointment.services.get(service_uuid=service_uuid))
                 # service already exists, so we will not re-write it
+                if service_client_price:
+                    appointment_service.set_client_price(service_client_price)
                 continue
-            service: StylistService = stylist_services.get(uuid=service_uuid)
-            AppointmentService.objects.create(
-                appointment=appointment,
-                service_uuid=service.uuid,
-                service_name=service.name,
-                duration=service.duration,
-                regular_price=service.regular_price,
-                client_price=service.regular_price,
-                applied_discount=None,
-                is_original=service.uuid in original_services_uuids
-            )
+            except AppointmentService.DoesNotExist:
+                service: StylistService = stylist_services.get(uuid=service_uuid)
+                AppointmentService.objects.create(
+                    appointment=appointment,
+                    service_uuid=service.uuid,
+                    service_name=service.name,
+                    duration=service.duration,
+                    regular_price=service.regular_price,
+                    calculated_price=service.regular_price,
+                    client_price=service_client_price if service_client_price
+                    else service.regular_price,
+                    is_price_edited=True if service_client_price else False,
+                    applied_discount=None,
+                    is_original=False
+                )
 
     def save(self, **kwargs):
 

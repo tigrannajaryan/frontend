@@ -1220,6 +1220,8 @@ to preview resulting price and conflicting appointments (if any).
 **POST /api/v1/stylist/appointments/preview**
 
 - **service_uuid** (required) - uuid of a service to create appointment for
+- **client_price** (optional) - custom price for the service that stylist wants to 
+have only for this appointment
 - **datetime_start_at** (required) - datetime when appointment is to start
 - **has_tax_included** (required) - whether or not grand total should contain tax
 - **has_card_fee_included** (required) - should card fee be applied on top
@@ -1238,8 +1240,11 @@ curl -X POST \
   -d '{
 	"datetime_start_at": "2018-05-31 23:10",
 	"services": [
-		{"service_uuid": "f23748c1-9201-4408-8114-72caeac291da"},
-		{"service_uuid": "c037f7be-2d29-4c52-94c1-c3e328ec202b"}
+            {
+                "service_uuid": "f23748c1-9201-4408-8114-72caeac291da",
+                "client_price": 25.00,
+            },
+            {"service_uuid": "c037f7be-2d29-4c52-94c1-c3e328ec202b"}
 	],
 	"has_tax_included": False,
 	"has_card_fee_included": False,
@@ -1265,7 +1270,7 @@ curl -X POST \
                     "uuid": "48a468a3-6dc3-4236-b91f-1c6a92b911b4",
                     "service_name": "Balayage",
                     "service_uuid": "f23748c1-9201-4408-8114-72caeac291da",
-                    "client_price": 250,
+                    "client_price": 25,
                     "regular_price": 250,
                     "is_original": true
                 },
@@ -1476,7 +1481,8 @@ curl -X POST \
           "service_uuid": "f23748c1-9201-4408-8114-72caeac291da"
         },
         {
-          "service_uuid": "c037f7be-2d29-4c52-94c1-c3e328ec202b"
+          "service_uuid": "c037f7be-2d29-4c52-94c1-c3e328ec202b",
+          "client_price": 10.00,
         }
     ],
     "has_tax_included": false,
@@ -1507,7 +1513,7 @@ curl -X POST \
             "uuid": "50701ff2-4774-4457-8078-5b956a16bd61",
             "service_name": "Blow out",
             "service_uuid": "c037f7be-2d29-4c52-94c1-c3e328ec202b",
-            "client_price": 45,
+            "client_price": 10,
             "regular_price": 45,
             "is_original": false
         },

@@ -1,4 +1,5 @@
 import datetime
+from decimal import Decimal
 
 from uuid import uuid4
 
@@ -125,9 +126,11 @@ class AppointmentService(models.Model):
     service_name = models.CharField(max_length=255)
 
     regular_price = models.DecimalField(max_digits=6, decimal_places=2)
+    calculated_price = models.DecimalField(max_digits=6, decimal_places=2)
     client_price = models.DecimalField(max_digits=6, decimal_places=2)
 
     applied_discount = models.PositiveIntegerField(choices=DISCOUNT_TYPE_CHOICES, null=True)
+    is_price_edited = models.BooleanField(default=False)
     discount_percentage = models.PositiveIntegerField(default=0)
 
     duration = models.DurationField()
@@ -138,3 +141,8 @@ class AppointmentService(models.Model):
 
     class Meta:
         db_table = 'appointment_service'
+
+    def set_client_price(self, client_price: Decimal):
+        self.client_price = client_price
+        self.is_price_edited = True
+        self.save(update_fields=['client_price', 'is_price_edited'])
