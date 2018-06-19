@@ -44,7 +44,7 @@ export interface AppointmentServiceUuid {
   service_uuid: string;
 }
 
-export interface NewAppointment {
+export interface NewAppointmentRequest {
   client_first_name: string;
   client_last_name: string;
   services: AppointmentServiceUuid[];
@@ -67,7 +67,7 @@ export interface Appointment {
   services: AppointmentService[];
 }
 
-export interface AppointmentDate {
+export interface AppointmentDateOffer {
   date: string; // ISO 8601 date
   price: number;
 }

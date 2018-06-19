@@ -9,13 +9,13 @@ import { componentUnloaded } from '~/core/utils/component-unloaded';
 import {
   AppointmentDatesState,
   GetDatesAction,
-  select2WeeksDays,
-  SelectDateAction
+  SelectDateAction,
+  selectDatesOffers
 } from '~/appointment/appointment-date/appointment-dates.reducer';
 import { selectSelectedService } from '~/appointment/appointment-services/services.reducer';
 import { selectSelectedClient } from '~/appointment/appointment-add/clients.reducer';
 
-import { AppointmentDate } from '~/today/today.models';
+import { AppointmentDateOffer } from '~/today/today.models';
 import { Client } from '~/appointment/appointment-add/clients-models';
 import { ServiceItem } from '~/core/stylist-service/stylist-models';
 
@@ -29,7 +29,7 @@ export class AppointmentDateComponent {
   client?: Client;
 
   protected moment = moment;
-  protected days: AppointmentDate[];
+  protected days: AppointmentDateOffer[];
 
   constructor(
     private navCtrl: NavController,
@@ -39,7 +39,7 @@ export class AppointmentDateComponent {
 
   ionViewWillLoad(): void {
     this.store
-      .select(select2WeeksDays)
+      .select(selectDatesOffers)
       .takeUntil(componentUnloaded(this))
       .subscribe(days => {
         this.days = days;
@@ -65,7 +65,7 @@ export class AppointmentDateComponent {
     // TODO: if no service selected
   }
 
-  select(date: AppointmentDate): void {
+  select(date: AppointmentDateOffer): void {
     this.store.dispatch(new SelectDateAction(date));
     this.navCtrl.pop();
   }

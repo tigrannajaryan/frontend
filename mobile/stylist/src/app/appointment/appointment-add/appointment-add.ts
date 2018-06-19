@@ -12,7 +12,7 @@ import { ServiceItem } from '~/core/stylist-service/stylist-models';
 
 import { Client } from '~/appointment/appointment-add/clients-models';
 import { TodayService as AppointmentService } from '~/today/today.service';
-import { AppointmentDate } from '~/today/today.models';
+import { AppointmentDateOffer } from '~/today/today.models';
 
 import {
   ClearClientsAction,
@@ -41,7 +41,7 @@ import {
 export class AppointmentAddComponent {
   form: FormGroup;
   selectedClient?: Client;
-  selectedDate?: AppointmentDate;
+  selectedDate?: AppointmentDateOffer;
   selectedService?: ServiceItem;
 
   // labels

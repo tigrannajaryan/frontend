@@ -1,6 +1,6 @@
 import * as paper from 'paper';
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { AppointmentDate } from '~/today/today.models';
+import { AppointmentDateOffer } from '~/today/today.models';
 
 /**
  * Project prices to px between 0 and width.
@@ -32,7 +32,7 @@ function calculatePricePosition(prices: number[], width: number): (price?: numbe
 })
 export class ChartComponent implements OnInit {
   @ViewChild('canvas') canvas;
-  @Input() dates: AppointmentDate[];
+  @Input() dates: AppointmentDateOffer[];
 
   private project: paper.Project;
 

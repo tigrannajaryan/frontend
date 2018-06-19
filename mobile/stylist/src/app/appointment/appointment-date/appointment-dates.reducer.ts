@@ -1,5 +1,5 @@
 import { Action, createFeatureSelector, createSelector } from '@ngrx/store';
-import { AppointmentDate } from '~/today/today.models';
+import { AppointmentDateOffer } from '~/today/today.models';
 import { Client } from '~/appointment/appointment-add/clients-models';
 import { ServiceUuid } from '~/core/stylist-service/stylist-models.ts';
 
@@ -12,9 +12,9 @@ export enum appointmentDatesActionTypes {
 }
 
 export interface AppointmentDatesState {
-  all: AppointmentDate[];
+  all: AppointmentDateOffer[];
   loaded: boolean;
-  selected?: AppointmentDate;
+  selected?: AppointmentDateOffer;
 }
 
 const initialState: AppointmentDatesState = {
@@ -33,7 +33,7 @@ export class GetDatesAction implements Action {
 
 export class GetDatesSuccessAction implements Action {
   readonly type = appointmentDatesActionTypes.GET_DATES_SUCCESS;
-  constructor(public days: AppointmentDate[]) { }
+  constructor(public days: AppointmentDateOffer[]) { }
 }
 
 export class GetDatesErrorAction implements Action {
@@ -43,7 +43,7 @@ export class GetDatesErrorAction implements Action {
 
 export class SelectDateAction implements Action {
   readonly type = appointmentDatesActionTypes.SELECT_DATE;
-  constructor(public date: AppointmentDate) { }
+  constructor(public date: AppointmentDateOffer) { }
 }
 
 export class ClearSelectedDateAction implements Action {
@@ -87,12 +87,12 @@ export const appointmentDatesStatePath = 'appointmentDates';
 
 export const selectAppointmentDates = createFeatureSelector<AppointmentDatesState>(appointmentDatesStatePath);
 
-export const select2WeeksDays = createSelector(
+export const selectDatesOffers = createSelector(
   selectAppointmentDates,
-  (state: AppointmentDatesState): AppointmentDate[] => state.all
+  (state: AppointmentDatesState): AppointmentDateOffer[] => state.all
 );
 
 export const selectSelectedDate = createSelector(
   selectAppointmentDates,
-  (state: AppointmentDatesState): AppointmentDate => state.selected
+  (state: AppointmentDatesState): AppointmentDateOffer => state.selected
 );

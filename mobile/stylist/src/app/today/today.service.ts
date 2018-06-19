@@ -8,7 +8,7 @@ import {
   AppointmentChangeRequest,
   AppointmentPreviewRequest,
   AppointmentPreviewResponse,
-  NewAppointment,
+  NewAppointmentRequest,
   Today
 } from '~/today/today.models';
 
@@ -47,7 +47,7 @@ export class TodayService extends BaseApiService {
   /**
    * Creates new appointment. The stylist must be already authenticated as a user.
    */
-  createAppointment(data: NewAppointment, forced = false): Promise<Appointment> {
+  createAppointment(data: NewAppointmentRequest, forced = false): Promise<Appointment> {
     return this.post<Appointment>(`stylist/appointments?force_start=${forced}`, data);
   }
 

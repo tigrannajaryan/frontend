@@ -9,7 +9,7 @@ import {
   ServiceItem, ServiceTemplateSet, ServiceTemplateSetBase, StylistProfile,
   StylistServicesList, StylistSummary
 } from './stylist-models';
-import { AppointmentDate } from '~/today/today.models';
+import { AppointmentDateOffer } from '~/today/today.models';
 
 export interface ServiceTemplateSetListResponse {
   service_template_sets: ServiceTemplateSetBase[];
@@ -31,7 +31,7 @@ export interface ServicesPricesParams {
 export interface ServicesPricesResponse {
   service_uuid: string;
   service_name: string;
-  prices: AppointmentDate[];
+  prices: AppointmentDateOffer[];
 }
 
 /**
@@ -106,7 +106,7 @@ export class StylistServiceProvider extends BaseApiService {
   }
 
   /**
-   * Get prices for 14 dates from now. The stylist must be already authenticated as a user.
+   * Get prices for a dates period from now. The stylist must be already authenticated as a user.
    */
   async getServicesPricesByDate(data: ServicesPricesParams): Promise<ServicesPricesResponse> {
     return this.post<ServicesPricesResponse>('stylist/services/pricing', data);
