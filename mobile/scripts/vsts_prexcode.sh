@@ -15,4 +15,4 @@ echo "--Patching iOS build number"
 # Technically, this is a lame approach. Right way to do that would be to set property
 # 'ios-CFBundleVersion={build_number}' in config.xml before running 'cordova prepare'.
 # That would require to write an extra hook, so I'll keep it for later time.
-/usr/libexec/PlistBuddy -c "Set :CFBundleVersion $IOS_BUILD_NUMBER" platforms/ios/$IOS_APP_NAME/$IOS_APP_NAME-Info.plist
+/usr/libexec/PlistBuddy -c "Set :CFBundleVersion $IOS_BUILD_NUMBER" "platforms/ios/$IOS_APP_NAME/$IOS_APP_NAME-Info.plist"

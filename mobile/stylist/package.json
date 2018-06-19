@@ -1,8 +1,8 @@
 {
   "name": "mobile",
   "version": "0.0.1",
-  "author": "Ionic Framework",
-  "homepage": "http://ionicframework.com/",
+  "author": "MadeBeauty Engineering Team",
+  "homepage": "https://www.madebeauty.com/",
   "private": true,
   "scripts": {
     "clean": "ionic-app-scripts clean",
@@ -91,7 +91,7 @@
     "stylelint-scss": "3.1.0",
     "typescript": "2.6.2"
   },
-  "description": "An Ionic project",
+  "description": "MadeBeauty for Professionals Beta",
   "cordova": {
     "plugins": {
       "cordova-plugin-whitelist": {},
