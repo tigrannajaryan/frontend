@@ -1,0 +1,86 @@
+<!--
+  Generated template for the AboutPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>About Made Pro</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+  <ion-list>
+    <ion-item>
+      <h1>Made Pro</h1>
+      <h2>Version 0.0.1, Build {{ getBuildNumber() }}</h2>
+      <h2 *ngIf="getEnv().ffEnableIncomplete">Incomplete Features Enabled: Yes</h2>
+      <h2>Copyright &copy; MadeBeauty Inc.</h2>
+    </ion-item>
+
+    <ion-item *ngIf="!getEnv().production">
+      <h1>Server</h1>
+      <a href="{{ getEnv().apiUrl }}">{{ getEnv().apiUrl }}</a>
+    </ion-item>
+
+    <ion-item>
+      <h1>Open Source Licenses</h1>
+      <a href="https://raw.githubusercontent.com/angular/angular/master/LICENSE">Angular (MIT License)</a>
+      <br/>
+      <a href="https://raw.githubusercontent.com/ionic-team/ionic/master/LICENSE">Ionic (MIT License)</a>
+      <br/>
+      <a href="https://raw.githubusercontent.com/ionic-team/ionic-native/master/LICENSE">Ionic-native (MIT License)</a>
+      <br/>
+      <a href="https://raw.githubusercontent.com/ngrx/platform/master/LICENSE">ngrx (MIT License)</a>
+      <br/>
+      <a href="https://raw.githubusercontent.com/apache/cordova-android/master/LICENSE">cordova-android (Apache License)</a>
+      <br/>
+      <a href="https://raw.githubusercontent.com/apache/cordova-ios/master/LICENSE">cordova-ios (Apache License)</a>
+      <br/>
+      <a href="https://www.npmjs.com/package/cordova-ios-plugin-no-export-compliance">cordova-ios-plugin-no-export-compliance (BSD-3)</a>
+      <br/>
+      <a href="https://raw.githubusercontent.com/apache/cordova-plugin-camera/master/LICENSE">cordova-plugin-camera (Apache License)</a>
+      <br/>
+      <a href="https://raw.githubusercontent.com/apache/cordova-plugin-contacts/master/LICENSE">cordova-plugin-contacts (Apache License)</a>
+      <br/>
+      <a href="https://raw.githubusercontent.com/apache/cordova-plugin-device/master/LICENSE">cordova-plugin-device (Apache License)</a>
+      <br/>
+      <a href="https://raw.githubusercontent.com/jeduan/cordova-plugin-facebook4/master/LICENSE">cordova-plugin-facebook4 (Apache License)</a>
+      <br/>
+      <a href="https://raw.githubusercontent.com/danwilson/google-analytics-plugin/master/LICENSE">cordova-plugin-google-analytics (MIT License)</a>
+      <br/>
+      <a href="https://raw.githubusercontent.com/ionic-team/cordova-plugin-ionic-keyboard/master/LICENSE">cordova-plugin-ionic-keyboard (MIT License)</a>
+      <br/>
+      <a href="https://raw.githubusercontent.com/ionic-team/cordova-plugin-ionic-webview/master/LICENSE">cordova-plugin-ionic-webview (Apache License)</a>
+      <br/>
+      <a href="https://raw.githubusercontent.com/apache/cordova-plugin-splashscreen/master/LICENSE">cordova-plugin-splashscreen (Apache License)</a>
+      <br/>
+      <a href="https://raw.githubusercontent.com/apache/cordova-plugin-statusbar/master/LICENSE">cordova-plugin-statusbar (Apache License)</a>
+      <br/>
+      <a href="https://raw.githubusercontent.com/apache/cordova-plugin-whitelist/master/LICENSE">cordova-plugin-whitelist (Apache License)</a>
+      <br/>
+      <a href="https://raw.githubusercontent.com/stonelasley/ionic-mocks/develop/LICENSE">ionic-mocks (MIT License)</a>
+      <br/>
+      <a href="https://raw.githubusercontent.com/ionic-team/ionicons/master/LICENSE">ionicons (MIT License)</a>
+      <br/>
+      <a href="https://raw.githubusercontent.com/moment/moment/develop/LICENSE">moment (MIT License)</a>
+      <br/>
+      <a href="https://raw.githubusercontent.com/brandonroberts/ngrx-store-freeze/master/LICENSE">ngrx-store-freeze (MIT License)</a>
+      <br/>
+      <a href="https://raw.githubusercontent.com/paperjs/paper.js/develop/LICENSE.txt">paper (MIT License)</a>
+      <br/>
+      <a href="https://raw.githubusercontent.com/ReactiveX/rxjs/master/LICENSE.txt">rxjs (Apache License)</a>
+      <br/>
+      <a href="https://raw.githubusercontent.com/GoogleChromeLabs/sw-toolbox/master/LICENSE">sw-toolbox (Apache License)</a>
+      <br/>
+      <a href="https://raw.githubusercontent.com/angular/zone.js/master/LICENSE">zone.js (MIT License)</a>
+      <br/>
+    </ion-item>
+  </ion-list>
+
+</ion-content>

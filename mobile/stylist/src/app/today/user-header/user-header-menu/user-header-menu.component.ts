@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { ViewController } from 'ionic-angular';
 
 export enum UserHeaderMenuActions {
+  about,
   logout
 }
 
@@ -15,7 +16,7 @@ export class UserHeaderMenuComponent {
     private viewCtrl: ViewController
   ) {}
 
-  logout(): void {
+  logoutClick(): void {
     // Note: do not attempt to work with NavController here.
     // In popovers the NavController is a different instance
     // and attempting to call NavController.setRoot() to
@@ -25,5 +26,9 @@ export class UserHeaderMenuComponent {
 
     // Hide popover and report selected action
     this.viewCtrl.dismiss(UserHeaderMenuActions.logout);
+  }
+
+  aboutClick(): void {
+    this.viewCtrl.dismiss(UserHeaderMenuActions.about);
   }
 }

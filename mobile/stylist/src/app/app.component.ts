@@ -8,7 +8,7 @@ import { PageNames } from '~/core/page-names';
 import { Logger } from './shared/logger';
 import { AuthApiService } from '~/core/auth-api-service/auth-api-service';
 import { UnhandledErrorHandler } from '~/shared/unhandled-error-handler';
-import { createNavHistoryList } from '~/core/functions';
+import { createNavHistoryList, getBuildNumber } from '~/core/functions';
 import { loading } from '~/core/utils/loading';
 
 // Google Analytics Id
@@ -36,6 +36,7 @@ export class MyAppComponent {
     private ga: GoogleAnalytics
   ) {
     this.logger.info('App initializing...');
+    this.logger.info(`Build number ${getBuildNumber()}`);
     this.initializeApp();
   }
 

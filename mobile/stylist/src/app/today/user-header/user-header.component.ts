@@ -67,6 +67,10 @@ export class UserHeaderComponent implements OnInit {
           this.navCtrl.setRoot(PageNames.FirstScreen);
           break;
 
+        case UserHeaderMenuActions.about:
+          this.navCtrl.push(PageNames.About);
+          break;
+
         default:
           break;
       }

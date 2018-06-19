@@ -7,7 +7,8 @@ const webpackConfig = require('../node_modules/@ionic/app-scripts/config/webpack
 const config = {
   plugins: [
     new webpack.EnvironmentPlugin({
-      BB_ENV: undefined
+      BB_ENV: undefined,
+      IOS_BUILD_NUMBER: undefined
     }),
     new webpack.NormalModuleReplacementPlugin(/\.\/environments\/environment\.default/, function (resource) {
       if (process.env.BB_ENV !== undefined) {
@@ -35,7 +36,15 @@ const config = {
         }
         global.environmentNameLogged = true;
       }
-    })
+    }),
+    function () {
+      this.plugin('watch-run', function (watching, callback) {
+        console.log('Begin compile at ' + new Date());
+        const buildNum = process.env.IOS_BUILD_NUMBER || 0;
+        console.log('IOS_BUILD_NUMBER=' + buildNum);
+        callback();
+      })
+    }
   ],
   resolve: {
     alias: {
