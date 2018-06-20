@@ -3,12 +3,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { getBuildNumber } from '~/core/functions';
 import { ENV } from '../../environments/environment.default';
 
-/**
- * Generated class for the AboutPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+declare const __COMMIT_HASH__: string;
 
 @IonicPage()
 @Component({
@@ -18,6 +13,7 @@ import { ENV } from '../../environments/environment.default';
 export class AboutComponent {
 
   protected getBuildNumber = getBuildNumber;
+  protected __COMMIT_HASH__ = __COMMIT_HASH__;
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
   }
