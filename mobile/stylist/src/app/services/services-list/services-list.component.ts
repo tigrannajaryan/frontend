@@ -118,6 +118,11 @@ export class ServicesListComponent {
         )
       ), []);
 
+    if (categoriesServices.length === 0) {
+      showAlert('Services are empty', 'At least one service should be added.');
+      return;
+    }
+
     try {
       await this.stylistService.setStylistServices({
         services: categoriesServices,
