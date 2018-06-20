@@ -86,11 +86,13 @@ page-appointment-add {
     margin: 0;
     font-size: $t-h3;
     color: color($grayscale, 800);
+    text-transform: none;
     border-bottom: 1px solid color($colors, bb_skin_dark);
     border-radius: 0;
 
     .button-inner {
       justify-content: flex-start;
+      text-transform: none;
     }
 
     &.is-muted {
