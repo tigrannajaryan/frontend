@@ -1,9 +1,11 @@
 import * as moment from 'moment';
 
 import { Component } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
 import { Store } from '@ngrx/store';
 import { IonicPage, NavController } from 'ionic-angular';
 
+import { AppModule } from '~/app.module';
 import { componentUnloaded } from '~/core/utils/component-unloaded';
 
 import {
@@ -19,6 +21,34 @@ import { AppointmentDateOffer } from '~/today/today.models';
 import { Client } from '~/appointment/appointment-add/clients-models';
 import { ServiceItem } from '~/core/stylist-service/stylist-models';
 
+/**
+ * Returns green if the price is less than a median price of all prices.
+ * Otherwise returns neutral color.
+ */
+function calculatePriceColor(prices: number[]): (price?: number) => string {
+  const sanitizer = AppModule.injector.get(DomSanitizer);
+
+  // calculate min max
+  let max = -Infinity;
+  const min = prices.reduce((minPrice, price) => {
+    if (price > max) {
+      max = price;
+    }
+    return price < minPrice ? price : minPrice;
+  });
+  const median = (min + max) / 2;
+
+  // define colors (TODO: wavelengths could be used)
+  const neutral = '#000';
+  const green = '#2BB14F';
+
+  if (prices.length < 2 || min === max) {
+    return () => sanitizer.bypassSecurityTrustStyle(neutral);
+  }
+
+  return (price: number): string => sanitizer.bypassSecurityTrustStyle(price < median ? green : neutral);
+}
+
 @IonicPage()
 @Component({
   selector: 'page-appointment-date',
@@ -27,6 +57,8 @@ import { ServiceItem } from '~/core/stylist-service/stylist-models';
 export class AppointmentDateComponent {
   service?: ServiceItem;
   client?: Client;
+
+  getPriceColor: (price?: number) => string;
 
   protected moment = moment;
   protected days: AppointmentDateOffer[];
@@ -43,6 +75,10 @@ export class AppointmentDateComponent {
       .takeUntil(componentUnloaded(this))
       .subscribe(days => {
         this.days = days;
+
+        if (days.length > 0) {
+          this.getPriceColor = calculatePriceColor(days.map(day => day.price));
+        }
       });
 
     this.store

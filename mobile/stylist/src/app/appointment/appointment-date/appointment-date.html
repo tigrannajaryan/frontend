@@ -3,9 +3,11 @@
 <ion-content padding>
   <div *ngIf="days" class="AppointmentDate-dates">
     <div *ngFor="let day of days" class="DateCard" (click)="select(day)">
-      <div class="DateCard-price">${{ day.price }}</div>
-      <div class="DateCard-day">{{ moment(day.date).format('dddd, D MMM') }}</div>
+      <div class="DateCard-day">
+        {{ moment(day.date).format('D MMM') }}
+        <small>{{ moment(day.date).format('dddd') }}</small>
+      </div>
+      <div class="DateCard-price" [style.color]="this.getPriceColor(day.price)">${{ day.price }}</div>
     </div>
-    <made-chart *ngIf="days.length > 0" [dates]="days"></made-chart>
   </div>
 </ion-content>

@@ -4,6 +4,9 @@ page-appointment-date {
   }
 
   .DateCard {
+    display: flex;
+    align-content: center;
+    justify-content: space-between;
     padding: pxtorem10(14) pxtorem10(25);
     margin-bottom: pxtorem10(18);
     border-radius: 5px;
@@ -15,8 +18,13 @@ page-appointment-date {
     }
 
     .DateCard-day {
-      font-size: $t-base;
+      font-size: $t-h3;
       color: color($grayscale, 500);
+
+      small {
+        display: block;
+        font-size: $t-base;
+      }
     }
   }
 }
