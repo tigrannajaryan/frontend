@@ -12,7 +12,7 @@ function calculatePricePosition(prices: number[], width: number): (price?: numbe
   if (prices.length < 2) {
     return (): number => width / 2; // centered
   }
-  let max = -Infinity;
+  let max = prices[0];
   const min = prices.reduce((minPrice, price) => {
     if (price > max) {
       max = price;
