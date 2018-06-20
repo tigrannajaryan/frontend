@@ -23,9 +23,6 @@ export class AppointmentDatesEffects {
   @Effect() getDates = this.actions
     .ofType(appointmentDatesActionTypes.GET_DATES)
     .map((action: GetDatesAction) => action)
-    .withLatestFrom(this.store.select(selectAppointmentDates))
-    .filter(([action, { loaded }]) => !loaded)
-    .map(([action]): GetDatesAction => action)
     .switchMap(action => Observable.defer(withLoader(async () => {
       try {
         const params: ServicesPricesParams = {
