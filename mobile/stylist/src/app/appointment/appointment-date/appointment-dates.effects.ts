@@ -13,8 +13,7 @@ import {
   AppointmentDatesState,
   GetDatesAction,
   GetDatesErrorAction,
-  GetDatesSuccessAction,
-  selectAppointmentDates
+  GetDatesSuccessAction
 } from '~/appointment/appointment-date/appointment-dates.reducer';
 
 @Injectable()

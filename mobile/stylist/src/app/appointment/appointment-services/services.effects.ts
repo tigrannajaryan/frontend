@@ -12,7 +12,6 @@ import {
   LoadAction,
   LoadErrorAction,
   LoadSuccessAction,
-  selectService,
   servicesActionTypes,
   ServicesState
 } from './services.reducer';
