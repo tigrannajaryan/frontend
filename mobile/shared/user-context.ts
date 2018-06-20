@@ -1,6 +1,12 @@
 import { Injectable } from '@angular/core';
 import { GoogleAnalytics } from '@ionic-native/google-analytics';
+/*
+Sentry is disabled for now because the iOS release is failing.
+We will work on a fix later.
+More details on the problem: https://github.com/madebeauty/monorepo/issues/316
+
 import * as Sentry from 'sentry-cordova';
+*/
 
 import { Logger } from '~/shared/logger';
 
@@ -22,7 +28,12 @@ export class UserContext {
       this.userId = userId;
       this.logger.info(`Current user is ${userId}`);
       this.ga.setUserId(userId);
+      /*
+      Sentry is disabled for now because the iOS release is failing.
+      We will work on a fix later.
+      More details on the problem: https://github.com/madebeauty/monorepo/issues/316
       Sentry.setUserContext({ id: userId });
+      */
     }
   }
 }

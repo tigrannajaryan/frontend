@@ -1,6 +1,13 @@
 import { ApplicationRef, Injectable, Injector } from '@angular/core';
 import { AlertController, NavControllerBase } from 'ionic-angular';
+
+/*
+Sentry is disabled for now because the iOS release is failing.
+We will work on a fix later.
+More details on the problem: https://github.com/madebeauty/monorepo/issues/316
+
 import * as Sentry from 'sentry-cordova';
+*/
 
 import {
   HttpStatus,
@@ -32,11 +39,17 @@ export class UnhandledErrorHandler {
   private firstPageName: string;
 
   private static reportToSentry(error: any): void {
+    /*
+    Sentry is disabled for now because the iOS release is failing.
+    We will work on a fix later.
+    More details on the problem: https://github.com/madebeauty/monorepo/issues/316
+
     try {
       Sentry.captureException(error.originalError || error);
     } catch (e) {
       console.error(e);
     }
+    */
   }
 
   constructor(
