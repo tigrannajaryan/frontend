@@ -5,6 +5,7 @@ import { Component } from '@angular/core';
 import { AlertController, IonicPage, NavController } from 'ionic-angular';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
+import { predicateValidator } from '~/shared/validators';
 import { loading } from '~/core/utils/loading';
 import { componentUnloaded } from '~/core/utils/component-unloaded';
 import { PageNames } from '~/core/page-names';
@@ -192,6 +193,9 @@ export class AppointmentAddComponent {
     }
   }
 
+  isServiceExist = () => Boolean(this.selectedService);
+  isDateSet = () => Boolean(this.selectedDate);
+
   @loading
   private async createAppointment(data, forced): Promise<any> {
     try {
@@ -212,8 +216,8 @@ export class AppointmentAddComponent {
     this.form = this.formBuilder.group({
       client: ['', [Validators.required]],
       phone: ['', [Validators.required]],
-      service: [this.selectServiceLabel, [Validators.required]],
-      date: [this.selectDateLabel, [Validators.required]],
+      service: [this.selectServiceLabel, [predicateValidator(this.isServiceExist)]],
+      date: [this.selectDateLabel, [predicateValidator(this.isDateSet)]],
       time: ['', [Validators.required]]
     });
   }
