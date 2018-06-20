@@ -19,7 +19,7 @@ from .models import (
 class ServiceTemplateAdmin(admin.ModelAdmin):
     # TODO: decide on filter/search fields
     list_filter = ['templateset__name', 'category', ]
-    list_display = ['name', 'category', 'templateset', 'base_price', 'duration', ]
+    list_display = ['name', 'category', 'templateset', 'regular_price', 'duration', ]
     search_fields = ['name', 'description', ]
 
 

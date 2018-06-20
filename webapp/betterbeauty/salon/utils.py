@@ -133,7 +133,7 @@ def generate_prices_for_stylist_service(
         stylist.salon.timezone,
         discounts,
         last_visit_date,
-        float(service.base_price),
+        float(service.regular_price),
         demand_list
     )
 
@@ -159,7 +159,7 @@ def calculate_price_and_discount_for_client_on_date(
         return prices[date]
     # Return base price if day does not appear to be available for booking
     calculated_price = CalculatedPrice.build(
-        price=float(service.base_price), applied_discount=None, discount_percentage=0
+        price=float(service.regular_price), applied_discount=None, discount_percentage=0
     )
     return calculated_price
 

@@ -160,7 +160,7 @@ class TestStylistServiceSerializer(object):
             ServiceTemplate,
             name='service 1', category=category,
             duration=datetime.timedelta(minutes=10),
-            base_price=20
+            regular_price=20
         )
         data = [
             {
@@ -183,7 +183,7 @@ class TestStylistServiceSerializer(object):
         service = StylistService.objects.last()
         assert(service.name == 'service 1')
         assert(service.duration == datetime.timedelta(minutes=10))
-        assert(service.base_price == 20)
+        assert(service.regular_price == 20)
         assert(service.service_origin_uuid == template.uuid)
 
     @pytest.mark.django_db
@@ -194,7 +194,7 @@ class TestStylistServiceSerializer(object):
             ServiceTemplate,
             name='old_name', category=category,
             duration=datetime.timedelta(minutes=10),
-            base_price=20
+            regular_price=20
         )
         stylist_service = G(
             StylistService,
@@ -202,7 +202,7 @@ class TestStylistServiceSerializer(object):
             category=category,
             name='old name',
             duration=datetime.timedelta(10),
-            base_price=20,
+            regular_price=20,
             is_enabled=True,
             deleted_at=None,
             service_origin_uuid=template.uuid
@@ -231,7 +231,7 @@ class TestStylistServiceSerializer(object):
         service = StylistService.objects.last()
         assert (service.name == 'new name')
         assert (service.duration == datetime.timedelta(minutes=10))
-        assert (service.base_price == 20)
+        assert (service.regular_price == 20)
         assert (old_service_uuid == service.uuid)
         assert (old_service_origin_uuid != service.service_origin_uuid)
 
@@ -514,7 +514,7 @@ class TestAppointmentSerializer(object):
         service: StylistService = G(
             StylistService,
             stylist=stylist_data, duration=datetime.timedelta(minutes=30),
-            base_price=50
+            regular_price=50
         )
         stylist_data.available_days.filter(weekday=Weekday.THURSDAY).update(
             is_available=True,
@@ -638,7 +638,7 @@ class TestAppointmentSerializer(object):
         service: StylistService = G(
             StylistService,
             stylist=stylist_data, duration=datetime.timedelta(minutes=30),
-            base_price=50
+            regular_price=50
         )
         stylist_data.available_days.filter(weekday=Weekday.THURSDAY).update(
             is_available=True,
@@ -675,7 +675,7 @@ class TestAppointmentSerializer(object):
         assert(appointment.services.count() == 1)
         original_service: AppointmentService = appointment.services.first()
         assert(original_service.is_original is True)
-        assert(original_service.regular_price == service.base_price)
+        assert(original_service.regular_price == service.regular_price)
         assert(original_service.client_price == 30)
         assert(original_service.service_uuid == service.uuid)
         assert(original_service.service_name == service.name)
@@ -686,7 +686,7 @@ class TestAppointmentSerializer(object):
         service: StylistService = G(
             StylistService,
             stylist=stylist_data, duration=datetime.timedelta(minutes=30),
-            base_price=50
+            regular_price=50
         )
         stylist_data.available_days.filter(weekday=Weekday.THURSDAY).update(
             is_available=True,
@@ -737,7 +737,7 @@ class TestAppointmentSerializer(object):
         assert (appointment.services.count() == 1)
         original_service: AppointmentService = appointment.services.first()
         assert (original_service.is_original is True)
-        assert (original_service.regular_price == service.base_price)
+        assert (original_service.regular_price == service.regular_price)
         assert (original_service.client_price == 30)
         assert (original_service.service_uuid == service.uuid)
         assert (original_service.service_name == service.name)
@@ -892,7 +892,7 @@ class TestAppointmentUpdateSerializer(object):
         original_service: StylistService = G(
             StylistService, stylist=appointment.stylist,
             duration=datetime.timedelta(30),
-            base_price=20
+            regular_price=20
         )
         G(
             AppointmentService, appointment=appointment,
@@ -904,7 +904,7 @@ class TestAppointmentUpdateSerializer(object):
         new_service: StylistService = G(
             StylistService, stylist=appointment.stylist,
             duration=datetime.timedelta(30),
-            base_price=40
+            regular_price=40
         )
 
         assert(appointment.services.count() == 1)

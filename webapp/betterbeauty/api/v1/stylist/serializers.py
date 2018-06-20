@@ -83,7 +83,7 @@ class StylistServiceSerializer(serializers.ModelSerializer):
     photo_samples = StylistServicePhotoSampleSerializer(
         many=True, read_only=True)
     base_price = serializers.DecimalField(
-        coerce_to_string=False, max_digits=6, decimal_places=2
+        coerce_to_string=False, max_digits=6, decimal_places=2, source='regular_price'
     )
     uuid = serializers.UUIDField(required=False, allow_null=True)
     category_uuid = serializers.UUIDField(source='category.uuid')
@@ -112,7 +112,7 @@ class StylistServiceSerializer(serializers.ModelSerializer):
 
         service_templates = ServiceTemplate.objects.filter(
             name=data_to_save['name'],
-            base_price=data_to_save['base_price'],
+            regular_price=data_to_save['regular_price'],
             category=category,
         )
 
@@ -249,7 +249,7 @@ class ServiceTemplateSerializer(serializers.ModelSerializer):
 class ServiceTemplateDetailsSerializer(serializers.ModelSerializer):
     duration_minutes = DurationMinuteField(source='duration')
     base_price = serializers.DecimalField(
-        coerce_to_string=False, max_digits=6, decimal_places=2)
+        coerce_to_string=False, max_digits=6, decimal_places=2, source='regular_price')
 
     class Meta:
         model = ServiceTemplate
@@ -277,7 +277,7 @@ class ServiceTemplateCategoryDetailsSerializer(serializers.ModelSerializer):
         fields = ['name', 'uuid', 'services']
 
     def get_services(self, service_category: ServiceCategory):
-        templates = service_category.templates.order_by('-base_price')
+        templates = service_category.templates.order_by('-regular_price')
         if 'service_template_set' in self.context:
             templates = templates.filter(templateset=self.context['service_template_set'])
         return ServiceTemplateDetailsSerializer(templates, many=True).data
@@ -293,7 +293,7 @@ class StylistServiceCategoryDetailsSerializer(serializers.ModelSerializer):
 
     def get_services(self, service_category: ServiceCategory):
         stylist: Stylist = self.context['stylist']
-        services = stylist.services.filter(category=service_category).order_by('-base_price')
+        services = stylist.services.filter(category=service_category).order_by('-regular_price')
         return StylistServiceSerializer(services, many=True).data
 
 
@@ -731,7 +731,7 @@ class AppointmentSerializer(AppointmentValidationMixin, serializers.ModelSeriali
                     service_name=service.name,
                     service_uuid=service.uuid,
                     duration=service.duration,
-                    regular_price=service.base_price,
+                    regular_price=service.regular_price,
                     client_price=client_price.price,
                     applied_discount=(
                         client_price.applied_discount.value
@@ -908,8 +908,8 @@ class AppointmentUpdateSerializer(
                 service_uuid=service.uuid,
                 service_name=service.name,
                 duration=service.duration,
-                regular_price=service.base_price,
-                client_price=service.base_price,
+                regular_price=service.regular_price,
+                client_price=service.regular_price,
                 applied_discount=None,
                 is_original=service.uuid in original_services_uuids
             )

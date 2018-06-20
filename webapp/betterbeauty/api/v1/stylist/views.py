@@ -277,7 +277,7 @@ class StylistAppointmentPreviewView(views.APIView):
                 service: StylistService = stylist.services.get(
                     uuid=service_request_item['service_uuid']
                 )
-                client_price: Decimal = service.base_price
+                client_price: Decimal = service.regular_price
                 if not appointment:
                     client_price = Decimal(calculate_price_and_discount_for_client_on_date(
                         service=service, client=client,
@@ -287,7 +287,7 @@ class StylistAppointmentPreviewView(views.APIView):
                     uuid=None,
                     service_uuid=service.uuid,
                     service_name=service.name,
-                    regular_price=service.base_price,
+                    regular_price=service.regular_price,
                     client_price=client_price,
                     duration=service.duration,
                     is_original=False
