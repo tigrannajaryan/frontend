@@ -130,26 +130,26 @@ page-register-salon {
 
       .text-input {
         margin-left: 0 !important;
-        font-size: pxtorem(46);
+        font-size: $t-h2;
 
         @media ($smartphone) {
-          font-size: $t-h1;
+          font-size: $t-h3;
         }
 
         @media ($phone) {
-          font-size: $t-h2;
+          font-size: $t-h3;
         }
       }
 
       &-label {
-        font-size: $t-h3;
+        font-size: $t-h2;
 
         @media ($smartphone) {
           font-size: $t-h4;
         }
 
         @media ($phone) {
-          font-size: $t-base;
+          font-size: $t-h4;
         }
       }
     }

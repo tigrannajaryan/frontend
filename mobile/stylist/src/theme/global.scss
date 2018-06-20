@@ -162,7 +162,7 @@
         font-size: pxtoem(18);
       }
       @media ($phone) {
-        font-size: pxtoem(15);
+        font-size: pxtoem(18);
       }
 
       &.noborder{
@@ -214,7 +214,7 @@
           font-size: pxtoem(18);
         }
         @media ($phone) {
-          font-size: pxtoem(12);
+          font-size: pxtoem(14);
         }
 
         &:first-child{

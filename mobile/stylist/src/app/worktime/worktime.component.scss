@@ -34,12 +34,18 @@ page-worktime-component {
     .label-md{
       margin: 13px 0px 0px 10px;
     }
+    .datetime-ios,
     .datetime-md{
       margin: 5px 8px 13px 10px;
       border-bottom: 1px solid color($colors, bb_honey);
       padding: 0px;
       font-size: $t-h3;
+      
+      @media ($phone){
+        font-size: $t-h3;
+      }
     }
+    
     span{
       padding-top: 5px;
       font-size: $t-h3;
@@ -61,7 +67,7 @@ page-worktime-component {
     }
     .wd_greed a{
       color: color($grayscale, 800);
-      font-size: $t-small;
+      font-size: $t-base;
       display: inline-block;
       padding: 0px 3px 3px 3px;
       border-bottom:2px solid color($colors, bb_skin);
@@ -96,7 +102,7 @@ page-worktime-component {
     margin:3rem 0rem 2rem 0rem;
     padding-top: 5px;
     border-top: 1px solid color($grayscale, 400);
-   font-size: 1.25em;
+    font-size: $t-h4;
   
     ion-col:first-child{
       min-width: 120px !important;

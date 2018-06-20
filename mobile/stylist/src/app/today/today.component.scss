@@ -206,8 +206,10 @@ page-today {
       }
 
       &-null{
+        margin-top: pxtorem(120);
         text-align: center;
-        font-size: pxtorem10(40);
+        font-size: pxtorem10(35);
+        font-style: italic;
 
         @media ($smartphone) {
           font-size: pxtorem10(30);
@@ -310,7 +312,7 @@ page-today {
             }
             @media ($phone) {
               margin-top: 0;
-              font-size: pxtorem(20);
+              font-size: pxtorem(24);
             }
           }
         }
@@ -326,8 +328,8 @@ page-today {
             font-size: pxtorem(28);
           }
           @media ($phone) {
-            padding-top: pxtorem(6);
-            font-size: pxtorem(18);
+            padding-top: pxtorem(8);
+            font-size: pxtorem(22);
           }
 
           &-ava{
@@ -341,6 +343,8 @@ page-today {
             vertical-align: middle;
             margin-right: pxtorem(20);
             margin-top: -5px;
+            border:1px solid color($colors, bb_skin);  
+
 
             @media ($smartphone) {
               margin-right: pxtorem(15);
@@ -349,8 +353,8 @@ page-today {
             }
             @media ($phone) {
               margin-right: pxtorem(7);
-              width: 16px;
-              height: 16px;
+              width: 20px;
+              height: 20px;
             }
           }
         }
