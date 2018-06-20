@@ -22,7 +22,7 @@ import { Client } from '~/appointment/appointment-add/clients-models';
 import { ServiceItem } from '~/core/stylist-service/stylist-models';
 
 /**
- * Returns green if the price is less than a median price of all prices.
+ * Returns green if the price is less than a mid price of all prices.
  * Otherwise returns neutral color.
  */
 function calculatePriceColor(prices: number[]): (price?: number) => string {
@@ -44,13 +44,13 @@ function calculatePriceColor(prices: number[]): (price?: number) => string {
     }
     return price < minPrice ? price : minPrice;
   });
-  const median = (min + max) / 2;
+  const midpoint = (min + max) / 2;
 
   if (min === max) {
     return () => sanitizer.bypassSecurityTrustStyle(neutral);
   }
 
-  return (price: number): string => sanitizer.bypassSecurityTrustStyle(price < median ? green : neutral);
+  return (price: number): string => sanitizer.bypassSecurityTrustStyle(price < midpoint ? green : neutral);
 }
 
 @IonicPage()
