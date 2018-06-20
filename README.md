@@ -94,11 +94,11 @@ if (!ENV.ffEnableIncomplete) {
 ## Pull Requests and Code Reviews
 
 Every change must be peer reviewed before it is merged to mainline
-branches. Push your feature branch to origin then go to VSTS
+branches. Push your feature branch to origin then go to Github
 and create a pull request from that branch. If your change is
 about UI then include screenshots showing what you did.
 
-Once the pull request is created VSTS will automatially trigger
+Once the pull request is created it will automatially trigger
 a build. Wait until the build succeeds and add appropriate
 reviewers. Now wait for reviewers to comment.
 
@@ -106,10 +106,10 @@ After receiving comments fix the issues, work with the reviewer
 to refine your work. If you need to make changes you can make
 additional commits on your feature branch or you can amend the
 original commit. Push your changes to origin and reply to comments
-in VSTS.
+in Github.
 
 Once you and the reviewer are satisfied merge you pull request
-using stashing. Use "Squash changes when merging" option in VSTS.
+using stashing. Use "Squash changes when merging" option in Github.
 Delete your feature branch after closing the pull request.
 
 ## Automated Tests

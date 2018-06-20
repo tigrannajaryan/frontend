@@ -14,6 +14,18 @@ local dev server for dev/testing and open the app in your default browser.
 
 To build only run `npm run build`.
 
+# Build environments
+
+The app can be built for different environments (e.g. production or local).
+The environments are defined in `environments/environment.*.ts` files.
+Certain settings such as backend URL, feature flags, etc are defined in these
+files.
+
+The default environment is `environment.default.ts`.
+
+To build non-default environment define BB_ENV env variable before building, e.g.
+`BB_ENV=local npm run build-full`
+
 # Coding guidelines
 
 Follow Angular Style Guide: https://angular.io/guide/styleguide
@@ -63,3 +75,7 @@ Note: to run successfully on VSTS this requires Hosted VS2017 agent.
 To build and run on Android emulator or connected Android device
 use command `ionic cordova run android --device`
 
+It is also possible to run the app on the device from VS Code and have full
+debugging experience. Use "Run android on device" VS Code debug configuration.
+Note that you will need to install Cordova plugin for VS Code first:
+https://marketplace.visualstudio.com/items?itemName=vsmobile.cordova-tools
