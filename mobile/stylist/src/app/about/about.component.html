@@ -19,6 +19,11 @@
     <ion-item>
       <h1>Made Pro</h1>
       <h2>Version 0.0.1, Build {{ getBuildNumber() }}</h2>
+      <h2 *ngIf="!getEnv().production">Commit hash:
+        <a href="https://github.com/madebeauty/monorepo/commit/{{ __COMMIT_HASH__ }}">
+          {{ __COMMIT_HASH__ }}
+        </a>
+      </h2>
       <h2 *ngIf="getEnv().ffEnableIncomplete">Incomplete Features Enabled: Yes</h2>
       <h2>Copyright &copy; MadeBeauty Inc.</h2>
     </ion-item>
