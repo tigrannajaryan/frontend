@@ -6,7 +6,6 @@ const noop = (): any => undefined;
 
 /**
  * A common logger that is used by the app.
- * TODO: properly handle multiple parameters to log() function.
  * TODO: think about how to get the logs in production environment.
  */
 @Injectable()

@@ -4,6 +4,7 @@ import { IonicModule } from 'ionic-angular';
 import { BaseApiService } from '~/shared/base-api-service';
 import { ComponentsModule } from './components/components.module';
 import { Logger } from '~/shared/logger';
+import { UserContext } from '~/shared/user-context';
 import { ServerStatusTracker } from '~/shared/server-status-tracker';
 import { DirectivesModule } from '~/core/directives/directive.module';
 
@@ -21,7 +22,8 @@ import { DirectivesModule } from '~/core/directives/directive.module';
   providers: [
     BaseApiService,
     Logger,
-    ServerStatusTracker
+    ServerStatusTracker,
+    UserContext
   ]
 })
 export class CoreModule {}

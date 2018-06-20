@@ -91,7 +91,9 @@ export class BaseApiService {
 
           default:
             if (BaseApiService.isInternalErrorStatus(e.status)) {
-              throw new ServerInternalError();
+              throw new ServerInternalError(e.message);
+            } else {
+              throw new ServerUnknownError(e.message);
             }
         }
       }

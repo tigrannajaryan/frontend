@@ -6,6 +6,7 @@ import { BaseApiService } from '~/shared/base-api-service';
 import { StylistProfile } from '../stylist-service/stylist-models';
 import { Logger } from '~/shared/logger';
 import { ServerStatusTracker } from '~/shared/server-status-tracker';
+import { UserContext } from '~/shared/user-context';
 
 export enum UserRole { stylist = 'stylist', client = 'client' }
 
@@ -60,7 +61,9 @@ export class AuthApiService extends BaseApiService {
   constructor(
     protected http: HttpClient,
     protected logger: Logger,
-    protected serverStatus: ServerStatusTracker) {
+    protected serverStatus: ServerStatusTracker,
+    protected appContext: UserContext
+  ) {
 
     super(http, logger, serverStatus);
 
@@ -69,7 +72,7 @@ export class AuthApiService extends BaseApiService {
     // we need synchronous behavior which window.localStorage
     // provides and Ionic Storage doesn't (Ionic Storage.get() is async).
     try {
-      this.authResponse = JSON.parse(window.localStorage.getItem(storageKey));
+      this.setAuthResponse(JSON.parse(window.localStorage.getItem(storageKey)));
     } catch (e) {
       this.authResponse = undefined;
     }
@@ -113,10 +116,6 @@ export class AuthApiService extends BaseApiService {
     return this.authResponse ? this.authResponse.token : undefined;
   }
 
-  getLastAuthResponse(): AuthResponse {
-    return this.authResponse;
-  }
-
   async refreshAuth(): Promise<AuthResponse> {
     const request = { token: this.authResponse.token };
     return this.processAuthResponse(
@@ -150,6 +149,12 @@ export class AuthApiService extends BaseApiService {
    */
   private setAuthResponse(response: AuthResponse): void {
     this.authResponse = response;
+
+    if (response && response.profile && response.profile.id) {
+      this.appContext.setUserId(response.profile.id.toString());
+    } else {
+      this.appContext.setUserId(undefined);
+    }
 
     // Save the authResponse for later use. This allows us to access any page
     // without re-login, which is very useful during development/debugging

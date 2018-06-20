@@ -102,4 +102,5 @@
     <engine name="android" spec="7.0.0" />
     <engine name="ios" spec="4.5.4" />
     <plugin name="cordova-plugin-google-analytics" spec="1.8.3" />
+    <plugin name="sentry-cordova" spec="0.10.2" />
 </widget>

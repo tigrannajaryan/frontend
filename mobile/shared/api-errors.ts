@@ -11,8 +11,18 @@ export class ServerUnreachableOrInternalError extends ApiError {
 }
 
 export class ServerUnreachableError extends ServerUnreachableOrInternalError {}
-export class ServerInternalError extends ServerUnreachableOrInternalError { }
-export class ServerUnknownError extends ServerUnreachableOrInternalError { }
+
+export class ServerInternalError extends ServerUnreachableOrInternalError {
+  constructor(readonly errorMsg: string) {
+    super();
+  }
+}
+
+export class ServerUnknownError extends ServerUnreachableOrInternalError {
+  constructor(readonly errorMsg?: string) {
+    super();
+  }
+}
 
 /**
  * HTTP Status Codes

@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { GoogleAnalytics } from '@ionic-native/google-analytics';
 
 import { loading } from '~/core/utils/loading';
 import { createNavHistoryList } from '~/core/functions';
@@ -31,8 +30,7 @@ export class LoginRegisterComponent {
   constructor(
     public navParams: NavParams,
     private navCtrl: NavController,
-    private authService: AuthApiService,
-    private ga: GoogleAnalytics
+    private authService: AuthApiService
   ) {
     this.pageType = this.navParams.get('pageType') as LoginOrRegisterType;
   }
@@ -47,10 +45,6 @@ export class LoginRegisterComponent {
         role: UserRole.stylist
       };
       const authResponse = await this.authService.doAuth(authCredentials);
-
-      if (authResponse && authResponse.profile) {
-        this.ga.setUserId(authResponse.profile.id.toString());
-      }
 
       // Find out what page should be shown to the user and navigate to
       // it while also properly populating the navigation history
@@ -72,10 +66,7 @@ export class LoginRegisterComponent {
       password: this.formData.password,
       role: UserRole.stylist
     };
-    const authResponse = await this.authService.registerByEmail(authCredentialsRecord);
-    if (authResponse && authResponse.profile) {
-      this.ga.setUserId(authResponse.profile.id.toString());
-    }
+    await this.authService.registerByEmail(authCredentialsRecord);
 
     this.navCtrl.push(PageNames.RegisterSalon, {}, { animate: false });
   }

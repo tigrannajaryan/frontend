@@ -68,12 +68,6 @@ export class MyAppComponent {
       await this.ga.startTrackerWithId(gaTrackingId);
       this.logger.info('Google Analytics is ready now');
 
-      const lastAuth = this.authApiService.getLastAuthResponse();
-      if (lastAuth && lastAuth.profile && lastAuth.profile.id) {
-        // Set current user id
-        this.ga.setUserId(lastAuth.profile.id.toString());
-      }
-
       // Track all screen changes
       this.nav.viewDidEnter.subscribe(view => {
         const viewName = view.instance.constructor.name;

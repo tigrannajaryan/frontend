@@ -16,6 +16,9 @@ import { httpInterceptorProviders } from '~/core/http-interceptors';
 import { CoreModule } from '~/core/core.module';
 import { getMetaReducers, reducers } from './app.reducers';
 import { UnhandledErrorHandler } from '~/shared/unhandled-error-handler';
+import { initSentry } from '~/shared/sentry';
+
+initSentry();
 
 @NgModule({
   declarations: [
