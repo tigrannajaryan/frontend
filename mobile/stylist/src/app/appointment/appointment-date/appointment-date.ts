@@ -28,6 +28,14 @@ import { ServiceItem } from '~/core/stylist-service/stylist-models';
 function calculatePriceColor(prices: number[]): (price?: number) => string {
   const sanitizer = AppModule.injector.get(DomSanitizer);
 
+  // define colors (TODO: wavelengths could be used)
+  const neutral = '#000';
+  const green = '#2BB14F';
+
+  if (prices.length < 2) {
+    return () => sanitizer.bypassSecurityTrustStyle(neutral);
+  }
+
   // calculate min max
   let max = -Infinity;
   const min = prices.reduce((minPrice, price) => {
@@ -38,11 +46,7 @@ function calculatePriceColor(prices: number[]): (price?: number) => string {
   });
   const median = (min + max) / 2;
 
-  // define colors (TODO: wavelengths could be used)
-  const neutral = '#000';
-  const green = '#2BB14F';
-
-  if (prices.length < 2 || min === max) {
+  if (min === max) {
     return () => sanitizer.bypassSecurityTrustStyle(neutral);
   }
 
