@@ -110,7 +110,7 @@ page-appointment-add {
   }
 
   .label {
-    font-size: $t-small;
+    font-size: $t-base;
     color: color($grayscale, 800);
 
     + ion-input .text-input {
@@ -121,7 +121,7 @@ page-appointment-add {
   input,
   ion-datetime {
     padding: 0;
-    font-size: $t-h3;
+    font-size: $t-h4;
 
     .datetime-placeholder,
     &::-webkit-input-placeholder {

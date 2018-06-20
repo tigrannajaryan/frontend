@@ -24,6 +24,9 @@ ion-app.wp {
   }
 
   @media ($phone) {
+    font-size: 12px;
+  }
+  @media ($phone-sm) {
     font-size: 10px;
   }
 }
@@ -313,3 +316,5 @@ ion-datetime {
     }
   }
 }
+
+

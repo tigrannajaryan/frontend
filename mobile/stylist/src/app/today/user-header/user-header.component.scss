@@ -28,9 +28,10 @@ ion-header ion-icon.back-button-icon.icon {
 
       @media ($phone) {
         padding: 0 10px;
-        font-size: pxtorem(22);
+        font-size: pxtorem(24);
       }
     }
+
   }
 
   .UserHeader-subtitle {
@@ -44,7 +45,7 @@ ion-header ion-icon.back-button-icon.icon {
     }
 
     @media ($phone) {
-      font-size: pxtorem(18);
+      font-size: pxtorem(22);
     }
   }
 
@@ -123,5 +124,13 @@ ion-header ion-icon.back-button-icon.icon {
       height: 30px;
       margin: 0 pxtoem(10) auto;
     }
+  }
+}
+.ion-bb-header .toolbar-ios{ // added paddings for header same for content. 
+  padding-left: 16px;
+  padding-top: 16px;
+  
+  .back-button-icon-ios{ //adjust beck arrow size
+    font-size: 2rem;
   }
 }
