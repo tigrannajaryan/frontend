@@ -7,7 +7,7 @@
         {{ moment(day.date).format('D MMM') }}
         <small>{{ moment(day.date).format('dddd') }}</small>
       </div>
-      <div class="DateCard-price" [style.color]="this.getPriceColor(day.price)">${{ day.price }}</div>
+      <div class="DateCard-price" [style.color]="this.getPriceColor(day.price)">${{ day.price.toFixed(0) }}</div>
     </div>
   </div>
 </ion-content>
