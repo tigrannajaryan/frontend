@@ -31,6 +31,7 @@ import {
 } from '~/appointment/appointment-services/services.reducer';
 
 import {
+  ClearSelectedDateAction,
   selectSelectedDate
 } from '~/appointment/appointment-date/appointment-dates.reducer';
 
@@ -200,8 +201,12 @@ export class AppointmentAddComponent {
   private async createAppointment(data, forced): Promise<any> {
     try {
       await this.appointmentService.createAppointment(data, forced);
-      this.store.dispatch(new ClearSelectedServiceAction());
+
+      // clear all data
       this.store.dispatch(new ClearClientsAction());
+      this.store.dispatch(new ClearSelectedServiceAction());
+      this.store.dispatch(new ClearSelectedDateAction());
+
       this.navCtrl.pop();
     } catch (e) {
       const dateTimeError = e.errors && e.errors.get('datetime_start_at');
