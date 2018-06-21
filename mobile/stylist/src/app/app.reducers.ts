@@ -1,4 +1,5 @@
 import {
+  Action,
   ActionReducer,
   ActionReducerMap,
   MetaReducer
@@ -40,8 +41,25 @@ export const reducers: ActionReducerMap<State> = {
 /**
  * Use meta reducer to log all actions.
  */
-export function logger(reducer: ActionReducer<State>): any {
+export function logger(reducer: ActionReducer<State>): ActionReducer<State> {
   return storeLogger()(reducer);
+}
+
+export enum appActionTypes {
+  USER_LOGOUT = 'APP_USER_LOGOUT'
+}
+
+export class LogoutAction implements Action {
+  readonly type = appActionTypes.USER_LOGOUT;
+}
+
+export function resetOnLogoutReducer(reducer: ActionReducer<State>): ActionReducer<State> {
+  return (state: State, action: any) => {
+    if (action.type === appActionTypes.USER_LOGOUT) {
+      state = undefined;
+    }
+    return reducer(state, action);
+  };
 }
 
 /**
@@ -50,10 +68,19 @@ export function logger(reducer: ActionReducer<State>): any {
  * that will be composed to form the root meta-reducer.
  */
 export function getMetaReducers(): Array<MetaReducer<State>> {
-  const metaReducers: Array<MetaReducer<State>> = !ENV.production
-    ? [reducer => logger(reducer),
-       storeFreeze]
-    : [];
+  const metaReducers: Array<MetaReducer<State>> = [];
+
+  if (!ENV.production) { // development and staging
+    metaReducers.push(
+      storeFreeze,
+      logger
+    );
+  }
+
+  // production
+  metaReducers.push(
+    resetOnLogoutReducer
+  );
 
   return metaReducers;
 }
