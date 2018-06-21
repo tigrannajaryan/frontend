@@ -12,6 +12,7 @@ from django.db.models.functions import Coalesce, ExtractWeekDay
 from django.shortcuts import get_object_or_404
 
 from rest_framework import serializers
+from rest_framework.validators import UniqueValidator
 
 import appointment.error_constants as appointment_errors
 from appointment.constants import APPOINTMENT_STYLIST_SETTABLE_STATUSES
@@ -42,7 +43,7 @@ from salon.utils import (
     create_stylist_profile_for_user,
     generate_prices_for_stylist_service,
 )
-from .constants import MAX_SERVICE_TEMPLATE_PREVIEW_COUNT
+from .constants import ErrorMessages, MAX_SERVICE_TEMPLATE_PREVIEW_COUNT
 from .fields import DurationMinuteField
 
 
@@ -157,7 +158,11 @@ class StylistSerializer(serializers.ModelSerializer):
 
     first_name = serializers.CharField(source='user.first_name')
     last_name = serializers.CharField(source='user.last_name')
-    phone = serializers.CharField(source='user.phone')
+    phone = serializers.CharField(
+        source='user.phone',
+        validators=[UniqueValidator(
+            queryset=User.objects.all(),
+            message=ErrorMessages.UNIQUE_STYLIST_PHONE)])
 
     class Meta:
         model = Stylist
@@ -636,7 +641,9 @@ class AppointmentSerializer(AppointmentValidationMixin, serializers.ModelSeriali
         allow_null=True, allow_blank=True, required=False
     )
     client_phone = serializers.CharField(
-        source='client.user.phone', required=False
+        source='client.user.phone', required=False,
+        validators=[UniqueValidator(queryset=User.objects.all(),
+                                    message=ErrorMessages.UNIQUE_CLIENT_PHONE)]
     )
 
     total_client_price_before_tax = serializers.DecimalField(

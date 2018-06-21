@@ -79,7 +79,7 @@ class BaseEmailUser(AbstractBaseUser, PermissionsMixin):
 class User(BaseEmailUser):
     role = models.CharField(max_length=10, choices=USER_ROLE)
 
-    phone = models.CharField(max_length=20, blank=True)
+    phone = models.CharField(max_length=20, unique=True, null=True, default=None)
     photo = models.ImageField(blank=True, null=True)
 
     facebook_id = models.CharField(max_length=255, blank=True, null=True)

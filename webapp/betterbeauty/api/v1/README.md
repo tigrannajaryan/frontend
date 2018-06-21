@@ -261,6 +261,15 @@ Note: all fields listed above are required.
 }
 ```
 
+**Response 400 Bad Request**
+```
+{
+     "phone":[
+        "The phone number is registered to another stylist. Please contact us if you have any questions"
+     ]
+}
+```
+
 ### Update existing profile with all required fields
 **POST/PUT /api/v1/stylist/profile**
 
@@ -288,6 +297,15 @@ Note: all fields listed above are required.
     "profile_photo_url": null,
     "salon_name": "Jane salon",
     "salon_address": "1234 Front Street"
+}
+```
+
+**Response 400 Bad Request**
+```
+{
+     "phone":[
+        "The phone number is registered to another stylist. Please contact us if you have any questions"
+     ]
 }
 ```
 
@@ -1439,6 +1457,14 @@ curl -X POST \
     "client_uuid": [
         "No such client"
     ]
+}
+```
+**Response 400 Bad Request**
+```
+{
+     "client_phone":[
+        "The phone number belongs to existing client"
+     ]
 }
 ```
 
