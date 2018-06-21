@@ -84,7 +84,10 @@ export class UnhandledErrorHandler {
     this.logger.error('Unhandled exception:', errorType, errorDescription, error);
 
     // Report to GA
-    this.ga.trackException(`${errorType}: ${errorDescription}`, false);
+    this.ga.trackException(`${errorType}: ${errorDescription}`, false)
+      .catch(e => {
+        // Ignore errors during reporting, there is nothing else we can do.
+      });
 
     // Based on error type decide how to report it to Sentry and how to show it in the UI
     let errorUIAction: ErrorUIAction;

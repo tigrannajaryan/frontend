@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { GoogleAnalytics } from '@ionic-native/google-analytics';
 /*
 Sentry is disabled for now because the iOS release is failing.
 We will work on a fix later.
@@ -9,6 +8,7 @@ import * as Sentry from 'sentry-cordova';
 */
 
 import { Logger } from '~/shared/logger';
+import { GAWrapper } from '~/shared/google-analytics';
 
 /**
  * A common user context used by the app. Propagates user id to GA and Sentry.
@@ -18,7 +18,7 @@ export class UserContext {
   private userId: string;
 
   constructor(
-    private ga: GoogleAnalytics,
+    private ga: GAWrapper,
     private logger: Logger
   ) {
   }

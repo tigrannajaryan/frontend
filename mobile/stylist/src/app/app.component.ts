@@ -2,7 +2,6 @@ import { Component, ErrorHandler, ViewChild } from '@angular/core';
 import { MenuController, Nav, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-import { GoogleAnalytics } from '@ionic-native/google-analytics';
 
 import { PageNames } from '~/core/page-names';
 import { Logger } from './shared/logger';
@@ -10,6 +9,7 @@ import { AuthApiService } from '~/core/auth-api-service/auth-api-service';
 import { UnhandledErrorHandler } from '~/shared/unhandled-error-handler';
 import { createNavHistoryList, getBuildNumber } from '~/core/functions';
 import { loading } from '~/core/utils/loading';
+import { GAWrapper } from '~/shared/google-analytics';
 
 // Google Analytics Id
 const gaTrackingId = 'UA-120898935-1';
@@ -33,7 +33,7 @@ export class MyAppComponent {
     private authApiService: AuthApiService,
     private errorHandler: ErrorHandler,
     private logger: Logger,
-    private ga: GoogleAnalytics
+    private ga: GAWrapper
   ) {
     this.logger.info('App initializing...');
     this.logger.info(`Build number ${getBuildNumber()}`);
@@ -45,8 +45,10 @@ export class MyAppComponent {
     const startTime = Date.now();
 
     await this.platform.ready();
-
     // The platform is ready and the plugins are available.
+
+    this.initGa();
+
     if (this.errorHandler instanceof UnhandledErrorHandler) {
       this.errorHandler.init(this.nav, PageNames.FirstScreen);
     }
@@ -56,8 +58,6 @@ export class MyAppComponent {
     this.statusBar.styleDefault();
     this.splashScreen.hide();
 
-    await this.initGa();
-
     const loadTime = Date.now() - startTime;
 
     this.ga.trackTiming('Loading', loadTime, 'AppInitialization', 'FirstLoad');
@@ -65,7 +65,7 @@ export class MyAppComponent {
 
   async initGa(): Promise<void> {
     try {
-      await this.ga.startTrackerWithId(gaTrackingId);
+      await this.ga.init(gaTrackingId);
       this.logger.info('Google Analytics is ready now');
 
       // Track all screen changes
@@ -75,7 +75,7 @@ export class MyAppComponent {
         this.ga.trackView(viewName);
       });
     } catch (e) {
-      this.logger.error('Error starting Google Analytics', e);
+      this.logger.warn('Error starting Google Analytics (this is expected if not on the phone):', e);
     }
   }
 
