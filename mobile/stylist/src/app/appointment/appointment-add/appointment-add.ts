@@ -169,25 +169,25 @@ export class AppointmentAddComponent {
     const errorMessage = await this.createAppointment(data, forced);
 
     if (errorMessage) {
-      const validAddAppointmentErrors = [
-        // TODO: check on some error code, not error text msg
-        'Cannot add appointment for a past date and time',
-        'Cannot add appointment intersecting with another',
-        'Cannot add appointment outside working hours'
-      ];
-      const hasAddAnyway = validAddAppointmentErrors.indexOf(errorMessage) !== -1;
+      let alertMsg = '';
       const alertAdditionalBtns = [];
 
-      if (hasAddAnyway) {
-        alertAdditionalBtns.push({
-          text: 'Add anyway',
-          handler: () => this.submit(true)
-        });
+      if (errorMessage instanceof Map && errorMessage.size > 0) {
+        alertMsg = Array.from(errorMessage.values())[0][0].code; // show first message
+
+        if (errorMessage.has('datetime_start_at') && errorMessage.size === 1) { // when only datetime error
+          alertAdditionalBtns.push({
+            text: 'Add anyway',
+            handler: () => this.submit(true)
+          });
+        }
+      } else {
+        alertMsg = errorMessage.toString();
       }
 
       const alert = this.alertCtrl.create({
         title: 'Adding appointment failed',
-        subTitle: errorMessage,
+        subTitle: alertMsg,
         buttons: ['Dismiss', ...alertAdditionalBtns]
       });
       alert.present();
@@ -209,11 +209,10 @@ export class AppointmentAddComponent {
 
       this.navCtrl.pop();
     } catch (e) {
-      const dateTimeError = e.errors && e.errors.get('datetime_start_at');
-      if (dateTimeError) {
-        return dateTimeError[0] ? dateTimeError[0].code : e.message;
+      if (e.errors instanceof Map) {
+        return e.errors; // js Map
       }
-      return e.message;
+      return e.message; // string
     }
   }
 
