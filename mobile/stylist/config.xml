@@ -1,5 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="com.madebeauty.stylist.beta" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <hook type="before_platform_rm" src="../scripts/patch_config_xml.js" />
     <name>Made Pro Staging</name>
     <description>Made Pro Staging</description>
     <author email="admin@madebeauty.com" href="https://www.madebeauty.com/">MadeBeauty Engineering Team</author>
@@ -20,10 +21,6 @@
     <preference name="SplashScreen" value="screen" />
     <preference name="SplashScreenDelay" value="3000" />
     <platform name="android">
-        <config-file parent="/resources" target="./res/values/strings.xml">
-            <string name="fb_app_id">1332946860139961</string>
-            <string name="fb_app_name">bb</string>
-        </config-file>
         <allow-intent href="market:*" />
         <icon density="ldpi" src="resources/android/icon/drawable-ldpi-icon.png" />
         <icon density="mdpi" src="resources/android/icon/drawable-mdpi-icon.png" />
@@ -45,10 +42,6 @@
         <splash density="port-xxxhdpi" src="resources/android/splash/drawable-port-xxxhdpi-screen.png" />
     </platform>
     <platform name="ios">
-        <config-file parent="/resources" target="./res/values/strings.xml">
-            <string name="fb_app_id">1332946860139961</string>
-            <string name="fb_app_name">bb</string>
-        </config-file>
         <config-file parent="NSPhotoLibraryUsageDescription" target="*-Info.plist">
             <string>photo library usage description</string>
         </config-file>

@@ -1,18 +1,23 @@
 cd mobile/stylist
 echo "--Creating www folder"
-mkdir www
+mkdir www || true
 
 echo "--Running cordova build to prepare iOS project."
-npm install -g cordova
+npm install -g cordova xml2js
+
+# Remove and re-add cordova-plugin-facebook4 to update app id / name
+./node_modules/ionic/bin/ionic cordova plugin rm cordova-plugin-facebook4 || true
+./node_modules/ionic/bin/ionic cordova plugin add cordova-plugin-facebook4 --save --variable APP_ID="$FB_APP_ID" --variable APP_NAME="$FB_APP_NAME"
+
+# Remove and add platform; before_platform_rm hook will update
+# application name, description, version and ios bundle id
+./node_modules/ionic/bin/ionic cordova platform rm ios || true
 ./node_modules/ionic/bin/ionic cordova platform add ios || true
+
+# generate xcode source
 ./node_modules/ionic/bin/ionic cordova prepare ios
 
 echo "--Patching build config to remove standard signing credentials"
 sed -i.bak /CODE_SIGN_IDENTITY.*/d platforms/ios/cordova/build.xcconfig
 sed -i.bak /CODE_SIGN_IDENTITY.*/d platforms/ios/cordova/build-release.xcconfig
 
-echo "--Patching iOS build number"
-# Technically, this is a lame approach. Right way to do that would be to set property
-# 'ios-CFBundleVersion={build_number}' in config.xml before running 'cordova prepare'.
-# That would require to write an extra hook, so I'll keep it for later time.
-/usr/libexec/PlistBuddy -c "Set :CFBundleVersion $IOS_BUILD_NUMBER" "platforms/ios/$IOS_APP_NAME/$IOS_APP_NAME-Info.plist"
