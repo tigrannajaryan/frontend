@@ -10,7 +10,7 @@ import { Store } from '@ngrx/store';
 
 import {
   LoadAction,
-  selectRemainingVisitsToday,
+  selectRemainingVisitsTodayCount,
   selectTodayState,
   TodayState
 } from './today.reducer';
@@ -62,7 +62,7 @@ export class TodayComponent {
       });
 
     this.store
-      .select(selectRemainingVisitsToday)
+      .select(selectRemainingVisitsTodayCount)
       .takeUntil(componentUnloaded(this))
       .subscribe(remainingVisitsCount => {
         this.remainingVisitsCount = remainingVisitsCount;

@@ -67,7 +67,7 @@ export function todayReducer(state: any = initialState, action: ActionsUnion): T
 
 export const selectTodayState = createFeatureSelector<TodayState>('today');
 
-export const selectRemainingVisitsToday = createSelector(
+export const selectRemainingVisitsTodayCount = createSelector(
   selectTodayState,
   (state: TodayState): number => {
     if (!state.today) {
