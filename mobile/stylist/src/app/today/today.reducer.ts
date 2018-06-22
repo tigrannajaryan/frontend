@@ -75,7 +75,7 @@ export const selectRemainingVisitsTodayCount = createSelector(
     }
     return (
       state.today.today_appointments
-        .filter(appointment => !moment(appointment.datetime_start_at).isBefore(new Date()))
+        .filter(appointment => moment(appointment.datetime_start_at).isSameOrAfter(new Date()))
         .length
     );
   }
