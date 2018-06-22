@@ -49,6 +49,11 @@ from .fields import DurationMinuteField
 
 class StylistUserSerializer(serializers.ModelSerializer):
 
+    phone = serializers.CharField(
+        validators=[UniqueValidator(
+            queryset=User.objects.all(),
+            message=ErrorMessages.UNIQUE_STYLIST_PHONE)])
+
     class Meta:
         model = User
         fields = ['first_name', 'last_name', 'phone', ]
@@ -158,11 +163,7 @@ class StylistSerializer(serializers.ModelSerializer):
 
     first_name = serializers.CharField(source='user.first_name')
     last_name = serializers.CharField(source='user.last_name')
-    phone = serializers.CharField(
-        source='user.phone',
-        validators=[UniqueValidator(
-            queryset=User.objects.all(),
-            message=ErrorMessages.UNIQUE_STYLIST_PHONE)])
+    phone = serializers.CharField(source='user.phone',)
 
     class Meta:
         model = Stylist
