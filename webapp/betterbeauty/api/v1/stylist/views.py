@@ -257,7 +257,11 @@ class StylistAppointmentPreviewView(views.APIView):
                 appointment_service = appointment.services.filter(
                     service_uuid=service_request_item['service_uuid']
                 ).last()
+            client_price: Optional[Decimal] = service_request_item[
+                'client_price'] if 'client_price' in service_request_item else None
             if appointment_service:
+                if client_price:
+                    appointment_service.set_client_price(client_price)
                 # service already exists in appointment, and will not be recalculated,
                 # so we should take it's data verbatim
                 service_item = AppointmentServicePreview(
@@ -277,12 +281,13 @@ class StylistAppointmentPreviewView(views.APIView):
                 service: StylistService = stylist.services.get(
                     uuid=service_request_item['service_uuid']
                 )
-                client_price: Decimal = service.regular_price
-                if not appointment:
-                    client_price = Decimal(calculate_price_and_discount_for_client_on_date(
-                        service=service, client=client,
-                        date=preview_request.datetime_start_at.date()
-                    ).price)
+                if not client_price:
+                    client_price = service.regular_price
+                    if not appointment:
+                        client_price = Decimal(calculate_price_and_discount_for_client_on_date(
+                            service=service, client=client,
+                            date=preview_request.datetime_start_at.date()
+                        ).price)
                 service_item = AppointmentServicePreview(
                     uuid=None,
                     service_uuid=service.uuid,
