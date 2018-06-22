@@ -7,7 +7,7 @@ from django.db import models, transaction
 from django.db.models import Sum
 from django.db.models.functions import Coalesce
 
-from client.models import Client
+from client.models import ClientOfStylist
 from core.models import User
 from pricing import DISCOUNT_TYPE_CHOICES
 from salon.models import Stylist
@@ -36,7 +36,7 @@ class Appointment(models.Model):
 
     # client can be null in case if stylist adds an appointment for someone not in the system
     client = models.ForeignKey(
-        Client, related_name='appointments', null=True, on_delete=models.PROTECT
+        ClientOfStylist, related_name='appointments', null=True, on_delete=models.PROTECT
     )
     client_first_name = models.CharField(max_length=255, null=True, blank=True)
     client_last_name = models.CharField(max_length=255, null=True, blank=True)

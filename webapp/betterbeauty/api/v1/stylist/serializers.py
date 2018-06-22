@@ -18,8 +18,7 @@ import appointment.error_constants as appointment_errors
 from appointment.constants import APPOINTMENT_STYLIST_SETTABLE_STATUSES
 from appointment.models import Appointment, AppointmentService
 from appointment.types import AppointmentStatus
-from client.models import Client
-from client.utils import create_nonlogin_client
+from client.models import ClientOfStylist
 from core.models import TemporaryFile, User
 from core.types import AppointmentPrices, Weekday
 from core.utils import (
@@ -603,7 +602,7 @@ class AppointmentValidationMixin(object):
         stylist: Stylist = context['stylist']
 
         if client_uuid:
-            if not Client.objects.filter(
+            if not ClientOfStylist.objects.filter(
                     uuid=client_uuid,
                     appointments__stylist=stylist,
             ).exists():
@@ -641,11 +640,7 @@ class AppointmentSerializer(AppointmentValidationMixin, serializers.ModelSeriali
     client_last_name = serializers.CharField(
         allow_null=True, allow_blank=True, required=False
     )
-    client_phone = serializers.CharField(
-        source='client.user.phone', required=False,
-        validators=[UniqueValidator(queryset=User.objects.all(),
-                                    message=ErrorMessages.UNIQUE_CLIENT_PHONE)]
-    )
+    client_phone = serializers.CharField(required=False,)
 
     total_client_price_before_tax = serializers.DecimalField(
         max_digits=6, decimal_places=2, coerce_to_string=False, read_only=True
@@ -689,20 +684,33 @@ class AppointmentSerializer(AppointmentValidationMixin, serializers.ModelSeriali
                     errors.update({
                         field: serializers.Field.default_error_messages['required']
                     })
+            if ClientOfStylist.objects.filter(
+                    phone=attrs['client_phone'],
+                    stylist=self.context['stylist']).exists():
+                errors.update({
+                    'client_phone': ErrorMessages.UNIQUE_CLIENT_PHONE
+                })
+            if ClientOfStylist.objects.filter(
+                    first_name=attrs['client_first_name'],
+                    last_name=attrs['client_last_name'],
+                    stylist=self.context['stylist']).exists():
+                errors.update({
+                    'client_first_name': ErrorMessages.UNIQUE_CLIENT_NAME
+                })
             if errors:
                 raise serializers.ValidationError(errors)
-        return attrs
+        return super(AppointmentSerializer, self).validate(attrs)
 
     def create(self, validated_data):
         data = validated_data.copy()
         stylist: Stylist = self.context['stylist']
 
-        client: Optional[Client] = None
+        client: Optional[ClientOfStylist] = None
         client_data = validated_data.pop('client', {})
         client_uuid = client_data.get('uuid', None)
 
         if client_uuid:
-            client: Client = Client.objects.get(uuid=client_uuid)
+            client: ClientOfStylist = ClientOfStylist.objects.get(uuid=client_uuid)
 
         data['created_by'] = stylist.user
         data['stylist'] = stylist
@@ -711,15 +719,15 @@ class AppointmentSerializer(AppointmentValidationMixin, serializers.ModelSeriali
 
         # create first AppointmentService
         with transaction.atomic():
-            # if client doesn't exist yet - create non-login account
             if not client:
-                client = create_nonlogin_client(
+                client = ClientOfStylist.objects.create(
                     first_name=data['client_first_name'],
                     last_name=data['client_last_name'],
-                    phone=client_data['user']['phone']
+                    phone=data.pop('client_phone'),
+                    stylist=stylist
                 )
-            data['client_last_name'] = client.user.last_name
-            data['client_first_name'] = client.user.first_name
+            data['client_last_name'] = client.last_name
+            data['client_first_name'] = client.first_name
             data['client'] = client
 
             appointment_services = data.pop('services', [])
@@ -1082,12 +1090,12 @@ class StylistSettingsRetrieveSerializer(serializers.ModelSerializer):
 
 
 class ClientSerializer(serializers.ModelSerializer):
-    first_name = serializers.CharField(source='user.first_name', read_only=True)
-    last_name = serializers.CharField(source='user.last_name', read_only=True)
-    phone = serializers.CharField(source='user.phone', read_only=True)
+    first_name = serializers.CharField(read_only=True)
+    last_name = serializers.CharField(read_only=True)
+    phone = serializers.CharField(read_only=True)
 
     class Meta:
-        model = Client
+        model = ClientOfStylist
         fields = ['uuid', 'first_name', 'last_name', 'phone', ]
 
 

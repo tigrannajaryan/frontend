@@ -22,7 +22,7 @@ from api.v1.stylist.serializers import (
 )
 from appointment.models import Appointment, AppointmentService
 from appointment.types import AppointmentStatus
-from client.models import Client
+from client.models import ClientOfStylist
 from core.choices import USER_ROLE
 from core.models import User
 from core.types import UserRole, Weekday
@@ -454,7 +454,7 @@ class TestStylistTodaySerializer(object):
     @pytest.mark.django_db
     def test_today_appointments(self, stylist_data: Stylist):
         appointments = stylist_appointments_data(stylist_data)
-        client = G(Client)
+        client = G(ClientOfStylist)
         appointments.update(
             {
                 'cancelled_by_client_past': G(
@@ -667,11 +667,9 @@ class TestAppointmentSerializer(object):
         assert(appointment.duration == service.duration)
         assert(appointment.client_first_name == 'Fred')
         assert(appointment.client is not None)
-        user: User = appointment.client.user
-        assert(user.has_usable_password() is False)
-        assert(user.is_active is False)
-        assert(user.first_name == 'Fred')
-        assert(user.phone == '12345')
+        client: ClientOfStylist = appointment.client
+        assert(client.first_name == 'Fred')
+        assert(client.phone == '12345')
         assert(appointment.services.count() == 1)
         original_service: AppointmentService = appointment.services.first()
         assert(original_service.is_original is True)
@@ -702,7 +700,7 @@ class TestAppointmentSerializer(object):
         )
         available_time: datetime.datetime = datetime.datetime(
             2018, 5, 17, 16, 00, tzinfo=pytz.utc)
-        client: Client = G(Client)
+        client: ClientOfStylist = G(ClientOfStylist)
         data = {
             'client_uuid': client.uuid,
             'services': [
@@ -731,7 +729,7 @@ class TestAppointmentSerializer(object):
             appointment.total_client_price_before_tax == 30
         )
         assert(appointment.duration == service.duration)
-        assert(appointment.client_first_name == client.user.first_name)
+        assert(appointment.client_first_name == client.first_name)
         assert(appointment.client == client)
 
         assert (appointment.services.count() == 1)
@@ -756,7 +754,7 @@ class TestAppointmentSerializer(object):
         appointment_start: datetime.datetime = stylist_data.with_salon_tz(
             datetime.datetime(2018, 5, 17, 15, 00)
         )
-        client = G(Client)
+        client = G(ClientOfStylist)
 
         # associate client with stylist
         G(Appointment, stylist=stylist_data, client=client,

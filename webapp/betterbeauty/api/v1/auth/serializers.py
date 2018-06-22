@@ -7,7 +7,6 @@ from rest_framework.exceptions import ValidationError
 from api.v1.auth.constants import ROLES_WITH_ALLOWED_LOGIN
 from api.v1.client.serializers import ClientSerializer
 from api.v1.stylist.serializers import StylistProfileStatusSerializer, StylistSerializer
-from client.utils import create_client_profile_for_user
 from core.choices import USER_ROLE
 from core.models import User
 from core.types import FBAccessToken, FBUserID, UserRole
@@ -18,10 +17,9 @@ from salon.utils import create_stylist_profile_for_user
 class CreateProfileMixin(object):
     def create_profile_for_user(self, user: User) -> None:
         assert user.role in ROLES_WITH_ALLOWED_LOGIN
-        if user.role == UserRole.CLIENT:
-            create_client_profile_for_user(user=user)
-        elif user.role == UserRole.STYLIST:
+        if user.role == UserRole.STYLIST:
             create_stylist_profile_for_user(user=user)
+        # TODO: Implement creating a client profile similar to stylist
 
 
 class UserRegistrationSerializer(CreateProfileMixin, serializers.Serializer):

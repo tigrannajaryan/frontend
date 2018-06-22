@@ -7,7 +7,7 @@ from django.db import transaction
 
 from appointment.constants import AppointmentStatus
 from appointment.models import Appointment
-from client.models import Client
+from client.models import ClientOfStylist
 from core.constants import (
     DEFAULT_FIRST_TIME_BOOK_DISCOUNT_PERCENT,
     DEFAULT_REBOOK_WITHIN_1_WEEK_DISCOUNT_PERCENT,
@@ -77,7 +77,9 @@ def generate_demand_list_for_stylist(
     return demand_list
 
 
-def get_last_visit_date_for_client(stylist: Stylist, client: Client) -> Optional[datetime.date]:
+def get_last_visit_date_for_client(
+        stylist: Stylist, client: ClientOfStylist
+) -> Optional[datetime.date]:
     """Return last checked out appointment between stylist and client"""
     last_appointment: Optional[Appointment] = Appointment.objects.filter(
         stylist=stylist,
@@ -110,7 +112,9 @@ def generate_discount_settings_for_stylist(
 
 
 def generate_prices_for_stylist_service(
-        service: StylistService, client: Optional[Client], exclude_fully_booked: bool=False
+        service: StylistService,
+        client: Optional[ClientOfStylist],
+        exclude_fully_booked: bool=False
 ) -> Iterable[Tuple[datetime.date, CalculatedPrice]]:
     """
     Generate prices for given stylist, client and service for PRICE_BLOCK_SIZE days ahead
@@ -149,7 +153,7 @@ def generate_prices_for_stylist_service(
 
 
 def calculate_price_and_discount_for_client_on_date(
-        service: StylistService, client: Optional[Client], date: datetime.date
+        service: StylistService, client: Optional[ClientOfStylist], date: datetime.date
 ) -> CalculatedPrice:
     prices: Dict[datetime.date, CalculatedPrice] = dict(
         generate_prices_for_stylist_service(

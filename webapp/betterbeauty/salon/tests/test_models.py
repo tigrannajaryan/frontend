@@ -10,7 +10,7 @@ from psycopg2.extras import DateRange
 
 from appointment.models import Appointment, AppointmentService
 from appointment.types import AppointmentStatus
-from client.models import Client
+from client.models import ClientOfStylist
 from core.models import User
 from core.types import Weekday
 from salon.models import (
@@ -56,7 +56,7 @@ def stylist_data() -> Stylist:
 
 
 def stylist_appointments_data(stylist: Stylist) -> Dict[str, Appointment]:
-    client = G(Client)
+    client = G(ClientOfStylist)
     current_appointment = G(
         Appointment, client=client, stylist=stylist,
         datetime_start_at=stylist.salon.timezone.localize(

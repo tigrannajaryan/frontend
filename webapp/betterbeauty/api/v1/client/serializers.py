@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from client.models import Client
+from client.models import ClientOfStylist
 
 
 class ClientSerializer(serializers.ModelSerializer):
@@ -10,5 +10,5 @@ class ClientSerializer(serializers.ModelSerializer):
     phone = serializers.CharField(source='user.phone')
 
     class Meta:
-        model = Client
+        model = ClientOfStylist
         fields = ['first_name', 'last_name', 'phone', 'id', ]

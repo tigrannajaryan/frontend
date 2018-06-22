@@ -11,7 +11,7 @@ from django.db import models
 from timezone_field import TimeZoneField
 
 from appointment.types import AppointmentStatus
-from client.models import Client
+from client.models import ClientOfStylist
 from core.choices import WEEKDAY
 from core.models import User
 from core.types import Weekday
@@ -417,7 +417,9 @@ class Invitation(models.Model):
     delivered_at = models.DateTimeField(null=True, default=None)
     accepted_at = models.DateTimeField(null=True, default=None)
 
-    created_client = models.ForeignKey(Client, null=True, default=None, on_delete=models.CASCADE)
+    created_client = models.ForeignKey(
+        ClientOfStylist, null=True, default=None, on_delete=models.CASCADE
+    )
 
     class Meta:
         db_table = 'invitation'

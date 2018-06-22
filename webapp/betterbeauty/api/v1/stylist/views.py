@@ -17,8 +17,8 @@ from api.common.permissions import (
 )
 from appointment.models import Appointment, AppointmentService
 from appointment.types import AppointmentStatus
-from client.models import Client
-from core.types import AppointmentPrices, UserRole
+from client.models import ClientOfStylist
+from core.types import AppointmentPrices
 from core.utils import (
     calculate_appointment_prices,
     post_or_get,
@@ -242,7 +242,7 @@ class StylistAppointmentPreviewView(views.APIView):
             stylist: Stylist,
             preview_request: AppointmentPreviewRequest
     ) -> AppointmentPreviewResponse:
-        client: Optional[Client] = Client.objects.filter(
+        client: Optional[ClientOfStylist] = ClientOfStylist.objects.filter(
             uuid=preview_request.client_uuid
         ) if preview_request.client_uuid else None
 
@@ -408,7 +408,7 @@ class ClientSearchView(views.APIView):
     @staticmethod
     def _search_clients(stylist: Stylist, query: str) -> QuerySet:
         if len(query) < 2:
-            return Client.objects.none()
+            return ClientOfStylist.objects.none()
 
         # we will only search among current stylist's clients, i.e. those
         # who already had appointments with this stylist in the past
@@ -416,15 +416,14 @@ class ClientSearchView(views.APIView):
         # TODO: Also extend this to those clients who have accepted invitations
         # TODO: from the stylist (even though had no appointments yet)
 
-        stylists_clients = Client.objects.filter(
-            appointments__stylist=stylist,
-            user__role=UserRole.CLIENT
+        stylists_clients = ClientOfStylist.objects.filter(
+            stylist=stylist,
         ).distinct('id')
 
         name_phone_query = (
-            Q(user__first_name__icontains=query) |
-            Q(user__last_name__icontains=query) |
-            Q(user__phone__icontains=query)
+            Q(first_name__icontains=query) |
+            Q(last_name__icontains=query) |
+            Q(phone__icontains=query)
         )
 
         return stylists_clients.filter(
@@ -451,7 +450,7 @@ class StylistServicePricingView(views.APIView):
         client_uuid = serializer.validated_data.get('client_uuid', None)
         client = None
         if client_uuid:
-            client = Client.objects.get(uuid=client_uuid)
+            client = ClientOfStylist.objects.get(uuid=client_uuid)
         service_uuid = serializer.validated_data['service_uuid']
 
         service = self.get_queryset().filter(uuid=service_uuid).last()

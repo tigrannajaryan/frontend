@@ -7,7 +7,7 @@ from rest_framework import status
 
 from api.v1.stylist.views import ClientSearchView
 from appointment.models import Appointment
-from client.models import Client
+from client.models import ClientOfStylist
 from core.models import User
 from core.types import UserRole
 from salon.models import Stylist
@@ -59,40 +59,34 @@ class TestClientSearchView(object):
 
     @pytest.mark.django_db
     def test_search_clients(self):
-        stylist = G(Stylist)
+        stylist_1 = G(Stylist)
         # stray_client
-        user_1 = G(
-            User,
+        G(
+            ClientOfStylist,
             first_name='Fred',
             last_name='McBob',
             phone='123456',
-            role=UserRole.CLIENT
-        )
-        G(
-            Client,
-            user=user_1
+            stylist=stylist_1,
         )
 
+        stylist_ours = G(Stylist)
         # client that our stylist has appointments with
-        user_2 = G(
-            User,
+        client_of_stylist_2 = G(
+            ClientOfStylist,
             first_name='Fred_ours',
             last_name='McBob_ours',
             phone='123457',
-            role=UserRole.CLIENT
+            stylist=stylist_ours,
         )
-        our_client = G(
-            Client,
-            user=user_2
-        )
-        G(Appointment, stylist=stylist, client=our_client)
+
+        G(Appointment, stylist=stylist_ours, client=client_of_stylist_2)
 
         no_results = ClientSearchView()._search_clients(
-            stylist, 'Gemma'
+            stylist_ours, 'Gemma'
         )
         assert(no_results.count() == 0)
         results = ClientSearchView()._search_clients(
-            stylist, 'Fred'
+            stylist_ours, 'Fred'
         )
         assert(results.count() == 1)
-        assert(results.last() == our_client)
+        assert(results.last() == client_of_stylist_2)
