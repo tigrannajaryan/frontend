@@ -84,7 +84,7 @@ class ServiceTemplateSetListView(views.APIView):
         )
 
     def get_queryset(self):
-        return ServiceTemplateSet.objects.all()
+        return ServiceTemplateSet.objects.all().order_by('sort_weight')
 
 
 class ServiceTemplateSetDetailsView(generics.RetrieveAPIView):
