@@ -1,4 +1,6 @@
-import { Action, createFeatureSelector } from '@ngrx/store';
+import * as moment from 'moment';
+
+import { Action, createFeatureSelector, createSelector } from '@ngrx/store';
 import { Today } from './today.models';
 
 export enum todayActionTypes {
@@ -64,3 +66,17 @@ export function todayReducer(state: any = initialState, action: ActionsUnion): T
 }
 
 export const selectTodayState = createFeatureSelector<TodayState>('today');
+
+export const selectRemainingVisitsToday = createSelector(
+  selectTodayState,
+  (state: TodayState): number => {
+    if (!state.today) {
+      return 0;
+    }
+    return (
+      state.today.today_appointments
+        .filter(appointment => !moment(appointment.datetime_start_at).isBefore(new Date()))
+        .length
+    );
+  }
+);

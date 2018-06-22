@@ -1,3 +1,4 @@
+import * as moment from 'moment';
 import { Component } from '@angular/core';
 import {
   ActionSheetController,
@@ -6,11 +7,10 @@ import {
   NavController, NavParams
 } from 'ionic-angular';
 import { Store } from '@ngrx/store';
-import { Subscription } from 'rxjs/Subscription';
-import * as moment from 'moment';
 
 import {
   LoadAction,
+  selectRemainingVisitsToday,
   selectTodayState,
   TodayState
 } from './today.reducer';
@@ -21,6 +21,7 @@ import { TodayService } from '~/today/today.service';
 import { PageNames } from '~/core/page-names';
 import { AppointmentCheckoutParams } from '~/appointment/appointment-checkout/appointment-checkout.component';
 import { loading } from '~/core/utils/loading';
+import { componentUnloaded } from '~/core/utils/component-unloaded';
 
 enum AppointmentTag {
   NotCheckedOut = 'Not checked out',
@@ -40,8 +41,7 @@ export class TodayComponent {
   protected today: Today;
   protected appointmentTags: AppointmentTag[];
   protected AppointmentTag = AppointmentTag;
-
-  private stateSubscription: Subscription;
+  protected remainingVisitsCount = 0;
 
   constructor(
     public navCtrl: NavController,
@@ -53,22 +53,23 @@ export class TodayComponent {
   ) {
   }
 
-  async ionViewDidEnter(): Promise<void> {
-    // Subscribe to receive updates on todayState data.
-    this.stateSubscription = await this.store.select(selectTodayState)
+  ionViewDidEnter(): void {
+    this.store
+      .select(selectTodayState)
+      .takeUntil(componentUnloaded(this))
       .subscribe(todayState => {
-        // Received new state. Update the view.
         this.processTodayData(todayState.today);
+      });
+
+    this.store
+      .select(selectRemainingVisitsToday)
+      .takeUntil(componentUnloaded(this))
+      .subscribe(remainingVisitsCount => {
+        this.remainingVisitsCount = remainingVisitsCount;
       });
 
     // Initiate loading the today data.
     this.store.dispatch(new LoadAction());
-  }
-
-  ionViewDidLeave(): void {
-    // Unsubscribe from observer when this view is no longer visible
-    // to avoid unneccessary processing.
-    this.stateSubscription.unsubscribe();
   }
 
   /**
