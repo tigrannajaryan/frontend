@@ -6,7 +6,6 @@ import django.db.models.deletion
 def set_null_for_clients(apps, schema_editor):
     Appointment = apps.get_model('appointment', 'Appointment')
     Appointment.objects.all().delete()
-    pass
 
 class Migration(migrations.Migration):
 

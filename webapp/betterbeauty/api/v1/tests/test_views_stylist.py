@@ -63,30 +63,42 @@ class TestClientSearchView(object):
         # stray_client
         G(
             ClientOfStylist,
-            first_name='Fred',
-            last_name='McBob',
+            first_name='Jenny',
+            last_name='McDonald',
             phone='123456',
             stylist=stylist_1,
         )
 
-        stylist_ours = G(Stylist)
+        our_stylist = G(Stylist)
         # client that our stylist has appointments with
-        client_of_stylist_2 = G(
+        our_client = G(
             ClientOfStylist,
-            first_name='Fred_ours',
-            last_name='McBob_ours',
+            first_name='Fred',
+            last_name='McBob',
             phone='123457',
-            stylist=stylist_ours,
+            stylist=our_stylist,
         )
 
-        G(Appointment, stylist=stylist_ours, client=client_of_stylist_2)
+        G(Appointment, stylist=our_stylist, client=our_client)
 
         no_results = ClientSearchView()._search_clients(
-            stylist_ours, 'Gemma'
+            our_stylist, 'Jenny'
         )
         assert(no_results.count() == 0)
         results = ClientSearchView()._search_clients(
-            stylist_ours, 'Fred'
+            our_stylist, 'Fred'
         )
         assert(results.count() == 1)
-        assert(results.last() == client_of_stylist_2)
+        assert(results.last() == our_client)
+
+        results = ClientSearchView()._search_clients(our_stylist, 'Fred mc')
+
+        assert (results.count() == 1)
+
+        assert (results.last() == our_client)
+
+        results = ClientSearchView()._search_clients(our_stylist, 'mcbob fr')
+
+        assert (results.count() == 1)
+
+        assert (results.last() == our_client)
