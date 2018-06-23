@@ -6,7 +6,8 @@ from annoying.functions import get_object_or_None
 from dateutil.parser import parse
 from django.db import transaction
 
-from django.db.models import Q, QuerySet
+from django.db.models import F, Q, QuerySet, Value
+from django.db.models.functions import Concat
 
 from rest_framework import generics, permissions, status, views
 from rest_framework.response import Response
@@ -407,7 +408,7 @@ class ClientSearchView(views.APIView):
 
     @staticmethod
     def _search_clients(stylist: Stylist, query: str) -> QuerySet:
-        if len(query) < 2:
+        if len(query) < 3:
             return Client.objects.none()
 
         # we will only search among current stylist's clients, i.e. those
@@ -419,12 +420,15 @@ class ClientSearchView(views.APIView):
         stylists_clients = Client.objects.filter(
             appointments__stylist=stylist,
             user__role=UserRole.CLIENT
+        ).annotate(
+            full_name=Concat(F('user__first_name'), Value(' '), F('user__last_name')),
+            reverse_full_name=Concat(F('user__last_name'), Value(' '), F('user__first_name')),
         ).distinct('id')
 
         name_phone_query = (
-            Q(user__first_name__icontains=query) |
-            Q(user__last_name__icontains=query) |
-            Q(user__phone__icontains=query)
+            Q(user__phone__icontains=query) |
+            Q(full_name__icontains=query) |
+            Q(reverse_full_name__icontains=query)
         )
 
         return stylists_clients.filter(
