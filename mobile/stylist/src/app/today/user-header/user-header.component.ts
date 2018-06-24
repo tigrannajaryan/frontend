@@ -1,24 +1,26 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { NavController, PopoverController } from 'ionic-angular';
 import { Store } from '@ngrx/store';
+import { Subscription } from 'rxjs';
 
 import { PageNames } from '~/core/page-names';
-import { StylistServiceProvider } from '~/core/stylist-service/stylist-service';
 import { StylistProfile } from '~/core/stylist-service/stylist-models';
 
 import { TodayComponent } from '~/today/today.component';
 import { UserHeaderMenuActions, UserHeaderMenuComponent } from './user-header-menu/user-header-menu.component';
-import { showAlert } from '~/core/utils/alert';
 import { AuthApiService } from '~/core/auth-api-service/auth-api-service';
+import { LoadAction, ProfileState, selectProfile } from '~/today/user-header/profile.reducer';
 import { LogoutAction } from '~/app.reducers';
 
 @Component({
   selector: '[madeUserHeader]',
   templateUrl: 'user-header.component.html'
 })
-export class UserHeaderComponent implements OnInit {
+export class UserHeaderComponent implements OnInit, OnDestroy {
   @Input() hasBackButton: boolean;
   @Input() hasShadow: boolean;
+
+  protected subscription: Subscription;
 
   protected profile: StylistProfile;
   protected PageNames = PageNames;
@@ -27,14 +29,24 @@ export class UserHeaderComponent implements OnInit {
   constructor(
     public popoverCtrl: PopoverController,
     protected navCtrl: NavController,
-    private apiService: StylistServiceProvider,
     private authApiService: AuthApiService,
-    private store: Store<any>
+    private store: Store<ProfileState>
   ) {
   }
 
   ngOnInit(): void {
-    this.loadUserData();
+    this.subscription = this.store
+      .select(selectProfile)
+      .subscribe(profile => {
+        this.profile = profile;
+      });
+
+    // Load profile info
+    this.store.dispatch(new LoadAction());
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
   goToHome(): void {
@@ -44,15 +56,6 @@ export class UserHeaderComponent implements OnInit {
       this.navCtrl.pop();
     } else {
       this.navCtrl.push(PageNames.Today);
-    }
-  }
-
-  async loadUserData(): Promise<void> {
-    try {
-      this.profile = await this.apiService.getProfile();
-      this.profile.profile_photo_url = `url(${this.profile.profile_photo_url})`;
-    } catch (e) {
-      showAlert('Loading profile failed', e.message);
     }
   }
 
