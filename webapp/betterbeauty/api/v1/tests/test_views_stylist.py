@@ -92,13 +92,13 @@ class TestClientSearchView(object):
         assert(results.last() == our_client)
 
         results = ClientSearchView()._search_clients(our_stylist, 'Fred mc')
-
         assert (results.count() == 1)
-
         assert (results.last() == our_client)
 
         results = ClientSearchView()._search_clients(our_stylist, 'mcbob fr')
-
         assert (results.count() == 1)
+        assert (results.last() == our_client)
 
+        results = ClientSearchView()._search_clients(our_stylist, '12345')
+        assert (results.count() == 1)
         assert (results.last() == our_client)

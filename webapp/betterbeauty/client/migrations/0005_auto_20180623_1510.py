@@ -14,6 +14,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='clientofstylist',
             name='stylist',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='client_of_stylist', to='salon.Stylist'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='clients_of_stylist', to='salon.Stylist'),
         ),
     ]

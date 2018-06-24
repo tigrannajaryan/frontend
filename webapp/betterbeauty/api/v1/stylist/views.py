@@ -426,7 +426,7 @@ class ClientSearchView(views.APIView):
 
         name_phone_query = (
             Q(full_name__icontains=query) |
-            Q(last_name__icontains=query) |
+            Q(phone__icontains=query) |
             Q(reverse_full_name__icontains=query)
         )
 
