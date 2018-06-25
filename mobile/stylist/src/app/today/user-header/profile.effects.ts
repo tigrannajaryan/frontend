@@ -7,9 +7,9 @@ import { showAlert } from '~/core/utils/alert';
 import { Logger } from '~/shared/logger';
 
 import {
-  LoadAction,
-  LoadErrorAction,
-  LoadSuccessAction,
+  LoadProfileAction,
+  LoadProfileErrorAction,
+  LoadProfileSuccessAction,
   profileActionTypes
 } from '~/today/user-header/profile.reducer';
 
@@ -18,16 +18,16 @@ export class ProfileEffects {
 
   @Effect() load = this.actions
     .ofType(profileActionTypes.LOAD)
-    .map((action: LoadAction) => action)
+    .map((action: LoadProfileAction) => action)
     .switchMap(() => Observable.defer(async () => {
       try {
         const profile = await this.stylistService.getProfile();
-        return new LoadSuccessAction(profile);
+        return new LoadProfileSuccessAction(profile);
       } catch (error) {
         showAlert('Loading profile failed', error.message);
         const logger = new Logger();
         logger.error(error);
-        return new LoadErrorAction(error);
+        return new LoadProfileErrorAction(error);
       }
     }));
 

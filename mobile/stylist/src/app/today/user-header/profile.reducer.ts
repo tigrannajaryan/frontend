@@ -12,24 +12,24 @@ export type ProfileState = StylistProfile | undefined;
 
 const initialState: ProfileState = undefined;
 
-export class LoadAction implements Action {
+export class LoadProfileAction implements Action {
   readonly type = profileActionTypes.LOAD;
 }
 
-export class LoadSuccessAction implements Action {
+export class LoadProfileSuccessAction implements Action {
   readonly type = profileActionTypes.LOAD_SUCCESS;
   constructor(public profile: StylistProfile) { }
 }
 
-export class LoadErrorAction implements Action {
+export class LoadProfileErrorAction implements Action {
   readonly type = profileActionTypes.LOAD_ERROR;
   constructor(public error: Error) { }
 }
 
 type Actions =
-  | LoadAction
-  | LoadSuccessAction
-  | LoadErrorAction;
+  | LoadProfileAction
+  | LoadProfileSuccessAction
+  | LoadProfileErrorAction;
 
 export function profileReducer(state: ProfileState = initialState, action: Actions): ProfileState {
   switch (action.type) {
