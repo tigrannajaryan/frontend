@@ -1,7 +1,6 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { NavController, PopoverController } from 'ionic-angular';
 import { Store } from '@ngrx/store';
-import { Subscription } from 'rxjs';
 
 import { PageNames } from '~/core/page-names';
 import { StylistProfile } from '~/core/stylist-service/stylist-models';
@@ -9,44 +8,29 @@ import { StylistProfile } from '~/core/stylist-service/stylist-models';
 import { TodayComponent } from '~/today/today.component';
 import { UserHeaderMenuActions, UserHeaderMenuComponent } from './user-header-menu/user-header-menu.component';
 import { AuthApiService } from '~/core/auth-api-service/auth-api-service';
-import { LoadAction, ProfileState, selectProfile } from '~/today/user-header/profile.reducer';
 import { LogoutAction } from '~/app.reducers';
 
 @Component({
   selector: '[madeUserHeader]',
   templateUrl: 'user-header.component.html'
 })
-export class UserHeaderComponent implements OnInit, OnDestroy {
+export class UserHeaderComponent {
   @Input() hasBackButton: boolean;
   @Input() hasShadow: boolean;
+  @Input() profile: StylistProfile;
 
-  protected subscription: Subscription;
-
-  protected profile: StylistProfile;
   protected PageNames = PageNames;
-  protected today = new Date();
 
   constructor(
     public popoverCtrl: PopoverController,
     protected navCtrl: NavController,
     private authApiService: AuthApiService,
-    private store: Store<ProfileState>
+    private store: Store<any>
   ) {
   }
 
-  ngOnInit(): void {
-    this.subscription = this.store
-      .select(selectProfile)
-      .subscribe(profile => {
-        this.profile = profile;
-      });
-
-    // Load profile info
-    this.store.dispatch(new LoadAction());
-  }
-
-  ngOnDestroy(): void {
-    this.subscription.unsubscribe();
+  getToday(): Date {
+    return new Date();
   }
 
   goToHome(): void {

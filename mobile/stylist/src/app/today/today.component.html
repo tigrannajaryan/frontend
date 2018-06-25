@@ -1,4 +1,4 @@
-<ion-header class="ion-bb-header" madeUserHeader [hasBackButton]="false"></ion-header>
+<ion-header class="ion-bb-header" madeUserHeader [profile]="profile | async" [hasBackButton]="false"></ion-header>
 
 <ion-content padding>
   <div *ngIf="today" class="bb-wp-a">

@@ -7,6 +7,7 @@ import {
   NavController, NavParams
 } from 'ionic-angular';
 import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
 
 import {
   LoadAction,
@@ -16,12 +17,14 @@ import {
 } from './today.reducer';
 
 import { AppointmentStatuses, Today } from './today.models';
+import { StylistProfile } from '~/core/stylist-service/stylist-models';
 import { Appointment } from '~/today/today.models';
 import { TodayService } from '~/today/today.service';
 import { PageNames } from '~/core/page-names';
 import { AppointmentCheckoutParams } from '~/appointment/appointment-checkout/appointment-checkout.component';
 import { loading } from '~/core/utils/loading';
 import { componentUnloaded } from '~/core/utils/component-unloaded';
+import { LoadAction as ProfileLoadAction, ProfileState, selectProfile } from '~/today/user-header/profile.reducer';
 
 enum AppointmentTag {
   NotCheckedOut = 'Not checked out',
@@ -43,12 +46,14 @@ export class TodayComponent {
   protected AppointmentTag = AppointmentTag;
   protected remainingVisitsCount = 0;
 
+  protected profile: Observable<StylistProfile>;
+
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
     public todayService: TodayService,
     public alertCtrl: AlertController,
-    private store: Store<TodayState>,
+    private store: Store<TodayState & ProfileState>,
     private actionSheetCtrl: ActionSheetController
   ) {
   }
@@ -67,6 +72,11 @@ export class TodayComponent {
       .subscribe(remainingVisitsCount => {
         this.remainingVisitsCount = remainingVisitsCount;
       });
+
+    this.profile = this.store.select(selectProfile);
+
+    // Load profile info
+    this.store.dispatch(new ProfileLoadAction());
 
     // Initiate loading the today data.
     this.store.dispatch(new LoadAction());
