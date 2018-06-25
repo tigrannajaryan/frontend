@@ -80,7 +80,7 @@ class Appointment(models.Model):
 
     def get_client_full_name(self):
         if self.client:
-            return self.client.user.get_full_name()
+            return self.client.get_full_name()
         return '{0} {1}'.format(
             self.client_first_name, self.client_last_name
         )
