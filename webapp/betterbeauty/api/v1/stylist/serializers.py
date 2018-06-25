@@ -1025,13 +1025,12 @@ class StylistTodaySerializer(serializers.ModelSerializer):
         ).count()
 
     def get_week_visits_count(self, stylist: Stylist):
-        """Return non-cancelled appointments till end of week"""
+        """Return non-cancelled appointments of the week"""
         week_start, week_end = stylist.get_current_week_bounds()
         return stylist.get_appointments_in_datetime_range(
-            datetime_from=stylist.get_current_now(),
+            datetime_from=week_start,
             datetime_to=week_end,
-            include_cancelled=False,
-            include_checked_out=False
+            include_cancelled=False
         ).count()
 
     def get_past_visits_count(self, stylist: Stylist):

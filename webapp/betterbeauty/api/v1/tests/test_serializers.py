@@ -501,7 +501,7 @@ class TestStylistTodaySerializer(object):
             str(appointments['late_night_appointment'].uuid),
         ]))
         assert(data['today_visits_count'] == 3)
-        assert(data['week_visits_count'] == 4)
+        assert(data['week_visits_count'] == 7)
         assert(data['past_visits_count'] == 4)
 
 
