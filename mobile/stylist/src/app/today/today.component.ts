@@ -24,7 +24,7 @@ import { PageNames } from '~/core/page-names';
 import { AppointmentCheckoutParams } from '~/appointment/appointment-checkout/appointment-checkout.component';
 import { loading } from '~/core/utils/loading';
 import { componentUnloaded } from '~/core/utils/component-unloaded';
-import { LoadAction as ProfileLoadAction, ProfileState, selectProfile } from '~/today/user-header/profile.reducer';
+import { LoadAction as LoadProfileAction, ProfileState, selectProfile } from '~/today/user-header/profile.reducer';
 
 enum AppointmentTag {
   NotCheckedOut = 'Not checked out',
@@ -76,7 +76,7 @@ export class TodayComponent {
     this.profile = this.store.select(selectProfile);
 
     // Load profile info
-    this.store.dispatch(new ProfileLoadAction());
+    this.store.dispatch(new LoadProfileAction());
 
     // Initiate loading the today data.
     this.store.dispatch(new LoadAction());

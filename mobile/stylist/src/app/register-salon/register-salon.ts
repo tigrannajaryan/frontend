@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Camera, CameraOptions } from '@ionic-native/camera';
-import { Store } from '@ngrx/store';
 
 import {
   ActionSheetController,
@@ -20,8 +19,6 @@ import { StylistServiceProvider } from '~/core/stylist-service/stylist-service';
 import { BaseApiService } from '~/shared/base-api-service';
 import { showAlert } from '~/core/utils/alert';
 import { Logger } from '~/shared/logger';
-
-import { LoadAction as LoadProfileAction, ProfileState } from '~/today/user-header/profile.reducer';
 
 enum PhotoSourceType {
   photoLibrary = 0,
@@ -100,8 +97,7 @@ export class RegisterSalonComponent {
     private domSanitizer: DomSanitizer,
     private camera: Camera,
     private actionSheetCtrl: ActionSheetController,
-    private logger: Logger,
-    private store: Store<ProfileState>
+    private logger: Logger
   ) {
     this.form = this.formBuilder.group({
       vars: this.formBuilder.group({
@@ -186,9 +182,6 @@ export class RegisterSalonComponent {
       salon_name: profile.salon_name || null
     };
     await this.apiService.setProfile(data);
-
-    // Reload profile data
-    this.store.dispatch(new LoadProfileAction());
 
     this.nextRoute();
   }
