@@ -14,12 +14,21 @@ export class AboutComponent {
 
   protected getBuildNumber = getBuildNumber;
   protected __COMMIT_HASH__ = __COMMIT_HASH__;
+  protected easterEggCounter = 0;
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
   }
 
   protected getEnv(): typeof ENV {
     return ENV;
+  }
+
+  protected onNameClick(): void {
+    const easterEggMax = 5;
+    if (++this.easterEggCounter >= easterEggMax) {
+      this.easterEggCounter = 0;
+      throw new Error(' Not a real error, just for debugging');
+    }
   }
 
 }

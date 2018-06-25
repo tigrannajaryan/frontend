@@ -17,7 +17,7 @@
 
   <ion-list>
     <ion-item>
-      <h1>Made Pro</h1>
+      <h1><span (click)="onNameClick()">Made Pro</span></h1>
       <h2>Version 0.0.1, Build {{ getBuildNumber() }}</h2>
       <h2 *ngIf="!getEnv().production">Commit hash:
         <a href="https://github.com/madebeauty/monorepo/commit/{{ __COMMIT_HASH__ }}">
