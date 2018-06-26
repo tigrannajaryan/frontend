@@ -19,8 +19,8 @@ export class ClientsEffects {
 
   @Effect() search = this.actions
     .ofType(clientsActionTypes.SEARCH)
-    .pipe(debounce(() => timer(400)))
     .map((action: SearchAction) => action)
+    .pipe(debounce(() => timer(200)))
     .switchMap(action => Observable.defer(async () => {
       try {
         const { clients } = await this.clientsService.search(action.query);
