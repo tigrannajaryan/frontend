@@ -5,6 +5,9 @@ mkdir www || true
 echo "--Running cordova build to prepare iOS project."
 npm install -g cordova xml2js
 
+# save sentry properties before we start adding/removing plugins
+cp sentry.properties sentry.properties.bak
+
 # Remove and re-add cordova-plugin-facebook4 to update app id / name
 ./node_modules/ionic/bin/ionic cordova plugin rm cordova-plugin-facebook4 || true
 
@@ -23,10 +26,13 @@ cordova plugin remove sentry-cordova || true
 # architectures from final build
 npm install @sentry/wizard@0.10.2
 ./node_modules/@sentry/wizard/dist/bin.js --skip-connect -i cordova --uninstall true --quiet
-cordova plugin add sentry-cordova ||true
+SENTRY_SKIP_WIZARD=true cordova plugin add sentry-cordova ||true
 # run sentry-wizard; it will add a post-build phase to Xcode source
 # to remove simulator architectures (required for AppStore submission)
 ./node_modules/@sentry/wizard/dist/bin.js --skip-connect -i cordova --uninstall false --quiet
+
+# restore sentry.properties previously overridden by sentry-wizard
+cp sentry.properties.bak sentry.properties
 
 # generate xcode source
 ./node_modules/ionic/bin/ionic cordova prepare ios
