@@ -7,20 +7,26 @@ import { Directive, HostListener } from '@angular/core';
  *
  * example of use - (type="tel" ngxInputNumber)
  * for <input/> or <ion-input>
+ *
+ * from https://www.davebennett.tech/angular-4-input-numbers-directive/
  */
 @Directive({
   selector: '[ngxInputNumber]'
 })
 export class InputNumberDirective {
-  private regexp = /\d|\./;
+  private regex: RegExp = new RegExp(/^[0-9]+(\.[0-9]*){0,1}$/g);
+  private specialKeys: string[] = ['Backspace', 'Tab', 'End', 'Home'];
 
   @HostListener('keydown', [ '$event' ])
   keydown(event: KeyboardEvent): void {
-    const charCode = (event.which) ? event.which : event.keyCode;
-    const key = event.key;
-    const isSpecialChar = charCode <= 31;
+    if (this.specialKeys.indexOf(event.key) !== -1) {
+      return;
+    }
 
-    if (!(isSpecialChar || this.regexp.test(key))) {
+    // tslint:disable-next-line
+    const current: string = event.target.value; // input’s value
+    const next: string = current.concat(event.key);
+    if (next && !String(next).match(this.regex)) {
       event.preventDefault();
     }
   }
