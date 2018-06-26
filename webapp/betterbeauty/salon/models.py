@@ -321,10 +321,15 @@ class ServiceTemplateSet(models.Model):
     name = models.CharField(max_length=255, unique=True)
     image = models.ImageField(upload_to='template_set_images', null=True, blank=True)
 
+    sort_weight = models.IntegerField(
+        default=0, verbose_name='Weight in API output; smallest go first'
+    )
+
     description = models.TextField(blank=True)
 
     class Meta:
         db_table = 'service_template_set'
+        ordering = ['sort_weight', 'id', ]
 
     def __str__(self):
         return 'Service Template Set: {0}'.format(self.name)
