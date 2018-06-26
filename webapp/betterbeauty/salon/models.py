@@ -304,6 +304,10 @@ class Stylist(models.Model):
             work_end_at__gt=end_time
         ).exists()
 
+    def is_working_day(self, date_time: datetime.datetime):
+        return self.available_days.filter(
+            weekday=date_time.isoweekday(), is_available=True).exists()
+
 
 class ServiceCategory(models.Model):
     name = models.CharField(max_length=255, unique=True)

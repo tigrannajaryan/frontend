@@ -1027,8 +1027,7 @@ curl -X POST \
 ## Service pricing
 
 Returns prices for given service for given client in the timeframe of the
-next 14 days. If a day is unavailable for booking (e.g. no working hours,
-or completely booked), this day is excluded from the response
+next 14 days.
 
 **POST /api/v1/services/pricing**
 
@@ -1056,31 +1055,45 @@ curl -X POST \
     "prices": [
         {
             "date": "2018-06-18",
-            "price": 5
+            "price": 5,
+            "is_fully_booked": true,
+            "is_working_day":true
         },
         {
             "date": "2018-06-20",
-            "price": 5
+            "price": 5,
+            "is_fully_booked": true,
+            "is_working_day":false
         },
         {
             "date": "2018-06-21",
-            "price": 5
+            "price": 5,
+            "is_fully_booked": false,
+            "is_working_day":true
         },
         {
             "date": "2018-06-22",
-            "price": 5
+            "price": 5,
+            "is_fully_booked": false,
+            "is_working_day":true
         },
         {
             "date": "2018-06-25",
-            "price": 6.25
+            "price": 6.25,
+            "is_fully_booked": false,
+            "is_working_day":true
         },
         {
             "date": "2018-06-27",
-            "price": 5
+            "price": 5,
+            "is_fully_booked": false,
+            "is_working_day":true
         },
         {
             "date": "2018-06-28",
-            "price": 5
+            "price": 5,
+            "is_fully_booked": false,
+            "is_working_day":true
         }
     ]
 }

@@ -18,3 +18,4 @@ assert round(1 / DISCOUNT_GRANULARIZATION) == 1 / DISCOUNT_GRANULARIZATION
 # value equal to 1 (demain is 0..1, 1 is completely booked)
 
 COMPLETELY_BOOKED_DEMAND = 1
+UNAVAILABLE_DEMAND = 1

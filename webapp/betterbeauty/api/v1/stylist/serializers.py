@@ -2,7 +2,7 @@ import datetime
 import uuid
 from decimal import Decimal
 from math import trunc
-from typing import Dict, List, Optional, Tuple
+from typing import Dict, Iterable, List, Optional, Tuple
 
 from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
@@ -37,6 +37,7 @@ from salon.models import (
     StylistServicePhotoSample,
     StylistWeekdayDiscount,
 )
+from salon.types import PriceOnDate
 from salon.utils import (
     calculate_price_and_discount_for_client_on_date,
     create_stylist_profile_for_user,
@@ -559,12 +560,18 @@ class AppointmentValidationMixin(object):
             raise serializers.ValidationError(
                 appointment_errors.ERR_APPOINTMENT_IN_THE_PAST
             )
-        # check if appointment doesn't fit working hours
 
+        if not stylist.is_working_day(datetime_start_at):
+            raise serializers.ValidationError(
+                appointment_errors.ERR_APPOINTMENT_NON_WORKING_DAY
+            )
+
+        # check if appointment doesn't fit working hours
         if not stylist.is_working_time(datetime_start_at):
             raise serializers.ValidationError(
                 appointment_errors.ERR_APPOINTMENT_OUTSIDE_WORKING_HOURS
             )
+
         # check if there are intersecting appointments
         if stylist.get_appointments_in_datetime_range(
             datetime_start_at, datetime_start_at + stylist.service_time_gap,
@@ -1101,6 +1108,8 @@ class ClientSerializer(serializers.ModelSerializer):
 class StylistServicePriceSerializer(serializers.Serializer):
     date = serializers.DateField()
     price = serializers.IntegerField()
+    is_fully_booked = serializers.BooleanField()
+    is_working_day = serializers.BooleanField()
 
 
 class StylistServicePricingRequestSerializer(
@@ -1121,10 +1130,15 @@ class StylistServicePricingSerializer(serializers.ModelSerializer):
 
     def get_prices(self, stylist_service):
         client = self.context.get('client', None)
-        prices_and_dates = generate_prices_for_stylist_service(
-            stylist_service, client, exclude_fully_booked=True
+        prices_and_dates: Iterable[PriceOnDate] = generate_prices_for_stylist_service(
+            stylist_service, client, exclude_fully_booked=False,
+            exclude_unavailable_days=False
         )
         return StylistServicePriceSerializer(
-            map(lambda m: {'date': m[0], 'price': trunc(m[1].price)}, prices_and_dates),
+            map(lambda m: {'date': m.date,
+                           'price': trunc(m.calculated_price.price),
+                           'is_fully_booked': m.is_fully_booked,
+                           'is_working_day': m.is_working_day
+                           }, prices_and_dates),
             many=True
         ).data

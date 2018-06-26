@@ -23,18 +23,11 @@ from pricing import (
 )
 from pricing.constants import COMPLETELY_BOOKED_DEMAND, PRICE_BLOCK_SIZE
 from salon.models import Stylist, StylistAvailableWeekDay, StylistService
+from salon.types import DemandOnDate, PriceOnDate
 
 
-def generate_demand_list_for_stylist(
-        stylist: Stylist, dates: List[datetime.date]
-) -> List[float]:
-    """
-    Generate list of 0..1 float values for each date supplied. Demand is generated
-    based on formula: appointment_count * service_time_gap / available_time_during_day.
-    If resulting demand value is > 1, we set it to 1. If no time is available during
-    a day (or stylist is just unavailable on particular date) demand value will also
-    be equal to 1
-    """
+def get_weekday_available_times(stylist: Stylist) -> Dict[int, Tuple[datetime.timedelta, bool]]:
+
     weekday_available_times = {}
 
     # generate time availability based on weekday to avoid multiple DB requests
@@ -44,12 +37,28 @@ def generate_demand_list_for_stylist(
         ).last()
         if not available_weekday:
             weekday_available_times.update({
-                weekday: datetime.timedelta(0)
+                weekday: (datetime.timedelta(0), False)
             })
         else:
             weekday_available_times.update({
-                weekday: available_weekday.get_available_time()
+                weekday: (available_weekday.get_available_time(), available_weekday.is_available)
             })
+
+    return weekday_available_times
+
+
+def generate_demand_list_for_stylist(
+        stylist: Stylist, dates: List[datetime.date]
+) -> List[DemandOnDate]:
+    """
+    Generate list of NamedTuples with demand (0..1 float), is_fully_booked(boolean),
+    is_working_day(boolean), for each date supplied. Demand is generated
+    based on formula: appointment_count * service_time_gap / available_time_during_day.
+    If resulting demand value is > 1, we set it to 1. If no time is available during
+    a day (or stylist is just unavailable on particular date) demand value will also
+    be equal to 1
+    """
+    weekday_available_times = get_weekday_available_times(stylist)
 
     time_gap = stylist.service_time_gap
     demand_list = []
@@ -57,23 +66,34 @@ def generate_demand_list_for_stylist(
     for date in dates:
         midnight = stylist.with_salon_tz(datetime.datetime.combine(date, datetime.time(0, 0)))
         next_midnight = midnight + datetime.timedelta(days=1)
-        work_day_duration = weekday_available_times[date.isoweekday()]
+        work_day_duration = weekday_available_times[date.isoweekday()][0]
         load_on_date_duration = stylist.appointments.filter(
             datetime_start_at__gte=midnight, datetime_start_at__lt=next_midnight,
         ).exclude(status__in=[
             AppointmentStatus.CANCELLED_BY_STYLIST,
             AppointmentStatus.CANCELLED_BY_CLIENT]
         ).count() * time_gap
+        is_working_day: bool = weekday_available_times[date.isoweekday()][1]
         demand_on_date = (
             load_on_date_duration / work_day_duration
             if work_day_duration > datetime.timedelta(0)
             else COMPLETELY_BOOKED_DEMAND
         )
+        is_fully_booked: bool = False
+        if is_working_day and demand_on_date == COMPLETELY_BOOKED_DEMAND:
+            is_fully_booked = True
+
         # Technically, there may be a situation of overbooking, which may cause actual
         # demand be > 1; in this case we'll cast it to 1 manually
         if demand_on_date > 1:
             demand_on_date = 1
-        demand_list.append(demand_on_date)
+
+        demand = DemandOnDate(
+            demand=demand_on_date,
+            is_fully_booked=is_fully_booked,
+            is_working_day=is_working_day
+        )
+        demand_list.append(demand)
     return demand_list
 
 
@@ -122,15 +142,17 @@ def generate_discount_settings_for_stylist(
 def generate_prices_for_stylist_service(
         service: StylistService,
         client: Optional[ClientOfStylist],
-        exclude_fully_booked: bool=False
-) -> Iterable[Tuple[datetime.date, CalculatedPrice]]:
+        exclude_fully_booked: bool=False,
+        exclude_unavailable_days: bool=False
+) -> Iterable[PriceOnDate]:
     """
     Generate prices for given stylist, client and service for PRICE_BLOCK_SIZE days ahead
 
     :param service: Service to generate prices for
     :param client: (optional) Client object, if omitted no client-specific discounts will apply
-    :param exclude_fully_booked: whether or not remove fully booked/unavailable dates
-    :return: Iterator over (date, CalculatedPrice)
+    :param exclude_fully_booked: whether or not remove fully booked dates
+    :param exclude_unavailable_days: whether or not remove unavailable dates
+    :return: Iterator over (date, CalculatedPrice, fully_booked boolean)
     """
     stylist = service.stylist
 
@@ -138,7 +160,9 @@ def generate_prices_for_stylist_service(
 
     today = stylist.get_current_now().date()
     dates_list = [today + datetime.timedelta(days=i) for i in range(0, PRICE_BLOCK_SIZE)]
-    demand_list = generate_demand_list_for_stylist(stylist=stylist, dates=dates_list)
+    demand_on_dates = generate_demand_list_for_stylist(stylist=stylist, dates=dates_list)
+
+    demand_list = [x.demand for x in demand_on_dates]
 
     discounts = generate_discount_settings_for_stylist(stylist)
 
@@ -150,12 +174,17 @@ def generate_prices_for_stylist_service(
         demand_list
     )
 
-    prices_on_dates = zip(dates_list, prices_list)
-
+    is_fully_booked_list = [d.is_fully_booked for d in demand_on_dates]
+    is_working_day_list = [d.is_working_day for d in demand_on_dates]
+    prices_on_dates: Iterable[PriceOnDate] = [PriceOnDate._make(x) for x in zip(
+        dates_list, prices_list, is_fully_booked_list, is_working_day_list)]
     if exclude_fully_booked:
         # remove dates where demand is equal to COMPLETELY_BOOKED_DEMAND
-        demand_filter = [d < COMPLETELY_BOOKED_DEMAND for d in demand_list]
-        return compress(prices_on_dates, demand_filter)
+        prices_on_dates = compress(prices_on_dates, is_fully_booked_list)
+
+    if exclude_unavailable_days:
+        # remove dates where demand is equal to UNAVAILABLE_DEMAND
+        prices_on_dates = compress(prices_on_dates, is_working_day_list)
 
     return prices_on_dates
 
@@ -163,11 +192,16 @@ def generate_prices_for_stylist_service(
 def calculate_price_and_discount_for_client_on_date(
         service: StylistService, client: Optional[ClientOfStylist], date: datetime.date
 ) -> CalculatedPrice:
-    prices: Dict[datetime.date, CalculatedPrice] = dict(
+
+    price_on_dates: Iterable[PriceOnDate] = (
         generate_prices_for_stylist_service(
-            service=service, client=client, exclude_fully_booked=True
-        )
-    )
+            service=service, client=client, exclude_fully_booked=False,
+            exclude_unavailable_days=False
+        ))
+
+    prices: Dict[datetime.date, CalculatedPrice] = dict(
+        (m.date, m.calculated_price) for m in price_on_dates)
+
     if date in prices:
         return prices[date]
     # Return base price if day does not appear to be available for booking
