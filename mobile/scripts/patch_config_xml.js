@@ -40,7 +40,6 @@ fs.readFile('config.xml', 'utf8', function(err, data) {
     // set iOS and Android build versions
     obj['widget']['$']['ios-CFBundleVersion'] = buildNumber;
     obj['widget']['$']['android-versionCode'] = buildNumber;
-    obj['widget']['$']['version'] = '1.0.' + buildNumber;
 
     // set iOS bundle id
     obj['widget']['$']['id'] = iosAppBundleId;
