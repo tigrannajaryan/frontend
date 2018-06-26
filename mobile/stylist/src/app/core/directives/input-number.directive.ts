@@ -1,4 +1,4 @@
-import { Directive, HostListener } from '@angular/core';
+import { Directive, ElementRef, HostListener } from '@angular/core';
 
 enum SpecialKeysCodes {
   Backspace = 8,
@@ -21,6 +21,11 @@ enum SpecialKeysCodes {
 export class InputNumberDirective {
   private regex: RegExp = new RegExp(/^[0-9]+(\.[0-9]*){0,1}$/g);
 
+  constructor(
+    private el: ElementRef
+  ) {
+  }
+
   @HostListener('keydown', [ '$event' ])
   keydown(event: KeyboardEvent): void {
     const code: number = event.which || Number(event.code);
@@ -30,8 +35,8 @@ export class InputNumberDirective {
       return;
     }
 
-    // tslint:disable-next-line
-    const next: string = event.target.value.concat(key);
+    const start: string = this.el.nativeElement.querySelector('input').value;
+    const next: string = start.concat(key);
 
     if (next && !String(next).match(this.regex)) {
       event.preventDefault();
