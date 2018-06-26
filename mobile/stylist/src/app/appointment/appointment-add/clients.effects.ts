@@ -20,6 +20,7 @@ export class ClientsEffects {
   @Effect() search = this.actions
     .ofType(clientsActionTypes.SEARCH)
     .map((action: SearchAction) => action)
+    .filter(action => action.query.length >= 3)
     .pipe(debounce(() => timer(200)))
     .switchMap(action => Observable.defer(async () => {
       try {
