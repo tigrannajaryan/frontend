@@ -14,5 +14,5 @@ DEFAULT_WEEKDAY_DISCOUNT_PERCENTS = {
     4: 20,
     5: 0,
     6: 0,
-    7: 20
+    7: 0
 }
