@@ -1,4 +1,11 @@
-import { Directive, HostListener } from '@angular/core';
+import { Directive, ElementRef, HostListener } from '@angular/core';
+
+enum SpecialKeysCodes {
+  Backspace = 8,
+  Tab = 9,
+  End = 35,
+  Home = 36
+}
 
 /**
  * ngxInputNumber attribute need for input
@@ -12,15 +19,26 @@ import { Directive, HostListener } from '@angular/core';
   selector: '[ngxInputNumber]'
 })
 export class InputNumberDirective {
-  private regexp = /\d|\./;
+  private regex: RegExp = new RegExp(/^[0-9]+(\.[0-9]*){0,1}$/g);
+
+  constructor(
+    private el: ElementRef
+  ) {
+  }
 
   @HostListener('keydown', [ '$event' ])
   keydown(event: KeyboardEvent): void {
-    const charCode = (event.which) ? event.which : event.keyCode;
-    const key = event.key;
-    const isSpecialChar = charCode <= 31;
+    const code: number = event.which || Number(event.code);
+    const key: string = event.key || String.fromCharCode(code);
 
-    if (!(isSpecialChar || this.regexp.test(key))) {
+    if (code in SpecialKeysCodes) {
+      return;
+    }
+
+    const start: string = this.el.nativeElement.querySelector('input').value;
+    const next: string = start.concat(key);
+
+    if (next && !String(next).match(this.regex)) {
       event.preventDefault();
     }
   }
