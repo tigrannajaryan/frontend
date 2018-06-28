@@ -1,6 +1,6 @@
 ## Log in or sign up
 
-#### POST /auth/code
+#### POST /api/v1/client/auth/code
 
 ```json
 {
@@ -16,7 +16,7 @@
 }
 ```
 
-#### POST /auth/code/confirm
+#### POST /api/v1/client/auth/code/confirm
 
 ```json
 {
@@ -36,7 +36,7 @@
 
 ## Stylists
 
-#### GET /stylists
+#### GET /api/v1/client/stylists
 
 **Response 200 OK**
 
@@ -48,7 +48,8 @@
     "last_name": "McBob",
     "profile_photo_url": "http://example.com/profile_photo.jpg",
     "salon_name": "Jane's Beauty",
-    "salon_address": "Some address"
+    "salon_address": "Some address",
+    "phone": "(650) 350-1234"
   },
   {
     "id": 2,
@@ -56,12 +57,13 @@
     "last_name": "McBob",
     "profile_photo_url": "http://example.com/profile_photo.jpg",
     "salon_name": "Jane's Beauty",
-    "salon_address": "Some address"
+    "salon_address": "Some address",
+    "phone": "(650) 350-1234"
   }
 ]
 ```
 
-#### GET /stylists/related
+#### GET /api/v1/client/stylists/related
 
 **Response 200 OK**
 
@@ -72,11 +74,12 @@
     "last_name": "McBob",
     "profile_photo_url": "http://example.com/profile_photo.jpg",
     "salon_name": "Jane's Beauty",
-    "salon_address": "Some address"
+    "salon_address": "Some address",
+    "phone": "(650) 350-1234"
 }
 ```
 
-#### GET /search-stylists?query=Freya
+#### GET /api/v1/client/search-stylists?query=Freya
 
 **Response 200 OK**
 
@@ -88,14 +91,15 @@
     "last_name": "McBob",
     "profile_photo_url": "http://example.com/profile_photo.jpg",
     "salon_name": "Jane's Beauty",
-    "salon_address": "Some address"
+    "salon_address": "Some address",
+    "phone": "(650) 350-1234"
   }
 ]
 ```
 
 ## Services
 
-#### GET /services
+#### GET /api/v1/client/services
 
 **Response 200 OK**
 
@@ -116,7 +120,7 @@
 ]
 ```
 
-#### GET /search-services?query=Braids
+#### GET /api/v1/client/search-services?query=Braids
 
 **Response 200 OK**
 
@@ -139,7 +143,7 @@
 
 ### Service pricing
 
-#### POST /services/pricing**
+#### POST /api/v1/client/services/pricing**
 
 ```json
 {
@@ -150,7 +154,7 @@
 
 **Response 200 OK**
 
-❗️Not returning non-working days.
+❗️Not returning non-working and fully booked days.
 
 ```json
 {
@@ -160,13 +164,11 @@
   "prices": [
     {
       "date": "2018-06-18",
-      "price": 5,
-      "is_fully_booked": true
+      "price": 5
     },
     {
       "date": "2018-06-20",
-      "price": 5,
-      "is_fully_booked": true
+      "price": 5
     }
   ]
 }
