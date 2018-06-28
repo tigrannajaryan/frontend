@@ -16,6 +16,16 @@
 }
 ```
 
+**Response 400 Bad Request**
+
+```json
+{
+  "client_phone": [
+     "The phone number is registered to another person. Please contact us if you have any questions"
+  ]
+}
+```
+
 #### POST /api/v1/client/auth/code/confirm
 
 ```json
@@ -31,6 +41,26 @@
 {
   "client_phone": "+12525858484",
   "code": "858484"
+}
+```
+
+**Response 400 Bad Request**
+
+```json
+{
+  "client_phone": [
+     "The phone number is registered to another person. Please contact us if you have any questions"
+  ]
+}
+```
+
+**Response 400 Bad Request**
+
+```json
+{
+  "code": [
+     "You entered a wrong verification code. Please try again."
+  ]
 }
 ```
 
@@ -143,7 +173,7 @@
 
 ### Service pricing
 
-#### POST /api/v1/client/services/pricing**
+#### POST /api/v1/client/services/pricing
 
 ```json
 {
@@ -170,6 +200,26 @@
       "date": "2018-06-20",
       "price": 5
     }
+  ]
+}
+```
+
+**Response 400 Bad Request**
+
+```json
+{
+  "service_uuid": [
+      "No such service"
+  ]
+}
+```
+
+**Response 400 Bad Request**
+
+```json
+{
+  "stylist_uuid": [
+      "No such Stylist"
   ]
 }
 ```
