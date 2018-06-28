@@ -7,6 +7,8 @@
         {{ moment(day.date).format('D MMM') }}
         <small>{{ moment(day.date).format('dddd') }}</small>
       </div>
+      <div *ngIf="day.is_fully_booked" class="DateCard-badge is-warn">Fully Booked</div>
+      <div *ngIf="!day.is_working_day" class="DateCard-badge">Non-working</div>
       <div class="DateCard-price" [style.color]="this.getPriceColor(day.price)">${{ day.price.toFixed(0) }}</div>
     </div>
   </div>
