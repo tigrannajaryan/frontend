@@ -1,12 +1,12 @@
 # Introduction
-MadeBeauty source code monorepo. This repo contains all source code for all our applications.
+MadeBeauty frontend source code. This repo contains all source code
+for all our mobile applications.
 
 # Directory Structure
 
 The repository has the following structure:
 ```
 /mobile  - mobile apps.
-/webapp  - application backend API and admin.
 /website - madebeauty.com public web site.
 ```
 
@@ -14,9 +14,8 @@ The repository has the following structure:
 # Contributing
 
 Below are general guidelines that you need to follow
-when contributing to this repo. See also additional guideance
-on specific apps in `/mobile/README.md` and
-`/webapp/README.md` files.
+when contributing to this repo. See also additional guidance
+on specific apps in `/mobile/README.md`.
 
 Use supplied `/.gitcommit` commit message template. You can enable
 it this way:
@@ -24,19 +23,18 @@ it this way:
 
 ## Branching Model
 
-We practice Continuous Deployment with 2 mainline branches:
-`develop` and `master`.
+We practice Continuous Deployment with 1 mainline branch:
+`develop`.
 
-Commiting to `develop` branch will trigger automatic build
-and deployment of staging enviroment. Commiting to `master`
-branch will trigger automatic build and deployment of
-production enviroment.
+Committing to `develop` branch will trigger automatic build
+and deployment of staging environment, and upon success - automatic
+build and deployment of production environment.
 
-We keep linear commit history on `develop` and `master` branches.
-Don't use merge commits on these branches. Always use rebase and
+We keep linear commit history on `develop` branch.
+Don't use merge commits on this branch. Always use rebase and
 fast-forward when merging.
 
-Commits on `develop` and `master` branches should be the smalest
+Commits on `develop` branch should be the smallest
 possible logical change that makes sense but not smaller. It should
 be single cohesive idea, like "Added ability to upload a photo on
 profile page". There should be one-to-one mapping between ideas
@@ -51,9 +49,9 @@ Do not keep long-lasting feature branches, otherwise you
 risk facing merge conflicts which are never fun.
 
 Feel free to make as many commits as you want on your feature
-branch as you make progress on the work. These intermedidate
+branch as you make progress on the work. These intermediate
 commits are a convenient savepoints and it is up to you
-how many intermedidate commits you want to do and what to
+how many intermediate commits you want to do and what to
 include in each. However before merging your work to develop
 branch make sure your commits are squashed into one logical commit
 (an exception to this rule when you can have more than one logical

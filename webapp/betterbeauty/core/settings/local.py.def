@@ -1,5 +1,0 @@
-# rename to local.py and add your own settings
-
-from .defaults import *
-
-DEBUG = True
