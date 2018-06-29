@@ -22,6 +22,7 @@ export enum LoginOrRegisterType {
 export class LoginRegisterComponent {
   // this should be here if we using enum in html
   protected LoginOrRegisterType = LoginOrRegisterType;
+  protected PageNames = PageNames;
 
   pageType: LoginOrRegisterType;
   formData = { email: '', password: '' };
