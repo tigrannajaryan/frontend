@@ -178,7 +178,7 @@ Returns categories with services.
           "uuid": "f2f0d141-47a8-4393-9c8e-c79126502c41",
           "name": "Color",
           "min_price": 56,
-          "max_price": 88
+          "base_price": 88
         }
       ]
     }
@@ -205,7 +205,7 @@ Returns categories with services.
           "uuid": "f2f0d141-47a8-4393-9c8e-c79126502c41",
           "name": "Color",
           "min_price": 56,
-          "max_price": 88
+          "base_price": 88
         }
       ]
     }
