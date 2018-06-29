@@ -45,10 +45,21 @@
 
 **Response 200 OK**
 
+❗Empty `stylist_invite` object if a client is not invited by a stylist.
+
 ```json
 {
   "phone": "+12525858484",
-  "code": "858484"
+  "code": "858484",
+  "stylist_invite": {
+    "uuid": "15610c0a-a819-4731-b503-1e5e3f4fdbee",
+    "first_name": "Freya",
+    "last_name": "McBob",
+    "profile_photo_url": "http://example.com/profile_photo.jpg",
+    "salon_name": "Jane's Beauty",
+    "salon_address": "Some address",
+    "phone": "(650) 350-1234"
+  }
 }
 ```
 
@@ -77,43 +88,27 @@
 **Response 200 OK**
 
 ```json
-[
-  {
-    "id": 1,
-    "first_name": "Freya",
-    "last_name": "McBob",
-    "profile_photo_url": "http://example.com/profile_photo.jpg",
-    "salon_name": "Jane's Beauty",
-    "salon_address": "Some address",
-    "phone": "(650) 350-1234"
-  },
-  {
-    "id": 2,
-    "first_name": "Freya",
-    "last_name": "McBob",
-    "profile_photo_url": "http://example.com/profile_photo.jpg",
-    "salon_name": "Jane's Beauty",
-    "salon_address": "Some address",
-    "phone": "(650) 350-1234"
-  }
-]
-```
-
-#### `GET` /api/v1/client/stylists/invite
-
-**Response 200 OK**
-
-Empty object if a client is not invited by a stylist.
-
-```json
 {
-    "id": 1,
-    "first_name": "Freya",
-    "last_name": "McBob",
-    "profile_photo_url": "http://example.com/profile_photo.jpg",
-    "salon_name": "Jane's Beauty",
-    "salon_address": "Some address",
-    "phone": "(650) 350-1234"
+  "stylists": [
+    {
+      "uuid": "15610c0a-a819-4731-b503-1e5e3f4fdbee",
+      "first_name": "Freya",
+      "last_name": "McBob",
+      "profile_photo_url": "http://example.com/profile_photo.jpg",
+      "salon_name": "Jane's Beauty",
+      "salon_address": "Some address",
+      "phone": "(650) 350-1234"
+    },
+    {
+      "uuid": "15610c0a-a819-4731-b503-1e5e3f4fdbee",
+      "first_name": "Freya",
+      "last_name": "McBob",
+      "profile_photo_url": "http://example.com/profile_photo.jpg",
+      "salon_name": "Jane's Beauty",
+      "salon_address": "Some address",
+      "phone": "(650) 350-1234"
+    }
+  ]
 }
 ```
 
@@ -124,17 +119,17 @@ Empty object if a client is not invited by a stylist.
 Empty array if not found.
 
 ```json
-[
-  {
-    "id": 2,
+{
+  "stylists": [{
+    "uuid": "15610c0a-a819-4731-b503-1e5e3f4fdbee",
     "first_name": "Freya",
     "last_name": "McBob",
     "profile_photo_url": "http://example.com/profile_photo.jpg",
     "salon_name": "Jane's Beauty",
     "salon_address": "Some address",
     "phone": "(650) 350-1234"
-  }
-]
+  }]
+}
 ```
 
 ## Services
@@ -146,20 +141,22 @@ Empty array if not found.
 Returns categories with services.
 
 ```json
-[
-  {
-    "name": "Braids and Locs",
-    "uuid": "15610c0a-a819-4731-b503-1e5e3f4fdbee",
-    "services": [
-      {
-        "uuid": "f2f0d141-47a8-4393-9c8e-c79126502c41",
-        "name": "Color",
-        "min_price": 56,
-        "max_price": 88
-      }
-    ]
-  }
-]
+{
+  "categories": [
+    {
+      "name": "Braids and Locs",
+      "uuid": "15610c0a-a819-4731-b503-1e5e3f4fdbee",
+      "services": [
+        {
+          "uuid": "f2f0d141-47a8-4393-9c8e-c79126502c41",
+          "name": "Color",
+          "min_price": 56,
+          "max_price": 88
+        }
+      ]
+    }
+  ]
+}
 ```
 
 #### `GET` /api/v1/client/search-services?query=Braids
@@ -171,20 +168,22 @@ Returns categories with services.
 Returns categories with services.
 
 ```json
-[
-  {
-    "name": "Braids and Locs",
-    "uuid": "15610c0a-a819-4731-b503-1e5e3f4fdbee",
-    "services": [
-      {
-        "uuid": "f2f0d141-47a8-4393-9c8e-c79126502c41",
-        "name": "Color",
-        "min_price": 56,
-        "max_price": 88
-      }
-    ]
-  }
-]
+{
+  "categories": [
+    {
+      "name": "Braids and Locs",
+      "uuid": "15610c0a-a819-4731-b503-1e5e3f4fdbee",
+      "services": [
+        {
+          "uuid": "f2f0d141-47a8-4393-9c8e-c79126502c41",
+          "name": "Color",
+          "min_price": 56,
+          "max_price": 88
+        }
+      ]
+    }
+  ]
+}
 ```
 </details>
 
@@ -203,7 +202,6 @@ Returns categories with services.
 
 ```json
 {
-
   "service_uuid": "e15cc4e9-e7a9-4905-a94d-5d44f1b860e9",
   "stylist_uuid": "f74b1c66-943c-4bc4-bf14-6fefa21ab5a5",
   "prices": [
