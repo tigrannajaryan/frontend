@@ -18,19 +18,41 @@
 
 **Response 400 Bad Request**
 
+[field_errors](https://github.com/madebeauty/monorepo/issues/35#issuecomment-389011477):
 - invalid phone (check with google libphonenumber)
 - someone elses phone
+
+```json
+{
+  "code": "form_is_invalid",
+  "field_errors": {
+    "phone": [{
+      "code": "invalid_phone",
+      "details": {
+        "description": "The phone number is not valid"
+      }
+    }, {
+      "code": "someone_elses_phone",
+      "details": {
+        "description": "The phone number is registered to another person"
+      }
+    }]
+  }
+}
+```
+
+[ServerError](https://github.com/madebeauty/monorepo/issues/35#issuecomment-389011477):
 - request timeout error on re-requesting new code within e.g. less than 2min
 
 ```json
 {
-  "phone": [
-    "The phone number is not valid",
-    "The phone number is registered to another person"
-  ],
-  "non_field_errors": [
-    "Request timeout error"
-  ]
+  "code": "re_request_timeout",
+  "non_field_errors": [{
+    "code": "re_request_timeout",
+    "details": {
+      "description": "Request timeout error. You should wait for 2min before re-requesting a code."
+    }
+  }]
 }
 ```
 
@@ -65,19 +87,24 @@
 
 **Response 400 Bad Request**
 
+The same from previous `POST` /api/v1/client/auth/code:
 - invalid phone (check with google libphonenumber)
 - someone elses phone
+
+And add one more [field_error](https://github.com/madebeauty/monorepo/issues/35#issuecomment-389011477):
 - wrong verification code
 
 ```json
 {
-  "phone": [
-    "The phone number is not valid",
-    "The phone number is registered to another person"
-  ],
-  "code": [
-    "Wrong verification code is enetered"
-  ]
+  "code": "form_is_invalid",
+  "field_errors": {
+    "code": [{
+      "code": "invalid_code",
+      "details": {
+        "description": "Wrong verification code is enetered"
+      }
+    }]
+  }
 }
 ```
 
