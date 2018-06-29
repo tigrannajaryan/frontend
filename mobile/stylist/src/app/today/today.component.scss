@@ -1,15 +1,15 @@
 page-today {
   // p = page
   // -asd = first letter of each word (in this case just -t)
-  .p-t{
-    &-blur{
+  .p-t {
+    &-blur {
       filter: blur(3px);
     }
 
-    &-top{
+    &-top {
       display: flex;
-      justify-content: space-between;
       align-items: center;
+      justify-content: space-between;
       margin-top: pxtorem(50);
       margin-bottom: pxtorem(65);
 
@@ -17,49 +17,52 @@ page-today {
         margin-top: pxtorem(20);
         margin-bottom: pxtorem(50);
       }
+
       @media ($phone) {
         margin-top: pxtorem(-20);
         margin-bottom: pxtorem(40);
       }
 
-      &-info{
+      &-info {
         font-size: pxtorem(29);
         color: rgba(0, 0, 0, 0.5);
 
         @media ($smartphone) {
           font-size: pxtorem(24);
         }
+
         @media ($phone) {
           font-size: pxtorem(18);
         }
 
-        &-progress{
-          margin-top: pxtorem(25);
+        &-progress {
+          position: relative;
           max-width: pxtorem(250);
+          margin-top: pxtorem(25);
+          overflow: hidden;
           height: 5px;
           border-radius: 1px;
-          position: relative;
           background: color($colors, color1);
-          overflow: hidden;
 
-          &-line{
-            background: color($colors, color2);
+          &-line {
             height: 100%;
+            background: color($colors, color2);
           }
         }
 
-        span{
+        span {
           color: color($colors, dark);
         }
       }
 
-      &-stats{
-        &-a, &-b{
+      &-stats {
+        &-a, &-b {
           font-size: pxtorem(30);
 
           @media ($smartphone) {
             font-size: pxtorem(24);
           }
+
           @media ($phone) {
             font-size: pxtorem(16);
           }
@@ -67,20 +70,21 @@ page-today {
           ion-icon{
             font-size: pxtorem(60);
             color: color($colors, bb_warn);
-            box-shadow: 0 0 0 0 color($colors, bb_warn);
             padding: 0 pxtorem(15);
+            box-shadow: 0 0 0 0 color($colors, bb_warn);
 
             @media ($smartphone) {
               font-size: pxtorem(50);
             }
+
             @media ($phone) {
               font-size: pxtorem(32);
             }
           }
-
         }
-        &-b{
-          ion-icon{
+
+        &-b {
+          ion-icon {
             color: color($colors, color3);
             box-shadow: 0 0 0 0 color($colors, color3);
           }
@@ -88,52 +92,21 @@ page-today {
       }
     }
 
-    &-up{
-      font-size: pxtorem(69);
-      margin-bottom: pxtorem(60);
-
-      @media ($smartphone) {
-        font-size: pxtorem(60);
-        margin-bottom: pxtorem(50);
-      }
-      @media ($phone) {
-        font-size: pxtorem(38);
-        margin-bottom: pxtorem(30);
-      }
-
-      &-info{
-        display: inline-block;
-        vertical-align: middle;
-        font-size: pxtorem(36);
-        margin-left: pxtorem(15);
-        background: color($colors, color4);
-        border-radius: 20px;
-        padding: 10px 20px;
-        color: color($colors, color5);
-
-        @media ($smartphone) {
-          font-size: pxtorem(28);
-          padding: 8px 16px;
-        }
-        @media ($phone) {
-          font-size: pxtorem(18);
-          padding: 4px 10px;
-        }
-      }
-
-      &-refresh{
+    &-up {
+      &-refresh {
         font-size: pxtorem(36);
 
         @media ($smartphone) {
           font-size: pxtorem(28);
         }
+
         @media ($phone) {
           font-size: pxtorem(18);
         }
       }
     }
 
-    &-history{
+    &-history {
       display: flex;
       justify-content: space-between;
       margin-bottom: pxtorem(95);
@@ -141,53 +114,57 @@ page-today {
       @media ($smartphone) {
         margin-bottom: pxtorem(60);
       }
+
       @media ($phone) {
         margin-bottom: pxtorem(40);
       }
 
-      &-item{
-        text-align: left;
+      &-item {
         width: 50%;
+        text-align: left;
         height: auto;
-        border-radius: 0px;
+        border-radius: 0;
 
-        .button-inner{
+        .button-inner {
+          display: block;
           font-size: pxtorem(34);
           color: rgba(0, 0, 0, 0.5);
-          display: block;
           text-transform: none;
 
           @media ($smartphone) {
             font-size: pxtorem(28);
           }
+
           @media ($phone) {
             font-size: pxtorem(20);
           }
         }
 
-        &-num{
-          font-size: pxtorem(44);
-          margin-top: pxtorem(26);
+        &-num {
           display: block;
+          margin-top: pxtorem(26);
+          font-size: pxtorem(44);
           color: color($colors, dark);
 
           @media ($smartphone) {
-            font-size: pxtorem(38);
             margin-top: pxtorem(20);
+            font-size: pxtorem(38);
           }
+
           @media ($phone) {
-            font-size: pxtorem(24);
             margin-top: pxtorem(10);
+            font-size: pxtorem(24);
           }
         }
 
-        &:not(:first-child){
+        &:not(:first-child) {
           padding: 0 0 0 pxtorem(65) !important;
           border-left: 1px solid color($colors, color6);
 
           @media ($smartphone) {
             padding: 0 0 0 pxtorem(45) !important;
           }
+
           @media ($phone) {
             padding: 0 0 0 pxtorem(20) !important;
           }
@@ -195,237 +172,86 @@ page-today {
       }
     }
 
-    &-items{
+    &-items {
       margin-bottom: pxtorem(180);
 
       @media ($smartphone) {
         margin-bottom: pxtorem(120);
       }
+
       @media ($phone) {
         margin-bottom: pxtorem(80);
       }
 
-      &-null{
+      &-null {
+        font-size: pxtorem10(35);
         margin-top: pxtorem(120);
         text-align: center;
-        font-size: pxtorem10(35);
         font-style: italic;
 
         @media ($smartphone) {
           font-size: pxtorem10(30);
         }
+
         @media ($phone) {
           font-size: pxtorem10(20);
         }
       }
-
-      &-item{
-        position: relative;
-        background: color($colors, white);
-        border-radius: 20px;
-        margin-bottom: pxtorem(70);
-        box-shadow: 0 0 50px 15px color($colors, color7);
-
-        @media ($smartphone) {
-          margin-bottom: pxtorem(55);
-        }
-        @media ($phone) {
-          margin-bottom: pxtorem(40);
-        }
-
-        &-wp{
-          display: flex;
-          justify-content: space-between;
-          align-items: flex-start;
-          padding: pxtoem(33) pxtorem(60);
-
-          @media ($smartphone) {
-            padding: pxtoem(30) pxtorem(35);
-          }
-          @media ($phone) {
-            padding: pxtoem(20) pxtorem(35);
-          }
-
-          &.isChecked{
-            visibility: hidden;
-          }
-        }
-
-        &-status{
-          position: absolute;
-          z-index: 2;
-          left: 7%;
-          top: -15px;
-          padding: pxtorem(10);
-          color: color($colors, white);
-          border-radius: 6px;
-
-          &.tag-notcheckedout {
-            background: #ff3333;
-          }
-          &.tag-now {
-            background: color($colors, color8);
-          }
-          &.tag-next {
-            background: #b2d6ff;
-          }
-        }
-
-        &-info{
-          &-time{
-            font-size: pxtorem(80);
-            white-space: nowrap;
-
-            @media ($smartphone) {
-              font-size: pxtorem(60);
-            }
-            @media ($phone) {
-              font-size: pxtorem(40);
-            }
-
-            &-sup{
-              display: inline-block;
-              top: pxtorem(-30);
-              margin-left: pxtorem(5);
-              font-size: pxtorem(34);
-              color: color($colors, color9);
-
-              @media ($smartphone) {
-                font-size: pxtorem(26);
-                margin-left: 0;
-                top: pxtorem(-25);
-              }
-              @media ($phone) {
-                font-size: pxtorem(18);
-                top: pxtorem(-15);
-              }
-            }
-          }
-
-          &-desc{
-            margin-top: pxtorem(10);
-            font-size: pxtorem(44);
-            color: color($colors, color9);
-
-            @media ($smartphone) {
-              font-size: pxtorem(30);
-            }
-            @media ($phone) {
-              margin-top: 0;
-              font-size: pxtorem(24);
-            }
-          }
-        }
-
-        &-name{
-          padding-top: pxtorem(10);
-          font-size: pxtorem(34);
-          color: color($colors, color9);
-          text-align: right;
-
-          @media ($smartphone) {
-            padding-top: pxtorem(8);
-            font-size: pxtorem(28);
-          }
-          @media ($phone) {
-            padding-top: pxtorem(8);
-            font-size: pxtorem(22);
-          }
-
-          &-ava{
-            width: 33px;
-            height: 33px;
-            border-radius: 50%;
-            background-size: cover !important;
-            background-repeat: no-repeat;
-            background-position: center;
-            display: inline-block;
-            vertical-align: middle;
-            margin-right: pxtorem(20);
-            margin-top: -5px;
-            border:1px solid color($colors, bb_skin);  
-
-
-            @media ($smartphone) {
-              margin-right: pxtorem(15);
-              width: 25px;
-              height: 25px;
-            }
-            @media ($phone) {
-              margin-right: pxtorem(7);
-              width: 20px;
-              height: 20px;
-            }
-          }
-        }
-
-        &-btns{
-          position: absolute;
-          z-index: 2;
-          left: 0;
-          top: 0;
-          right: 0;
-          bottom: 0;
-          display: flex;
-          justify-content: space-between;
-          align-content: center;
-          align-items: center;
-          padding: 0 pxtoem(40);
-        }
-      }
     }
 
-    &-footer{
+    &-footer {
       box-shadow: 0 0 50px 15px color($colors, color7);
 
-      &:before{
+      &:before {
         display: none;
       }
 
-      &-item{
+      &-item {
         text-align: center;
 
-        ion-icon{
-          font-size: pxtorem(60);
+        ion-icon {
           display: block;
+          font-size: pxtorem(60);
 
           @media ($smartphone) {
             font-size: pxtorem(50);
           }
+
           @media ($phone) {
             font-size: pxtorem(40);
           }
         }
       }
 
-      &-circle{
+      &-circle {
         position: relative;
         width: 70px;
         height: 70px;
-        cursor: pointer;
-        border-radius: 50%;
+        display: inline-block;
+        margin-top: -50px;
+        color: color($colors, dark);
         background: rgb(255, 218, 202);
         text-align: center;
-        color: color($colors, dark);
-        margin-top: -50px;
-        display: inline-block;
+        cursor: pointer;
+        border-radius: 50%;
 
         @media ($smartphone) {
           width: 60px;
           height: 60px;
           margin-top: -40px;
         }
+
         @media ($phone) {
           width: 50px;
           height: 50px;
           margin-top: -35px;
         }
 
-        ion-icon{
-          font-size: pxtorem(70);
+        ion-icon {
           position: absolute;
-          left: 50%;
           top: 50%;
+          left: 50%;
+          font-size: pxtorem(70);
           transform: translate(-50%, -50%);
         }
       }

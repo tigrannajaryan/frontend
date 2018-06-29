@@ -1,0 +1,148 @@
+appointment-item {
+  .AppointmentItem {
+    position: relative;
+    margin-bottom: pxtorem(70);
+    background: color($colors, white);
+    border-radius: 20px;
+    box-shadow: 0 0 50px 15px color($colors, color7);
+
+    @media ($smartphone) {
+      margin-bottom: pxtorem(55);
+    }
+
+    @media ($phone) {
+      margin-bottom: pxtorem(40);
+    }
+  }
+
+  .AppointmentItem-wp {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding: pxtoem(33) pxtorem(60);
+
+    @media ($smartphone) {
+      padding: pxtoem(30) pxtorem(35);
+    }
+
+    @media ($phone) {
+      padding: pxtoem(20) pxtorem(35);
+    }
+
+    &.isChecked {
+      visibility: hidden;
+    }
+  }
+
+  .AppointmentItem-status {
+    position: absolute;
+    top: -15px;
+    left: 7%;
+    z-index: 2;
+    padding: pxtorem(10);
+    color: color($colors, white);
+    border-radius: 6px;
+
+    &.NotCheckedOut {
+      background: color($colors, danger);
+    }
+
+    &.Now {
+      background: color($colors, color8);
+    }
+
+    &.Next {
+      background: color($colors, color18);
+    }
+  }
+
+  .AppointmentItem-info-time {
+    font-size: pxtorem(80);
+    white-space: nowrap;
+
+    @media ($smartphone) {
+      font-size: pxtorem(60);
+    }
+
+    @media ($phone) {
+      font-size: pxtorem(40);
+    }
+  }
+
+  .AppointmentItem-info-time-sup {
+    top: pxtorem(-30);
+    display: inline-block;
+    margin-left: pxtorem(5);
+    font-size: pxtorem(34);
+    color: color($colors, color9);
+
+    @media ($smartphone) {
+      top: pxtorem(-25);
+      margin-left: 0;
+      font-size: pxtorem(26);
+    }
+
+    @media ($phone) {
+      top: pxtorem(-15);
+      font-size: pxtorem(18);
+    }
+  }
+
+  .AppointmentItem-info-desc {
+    margin-top: pxtorem(10);
+    font-size: pxtorem(44);
+    color: color($colors, color9);
+
+    @media ($smartphone) {
+      font-size: pxtorem(30);
+    }
+
+    @media ($phone) {
+      margin-top: 0;
+      font-size: pxtorem(24);
+    }
+  }
+
+  .AppointmentItem-name {
+    padding-top: pxtorem(10);
+    font-size: pxtorem(34);
+    color: color($colors, color9);
+    text-align: right;
+
+    @media ($smartphone) {
+      padding-top: pxtorem(8);
+      font-size: pxtorem(28);
+    }
+
+    @media ($phone) {
+      padding-top: pxtorem(8);
+      font-size: pxtorem(22);
+    }
+  }
+
+  .AppointmentItem-name-ava {
+    display: inline-block;
+    width: 33px;
+    height: 33px;
+    margin-top: -5px;
+    margin-right: pxtorem(20);
+    vertical-align: middle;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover !important;
+    border: 1px solid color($colors, bb_skin);
+    border-radius: 50%;
+
+    @media ($smartphone) {
+      width: 25px;
+      height: 25px;
+      margin-right: pxtorem(15);
+    }
+
+    @media ($phone) {
+      width: 20px;
+      height: 20px;
+      margin-right: pxtorem(7);
+    }
+  }
+}

@@ -12,6 +12,7 @@ import { StoreModule } from '@ngrx/store';
 import { serverStatusReducer, serverStatusStateName } from '~/shared/server-status/server-status.reducer';
 import { UserHeaderMenuComponent } from '~/today/user-header/user-header-menu/user-header-menu.component';
 import { ServicesPickComponent } from '~/core/components/services-pick/services-pick.component';
+import { AppointmentItemComponent } from '~/core/components/appointment-item/appointment-item.component';
 
 const components = [
   MadeNavComponent,
@@ -20,7 +21,8 @@ const components = [
   UserFooterComponent,
   MadeTableComponent,
   UserHeaderMenuComponent,
-  ServicesPickComponent
+  ServicesPickComponent,
+  AppointmentItemComponent
 ];
 
 @NgModule({

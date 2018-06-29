@@ -1,0 +1,27 @@
+<div class="AppointmentItem">
+  <!-- Show the tag if needed -->
+  <div
+    *ngIf="appointmentTag"
+    [ngClass]="appointmentTag"
+    class="AppointmentItem-status">
+    {{ appointmentTag }}
+  </div>
+
+  <div class="AppointmentItem-wp">
+    <div class="AppointmentItem-info">
+      <div class="AppointmentItem-info-time">
+        {{ appointment.datetime_start_at | date: 'h:mmaaaaa' }}
+      </div>
+      <div class="AppointmentItem-info-desc">
+              <span *ngFor="let service of appointment.services" [hidden]="!service.is_original">
+                {{ service.service_name }}
+              </span>
+      </div>
+    </div>
+    <div class="AppointmentItem-name">
+      <div [style.background-image]="" class="AppointmentItem-name-ava"></div>
+      {{ appointment.client_first_name }}
+      {{ appointment.client_last_name }}
+    </div>
+  </div>
+</div>
