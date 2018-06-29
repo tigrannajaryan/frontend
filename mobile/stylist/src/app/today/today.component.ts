@@ -25,6 +25,7 @@ import { AppointmentCheckoutParams } from '~/appointment/appointment-checkout/ap
 import { loading } from '~/core/utils/loading';
 import { componentUnloaded } from '~/core/utils/component-unloaded';
 import { LoadProfileAction, ProfileState, selectProfile } from '~/today/user-header/profile.reducer';
+import { EducationalActionsTypes, showEducationAlert } from '~/core/educational/education';
 
 enum AppointmentTag {
   NotCheckedOut = 'Not checked out',
@@ -59,6 +60,8 @@ export class TodayComponent {
   }
 
   ionViewDidEnter(): void {
+    showEducationAlert(EducationalActionsTypes.SHOW_TODAY_HELP);
+
     this.store
       .select(selectTodayState)
       .takeUntil(componentUnloaded(this))

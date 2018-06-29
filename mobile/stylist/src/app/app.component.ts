@@ -12,6 +12,7 @@ import { createNavHistoryList, getBuildNumber } from '~/core/functions';
 import { loading } from '~/core/utils/loading';
 import { GAWrapper } from '~/shared/google-analytics';
 import { LogoutAction } from '~/app.reducers';
+import { initEducationalInfo } from '~/core/educational/education';
 
 // Google Analytics Id
 const gaTrackingId = 'UA-120898935-1';
@@ -51,6 +52,7 @@ export class MyAppComponent {
     // The platform is ready and the plugins are available.
 
     this.initGa();
+    initEducationalInfo();
 
     if (this.errorHandler instanceof UnhandledErrorHandler) {
       this.errorHandler.init(this.nav, PageNames.FirstScreen);

@@ -34,6 +34,7 @@ import {
   ClearSelectedDateAction,
   selectSelectedDate
 } from '~/appointment/appointment-date/appointment-dates.reducer';
+import { EducationalActionsTypes, showEducationAlert } from '~/core/educational/education';
 
 @IonicPage()
 @Component({
@@ -208,6 +209,10 @@ export class AppointmentAddComponent {
       this.store.dispatch(new ClearSelectedDateAction());
 
       this.navCtrl.pop();
+      const isFutureAppointment = +moment(data.datetime_start_at).format('YYYYMMDD') > +moment(new Date()).format('YYYYMMDD');
+      if (isFutureAppointment) {
+        showEducationAlert(EducationalActionsTypes.SHOW_FUTURE_APPOINTMENTS);
+      }
     } catch (e) {
       if (e.errors instanceof Map) {
         return e.errors; // js Map
