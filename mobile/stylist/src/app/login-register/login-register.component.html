@@ -1,3 +1,8 @@
+<ion-header class="ion-bb-header">
+  <ion-navbar>
+  </ion-navbar>
+</ion-header>
+
 <ion-content padding class="p-l-bg">
   <div class="p-l">
     <div class="bb-wp-b">
@@ -25,8 +30,13 @@
       </div>
 
       <div *ngIf="pageType === LoginOrRegisterType.login" class="bb-text">
-        Forgot your password again, haven't you? <br>
-        <a (click)="resetPassword()" class="bb-link">Reset it to the ground</a>
+        <!--TODO: uncomment this when api will be ready-->
+        <!--Forgot your password again, haven't you? <br>-->
+        <!--<a (click)="resetPassword()" class="bb-link">Reset it to the ground</a>-->
+        <!--<br>-->
+
+        Don't have an account?
+        <a [madeLink]="[PageNames.LoginRegister, { pageType: LoginOrRegisterType.register }]" class="bb-link">Register now</a>
       </div>
     </div>
   </div>
