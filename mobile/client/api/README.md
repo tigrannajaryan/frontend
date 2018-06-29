@@ -250,19 +250,33 @@ Returns categories with services.
 
 **Response 400 Bad Request**
 
+[field_errors](https://github.com/madebeauty/monorepo/issues/35#issuecomment-389011477):
 - no such service
 - not stylist’s service
 - no such stylist
 
 ```json
 {
-  "service_uuid": [
-    "Service doesn’t exist",
-    "Not a service of provided stylist"
-  ],
-  "stylist_uuid": [
-    "Stylist doesn’t exist"
-  ]
+  "code": "form_is_invalid",
+  "field_errors": {
+    "service_uuid": [{
+      "code": "not_existed",
+      "details": {
+        "description": "Service doesn’t exist"
+      }
+    }, {
+      "code": "not_stylists_service",
+      "details": {
+        "description": "Not a service of provided stylist"
+      }
+    }],
+    "stylist_uuid": [{
+      "code": "not_existed",
+      "details": {
+        "description": "Stylist doesn’t exist"
+      }
+    }]
+  }
 }
 ```
 
@@ -296,21 +310,10 @@ Returning free time slots to choose:
 
 **Response 400 Bad Request**
 
+The same errors from `POST` /api/v1/client/services/pricing:
 - no such service
 - not stylist’s service
 - no such stylist
-
-```json
-{
-  "service_uuid": [
-    "Service doesn’t exist",
-    "Not a service of provided stylist"
-  ],
-  "stylist_uuid": [
-    "Stylist doesn’t exist"
-  ]
-}
-```
 
 ### Appointments
 
@@ -356,20 +359,34 @@ Very close to stylists API.
 
 **Response 400 Bad Request**
 
+The same errors from `POST` /api/v1/client/services/pricing:
+- no such service
+- not stylist’s service
+- no such stylist
+
+And add errors for `datetime_start_at`:
+
 ```json
 {
-  "service_uuid": [
-    "Service doesn’t exist",
-    "Not a service of provided stylist"
-  ],
-  "stylist_uuid": [
-    "Stylist doesn’t exist"
-  ],
-  "datetime_start_at": [
-    "Cannot add appointment for a past date and time",
-    "Cannot add appointment outside working hours",
-    "Cannot add appointment intersecting with another"
-  ]
+  "code": "form_is_invalid",
+  "field_errors": {
+    "datetime_start_at": [{
+      "code": "past_date",
+      "details": {
+        "description": "Cannot add appointment for a past date and time"
+      }
+    }, {
+      "code": "outside_working_hours",
+      "details": {
+        "description": "Cannot add appointment outside working hours"
+      }
+    }, {
+      "code": "intersecting",
+      "details": {
+        "description": "Cannot add appointment intersecting with another"
+      }
+    }]
+  }
 }
 ```
 
