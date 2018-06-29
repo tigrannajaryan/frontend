@@ -7,6 +7,7 @@ import { Injectable } from '@angular/core';
  */
 interface Options {
   showTodayScreenHelp: boolean;
+  showFutureAppointmentHelp: boolean;
 }
 
 const storageKey = 'user-options';
@@ -32,7 +33,8 @@ export class UserOptions {
       // This would ensure that if the storage is deleted the app
       // will behave in the most common way.
       this.options = {
-        showTodayScreenHelp: false
+        showTodayScreenHelp: false,
+        showFutureAppointmentHelp: false
       };
     }
   }
