@@ -1,10 +1,10 @@
 ## Log in or sign up
 
-#### POST /api/v1/client/auth/code
+#### `POST` /api/v1/client/auth/code
 
 ```json
 {
-  "client_phone": "+12525858484"
+  "phone": "+12525858484"
 }
 ```
 
@@ -12,25 +12,33 @@
 
 ```json
 {
-  "client_phone": "+12525858484"
+  "phone": "+12525858484"
 }
 ```
 
 **Response 400 Bad Request**
 
+- invalid phone (check with google libphonenumber)
+- someone elses phone
+- request timeout error on re-requesting new code within e.g. less than 2min
+
 ```json
 {
-  "client_phone": [
-     "The phone number is registered to another person. Please contact us if you have any questions"
+  "phone": [
+    "The phone number is not valid",
+    "The phone number is registered to another person"
+  ],
+  "non_field_errors": [
+    "Request timeout error"
   ]
 }
 ```
 
-#### POST /api/v1/client/auth/code/confirm
+#### `POST` /api/v1/client/auth/code/confirm
 
 ```json
 {
-  "client_phone": "+12525858484",
+  "phone": "+12525858484",
   "code": "858484"
 }
 ```
@@ -39,34 +47,32 @@
 
 ```json
 {
-  "client_phone": "+12525858484",
+  "phone": "+12525858484",
   "code": "858484"
 }
 ```
 
 **Response 400 Bad Request**
 
-```json
-{
-  "client_phone": [
-     "The phone number is registered to another person. Please contact us if you have any questions"
-  ]
-}
-```
-
-**Response 400 Bad Request**
+- invalid phone (check with google libphonenumber)
+- someone elses phone
+- wrong verification code
 
 ```json
 {
+  "phone": [
+    "The phone number is not valid",
+    "The phone number is registered to another person"
+  ],
   "code": [
-     "You entered a wrong verification code. Please try again."
+    "Wrong verification code is enetered"
   ]
 }
 ```
 
 ## Stylists
 
-#### GET /api/v1/client/stylists
+#### `GET` /api/v1/client/stylists
 
 **Response 200 OK**
 
@@ -93,9 +99,11 @@
 ]
 ```
 
-#### GET /api/v1/client/stylists/related
+#### `GET` /api/v1/client/stylists/invite
 
 **Response 200 OK**
+
+Empty object if a client is not invited by a stylist.
 
 ```json
 {
@@ -109,9 +117,11 @@
 }
 ```
 
-#### GET /api/v1/client/search-stylists?query=Freya
+#### `GET` /api/v1/client/search-stylists?query=Freya
 
 **Response 200 OK**
+
+Empty array if not found.
 
 ```json
 [
@@ -129,9 +139,11 @@
 
 ## Services
 
-#### GET /api/v1/client/services
+#### `GET` /api/v1/client/services
 
 **Response 200 OK**
+
+Returns categories with services.
 
 ```json
 [
@@ -150,9 +162,13 @@
 ]
 ```
 
-#### GET /api/v1/client/search-services?query=Braids
+#### `GET` /api/v1/client/search-services?query=Braids
+
+<details><summary>❗This API was indicated as not needed.</summary>
 
 **Response 200 OK**
+
+Returns categories with services.
 
 ```json
 [
@@ -170,10 +186,11 @@
   }
 ]
 ```
+</details>
 
 ### Service pricing
 
-#### POST /api/v1/client/services/pricing
+#### `POST` /api/v1/client/services/pricing
 
 ```json
 {
@@ -184,8 +201,6 @@
 
 **Response 200 OK**
 
-❗️Not returning non-working and fully booked days.
-
 ```json
 {
 
@@ -194,13 +209,123 @@
   "prices": [
     {
       "date": "2018-06-18",
-      "price": 5
+      "price": 5,
+      "is_fully_booked": true,
+      "is_working_day": true
     },
     {
       "date": "2018-06-20",
-      "price": 5
+      "price": 5,
+      "is_fully_booked": false,
+      "is_working_day": false
     }
   ]
+}
+```
+
+**Response 400 Bad Request**
+
+- no such service
+- not stylist’s service
+- no such stylist
+
+```json
+{
+  "service_uuid": [
+    "Service doesn’t exist",
+    "Not a service of provided stylist"
+  ],
+  "stylist_uuid": [
+    "Stylist doesn’t exist"
+  ]
+}
+```
+
+### Time slots
+
+#### `POST` /api/v1/client/services/time-slots
+
+**Response 200 OK**
+
+❗This endpoint could be combined with /pricing
+
+Returning free time slots to choose:
+
+```json
+{
+
+  "service_uuid": "e15cc4e9-e7a9-4905-a94d-5d44f1b860e9",
+  "stylist_uuid": "f74b1c66-943c-4bc4-bf14-6fefa21ab5a5",
+  "time_slots": [
+    {
+      "start": "2018-06-18T09:30:00-04:00",
+      "end": "2018-06-18T11:30:00-04:00"
+    },
+    {
+      "start": "2018-06-18T09:30:00-04:00",
+      "end": "2018-06-18T11:30:00-04:00"
+    }
+  ]
+}
+```
+
+**Response 400 Bad Request**
+
+- no such service
+- not stylist’s service
+- no such stylist
+
+```json
+{
+  "service_uuid": [
+    "Service doesn’t exist",
+    "Not a service of provided stylist"
+  ],
+  "stylist_uuid": [
+    "Stylist doesn’t exist"
+  ]
+}
+```
+
+### Appointments
+
+#### `POST` /api/v1/client/appointments
+
+Very close to stylists API.
+
+❗No force flag.
+
+```json
+{
+  "stylist_uuid": "f74b1c66-943c-4bc4-bf14-6fefa21ab5a5",
+  "datetime_start_at": "2018-06-18T09:30:00-04:00",
+  "services": [{
+    "service_uuid": "e15cc4e9-e7a9-4905-a94d-5d44f1b860e9"
+  }]
+}
+```
+
+**Response 200 OK**
+
+```json
+{
+  "uuid": "f74b1c66-943c-4bc4-a94d-5d44f1b860e9",
+  "stylist_uuid": "f74b1c66-943c-4bc4-bf14-6fefa21ab5a5",
+  "stylist_first_name": "Fred",
+  "stylist_last_name": "McBob",
+  "stylist_phone": "+12525858484",
+  "datetime_start_at": "2018-06-18T09:30:00-04:00",
+  "total_client_price_before_tax": 295,
+  "total_tax": 26.18,
+  "total_card_fee": 8.83,
+  "grand_total": 315,
+  "has_tax_included": false,
+  "has_card_fee_included": false,
+  "duration_minutes": 60,
+  "status": "new",
+  "services": [{
+    "service_uuid": "e15cc4e9-e7a9-4905-a94d-5d44f1b860e9"
+  }],
 }
 ```
 
@@ -209,17 +334,25 @@
 ```json
 {
   "service_uuid": [
-      "No such service"
-  ]
-}
-```
-
-**Response 400 Bad Request**
-
-```json
-{
+    "Service doesn’t exist",
+    "Not a service of provided stylist"
+  ],
   "stylist_uuid": [
-      "No such Stylist"
+    "Stylist doesn’t exist"
+  ],
+  "datetime_start_at": [
+    "Cannot add appointment for a past date and time",
+    "Cannot add appointment outside working hours",
+    "Cannot add appointment intersecting with another"
   ]
 }
 ```
+
+#### `POST`/`PATCH` /api/v1/client/appointments/:appointment_uuid
+
+Very close to `Change appointment status` from Stylist API.
+
+## Should be needed also
+
+- `GET` clients profile
+- `GET` appointments list and one appointment
