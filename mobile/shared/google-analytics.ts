@@ -24,18 +24,10 @@ export class GAWrapper {
   }
 
   init(id: string): Promise<void> {
-    this.trackerInit = this.ga.startTrackerWithId(id).catch(() => {
-      this.logger.error('Google Analytics initializing failed');
-    });
-    return this.trackerInit;
-  }
+    this.trackerInit = this.ga.startTrackerWithId(id);
 
-  call(func: TrackingFunction): void {
-    if (!this.trackerInit) {
-      this.logger.error('You are trying to use Google Analytics before initializing it');
-      return;
-    }
-    this.trackerInit.then(func);
+    // return as is to be able to handle errors outside of init
+    return this.trackerInit;
   }
 
   setUserId(userId: string): void {
@@ -54,5 +46,17 @@ export class GAWrapper {
     this.call(() => {
       this.ga.trackTiming(category, intervalInMilliseconds, variable, label);
     });
+  }
+
+  private call(func: TrackingFunction): void {
+    if (!this.trackerInit) {
+      this.logger.error('You are trying to use Google Analytics before initializing it');
+      return;
+    }
+    this.trackerInit
+      .then(func)
+      .catch(() => {
+        this.logger.warn('Google Analytics initializing failed (this is expected if not on the phone)');
+      });
   }
 }
