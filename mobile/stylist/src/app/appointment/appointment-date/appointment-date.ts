@@ -1,5 +1,3 @@
-import * as moment from 'moment';
-
 import { Component } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Store } from '@ngrx/store';
@@ -21,6 +19,9 @@ import { AppointmentDateOffer } from '~/today/today.models';
 import { Client } from '~/appointment/appointment-add/clients-models';
 import { ServiceItem } from '~/core/stylist-service/stylist-models';
 
+export const neutralColor = 'rgb(0, 0, 0)';
+export const greenColor = 'rgb(43, 177, 79)';
+
 /**
  * Returns green if the price is less than a mid price of all prices.
  * Otherwise returns neutral color.
@@ -28,12 +29,8 @@ import { ServiceItem } from '~/core/stylist-service/stylist-models';
 function calculatePriceColor(prices: number[]): (price?: number) => string {
   const sanitizer = AppModule.injector.get(DomSanitizer);
 
-  // define colors (TODO: wavelengths could be used)
-  const neutral = '#000';
-  const green = '#2BB14F';
-
   if (prices.length < 2) {
-    return () => sanitizer.bypassSecurityTrustStyle(neutral);
+    return () => sanitizer.bypassSecurityTrustStyle(neutralColor);
   }
 
   // calculate min max
@@ -47,10 +44,10 @@ function calculatePriceColor(prices: number[]): (price?: number) => string {
   const midpoint = (min + max) / 2;
 
   if (min === max) {
-    return () => sanitizer.bypassSecurityTrustStyle(neutral);
+    return () => sanitizer.bypassSecurityTrustStyle(neutralColor);
   }
 
-  return (price: number): string => sanitizer.bypassSecurityTrustStyle(price < midpoint ? green : neutral);
+  return (price: number): string => sanitizer.bypassSecurityTrustStyle(price < midpoint ? greenColor : neutralColor);
 }
 
 @IonicPage()
@@ -64,7 +61,6 @@ export class AppointmentDateComponent {
 
   getPriceColor: (price?: number) => string;
 
-  protected moment = moment;
   protected days: AppointmentDateOffer[];
 
   constructor(
@@ -86,23 +82,28 @@ export class AppointmentDateComponent {
       });
 
     this.store
-      .combineLatest(
-        this.store.select(selectSelectedService),
-        this.store.select(selectSelectedClient),
-        (store, service, client) => {
-          this.service = service;
-          this.client = client;
-        }
-      )
+      .select(selectSelectedService)
       .takeUntil(componentUnloaded(this))
-      .subscribe();
+      .subscribe(service => {
+        this.service = service;
+      });
+
+    this.store
+      .select(selectSelectedClient)
+      .takeUntil(componentUnloaded(this))
+      .subscribe(client => {
+        this.client = client;
+      });
   }
 
   ionViewDidEnter(): void {
     if (this.service) {
       this.store.dispatch(new GetDatesAction(this.service, this.client));
+    } else {
+      // This page should be used only when a service is already selected.
+      // The opposite case should be considered mostly unrechable. JIC:
+      throw new Error('Service is undefined');
     }
-    // TODO: if no service selected
   }
 
   select(date: AppointmentDateOffer): void {
