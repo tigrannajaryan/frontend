@@ -17,6 +17,7 @@ import { AppointmentDateOffer } from '~/today/today.models';
 
 import {
   ClearClientsAction,
+  ClearSelectedClientAction,
   ClientsState,
   SearchAction,
   SelectClientAction,
@@ -203,7 +204,9 @@ export class AppointmentAddComponent {
       await this.appointmentService.createAppointment(data, forced);
 
       // clear all data
+      // TODO: submit with action and use effect to clear relative data
       this.store.dispatch(new ClearClientsAction());
+      this.store.dispatch(new ClearSelectedClientAction());
       this.store.dispatch(new ClearSelectedServiceAction());
       this.store.dispatch(new ClearSelectedDateAction());
 
