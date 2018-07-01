@@ -1,60 +1,58 @@
 page-services-list {
   // p = page
   // -asd = first letter of each word (in this case just -si)
-  .p-sl{
-    &-title{
-      font-size: pxtoem(36);
-      margin-bottom: pxtoem(10);
-      color: color($colors, dark);
-      padding: 0 20px;
+  .p-sl-title {
+    padding: 0 20px;
+    margin-bottom: pxtoem(10);
+    font-size: $t-h2;
+    color: color($colors, dark);
+
+    @media ($phone) {
+      font-size: $t-h3;
+    }
+  }
+
+  .p-sl-title-a {
+    padding: 0 20px;
+    font-size: $t-h4;
+    color: color($colors, dark);
+  }
+
+  .p-sl-gap {
+    padding: pxtoem(67) pxtoem(60) pxtoem(72);
+    margin: pxtoem(60) 0;
+    text-align: center;
+    background: color($colors, white);
+    border-radius: 30px;
+    box-shadow: 0 13px 85px 0 rgba(0, 0, 0, 0.08);
+
+    @media ($smartphone) {
+      border-radius: 20px;
+    }
+
+    @media ($phone) {
+      padding: pxtoem(43) pxtoem(30) pxtoem(15);
+      margin: pxtoem(47) 0;
+      border-radius: 10px;
+    }
+
+    &-icon {
+      margin: 0 0 pxtoem(7);
+      font-size: pxtoem(60);
 
       @media ($phone) {
-        font-size: pxtoem(29);
-      }
-
-      &-a{
-        font-size: pxtoem(20);
-        color: color($colors, dark);
-        padding: 0 20px;
-        opacity: 0.4;
+        margin: 0 0 pxtoem(6);
+        font-size: pxtoem(50);
       }
     }
 
-    &-gap{
-      background: color($colors, white);
-      border-radius: 30px;
-      margin: pxtoem(60) 0;
-      padding: pxtoem(67) pxtoem(60) pxtoem(72);
-      text-align: center;
-      box-shadow: 0 13px 85px 0 rgba(0, 0, 0, 0.08);
+    &-title {
+      margin: 0 0 pxtoem(10);
+      font-size: pxtoem(36);
 
-      @media ($smartphone) {
-        border-radius: 20px;
-      }
       @media ($phone) {
-        margin: pxtoem(47) 0;
-        padding: pxtoem(43) pxtoem(30) pxtoem(15);
-        border-radius: 10px;
-      }
-
-      &-icon{
-        font-size: pxtoem(60);
-        margin: 0 0 pxtoem(7);
-
-        @media ($phone) {
-          font-size: pxtoem(50);
-          margin: 0 0 pxtoem(6);
-        }
-      }
-
-      &-title{
-        font-size: pxtoem(36);
-        margin: 0 0 pxtoem(10);
-
-        @media ($phone) {
-          font-size: pxtoem(25);
-          margin: 0;
-        }
+        margin: 0;
+        font-size: pxtoem(25);
       }
     }
   }

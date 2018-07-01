@@ -10,12 +10,14 @@
 
   <div class="bb-wp">
     <div class="p-sl-title">Now let’s set your services</div>
+    <div class="p-sl-title-a">We pre-populated a list of services for you. Click on any service to delete,
+      add or change the price in the list below. Scroll to the bottom and save when you are done.</div>
 
-    <ion-row class="bb-table-add">
+    <ion-row *ngIf="isEmptyCategories" class="bb-table-add">
       <ion-col col-3>
       </ion-col>
       <ion-col col-6>
-        <button *ngIf="isEmptyCategories" (click)="openServiceModal()" ion-button full color="bb_skin" class="bb-btn-a">
+        <button (click)="openServiceModal()" ion-button full color="bb_skin" class="bb-btn-a">
           Add service
         </button>
       </ion-col>
