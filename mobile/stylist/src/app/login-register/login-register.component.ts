@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, MenuController, NavController, NavParams } from 'ionic-angular';
 
 import { loading } from '~/core/utils/loading';
 import { createNavHistoryList } from '~/core/functions';
@@ -29,6 +29,7 @@ export class LoginRegisterComponent {
   passwordType = 'password';
 
   constructor(
+    public menuCtrl: MenuController,
     public navParams: NavParams,
     private navCtrl: NavController,
     private authService: AuthApiService
@@ -72,12 +73,15 @@ export class LoginRegisterComponent {
     this.navCtrl.push(PageNames.RegisterSalon, {}, { animate: false });
   }
 
-  onLoginOrRegister(): void {
+  async onLoginOrRegister(): Promise<void> {
     if (this.pageType === LoginOrRegisterType.login) {
-      this.login();
+      await this.login();
     } else if (this.pageType === LoginOrRegisterType.register) {
-      this.register();
+      await this.register();
     }
+
+    // show the menu
+    this.menuCtrl.enable(true);
   }
 
   switchPasswordType(): void {
