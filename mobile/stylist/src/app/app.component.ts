@@ -56,6 +56,9 @@ export class MyAppComponent {
       this.errorHandler.init(this.nav, PageNames.FirstScreen);
     }
 
+    // hide the menu by default
+    this.menuCtrl.enable(false);
+
     await this.showInitialPage();
 
     this.statusBar.styleDefault();
@@ -100,6 +103,10 @@ export class MyAppComponent {
       if (authResponse) {
         this.logger.info('Authentication refreshed.');
         this.nav.setPages(createNavHistoryList(authResponse.profile_status));
+
+        // show the menu
+        this.menuCtrl.enable(true);
+
         return;
       }
     }
@@ -118,9 +125,10 @@ export class MyAppComponent {
     }
   }
 
-  logout(): void {
+  async logout(): void {
     // Hide the menu
-    this.menuCtrl.close();
+    await this.menuCtrl.close();
+    this.menuCtrl.enable(false);
 
     // Logout from backend
     this.authApiService.logout();
