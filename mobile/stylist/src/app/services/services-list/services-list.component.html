@@ -10,7 +10,7 @@
 
   <div class="bb-wp">
     <div class="p-sl-title">Now let’s set your services</div>
-    <div class="p-sl-title-a">We pre-populated a list of services for you. Click on any service to delete,
+    <div *ngIf="!isProfile" class="p-sl-title-a">We pre-populated a list of services for you. Click on any service to delete,
       add or change the price in the list below. Scroll to the bottom and save when you are done.</div>
 
     <ion-row *ngIf="isEmptyCategories" class="bb-table-add">
