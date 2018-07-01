@@ -3,7 +3,7 @@ page-worktime-component {
     font-size: pxtoem(30);
     margin-bottom: 4rem;
     padding: pxtoem(12) 0 0;
-     
+
     p{
         font-size: pxtoem(10);
         color: color($grayscale, 400);
@@ -21,8 +21,25 @@ page-worktime-component {
     background: color($colors, white);
     box-shadow: 0 0 50px 15px color($colors, color7);
 
-    .wd-row ion-col{ 
+    .wd-row ion-col{
       padding: 0px;
+
+      &.is-centered {
+        text-align: center;
+      }
+
+      .bb-btn-a {
+        height: 32px;
+        padding: 0;
+        margin-bottom: 10px;
+        background: color($colors, secondary);
+
+        .button-inner {
+          padding: 0 14px;
+          margin: 0;
+          font-size: $t-base;
+        }
+      }
     }
     .wd-row:first-child ion-col{
       padding-left: 10px;
@@ -40,13 +57,13 @@ page-worktime-component {
       border-bottom: 1px solid color($colors, bb_honey);
       padding: 0px;
       font-size: $t-h3;
-      
+
       @media ($phone){
         font-size: $t-h3;
       }
     }
-    
-    span{
+
+    span:not(.button-inner) {
       padding-top: 5px;
       font-size: $t-h3;
       display:inline-block;
@@ -71,7 +88,7 @@ page-worktime-component {
       display: inline-block;
       padding: 0px 3px 3px 3px;
       border-bottom:2px solid color($colors, bb_skin);
-      
+
     }
     .wd_greed ion-grid ion-col:nth-child(5) a{
       padding: 0px 7px 3px 4px;
@@ -84,7 +101,7 @@ page-worktime-component {
     }
     .wd_greed ion-row ion-col{
       padding: 0px 5px;
-    }  
+    }
     //week days end
   }
   //sifts block end
@@ -103,7 +120,7 @@ page-worktime-component {
     padding-top: 5px;
     border-top: 1px solid color($grayscale, 400);
     font-size: $t-h4;
-  
+
     ion-col:first-child{
       min-width: 120px !important;
     }
