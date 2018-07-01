@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ViewController } from 'ionic-angular';
+import { MenuController, ViewController } from 'ionic-angular';
 
 export enum UserHeaderMenuActions {
   about,
@@ -13,6 +13,7 @@ export enum UserHeaderMenuActions {
 export class UserHeaderMenuComponent {
 
   constructor(
+    public menuCtrl: MenuController,
     private viewCtrl: ViewController
   ) {}
 
@@ -26,6 +27,9 @@ export class UserHeaderMenuComponent {
 
     // Hide popover and report selected action
     this.viewCtrl.dismiss(UserHeaderMenuActions.logout);
+
+    // hide the menu
+    this.menuCtrl.enable(false);
   }
 
   aboutClick(): void {
