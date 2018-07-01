@@ -12,9 +12,6 @@ type TrackingFunction = (...args: any[]) => void;
  */
 @Injectable()
 export class GAWrapper {
-  private ready = false;
-  private failed = false;
-
   private trackerInit: Promise<void>;
 
   constructor(
