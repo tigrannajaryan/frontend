@@ -70,6 +70,8 @@ export interface Appointment {
 export interface AppointmentDateOffer {
   date: string; // ISO 8601 date
   price: number;
+  is_fully_booked?: boolean;
+  is_working_day?: boolean;
 }
 
 export interface Today {

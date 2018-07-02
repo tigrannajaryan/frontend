@@ -6,18 +6,37 @@ page-appointment-date {
   .DateCard {
     display: flex;
     align-content: center;
-    justify-content: space-between;
+    justify-content: flex-start;
     padding: pxtorem10(14) pxtorem10(25);
     margin-bottom: pxtorem10(18);
     border-radius: 5px;
     box-shadow: 0 4px 40px color($grayscale, 200);
 
     .DateCard-price {
+      min-width: 54px;
       margin-bottom: pxtorem10(6);
       font-size: $t-h2;
+      text-align: right;
+    }
+
+    .DateCard-badge {
+      max-height: 24px;
+      padding: 5px 8px;
+      margin: 2px 20px 0 0;
+      font-size: $t-base;
+      font-weight: bold;
+      color: white;
+      white-space: nowrap;
+      background: color($colors, color3);
+      border-radius: 5px;
+
+      &.is-warn {
+        background: color($colors, bb_warn);
+      }
     }
 
     .DateCard-day {
+      flex: 1;
       font-size: $t-h3;
 
       small {
