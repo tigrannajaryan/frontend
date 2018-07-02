@@ -5,6 +5,13 @@ export enum AppointmentStatuses {
   checked_out = 'checked_out'
 }
 
+export interface AppointmentParams {
+  date_from?: Date; // (yyyy-mm-dd) inclusive. If not specified will output appointments since the beginning of era
+  date_to?: Date; // (yyyy-mm-dd) inclusive. If not specified will output appointments till the end of era
+  include_cancelled?: boolean; // False by default, if true, will also return cancelled appointments
+  limit?: number; // limit the query, default is 100
+}
+
 export interface AppointmentChangeRequest {
   status: AppointmentStatuses;
   has_tax_included?: boolean;
