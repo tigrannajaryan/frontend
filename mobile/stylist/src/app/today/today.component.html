@@ -3,16 +3,16 @@
 <ion-content padding>
   <div *ngIf="today" class="bb-wp-a">
     <div>
-      <div class="p-t-top">
-        <!--  Enable this after available time data is received from the backend.
-        <div class="p-t-top-info">
-          Available time <span>45 min</span>
-          <div class="p-t-top-info-progress"><div class="p-t-top-info-progress-line" [style.width]="'50%'"></div></div>
+      <!--  Enable this after available time data is received from the backend.
+        <div class="p-t-top">
+          <div class="p-t-top-info">
+            Available time <span>45 min</span>
+            <div class="p-t-top-info-progress"><div class="p-t-top-info-progress-line" [style.width]="'50%'"></div></div>
+          </div>
         </div>
-        -->
-      </div>
+      -->
 
-      <div class="p-t-up" ion-row justify-content-between align-items-center>
+      <div class="bb-text-up" ion-row justify-content-between align-items-center>
         <div>
           Today’s Schedule
         </div>
@@ -38,39 +38,12 @@
     <div class="p-t-items">
       <div *ngIf="today.today_appointments.length === 0" class="p-t-items-null">Your scheduled visits will show up here.</div>
 
-      <div
-        *ngFor="let appointment of today.today_appointments; let i = index;"
-        (click)="onAppointmentClick(appointment)"
-        class="p-t-items-item">
-
-        <!-- Show the tag if needed -->
-        <div
-          *ngIf="appointmentTags[i] !== AppointmentTag.NoTag"
-          [class.tag-notcheckedout]="appointmentTags[i] === AppointmentTag.NotCheckedOut"
-          [class.tag-now]=          "appointmentTags[i] === AppointmentTag.Now"
-          [class.tag-next]=         "appointmentTags[i] === AppointmentTag.Next"
-          class="p-t-items-item-status">
-          {{ appointmentTags[i] }}
-        </div>
-
-        <div class="p-t-items-item-wp">
-          <div class="p-t-items-item-info">
-            <div class="p-t-items-item-info-time">
-              {{ appointment.datetime_start_at | date: 'h:mmaaaaa' }}
-            </div>
-            <div class="p-t-items-item-info-desc">
-              <span *ngFor="let service of appointment.services" [hidden]="!service.is_original">
-                {{ service.service_name }}
-              </span>
-            </div>
-          </div>
-          <div class="p-t-items-item-name">
-            <div [style.background-image]="" class="p-t-items-item-name-ava"></div>
-            {{ appointment.client_first_name }}
-            {{ appointment.client_last_name }}
-          </div>
-        </div>
-      </div>
+      <appointment-item
+        *ngFor="let appointment of today.today_appointments; let index = index"
+        [appointment]="appointment"
+        [appointmentTag]="appointmentTags[index]"
+        (click)="onAppointmentClick(appointment)">
+      </appointment-item>
     </div>
   </div>
 </ion-content>

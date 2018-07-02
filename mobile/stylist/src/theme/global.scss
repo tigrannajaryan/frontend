@@ -280,5 +280,41 @@
     font-size: pxtoem(24);
     line-height: pxtoem(26);
     color: color($colors, color21);
+
+    &-up {
+      margin-bottom: pxtorem(60);
+      font-size: pxtorem(69);
+
+      @media ($smartphone) {
+        margin-bottom: pxtorem(50);
+        font-size: pxtorem(60);
+      }
+
+      @media ($phone) {
+        margin-bottom: pxtorem(30);
+        font-size: pxtorem(38);
+      }
+
+      &-info {
+        display: inline-block;
+        margin-left: pxtorem(15);
+        padding: 10px 20px;
+        font-size: pxtorem(36);
+        vertical-align: middle;
+        background: color($colors, color4);
+        border-radius: 20px;
+        color: color($colors, color5);
+
+        @media ($smartphone) {
+          padding: 8px 16px;
+          font-size: pxtorem(28);
+        }
+
+        @media ($phone) {
+          padding: 4px 10px;
+          font-size: pxtorem(18);
+        }
+      }
+    }
   }
 }

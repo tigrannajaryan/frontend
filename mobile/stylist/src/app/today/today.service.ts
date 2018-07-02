@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import * as moment from 'moment';
+
 import { BaseApiService } from '~/shared/base-api-service';
 import { Logger } from '~/shared/logger';
 import { ServerStatusTracker } from '~/shared/server-status-tracker';
@@ -33,8 +35,12 @@ export class TodayService extends BaseApiService {
   /**
    * Get all appointments. The stylist must be already authenticated as a user.
    */
-  getAppointments(): Promise<Appointment[]> {
-    return this.get<Appointment[]>('stylist/appointments');
+  getAppointments(dateFrom?: Date): Promise<Appointment[]> {
+    let params = new HttpParams();
+    if (dateFrom) {
+      params = params.append('date_from', moment(dateFrom).format('YYYY-MM-DD'));
+    }
+    return this.get<Appointment[]>('stylist/appointments', params);
   }
 
   /**

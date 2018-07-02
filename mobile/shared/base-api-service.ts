@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpParams } from '@angular/common/http/src/params';
 import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
@@ -41,7 +42,7 @@ export class BaseApiService {
     protected serverStatus: ServerStatusTracker) {
   }
 
-  protected request<ResponseType>(method: string, apiPath: string, data?: any): Promise<ResponseType> {
+  protected request<ResponseType>(method: string, apiPath: string, data?: any, queryParams?: HttpParams): Promise<ResponseType> {
     // For help on how to use HttpClient see https://angular.io/guide/http
 
     // Prepare the header and the body
@@ -50,7 +51,8 @@ export class BaseApiService {
         // TODO: are standard HTTP headers defined as a constant anywhere?
         'Content-Type': HttpContentType.ApplicationJson
       }),
-      body: data ? JSON.stringify(data) : undefined
+        body: data ? JSON.stringify(data) : undefined,
+        params: queryParams
     };
 
     const url = ENV.apiUrl + apiPath;
@@ -103,8 +105,8 @@ export class BaseApiService {
     throw new ServerUnknownError();
   }
 
-  protected get<ResponseType>(apiPath: string): Promise<ResponseType> {
-    return this.request<ResponseType>('get', apiPath);
+  protected get<ResponseType>(apiPath: string, queryParams ?: HttpParams): Promise<ResponseType> {
+    return this.request<ResponseType>('get', apiPath, undefined, queryParams);
   }
 
   protected post<ResponseType>(apiPath: string, data: any): Promise<ResponseType> {

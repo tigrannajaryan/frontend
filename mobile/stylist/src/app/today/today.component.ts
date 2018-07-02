@@ -26,7 +26,7 @@ import { loading } from '~/core/utils/loading';
 import { componentUnloaded } from '~/core/utils/component-unloaded';
 import { LoadProfileAction, ProfileState, selectProfile } from '~/today/user-header/profile.reducer';
 
-enum AppointmentTag {
+export enum AppointmentTag {
   NotCheckedOut = 'Not checked out',
   Now = 'Now',
   Next = 'Next',
@@ -43,7 +43,6 @@ export class TodayComponent {
   protected AppointmentStatuses = AppointmentStatuses;
   protected today: Today;
   protected appointmentTags: AppointmentTag[];
-  protected AppointmentTag = AppointmentTag;
   protected remainingVisitsCount = 0;
 
   protected profile: Observable<StylistProfile>;
