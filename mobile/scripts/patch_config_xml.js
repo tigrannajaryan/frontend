@@ -1,5 +1,5 @@
 var fs = require('fs');
-var xml2js = require('xml2js');
+var xml2js = require('../stylist/node_modules/xml2js');
 
 var appName = (process.env.IOS_APP_NAME || '').trim();
 

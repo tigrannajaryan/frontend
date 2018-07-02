@@ -1,15 +1,23 @@
+#!/usr/bin/env bash
+
+# set initial build number with respect to previous VSTS builds
+# TODO: set to actual last VSTS build number before merge
+INITIAL_BUILD_NUMBER=3000
+export IOS_BUILD_NUMBER=$(($INITIAL_BUILD_NUMBER + $TRAVIS_BUILD_NUMBER))
+echo "Preparing build $IOS_BUILD_NUMBER"
+
 cd mobile/stylist
+
 echo "--Creating www folder"
 mkdir www || true
 
 echo "--Running cordova build to prepare iOS project."
-npm install -g cordova xml2js
+npm install -g cordova@8.0.0
 
 # save sentry properties before we start adding/removing plugins
 cp sentry.properties sentry.properties.bak
 
 # Remove and re-add cordova-plugin-facebook4 to update app id / name
-./node_modules/ionic/bin/ionic cordova plugin rm cordova-plugin-facebook4 || true
 
 ./node_modules/ionic/bin/ionic cordova plugin add cordova-plugin-facebook4@2.1.0 --save --variable APP_ID="$FB_APP_ID" --variable APP_NAME="$FB_APP_NAME"
 # Remove and add platform; before_platform_rm hook will update
