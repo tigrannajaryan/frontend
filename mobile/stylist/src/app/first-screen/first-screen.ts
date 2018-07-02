@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController } from 'ionic-angular';
+import { IonicPage, MenuController, NavController } from 'ionic-angular';
 import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook';
 import { StatusBar } from '@ionic-native/status-bar';
 
@@ -25,6 +25,7 @@ export class FirstScreenComponent {
   protected LoginOrRegisterType = LoginOrRegisterType;
 
   constructor(
+    public menuCtrl: MenuController,
     private navCtrl: NavController,
     private fb: Facebook,
     private authServiceProvider: AuthApiService,
@@ -57,6 +58,9 @@ export class FirstScreenComponent {
         };
 
         const authResponse = await this.authServiceProvider.loginByFb(credentials);
+
+        // show the menu
+        this.menuCtrl.enable(true);
 
         // Find out what page should be shown to the user and navigate to
         // it while also properly populating the navigation history
