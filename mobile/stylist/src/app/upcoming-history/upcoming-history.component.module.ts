@@ -4,9 +4,9 @@ import { UpcomingHistoryComponent } from './upcoming-history.component';
 import { CoreModule } from '~/core/core.module';
 import { TodayService } from '~/today/today.service';
 import { StoreModule } from '@ngrx/store';
-import { profileReducer, profileStatePath } from '~/today/user-header/profile.reducer';
 import { EffectsModule } from '@ngrx/effects';
-import { ProfileEffects } from '~/today/user-header/profile.effects';
+import { profileReducer, profileStatePath } from '~/core/components/user-header/profile.reducer';
+import { ProfileEffects } from '~/core/components/user-header/profile.effects';
 
 @NgModule({
   declarations: [

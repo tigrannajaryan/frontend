@@ -11,7 +11,7 @@ import {
   LoadProfileErrorAction,
   LoadProfileSuccessAction,
   profileActionTypes
-} from '~/today/user-header/profile.reducer';
+} from '~/core/components/user-header/profile.reducer';
 
 @Injectable()
 export class ProfileEffects {

@@ -9,8 +9,8 @@ import { TodayService } from './today.service';
 import { TodayEffects } from './today.effects';
 import { CoreModule } from '~/core/core.module';
 
-import { profileReducer, profileStatePath } from '~/today/user-header/profile.reducer';
-import { ProfileEffects } from '~/today/user-header/profile.effects';
+import { profileReducer, profileStatePath } from '~/core/components/user-header/profile.reducer';
+import { ProfileEffects } from '~/core/components/user-header/profile.effects';
 
 @NgModule({
   declarations: [

@@ -24,9 +24,9 @@ import { PageNames } from '~/core/page-names';
 import { AppointmentCheckoutParams } from '~/appointment/appointment-checkout/appointment-checkout.component';
 import { loading } from '~/core/utils/loading';
 import { componentUnloaded } from '~/core/utils/component-unloaded';
-import { LoadProfileAction, ProfileState, selectProfile } from '~/today/user-header/profile.reducer';
 import { UserOptions } from '~/core/user-options';
 import { showAlert } from '~/core/utils/alert';
+import { LoadProfileAction, ProfileState, selectProfile } from '~/core/components/user-header/profile.reducer';
 
 export enum AppointmentTag {
   NotCheckedOut = 'Not checked out',
