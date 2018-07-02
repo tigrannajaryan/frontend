@@ -56,6 +56,7 @@ import { AuthApiServiceMock } from './app/core/auth-api-service/auth-api-service
 import { StylistServiceProvider } from './app/core/stylist-service/stylist-service';
 import { StylistServiceMock } from './app/core/stylist-service/stylist-service-mock';
 import { GoogleAnalytics } from '@ionic-native/google-analytics';
+import { UserOptions } from '~/core/user-options';
 
 declare const require: any;
 
@@ -96,6 +97,7 @@ export class TestUtils {
       providers: [
         App, Form, Keyboard, DomController, MenuController, NavController,
         NavParams, GestureController, AlertControllerMock, LoadingControllerMock,
+        UserOptions,
         { provide: Platform, useFactory: () => PlatformMock.instance() },
         { provide: StatusBar, useFactory: () => StatusBarMock.instance() },
         { provide: Config, useFactory: () => ConfigMock.instance() },

@@ -6,6 +6,7 @@ import { createNavHistoryList } from '~/core/functions';
 import { AuthApiService, AuthCredentials, UserRole } from '~/core/auth-api-service/auth-api-service';
 import { ServerFieldError } from '~/shared/api-errors';
 import { PageNames } from '~/core/page-names';
+import { UserOptions } from '~/core/user-options';
 
 export enum LoginOrRegisterType {
   login,
@@ -31,7 +32,8 @@ export class LoginRegisterComponent {
   constructor(
     public navParams: NavParams,
     private navCtrl: NavController,
-    private authService: AuthApiService
+    private authService: AuthApiService,
+    private userOptions: UserOptions
   ) {
     this.pageType = this.navParams.get('pageType') as LoginOrRegisterType;
   }
@@ -68,6 +70,9 @@ export class LoginRegisterComponent {
       role: UserRole.stylist
     };
     await this.authService.registerByEmail(authCredentialsRecord);
+
+    // This is a new user, enable help screens
+    this.userOptions.set('showTodayScreenHelp', true);
 
     this.navCtrl.push(PageNames.RegisterSalon, {}, { animate: false });
   }

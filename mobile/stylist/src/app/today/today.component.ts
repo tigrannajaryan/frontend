@@ -25,6 +25,8 @@ import { AppointmentCheckoutParams } from '~/appointment/appointment-checkout/ap
 import { loading } from '~/core/utils/loading';
 import { componentUnloaded } from '~/core/utils/component-unloaded';
 import { LoadProfileAction, ProfileState, selectProfile } from '~/today/user-header/profile.reducer';
+import { UserOptions } from '~/core/user-options';
+import { showAlert } from '~/core/utils/alert';
 
 export enum AppointmentTag {
   NotCheckedOut = 'Not checked out',
@@ -32,6 +34,11 @@ export enum AppointmentTag {
   Next = 'Next',
   NoTag = ''
 }
+
+const helpText = `Congratulations! You completed your registration.<br/><br/>
+  This is your home screen where you will see all appointments for today
+  and can add new appointments using the big plus button.<br/><br/>
+  You can also tap the icons at the bottom of the screen to edit your settings.`;
 
 @IonicPage({ segment: 'today' })
 @Component({
@@ -53,11 +60,17 @@ export class TodayComponent {
     public todayService: TodayService,
     public alertCtrl: AlertController,
     private store: Store<TodayState & ProfileState>,
-    private actionSheetCtrl: ActionSheetController
+    private actionSheetCtrl: ActionSheetController,
+    private userOptions: UserOptions
   ) {
   }
 
   ionViewDidEnter(): void {
+    if (this.userOptions.get('showTodayScreenHelp')) {
+      showAlert('', helpText);
+      this.userOptions.set('showTodayScreenHelp', false);
+    }
+
     this.store
       .select(selectTodayState)
       .takeUntil(componentUnloaded(this))
