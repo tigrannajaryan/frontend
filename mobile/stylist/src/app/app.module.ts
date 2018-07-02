@@ -16,6 +16,7 @@ import { CoreModule } from '~/core/core.module';
 import { getMetaReducers, reducers } from './app.reducers';
 import { UnhandledErrorHandler } from '~/shared/unhandled-error-handler';
 import { initSentry } from '~/shared/sentry';
+import { UserOptions } from '~/core/user-options';
 
 initSentry();
 
@@ -59,6 +60,7 @@ initSentry();
     AuthApiService,
     StylistServiceProvider,
     httpInterceptorProviders,
+    UserOptions,
 
     {
       // Our custom handler for unhandled exceptions
