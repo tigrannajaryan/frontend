@@ -176,6 +176,10 @@ export class WorktimeComponent {
     this.cards.push(WorktimeComponent.createCard(false));
   }
 
+  removeCard(idx: number): void {
+    this.cards.splice(idx, 1);
+  }
+
   nextRoute(): void {
     if (this.isProfile) {
       this.navCtrl.pop();

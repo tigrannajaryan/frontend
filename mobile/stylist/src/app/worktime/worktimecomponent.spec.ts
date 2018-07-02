@@ -22,12 +22,12 @@ describe('Pages: WorktimeComponent', () => {
       fixture.detectChanges();
     })));
 
-  it('should create the page', async () => {
+  it('should create the page', async(() => {
     expect(instance).toBeTruthy();
     expect(instance.cards).toEqual([]);
-  });
+  }));
 
-  it('should toggle weekday and steal from another card', async () => {
+  it('should toggle weekday and steal from another card', async(async () => {
     await instance.ionViewWillLoad();
 
     // Test non-registration mode, when saving should result in refreshing of the page
@@ -73,6 +73,25 @@ describe('Pages: WorktimeComponent', () => {
 
     // Make sure Mon is not enabled
     expect(api.lastSet.weekdays[WeekdayIso.Mon].is_available).toEqual(false);
+  }));
 
-  });
+  it('should show remove button on an every card starting from the second one', async(() => {
+    Array(3).fill(undefined).forEach(() => {
+      instance.addNewCard();
+    });
+
+    fixture.detectChanges();
+
+    const [first, ...others] = Array.from(
+      fixture.nativeElement.querySelectorAll('.workingtime_shifts_block')
+    );
+
+    expect(first.textContent)
+      .not.toContain('Remove');
+
+    others.forEach(el => {
+      expect(el.textContent)
+        .toContain('Remove');
+    });
+  }));
 });
