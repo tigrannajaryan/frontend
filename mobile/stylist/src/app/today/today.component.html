@@ -27,7 +27,7 @@
           Visits Remaining Today
           <span class="p-t-history-item-num">{{ remainingVisitsCount }}</span>
         </button>
-        <button ion-button icon-only clear color="dark" class="p-t-history-item">
+        <button [madeLink]="[PageNames.UpcomingHistory]" ion-button icon-only clear color="dark" class="p-t-history-item">
           Total This Week
           <span class="p-t-history-item-num">{{ today.week_visits_count }}</span>
         </button>

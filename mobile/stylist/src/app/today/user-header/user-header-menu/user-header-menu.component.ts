@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ViewController } from 'ionic-angular';
+import { PageNames } from '~/core/page-names';
 
 export enum UserHeaderMenuActions {
   about,
@@ -11,6 +12,7 @@ export enum UserHeaderMenuActions {
   templateUrl: 'user-header-menu.component.html'
 })
 export class UserHeaderMenuComponent {
+  protected PageNames = PageNames;
 
   constructor(
     private viewCtrl: ViewController
