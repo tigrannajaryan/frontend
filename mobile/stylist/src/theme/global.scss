@@ -171,14 +171,14 @@
     }
 
     &-title{
-      font-size: pxtoem(36);
+      font-size: $t-h1;
       padding: pxtoem(20) 10px pxtoem(10);
 
       @media ($smartphone) {
-        font-size: pxtoem(28);
+        font-size: $t-h2;
       }
       @media ($phone) {
-        font-size: pxtoem(23);
+        font-size: $t-h4;
       }
 
       &-sup{
