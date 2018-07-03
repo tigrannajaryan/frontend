@@ -8,6 +8,7 @@ import { ServerStatusTracker } from '~/shared/server-status-tracker';
 import {
   Appointment,
   AppointmentChangeRequest,
+  AppointmentParams,
   AppointmentPreviewRequest,
   AppointmentPreviewResponse,
   NewAppointmentRequest,
@@ -35,10 +36,18 @@ export class TodayService extends BaseApiService {
   /**
    * Get all appointments. The stylist must be already authenticated as a user.
    */
-  getAppointments(dateFrom?: Date): Promise<Appointment[]> {
+  getAppointments(appointmentParams?: AppointmentParams): Promise<Appointment[]> {
     let params = new HttpParams();
-    if (dateFrom) {
-      params = params.append('date_from', moment(dateFrom).format('YYYY-MM-DD'));
+    if (appointmentParams) {
+      Object.keys(appointmentParams).forEach(key => {
+        const param = appointmentParams[key];
+
+        if (param instanceof Date) {
+          params = params.append(key, moment(param).format('YYYY-MM-DD'));
+        } else {
+          params = params.append(key, param);
+        }
+      });
     }
     return this.get<Appointment[]>('stylist/appointments', params);
   }

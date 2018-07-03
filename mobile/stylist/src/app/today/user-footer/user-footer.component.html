@@ -1,11 +1,11 @@
 <ion-footer class="u-f-footer">
   <ion-grid>
     <ion-row>
-      <ion-col class="u-f-footer-item">
+      <ion-col [madeLink]="[PageNames.Today]" class="u-f-footer-item">
         <i class="bb-icon bb-icon-home"></i>
         Home
       </ion-col>
-      <ion-col [madeLink]="[PageNames.Worktime, {isProfile: true}]" class="u-f-footer-item">
+      <ion-col [madeLink]="[PageNames.UpcomingHistory, {isHistory: true}]" class="u-f-footer-item">
         <i class="bb-icon bb-icon-history"></i>
         Hours
       </ion-col>

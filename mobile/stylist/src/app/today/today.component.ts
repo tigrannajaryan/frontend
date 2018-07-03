@@ -51,6 +51,7 @@ export class TodayComponent {
   protected today: Today;
   protected appointmentTags: AppointmentTag[];
   protected remainingVisitsCount = 0;
+  protected PageNames = PageNames;
 
   protected profile: Observable<StylistProfile>;
 

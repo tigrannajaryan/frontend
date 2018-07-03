@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
-import { UpcomingComponent } from './upcoming.component';
+import { UpcomingHistoryComponent } from './upcoming-history.component';
 import { CoreModule } from '~/core/core.module';
 import { TodayService } from '~/today/today.service';
 import { StoreModule } from '@ngrx/store';
@@ -10,10 +10,10 @@ import { ProfileEffects } from '~/today/user-header/profile.effects';
 
 @NgModule({
   declarations: [
-    UpcomingComponent
+    UpcomingHistoryComponent
   ],
   imports: [
-    IonicPageModule.forChild(UpcomingComponent),
+    IonicPageModule.forChild(UpcomingHistoryComponent),
     CoreModule,
 
     // User header reducer and effects
@@ -24,4 +24,4 @@ import { ProfileEffects } from '~/today/user-header/profile.effects';
     TodayService
   ]
 })
-export class UpcomingPageModule {}
+export class UpcomingHistoryComponentModule {}

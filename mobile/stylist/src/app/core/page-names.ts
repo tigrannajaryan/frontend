@@ -30,5 +30,5 @@ export enum PageNames {
   RegisterServicesItemAdd = 'ServiceItemComponent',
   Today = 'TodayComponent',
   Worktime = 'WorktimeComponent',
-  Upcoming = 'UpcomingComponent'
+  UpcomingHistory = 'UpcomingHistoryComponent'
 }

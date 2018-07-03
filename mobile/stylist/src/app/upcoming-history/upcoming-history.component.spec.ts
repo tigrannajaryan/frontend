@@ -4,19 +4,19 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestUtils } from '../../test';
 import { prepareSharedObjectsForTests } from '~/core/test-utils.spec';
 import { TodayService } from '~/today/today.service';
-import { UpcomingComponent } from '~/upcoming/upcoming.component';
+import { UpcomingHistoryComponent } from '~/upcoming-history/upcoming-history.component';
 
-let fixture: ComponentFixture<UpcomingComponent>;
-let instance: UpcomingComponent;
+let fixture: ComponentFixture<UpcomingHistoryComponent>;
+let instance: UpcomingHistoryComponent;
 
-describe('Pages: UpcomingComponent', () => {
+describe('Pages: UpcomingHistoryComponent', () => {
 
   prepareSharedObjectsForTests();
 
   // TestBed.createComponent(ProfileComponent) inside
   // see https://angular.io/guide/testing#component-class-testing for more info
   beforeEach(async(() => TestUtils.beforeEachCompiler([
-    UpcomingComponent
+    UpcomingHistoryComponent
   ], [TodayService], [HttpClientTestingModule]).then(compiled => {
     fixture = compiled.fixture; // https://angular.io/api/core/testing/ComponentFixture
     instance = compiled.instance;
