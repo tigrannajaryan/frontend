@@ -29,22 +29,22 @@
       <div *ngFor="let category of categories" [hidden]="category.services.length === 0">
         <div class="bb-table-title">{{ category.name }} <sup class="bb-table-title-sup">{{ category.services.length }}</sup></div>
 
-        <ion-grid>
+
+        <ion-list class="bb-table ion-bb-sliding">
           <ion-row class="bb-table-head">
-            <ion-col col-6>
+            <ion-col col-6 class="bb-table-row-col">
               Service
             </ion-col>
-            <ion-col col-3>
+            <ion-col col-3 class="bb-table-row-col">
               Duration
             </ion-col>
-            <ion-col col-3 text-right>
+            <ion-col col-3 class="bb-table-row-col">
               Price
             </ion-col>
           </ion-row>
-        </ion-grid>
 
-        <ion-list class="bb-table ion-bb-sliding">
-          <ion-item-sliding *ngFor="let service of category.services; let i = index" (click)="openServiceModal(category, service)" class="bb-table-row" #item>
+
+          <ion-item-sliding *ngFor="let service of category.services; let i = index" (click)="openServiceModal(category, service)" class="bb-table-row">
             <ion-item>
               <ion-row class="bb-table-row">
                 <ion-col col-6 class="bb-table-row-col">
@@ -54,9 +54,8 @@
                   {{ convertMinsToHrsMins(service.duration_minutes) }}
                 </ion-col>
                 <ion-col col-3 class="bb-table-row-col">
-                  <div text-right class="w100p">
-                    ${{ service.base_price }}
-                  </div>
+                  ${{ service.base_price }}
+                  <ion-icon name="ios-arrow-forward-outline"></ion-icon>
                 </ion-col>
               </ion-row>
             </ion-item>
