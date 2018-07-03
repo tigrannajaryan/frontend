@@ -68,7 +68,10 @@ export class MyAppComponent {
 
   async initGa(): Promise<void> {
     try {
+      this.logger.info(`Initializing Google Analytics with id=${gaTrackingId}...`);
+
       await this.ga.init(gaTrackingId);
+
       this.logger.info('Google Analytics is ready now');
 
       // Track all screen changes

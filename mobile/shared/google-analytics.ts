@@ -10,6 +10,7 @@ import { GoogleAnalytics } from '@ionic-native/google-analytics';
 export class GAWrapper {
   private ready = false;
   private failed = false;
+  private pendingCalls: Function[] = [];
 
   constructor(
     private ga: GoogleAnalytics
@@ -17,15 +18,20 @@ export class GAWrapper {
   }
 
   async init(id: string): Promise<void> {
-
     try {
       await this.ga.startTrackerWithId(id);
       this.ready = true;
+
     } catch (e) {
       this.failed = true;
       throw e;
     }
-  }
+
+    // Execute all pending calls
+    for (const func of this.pendingCalls) {
+      func();
+    }
+}
 
   setUserId(userId: string): void {
     this.execWhenReady(() => this.ga.setUserId(userId));
@@ -39,29 +45,18 @@ export class GAWrapper {
     this.execWhenReady(() => this.ga.trackTiming(category, intervalInMilliseconds, variable, label));
   }
 
-  protected execWhenReady(func: Function): void {
+  protected async execWhenReady(func: Function): Promise<void> {
     if (this.ready) {
       func();
-    } else {
-      const retryIntervalMsec = 1000;
-      const maxRetries = 10;
-      let retries = 0;
-      const timer = setInterval(() => {
-        if (this.ready) {
-          // We are ready, just call it
-          func();
-        } else if (!this.failed) {
-          // Not yet failed, see if we have attempts remaining
-          if (++retries < maxRetries) {
-            // Try again a bit later, don't stop the timer
-            return;
-          } else {
-            // Give up and stop the timer
-            this.failed = true;
-          }
-        }
-        clearInterval(timer);
-      }, retryIntervalMsec);
+      return;
     }
+
+    if (this.failed) {
+      // GA failed to initialize. Ignore all calls.
+      return;
+    }
+
+    // GA init not ready. Add call to pending list.
+    this.pendingCalls.push(func);
   }
 }
