@@ -8,6 +8,7 @@ import { ChangePercent } from '~/core/popups/change-percent/change-percent.compo
 import { loading } from '~/core/utils/loading';
 import { showAlert } from '~/core/utils/alert';
 import { ENV } from '../../environments/environment.default';
+import { WeekdayDiscount } from '~/discounts/discounts.models';
 
 export enum DiscountsTypes {
   weekday = 'weekday',
@@ -87,9 +88,11 @@ export class DiscountsComponent {
     let data: ChangePercent;
 
     if (type === DiscountsTypes.weekday) {
+      const curWeekday: WeekdayDiscount = this.discounts.weekdays[index];
+
       data = {
-        label: this.discounts.weekdays[index].weekday_verbose,
-        percentage: this.discounts.weekdays[index].discount_percent
+        label: curWeekday.weekday_verbose,
+        percentage: curWeekday.discount_percent
       };
     } else {
       data = {
@@ -102,7 +105,7 @@ export class DiscountsComponent {
     modal.onDidDismiss((res: number) => {
       if (isNaN(res)) { return; }
 
-      if (type === 'weekday') {
+      if (type === DiscountsTypes.weekday) {
         this.discounts.weekdays[index].discount_percent = res;
       } else {
         this.discounts[type] = res;

@@ -12,27 +12,31 @@
     <div *ngIf="discounts.weekdays" class="bb-wp-a bb-table">
       <div class="bb-table-title">Ok gorgeous, set your custom pricing</div>
 
-      <ion-grid>
+      <ion-list class="bb-table ion-bb-sliding">
         <ion-row class="bb-table-head">
-          <ion-col col-9>
+          <ion-col col-9 class="bb-table-row-col">
             Day
           </ion-col>
-          <ion-col col-3>
+          <ion-col col-3 class="bb-table-row-col">
             Discount
           </ion-col>
         </ion-row>
-      </ion-grid>
 
-      <ion-list class="bb-table ion-bb-sliding">
-        <ion-item *ngFor="let weekday of discounts.weekdays; let index = index" (click)="onDiscountChange('weekday', index)">
+
+        <ion-item *ngFor="let weekday of discounts.weekdays; let index = index" (click)="weekday.is_working_day && onDiscountChange(DiscountsTypes.weekday, index)">
           <ion-row class="bb-table-row">
-            <ion-col col-9 class="bb-table-row-col">
+            <ion-col [attr.col-9]="weekday.is_working_day ? true: null" [attr.col-7]="!weekday.is_working_day ? true: null" class="bb-table-row-col">
               {{ weekday.weekday_verbose }}
             </ion-col>
-            <ion-col col-3 class="bb-table-row-col">
+
+            <ion-col *ngIf="weekday.is_working_day" [attr.col-3]="weekday.is_working_day ? true: null" class="bb-table-row-col">
               <span *ngIf="!weekday.discount_percent" class="inactive">None</span>
               <span *ngIf="weekday.discount_percent">{{ weekday.discount_percent }}%</span>
               <ion-icon name="ios-arrow-forward-outline"></ion-icon>
+            </ion-col>
+
+            <ion-col *ngIf="!weekday.is_working_day" [attr.col-5]="!weekday.is_working_day ? true: null" class="bb-table-row-col">
+              <div class="w100p inactive" text-right>Non-working</div>
             </ion-col>
           </ion-row>
         </ion-item>
@@ -88,7 +92,7 @@
   </div>
   <br/> <!--TODO: This tag needs to be removed when button will be extracted as common component-->
   <!-- TODO: This needs to be extracted as a common component -->
-  
+
   <div text-center>
     <button (click)="saveChanges()" ion-button class="bb-btn-circle">
       <i class="bb-icon bb-icon-confirmation"></i>

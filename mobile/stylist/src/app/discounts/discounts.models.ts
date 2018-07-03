@@ -2,6 +2,7 @@ export interface WeekdayDiscount {
   weekday: number;
   weekday_verbose: string;
   discount_percent: number;
+  is_working_day: boolean;
 }
 
 export interface Discounts {
