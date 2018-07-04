@@ -1,5 +1,8 @@
 import { Injectable } from '@angular/core';
 import { GoogleAnalytics } from '@ionic-native/google-analytics';
+import { AppVersion } from '@ionic-native/app-version';
+
+import { getBuildNumber } from '~/core/functions';
 
 /**
  * Wrapper class for Google Analytics which initializes it
@@ -13,25 +16,39 @@ export class GAWrapper {
   private pendingCalls: Function[] = [];
 
   constructor(
-    private ga: GoogleAnalytics
+    private ga: GoogleAnalytics,
+    private verProvider: AppVersion
   ) {
   }
 
   async init(id: string): Promise<void> {
     try {
       await this.ga.startTrackerWithId(id);
-      this.ready = true;
-
     } catch (e) {
       this.failed = true;
       throw e;
     }
 
+    let appVersion: string;
+    try {
+      appVersion = await this.verProvider.getVersionNumber();
+    } catch (e) {
+      // Most likely running in browser so Cordova is not available. Ignore the error.
+      appVersion = 'Unknown';
+    }
+
+    const fullVer = `${appVersion}.${getBuildNumber()}`;
+    this.ga.setAppVersion(fullVer);
+
     // Execute all pending calls
     for (const func of this.pendingCalls) {
       func();
     }
-}
+    this.pendingCalls = [];
+
+    // We are now ready to perform direct GA calls
+    this.ready = true;
+  }
 
   setUserId(userId: string): void {
     this.execWhenReady(() => this.ga.setUserId(userId));
