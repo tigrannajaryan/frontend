@@ -13,8 +13,8 @@ import { PageNames } from '~/core/page-names';
 import { ServiceItem } from '~/core/stylist-service/stylist-models';
 
 import { Client } from '~/appointment/appointment-add/clients-models';
-import { TodayService as AppointmentService } from '~/today/today.service';
-import { AppointmentDateOffer } from '~/today/today.models';
+import { HomeService as AppointmentService } from '~/home/home.service';
+import { AppointmentDateOffer } from '~/home/home.models';
 
 import {
   ClearClientsAction,

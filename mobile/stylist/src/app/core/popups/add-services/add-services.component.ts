@@ -3,7 +3,7 @@ import { AlertController, IonicPage, NavController, NavParams } from 'ionic-angu
 import { StylistServiceProvider } from '~/core/stylist-service/stylist-service';
 import { loading } from '~/core/utils/loading';
 import { ServiceCategory, ServiceItem, StylistServicesList } from '~/core/stylist-service/stylist-models';
-import { CheckOutService } from '~/today/today.models';
+import { CheckOutService } from '~/home/home.models';
 
 export class AddServicesComponentParams {
   appointmentUuid: string;

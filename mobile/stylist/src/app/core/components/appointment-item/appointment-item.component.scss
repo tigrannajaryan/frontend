@@ -1,32 +1,24 @@
 appointment-item {
-  .AppointmentItem {
-    position: relative;
-    margin-bottom: pxtorem(70);
-    background: color($colors, white);
-    border-radius: 20px;
-    box-shadow: 0 0 50px 15px color($colors, color7);
-
-    @media ($smartphone) {
-      margin-bottom: pxtorem(55);
-    }
-
-    @media ($phone) {
-      margin-bottom: pxtorem(40);
-    }
-  }
+  position: relative;
+  display: block;
+  margin-bottom: pxtorem10(15);
+  background: color($colors, white);
+  border-radius: 20px;
+  box-shadow: 0 0 50px 15px color($colors, color7);
 
   .AppointmentItem-wp {
     display: flex;
-    align-items: flex-start;
+    flex-direction: column;
+    align-items: stretch;
     justify-content: space-between;
     padding: pxtoem(33) pxtorem(60);
 
     @media ($smartphone) {
-      padding: pxtoem(30) pxtorem(35);
+      padding: pxtoem(20) pxtorem(50);
     }
 
     @media ($phone) {
-      padding: pxtoem(20) pxtorem(35);
+      padding: pxtoem(12) pxtorem(40);
     }
 
     &.isChecked {
@@ -36,14 +28,15 @@ appointment-item {
 
   .AppointmentItem-status {
     position: absolute;
-    top: -15px;
+    top: -10px;
     left: 7%;
     z-index: 2;
-    padding: pxtorem(10);
+    padding: pxtorem(6) pxtorem(9);
+    font-size: $t-small;
     color: color($colors, white);
     border-radius: 6px;
 
-    &.NotCheckedOut {
+    &.Not.checked.out {
       background: color($colors, danger);
     }
 
@@ -56,8 +49,15 @@ appointment-item {
     }
   }
 
-  .AppointmentItem-info-time {
-    font-size: pxtorem(80);
+  .AppointmentItem-top {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 2px;
+  }
+
+  .AppointmentItem-topTime {
+    font-size: pxtorem10(80);
+    font-weight: 700;
     white-space: nowrap;
 
     @media ($smartphone) {
@@ -69,63 +69,100 @@ appointment-item {
     }
   }
 
-  .AppointmentItem-info-time-sup {
+  .AppointmentItem-topTimeDay {
     top: pxtorem(-30);
     display: inline-block;
     margin-left: pxtorem(5);
-    font-size: pxtorem(34);
+    font-size: $t-h2;
+    font-weight: 400;
     color: color($colors, color9);
 
     @media ($smartphone) {
-      top: pxtorem(-25);
+      top: pxtorem(-20);
       margin-left: 0;
-      font-size: pxtorem(26);
+      font-size: $t-h3;
     }
 
     @media ($phone) {
-      top: pxtorem(-15);
-      font-size: pxtorem(18);
+      top: pxtorem(-10);
+      font-size: pxtorem10(11);
     }
   }
 
-  .AppointmentItem-info-desc {
+  .AppointmentItem-topPrice {
+    display: flex;
+    align-items: start;
+    justify-content: flex-end;
+    font-size: pxtorem10(44);
+    font-weight: 700;
+    text-align: right;
+
+    @media ($smartphone) {
+      font-size: $t-h1;
+    }
+
+    @media ($phone) {
+      font-size: $t-h3;
+    }
+  }
+
+  .AppointmentItem-topPriceCur {
+    position: relative;
+    top: 2px;
+    font-size: $t-h3;
+
+    @media ($smartphone) {
+      font-size: $t-h4;
+    }
+
+    @media ($phone) {
+      font-size: $t-base;
+    }
+  }
+
+  .AppointmentItem-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .AppointmentItem-bottomDesc {
     margin-top: pxtorem(10);
-    font-size: pxtorem(44);
+    font-size: $t-h2;
     color: color($colors, color9);
 
     @media ($smartphone) {
-      font-size: pxtorem(30);
+      font-size: $t-h3;
     }
 
     @media ($phone) {
       margin-top: 0;
-      font-size: pxtorem(24);
+      font-size: pxtorem10(11);
     }
   }
 
-  .AppointmentItem-name {
-    padding-top: pxtorem(10);
-    font-size: pxtorem(34);
+  .AppointmentItem-bottomName {
+    display: flex;
+    align-items: center;
+    font-size: $t-h2;
     color: color($colors, color9);
     text-align: right;
 
     @media ($smartphone) {
-      padding-top: pxtorem(8);
-      font-size: pxtorem(28);
+      font-size: $t-h3;
     }
 
     @media ($phone) {
-      padding-top: pxtorem(8);
-      font-size: pxtorem(22);
+      font-size: pxtorem10(11);
     }
   }
 
-  .AppointmentItem-name-ava {
+  .AppointmentItem-bottomNameAva {
     display: inline-block;
     width: 33px;
     height: 33px;
-    margin-top: -5px;
     margin-right: pxtorem(20);
+    font-size: pxtorem(44);
     vertical-align: middle;
     background-repeat: no-repeat;
     background-position: center;
@@ -137,12 +174,14 @@ appointment-item {
       width: 25px;
       height: 25px;
       margin-right: pxtorem(15);
+      font-size: $t-h3;
     }
 
     @media ($phone) {
       width: 20px;
       height: 20px;
       margin-right: pxtorem(7);
+      font-size: $t-h4;
     }
   }
 }

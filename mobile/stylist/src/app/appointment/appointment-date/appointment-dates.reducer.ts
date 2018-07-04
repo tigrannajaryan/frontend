@@ -1,5 +1,5 @@
 import { Action, createFeatureSelector, createSelector } from '@ngrx/store';
-import { AppointmentDateOffer } from '~/today/today.models';
+import { AppointmentDateOffer } from '~/home/home.models';
 import { Client } from '~/appointment/appointment-add/clients-models';
 import { ServiceUuid } from '~/core/stylist-service/stylist-models.ts';
 

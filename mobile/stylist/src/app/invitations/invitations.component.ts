@@ -91,7 +91,7 @@ export class InvitationsComponent {
   @loading
   async sendInvitations(): Promise<void> {
     await this.invitationsApi.sendInvitations(this.invitations);
-    this.navCtrl.push(PageNames.Today);
+    this.navCtrl.push(PageNames.Home);
   }
 
   private addInvitation(phoneNumber: string, clientName?: string): void {

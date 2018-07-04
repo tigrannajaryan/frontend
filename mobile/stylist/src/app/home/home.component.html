@@ -1,0 +1,86 @@
+<ion-header class="ion-bb-header" madeUserHeader [profile]="profile | async" [hasBackButton]="false"></ion-header>
+
+<ion-content no-padding>
+  <ion-refresher (ionRefresh)="doRefresh($event)" class="Home-refresh">
+    <ion-spinner></ion-spinner>
+  </ion-refresher>
+
+  <div class="bb-wp-a">
+    <div class="Home-upText">
+      My Appointments
+      <span *ngIf="home" class="Home-upTextInfo">
+        {{ home.today_visits_count + home.upcoming_visits_count }}
+      </span>
+    </div>
+  </div>
+
+  <div *ngIf="home" class="Home-btns">
+    <div class="bb-wp-a Home-btnsWp">
+      <button (click)="loadAppointments(tabs[0].name)" [class.active]="tabs[0].name === activeTab" ion-button clear color="dark" class="Home-btnsBtn active">
+        {{ tabs[0].name }}
+        &nbsp;
+        <b>{{ home.today_visits_count }}</b>
+      </button>
+      <button (click)="loadAppointments(tabs[1].name)" [class.active]="tabs[1].name === activeTab" ion-button clear color="dark" class="Home-btnsBtn">
+        {{ tabs[1].name }}
+        &nbsp;
+        <b>{{ home.upcoming_visits_count }}</b>
+      </button>
+      <button (click)="loadAppointments(tabs[2].name)" [class.active]="tabs[2].name === activeTab" ion-button clear color="dark" class="Home-btnsBtn">
+        {{ tabs[2].name }}
+      </button>
+    </div>
+  </div>
+
+  <ion-slides *ngIf="home" (ionSlideDidChange)="slideChanged($event)" no-padding class="bb-wp-a">
+    <ion-slide class="Home-items Home-wp">
+      <div *ngIf="!tabs[0].loaded"><ion-spinner></ion-spinner></div>
+
+      <div *ngIf="tabs[0].loaded">
+        <div *ngIf="tabs[0]?.appointments?.length === 0" class="Home-itemsNull">Your scheduled visits will show up here.</div>
+
+        <appointment-item
+          *ngFor="let appointment of tabs[0].appointments; let index = index"
+          [appointment]="appointment"
+          [appointmentTag]="appointmentTags[index]"
+          (click)="onAppointmentClick(appointment)">
+        </appointment-item>
+      </div>
+    </ion-slide>
+
+
+    <ion-slide class="Home-items Home-wp">
+      <div *ngIf="!tabs[1].loaded"><ion-spinner></ion-spinner></div>
+
+      <div *ngIf="tabs[1].loaded">
+        <div *ngIf="tabs[1]?.appointments?.length === 0" class="Home-itemsNull">Your scheduled visits will show up here.</div>
+
+        <appointment-item
+          *ngFor="let appointment of tabs[1].appointments; let index = index"
+          [appointment]="appointment"
+          (click)="onAppointmentClick(appointment)"
+          [hasDate]="true">
+        </appointment-item>
+      </div>
+    </ion-slide>
+
+
+    <ion-slide class="Home-items Home-wp">
+      <div *ngIf="!tabs[2].loaded"><ion-spinner></ion-spinner></div>
+
+      <div *ngIf="tabs[2].loaded">
+        <div *ngIf="tabs[2]?.appointments?.length === 0" class="Home-itemsNull">Your scheduled visits will show up here.</div>
+
+        <appointment-item
+          *ngFor="let appointment of tabs[2].appointments; let index = index"
+          [appointment]="appointment"
+          [appointmentTag]="appointment.status === 'new' ? AppointmentTag.NotCheckedOut : null"
+          (click)="onAppointmentClick(appointment)"
+          [hasDate]="true">
+        </appointment-item>
+      </div>
+    </ion-slide>
+  </ion-slides>
+</ion-content>
+
+<ion-footer madeUserFooter></ion-footer>

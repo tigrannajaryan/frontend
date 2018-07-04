@@ -8,7 +8,7 @@ import { Store, StoreModule } from '@ngrx/store';
 import { prepareSharedObjectsForTests } from '~/core/test-utils.spec';
 import { TestUtils } from '~/../test';
 
-import { TodayService as AppointmentService } from '~/today/today.service';
+import { HomeService as AppointmentService } from '~/home/home.service';
 
 import { ServiceItem } from '~/core/stylist-service/stylist-models';
 import { clientsMock } from '~/appointment/appointment-add/clients-service-mock';

@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Appointment } from '~/today/today.models';
+import { Appointment } from '~/home/home.models';
 
 @Component({
   selector: 'appointment-item',
@@ -8,4 +8,5 @@ import { Appointment } from '~/today/today.models';
 export class AppointmentItemComponent {
   @Input() appointment: Appointment;
   @Input() appointmentTag?: string;
+  @Input() hasDate?: boolean;
 }

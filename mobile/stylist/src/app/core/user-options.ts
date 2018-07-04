@@ -6,7 +6,7 @@ import { Injectable } from '@angular/core';
  * via UserOptions class.
  */
 interface Options {
-  showTodayScreenHelp: boolean;
+  showHomeScreenHelp: boolean;
   showFutureAppointmentHelp: boolean;
 }
 
@@ -33,7 +33,7 @@ export class UserOptions {
       // This would ensure that if the storage is deleted the app
       // will behave in the most common way.
       this.options = {
-        showTodayScreenHelp: false,
+        showHomeScreenHelp: false,
         showFutureAppointmentHelp: false
       };
     }

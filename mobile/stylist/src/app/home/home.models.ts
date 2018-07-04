@@ -72,6 +72,8 @@ export interface Appointment {
   duration_minutes: number;
   status: AppointmentStatuses;
   services: AppointmentService[];
+  client_uuid: string;
+  grand_total: number;
 }
 
 export interface AppointmentDateOffer {
@@ -81,11 +83,10 @@ export interface AppointmentDateOffer {
   is_working_day?: boolean;
 }
 
-export interface Today {
-  today_appointments: Appointment[];
+export interface Home {
+  appointments: Appointment[];
   today_visits_count: number;
-  week_visits_count: number;
-  past_visits_count: number;
+  upcoming_visits_count: number;
 }
 
 export interface CheckoutRequest {
