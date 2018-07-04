@@ -9,7 +9,7 @@ import { Appointment, AppointmentParams } from '~/today/today.models';
 import { loading } from '~/core/utils/loading';
 import { showAlert } from '~/core/utils/alert';
 import { StylistProfile } from '~/core/stylist-service/stylist-models';
-import { LoadProfileAction, ProfileState, selectProfile } from '~/today/user-header/profile.reducer';
+import { LoadProfileAction, ProfileState, selectProfile } from '~/core/components/user-header/profile.reducer';
 import { TodayState } from '~/today/today.reducer';
 import { UpcomingHistory, UpcomingHistoryNavParams } from '~/upcoming-history/upcoming-history.model';
 
