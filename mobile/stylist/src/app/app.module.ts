@@ -17,6 +17,7 @@ import { getMetaReducers, reducers } from './app.reducers';
 import { UnhandledErrorHandler } from '~/shared/unhandled-error-handler';
 import { initSentry } from '~/shared/sentry';
 import { UserOptions } from '~/core/user-options';
+import { AppVersion } from '@ionic-native/app-version';
 
 initSentry();
 
@@ -61,6 +62,7 @@ initSentry();
     StylistServiceProvider,
     httpInterceptorProviders,
     UserOptions,
+    AppVersion,
 
     {
       // Our custom handler for unhandled exceptions
