@@ -54,7 +54,6 @@ env:
       IOS_APP_NAME="Made Pro Staging"
       FASTLANE_SKIP_WAITING=true
       FASTLANE_DISTRIBUTE_EXTERNAL=false
-      FASTLANE_EXTERNAL_GROUP_LIST=""
 
     # stylist-client-specific variables
     - BB_ENV=prod
@@ -64,8 +63,7 @@ env:
       IOS_APP_DESCRIPTION="Made Pro"
       IOS_APP_NAME="Made Pro"
       FASTLANE_SKIP_WAITING=false
-      FASTLANE_DISTRIBUTE_EXTERNAL=true
-      FASTLANE_EXTERNAL_GROUP_LIST="MadeBeauty Staff" # comma-separated list of groups to distribute to
+      FASTLANE_DISTRIBUTE_EXTERNAL='true --groups "MadeBeauty Staff"'
 
 # run before install phase
 before_install:
