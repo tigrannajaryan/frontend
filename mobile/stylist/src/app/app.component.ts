@@ -75,14 +75,19 @@ export class MyAppComponent {
       this.logger.info('Google Analytics is ready now');
 
       // Track all screen changes
-      this.nav.viewDidEnter.subscribe(view => {
-        const viewName = view.instance.constructor.name;
-        this.logger.info(`Entered ${viewName}`);
-        this.ga.trackView(viewName);
-      });
+      this.nav.viewDidEnter.subscribe(view => this.trackViewChange(view));
     } catch (e) {
       this.logger.warn('Error starting Google Analytics (this is expected if not on the phone):', e);
     }
+  }
+
+  protected trackViewChange(view: any): void {
+    const viewClassName: string = (view && view.instance) ? view.instance.constructor.name : 'unknown';
+    this.logger.info(`Entered ${viewClassName}`);
+
+    // Remove 'Component' suffix for better readability of GA results.
+    const viewName = viewClassName.replace(/Component$/, '');
+    this.ga.trackView(viewName);
   }
 
   async showInitialPage(): Promise<void> {
