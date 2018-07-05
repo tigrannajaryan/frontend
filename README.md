@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/madebeauty/monorepo.svg?token=E27wTPpcxaCRjQW243pX&branch=develop)](https://travis-ci.com/madebeauty/monorepo)
+
 # Introduction
 MadeBeauty frontend source code. This repo contains all source code
 for all our mobile applications.
