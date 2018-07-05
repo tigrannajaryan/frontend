@@ -15,25 +15,17 @@ branches:
   only:
     - develop
 
-# cache stylist's packages after each build, and restore on next builds
+# cache packages after each build, and restore on next builds
 # if a change is detected after build finishes - update cache
 cache:
   directories:
     - mobile/stylist/node_modules
+    - mobile/client/node_modules
 
-# run 2 consecutive builds for staging and prod, with different env values
-# once we add client app:
-# - this matrix will need to expand to 4 builds;
-# - we're going to need custom script which will run against $TRAVIS_COMMIT_RANGE
-# and will return a value - one of [`stylist`, `client`, `both`, `none`]. We're
-# going to evaluate script return value, and will adjust build matrix to only
-# run necessary builds (to save us build time). This check will be handled by Travis
-# during pre-build phase, and will not produce redundant queued builds.
-
+# global env variables, common to each build's environment
+# once we add client build - some of them will go to appropriate stages
 env:
   global:
-  # global env variables, common to each build's environment
-  # once we add client build - some of them will go to appropriate stages
     - IOS_SDK="iphoneos11.4"
     - IOS_PROVISIONING_PROFILE_ID="b36b0583-9122-4176-becf-38d769edee4d"
     - >-
@@ -44,26 +36,56 @@ env:
     - secure: "UQ9MhRlgyPGq+7pujSwMgOJNnQcTtAZl/uGuRZTpXxap6bjz5SeCa0UzXtTvPqjXcWsIbjpSRuSl0gX2Ozk+SH+coPVu6HdVhIT3qmzBFZ/5kL7VWBikyPPAmPFxewgZbb7k+sY5wRLiSc3Y6lZtfQTpkew2ij9rLP8qQh2QF1uY+8yxpLyEiJzFZtHI+mvRngIJD1owG1XGNlOEjbUQoVrId/rNIYwU0laPXrTw36FCYnglx8BQPRo/9y7GrouuK9z7SCJJ1n1AqD2Ezap7I9m72RvbkuA42Oi6rFj1XdMO8eBODrNbgdxdzzlPhUaRIagbHPwqnvBoL2kWcIOur6UFM9foR8QcxhsxmThvPCbd1XyHtT0j8PCF9kr79oloPppXwnyiL3umN96Mg5ZFnZ1kATInd8ZsnYdDDTJvsHdWfrSrZfgo2OnLh7tnsm46LOuwTNbc5STN2CyApL5RPs/oGKXe1VT+pflfwQON217kB14U33Q9uQ+gkjVrySc/LieEt1cxNHQPxj/kBzzIaKx2KFoEcxfecICmJFN1mDhuCYLL5mPpv7uakf5B5nrWVbnNWZLdcd8Q3oZ1axNWSPsozMd8Bbqd5V66GAu0tcRqji0SIQexJMSsS671OK4+ojOv6NYTfh19+sNlS6QweaeAYAU5FEaf14bqb1bJbr4="
     # $FASTLANE_PASSWORD; expands to FASTLANE_PASSWORD=password
     - secure: "Aop9V/yACO3GxHqay7rklodUPOsnFax4neC4btWkEXab+Dkliu0/goyDn1Wm5JldevVaSY+TUn0kITows5DvsD2Zpn+cwp1PNfGLw8eQnCf38UEK3vL7rIRxkgFhMd7N+KFhYkfag5d21i/8A7iT7RF8GBDAC3QjLIfkGBR+fFW/hsfsMph4/bNKdjnNmanVWxugYKvMtA2ZpwA0hR186glYC0oOmksGR5s0WG3RkgFB4TamnVT8PhIiwCJA4E5iGK15C/gwsQ+2Y6dNP1+MMueLAQeMqFFdNSzq+EvX6mighmPJhXNjKZqOXE8o7bsPY7jYkZvEBFlnTVpOLOCZfEf1HjQgU0weiCZYCfTYczGg9Vs4ksIFjO847d00cUJqc6WuZ6qy/zoOXLgkR4stmOj4A4twcT4uhXjqoTvdkueMYWOtlcLO0tViTbLiHFXaoVLeMfuArDZj73JxwaQuUnzHeIhHzyQeVrMKQpDiqp7U+/L3gjlSxFp7MEJqClWV53RWcG0b7K4E5WsynnCde0EdpKsegG/bgXTJxdFpHWBHOOy2aj2iM6LdZPB6k+bXyIC0EpMaE6WOm8PrPxuDYlw2jnKwlqL5ZVSPb6CAE4S060XVXU2vqxuqmj7u4R9aQJvIGRyRpyxhIeb05lCJqwPSYNNVWzVMvorXIs2dS9g="
-  matrix:
-    # stylist-staging-specific variables
-    - BB_ENV=staging
-      FB_APP_ID=1332946860139961
-      FB_APP_NAME="Made Pro Staging"
-      IOS_APP_BUNDLE_ID="com.madebeauty.stylist.beta"
-      IOS_APP_DESCRIPTION="Made Pro Staging"
-      IOS_APP_NAME="Made Pro Staging"
-      FASTLANE_SKIP_WAITING=true
-      FASTLANE_DISTRIBUTE_EXTERNAL=false
 
-    # stylist-client-specific variables
-    - BB_ENV=prod
-      FB_APP_ID=877860949068191
-      FB_APP_NAME="Made Pro"
-      IOS_APP_BUNDLE_ID="com.madebeauty.stylist.production"
-      IOS_APP_DESCRIPTION="Made Pro"
-      IOS_APP_NAME="Made Pro"
-      FASTLANE_SKIP_WAITING=false
-      FASTLANE_DISTRIBUTE_EXTERNAL='true --groups "MadeBeauty Staff"'
+# define build stages order
+stages:
+  - Stylist Staging Build
+  - Client Staging Build  # won't run until explicitly included into jobs
+  - Stylist Production Build
+  - Client Production Build  # won't run until explicitly included into jobs
+
+# define which stages to include, and under which conditions
+jobs:
+  fast_finish: true
+  include:
+    - stage: Stylist Staging Build
+      env:
+        APP_TYPE=stylist
+        BB_ENV=staging
+        FB_APP_ID=1332946860139961
+        FB_APP_NAME="Made Pro Staging"
+        IOS_APP_BUNDLE_ID="com.madebeauty.stylist.beta"
+        IOS_APP_DESCRIPTION="Made Pro Staging"
+        IOS_APP_NAME="Made Pro Staging"
+        FASTLANE_SKIP_WAITING=true
+        FASTLANE_DISTRIBUTE_EXTERNAL=false
+
+    - stage: Stylist Production Build
+      if: branch = develop AND type = push  # run this stage only if it's not a PR
+      env:
+        APP_TYPE=stylist
+        BB_ENV=prod
+        FB_APP_ID=877860949068191
+        FB_APP_NAME="Made Pro"
+        IOS_APP_BUNDLE_ID="com.madebeauty.stylist.production"
+        IOS_APP_DESCRIPTION="Made Pro"
+        IOS_APP_NAME="Made Pro"
+        FASTLANE_SKIP_WAITING=false
+        FASTLANE_DISTRIBUTE_EXTERNAL='true --groups "MadeBeauty Staff"'
+
+# TODO: placeholder for client builds
+#    - stage: Client Staging Build
+#      env:
+#        APP_TYPE=client
+#        BB_ENV=staging
+#      script: true  # skip this step for now
+#      install: true  # skip this step for now
+#
+#    - stage: Client Production Build
+#      if: branch = develop AND type = push
+#      env:
+#        APP_TYPE=client
+#        BB_ENV=prod
 
 # run before install phase
 before_install:
