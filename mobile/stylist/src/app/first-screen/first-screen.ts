@@ -10,7 +10,7 @@ import { PageNames } from '~/core/page-names';
 import { LoginOrRegisterType } from '~/login-register/login-register.component';
 import { showAlert } from '~/core/utils/alert';
 
-// Permissions of Facebook Login
+// permissions of Facebook Login
 // https://developers.facebook.com/docs/facebook-login/permissions/v3.0
 const permission = ['public_profile', 'email'];
 const connected = 'connected';
@@ -58,13 +58,13 @@ export class FirstScreenComponent {
 
         const authResponse = await this.authServiceProvider.loginByFb(credentials);
 
-        // Find out what page should be shown to the user and navigate to
+        // find out what page should be shown to the user and navigate to
         // it while also properly populating the navigation history
         // so that Back buttons work correctly.
         this.navCtrl.setPages(createNavHistoryList(authResponse.profile_status));
       }
     } catch (e) {
-      // Show an error message
+      // show an error message
       showAlert('Login failed', 'Invalid email or password');
     }
   }

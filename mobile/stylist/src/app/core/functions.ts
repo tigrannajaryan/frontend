@@ -20,7 +20,7 @@ export function createNavHistoryList(profileStatus: ProfileStatus): PageDescr[] 
 
   pages.push({ page: PageNames.RegisterSalon });
   if (!profileStatus) {
-    // No profile at all, start from beginning.
+    // no profile at all, start from beginning.
     return pages;
   }
 
@@ -50,7 +50,7 @@ export function createNavHistoryList(profileStatus: ProfileStatus): PageDescr[] 
     }
   }
 
-  // Everything is complete, go to Today screen. We are return a single page here,
+  // everything is complete, go to Today screen. We are return a single page here,
   // there will be no navigation history.
   return [{ page: PageNames.Today }];
 }

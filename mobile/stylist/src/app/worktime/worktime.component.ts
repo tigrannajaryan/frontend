@@ -40,7 +40,7 @@ class VisualWeekCard {
 
       return timeRange.durationInMins();
     } catch (e) {
-      // For visualization purposes invalid time range
+      // for visualization purposes invalid time range
       // should be shown as zero duration.
       return 0;
     }
@@ -81,7 +81,7 @@ export class WorktimeComponent {
 
   cards: VisualWeekCard[] = [];
 
-  // Indicates if this screen should work in registration mode
+  // indicates if this screen should work in registration mode
   // TODO: use instead of isProfile
   @Input()
   registrationMode = true;
@@ -126,7 +126,7 @@ export class WorktimeComponent {
   @loading
   async loadInitialData(): Promise<void> {
     try {
-      // Load data from backend and show it
+      // load data from backend and show it
       const worktime = await this.api.getWorktime();
       this.cards = this.api2presentation(worktime);
     } catch (e) {
@@ -138,7 +138,7 @@ export class WorktimeComponent {
    * Click handler for weekday box. Toggles the state of the day.
    */
   toggleWeekday(toogleDay: VisualWeekday): void {
-    // If the day is to be enabled, disable the same day
+    // if the day is to be enabled, disable the same day
     // from all other cards first.
     if (!toogleDay.enabled) {
       for (const card of this.cards) {
@@ -150,7 +150,7 @@ export class WorktimeComponent {
         }
       }
     }
-    // Now toggle the day
+    // now toggle the day
     toogleDay.enabled = !toogleDay.enabled;
   }
 
@@ -187,14 +187,14 @@ export class WorktimeComponent {
 
   @loading
   async saveChanges(): Promise<void> {
-    // Save to backend
+    // save to backend
     const worktime = await this.api.setWorktime(this.presentation2api(this.cards));
 
     if (this.registrationMode) {
-      // Continue registration on the next page
+      // continue registration on the next page
       this.nextRoute();
     } else {
-      // And load the response back to make sure client shows what backend understood.
+      // and load the response back to make sure client shows what backend understood.
       this.cards = this.api2presentation(worktime);
     }
   }
@@ -208,18 +208,18 @@ export class WorktimeComponent {
 
     for (const weekday of data.weekdays) {
       if (!weekday.work_start_at || !weekday.work_end_at) {
-        // Invalid data model entry. Ignore and skip.
+        // invalid data model entry. Ignore and skip.
         continue;
       }
 
       try {
-        // Create a time range to use as the key of the map.
+        // create a time range to use as the key of the map.
         const timeRange: HourRange = [weekday.work_start_at, weekday.work_end_at];
         const cardKey = timeRange.toString();
 
         let card: VisualWeekCard = cardsMapByTime.get(cardKey);
         if (!card) {
-          // We don't have a card for this time range. Create a new one.
+          // we don't have a card for this time range. Create a new one.
           card = new VisualWeekCard(
             weekday.work_start_at,
             weekday.work_end_at,
@@ -227,7 +227,7 @@ export class WorktimeComponent {
           );
           cardsMapByTime.set(cardKey, card);
         }
-        // Set the day in the card
+        // set the day in the card
         card.weekdays[weekday.weekday_iso - firstWeekday] = {
           weekdayIso: weekday.weekday_iso,
           label: WeekdayIso[weekday.weekday_iso],
@@ -235,20 +235,20 @@ export class WorktimeComponent {
         };
 
       } catch (e) {
-        // Ignore invalid response from api
+        // ignore invalid response from api
         this.logger.error(`Error decoding Worktime: ${e}`);
       }
     }
 
     const cardsArray: VisualWeekCard[] = [];
 
-    // Convert the map to array of cards
+    // convert the map to array of cards
     for (const [, card] of cardsMapByTime) {
       cardsArray.push(card);
     }
 
     if (cardsArray.length === 0) {
-      // No cards in the input data, but must have at least one card
+      // no cards in the input data, but must have at least one card
       // so create one with all days enabled.
       cardsArray.push(WorktimeComponent.createCard(true));
     }
@@ -262,7 +262,7 @@ export class WorktimeComponent {
   // tslint:disable-next-line:prefer-function-over-method
   private presentation2api(cards: VisualWeekCard[]): Worktime {
 
-    // Create all disabled weekdays first
+    // create all disabled weekdays first
     const weekdays: Workday[] = [];
 
     for (let i = firstWeekday; i <= lastWeekday; i++) {
@@ -277,7 +277,7 @@ export class WorktimeComponent {
 
     const worktime: Worktime = { weekdays };
 
-    // Now enable all weekdays that are enabled on any card
+    // now enable all weekdays that are enabled on any card
     // and set correct times for them.
     for (const card of cards) {
       for (const weekday of card.weekdays) {

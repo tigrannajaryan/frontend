@@ -8,7 +8,7 @@ export enum AppointmentStatuses {
 export interface AppointmentParams {
   date_from?: Date; // (yyyy-mm-dd) inclusive. If not specified will output appointments since the beginning of era
   date_to?: Date; // (yyyy-mm-dd) inclusive. If not specified will output appointments till the end of era
-  include_cancelled?: boolean; // False by default, if true, will also return cancelled appointments
+  include_cancelled?: boolean; // false by default, if true, will also return cancelled appointments
   limit?: number; // limit the query, default is 100
 }
 
@@ -55,7 +55,7 @@ export interface NewAppointmentRequest {
   client_first_name: string;
   client_last_name: string;
   services: AppointmentServiceUuid[];
-  datetime_start_at: string; // ISO 8601: 2018-05-20T18:00:00-04:00
+  datetime_start_at: string; // iso 8601: 2018-05-20T18:00:00-04:00
 }
 
 export interface Appointment {
@@ -75,7 +75,7 @@ export interface Appointment {
 }
 
 export interface AppointmentDateOffer {
-  date: string; // ISO 8601 date
+  date: string; // iso 8601 date
   price: number;
   is_fully_booked?: boolean;
   is_working_day?: boolean;

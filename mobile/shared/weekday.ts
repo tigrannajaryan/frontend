@@ -1,9 +1,9 @@
-// Weekday ISO matchings
+// weekday ISO matchings
 export enum WeekdayIso {
   Mon = 1, Tue, Wed, Thu, Fri, Sat, Sun
 }
 
-// To get weekday full name, e.g. WEEKDAY_FULL_NAMES[WeekdayIso.Fri]
+// to get weekday full name, e.g. WEEKDAY_FULL_NAMES[WeekdayIso.Fri]
 export const WEEKDAY_FULL_NAMES = [undefined, 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
 /**

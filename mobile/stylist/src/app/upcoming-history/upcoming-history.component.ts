@@ -66,7 +66,7 @@ export class UpcomingHistoryComponent {
   async init(): Promise<void> {
     try {
       this.profile = this.store.select(selectProfile);
-      // Load profile info
+      // load profile info
       this.store.dispatch(new LoadProfileAction());
 
       this.params = this.navParams.data as UpcomingHistoryNavParams;

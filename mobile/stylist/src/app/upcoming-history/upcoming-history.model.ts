@@ -6,7 +6,7 @@ export interface UpcomingHistory {
 }
 
 export interface UpcomingHistoryAppointments {
-  day: string; // ISO 8601 YYYY-MM-DD
+  day: string; // iso 8601 YYYY-MM-DD
   appointments: Appointment[];
 }
 

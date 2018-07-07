@@ -33,20 +33,20 @@ export class GAWrapper {
     try {
       appVersion = await this.verProvider.getVersionNumber();
     } catch (e) {
-      // Most likely running in browser so Cordova is not available. Ignore the error.
+      // most likely running in browser so Cordova is not available. Ignore the error.
       appVersion = 'Unknown';
     }
 
     const fullVer = `${appVersion}.${getBuildNumber()}`;
     this.ga.setAppVersion(fullVer);
 
-    // Execute all pending calls
+    // execute all pending calls
     for (const func of this.pendingCalls) {
       func();
     }
     this.pendingCalls = [];
 
-    // We are now ready to perform direct GA calls
+    // we are now ready to perform direct GA calls
     this.ready = true;
   }
 
@@ -69,11 +69,11 @@ export class GAWrapper {
     }
 
     if (this.failed) {
-      // GA failed to initialize. Ignore all calls.
+      // ga failed to initialize. Ignore all calls.
       return;
     }
 
-    // GA init not ready. Add call to pending list.
+    // ga init not ready. Add call to pending list.
     this.pendingCalls.push(func);
   }
 }

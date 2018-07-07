@@ -37,7 +37,7 @@ const components = [
   imports: [
     IonicModule,
 
-    // Register reducers for serverStatus
+    // register reducers for serverStatus
     StoreModule.forFeature(serverStatusStateName, serverStatusReducer),
 
     DirectivesModule

@@ -31,7 +31,7 @@ export class AboutComponent {
     try {
       this.appVersion = await verProvider.getVersionNumber();
     } catch (e) {
-      // Most likely running in browser so Cordova is not available. Ignore.
+      // most likely running in browser so Cordova is not available. Ignore.
       this.appVersion = 'Unknown';
     }
   }

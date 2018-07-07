@@ -46,10 +46,10 @@ export class RegisterSalonComponent {
       const maxDimension = 512;
       const downscaleQuality = 0.7;
 
-      // Use canvas to draw downscaled image on it
+      // use canvas to draw downscaled image on it
       const canvas: any = document.createElement('canvas');
 
-      // Load the original image
+      // load the original image
       const image = new Image();
 
       image.onload = () => {
@@ -57,7 +57,7 @@ export class RegisterSalonComponent {
           let width = image.width;
           let height = image.height;
 
-          // Enforce max dimensions
+          // enforce max dimensions
           if (width > height) {
             if (width > maxDimension) {
               height *= maxDimension / width;
@@ -73,10 +73,10 @@ export class RegisterSalonComponent {
           canvas.height = height;
           const ctx = canvas.getContext('2d');
 
-          // Draw original image downscaled
+          // draw original image downscaled
           ctx.drawImage(image, 0, 0, width, height);
 
-          // And get the result with required quality
+          // and get the result with required quality
           const dataUri = canvas.toDataURL('image/jpeg', downscaleQuality);
 
           resolve(dataUri);
@@ -247,7 +247,7 @@ export class RegisterSalonComponent {
         encodingType: this.camera.EncodingType.JPEG,
         mediaType: this.camera.MediaType.PICTURE,
         correctOrientation: true,
-        sourceType // PHOTOLIBRARY = 0, CAMERA = 1
+        sourceType // photolibrary = 0, camera = 1
       };
 
       imageData = await this.camera.getPicture(options);
@@ -258,7 +258,7 @@ export class RegisterSalonComponent {
 
     try {
       // imageData is either a base64 encoded string or a file URI
-      // If it's base64:
+      // if it's base64:
       const originalBase64Image = `data:image/jpeg;base64,${imageData}`;
 
       const downscaledBase64Image = await RegisterSalonComponent.downscalePhoto(originalBase64Image);

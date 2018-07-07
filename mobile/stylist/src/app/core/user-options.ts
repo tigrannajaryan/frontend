@@ -23,14 +23,14 @@ export class UserOptions {
     try {
       this.options = JSON.parse(window.localStorage.getItem(storageKey));
     } catch (e) {
-      // Ignore read errors. We will re-initialize below.
+      // ignore read errors. We will re-initialize below.
     }
 
     if (!this.options) {
-      // If no storage is found initialize to most sensible defaults.
-      // Note: most sensible here does not mean what a new app state
+      // if no storage is found initialize to most sensible defaults.
+      // note: most sensible here does not mean what a new app state
       // should be but instead what a normally used app would need.
-      // This would ensure that if the storage is deleted the app
+      // this would ensure that if the storage is deleted the app
       // will behave in the most common way.
       this.options = {
         showTodayScreenHelp: false,

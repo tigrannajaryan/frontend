@@ -67,7 +67,7 @@ export class AuthApiService extends BaseApiService {
 
     super(http, logger, serverStatus);
 
-    // Read previously saved authResponse (if any). We are using
+    // read previously saved authResponse (if any). We are using
     // window.localStorage instead of Ionic Storage class because
     // we need synchronous behavior which window.localStorage
     // provides and Ionic Storage doesn't (Ionic Storage.get() is async).
@@ -136,7 +136,7 @@ export class AuthApiService extends BaseApiService {
         return response;
       })
       .catch(e => {
-        // Failed authentication. Clear previously saved successfull response (if any).
+        // failed authentication. Clear previously saved successfull response (if any).
         this.setAuthResponse(undefined);
         this.logger.error('Authentication failed:', JSON.stringify(e));
         throw e;
@@ -156,7 +156,7 @@ export class AuthApiService extends BaseApiService {
       this.appContext.setUserId(undefined);
     }
 
-    // Save the authResponse for later use. This allows us to access any page
+    // save the authResponse for later use. This allows us to access any page
     // without re-login, which is very useful during development/debugging
     // since you can just refresh the browser window.
     window.localStorage.setItem(storageKey, JSON.stringify(this.authResponse));

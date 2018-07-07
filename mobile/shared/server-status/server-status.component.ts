@@ -32,7 +32,7 @@ export class ServerStatusComponent implements OnInit, OnDestroy {
         } else if (state.isServerError) {
           this.errorText = state.serverErrorText;
         } else {
-          // This will hide the error banner
+          // this will hide the error banner
           this.errorText = undefined;
         }
       }

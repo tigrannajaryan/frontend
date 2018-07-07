@@ -88,10 +88,10 @@ export class TodayComponent {
 
     this.profile = this.store.select(selectProfile);
 
-    // Load profile info
+    // load profile info
     this.store.dispatch(new LoadProfileAction());
 
-    // Initiate loading the today data.
+    // initiate loading the today data.
     this.store.dispatch(new LoadAction());
   }
 
@@ -107,7 +107,7 @@ export class TodayComponent {
       return;
     }
 
-    // Create tags for each appointment based on their start/end times
+    // create tags for each appointment based on their start/end times
     let metNext = false;
     for (const appoinment of this.today.today_appointments) {
       const startTime = moment(new Date(appoinment.datetime_start_at));

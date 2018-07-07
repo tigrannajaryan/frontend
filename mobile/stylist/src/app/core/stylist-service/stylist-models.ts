@@ -1,4 +1,4 @@
-// Stylist profile
+// stylist profile
 
 export interface StylistProfile {
   id?: number;
@@ -33,7 +33,7 @@ export interface StylistSummary {
   total_week_appointments_count: number;
 }
 
-// Weekday discounts
+// weekday discounts
 
 export interface WeekdayDiscount {
   label: string;
@@ -45,7 +45,7 @@ export interface WeekdayDiscounts {
   weekdays: WeekdayDiscount[];
 }
 
-// Other discounts
+// other discounts
 
 export interface SimpleDiscounts {
   first_visit_discount_percent: number;
@@ -53,7 +53,7 @@ export interface SimpleDiscounts {
   repeat_within_2_week_discount_percent: number;
 }
 
-// Service templates
+// service templates
 
 export interface ServiceName {
   name: string;
@@ -95,7 +95,7 @@ export interface ServiceTemplateItem {
   duration_minutes: number;
 }
 
-// Services
+// services
 export interface ServiceItem extends ServiceTemplateItem {
   service_uuid?: string;
 

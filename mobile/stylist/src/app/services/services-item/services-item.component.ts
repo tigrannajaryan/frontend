@@ -45,7 +45,7 @@ export class ServiceItemComponent {
   }
 
   ionViewWillLoad(): void {
-    // Unfortunately navaParams.get() is untyped 'any' data.
+    // unfortunately navaParams.get() is untyped 'any' data.
     this.data = this.navParams.get('data') as ServiceItemComponentData;
     this.createForm();
     this.setFormData(this.data);
@@ -58,7 +58,7 @@ export class ServiceItemComponent {
       await this.deleteService(service);
     }
 
-    // Empty data indicates deleted item.
+    // empty data indicates deleted item.
     const newData: ServiceItemComponentData = {};
 
     this.viewCtrl.dismiss(newData);
