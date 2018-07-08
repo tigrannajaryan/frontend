@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { GoogleAnalytics } from '@ionic-native/google-analytics';
 import { AppVersion } from '@ionic-native/app-version';
 
-import { getBuildNumber } from '~/core/functions';
+import { getBuildNumber } from '~/shared/get-build-number';
 
 /**
  * Wrapper class for Google Analytics which initializes it

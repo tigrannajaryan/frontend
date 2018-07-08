@@ -1,12 +1,10 @@
 #!/usr/bin/env bash
 
 # set initial build number with respect to previous VSTS builds
-# TODO: set to actual last VSTS build number before merge
-INITIAL_BUILD_NUMBER=3000
-export IOS_BUILD_NUMBER=$(($INITIAL_BUILD_NUMBER + $TRAVIS_BUILD_NUMBER))
+export IOS_BUILD_NUMBER="$TRAVIS_BUILD_NUMBER"
 echo "Preparing build $IOS_BUILD_NUMBER"
 
-cd mobile/stylist
+cd mobile/$APP_TYPE
 
 echo "--Creating www folder"
 mkdir www || true

@@ -1,5 +1,10 @@
 export const ENV = {
-  apiUrl: 'http://admindev.betterbeauty.io/api/v1/',
+  apiUrl: 'https://admin.madebeauty.com/api/v1/',
   production: true,
-  version: '0.0.1'
+
+  // Feature flag to enable or disable incomplete features
+  ffEnableIncomplete: false,
+
+  // Enable Sentry reporting on production
+  sentryDsn: 'https://9a5ba7f5d8494d75a3ccdca437f8b450@sentry.io/1239452'
 };

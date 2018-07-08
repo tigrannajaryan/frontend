@@ -23,11 +23,9 @@ cache:
     - mobile/client/node_modules
 
 # global env variables, common to each build's environment
-# once we add client build - some of them will go to appropriate stages
 env:
   global:
     - IOS_SDK="iphoneos11.4"
-    - IOS_PROVISIONING_PROFILE_ID="b36b0583-9122-4176-becf-38d769edee4d"
     - >-
         IOS_CODE_SIGN_IDENTITY="iPhone Distribution: BetterBeauty, Inc"
     # expands to IOS_DISTRIBUTION_CERT_PASSWORD=password
@@ -40,9 +38,9 @@ env:
 # define build stages order
 stages:
   - Stylist Staging Build
-  - Client Staging Build  # won't run until explicitly included into jobs
+  - Client Staging Build
   - Stylist Production Build
-  - Client Production Build  # won't run until explicitly included into jobs
+  - Client Production Build
 
 # define which stages to include, and under which conditions
 jobs:
@@ -52,11 +50,13 @@ jobs:
       env:
         APP_TYPE=stylist
         BB_ENV=staging
-        FB_APP_ID=1332946860139961
-        FB_APP_NAME="Made Pro Staging"
         IOS_APP_BUNDLE_ID="com.madebeauty.stylist.beta"
-        IOS_APP_DESCRIPTION="Made Pro Staging"
         IOS_APP_NAME="Made Pro Staging"
+        IOS_APP_DESCRIPTION="Made Pro Staging"
+        IOS_PROVISIONING_PROFILE="made-final-appstore"
+        IOS_PROVISIONING_PROFILE_ID="b36b0583-9122-4176-becf-38d769edee4d"
+        FB_APP_ID=1332946860139961
+        FB_APP_NAME="Made Staging"
         FASTLANE_SKIP_WAITING=true
         FASTLANE_DISTRIBUTE_EXTERNAL=false
 
@@ -65,58 +65,57 @@ jobs:
       env:
         APP_TYPE=stylist
         BB_ENV=prod
-        FB_APP_ID=877860949068191
-        FB_APP_NAME="Made Pro"
         IOS_APP_BUNDLE_ID="com.madebeauty.stylist.production"
-        IOS_APP_DESCRIPTION="Made Pro"
         IOS_APP_NAME="Made Pro"
+        IOS_APP_DESCRIPTION="Made Pro"
+        IOS_PROVISIONING_PROFILE="made-final-appstore"
+        IOS_PROVISIONING_PROFILE_ID="b36b0583-9122-4176-becf-38d769edee4d"
+        FB_APP_ID=877860949068191
+        FB_APP_NAME="Made"
         FASTLANE_SKIP_WAITING=false
         FASTLANE_DISTRIBUTE_EXTERNAL='true --groups "MadeBeauty Staff"'
 
-# TODO: placeholder for client builds
-#    - stage: Client Staging Build
-#      env:
-#        APP_TYPE=client
-#        BB_ENV=staging
-#      script: true  # skip this step for now
-#      install: true  # skip this step for now
-#
-#    - stage: Client Production Build
-#      if: branch = develop AND type = push
-#      env:
-#        APP_TYPE=client
-#        BB_ENV=prod
+    - stage: Client Staging Build
+      env:
+        APP_TYPE=client
+        BB_ENV=staging
+        IOS_APP_BUNDLE_ID="com.madebeauty.client.staging"
+        IOS_APP_NAME="MadeBeauty Staging"
+        IOS_APP_DESCRIPTION="MadeBeauty Staging"
+        IOS_PROVISIONING_PROFILE="client-staging"
+        IOS_PROVISIONING_PROFILE_ID="b76338ed-b7e9-4053-ab42-ec80d7eea4ba"
+        FB_APP_ID=1332946860139961
+        FB_APP_NAME="Made Staging"
+        FASTLANE_SKIP_WAITING=true
+        FASTLANE_DISTRIBUTE_EXTERNAL=false
 
-# run before install phase
-before_install:
-  - cd $TRAVIS_BUILD_DIR
-  - cd mobile
+    - stage: Client Production Build
+      if: branch = develop AND type = push  # run this stage only if it's not a PR
+      env:
+        APP_TYPE=client
+        BB_ENV=prod
+        IOS_APP_BUNDLE_ID="com.madebeauty.client.production"
+        IOS_APP_NAME="MadeBeauty"
+        IOS_APP_DESCRIPTION="MadeBeauty"
+        IOS_PROVISIONING_PROFILE="client-production"
+        IOS_PROVISIONING_PROFILE_ID="222754f3-76d8-4094-9da5-78e105d5f541"
+        FB_APP_ID=877860949068191
+        FB_APP_NAME="Made"
+        FASTLANE_SKIP_WAITING=true
+        FASTLANE_DISTRIBUTE_EXTERNAL=false
+
 
 # run basic node / angular build and test
-install:
-  - echo "install"
-  - make -j8 build-stylist LOG=yes
+install: mobile/scripts/should-skip-build.sh || mobile/scripts/travis_install.sh
 
-# run before main script
-before_script:
-  - cd $TRAVIS_BUILD_DIR
-  # restore encrypted distribution certificate file
-  - openssl aes-256-cbc -K $encrypted_d801e47d7db5_key -iv $encrypted_d801e47d7db5_iv -in mobile/stylist/ios-cert/distribution.p12.enc -out mobile/stylist/ios-cert/distribution.p12 -d
-  - mobile/scripts/install-apple-profile.sh
-  # import distribution certificate to local keychain (required for XCode signing)
-  - IOS_DISTRIBUTION_CERT_PASSWORD="$IOS_DISTRIBUTION_CERT_PASSWORD" mobile/scripts/install-apple-certificate.sh
-
-script:
-  # run coroova prepare and patch/amend necessary assets
-  - mobile/scripts/prepare-stylist-app.sh
-  # actually build, archive and export iOS application
-  - mobile/scripts/build-stylist-app.sh
+# prepare and build iOS app
+script: mobile/scripts/should-skip-build.sh || mobile/scripts/travis_script.sh
 
 before_deploy:
   # install fastlane - a tool which allows uploads to appStoreConnect
   # upload procedure uses proprietary Apple's protocol; fastlane is a
   # wide-known solution for handling this procedure
-  - gem install fastlane --no-ri --no-rdoc --no-document
+  - mobile/scripts/should-skip-build.sh || gem install fastlane --no-ri --no-rdoc --no-document
 
 deploy:
   skip_cleanup: true
@@ -129,7 +128,7 @@ deploy:
     condition: $TRAVIS_PULL_REQUEST = false
   provider: script # indicates we'll run a bash script here
   # actually upload resulting iOS app to appStoreConnect using fastlane
-  script: mobile/scripts/deploy-ios-app.sh
+  script: mobile/scripts/should-skip-build.sh || mobile/scripts/deploy-ios-app.sh
 
 after_script:
   # teardown and remove distribution certificate and provisioning profile
