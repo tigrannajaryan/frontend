@@ -97,7 +97,7 @@ export class InvitationsComponent {
   private addInvitation(phoneNumber: string, clientName?: string): void {
     phoneNumber = phoneNumber.trim();
 
-    // Check for duplicates
+    // check for duplicates
     if (this.invitations.find(e => e.phone === phoneNumber)) {
       showAlert('', `Phone number ${phoneNumber} is already added to the invitation list.`);
       return;

@@ -31,24 +31,24 @@ export interface AppointmentCheckoutParams {
   templateUrl: 'appointment-checkout.component.html'
 })
 export class AppointmentCheckoutComponent {
-  // The following field is returned by the server as a result
+  // the following field is returned by the server as a result
   // of us asking for a preview of what the appointment will look
   // like if we checkout using provided list of services.
   protected previewResponse: AppointmentPreviewResponse;
 
-  // The details of the appointment
+  // the details of the appointment
   protected appointment: Appointment;
 
-  // The state of 2 toggles for tax and card fee
+  // the state of 2 toggles for tax and card fee
   protected hasTaxIncluded: boolean;
   protected hasCardFeeIncluded: boolean;
 
   protected subTotalRegularPrice: number;
 
-  // The initial state of this screen that we need to show
+  // the initial state of this screen that we need to show
   private params: AppointmentCheckoutParams;
 
-  // Services that are currently selected for this checkout
+  // services that are currently selected for this checkout
   // and are visible on screen.
   private selectedServices: CheckOutService[];
 
@@ -61,11 +61,11 @@ export class AppointmentCheckoutComponent {
 
   async ionViewWillEnter(): Promise<void> {
     if (!this.params) {
-      // Entering this view for the first time. Load the data.
+      // entering this view for the first time. Load the data.
       this.params = this.navParams.get('data') as AppointmentCheckoutParams;
       this.appointment = await this.todayService.getAppointmentById(this.params.appointmentUuid);
       this.selectedServices = this.appointment.services.map(el => ({ service_uuid: el.service_uuid }));
-      this.hasTaxIncluded = true; // Enable tax by default
+      this.hasTaxIncluded = true; // enable tax by default
       this.hasCardFeeIncluded = this.appointment.has_card_fee_included;
     }
     this.updatePreview();
@@ -115,10 +115,10 @@ export class AppointmentCheckoutComponent {
    * This callback is called by AddServicesComponent when it is about to close.
    */
   protected onAddServices(addedServices: ServiceItem[]): void {
-    // Update list of selected services
+    // update list of selected services
     this.selectedServices = addedServices.map(serviceItem => ({ service_uuid: serviceItem.service_uuid }));
 
-    // Close AddServicesComponent page and show this page
+    // close AddServicesComponent page and show this page
     this.navCtrl.pop();
   }
 
@@ -132,7 +132,7 @@ export class AppointmentCheckoutComponent {
 
     await this.todayService.changeAppointment(this.params.appointmentUuid, request);
 
-    // Replace current page with checkout confirmation page. We push the new page first
+    // replace current page with checkout confirmation page. We push the new page first
     // and then remove the current page to avoid 2 UI transitions.
     const current = this.navCtrl.length() - 1;
     this.navCtrl.push(PageNames.ConfirmCheckoutComponent);

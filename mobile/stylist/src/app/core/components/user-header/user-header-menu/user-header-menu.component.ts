@@ -19,14 +19,14 @@ export class UserHeaderMenuComponent {
   ) {}
 
   logoutClick(): void {
-    // Note: do not attempt to work with NavController here.
-    // In popovers the NavController is a different instance
+    // note: do not attempt to work with NavController here.
+    // in popovers the NavController is a different instance
     // and attempting to call NavController.setRoot() to
     // return to FirstScreen will result in misterious and
     // spurious errors.
-    // See solution here: https://github.com/ionic-team/ionic/issues/8437#issuecomment-260375966
+    // see solution here: https://github.com/ionic-team/ionic/issues/8437#issuecomment-260375966
 
-    // Hide popover and report selected action
+    // hide popover and report selected action
     this.viewCtrl.dismiss(UserHeaderMenuActions.logout);
   }
 

@@ -100,8 +100,8 @@ export class AppointmentDateComponent {
     if (this.service) {
       this.store.dispatch(new GetDatesAction(this.service, this.client));
     } else {
-      // This page should be used only when a service is already selected.
-      // The opposite case should be considered mostly unrechable. JIC:
+      // this page should be used only when a service is already selected.
+      // the opposite case should be considered mostly unrechable. JIC:
       throw new Error('Service is undefined');
     }
   }

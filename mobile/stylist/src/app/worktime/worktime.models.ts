@@ -1,4 +1,4 @@
-// API models for stylist working days and hours
+// api models for stylist working days and hours
 
 export interface Workday {
   label: string;

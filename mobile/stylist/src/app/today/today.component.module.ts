@@ -20,11 +20,11 @@ import { ProfileEffects } from '~/core/components/user-header/profile.effects';
     IonicPageModule.forChild(TodayComponent),
     CoreModule,
 
-    // Register reducers for today
+    // register reducers for today
     StoreModule.forFeature('today', todayReducer),
     EffectsModule.forFeature([TodayEffects]),
 
-    // User header reducer and effects
+    // user header reducer and effects
     StoreModule.forFeature(profileStatePath, profileReducer),
     EffectsModule.forFeature([ProfileEffects])
   ],

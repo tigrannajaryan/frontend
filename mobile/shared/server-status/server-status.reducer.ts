@@ -18,17 +18,17 @@ export enum serverStatusActionTypes {
  * The actual state that we store for serverStatus.
  */
 export interface ServerStatusState {
-  // Indicates that we are online (not yet used, requires network status detection)
+  // indicates that we are online (not yet used, requires network status detection)
   isOnline: boolean;
 
-  // Indicates that the server is reachable (we received a response)
+  // indicates that the server is reachable (we received a response)
   isServerReachable: boolean;
 
-  // Indicates that there was a general error response from server
+  // indicates that there was a general error response from server
   isServerError: boolean;
   serverErrorText: string;
 
-  // Note: if (isOnline && isServerReachable && !isServerError) then
+  // note: if (isOnline && isServerReachable && !isServerError) then
   // there is no known problem with the server. This means either
   // we received something successfully from the server or maybe we
   // didn't even try to contact it.

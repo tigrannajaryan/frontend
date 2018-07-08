@@ -36,7 +36,7 @@ export class UserHeaderComponent {
   goToHome(): void {
     const previous = this.navCtrl.getPrevious();
     if (previous && previous.component === TodayComponent) {
-      // When click on house icon navigate back if previous route is Today
+      // when click on house icon navigate back if previous route is Today
       this.navCtrl.pop();
     } else {
       this.navCtrl.push(PageNames.Today);
@@ -50,13 +50,13 @@ export class UserHeaderComponent {
 
       switch (action) {
         case UserHeaderMenuActions.logout:
-          // Logout from backend
+          // logout from backend
           this.authApiService.logout();
 
-          // Dismiss user’s state
+          // dismiss user’s state
           this.store.dispatch(new LogoutAction());
 
-          // Erase all previous navigation history and make FirstScreen the root
+          // erase all previous navigation history and make FirstScreen the root
           this.navCtrl.setRoot(PageNames.FirstScreen);
           break;
 

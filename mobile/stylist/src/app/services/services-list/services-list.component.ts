@@ -134,7 +134,7 @@ export class ServicesListComponent {
         this.navCtrl.push(PageNames.Worktime);
       }
     } catch (e) {
-      // Show an error message
+      // show an error message
       showAlert('Error', e);
     }
   }
@@ -174,30 +174,30 @@ export class ServicesListComponent {
    */
   private updateServiceItem(itemToEdit: ServiceItemComponentData, editedItem: ServiceItemComponentData): void {
     if (!editedItem) {
-      // No new data. Most likely just pressed Back. Nothing to do.
+      // no new data. Most likely just pressed Back. Nothing to do.
       return;
     }
 
-    // Find old item
+    // find old item
     let categoryIndex = this.categories.findIndex(x => x.uuid === itemToEdit.categoryUuid);
     let category: ServiceCategory = this.categories[categoryIndex];
     let serviceIndex: number = itemToEdit.service ? category.services.findIndex(x => x === itemToEdit.service) : -1;
 
     if (itemToEdit.categoryUuid !== editedItem.categoryUuid) {
-      // Remove from old category
+      // remove from old category
       if (serviceIndex !== -1) {
         category.services.splice(serviceIndex, 1);
       }
 
-      // Edit item not empty (indicates deletion if it is empty)
+      // edit item not empty (indicates deletion if it is empty)
       if (editedItem.service) {
-        // Not empty. Add to new category.
+        // not empty. Add to new category.
         categoryIndex = this.categories.findIndex(x => x.uuid === editedItem.categoryUuid);
         category = this.categories[categoryIndex];
         category.services.push(editedItem.service);
       }
     } else {
-      // Update the service item
+      // update the service item
       if (serviceIndex === -1) {
         // this is a new item, append at the end
         serviceIndex = category.services.length;

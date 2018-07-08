@@ -13,7 +13,7 @@ import { loading } from '~/core/utils/loading';
 import { GAWrapper } from '~/shared/google-analytics';
 import { LogoutAction } from '~/app.reducers';
 
-// Google Analytics Id
+// google Analytics Id
 const gaTrackingId = 'UA-120898935-1';
 
 @Component({
@@ -48,7 +48,7 @@ export class MyAppComponent {
     const startTime = Date.now();
 
     await this.platform.ready();
-    // The platform is ready and the plugins are available.
+    // the platform is ready and the plugins are available.
 
     this.initGa();
 
@@ -74,7 +74,7 @@ export class MyAppComponent {
 
       this.logger.info('Google Analytics is ready now');
 
-      // Track all screen changes
+      // track all screen changes
       this.nav.viewDidEnter.subscribe(view => this.trackViewChange(view));
     } catch (e) {
       this.logger.warn('Error starting Google Analytics (this is expected if not on the phone):', e);
@@ -85,7 +85,7 @@ export class MyAppComponent {
     const viewClassName: string = (view && view.instance) ? view.instance.constructor.name : 'unknown';
     this.logger.info(`Entered ${viewClassName}`);
 
-    // Remove 'Component' suffix for better readability of GA results.
+    // remove 'Component' suffix for better readability of GA results.
     const viewName = viewClassName.replace(/Component$/, '');
     this.ga.trackView(viewName);
   }
@@ -94,7 +94,7 @@ export class MyAppComponent {
     if (this.authApiService.getAuthToken()) {
       this.logger.info('We have a stored authentication information. Attempting to restore.');
 
-      // We were previously authenticated, let's try to refresh the token
+      // we were previously authenticated, let's try to refresh the token
       // and validate it and show the correct page after that.
       let authResponse;
       try {
@@ -102,7 +102,7 @@ export class MyAppComponent {
       } catch (e) {
         this.logger.error('Error when trying to refresh auth.');
       }
-      // Find out what page should be shown to the user and navigate to
+      // find out what page should be shown to the user and navigate to
       // it while also properly populating the navigation history
       // so that Back buttons work correctly.
       if (authResponse) {
@@ -114,7 +114,7 @@ export class MyAppComponent {
 
     this.logger.info('No valid authenticated session. Start from first screen.');
 
-    // No valid saved authentication, just show the first screen.
+    // no valid saved authentication, just show the first screen.
     this.nav.setRoot(PageNames.FirstScreen, {}, { animate: false }, () => this.statusBar.hide());
   }
 
@@ -127,16 +127,16 @@ export class MyAppComponent {
   }
 
   logout(): void {
-    // Hide the menu
+    // hide the menu
     this.menuCtrl.close();
 
-    // Logout from backend
+    // logout from backend
     this.authApiService.logout();
 
-    // Dismiss user’s state
+    // dismiss user’s state
     this.store.dispatch(new LogoutAction());
 
-    // Erase all previous navigation history and make FirstScreen the root
+    // erase all previous navigation history and make FirstScreen the root
     this.nav.setRoot(PageNames.FirstScreen);
   }
 }

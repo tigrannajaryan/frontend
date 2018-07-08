@@ -2,7 +2,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { BrowserModule } from '@angular/platform-browser';
-import { ErrorHandler, Injector, NgModule } from '@angular/core';
+import { Injector, NgModule } from '@angular/core';
 import { META_REDUCERS, StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { IonicApp, IonicModule } from 'ionic-angular';
@@ -14,10 +14,10 @@ import { StylistServiceProvider } from '~/core/stylist-service/stylist-service';
 import { httpInterceptorProviders } from '~/core/http-interceptors';
 import { CoreModule } from '~/core/core.module';
 import { getMetaReducers, reducers } from './app.reducers';
-import { UnhandledErrorHandler } from '~/shared/unhandled-error-handler';
 import { initSentry } from '~/shared/sentry';
 import { UserOptions } from '~/core/user-options';
 import { AppVersion } from '@ionic-native/app-version';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 initSentry();
 
@@ -47,7 +47,8 @@ initSentry();
      *
      * See: https://github.com/ngrx/platform/blob/master/docs/effects/api.md#forroot
      */
-    EffectsModule.forRoot([])
+    EffectsModule.forRoot([]),
+    StoreDevtoolsModule.instrument()
   ],
 
   bootstrap: [IonicApp],
@@ -64,14 +65,14 @@ initSentry();
     UserOptions,
     AppVersion,
 
-    {
-      // Our custom handler for unhandled exceptions
-      provide: ErrorHandler,
-      useClass: UnhandledErrorHandler
-    },
+    // {
+    //   // our custom handler for unhandled exceptions
+    //   provide: ErrorHandler,
+    //   useClass: UnhandledErrorHandler
+    // },
 
     {
-      // This allows us to inject Logger into getMetaReducers()
+      // this allows us to inject Logger into getMetaReducers()
       provide: META_REDUCERS,
       deps: [Logger],
       useFactory: getMetaReducers

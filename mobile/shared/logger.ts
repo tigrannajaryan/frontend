@@ -12,7 +12,7 @@ const noop = (): any => undefined;
 export class Logger {
 
   private static invokeConsoleMethod(type: string, args?: any): void {
-    // Don't log in production
+    // don't log in production
     if (!ENV.production) {
       const logFn: Function = (console)[type] || console.log || noop;
       logFn.apply(console, args);

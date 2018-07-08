@@ -1,4 +1,4 @@
-// Client to invite
+// client to invite
 
 export interface ClientInvitation {
   name?: string;

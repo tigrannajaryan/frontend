@@ -41,7 +41,7 @@ export class LoginRegisterComponent {
   @loading
   async login(): Promise<void> {
     try {
-      // Call auth API
+      // call auth API
       const authCredentials: AuthCredentials = {
         email: this.formData.email,
         password: this.formData.password,
@@ -49,7 +49,7 @@ export class LoginRegisterComponent {
       };
       const authResponse = await this.authService.doAuth(authCredentials);
 
-      // Find out what page should be shown to the user and navigate to
+      // find out what page should be shown to the user and navigate to
       // it while also properly populating the navigation history
       // so that Back buttons work correctly.
       const pages = createNavHistoryList(authResponse.profile_status);
@@ -71,7 +71,7 @@ export class LoginRegisterComponent {
     };
     await this.authService.registerByEmail(authCredentialsRecord);
 
-    // This is a new user, enable help screens
+    // this is a new user, enable help screens
     this.userOptions.set('showTodayScreenHelp', true);
     this.userOptions.set('showFutureAppointmentHelp', true);
 

@@ -50,7 +50,7 @@ export class AddServicesComponent {
   }
 
   protected addServicesClick(): void {
-    // Call the callback. It is expected that the callback will close this page in a
+    // call the callback. It is expected that the callback will close this page in a
     // way that mirrors how this page was opened (but this page doesn't really care how)
     this.params.onComplete(this.addedServices);
   }

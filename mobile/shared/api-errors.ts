@@ -69,7 +69,7 @@ export class ServerFieldError extends ApiError {
 
     // tslint:disable-next-line:forin
     for (const field in response) {
-      // Create a Map of errors with keys matching field names
+      // create a Map of errors with keys matching field names
       // and values being an array of FieldError instances.
       this.errors.set(
         field,

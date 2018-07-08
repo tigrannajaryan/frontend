@@ -60,24 +60,24 @@ export class UnhandledErrorHandler {
    */
   handleError(error: any): void {
     if (error.rejection) {
-      // This is most likely an exception thrown from async function.
+      // this is most likely an exception thrown from async function.
       error = error.rejection;
     }
 
-    // Get string representation of the error
+    // get string representation of the error
     const errorType = (error.constructor && error.constructor.name) ? `class=${error.constructor.name}` : 'Unknown class';
     const errorDescription = error.toString ? `(${error.toString()})` : '';
 
-    // And log it
+    // and log it
     this.logger.error('Unhandled exception:', errorType, errorDescription, error);
 
-    // Report to GA
+    // report to GA
     this.ga.trackException(`${errorType}: ${errorDescription}`, false)
       .catch(e => {
-        // Ignore errors during reporting, there is nothing else we can do.
+        // ignore errors during reporting, there is nothing else we can do.
       });
 
-    // Based on error type decide how to report it to Sentry and how to show it in the UI
+    // based on error type decide how to report it to Sentry and how to show it in the UI
     let errorUIAction: ErrorUIAction;
     let errorMsg = '';
 
@@ -85,16 +85,16 @@ export class UnhandledErrorHandler {
       errorMsg = error.getStr();
       errorUIAction = ErrorUIAction.showAlert;
     } else if (error instanceof ServerFieldError) {
-      // This case should never end up here, it should be properly
+      // this case should never end up here, it should be properly
       // handled by each specific screen and the incorrect fields
       // should be highlighted in the UI.
       errorMsg = 'Error in the input fields';
       errorUIAction = ErrorUIAction.showAlert;
     } else if (error instanceof ServerErrorResponse && error.status === HttpStatus.unauthorized) {
-      // Erase all previous navigation history and make LoginPage the root
+      // erase all previous navigation history and make LoginPage the root
       errorUIAction = ErrorUIAction.redirectToFirstPage;
     } else if (error instanceof ServerUnreachableOrInternalError) {
-      // Update server status. This will result in server status error banner to appear.
+      // update server status. This will result in server status error banner to appear.
       errorUIAction = ErrorUIAction.markServerUnreachable;
       UnhandledErrorHandler.reportToSentry(error);
     } else {
@@ -103,11 +103,11 @@ export class UnhandledErrorHandler {
       UnhandledErrorHandler.reportToSentry(error);
     }
 
-    // Do UI updates via setTimeout to work around known Angular bug:
+    // do UI updates via setTimeout to work around known Angular bug:
     // https://stackoverflow.com/questions/37836172/angular-2-doesnt-update-view-after-exception-is-thrown)
-    // Also force Application update via Application.tick().
-    // This is the only way I found reliably results in UI showing the error.
-    // Despite Angular team claims the bug is still not fixed in Angular 5.2.9.
+    // also force Application update via Application.tick().
+    // this is the only way I found reliably results in UI showing the error.
+    // despite Angular team claims the bug is still not fixed in Angular 5.2.9.
 
     setTimeout(() => this.performUIAction(errorUIAction, errorMsg));
   }
@@ -119,25 +119,25 @@ export class UnhandledErrorHandler {
         break;
 
       case ErrorUIAction.redirectToFirstPage:
-        // Erase all previous navigation history and make LoginPage the root
+        // erase all previous navigation history and make LoginPage the root
         this.nav.setRoot(this.firstPageName);
         break;
 
       case ErrorUIAction.markServerUnreachable:
-        // Update server status. This will result in server status error banner to appear.
+        // update server status. This will result in server status error banner to appear.
         this.serverStatus.dispatch(new ServerReachabilityAction(false));
         break;
 
       default:
     }
 
-    // Force UI update
+    // force UI update
     const appRef: ApplicationRef = this.injector.get(ApplicationRef);
     appRef.tick();
   }
 
   private popup(msg: string): void {
-    // Show an error message
+    // show an error message
     const alert = this.alertCtrl.create({
       subTitle: msg,
       buttons: ['Dismiss']

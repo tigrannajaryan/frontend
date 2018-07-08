@@ -43,9 +43,9 @@ export class BaseApiService {
   }
 
   protected request<ResponseType>(method: string, apiPath: string, data?: any, queryParams?: HttpParams): Promise<ResponseType> {
-    // For help on how to use HttpClient see https://angular.io/guide/http
+    // for help on how to use HttpClient see https://angular.io/guide/http
 
-    // Prepare the header and the body
+    // prepare the header and the body
     const httpOptions = {
       headers: new HttpHeaders({
         // TODO: are standard HTTP headers defined as a constant anywhere?
@@ -60,7 +60,7 @@ export class BaseApiService {
     return this.http.request<ResponseType>(method, url, httpOptions)
       .toPromise()
       .then(response => {
-        // Successful response. Let ServerStatus know about it.
+        // successful response. Let ServerStatus know about it.
         this.serverStatus.dispatch(new ServerIsOkAction());
         return response;
       })
@@ -75,17 +75,17 @@ export class BaseApiService {
 
     if (e instanceof HttpErrorResponse) {
       if (!e.status) {
-        // No response at all, probably no network connection or server is down.
+        // no response at all, probably no network connection or server is down.
         throw new ServerUnreachableError();
       } else {
-        // We have a response, check the status.
+        // we have a response, check the status.
         switch (e.status) {
           case HttpStatus.badRequest:
             if (e.error.non_field_errors) {
-              // The request was bad but not related to fields
+              // the request was bad but not related to fields
               throw new ServerNonFieldError(e.status, e.error.non_field_errors);
             }
-            // The request had invalid fields
+            // the request had invalid fields
             throw new ServerFieldError(e.error);
 
           case HttpStatus.unauthorized:
@@ -101,7 +101,7 @@ export class BaseApiService {
       }
     }
 
-    // Server returned something we don't understand or some other unexpected error happened.
+    // server returned something we don't understand or some other unexpected error happened.
     throw new ServerUnknownError();
   }
 
