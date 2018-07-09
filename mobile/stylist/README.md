@@ -73,6 +73,7 @@ To fix this problem you should run the following commands:
 `node PROJECT_ROOT/mobile/stylist/node_modules/node-sass/scripts/install.js`
 
 `npm rebuild node-sass`
+
 - Unsupported npm version gives you an error while installing node_modules similar to the following:
 
 `17166 error code EINTEGRITY`
@@ -82,6 +83,23 @@ To fix this problem you should run the following commands:
 `17168 verbose exit [ 1, true ]`
 
 To fix the issue - update npm version.
+
+- Register user returns error message:
+
+`API request POST http://betterbeauty.local:8000/api/v1/auth/register failed: {"headers":{"normalizedNames":{},"lazyUpdate":null,"headers":{}},"status":0,"statusText":"Unknown Error","url":null,"ok":false,"name":"HttpErrorResponse","message":"Http failure response for (unknown url): 0 Unknown Error","error":{"isTrusted":true}}`
+
+To fix this issue create a file `environment.local.ts` in `app/src/environments` and fill it with the content:
+
+`export const ENV = {`
+`  // apiUrl: 'http://betterbeauty.local:8000/api/v1/', // local backend`
+`  apiUrl: 'https://admindev.betterbeauty.io/api/v1/', // staging url`
+`  production: false,`
+`  version: '_DEV_'`
+`};`
+
+Then restart server:
+
+`npm run ionic:serve`
 
 # Android App
 
