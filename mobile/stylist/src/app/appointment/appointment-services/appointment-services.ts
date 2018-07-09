@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { IonicPage, NavController } from 'ionic-angular';
 
-import { componentUnloaded } from '~/core/utils/component-unloaded';
+import { componentUnloaded } from '~/shared/component-unloaded';
 import { ServiceCategory, ServiceItem } from '~/core/stylist-service/stylist-models';
 
 import {

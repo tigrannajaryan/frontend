@@ -1,0 +1,13 @@
+{
+  "invalid_code": {
+    "code": "form_is_invalid",
+    "field_errors": {
+      "code": [{
+        "code": "invalid_code",
+        "details": {
+          "description": "Wrong verification code is entered"
+        }
+      }]
+    }
+  }
+}

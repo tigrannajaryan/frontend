@@ -1,27 +1,38 @@
+import { ErrorHandler, Injector, NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
-import { StatusBar } from '@ionic-native/status-bar';
-import { SplashScreen } from '@ionic-native/splash-screen';
+import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
-import { ErrorHandler, NgModule } from '@angular/core';
+
+import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
+import { SplashScreen } from '@ionic-native/splash-screen';
+import { StatusBar } from '@ionic-native/status-bar';
+import { IonicStorageModule } from '@ionic/storage';
+
 import { META_REDUCERS, StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
-import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 
 import { Logger } from '~/shared/logger';
+import { ServerStatusTracker } from '~/shared/server-status-tracker';
 
-import { MyAppComponent } from './app.component';
-import { SharedModule } from '~/core/shared.module';
-import { getMetaReducers, reducers } from './app.reducers';
+import { UnhandledErrorHandler } from '~/core/unhandled-error-handler';
+import { AuthServiceMock } from '~/core/api/auth-service.mock';
+
+import { ClientAppComponent } from '~/app.component';
+import { getMetaReducers, reducers } from '~/app.reducers';
+
+import { AuthEffects } from '~/core/effects/auth.effects';
+import { ErrorsEffects } from '~/core/effects/errors.effects';
 
 @NgModule({
   declarations: [
-    MyAppComponent
+    ClientAppComponent
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
-    IonicModule.forRoot(MyAppComponent, {backButtonText: '', backButtonIcon: 'md-arrow-back'}),
-    SharedModule,
+    ReactiveFormsModule,
+    IonicModule.forRoot(ClientAppComponent, {backButtonText: '', backButtonIcon: 'ios-arrow-round-back'}),
+    IonicStorageModule.forRoot(),
 
     /**
      * StoreModule.forRoot is imported once in the root module, accepting a reducer
@@ -39,18 +50,32 @@ import { getMetaReducers, reducers } from './app.reducers';
      *
      * See: https://github.com/ngrx/platform/blob/master/docs/effects/api.md#forroot
      */
-    EffectsModule.forRoot([])
+    EffectsModule.forRoot([
+      AuthEffects,
+      ErrorsEffects
+    ])
   ],
 
   bootstrap: [IonicApp],
 
   entryComponents: [
-    MyAppComponent
+    ClientAppComponent
   ],
   providers: [
+    Logger,
     StatusBar,
     SplashScreen,
-    { provide: ErrorHandler, useClass: IonicErrorHandler },
+
+    // services
+    AuthServiceMock,
+
+    // ServerStatusTracker,
+
+    {
+      // Our custom handler for unhandled exceptions
+      provide: ErrorHandler,
+      useClass: UnhandledErrorHandler
+    },
 
     {
       // This allows us to inject Logger into getMetaReducers()
@@ -60,4 +85,14 @@ import { getMetaReducers, reducers } from './app.reducers';
     }
   ]
 })
-export class AppModule { }
+export class AppModule {
+  /**
+   * Allows for retrieving singletons using `AppModule.injector.get(MyService)`
+   * This is good to prevent injecting the service as constructor parameter.
+   */
+  static injector: Injector;
+
+  constructor(injector: Injector) {
+    AppModule.injector = injector;
+  }
+}

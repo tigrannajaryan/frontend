@@ -1,0 +1,11 @@
+<ion-content>
+  <form (ngSubmit)="submit()">
+    <ion-item>
+      <ion-label>Enter you phone</ion-label>
+      <ion-input type="tel" [formControl]="phone"></ion-input>
+    </ion-item>
+    <ion-item>
+      <button ion-button type="submit" [disabled]="phone.invalid">Next</button>
+    </ion-item>
+  </form>
+</ion-content>

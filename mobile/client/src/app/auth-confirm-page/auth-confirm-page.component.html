@@ -1,0 +1,13 @@
+<ion-header><ion-navbar></ion-navbar></ion-header>
+
+<ion-content>
+  <form (ngSubmit)="submit()">
+    <ion-item>
+      <ion-label>Enter code</ion-label>
+      <ion-input type="tel" [formControl]="code"></ion-input>
+    </ion-item>
+    <ion-item>
+      <button ion-button type="submit" [disabled]="code.invalid">Next</button>
+    </ion-item>
+  </form>
+</ion-content>

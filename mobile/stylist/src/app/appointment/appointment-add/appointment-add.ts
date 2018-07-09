@@ -8,7 +8,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { predicateValidator } from '~/shared/validators';
 import { loading } from '~/core/utils/loading';
 import { showAlert } from '~/core/utils/alert';
-import { componentUnloaded } from '~/core/utils/component-unloaded';
+import { componentUnloaded } from '~/shared/component-unloaded';
 import { PageNames } from '~/core/page-names';
 import { ServiceItem } from '~/core/stylist-service/stylist-models';
 

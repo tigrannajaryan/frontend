@@ -46,10 +46,10 @@
         <splash density="port-xxxhdpi" src="resources/android/splash/drawable-port-xxxhdpi-screen.png" />
     </platform>
     <platform name="ios">
-      <config-file parent="/resources" target="./res/values/strings.xml">
-        <string name="fb_app_id">1332946860139961</string>
-        <string name="fb_app_name">bb</string>
-      </config-file>
+        <config-file parent="/resources" target="./res/values/strings.xml">
+            <string name="fb_app_id">1332946860139961</string>
+            <string name="fb_app_name">bb</string>
+        </config-file>
         <allow-intent href="itms:*" />
         <allow-intent href="itms-apps:*" />
         <icon height="57" src="resources/ios/icon/icon.png" width="57" />
@@ -94,4 +94,5 @@
     <plugin name="cordova-ios-plugin-no-export-compliance" spec="0.0.5" />
     <engine name="android" spec="~7.0.0" />
     <plugin name="cordova-plugin-facebook4" spec="^2.1.0" />
+    <plugin name="cordova-sqlite-storage" spec="^2.3.3" />
 </widget>

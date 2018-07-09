@@ -3,8 +3,8 @@ import { IonicPage } from 'ionic-angular';
 
 @IonicPage()
 @Component({
-  selector: 'page-first-screen',
-  templateUrl: 'first-screen.html'
+  selector: 'page-services',
+  templateUrl: 'services-page.component.html'
 })
-export class FirstScreenComponent {
+export class ServicesPageComponent {
 }
