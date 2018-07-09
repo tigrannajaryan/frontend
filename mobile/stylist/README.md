@@ -56,6 +56,32 @@ trigger the breakpoints.
 To run the tests in headless mode (e.g. for CI) use `npm run test-headless`.
 Note: to run successfully on VSTS this requires Hosted VS2017 agent.
 
+# Known Issues
+- Errors about missing modules are shown when starting up the application:
+You need to create a symlink alias. Type the following to the command line or terminal:
+
+`mklink /D PROJECT_ROOT\mobile\stylist\src\app\shared PROJECT_ROOT\mobile\shared` - for Windows;
+
+`ln -s PROJECT_ROOT\mobile\shared PROJECT_ROOT\mobile\stylist\src\app\shared` - for MacOS and Linux;
+
+- node-sass shows show you the following error message while setting up the project:
+
+`Error: ENOENT: no such file or directory, scandir 'PROJECT_ROOT/mobile/stylist/node_modules/node-sass/vendor'`
+
+To fix this problem you should run the following commands:
+
+`node PROJECT_ROOT/mobile/stylist/node_modules/node-sass/scripts/install.js`
+
+`npm rebuild node-sass`
+- Unsupported npm version gives you an error while installing node_modules similar to the following:
+
+`17166 error code EINTEGRITY`
+
+`17167 error sha512-W2Cr4iDg3EHANbuOqjobJtYhHrptIEJ7mBQZTqp3qh1fSRm2yNcnt8sgmfqbotl2Qh2nCKb3qLVv3v8v3DoRkw== integrity checksum failed when using sha512: wanted sha512-W2Cr4iDg3EHANbuOqjobJtYhHrptIEJ7mBQZTqp3qh1fSRm2yNcnt8sgmfqbotl2Qh2nCKb3qLVv3v8v3DoRkw== but got sha512-EctwPdNttbuuucRR7WdmXgsST4gcnOFPt5CDc+TpCggVrlvnhNfyJ4h8jYAiwkWe0fpyu8rgJfHLIXQB1U1c9Q==. (661037 bytes)`
+
+`17168 verbose exit [ 1, true ]`
+
+To fix the issue - update npm version.
 
 # Android App
 
