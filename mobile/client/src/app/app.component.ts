@@ -36,6 +36,7 @@ export class ClientAppComponent implements OnInit {
     this.statusBar.styleDefault();
     this.splashScreen.hide();
 
+    // TODO: use try/catch
     const token = await getToken();
     if (token) {
       this.rootPage = PageNames.Services;
