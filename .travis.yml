@@ -9,5 +9,3 @@ install:
   - echo "TRAVIS_COMMIT_RANGE $TRAVIS_COMMIT_RANGE"
 
 script: true
-
-deploy: true
