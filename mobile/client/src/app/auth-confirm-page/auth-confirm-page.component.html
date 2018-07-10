@@ -1,13 +1,36 @@
 <ion-header><ion-navbar></ion-navbar></ion-header>
 
-<ion-content>
-  <form (ngSubmit)="submit()">
-    <ion-item>
-      <ion-label>Enter code</ion-label>
-      <ion-input type="tel" [formControl]="code"></ion-input>
-    </ion-item>
-    <ion-item>
-      <button ion-button type="submit" [disabled]="code.invalid">Next</button>
-    </ion-item>
-  </form>
+<ion-content class="AuthConfirmPage">
+  <ion-grid fixed>
+    <ion-row justify-content-center>
+      <div class="H1">
+        Verification code
+        <div class="H1-subtitle">
+          We’ve just sent you a&nbsp;code via text&nbsp;to
+        </div>
+      </div>
+    </ion-row>
+    <ion-row justify-content-center>
+      <!-- TODO: add real phone -->
+      <span>+1 (378) 400-1234&nbsp;</span><span>Edit</span>
+    </ion-row>
+    <ion-row>
+      <form (ngSubmit)="submit()">
+        <ion-row justify-content-center>
+          <ion-item class="FormControl AuthConfirmPage-codeControl">
+            <ion-input type="tel" ngxInputNumber [formControl]="code" (keydown)="verifyCode($event)"></ion-input>
+          </ion-item>
+        </ion-row>
+        <ion-row justify-content-center>
+          <div class="AuthConfirmPage-digits">
+            <div *ngFor="let digit of digits; let index = index" class="AuthConfirmPage-digit is-number{{ index + 1 }}"></div>
+          </div>
+        </ion-row>
+        <button ion-button class="Button" type="submit" [disabled]="code.invalid">Next</button>
+      </form>
+    </ion-row>
+    <ion-row justify-content-center>
+      <span>Didn’t get a&nbsp;code? </span><span>Send a&nbsp;new one</span>
+    </ion-row>
+  </ion-grid>
 </ion-content>

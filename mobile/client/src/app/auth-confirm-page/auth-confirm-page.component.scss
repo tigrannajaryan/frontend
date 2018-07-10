@@ -1,0 +1,39 @@
+.AuthConfirmPage {
+  $maxCodeLength: 6;
+  $digitWidth: 38px;
+  $digitHeight: 48px;
+  $digitOffset: 8px;
+  $width: $digitWidth *  $maxCodeLength + $digitOffset * ($maxCodeLength - 1);
+
+  .AuthConfirmPage-codeControl {
+    width: $width;
+
+    .text-input { // ionic’s
+      width: 100%;
+      padding-left: 13.2px;
+      font-size: $t-h3;
+      letter-spacing: 34.4px;
+    }
+  }
+
+  .AuthConfirmPage-digits {
+    position: relative;
+    width: $width;
+    pointer-events: none;
+  }
+
+  .AuthConfirmPage-digit {
+    position: absolute;
+    top: -1 * $digitHeight;
+    width: $digitWidth;
+    height: $digitHeight;
+    border: 1px solid color($grayscale, 200);
+    border-radius: 4px;
+
+    @for $i from 1 through $maxCodeLength {
+      &.is-number#{$i} {
+        left: ($digitWidth + $digitOffset) * ($i - 1);
+      }
+    }
+  }
+}

@@ -14,7 +14,7 @@ async function getStorage(): Promise<Storage> {
 
 export async function saveToken(tokenData: AuthTokenModel): Promise<void> {
   const storage = await getStorage();
-  logger.warn('SAVING TOKEN…', tokenData);
+  logger.warn('SAVE TOKEN', tokenData);
   return storage.set(TOKEN_KEY, JSON.stringify(tokenData));
 }
 
@@ -28,6 +28,6 @@ export async function getToken(): Promise<AuthTokenModel> {
 
 export async function deleteToken(): Promise<void> {
   const storage = await getStorage();
-  logger.warn('REMOVING TOKEN…');
+  logger.warn('REMOVE TOKEN');
   return storage.remove(TOKEN_KEY);
 }

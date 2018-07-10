@@ -27,7 +27,7 @@ export class AuthServiceMock {
         setTimeout(() => {
           observer.next({});
           // observer.error(new Error('403'));
-        }, 1500);
+        }, 100);
       })
     );
   }
@@ -35,11 +35,13 @@ export class AuthServiceMock {
   confirmCode(params: ConfirmCodeParams): Observable<ConfirmCodeResponse> {
     return this.wrapError<ConfirmCodeResponse>(
       Observable.create(observer => {
-        observer.next({
-          token: faker.internet.password(),
-          created_at: Number(new Date())
-        });
-        // observer.error(AuthErrors.invalid_code);
+        setTimeout(() => {
+          observer.next({
+            token: faker.internet.password(),
+            created_at: Number(new Date())
+          });
+          // observer.error(AuthErrors.invalid_code);
+         }, 2000);
       })
     );
   }

@@ -12,6 +12,7 @@
 }
 
 .Button {
+  width: 100%;
   min-height: 55px;
   background-color: color($colors, primary);
   border-radius: 10px;
@@ -49,10 +50,5 @@
 
   .AuthPage-phoneControl {
     width: 144px;
-  }
-
-  .AuthPage-submit {
-    width: 100%;
-    margin-top: 16px;
   }
 }

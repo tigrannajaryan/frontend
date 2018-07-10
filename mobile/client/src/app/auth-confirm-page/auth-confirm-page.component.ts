@@ -11,18 +11,20 @@ import {
 } from '~/core/reducers/auth.reducer';
 import { AuthEffects } from '~/core/effects/auth.effects';
 
+export const CODE_LENGTH = 6;
+
 @IonicPage()
 @Component({
   selector: 'page-auth-confirm',
   templateUrl: 'auth-confirm-page.component.html'
 })
 export class AuthConfirmPageComponent {
-  static CODE_LENGTH = 6;
+  digits = Array(CODE_LENGTH).fill(undefined);
 
   code: FormControl = new FormControl('', [
     Validators.required,
-    Validators.minLength(AuthConfirmPageComponent.CODE_LENGTH),
-    Validators.maxLength(AuthConfirmPageComponent.CODE_LENGTH)
+    Validators.minLength(CODE_LENGTH),
+    Validators.maxLength(CODE_LENGTH)
   ]);
 
   constructor(
@@ -33,6 +35,12 @@ export class AuthConfirmPageComponent {
   }
 
   ionViewWillEnter(): void {
+    this.codeSubscription = this.code.statusChanges.subscribe(() => {
+      if (this.code.valid) {
+        this.store.dispatch(new ConfirmCodeAction(this.code.value));
+      }
+    });
+
     this.subscription = this.authEffects.saveToken
       .subscribe((isTokenSaved: boolean) => {
         if (isTokenSaved) {
@@ -43,10 +51,21 @@ export class AuthConfirmPageComponent {
   }
 
   ionViewWillLeave(): void {
+    this.codeSubscription.unsubscribe();
     this.subscription.unsubscribe();
   }
 
-  submit(): void {
-    this.store.dispatch(new ConfirmCodeAction(this.code.value));
+  verifyCode(event: Event): void {
+    const code: number = event.which || Number(event.code);
+    const key: string = event.key || String.fromCharCode(code);
+
+    if (!isNaN(parseInt(key, 10)) && event.target.value.length === CODE_LENGTH - 1) {
+      event.target.selectionStart = event.target.selectionEnd = 0;
+      event.target.scrollLeft = 0;
+      event.target.blur();
+      setTimeout(() => {
+        this.code.patchValue(event.target.value + key);
+      });
+    }
   }
 }

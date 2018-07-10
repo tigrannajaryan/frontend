@@ -22,7 +22,7 @@
             <ion-input madePhoneInput type="tel" [countryCode]="countryCode.value" [formControl]="phone"></ion-input>
           </ion-item>
         </ion-row>
-        <button ion-button class="Button AuthPage-submit" [ngClass]="{'is-loading': isLoading}" type="submit" [disabled]="isLoading || phone.invalid">
+        <button ion-button class="Button" [ngClass]="{'is-loading': isLoading}" type="submit" [disabled]="isLoading || phone.invalid">
           {{ isLoading ? 'Loading…' : 'Continue' }}
         </button>
       </form>
