@@ -33,8 +33,16 @@ $app-direction: ltr;
 // colors so you can add, rename and remove colors as needed.
 // The "primary" color is the only required color in the map.
 
+$grayscale: (
+  200:        #ECECEC,
+  500:        #999999,
+  800:        black,
+);
+
 $colors: (
-  primary:    #F2C8A1,
+  primary:    #FEE0D0,
+
+  orange:     #FBB597,
 );
 
 
@@ -75,3 +83,22 @@ $colors: (
 // http://ionicframework.com/docs/ionicons/
 
 @import "ionic.ionicons";
+
+
+// Typography
+// --------------------------------------------------
+$t-h1:    38px !default;
+$t-h2:    28px !default;
+$t-h3:    21px !default;
+$t-h4:    18px !default;
+$t-base:  16px !default;
+$t-small: 13px !default;
+
+
+
+
+
+
+
+
+

@@ -24,8 +24,10 @@ export class AuthServiceMock {
   getCode(params: GetCodeParams): Observable<GetCodeResponse> {
     return this.wrapError<GetCodeResponse>(
       Observable.create(observer => {
-        observer.next({});
-        // observer.error(new Error('403'));
+        setTimeout(() => {
+          observer.next({});
+          // observer.error(new Error('403'));
+        }, 1500);
       })
     );
   }

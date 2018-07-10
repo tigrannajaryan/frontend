@@ -21,7 +21,7 @@ export function getUnifiedPhoneValue(phoneNumber: string, countryCode: CountryCo
   selector: '[madePhoneInput]'
 })
 export class PhoneInputDirective {
-  @Input() countryCode = DEFAULT_COUNTRY_CODE;
+  @Input() countryCode: CountryCode = DEFAULT_COUNTRY_CODE;
 
   constructor(
     private el: ElementRef

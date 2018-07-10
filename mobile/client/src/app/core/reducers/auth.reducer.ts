@@ -17,7 +17,9 @@ export enum authActionTypes {
   CONFIRM_CODE = 'AUTH_CONFIRM_CODE',
   CONFIRM_CODE_LOADING = 'AUTH_CONFIRM_CODE_LOADING',
   CONFIRM_CODE_ERROR = 'AUTH_CONFIRM_CODE_ERROR',
-  CONFIRM_CODE_SUCCESS = 'AUTH_CONFIRM_CODE_SUCCESS'
+  CONFIRM_CODE_SUCCESS = 'AUTH_CONFIRM_CODE_SUCCESS',
+
+  RESET = 'AUTH_RESET'
 }
 
 export class RequestCodeAction implements Action {
@@ -30,17 +32,20 @@ export class RequestCodeAction implements Action {
 export class RequestCodeLoadingAction implements Action {
   readonly type = authActionTypes.REQUEST_CODE_LOADING;
   readonly requestState = RequestState.Loading;
+  readonly requestType = AuthRequestTypes.RequestCode;
 }
 
 export class RequestCodeErrorAction implements Action {
   readonly type = authActionTypes.REQUEST_CODE_ERROR;
   readonly requestState = RequestState.Failed;
+  readonly requestType = AuthRequestTypes.RequestCode;
   constructor(public error: Error) {}
 }
 
 export class RequestCodeSuccessAction implements Action {
   readonly type = authActionTypes.REQUEST_CODE_SUCCESS;
   readonly requestState = RequestState.Succeded;
+  readonly requestType = AuthRequestTypes.RequestCode;
 }
 
 export class ConfirmCodeAction implements Action {
@@ -53,18 +58,25 @@ export class ConfirmCodeAction implements Action {
 export class ConfirmCodeLoadingAction implements Action {
   readonly type = authActionTypes.CONFIRM_CODE_LOADING;
   readonly requestState = RequestState.Loading;
+  readonly requestType = AuthRequestTypes.ConfirmCode;
 }
 
 export class ConfirmCodeErrorAction implements Action {
   readonly type = authActionTypes.CONFIRM_CODE_ERROR;
   readonly requestState = RequestState.Failed;
+  readonly requestType = AuthRequestTypes.ConfirmCode;
   constructor(public error: Error) {}
 }
 
 export class ConfirmCodeSuccessAction implements Action {
   readonly type = authActionTypes.CONFIRM_CODE_SUCCESS;
   readonly requestState = RequestState.Succeded;
+  readonly requestType = AuthRequestTypes.ConfirmCode;
   constructor(public token: AuthTokenModel) {}
+}
+
+export class ResetAction implements Action {
+  readonly type = authActionTypes.RESET;
 }
 
 type Actions =
@@ -75,7 +87,8 @@ type Actions =
   | ConfirmCodeAction
   | ConfirmCodeLoadingAction
   | ConfirmCodeSuccessAction
-  | ConfirmCodeErrorAction;
+  | ConfirmCodeErrorAction
+  | ResetAction;
 
 export interface AuthState {
   phone?: string;
@@ -93,6 +106,11 @@ const initialState: AuthState = {
 
 export function authReducer(state: AuthState = initialState, action: Actions): AuthState {
   switch (action.type) {
+    case authActionTypes.RESET:
+      return {
+        ...initialState
+      };
+
     case authActionTypes.REQUEST_CODE:
     case authActionTypes.CONFIRM_CODE:
       return {
@@ -110,7 +128,8 @@ export function authReducer(state: AuthState = initialState, action: Actions): A
     case authActionTypes.CONFIRM_CODE_LOADING:
       return {
         ...state,
-        requestState: action.requestState
+        requestState: action.requestState,
+        requestType: action.requestType
       };
 
     case authActionTypes.REQUEST_CODE_ERROR:
@@ -147,9 +166,16 @@ export const selectToken = createSelector(
   (state: AuthState): AuthTokenModel | undefined => state.token
 );
 
-export const selectRequestCodeFailed = createSelector(
+export const selectRequestCodeLoading = createSelector(
   selectAuthFromState,
   (state: AuthState): boolean =>
     state.requestType === AuthRequestTypes.RequestCode &&
-    state.requestState === RequestState.Failed
+    state.requestState === RequestState.Loading
+);
+
+export const selectRequestCodeSucceded = createSelector(
+  selectAuthFromState,
+  (state: AuthState): boolean =>
+    state.requestType === AuthRequestTypes.RequestCode &&
+    state.requestState === RequestState.Succeded
 );

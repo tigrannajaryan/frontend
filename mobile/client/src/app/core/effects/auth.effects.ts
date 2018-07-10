@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions, Effect } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
+import { timer } from 'rxjs/observable/timer';
 
 import { PageNames } from '~/core/page-names';
 import { saveToken } from '~/core/utils/token-utils';
@@ -25,6 +26,7 @@ import {
   RequestCodeLoadingAction,
   RequestCodeSuccessAction,
   selectPhone,
+  selectRequestCodeSucceded,
   selectToken
 } from '~/core/reducers/auth.reducer';
 import { UnhandledErrorAction } from '~/core/reducers/errors.reducer';
@@ -32,10 +34,6 @@ import { SetPhoneAction } from '~/core/reducers/profile.reducer';
 
 @Injectable()
 export class AuthEffects {
-
-  @Effect() getCodeLoading = this.actions
-    .ofType(authActionTypes.REQUEST_CODE)
-    .map(() => new RequestCodeLoadingAction());
 
   @Effect() getCodeRequest = this.actions
     .ofType(authActionTypes.REQUEST_CODE)
@@ -46,6 +44,16 @@ export class AuthEffects {
           .map(() => new RequestCodeSuccessAction())
           .catch((error: Error) => Observable.of(new RequestCodeErrorAction(error)))
       );
+    });
+
+  @Effect({ dispatch: false }) getCodeLoading = this.actions
+    .ofType(authActionTypes.REQUEST_CODE)
+    .delay(250)
+    .withLatestFrom(this.store)
+    .map(([action, store]) => {
+      if (!selectRequestCodeSucceded(store)) {
+        this.store.dispatch(new RequestCodeLoadingAction());
+      }
     });
 
   @Effect() confirmCodeLoading = this.actions
