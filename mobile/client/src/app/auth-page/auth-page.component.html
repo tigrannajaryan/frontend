@@ -1,8 +1,15 @@
 <ion-content>
   <form (ngSubmit)="submit()">
     <ion-item>
+      <ion-select [formControl]="countryCode" (ionChange)="countrySelected()">
+        <ion-option *ngFor="let country of countries" [value]="country.alpha2">
+          {{ country.name }} {{ country.countryCallingCodes[0] }}
+        </ion-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
       <ion-label>Enter you phone</ion-label>
-      <ion-input type="tel" [formControl]="phone"></ion-input>
+      <ion-input madePhoneInput type="tel" [countryCode]="countryCode.value" [formControl]="phone"></ion-input>
     </ion-item>
     <ion-item>
       <button ion-button type="submit" [disabled]="phone.invalid">Next</button>

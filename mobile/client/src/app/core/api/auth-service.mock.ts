@@ -11,7 +11,7 @@ import {
 } from '~/core/api/auth.models';
 import { ApiErrorAction } from '~/core/reducers/errors.reducer';
 
-import AuthErrors from '~/core/api/auth.errors.json';
+import AuthErrors from '~/core/data/auth.errors.json';
 
 @Injectable()
 export class AuthServiceMock {

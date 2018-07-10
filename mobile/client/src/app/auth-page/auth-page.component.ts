@@ -7,17 +7,19 @@ import { PageNames } from '~/core/page-names';
 import { AuthState, RequestCodeAction } from '~/core/reducers/auth.reducer';
 import { phoneValidator } from '~/core/validators/phone.validator';
 
+import { DEFAULT_COUNTRY_CODE, getUnifiedPhoneValue } from '~/core/directives/phone-input.directive';
+import Countries from 'country-data/data/countries.json';
+
 @IonicPage()
 @Component({
   selector: 'page-auth',
   templateUrl: 'auth-page.component.html'
 })
 export class AuthPageComponent {
-  // TODO:
-  // 1. extract to phone input directive
-  // 2. use asYouType formatter to format the phone
-  // 3. highlight error when 10 digits or on submit
-  phone: FormControl = new FormControl('', [Validators.required, phoneValidator()]);
+  countries = Countries.filter(country => country.countryCallingCodes.length > 0);
+
+  countryCode: FormControl = new FormControl(DEFAULT_COUNTRY_CODE, [Validators.required]);
+  phone: FormControl = new FormControl('', [Validators.required, phoneValidator(DEFAULT_COUNTRY_CODE)]);
 
   constructor(
     private navCtrl: NavController,
@@ -25,8 +27,13 @@ export class AuthPageComponent {
   ) {
   }
 
+  countrySelected(): string {
+    this.phone.setValidators([Validators.required, phoneValidator(this.countryCode.value)]);
+  }
+
   submit(): void {
-    this.store.dispatch(new RequestCodeAction(this.phone.value));
+    const phone = getUnifiedPhoneValue(this.phone.value, this.countryCode.value);
+    this.store.dispatch(new RequestCodeAction(phone));
 
     this.navCtrl.push(PageNames.AuthConfirm);
   }

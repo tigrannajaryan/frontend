@@ -1,13 +1,9 @@
 import { AbstractControl, ValidatorFn } from '@angular/forms';
-import { parseNumber } from 'libphonenumber-js';
+import { isValidNumber } from 'libphonenumber-js';
 
-const defaultCountry = 'US';
-
-export function phoneValidator(): ValidatorFn {
+export function phoneValidator(countryCode: string): ValidatorFn {
   return (control: AbstractControl): {[key: string]: any} | null => {
-    const { phone } = parseNumber(control.value, defaultCountry);
-
     // tslint:disable-next-line:no-null-keyword
-    return phone ? null : { phone: {value: control.value} };
+    return isValidNumber(control.value, countryCode) ? null : { phone: {value: control.value} };
   };
 }
