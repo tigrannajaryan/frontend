@@ -1,5 +1,5 @@
 import { Directive, ElementRef, HostListener, Input } from '@angular/core';
-import { AsYouType, CountryCode, parseNumber, TelephoneNumber } from 'libphonenumber-js';
+import { AsYouType, CountryCode, parseNumber } from 'libphonenumber-js';
 
 export enum NumberFormat {
   National = 'National',
@@ -20,7 +20,7 @@ enum SpecialKeysCodes {
 
 export const DEFAULT_COUNTRY_CODE = 'US';
 
-export function getUnifiedPhoneValue(phoneNumber: string, countryCode: CountryCode = DEFAULT_COUNTRY_CODE): TelephoneNumber {
+export function getUnifiedPhoneValue(phoneNumber: string, countryCode: CountryCode = DEFAULT_COUNTRY_CODE): string {
   const { countryCallingCode, phone } = parseNumber(phoneNumber, countryCode, { extended: true });
   return `+${countryCallingCode}${phone}`;
 }

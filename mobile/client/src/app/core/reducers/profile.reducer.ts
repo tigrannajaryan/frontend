@@ -1,4 +1,4 @@
-import { Action, createFeatureSelector, createSelector } from '@ngrx/store';
+import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 import { RequestState } from '~/core/api/request.models';
 import { ProfileModel } from '~/core/api/profile.models';

@@ -12,7 +12,6 @@ import { META_REDUCERS, StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 
 import { Logger } from '~/shared/logger';
-import { ServerStatusTracker } from '~/shared/server-status-tracker';
 
 import { UnhandledErrorHandler } from '~/core/unhandled-error-handler';
 import { AuthServiceMock } from '~/core/api/auth-service.mock';
@@ -69,6 +68,8 @@ import { ErrorsEffects } from '~/core/effects/errors.effects';
     // services
     AuthServiceMock,
 
+    // TODO: is it needed?
+    // import { ServerStatusTracker } from '~/shared/server-status-tracker';
     // ServerStatusTracker,
 
     {

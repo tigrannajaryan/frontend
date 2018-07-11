@@ -2,13 +2,12 @@ import { Component } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { IonicPage, NavController } from 'ionic-angular';
 import { Store } from '@ngrx/store';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 
 import { PageNames } from '~/core/page-names';
 import {
   AuthState,
   ConfirmCodeAction,
-  RequestCodeErrorAction,
   selectConfirmCodeLoading,
   selectPhone
 } from '~/core/reducers/auth.reducer';
@@ -24,7 +23,7 @@ export const CODE_LENGTH = 6;
 export class AuthConfirmPageComponent {
   digits = Array(CODE_LENGTH).fill(undefined);
 
-  phone: Subscription<string>;
+  phone: Observable<string>;
   code: FormControl = new FormControl('', [
     Validators.required,
     Validators.minLength(CODE_LENGTH),
@@ -32,6 +31,10 @@ export class AuthConfirmPageComponent {
   ]);
 
   isLoading = false;
+
+  codeSubscription: Subscription;
+  saveTokenSubscription: Subscription;
+  loadingSubscription: Subscription;
 
   constructor(
     private authEffects: AuthEffects,
@@ -70,7 +73,7 @@ export class AuthConfirmPageComponent {
     this.loadingSubscription.unsubscribe();
   }
 
-  verifyCode(event: Event): void {
+  verifyCode(event: any): void {
     const code: number = event.which || Number(event.code);
     const key: string = event.key || String.fromCharCode(code);
 

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { IonicPage, NavController } from 'ionic-angular';
 import { Store } from '@ngrx/store';
+import { Subscription } from 'rxjs';
 import { getCountryCallingCode } from 'libphonenumber-js';
 
 import { PageNames } from '~/core/page-names';
@@ -14,7 +15,7 @@ import {
 } from '~/core/reducers/auth.reducer';
 import { phoneValidator } from '~/core/validators/phone.validator';
 
-import { DEFAULT_COUNTRY_CODE, getCountryCallingCode, getUnifiedPhoneValue } from '~/core/directives/phone-input.directive';
+import { DEFAULT_COUNTRY_CODE, getUnifiedPhoneValue } from '~/core/directives/phone-input.directive';
 import Countries from 'country-data/data/countries.json';
 
 @IonicPage()
@@ -29,6 +30,9 @@ export class AuthPageComponent {
   phone: FormControl = new FormControl('', [Validators.required, phoneValidator(DEFAULT_COUNTRY_CODE)]);
 
   isLoading = false;
+
+  subscriptionOnLoading: Subscription;
+  subscriptionOnSuccess: Subscription;
 
   constructor(
     private navCtrl: NavController,
@@ -59,7 +63,7 @@ export class AuthPageComponent {
     this.subscriptionOnSuccess.unsubscribe();
   }
 
-  countrySelected(): string {
+  countrySelected(): void {
     this.phone.setValidators([Validators.required, phoneValidator(this.countryCode.value)]);
   }
 

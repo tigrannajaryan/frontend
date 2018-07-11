@@ -158,8 +158,8 @@ export function authReducer(state: AuthState = initialState, action: Actions): A
   }
 }
 
-export function resetOnLogoutReducer(reducer: ActionReducer<State>): ActionReducer<State> {
-  return (state: State, action: any) => {
+export function resetOnLogoutReducer(reducer: ActionReducer<State<any>>): ActionReducer<State<any>> {
+  return (state: State<any>, action: any) => {
     if (action.type === authActionTypes.USER_LOGOUT) {
       state = undefined;
     }
@@ -172,6 +172,11 @@ export const authPath = 'auth';
 const selectAuthFromState = createFeatureSelector<AuthState>(authPath);
 
 export const selectPhone = createSelector(
+  selectAuthFromState,
+  (state: AuthState): string | undefined => state.phone
+);
+
+export const selectFormattedPhone = createSelector(
   selectAuthFromState,
   (state: AuthState): string | undefined => state.phone
 );

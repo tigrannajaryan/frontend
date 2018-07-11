@@ -2,9 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions, Effect } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { timer } from 'rxjs/observable/timer';
 
-import { PageNames } from '~/core/page-names';
 import { saveToken } from '~/core/utils/token-utils';
 
 import { AuthServiceMock } from '~/core/api/auth-service.mock';
@@ -17,7 +15,6 @@ import {
 import {
   authActionTypes,
   AuthState,
-  ConfirmCodeAction,
   ConfirmCodeErrorAction,
   ConfirmCodeLoadingAction,
   ConfirmCodeSuccessAction,

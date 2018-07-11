@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { Actions, Effect } from '@ngrx/effects';
 import { AlertController } from 'ionic-angular';
 
+import { Logger } from '~/shared/logger';
+
 import {
   ApiErrorAction,
   ErrorAction,
@@ -35,7 +37,8 @@ export class ErrorsEffects {
 
   constructor(
     private actions: Actions,
-    private alertCtrl: AlertController
+    private alertCtrl: AlertController,
+    private logger: Logger
   ) {
   }
 
@@ -45,6 +48,6 @@ export class ErrorsEffects {
     // 1. log
     // 2. sentry
     // 3. analytics
-    console.error(error);
+    this.logger.error(error);
   }
 }

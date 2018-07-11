@@ -11,7 +11,7 @@ const noop = (): any => undefined;
 @Injectable()
 export class Logger {
 
-  private static invokeConsoleMethod(type: string, ...args: Array<any>): void {
+  private static invokeConsoleMethod(type: string, ...args: any[]): void {
     // Don't log in production
     if (!ENV.production) {
       const logFn: Function = (console)[type] || console.log || noop;

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Action, Store } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import * as faker from 'faker';
 
@@ -10,8 +10,6 @@ import {
   GetCodeResponse
 } from '~/core/api/auth.models';
 import { ApiErrorAction } from '~/core/reducers/errors.reducer';
-
-import AuthErrors from '~/core/data/auth.errors.json';
 
 @Injectable()
 export class AuthServiceMock {
@@ -26,7 +24,6 @@ export class AuthServiceMock {
       Observable.create(observer => {
         setTimeout(() => {
           observer.next({});
-          // observer.error(new Error('403'));
         }, 3200);
       })
     );
@@ -40,6 +37,8 @@ export class AuthServiceMock {
             token: faker.internet.password(),
             created_at: Number(new Date())
           });
+          // TODO: errors handling
+          // import AuthErrors from '~/core/data/auth.errors.json';
           // observer.error(AuthErrors.invalid_code);
          }, 2000);
       })
