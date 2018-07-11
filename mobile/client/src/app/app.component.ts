@@ -1,10 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { Store } from '@ngrx/store';
 import { MenuController, Nav, Platform } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { deleteToken, getToken } from '~/core/utils/token-utils';
+import { LogoutAction } from '~/core/reducers/auth.reducer';
 
 import { Logger } from '~/shared/logger';
 import { PageNames } from '~/core/page-names';
@@ -24,7 +26,8 @@ export class ClientAppComponent implements OnInit {
     private platform: Platform,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
-    private storage: Storage
+    private storage: Storage,
+    private store: Store<any>
   ) {
   }
 
@@ -59,6 +62,8 @@ export class ClientAppComponent implements OnInit {
   async logout(): Promise<void> {
     // TODO: show nice loader
     await deleteToken();
+
+    this.store.dispatch(new LogoutAction());
 
     // Hide the menu
     this.menuCtrl.close();

@@ -36,7 +36,7 @@ export class AuthPageComponent {
   ) {
   }
 
-  ionViewWillEnter(): void {
+  ionViewDidEnter(): void {
     this.store.dispatch(new ResetAction());
 
     this.subscriptionOnLoading = this.store

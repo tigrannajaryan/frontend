@@ -27,7 +27,7 @@ export class AuthServiceMock {
         setTimeout(() => {
           observer.next({});
           // observer.error(new Error('403'));
-        }, 100);
+        }, 1000);
       })
     );
   }

@@ -1,4 +1,4 @@
-import { Action, createFeatureSelector, createSelector } from '@ngrx/store';
+import { Action, ActionReducer, createFeatureSelector, createSelector, State } from '@ngrx/store';
 
 import { RequestState } from '~/core/api/request.models';
 import { AuthTokenModel } from '~/core/api/auth.models';
@@ -19,7 +19,8 @@ export enum authActionTypes {
   CONFIRM_CODE_ERROR = 'AUTH_CONFIRM_CODE_ERROR',
   CONFIRM_CODE_SUCCESS = 'AUTH_CONFIRM_CODE_SUCCESS',
 
-  RESET = 'AUTH_RESET'
+  RESET = 'AUTH_RESET',
+  USER_LOGOUT = 'AUTH_USER_LOGOUT'
 }
 
 export class RequestCodeAction implements Action {
@@ -77,6 +78,11 @@ export class ConfirmCodeSuccessAction implements Action {
 
 export class ResetAction implements Action {
   readonly type = authActionTypes.RESET;
+}
+
+// used in meta reducer in app.reducer.ts
+export class LogoutAction implements Action {
+  readonly type = authActionTypes.USER_LOGOUT;
 }
 
 type Actions =
@@ -152,6 +158,15 @@ export function authReducer(state: AuthState = initialState, action: Actions): A
   }
 }
 
+export function resetOnLogoutReducer(reducer: ActionReducer<State>): ActionReducer<State> {
+  return (state: State, action: any) => {
+    if (action.type === authActionTypes.USER_LOGOUT) {
+      state = undefined;
+    }
+    return reducer(state, action);
+  };
+}
+
 export const authPath = 'auth';
 
 const selectAuthFromState = createFeatureSelector<AuthState>(authPath);
@@ -177,5 +192,19 @@ export const selectRequestCodeSucceded = createSelector(
   selectAuthFromState,
   (state: AuthState): boolean =>
     state.requestType === AuthRequestTypes.RequestCode &&
+    state.requestState === RequestState.Succeded
+);
+
+export const selectConfirmCodeLoading = createSelector(
+  selectAuthFromState,
+  (state: AuthState): boolean =>
+    state.requestType === AuthRequestTypes.ConfirmCode &&
+    state.requestState === RequestState.Loading
+);
+
+export const selectConfirmCodeSucceded = createSelector(
+  selectAuthFromState,
+  (state: AuthState): boolean =>
+    state.requestType === AuthRequestTypes.ConfirmCode &&
     state.requestState === RequestState.Succeded
 );

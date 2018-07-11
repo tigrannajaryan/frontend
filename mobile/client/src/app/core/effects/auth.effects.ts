@@ -25,6 +25,7 @@ import {
   RequestCodeErrorAction,
   RequestCodeLoadingAction,
   RequestCodeSuccessAction,
+  selectConfirmCodeSucceded,
   selectPhone,
   selectRequestCodeSucceded,
   selectToken
@@ -56,17 +57,11 @@ export class AuthEffects {
       }
     });
 
-  @Effect() confirmCodeLoading = this.actions
-    .ofType(authActionTypes.CONFIRM_CODE)
-    .map(() => new ConfirmCodeLoadingAction());
-
   @Effect() confirmCodeRequest = this.actions
     .ofType(authActionTypes.CONFIRM_CODE)
-    .combineLatest(
-      this.store.select(selectPhone)
-    )
-    .map((data: [ConfirmCodeAction, string]) => {
-      const [ action, phone ] = data;
+    .withLatestFrom(this.store)
+    .map(([action, store]) => {
+      const phone = selectPhone(store);
       return { phone, code: action.code };
     })
     .switchMap((params: ConfirmCodeParams) =>
@@ -79,17 +74,30 @@ export class AuthEffects {
         .catch((error: Error) => Observable.of(new ConfirmCodeErrorAction(error)))
     );
 
+  @Effect({ dispatch: false }) confirmCodeLoading = this.actions
+    .ofType(authActionTypes.CONFIRM_CODE)
+    .delay(250)
+    .withLatestFrom(this.store)
+    .map(([action, store]) => {
+      if (!selectConfirmCodeSucceded(store)) {
+        this.store.dispatch(new ConfirmCodeLoadingAction());
+      }
+    });
+
   @Effect({ dispatch: false }) saveToken = this.actions
     .ofType(authActionTypes.CONFIRM_CODE_SUCCESS)
-    .switchMap((): Observable<AuthTokenModel> => Observable.from(this.store.select(selectToken)))
-    .switchMap((token: AuthTokenModel): Observable<boolean> => Observable.from(
-      saveToken(token)
-        .then(() => true)
-        .catch((error: Error) => {
-          this.store.dispatch(new UnhandledErrorAction(error));
-          return false;
-        })
-    ))
+    .withLatestFrom(this.store)
+    .switchMap(([action, store]): Observable<boolean> => {
+      const token = selectToken(store);
+      return Observable.from(
+        saveToken(token)
+          .then(() => true)
+          .catch((error: Error) => {
+            this.store.dispatch(new UnhandledErrorAction(error));
+            return false;
+          })
+      );
+    })
     .share();
 
   @Effect() setProfilePhone = this.actions

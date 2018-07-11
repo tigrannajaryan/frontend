@@ -7,7 +7,8 @@ import { PageNames } from '~/core/page-names';
 import {
   AuthState,
   ConfirmCodeAction,
-  RequestCodeErrorAction
+  RequestCodeErrorAction,
+  selectConfirmCodeLoading
 } from '~/core/reducers/auth.reducer';
 import { AuthEffects } from '~/core/effects/auth.effects';
 
@@ -27,6 +28,8 @@ export class AuthConfirmPageComponent {
     Validators.maxLength(CODE_LENGTH)
   ]);
 
+  isLoading = false;
+
   constructor(
     private authEffects: AuthEffects,
     private navCtrl: NavController,
@@ -34,25 +37,32 @@ export class AuthConfirmPageComponent {
   ) {
   }
 
-  ionViewWillEnter(): void {
+  ionViewDidEnter(): void {
     this.codeSubscription = this.code.statusChanges.subscribe(() => {
       if (this.code.valid) {
         this.store.dispatch(new ConfirmCodeAction(this.code.value));
       }
     });
 
-    this.subscription = this.authEffects.saveToken
+    this.saveTokenSubscription = this.authEffects.saveToken
       .subscribe((isTokenSaved: boolean) => {
         if (isTokenSaved) {
           // navigate when token done saving
           this.navCtrl.setRoot(PageNames.Services);
         }
       });
+
+    this.loadingSubscription = this.store
+      .select(selectConfirmCodeLoading)
+      .subscribe((isLoading: boolean) => {
+        this.isLoading = isLoading;
+      });
   }
 
   ionViewWillLeave(): void {
     this.codeSubscription.unsubscribe();
-    this.subscription.unsubscribe();
+    this.saveTokenSubscription.unsubscribe();
+    this.loadingSubscription.unsubscribe();
   }
 
   verifyCode(event: Event): void {

@@ -18,7 +18,7 @@
       <form (ngSubmit)="submit()">
         <ion-row justify-content-center>
           <ion-item class="FormControl AuthConfirmPage-codeControl">
-            <ion-input type="tel" ngxInputNumber [formControl]="code" (keydown)="verifyCode($event)"></ion-input>
+            <ion-input type="tel" ngxInputNumber [formControl]="code" [disabled]="isLoading" (keydown)="verifyCode($event)"></ion-input>
           </ion-item>
         </ion-row>
         <ion-row justify-content-center>
@@ -26,11 +26,13 @@
             <div *ngFor="let digit of digits; let index = index" class="AuthConfirmPage-digit is-number{{ index + 1 }}"></div>
           </div>
         </ion-row>
-        <button ion-button class="Button" type="submit" [disabled]="code.invalid">Next</button>
       </form>
     </ion-row>
     <ion-row justify-content-center>
-      <span>Didn’t get a&nbsp;code? </span><span>Send a&nbsp;new one</span>
+      <span *ngIf="isLoading">Sending code…</span>
+      <span *ngIf="!isLoading">
+        <span>Didn’t get a&nbsp;code? </span><span>Send a&nbsp;new one</span>
+      </span>
     </ion-row>
   </ion-grid>
 </ion-content>
