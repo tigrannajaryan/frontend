@@ -8,7 +8,8 @@ import {
   AuthState,
   ConfirmCodeAction,
   RequestCodeErrorAction,
-  selectConfirmCodeLoading
+  selectConfirmCodeLoading,
+  selectConfirmCodeSucceded
 } from '~/core/reducers/auth.reducer';
 import { AuthEffects } from '~/core/effects/auth.effects';
 
@@ -37,7 +38,7 @@ export class AuthConfirmPageComponent {
   ) {
   }
 
-  ionViewDidEnter(): void {
+  ionViewWillEnter(): void {
     this.codeSubscription = this.code.statusChanges.subscribe(() => {
       if (this.code.valid) {
         this.store.dispatch(new ConfirmCodeAction(this.code.value));
@@ -49,6 +50,8 @@ export class AuthConfirmPageComponent {
         if (isTokenSaved) {
           // navigate when token done saving
           this.navCtrl.setRoot(PageNames.Services);
+        } else {
+          this.isLoading = false;
         }
       });
 
@@ -56,6 +59,14 @@ export class AuthConfirmPageComponent {
       .select(selectConfirmCodeLoading)
       .subscribe((isLoading: boolean) => {
         this.isLoading = isLoading;
+      });
+
+    this.subscriptionOnSuccess = this.store
+      .select(selectConfirmCodeSucceded)
+      .subscribe((isSucceded: boolean) => {
+        if (isSucceded) {
+          this.isLoading = true; // continue to show loading
+        }
       });
   }
 

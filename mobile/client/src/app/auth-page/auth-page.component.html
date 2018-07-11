@@ -1,3 +1,5 @@
+<ion-header><ion-navbar></ion-navbar></ion-header>
+
 <ion-content class="AuthPage">
   <ion-grid fixed>
     <ion-row justify-content-center>
@@ -10,7 +12,7 @@
     </ion-row>
     <ion-row>
       <form (ngSubmit)="submit()">
-        <ion-row justify-content-center>
+        <ion-row class="AuthPage-phoneInputGroup" justify-content-center>
           <ion-item class="FormControl AuthPage-countryCodeControl">
             <ion-select [formControl]="countryCode" (ionChange)="countrySelected()" [selectedText]="getPhoneCode()">
               <ion-option *ngFor="let country of countries" [value]="country.alpha2">

@@ -10,7 +10,7 @@
         </div>
       </div>
     </ion-row>
-    <ion-row justify-content-center>
+    <ion-row class="AuthConfirmPage-phoneNumber" justify-content-center>
       <!-- TODO: add real phone -->
       <span>+1 (378) 400-1234&nbsp;</span><span>Edit</span>
     </ion-row>
@@ -29,7 +29,7 @@
       </form>
     </ion-row>
     <ion-row justify-content-center>
-      <span *ngIf="isLoading">Sending code…</span>
+      <span *ngIf="isLoading">Checking the code…</span>
       <span *ngIf="!isLoading">
         <span>Didn’t get a&nbsp;code? </span><span>Send a&nbsp;new one</span>
       </span>

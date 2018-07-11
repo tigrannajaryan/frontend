@@ -36,7 +36,7 @@ export class AuthPageComponent {
   ) {
   }
 
-  ionViewDidEnter(): void {
+  ionViewWillEnter(): void {
     this.store.dispatch(new ResetAction());
 
     this.subscriptionOnLoading = this.store
@@ -49,6 +49,7 @@ export class AuthPageComponent {
       .select(selectRequestCodeSucceded)
       .subscribe((isSucceded: boolean) => {
         if (isSucceded) {
+          this.isLoading = true; // continue to show loading
           this.navCtrl.push(PageNames.AuthConfirm);
         }
       });

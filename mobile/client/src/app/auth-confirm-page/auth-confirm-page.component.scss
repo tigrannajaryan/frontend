@@ -7,6 +7,7 @@
 
   .AuthConfirmPage-codeControl {
     width: $width;
+    margin-top: 64px;
 
     .text-input { // ionic’s
       width: 100%;
@@ -14,11 +15,17 @@
       font-size: $t-h3;
       letter-spacing: 34.4px;
     }
+
+    &.item-block .item-inner,
+    &.item-input-has-focus .item-inner { // ionic’s
+      border-bottom: none;
+    }
   }
 
   .AuthConfirmPage-digits {
     position: relative;
     width: $width;
+    margin-bottom: 122px;
     pointer-events: none;
   }
 
@@ -35,5 +42,9 @@
         left: ($digitWidth + $digitOffset) * ($i - 1);
       }
     }
+  }
+
+  .AuthConfirmPage-phoneNumber {
+    margin-top: 12px;
   }
 }
