@@ -1,6 +1,14 @@
 import { Directive, ElementRef, HostListener, Input } from '@angular/core';
 import { AsYouType, CountryCode, parseNumber, TelephoneNumber } from 'libphonenumber-js';
 
+export enum NumberFormat {
+  National = 'National',
+  International = 'International',
+  E164 = 'E.164',
+  RFC3966 = 'RFC3966',
+  IDD = 'IDD'
+}
+
 enum SpecialKeysCodes {
   Backspace = 8,
   Space = 32,

@@ -12,7 +12,7 @@
     </ion-row>
     <ion-row class="AuthConfirmPage-phoneNumber" justify-content-center>
       <!-- TODO: add real phone -->
-      <span>+1 (378) 400-1234&nbsp;</span><span>Edit</span>
+      <span>{{ phone | async }}&nbsp;</span><span class="Link" (click)="navCtrl.pop()">Edit</span>
     </ion-row>
     <ion-row>
       <form (ngSubmit)="submit()">
@@ -31,7 +31,7 @@
     <ion-row justify-content-center>
       <span *ngIf="isLoading">Checking the code…</span>
       <span *ngIf="!isLoading">
-        <span>Didn’t get a&nbsp;code? </span><span>Send a&nbsp;new one</span>
+        <span>Didn’t get a&nbsp;code? </span><span class="Link">Send a&nbsp;new one</span>
       </span>
     </ion-row>
   </ion-grid>

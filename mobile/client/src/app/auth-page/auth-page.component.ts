@@ -49,7 +49,6 @@ export class AuthPageComponent {
       .select(selectRequestCodeSucceded)
       .subscribe((isSucceded: boolean) => {
         if (isSucceded) {
-          this.isLoading = true; // continue to show loading
           this.navCtrl.push(PageNames.AuthConfirm);
         }
       });

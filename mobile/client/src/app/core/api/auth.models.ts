@@ -4,7 +4,9 @@ export interface GetCodeParams {
   phone: string;
 }
 
-export type GetCodeResponse = object;
+// tslint:disable-next-line:no-empty-interface
+export interface GetCodeResponse {
+}
 
 export interface ConfirmCodeParams extends GetCodeParams {
   code: string;

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { IonicPage, NavController } from 'ionic-angular';
 import { Store } from '@ngrx/store';
+import { Subscription } from 'rxjs';
 
 import { PageNames } from '~/core/page-names';
 import {
@@ -9,7 +10,7 @@ import {
   ConfirmCodeAction,
   RequestCodeErrorAction,
   selectConfirmCodeLoading,
-  selectConfirmCodeSucceded
+  selectPhone
 } from '~/core/reducers/auth.reducer';
 import { AuthEffects } from '~/core/effects/auth.effects';
 
@@ -23,6 +24,7 @@ export const CODE_LENGTH = 6;
 export class AuthConfirmPageComponent {
   digits = Array(CODE_LENGTH).fill(undefined);
 
+  phone: Subscription<string>;
   code: FormControl = new FormControl('', [
     Validators.required,
     Validators.minLength(CODE_LENGTH),
@@ -39,6 +41,8 @@ export class AuthConfirmPageComponent {
   }
 
   ionViewWillEnter(): void {
+    this.phone = this.store.select(selectPhone);
+
     this.codeSubscription = this.code.statusChanges.subscribe(() => {
       if (this.code.valid) {
         this.store.dispatch(new ConfirmCodeAction(this.code.value));
@@ -50,8 +54,6 @@ export class AuthConfirmPageComponent {
         if (isTokenSaved) {
           // navigate when token done saving
           this.navCtrl.setRoot(PageNames.Services);
-        } else {
-          this.isLoading = false;
         }
       });
 
@@ -59,14 +61,6 @@ export class AuthConfirmPageComponent {
       .select(selectConfirmCodeLoading)
       .subscribe((isLoading: boolean) => {
         this.isLoading = isLoading;
-      });
-
-    this.subscriptionOnSuccess = this.store
-      .select(selectConfirmCodeSucceded)
-      .subscribe((isSucceded: boolean) => {
-        if (isSucceded) {
-          this.isLoading = true; // continue to show loading
-        }
       });
   }
 
