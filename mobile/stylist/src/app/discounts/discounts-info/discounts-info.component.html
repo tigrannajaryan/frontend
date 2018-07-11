@@ -1,0 +1,36 @@
+<ion-header madeBackHeader></ion-header>
+
+
+<ion-content no-padding>
+  <made-nav [activePage]="PageNames.DiscountsInfo"></made-nav>
+
+  <div class="Discounts-wp Discounts-wpBody">
+    <div class="DiscountsInfo-title">
+      How MADE Applies <br/> Discounts
+    </div>
+
+    <div class="Discounts-icon">
+      <img src="assets/imgs/icons/discount.png" alt="">
+    </div>
+
+    <div class="Discounts-list">
+      <div class="Discounts-listNum">1</div>
+      Add your normal service prices.
+    </div>
+    <div class="Discounts-list">
+      <div class="Discounts-listNum">2</div>
+      Set your discounts to match your schedule.
+    </div>
+    <div class="Discounts-list">
+      <div class="Discounts-listNum">3</div>
+      Clients see a customized price based on your availability and their visit frequency.
+    </div>
+    <div class="Discounts-list">
+      <div class="Discounts-listNum">4</div>
+      As your daily schedule fills up, the app will lower discounts automatically.
+    </div>
+  </div>
+</ion-content>
+
+
+<ion-footer madeDiscountsFooter (continue)="onContinue()"></ion-footer>

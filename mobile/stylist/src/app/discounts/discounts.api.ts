@@ -4,8 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { Logger } from '~/shared/logger';
 import { ServerStatusTracker } from '~/shared/server-status-tracker';
 import { Discounts } from './discounts.models';
-
-const apiUrl = 'stylist/discounts';
+import { MaximumDiscounts } from '~/discounts/discounts.models';
 
 /**
  * DiscountsApi allows getting and setting the discount for stylist.
@@ -25,13 +24,27 @@ export class DiscountsApi extends BaseApiService {
    * Get the discounts of the stylist. The stylist must be already authenticated as a user.
    */
   async getDiscounts(): Promise<Discounts> {
-    return this.get<Discounts>(apiUrl);
+    return this.get<Discounts>('stylist/discounts');
+  }
+
+  /**
+   * Get the maximum discounts of the stylist. The stylist must be already authenticated as a user.
+   */
+  async getMaximumDiscounts(): Promise<MaximumDiscounts> {
+    return this.get<MaximumDiscounts>('stylist/maximum-discount');
   }
 
   /**
    * Set discounts to stylist. The stylist must be already authenticated as a user.
    */
   async setDiscounts(discounts: Discounts): Promise<Discounts> {
-    return this.post<Discounts>(apiUrl, discounts);
+    return this.patch<Discounts>('stylist/discounts', discounts);
+  }
+
+  /**
+   * Set maximum discounts to stylist. The stylist must be already authenticated as a user.
+   */
+  async setMaximumDiscounts(maximumDiscounts: MaximumDiscounts): Promise<MaximumDiscounts> {
+    return this.post<MaximumDiscounts>('stylist/maximum-discount', maximumDiscounts);
   }
 }

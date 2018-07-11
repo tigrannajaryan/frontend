@@ -1,0 +1,27 @@
+<div class="Discounts-text Discounts-textOffset">
+  <div class="Discounts-textItem">
+    Set a special first visit discount to attract new clients.
+  </div>
+  <div class="Discounts-textItem">
+    Click on the % below to edit the discount clients receive on their first booking.
+  </div>
+</div>
+
+
+<div *ngIf="firstBooking">
+  <div class="DiscountsList">
+    <ion-row (click)="onDiscountChange()" class="DiscountsList-row">
+      <ion-col no-padding col-8 class="DiscountsList-col">
+        {{ firstBooking.label }}
+      </ion-col>
+
+      <ion-col col-4 no-padding class="DiscountsList-col DiscountsList-colIcon">
+        <div>
+          <span *ngIf="!firstBooking.percentage">None</span>
+          <span *ngIf="firstBooking.percentage">{{ firstBooking.percentage }}%</span>
+        </div>
+        <ion-icon name="ios-arrow-forward-outline"></ion-icon>
+      </ion-col>
+    </ion-row>
+  </div>
+</div>

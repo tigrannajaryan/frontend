@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { NavController } from 'ionic-angular';
+
 import { PageNames } from '~/core/page-names';
 
 @Component({
@@ -28,7 +29,12 @@ export class MadeNavComponent {
     { name: 'Personal Info', page: PageNames.RegisterSalon },
     { name: 'Services', page: PageNames.RegisterServices },
     { name: 'Schedule', page: PageNames.Worktime },
-    { name: 'Custom Price', page: PageNames.Discounts },
+
+    { name: 'Discounts', page: PageNames.DiscountsInfo },
+    { name: 'Weekdays', page: PageNames.DiscountsWeekday },
+    { name: 'Revisit', page: PageNames.DiscountsRevisit },
+    { name: 'First Visit', page: PageNames.DiscountsFirstBooking },
+
     { name: 'Invite Clients', page: PageNames.Invitations },
     { name: 'Summary', page: PageNames.Profile }
   ];

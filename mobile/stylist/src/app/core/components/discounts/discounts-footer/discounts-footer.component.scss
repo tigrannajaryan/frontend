@@ -1,0 +1,66 @@
+[madediscountsfooter] {
+  .toolbar {
+    height: pxtorem10(81);
+    padding: 4px 0;
+
+    @media ($phone-md) {
+      height: pxtorem10(92);
+    }
+
+    @media ($phone-lg) {
+      height: pxtorem10(105);
+    }
+
+    &-title {
+      height: 100%;
+      padding: 0;
+    }
+
+    &-background {
+      background: color($colors, white);
+    }
+  }
+
+  ion-title {
+    align-items: start;
+    padding: 0;
+  }
+
+  &:before {
+    height: 1px;
+    background: rgba(0, 0, 0, 0.1);
+  }
+}
+
+.DiscountsFooter-wp {
+  display: flex;
+  align-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.Discounts-btn {
+  width: 100%;
+  height: auto;
+  padding: pxtorem10(17.5) 0;
+  margin: 0;
+  font-size: pxtorem10(12.5);
+  color: color($grayscale, 800);
+  text-transform: capitalize;
+  background: color($colors, secondary);
+  border-radius: pxtorem10(7);
+  box-shadow: none;
+
+  @media ($phone-md) {
+    padding: pxtorem10(21) 0;
+    font-size: pxtorem10(16);
+    border-radius: pxtorem10(8);
+  }
+
+  @media ($phone-lg) {
+    padding: pxtorem10(23) 0;
+    font-size: pxtorem10(17);
+    border-radius: pxtorem10(9);
+  }
+}
+

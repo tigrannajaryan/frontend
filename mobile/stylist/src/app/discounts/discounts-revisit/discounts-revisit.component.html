@@ -1,0 +1,15 @@
+<ion-header madeBackHeader></ion-header>
+
+
+<ion-content no-padding>
+  <made-nav [activePage]="PageNames.DiscountsRevisit"></made-nav>
+
+  <div class="Discounts-wp Discounts-wpBody">
+    <div class="Discounts-title">Revisit Discounts</div>
+
+    <discounts-revisit-short [discounts]="discounts" (revisitChange)="onRevisitChange()"></discounts-revisit-short>
+  </div>
+</ion-content>
+
+
+<ion-footer madeDiscountsFooter (continue)="onContinue()"></ion-footer>

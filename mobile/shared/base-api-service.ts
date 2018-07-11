@@ -129,6 +129,10 @@ export class BaseApiService {
     return this.request<ResponseType>('post', apiPath, data);
   }
 
+  protected patch<ResponseType>(apiPath: string, data: any): Promise<ResponseType> {
+    return this.request<ResponseType>('patch', apiPath, data);
+  }
+
   protected delete<ResponseType>(apiPath: string): Promise<ResponseType> {
     return this.request<ResponseType>('delete', apiPath);
   }

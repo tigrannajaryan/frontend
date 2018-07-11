@@ -1,0 +1,15 @@
+<ion-header madeBackHeader></ion-header>
+
+
+<ion-content no-padding>
+  <made-nav [activePage]="PageNames.DiscountsFirstBooking"></made-nav>
+
+  <div class="Discounts-wp Discounts-wpBody">
+    <div class="Discounts-title">First Visit Discount</div>
+
+    <discounts-first-booking-short [firstBooking]="firstBooking" (firstVisitChange)="onFirstVisitChange()"></discounts-first-booking-short>
+  </div>
+</ion-content>
+
+
+<ion-footer madeDiscountsFooter (continue)="onContinue()"></ion-footer>

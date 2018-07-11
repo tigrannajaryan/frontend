@@ -1,0 +1,41 @@
+[madebackheader] {
+  .toolbar {
+    min-height: 42px;
+
+    &-title {
+      padding: 0;
+      color: color($grayscale, 800);
+    }
+
+    &-background {
+      background: none;
+      border-color: transparent;
+    }
+  }
+
+  &:after {
+    display: none;
+  }
+
+  .BackHeader-backBtn {
+    .back-button {
+      position: absolute;
+      z-index: 1;
+      min-width: auto;
+      padding: 0;
+      margin: 0;
+
+      ion-icon {
+        font-size: pxtorem10(14);
+
+        @media ($phone-md) {
+          font-size: pxtorem10(18);
+        }
+
+        @media ($phone-lg) {
+          font-size: pxtorem10(20);
+        }
+      }
+    }
+  }
+}

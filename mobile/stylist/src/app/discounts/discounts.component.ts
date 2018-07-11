@@ -1,20 +1,18 @@
-import { Component } from '@angular/core';
-import { IonicPage, ModalController, NavController, NavParams } from 'ionic-angular';
+import { Component, ViewChild } from '@angular/core';
+import { Content, IonicPage, Slides } from 'ionic-angular';
 
-import { DiscountsApi } from './discounts.api';
-import { Discounts } from './discounts.models';
 import { PageNames } from '~/core/page-names';
-import { ChangePercent } from '~/core/popups/change-percent/change-percent.component';
 import { loading } from '~/core/utils/loading';
-import { showAlert } from '~/core/utils/alert';
-import { ENV } from '../../environments/environment.default';
-import { WeekdayDiscount } from '~/discounts/discounts.models';
+import { Discounts, MaximumDiscounts, MaximumDiscountsWithVars, WeekdayDiscount } from '~/discounts/discounts.models';
+import { DiscountsApi } from '~/discounts/discounts.api';
+import { FirstBooking } from '~/discounts/discounts-first-booking/discounts-first-booking.component';
+import { DiscountsRevisitComponent } from '~/discounts/discounts-revisit/discounts-revisit.component';
 
-export enum DiscountsTypes {
-  weekday = 'weekday',
-  first_booking = 'first_booking',
-  rebook_within_1_week = 'rebook_within_1_week',
-  rebook_within_2_weeks = 'rebook_within_2_weeks'
+export enum DiscountTabNames {
+  weekday,
+  revisit,
+  firstVisit,
+  max
 }
 
 @IonicPage({
@@ -25,128 +23,103 @@ export enum DiscountsTypes {
   templateUrl: 'discounts.component.html'
 })
 export class DiscountsComponent {
-  // this should be here if we using enum in html
-  protected DiscountsTypes = DiscountsTypes;
   protected PageNames = PageNames;
-
-  discounts: Discounts;
-  isProfile?: Boolean;
+  protected DiscountTabNames = DiscountTabNames;
+  protected weekdays: WeekdayDiscount[];
+  protected rebook: WeekdayDiscount[];
+  protected firstBooking: FirstBooking = {
+    label: 'First booking',
+    percentage: 0
+  };
+  protected maximumDiscounts: MaximumDiscountsWithVars = {
+    is_maximum_discount_label: 'Enable Maximum Discount',
+    maximum_discount_label: 'Maximum Discount',
+    maximum_discount: 0,
+    is_maximum_discount_enabled: false
+  };
+  protected discountTabs = [
+    {name: 'Weekday'},
+    {name: 'Revisit'},
+    {name: 'First visit'},
+    {name: 'Maximum'}
+  ];
+  protected activeTab: DiscountTabNames;
+  @ViewChild(Slides) slides: Slides;
+  @ViewChild(Content) content: Content;
 
   constructor(
-    public navCtrl: NavController,
-    public navParams: NavParams,
-    public modalCtrl: ModalController,
-    public discountsApi: DiscountsApi
-    ) {
+    private discountsApi: DiscountsApi
+  ) {
   }
 
-  ionViewWillLoad(): void {
-    this.isProfile = Boolean(this.navParams.get('isProfile'));
+  ionViewDidLoad(): void {
+    this.activeTab = DiscountTabNames.weekday;
+  }
+
+  ionViewDidEnter(): void {
     this.loadInitialData();
   }
 
   @loading
   async loadInitialData(): Promise<void> {
-    try {
-      const discounts = await this.discountsApi.getDiscounts() as Discounts;
-      this.discounts = {
-        ...discounts,
-        weekdays: discounts.weekdays.sort((a, b) => a.weekday - b.weekday) // from 1 (Monday) to 7 (Sunday)
-      };
-    } catch (e) {
-      showAlert('Loading discounts failed', e.message);
-    }
+    const {first_booking, weekdays, ...rebook} = await this.discountsApi.getDiscounts() as Discounts;
+    this.firstBooking.percentage = first_booking;
+    this.weekdays = weekdays.sort((a, b) => a.weekday - b.weekday); // from 1 (Monday) to 7 (Sunday)
+    this.rebook = DiscountsRevisitComponent.transformRebookToDiscounts(rebook);
+
+    const maximumDiscounts = await this.discountsApi.getMaximumDiscounts() as MaximumDiscounts;
+    this.maximumDiscounts.maximum_discount = maximumDiscounts.maximum_discount;
+    this.maximumDiscounts.is_maximum_discount_enabled = maximumDiscounts.is_maximum_discount_enabled;
   }
 
-  /**
-   * Check if we have at least one value with percent > 0
-   */
-  hasDiscounts(): boolean {
-    for (const key in this.discounts) {
-      if (this.discounts.hasOwnProperty(key)) {
+  protected async doRefresh(refresher): Promise<void> {
+    await this.loadInitialData();
 
-        if (Array.isArray(this.discounts[key])) {
-          for (const weekday of this.discounts[key]) {
-            if (weekday.discount_percent > 0) { return true; }
-          }
-        } else {
-          if (this.discounts[key] > 0) { return true; }
-        }
-      }
-    }
-
-    return false;
+    refresher.complete();
   }
 
-  /**
-   * Open modal where we can change percent of any item
-   * @param type - type of key
-   * @param index - if array of weekdays
-   * @param verbose - verbose name if not array
-   */
-  onDiscountChange(type: DiscountsTypes, index?: number, verbose?: string): void {
-    let data: ChangePercent;
+  protected changeTab(activeTab: DiscountTabNames): void {
+    this.activeTab = activeTab;
 
-    if (type === DiscountsTypes.weekday) {
-      const curWeekday: WeekdayDiscount = this.discounts.weekdays[index];
+    this.updateSlider(activeTab);
+  }
 
-      data = {
-        label: curWeekday.weekday_verbose,
-        percentage: curWeekday.discount_percent
-      };
-    } else {
-      data = {
-        label: verbose,
-        percentage: this.discounts[type]
-      };
+  // swipe action for tabs
+  protected onSlideChanged(): void {
+    // if index more or equal to tabs length we got an error
+    if (this.slides.getActiveIndex() >= this.discountTabs.length) {
+      return;
     }
+    this.activeTab = this.slides.getActiveIndex();
+    this.updateSlider(this.activeTab);
+  }
 
-    const modal = this.modalCtrl.create(PageNames.ChangePercent, { data });
-    modal.onDidDismiss((res: number) => {
-      if (isNaN(res)) { return; }
+  protected updateSlider(activeTab: DiscountTabNames): void {
+    const animationSpeedMs = 500;
+    this.slides.slideTo(activeTab, animationSpeedMs);
+    this.content.scrollToTop(animationSpeedMs);
+  }
 
-      if (type === DiscountsTypes.weekday) {
-        this.discounts.weekdays[index].discount_percent = res;
-      } else {
-        this.discounts[type] = res;
-      }
+  protected onWeekdayChange(): void {
+    this.discountsApi.setDiscounts({
+      weekdays: this.weekdays
     });
-    modal.present();
   }
 
-  nextRoute(): void {
-    if (this.isProfile) {
-      this.navCtrl.pop();
-      return;
-    }
-
-    if (ENV.ffEnableIncomplete) {
-      this.navCtrl.push(PageNames.Invitations);
-    } else {
-      this.navCtrl.push(PageNames.Home);
-    }
+  protected onRevisitChange(): void {
+    this.discountsApi.setDiscounts(DiscountsRevisitComponent.transformDiscountsToRebook(this.rebook));
   }
 
-  /**
-   * Clean up the data before save,
-   * show alert if we have no discounts,
-   * save data on server
-   */
-  saveChanges(): void {
-    if (!this.hasDiscounts()) { // TODO: use promise and one-directional flow
-      const modal = this.modalCtrl.create(PageNames.DiscountsAlert);
-      modal.onDidDismiss((confirmNoDiscount: boolean) => {
-        if (confirmNoDiscount) {
-          this.discountsApi.setDiscounts(this.discounts);
-          this.nextRoute();
-        }
-      });
-      modal.present();
+  protected onFirstVisitChange(): void {
+    this.discountsApi.setDiscounts({
+      first_booking: this.firstBooking.percentage
+    });
+  }
 
-      return;
-    }
-
-    this.discountsApi.setDiscounts(this.discounts);
-    this.nextRoute();
+  protected onMaximumDiscountChange(): void {
+    this.discountsApi.setMaximumDiscounts({
+      maximum_discount: this.maximumDiscounts.maximum_discount,
+      is_maximum_discount_enabled: this.maximumDiscounts.is_maximum_discount_enabled
+    });
   }
 }
