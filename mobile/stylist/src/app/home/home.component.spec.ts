@@ -9,6 +9,8 @@ import { HomeService } from '~/home/home.service';
 import { profileReducer, profileStatePath } from '~/core/components/user-header/profile.reducer';
 import { ActionSheetController } from 'ionic-angular';
 import { homeReducer, HomeState } from '~/home/home.reducer';
+import { GAWrapper } from '~/shared/google-analytics';
+import { AppVersion } from '@ionic-native/app-version';
 
 let fixture: ComponentFixture<HomeComponent>;
 let instance: HomeComponent;
@@ -22,7 +24,9 @@ describe('Pages: HomeComponent', () => {
     HomeComponent
   ], [
     HomeService,
-    ActionSheetController
+    ActionSheetController,
+    GAWrapper,
+    AppVersion
   ], [
     HttpClientTestingModule,
     StoreModule.forFeature('home', homeReducer),

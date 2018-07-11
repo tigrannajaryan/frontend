@@ -26,6 +26,7 @@ import { componentUnloaded } from '~/core/utils/component-unloaded';
 import { UserOptions } from '~/core/user-options';
 import { showAlert } from '~/core/utils/alert';
 import { LoadProfileAction, ProfileState, selectProfile } from '~/core/components/user-header/profile.reducer';
+import { GAWrapper } from '~/shared/google-analytics';
 
 export enum AppointmentTag {
   NotCheckedOut = 'Not checked out',
@@ -55,17 +56,17 @@ export class HomeComponent {
   protected TabNames = TabNames;
   protected tabs = [
     {
-      name: 'today',
+      name: 'Today',
       loaded: false,
       appointments: []
     },
     {
-      name: 'upcoming',
+      name: 'Upcoming',
       loaded: false,
       appointments: []
     },
     {
-      name: 'past',
+      name: 'Past',
       loaded: false,
       appointments: []
     }
@@ -85,7 +86,8 @@ export class HomeComponent {
     public alertCtrl: AlertController,
     private store: Store<HomeState & ProfileState>,
     private actionSheetCtrl: ActionSheetController,
-    private userOptions: UserOptions
+    private userOptions: UserOptions,
+    private ga: GAWrapper
   ) {
   }
 
@@ -161,7 +163,7 @@ export class HomeComponent {
   @loading
   protected async cancelAppointment(appointment: Appointment): Promise<void> {
     await this.homeService.changeAppointment(appointment.uuid, { status: AppointmentStatuses.cancelled_by_stylist });
-    this.store.dispatch(new HomeLoadAction(this.activeTab));
+    this.store.dispatch(new HomeLoadAction(this.activeTab.toLocaleLowerCase()));
   }
 
   protected async doRefresh(refresher): Promise<void> {
@@ -178,7 +180,8 @@ export class HomeComponent {
 
   private loadAppointments(tabType: string): void {
     this.activeTab = tabType;
-    this.store.dispatch(new HomeLoadAction(this.activeTab));
+    this.store.dispatch(new HomeLoadAction(this.activeTab.toLocaleLowerCase()));
+    this.ga.trackView(`Home${this.activeTab}`);
   }
 
   /**
