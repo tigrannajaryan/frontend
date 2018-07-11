@@ -5,7 +5,7 @@ import { Store } from '@ngrx/store';
 import { PageNames } from '~/core/page-names';
 import { StylistProfile } from '~/core/stylist-service/stylist-models';
 
-import { TodayComponent } from '~/today/today.component';
+import { HomeComponent } from '~/home/home.component';
 import { UserHeaderMenuActions, UserHeaderMenuComponent } from './user-header-menu/user-header-menu.component';
 import { AuthApiService } from '~/core/auth-api-service/auth-api-service';
 import { LogoutAction } from '~/app.reducers';
@@ -35,11 +35,11 @@ export class UserHeaderComponent {
 
   goToHome(): void {
     const previous = this.navCtrl.getPrevious();
-    if (previous && previous.component === TodayComponent) {
-      // When click on house icon navigate back if previous route is Today
+    if (previous && previous.component === HomeComponent) {
+      // When click on house icon navigate back if previous route is Home
       this.navCtrl.pop();
     } else {
-      this.navCtrl.push(PageNames.Today);
+      this.navCtrl.push(PageNames.Home);
     }
   }
 

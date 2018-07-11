@@ -1,13 +1,14 @@
-user-footer {
+[madeUserFooter] {
+  background: white;
+  box-shadow: 0 0 60px 35px color($colors, color7);
+
+  &:before {
+    display: none;
+  }
+
+
   .u-f {
     &-footer {
-      background: white;
-      box-shadow: 0 0 60px 35px color($colors, color7);
-
-      &:before {
-        display: none;
-      }
-
       &-item {
         text-align: center;
 

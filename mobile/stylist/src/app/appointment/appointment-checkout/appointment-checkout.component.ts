@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
-import { TodayService } from '~/today/today.service';
+import { HomeService } from '~/home/home.service';
 import {
   Appointment,
   AppointmentChangeRequest,
@@ -10,7 +10,7 @@ import {
   AppointmentService,
   AppointmentStatuses,
   CheckOutService
-} from '~/today/today.models';
+} from '~/home/home.models';
 import { loading } from '~/core/utils/loading';
 import { PageNames } from '~/core/page-names';
 import { AddServicesComponentParams } from '~/core/popups/add-services/add-services.component';
@@ -55,7 +55,7 @@ export class AppointmentCheckoutComponent {
   constructor(
     private navCtrl: NavController,
     private navParams: NavParams,
-    private todayService: TodayService
+    private todayService: HomeService
   ) {
   }
 

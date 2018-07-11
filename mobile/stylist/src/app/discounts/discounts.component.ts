@@ -123,7 +123,7 @@ export class DiscountsComponent {
     if (ENV.ffEnableIncomplete) {
       this.navCtrl.push(PageNames.Invitations);
     } else {
-      this.navCtrl.push(PageNames.Today);
+      this.navCtrl.push(PageNames.Home);
     }
   }
 

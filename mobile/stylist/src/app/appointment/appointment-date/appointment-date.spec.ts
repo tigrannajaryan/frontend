@@ -7,7 +7,7 @@ import { TestUtils } from '~/../test';
 import { prepareSharedObjectsForTests } from '~/core/test-utils.spec';
 
 import { AppointmentDateComponent, greenColor, neutralColor } from '~/appointment/appointment-date/appointment-date';
-import { AppointmentDateOffer } from '~/today/today.models';
+import { AppointmentDateOffer } from '~/home/home.models';
 
 import { servicesReducer } from '~/appointment/appointment-services/services.reducer';
 import { clientsReducer } from '~/appointment/appointment-add/clients.reducer';

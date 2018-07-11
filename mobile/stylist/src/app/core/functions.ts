@@ -50,7 +50,7 @@ export function createNavHistoryList(profileStatus: ProfileStatus): PageDescr[] 
     }
   }
 
-  // Everything is complete, go to Today screen. We are return a single page here,
+  // Everything is complete, go to Home screen. We are return a single page here,
   // there will be no navigation history.
-  return [{ page: PageNames.Today }];
+  return [{ page: PageNames.Home }];
 }

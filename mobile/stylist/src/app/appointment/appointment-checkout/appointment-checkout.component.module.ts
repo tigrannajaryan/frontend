@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 import { AppointmentCheckoutComponent } from './appointment-checkout.component';
 import { CoreModule } from '~/core/core.module';
-import { TodayService } from '~/today/today.service';
+import { HomeService } from '~/home/home.service';
 
 @NgModule({
   declarations: [
@@ -14,7 +14,7 @@ import { TodayService } from '~/today/today.service';
     CoreModule
   ],
   providers: [
-    TodayService
+    HomeService
   ]
 })
 export class AppointmentCheckoutComponentModule {}

@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 import { CoreModule } from '~/core/core.module';
 import { ConfirmCheckoutComponent } from '~/core/popups/confirm-checkout/confirm-checkout.component';
-import { TodayService } from '~/today/today.service';
+import { HomeService } from '~/home/home.service';
 
 @NgModule({
   declarations: [
@@ -13,7 +13,7 @@ import { TodayService } from '~/today/today.service';
     CoreModule
   ],
   providers: [
-    TodayService
+    HomeService
   ]
 })
 export class ConfirmCheckoutComponentModule {}

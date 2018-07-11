@@ -19,6 +19,7 @@ export enum PageNames {
   DiscountsAlert = 'DiscountsAlertComponent',
   DiscountsChange = 'DiscountsChangeComponent',
   FirstScreen = 'FirstScreenComponent',
+  Home = 'HomeComponent',
   Invitations = 'InvitationsComponent',
   Login = 'LoginComponent',
   LoginRegister = 'LoginRegisterComponent',
@@ -28,7 +29,6 @@ export enum PageNames {
   RegisterServices = 'ServicesComponent',
   RegisterServicesItem = 'ServicesListComponent',
   RegisterServicesItemAdd = 'ServiceItemComponent',
-  Today = 'TodayComponent',
   Worktime = 'WorktimeComponent',
   UpcomingHistory = 'UpcomingHistoryComponent'
 }

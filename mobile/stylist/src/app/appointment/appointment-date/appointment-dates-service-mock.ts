@@ -2,7 +2,7 @@ import * as faker from 'faker';
 import * as moment from 'moment';
 
 import { Injectable } from '@angular/core';
-import { AppointmentDateOffer } from '~/today/today.models';
+import { AppointmentDateOffer } from '~/home/home.models';
 
 export const datesMock: AppointmentDateOffer[] =
   Array(14).fill(undefined).map((_, i) => ({

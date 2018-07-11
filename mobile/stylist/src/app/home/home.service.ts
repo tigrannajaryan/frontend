@@ -11,12 +11,12 @@ import {
   AppointmentParams,
   AppointmentPreviewRequest,
   AppointmentPreviewResponse,
-  NewAppointmentRequest,
-  Today
-} from '~/today/today.models';
+  Home,
+  NewAppointmentRequest
+} from '~/home/home.models';
 
 @Injectable()
-export class TodayService extends BaseApiService {
+export class HomeService extends BaseApiService {
 
   constructor(
     protected http: HttpClient,
@@ -27,10 +27,10 @@ export class TodayService extends BaseApiService {
   }
 
   /**
-   * Get today page data. The stylist must be already authenticated as a user.
+   * Get home page data. The stylist must be already authenticated as a user.
    */
-  getToday(): Promise<Today> {
-    return this.get<Today>('stylist/today');
+  getHome(query: string): Promise<Home> {
+    return this.get<Home>(`stylist/home?query=${encodeURIComponent(query)}`);
   }
 
   /**

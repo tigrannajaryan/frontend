@@ -72,7 +72,7 @@ export class LoginRegisterComponent {
     await this.authService.registerByEmail(authCredentialsRecord);
 
     // This is a new user, enable help screens
-    this.userOptions.set('showTodayScreenHelp', true);
+    this.userOptions.set('showHomeScreenHelp', true);
     this.userOptions.set('showFutureAppointmentHelp', true);
 
     this.navCtrl.push(PageNames.RegisterSalon, {}, { animate: false });

@@ -24,7 +24,7 @@ export class MyAppComponent {
   @ViewChild(Nav) nav: Nav;
 
   pages: Array<{ title: string, component: any }> = [
-    { title: 'Today', component: PageNames.Today },
+    { title: 'Home', component: PageNames.Home },
     { title: 'My Profile', component: PageNames.Profile }
   ];
 
