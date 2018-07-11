@@ -32,7 +32,7 @@ export enum AppointmentTag {
   Now = 'Now',
   Next = 'Next'
 }
-export enum Tabs {
+export enum TabNames {
   today = 0,
   upcoming = 1,
   past = 2
@@ -52,6 +52,7 @@ export class HomeComponent {
   protected appointmentTags: AppointmentTag[];
   protected AppointmentTag = AppointmentTag;
   protected PageNames = PageNames;
+  protected TabNames = TabNames;
   protected tabs = [
     {
       name: 'today',
@@ -93,7 +94,7 @@ export class HomeComponent {
   // and ionViewDidLoad fire only once this is not what we need here
   ionViewDidEnter(): void {
     // init active tab
-    this.activeTab = this.tabs[Tabs.today].name;
+    this.activeTab = this.tabs[TabNames.today].name;
 
     if (this.userOptions.get('showHomeScreenHelp')) {
       showAlert('', helpText);
@@ -134,11 +135,11 @@ export class HomeComponent {
     ];
 
     // remove 'Checkout Client' if this is upcoming tab
-    if (this.activeTab === this.tabs[Tabs.upcoming].name) {
+    if (this.activeTab === this.tabs[TabNames.upcoming].name) {
       buttons.splice(0, 1);
     }
     // remove 'Cancel Appointment' if this is past tab
-    if (this.activeTab === this.tabs[Tabs.past].name) {
+    if (this.activeTab === this.tabs[TabNames.past].name) {
       buttons.splice(1, 1);
     }
 
@@ -200,7 +201,7 @@ export class HomeComponent {
     this.appointmentTags = [];
 
     // appointmentTags for today tab
-    if (this.activeTab === this.tabs[Tabs.today].name) {
+    if (this.activeTab === this.tabs[TabNames.today].name) {
       // Create tags for each appointment based on their start/end times
       let metNext = false;
       for (const appointment of this.home.appointments) {
