@@ -71,10 +71,7 @@ export class ServerFieldError extends ApiError {
     for (const field in response) {
       // Create a Map of errors with keys matching field names
       // and values being an array of FieldError instances.
-      this.errors.set(
-        field,
-        response[field].map(error => ({ code: error }))
-      );
+      this.errors.set(field, response[field]);
     }
   }
 }

@@ -180,9 +180,12 @@ export class AppointmentAddComponent {
       const alertAdditionalBtns = [];
 
       if (errorMessage instanceof Map && errorMessage.size > 0) {
-        alertMsg = Array.from(errorMessage.values())[0][0].code; // show first message
+        // TODO: change error retrieval
+        const firstErrorMessage = Array.from(errorMessage.entries())[0];
+        alertMsg = `${firstErrorMessage[0]}: ${firstErrorMessage[1][0].code}`; // show first code of first message
 
         if (errorMessage.has('datetime_start_at') && errorMessage.size === 1) { // when only datetime error
+          alertMsg = 'Appointment time intersects with another appointment or outside working hours';
           alertAdditionalBtns.push({
             text: 'Add anyway',
             handler: () => this.submit(true)

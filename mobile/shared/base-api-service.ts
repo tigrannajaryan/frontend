@@ -26,6 +26,14 @@ enum HttpContentType {
   ApplicationJson = 'application/json'
 }
 
+enum HighLevelErrorCode {
+  err_api_exception = 'err_api_exception',
+  err_authentication_failed = 'err_authentication_failed',
+  err_unauthorized = 'err_unauthorized',
+  err_not_found = 'err_not_found',
+  err_method_not_allowed = 'err_method_not_allowed'
+}
+
 /**
  * BaseApiService provides basic HTTP API call capability.
  */
@@ -81,12 +89,20 @@ export class BaseApiService {
         // We have a response, check the status.
         switch (e.status) {
           case HttpStatus.badRequest:
-            if (e.error.non_field_errors) {
+            if (e.error.non_field_errors.length > 0) {
               // The request was bad but not related to fields
               throw new ServerNonFieldError(e.status, e.error.non_field_errors);
+            } else if (Object.keys(e.error.field_errors).length > 0) {
+              // The request had invalid fields
+              throw new ServerFieldError(e.error.field_errors);
+            } else if (
+              e.error.code === HighLevelErrorCode.err_authentication_failed ||
+              e.error.code === HighLevelErrorCode.err_unauthorized
+            ) {
+              throw new ServerErrorResponse(e.status, e.error);
+            } else {
+              throw new ServerUnknownError(e.message);
             }
-            // The request had invalid fields
-            throw new ServerFieldError(e.error);
 
           case HttpStatus.unauthorized:
             throw new ServerErrorResponse(e.status, e.error);
