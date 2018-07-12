@@ -2,19 +2,18 @@ import { async, ComponentFixture } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ActionSheetController } from 'ionic-angular';
 import { AppVersion } from '@ionic-native/app-version';
-import { Store, StoreModule } from '@ngrx/store';
+import { StoreModule } from '@ngrx/store';
 
 import { TestUtils } from '../../test';
 import { prepareSharedObjectsForTests } from '~/core/test-utils.spec';
 import { HomeComponent } from '~/home/home.component';
 import { HomeService } from '~/home/home.service';
 import { profileReducer, profileStatePath } from '~/core/components/user-header/profile.reducer';
-import { homeReducer, HomeState } from '~/home/home.reducer';
+import { homeReducer } from '~/home/home.reducer';
 import { GAWrapper } from '~/shared/google-analytics';
 
 let fixture: ComponentFixture<HomeComponent>;
 let instance: HomeComponent;
-let store: Store<HomeState>;
 
 describe('Pages: HomeComponent', () => {
 
@@ -34,8 +33,6 @@ describe('Pages: HomeComponent', () => {
   ]).then(compiled => {
     fixture = compiled.fixture;
     instance = compiled.instance;
-
-    store = fixture.debugElement.injector.get(Store);
 
     // subscribe to store
     instance.ionViewDidEnter();

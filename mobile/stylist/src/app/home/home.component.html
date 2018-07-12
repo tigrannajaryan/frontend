@@ -1,7 +1,7 @@
 <ion-header class="ion-bb-header" madeUserHeader [profile]="profile | async" [hasBackButton]="false"></ion-header>
 
 <ion-content no-padding>
-  <ion-refresher (ionRefresh)="doRefresh($event)" class="Home-refresh">
+  <ion-refresher (ionRefresh)="doRefresh()" class="Home-refresh">
     <ion-spinner></ion-spinner>
   </ion-refresher>
 
@@ -32,7 +32,7 @@
     </div>
   </div>
 
-  <ion-slides *ngIf="home" (ionSlideDidChange)="slideChanged($event)" no-padding class="bb-wp-a">
+  <ion-slides (ionSlideDidChange)="slideChanged()" no-padding class="bb-wp-a">
     <ion-slide class="Home-items Home-wp">
       <div *ngIf="!tabs[TabNames.today].loaded"><ion-spinner></ion-spinner></div>
 
