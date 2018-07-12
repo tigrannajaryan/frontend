@@ -118,6 +118,12 @@ export class HomeComponent {
   }
 
   protected onAppointmentClick(appointment: Appointment): void {
+    // if this is past tab => open checkout page immediately
+    if (this.activeTab === this.tabs[TabNames.past].name) {
+      this.checkOutAppointmentClick(appointment);
+      return;
+    }
+
     const buttons = [
       {
         text: 'Checkout Client',
@@ -140,10 +146,6 @@ export class HomeComponent {
     if (this.activeTab === this.tabs[TabNames.upcoming].name) {
       buttons.splice(0, 1);
     }
-    // remove 'Cancel Appointment' if this is past tab
-    if (this.activeTab === this.tabs[TabNames.past].name) {
-      buttons.splice(1, 1);
-    }
 
     const actionSheet = this.actionSheetCtrl.create({ buttons });
     actionSheet.present();
@@ -153,7 +155,10 @@ export class HomeComponent {
    * Handler for 'Checkout Client' action.
    */
   protected checkOutAppointmentClick(appointment: Appointment): void {
-    const data: AppointmentCheckoutParams = { appointmentUuid: appointment.uuid };
+    const data: AppointmentCheckoutParams = {
+      appointmentUuid: appointment.uuid,
+      isAlreadyCheckedOut: appointment.status !== AppointmentStatuses.new
+    };
     this.navCtrl.push(PageNames.AppointmentCheckout, { data });
   }
 

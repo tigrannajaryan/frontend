@@ -18,6 +18,7 @@ import { ServiceItem } from '~/core/stylist-service/stylist-models';
 
 export interface AppointmentCheckoutParams {
   appointmentUuid: string;
+  isAlreadyCheckedOut?: boolean;
 }
 
 /**
