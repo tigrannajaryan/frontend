@@ -1,7 +1,16 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 
-import { UnhandledErrorAction } from '~/core/reducers/errors.reducer';
+import { ErrorAction } from '~/app.reducers';
+
+export enum errorsActionTypes {
+  UNHANDLED_ERROR = 'UNHANDLED_ERROR'
+}
+
+export class UnhandledErrorAction implements ErrorAction {
+  readonly type = errorsActionTypes.UNHANDLED_ERROR;
+  constructor(public errors: Error[]) {}
+}
 
 /**
  * Custom unhandled error handler.
@@ -22,7 +31,7 @@ export class UnhandledErrorHandler {
    */
   handleError(error: Error): void {
     setTimeout(() => {
-      this.store.dispatch(new UnhandledErrorAction(error));
+      this.store.dispatch(new UnhandledErrorAction([error]));
     });
   }
 }

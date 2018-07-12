@@ -27,7 +27,7 @@ import {
   selectRequestCodeSucceded,
   selectToken
 } from '~/core/reducers/auth.reducer';
-import { UnhandledErrorAction } from '~/core/reducers/errors.reducer';
+import { UnhandledErrorAction } from '~/core/unhandled-error-handler';
 import { SetPhoneAction } from '~/core/reducers/profile.reducer';
 
 @Injectable()
@@ -39,8 +39,12 @@ export class AuthEffects {
       const params: GetCodeParams = { phone: action.phone };
       return (
         this.authService.getCode(params)
-          .map(() => new RequestCodeSuccessAction())
-          .catch((error: Error) => Observable.of(new RequestCodeErrorAction(error)))
+          .map(({ response, errors }) => {
+            if (errors) {
+              return new RequestCodeErrorAction(errors);
+            }
+            return new RequestCodeSuccessAction();
+          })
       );
     });
 
@@ -63,12 +67,14 @@ export class AuthEffects {
     })
     .switchMap((params: ConfirmCodeParams) =>
       this.authService.confirmCode(params)
-        .map((response: ConfirmCodeResponse) => {
+        .map(({ response, errors }) => {
+          if (errors) {
+            return new ConfirmCodeErrorAction(errors);
+          }
           const { created_at, token } = response;
           const tokenData: AuthTokenModel = { created_at, token };
           return new ConfirmCodeSuccessAction(tokenData);
         })
-        .catch((error: Error) => Observable.of(new ConfirmCodeErrorAction(error)))
     );
 
   @Effect({ dispatch: false }) confirmCodeLoading = this.actions

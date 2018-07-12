@@ -40,7 +40,7 @@ export class RequestCodeErrorAction implements Action {
   readonly type = authActionTypes.REQUEST_CODE_ERROR;
   readonly requestState = RequestState.Failed;
   readonly requestType = AuthRequestTypes.RequestCode;
-  constructor(public error: Error) {}
+  constructor(public errors: Error) {}
 }
 
 export class RequestCodeSuccessAction implements Action {
@@ -66,7 +66,7 @@ export class ConfirmCodeErrorAction implements Action {
   readonly type = authActionTypes.CONFIRM_CODE_ERROR;
   readonly requestState = RequestState.Failed;
   readonly requestType = AuthRequestTypes.ConfirmCode;
-  constructor(public error: Error) {}
+  constructor(public errors: Error) {}
 }
 
 export class ConfirmCodeSuccessAction implements Action {
@@ -143,7 +143,7 @@ export function authReducer(state: AuthState = initialState, action: Actions): A
       return {
         ...state,
         requestState: action.requestState,
-        error: action.error
+        errors: action.errors
       };
 
     case authActionTypes.CONFIRM_CODE_SUCCESS:
@@ -184,6 +184,13 @@ export const selectFormattedPhone = createSelector(
 export const selectToken = createSelector(
   selectAuthFromState,
   (state: AuthState): AuthTokenModel | undefined => state.token
+);
+
+export const selectConfirmCodeErrors = createSelector(
+  selectAuthFromState,
+  (state: AuthState): any =>
+    state.requestType === AuthRequestTypes.ConfirmCode &&
+    state.errors
 );
 
 export const selectRequestCodeLoading = createSelector(

@@ -20,7 +20,7 @@ import { ClientAppComponent } from '~/app.component';
 import { getMetaReducers, reducers } from '~/app.reducers';
 
 import { AuthEffects } from '~/core/effects/auth.effects';
-import { ErrorsEffects } from '~/core/effects/errors.effects';
+import { ApiErrorsEffects } from '~/core/effects/api-errors.effects';
 
 @NgModule({
   declarations: [
@@ -51,7 +51,7 @@ import { ErrorsEffects } from '~/core/effects/errors.effects';
      */
     EffectsModule.forRoot([
       AuthEffects,
-      ErrorsEffects
+      ApiErrorsEffects
     ])
   ],
 

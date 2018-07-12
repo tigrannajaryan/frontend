@@ -11,8 +11,7 @@
       </div>
     </ion-row>
     <ion-row class="AuthConfirmPage-phoneNumber" justify-content-center>
-      <!-- TODO: add real phone -->
-      <span>{{ phone | async }}&nbsp;</span><span class="Link" (click)="navCtrl.pop()">Edit</span>
+      <span>{{ phone | async | formatPhone }}&nbsp;</span><span class="Link" (click)="navCtrl.pop()">Edit</span>
     </ion-row>
     <ion-row>
       <form (ngSubmit)="submit()">
@@ -24,6 +23,9 @@
         <ion-row justify-content-center>
           <div class="AuthConfirmPage-digits">
             <div *ngFor="let digit of digits; let index = index" class="AuthConfirmPage-digit is-number{{ index + 1 }}"></div>
+            <span *ngIf="errors | async | hasError:invalidCodeError">
+              Please enter a&nbsp;valid code
+            </span>
           </div>
         </ion-row>
       </form>

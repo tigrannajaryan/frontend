@@ -8,10 +8,13 @@ import { PageNames } from '~/core/page-names';
 import {
   AuthState,
   ConfirmCodeAction,
+  selectConfirmCodeErrors,
   selectConfirmCodeLoading,
   selectPhone
 } from '~/core/reducers/auth.reducer';
 import { AuthEffects } from '~/core/effects/auth.effects';
+
+import { ApiFieldError, GenericFieldErrorCode } from '~/core/api/errors.models';
 
 export const CODE_LENGTH = 6;
 
@@ -30,6 +33,9 @@ export class AuthConfirmPageComponent {
     Validators.maxLength(CODE_LENGTH)
   ]);
 
+  errors: Observable<string>;
+  invalidCodeError = new ApiFieldError('code', GenericFieldErrorCode.invalid);
+
   isLoading = false;
 
   codeSubscription: Subscription;
@@ -45,6 +51,7 @@ export class AuthConfirmPageComponent {
 
   ionViewWillEnter(): void {
     this.phone = this.store.select(selectPhone);
+    this.errors = this.store.select(selectConfirmCodeErrors);
 
     this.codeSubscription = this.code.statusChanges.subscribe(() => {
       if (this.code.valid) {
