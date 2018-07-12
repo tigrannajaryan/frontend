@@ -1,16 +1,16 @@
 import { async, ComponentFixture } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { ActionSheetController } from 'ionic-angular';
+import { AppVersion } from '@ionic-native/app-version';
+import { Store, StoreModule } from '@ngrx/store';
 
 import { TestUtils } from '../../test';
 import { prepareSharedObjectsForTests } from '~/core/test-utils.spec';
 import { HomeComponent } from '~/home/home.component';
-import { Store, StoreModule } from '@ngrx/store';
 import { HomeService } from '~/home/home.service';
 import { profileReducer, profileStatePath } from '~/core/components/user-header/profile.reducer';
-import { ActionSheetController } from 'ionic-angular';
 import { homeReducer, HomeState } from '~/home/home.reducer';
 import { GAWrapper } from '~/shared/google-analytics';
-import { AppVersion } from '@ionic-native/app-version';
 
 let fixture: ComponentFixture<HomeComponent>;
 let instance: HomeComponent;
