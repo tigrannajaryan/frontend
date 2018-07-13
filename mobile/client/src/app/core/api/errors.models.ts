@@ -22,8 +22,12 @@ export enum GenericFieldErrorCode {
   datetime = 'datetime'
 }
 
+type ApiErrorCode =
+  | GenericFieldErrorCode
+  | string; // specific error codes
+
 export interface ApiError {
-  code: string;
+  code: ApiErrorCode;
   details?: {
     description: string;
   };
