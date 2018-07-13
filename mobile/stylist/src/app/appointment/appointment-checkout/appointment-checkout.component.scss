@@ -274,6 +274,14 @@ page-checkout {
           }
         }
 
+        &.lastAndCheckedOut {
+          margin: 0;
+
+          .row {
+            border-bottom: none;
+          }
+        }
+
         &-title{
           font-size: pxtorem(36);
           display: flex;
