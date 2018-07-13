@@ -10,14 +10,19 @@ import { LogoutAction } from '~/core/reducers/auth.reducer';
 import { Logger } from '~/shared/logger';
 import { PageNames } from '~/core/page-names';
 
+interface MenuPage {
+  title: string;
+  component: PageNames;
+}
+
 @Component({
   templateUrl: 'app.component.html'
 })
 export class ClientAppComponent implements OnInit {
   @ViewChild(Nav) nav: Nav;
 
-  rootPage: any;
-  menuPages: Array<{ title: string, component: any }>;
+  protected rootPage: any;
+  protected menuPages: MenuPage[];
 
   constructor(
     private logger: Logger,
@@ -51,7 +56,7 @@ export class ClientAppComponent implements OnInit {
     }
   }
 
-  openPage(page): void {
+  openPage(page: MenuPage): void {
     if (page.component !== this.nav.getActive().component) {
       this.nav.setRoot(page.component, {}, { animate: false });
     }
