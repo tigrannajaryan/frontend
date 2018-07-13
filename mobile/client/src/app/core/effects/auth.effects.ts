@@ -9,12 +9,12 @@ import { AuthServiceMock } from '~/core/api/auth-service.mock';
 import {
   AuthTokenModel,
   ConfirmCodeParams,
-  ConfirmCodeResponse,
   GetCodeParams
 } from '~/core/api/auth.models';
 import {
   authActionTypes,
   AuthState,
+  ConfirmCodeAction,
   ConfirmCodeErrorAction,
   ConfirmCodeLoadingAction,
   ConfirmCodeSuccessAction,
@@ -60,6 +60,7 @@ export class AuthEffects {
 
   @Effect() confirmCodeRequest = this.actions
     .ofType(authActionTypes.CONFIRM_CODE)
+    .map((action: ConfirmCodeAction) => action)
     .withLatestFrom(this.store)
     .map(([action, store]) => {
       const phone = selectPhone(store);
@@ -96,7 +97,7 @@ export class AuthEffects {
         saveToken(token)
           .then(() => true)
           .catch((error: Error) => {
-            this.store.dispatch(new UnhandledErrorAction(error));
+            this.store.dispatch(new UnhandledErrorAction([error]));
             return false;
           })
       );

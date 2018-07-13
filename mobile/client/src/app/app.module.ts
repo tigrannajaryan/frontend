@@ -3,7 +3,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 
-import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
+import { IonicApp, IonicModule } from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import { IonicStorageModule } from '@ionic/storage';
@@ -20,7 +20,7 @@ import { ClientAppComponent } from '~/app.component';
 import { getMetaReducers, reducers } from '~/app.reducers';
 
 import { AuthEffects } from '~/core/effects/auth.effects';
-import { ApiErrorsEffects } from '~/core/effects/api-errors.effects';
+import { ApiCommonErrorsEffects } from '~/core/effects/api-common-errors.effects';
 
 @NgModule({
   declarations: [
@@ -51,7 +51,7 @@ import { ApiErrorsEffects } from '~/core/effects/api-errors.effects';
      */
     EffectsModule.forRoot([
       AuthEffects,
-      ApiErrorsEffects
+      ApiCommonErrorsEffects
     ])
   ],
 

@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpErrorResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import * as faker from 'faker';
+// import * as faker from 'faker';
 
 import {
   ConfirmCodeParams,
@@ -11,35 +11,30 @@ import {
   GetCodeResponse
 } from '~/core/api/auth.models';
 
-import {
-  processApiResponseError,
-  ServerUnreachableError
-} from '~/core/api/errors';
+import { processApiResponseError } from '~/core/api/errors';
 
-import {
-  ApiBaseError,
-  ServerUnreachableError
-} from '~/core/api/errors.models';
+import { ApiBaseError, BaseError } from '~/core/api/errors.models';
 
-import { ApiCommonErrorAction, apiErrorsActions } from '~/core/effects/api-errors.effects';
+import { AuthState } from '~/core/reducers/auth.reducer';
+import { ApiCommonErrorAction } from '~/core/effects/api-errors.effects';
 
 import AuthErrors from '~/core/data/auth.errors.json';
 
 export interface ApiResponse<ReponseType> {
   response: ReponseType;
-  errors: any[];
+  errors?: BaseError[];
 }
 
 @Injectable()
 export class AuthServiceMock {
 
   constructor(
-    private store: Store<any>
+    private store: Store<AuthState>
   ) {
   }
 
   getCode(params: GetCodeParams): Observable<ApiResponse<GetCodeResponse>> {
-    return this.request(
+    return this.request<ConfirmCodeResponse>(
       Observable.create(observer => {
         setTimeout(() => {
           observer.next({});
@@ -49,11 +44,11 @@ export class AuthServiceMock {
   }
 
   confirmCode(params: ConfirmCodeParams): Observable<ApiResponse<ConfirmCodeResponse>> {
-    return this.request(
+    return this.request<ConfirmCodeResponse>(
       Observable.create(observer => {
         setTimeout(() => {
           const error = new HttpErrorResponse({
-            headers: {},
+            headers: new HttpHeaders({}),
             status: 400,
             error: AuthErrors.invalid_code
           });
@@ -67,7 +62,7 @@ export class AuthServiceMock {
     );
   }
 
-  private request(responseMock: Observable<any>): Observable<any> {
+  private request<ResponseType>(responseMock: Observable<ResponseType>): Observable<ApiResponse<ResponseType>> {
     return (
       responseMock
         .map(response => ({ response }))
@@ -78,9 +73,9 @@ export class AuthServiceMock {
           // Skip for fields and non-fields errors.
           errors
             .filter(e => !(e instanceof ApiBaseError))
-            .forEach(e => this.store.dispatch(new ApiCommonErrorAction(e.constructor.name)));
+            .forEach(e => this.store.dispatch(new ApiCommonErrorAction(e)));
 
-          return Observable.of({ errors });
+          return Observable.of({ response: undefined, errors });
         })
     );
   }

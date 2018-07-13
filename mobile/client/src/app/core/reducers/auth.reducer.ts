@@ -2,6 +2,7 @@ import { Action, ActionReducer, createFeatureSelector, createSelector, State } f
 
 import { RequestState } from '~/core/api/request.models';
 import { AuthTokenModel } from '~/core/api/auth.models';
+import { BaseError } from '~/core/api/errors.models';
 
 export enum AuthRequestTypes {
   RequestCode = 'RequestCode',
@@ -40,7 +41,7 @@ export class RequestCodeErrorAction implements Action {
   readonly type = authActionTypes.REQUEST_CODE_ERROR;
   readonly requestState = RequestState.Failed;
   readonly requestType = AuthRequestTypes.RequestCode;
-  constructor(public errors: Error) {}
+  constructor(public errors: BaseError[]) {}
 }
 
 export class RequestCodeSuccessAction implements Action {
@@ -66,7 +67,7 @@ export class ConfirmCodeErrorAction implements Action {
   readonly type = authActionTypes.CONFIRM_CODE_ERROR;
   readonly requestState = RequestState.Failed;
   readonly requestType = AuthRequestTypes.ConfirmCode;
-  constructor(public errors: Error) {}
+  constructor(public errors: BaseError[]) {}
 }
 
 export class ConfirmCodeSuccessAction implements Action {
@@ -102,7 +103,7 @@ export interface AuthState {
 
   requestState: RequestState;
   requestType: AuthRequestTypes;
-  error?: Error;
+  errors?: BaseError[];
 }
 
 const initialState: AuthState = {
@@ -126,7 +127,7 @@ export function authReducer(state: AuthState = initialState, action: Actions): A
 
         // reset
         requestState: RequestState.NotStarted,
-        error: undefined
+        errors: undefined
       };
 
     case authActionTypes.REQUEST_CODE_LOADING:

@@ -24,29 +24,29 @@ export enum GenericFieldErrorCode {
 
 export interface ApiError {
   code: string;
-  details: {
+  details?: {
     description: string;
   };
 }
 
-export interface ApiErrorResponse {
+export interface ApiErrorResponse extends ApiError {
   code: HighLevelErrorCode;
   non_field_errors: ApiError[];
   field_errors: {
-    [string]: ApiError[];
+    [fieldName: string]: ApiError[];
   };
 }
 
-export class BaseError {
-  constructor(private error: any) {}
+export abstract class BaseError {
+  constructor(public error: ApiError | Error) {}
 }
 
-export class ApiBaseError extends BaseError {
-  isSame: (error: any) => boolean;
+export abstract class ApiBaseError extends BaseError {
+  abstract isSame(error: BaseError): boolean;
 
   constructor(
     public code: string,
-    private error: ApiError
+    public error: ApiError
   ) {
     super(error);
   }
@@ -62,7 +62,7 @@ export class ApiFieldError extends ApiBaseError {
   constructor(
     public field: string,
     public code: string,
-    private error: ApiError
+    public error: ApiError
   ) {
     super(code, error);
   }
