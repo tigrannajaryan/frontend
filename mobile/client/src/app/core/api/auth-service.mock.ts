@@ -16,7 +16,7 @@ import { processApiResponseError } from '~/core/api/errors';
 import { ApiBaseError, BaseError } from '~/core/api/errors.models';
 
 import { AuthState } from '~/core/reducers/auth.reducer';
-import { ApiCommonErrorAction } from '~/core/effects/api-errors.effects';
+import { ApiCommonErrorAction } from '~/core/effects/api-common-errors.effects';
 
 import AuthErrors from '~/core/data/auth.errors.json';
 

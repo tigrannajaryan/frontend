@@ -59,7 +59,7 @@ export function logger(reducer: ActionReducer<State>): ActionReducer<State> {
  */
 export interface ErrorAction extends Action {
   type: string;
-  errors: Error;
+  errors: Error[];
 }
 export function onErrorAction(reducer: ActionReducer<State>): ActionReducer<State> {
   return (state: State, action: ErrorAction) => {
