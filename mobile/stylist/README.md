@@ -70,17 +70,19 @@ You need to create a symlink alias. Type the following to the command line or te
 
 To fix this problem you should run the following commands:
 
-`node PROJECT_ROOT/mobile/stylist/node_modules/node-sass/scripts/install.js`
+```
+node PROJECT_ROOT/mobile/stylist/node_modules/node-sass/scripts/install.js
+npm rebuild node-sass
+```
 
-`npm rebuild node-sass`
 
 - Unsupported npm version gives you an error while installing node_modules similar to the following:
 
-`17166 error code EINTEGRITY`
-
-`17167 error sha512-W2Cr4iDg3EHANbuOqjobJtYhHrptIEJ7mBQZTqp3qh1fSRm2yNcnt8sgmfqbotl2Qh2nCKb3qLVv3v8v3DoRkw== integrity checksum failed when using sha512: wanted sha512-W2Cr4iDg3EHANbuOqjobJtYhHrptIEJ7mBQZTqp3qh1fSRm2yNcnt8sgmfqbotl2Qh2nCKb3qLVv3v8v3DoRkw== but got sha512-EctwPdNttbuuucRR7WdmXgsST4gcnOFPt5CDc+TpCggVrlvnhNfyJ4h8jYAiwkWe0fpyu8rgJfHLIXQB1U1c9Q==. (661037 bytes)`
-
-`17168 verbose exit [ 1, true ]`
+```
+17166 error code EINTEGRITY
+17167 error sha512-W2Cr4iDg3EHANbuOqjobJtYhHrptIEJ7mBQZTqp3qh1fSRm2yNcnt8sgmfqbotl2Qh2nCKb3qLVv3v8v3DoRkw== integrity checksum failed when using sha512: wanted sha512-W2Cr4iDg3EHANbuOqjobJtYhHrptIEJ7mBQZTqp3qh1fSRm2yNcnt8sgmfqbotl2Qh2nCKb3qLVv3v8v3DoRkw== but got sha512-EctwPdNttbuuucRR7WdmXgsST4gcnOFPt5CDc+TpCggVrlvnhNfyJ4h8jYAiwkWe0fpyu8rgJfHLIXQB1U1c9Q==. (661037 bytes)
+17168 verbose exit [ 1, true ]
+```
 
 To fix the issue - update npm version.
 
@@ -90,16 +92,27 @@ To fix the issue - update npm version.
 
 To fix this issue create a file `environment.local.ts` in `app/src/environments` and fill it with the content:
 
-`export const ENV = {`
-`  // apiUrl: 'http://betterbeauty.local:8000/api/v1/', // local backend`
-`  apiUrl: 'https://admindev.betterbeauty.io/api/v1/', // staging url`
-`  production: false,`
-`  version: '_DEV_'`
-`};`
+```
+export const ENV = {
+  // apiUrl: 'http://betterbeauty.local:8000/api/v1/', // local backend
+  apiUrl: 'https://admindev.betterbeauty.io/api/v1/', // staging url
+  production: false,
+  version: '_DEV_'
+};`
+```
 
 Then restart server:
 
 `npm run ionic:serve`
+
+- Starting Android emulator `ionic:serve-android` returns error message:
+
+```
+(node:11980) UnhandledPromiseRejectionWarning: CordovaError: Failed to execute shell command "getprop,dev.bootcomplete"" on device: Error: C:\Users\Admin\AppData\Local\Android\Sd
+k\platform-tools\adb.exe: Command failed with exit code 1 Error output:
+error: device still connecting
+```
+To fix this issue we need to increase loadUrlTimeoutValue (to 1700000 for example) in `PROJECT_ROOT\mobile\stylist\node_modules\cordova-android\bin\templates\project\res\xml\config.xml` 
 
 # Android App
 
