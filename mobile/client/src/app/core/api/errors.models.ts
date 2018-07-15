@@ -49,7 +49,7 @@ export abstract class ApiBaseError extends BaseError {
   abstract isSame(error: BaseError): boolean;
 
   constructor(
-    public code: string,
+    public code: ApiErrorCode,
     public error: ApiError
   ) {
     super(error);
@@ -65,7 +65,7 @@ export class ApiNonFieldError extends ApiBaseError {
 export class ApiFieldError extends ApiBaseError {
   constructor(
     public field: string,
-    public code: string,
+    public code: ApiErrorCode,
     public error: ApiError
   ) {
     super(code, error);

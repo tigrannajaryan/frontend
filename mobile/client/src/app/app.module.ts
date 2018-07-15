@@ -68,10 +68,6 @@ import { ApiCommonErrorsEffects } from '~/core/effects/api-common-errors.effects
     // services
     AuthServiceMock,
 
-    // TODO: is it needed?
-    // import { ServerStatusTracker } from '~/shared/server-status-tracker';
-    // ServerStatusTracker,
-
     {
       // Our custom handler for unhandled exceptions
       provide: ErrorHandler,

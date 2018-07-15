@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { ErrorHandler, Injectable } from '@angular/core';
 import { Actions, Effect } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
@@ -27,7 +27,6 @@ import {
   selectRequestCodeSucceded,
   selectToken
 } from '~/core/reducers/auth.reducer';
-import { UnhandledErrorAction } from '~/core/unhandled-error-handler';
 import { SetPhoneAction } from '~/core/reducers/profile.reducer';
 
 @Injectable()
@@ -97,7 +96,7 @@ export class AuthEffects {
         saveToken(token)
           .then(() => true)
           .catch((error: Error) => {
-            this.store.dispatch(new UnhandledErrorAction([error]));
+            this.errorHandler.handleError(error);
             return false;
           })
       );
@@ -112,6 +111,7 @@ export class AuthEffects {
   constructor(
     private actions: Actions,
     private authService: AuthServiceMock,
+    private errorHandler: ErrorHandler,
     private store: Store<AuthState>
   ) {
   }

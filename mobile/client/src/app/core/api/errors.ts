@@ -15,33 +15,38 @@ import {
   ServerUnreachableError
 } from '~/core/api/errors.models';
 
-export function processApiResponseError(error: HttpErrorResponse | any): BaseError[] {
-  if (error instanceof HttpErrorResponse) {
-    if (!error.status) {
-      // No response at all, probably no network connection or server is down.
-      return [new ServerUnreachableError(error)];
-    }
-
-    // We have a response, check the status.
-    switch (error.status) {
-      case 400: // bad request
-        return getApiErrors(error.error);
-
-      case 401: // unauthorized
-        return [new RequestUnauthorizedError(error)];
-
-      default:
-        if (error.status >= 500 && error.status <= 599) {
-          return [new ServerInternalError(error)];
-        }
-    }
+export function processApiResponseError(error: HttpErrorResponse): BaseError[] {
+  if (!(error instanceof HttpErrorResponse)) {
+    // This shouldn’t happen. JIC server returned something we don't understand.
+    return [new ServerUnknownError(error)];
   }
 
-  // Server returned something we don't understand or some other unexpected error happened.
-  return [new ServerUnknownError(error)];
+  if (!error.status) {
+    // No response at all, probably no network connection or server is down.
+    return [new ServerUnreachableError(error)];
+  }
+
+  // We have a response, check the status.
+  switch (error.status) {
+    case 400: // bad request
+      // Match API errors:
+      return getApiErrors(error.error);
+
+    case 401: // unauthorized
+      return [new RequestUnauthorizedError(error)];
+
+    default:
+      if (error.status >= 500 && error.status <= 599) {
+        return [new ServerInternalError(error)];
+      }
+  }
 }
 
-// Errors matching function
+/**
+ * Errors matching function.
+ * @param  error response from the API that contains high level error code, non-fields and fields errors
+ * @return an array of matched errors
+ */
 export function getApiErrors(error: ApiErrorResponse): BaseError[] {
   switch (error.code) {
 

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-// import * as faker from 'faker';
+import * as faker from 'faker';
 
 import {
   ConfirmCodeParams,
@@ -47,16 +47,16 @@ export class AuthServiceMock {
     return this.request<ConfirmCodeResponse>(
       Observable.create(observer => {
         setTimeout(() => {
-          const error = new HttpErrorResponse({
-            headers: new HttpHeaders({}),
-            status: 400,
-            error: AuthErrors.invalid_code
-          });
-          observer.error(error);
-          // observer.next({
-          //   token: faker.internet.password(),
-          //   created_at: Number(new Date())
+          // const error = new HttpErrorResponse({
+          //   headers: new HttpHeaders({}),
+          //   status: 400,
+          //   error: AuthErrors.invalid_code
           // });
+          // observer.error(error);
+          observer.next({
+            token: faker.internet.password(),
+            created_at: Number(new Date())
+          });
          }, 400);
       })
     );

@@ -1,16 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Store } from '@ngrx/store';
-
-import { ErrorAction } from '~/app.reducers';
-
-export enum errorsActionTypes {
-  UNHANDLED_ERROR = 'UNHANDLED_ERROR'
-}
-
-export class UnhandledErrorAction implements ErrorAction {
-  readonly type = errorsActionTypes.UNHANDLED_ERROR;
-  constructor(public errors: Error[]) {}
-}
+import { AlertController } from 'ionic-angular';
 
 /**
  * Custom unhandled error handler.
@@ -20,7 +9,7 @@ export class UnhandledErrorAction implements ErrorAction {
 export class UnhandledErrorHandler {
 
   constructor(
-    private store: Store<any>
+    private alertCtrl: AlertController
   ) {
   }
 
@@ -31,7 +20,16 @@ export class UnhandledErrorHandler {
    */
   handleError(error: Error): void {
     setTimeout(() => {
-      this.store.dispatch(new UnhandledErrorAction([error]));
+      // TODO:
+      // 1. log
+      // 2. sentry
+      // 3. analytics
+      const alert = this.alertCtrl.create({
+        title: 'An error occurred',
+        subTitle: 'We are working on fixing it.',
+        buttons: ['Dismiss']
+      });
+      alert.present();
     });
   }
 }

@@ -5,14 +5,12 @@ import {
   MetaReducer
 } from '@ngrx/store';
 import { storeLogger } from 'ngrx-store-logger';
-import { AlertController } from 'ionic-angular';
 
 import { ENV } from '~/../environments/environment.default';
 
 import { authPath, authReducer, resetOnLogoutReducer } from '~/core/reducers/auth.reducer';
 import { profilePath, profileReducer } from '~/core/reducers/profile.reducer';
 
-import { errorsActionTypes } from '~/core/unhandled-error-handler';
 import { AppModule } from '~/app.module';
 
 /**
@@ -55,43 +53,6 @@ export function logger(reducer: ActionReducer<State>): ActionReducer<State> {
 }
 
 /**
- * Use meta reducer to add side-effects to all errors actions.
- */
-export interface ErrorAction extends Action {
-  type: string;
-  errors: Error[];
-}
-export function onErrorAction(reducer: ActionReducer<State>): ActionReducer<State> {
-  return (state: State, action: ErrorAction) => {
-    if (action.errors) {
-      // TODO:
-      // Create a method with this stuff \/
-      // 1. log
-      // 2. sentry
-      // 3. analytics
-      console.error(...action.errors);
-
-      switch (action.type) {
-        case errorsActionTypes.UNHANDLED_ERROR:
-          const alertCtrl = AppModule.injector.get(AlertController);
-          const alert = alertCtrl.create({
-            title: 'An error occurred',
-            // TODO: nicer subtitle
-            subTitle: 'We are working on fixing it.',
-            buttons: ['Dismiss']
-          });
-          alert.present();
-          break;
-
-        default:
-          break;
-      }
-    }
-    return reducer(state, action);
-  };
-}
-
-/**
  * By default, @ngrx/store uses combineReducers with the reducer map to compose
  * the root meta-reducer. To add more meta-reducers, provide an array of meta-reducers
  * that will be composed to form the root meta-reducer.
@@ -108,8 +69,7 @@ export function getMetaReducers(): Array<MetaReducer<State>> {
 
   // production
   metaReducers.push(
-    resetOnLogoutReducer,
-    onErrorAction
+    resetOnLogoutReducer
   );
 
   return metaReducers;
