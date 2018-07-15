@@ -1,30 +1,16 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
-import {
-  ApiBaseError,
-  ApiFieldError
-} from '~/core/api/errors.models';
-
-const EMPTY_API_ERROR = { code: '' };
-
-export class ApiFieldErrorMatch extends ApiFieldError {
-  constructor(
-    public field: string,
-    public code: string
-  ) {
-    super(field, code, EMPTY_API_ERROR);
-  }
-}
+import { ApiDerivedError } from '~/core/api/errors.models';
 
 @Pipe({ name: 'hasError' })
 export class HasErrorPipe implements PipeTransform {
 
   transform(errors: any[], error: any): boolean {
     if (errors && errors.length > 0) {
-      if (error instanceof ApiBaseError) {
+      if (error instanceof ApiDerivedError) {
         return (
           errors
-            .filter(e => e instanceof ApiBaseError)
+            .filter(e => e instanceof ApiDerivedError)
             .some(e => e.isSame(error))
         );
       }

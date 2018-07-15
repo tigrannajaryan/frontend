@@ -14,8 +14,7 @@ import {
 } from '~/core/reducers/auth.reducer';
 import { AuthEffects } from '~/core/effects/auth.effects';
 
-import { GenericFieldErrorCode } from '~/core/api/errors.models';
-import { ApiFieldErrorMatch } from '~/core/pipes/has-error.pipe';
+import { ApiFieldError, GenericFieldErrorCode } from '~/core/api/errors.models';
 
 export const CODE_LENGTH = 6;
 
@@ -35,7 +34,7 @@ export class AuthConfirmPageComponent {
   ]);
 
   errors: Observable<string>;
-  invalidCodeError = new ApiFieldErrorMatch('code', GenericFieldErrorCode.invalid);
+  invalidCodeError = new ApiFieldError('code', { code: GenericFieldErrorCode.invalid });
 
   isLoading = false;
 

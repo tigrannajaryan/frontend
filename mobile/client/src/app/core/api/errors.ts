@@ -1,43 +1,38 @@
 import { HttpErrorResponse } from '@angular/common/http';
 
 import {
-  ApiErrorResponse,
+  ApiError,
   ApiFieldError,
+  ApiHighLevelErrorResponse,
   ApiNonFieldError,
   ApiNotAllowedMethodError,
   ApiObjectNotFoundError,
+  ApiRecognisableError,
   ApiUnknownError,
-  BaseError,
   HighLevelErrorCode,
   RequestUnauthorizedError,
   ServerInternalError,
-  ServerUnknownError,
   ServerUnreachableError
 } from '~/core/api/errors.models';
 
-export function processApiResponseError(error: HttpErrorResponse): BaseError[] {
-  if (!(error instanceof HttpErrorResponse)) {
-    // This shouldn’t happen. JIC server returned something we don't understand.
-    return [new ServerUnknownError(error)];
-  }
-
-  if (!error.status) {
-    // No response at all, probably no network connection or server is down.
-    return [new ServerUnreachableError(error)];
+export function processApiResponseError(error: HttpErrorResponse): ApiError[] {
+  if (error.error instanceof ErrorEvent) {
+    // Client-side error, e.g. network error or exception thrown.
+    return [new ServerUnreachableError(error.error)];
   }
 
   // We have a response, check the status.
   switch (error.status) {
     case 400: // bad request
       // Match API errors:
-      return getApiErrors(error.error);
+      return getRecognisableErrors(error.error);
 
     case 401: // unauthorized
-      return [new RequestUnauthorizedError(error)];
+      return [new RequestUnauthorizedError(error.error)];
 
     default:
       if (error.status >= 500 && error.status <= 599) {
-        return [new ServerInternalError(error)];
+        return [new ServerInternalError(error.error)];
       }
   }
 }
@@ -47,19 +42,19 @@ export function processApiResponseError(error: HttpErrorResponse): BaseError[] {
  * @param  error response from the API that contains high level error code, non-fields and fields errors
  * @return an array of matched errors
  */
-export function getApiErrors(error: ApiErrorResponse): BaseError[] {
+export function getRecognisableErrors(error: ApiHighLevelErrorResponse): ApiRecognisableError[] {
   switch (error.code) {
 
     // An exception occured in the API, the `non_field_errors` or(and) `field_errors` should be returned
     case HighLevelErrorCode.err_api_exception: {
-      const nonFieldErrors = error.non_field_errors.map(e => new ApiNonFieldError(e.code, error));
+      const nonFieldErrors = error.non_field_errors.map(e => new ApiNonFieldError(error));
 
       const fieldErrors =
         Object.keys(error.field_errors)
           .reduce((all, field) => {
             const errors = error.field_errors[field];
             return all.concat(
-              errors.map(e => new ApiFieldError(field, e.code, error))
+              errors.map(e => new ApiFieldError(field, error))
             );
           }, []);
 

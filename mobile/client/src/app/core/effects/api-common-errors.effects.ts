@@ -7,7 +7,6 @@ import { PageNames } from '~/core/page-names';
 
 import {
   ApiError,
-  BaseError,
   RequestUnauthorizedError
 } from '~/core/api/errors.models';
 
@@ -15,30 +14,23 @@ export const API_COMMON_ERROR = 'API_COMMON_ERROR';
 
 export class ApiCommonErrorAction implements Action {
   readonly type = API_COMMON_ERROR;
-
-  constructor(public error: BaseError) {}
-
-  getError(): ApiError | Error {
-    return this.error.error;
-  }
+  constructor(public error: ApiError) {}
 }
 
 @Injectable()
 export class ApiCommonErrorsEffects {
 
+  /**
+   * Handle different types of API errors with `handleGlobally` flag set to ”true”
+   */
   @Effect({ dispatch: false }) handleApiCommonError = this.actions
     .ofType(API_COMMON_ERROR)
+    .filter((action: ApiCommonErrorAction) => action.error.handleGlobally)
     .map((action: ApiCommonErrorAction) => {
 
-      switch (action.error.constructor.name) {
-        case RequestUnauthorizedError.name: {
-          const [ nav ] = this.app.getActiveNavs();
-          nav.setRoot(PageNames.Auth);
-          break;
-        }
-
-        default:
-          // Just ignoring the error
+      if (action.error instanceof RequestUnauthorizedError) {
+        const [ nav ] = this.app.getActiveNavs();
+        nav.setRoot(PageNames.Auth);
       }
     });
 

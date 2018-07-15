@@ -1,3 +1,4 @@
+// error.code
 export enum HighLevelErrorCode {
   err_api_exception = 'err_api_exception',
   err_authentication_failed = 'err_authentication_failed',
@@ -6,6 +7,7 @@ export enum HighLevelErrorCode {
   err_method_not_allowed = 'err_method_not_allowed'
 }
 
+// `field_errors` possible codes (not all of possible!)
 export enum GenericFieldErrorCode {
   required = 'required',
   invalid = 'invalid',
@@ -23,69 +25,128 @@ export enum GenericFieldErrorCode {
 }
 
 type ApiErrorCode =
+  | HighLevelErrorCode
   | GenericFieldErrorCode
   | string; // specific error codes
 
-export interface ApiError {
+/**
+ * All errors returned from the API in case of an error
+ */
+export interface ApiErrorResponse {
   code: ApiErrorCode;
   details?: {
     description: string;
   };
 }
 
-export interface ApiErrorResponse extends ApiError {
+/**
+ * High-level error response returned from the API in case of an error
+ */
+export interface ApiHighLevelErrorResponse extends ApiErrorResponse {
   code: HighLevelErrorCode;
-  non_field_errors: ApiError[];
+  non_field_errors: ApiErrorResponse[];
   field_errors: {
-    [fieldName: string]: ApiError[];
+    [fieldName: string]: ApiErrorResponse[];
   };
 }
 
-export abstract class BaseError {
-  constructor(public error: ApiError | Error) {}
+/**
+ * Base class for all posible errors returned from the API request
+ */
+export class ApiError {
+  /**
+   * This is used to indicate that dispatching of ApiCommonErrorAction
+   * is needed when this error occures.
+   */
+  handleGlobally = true;
 }
 
-export abstract class ApiBaseError extends BaseError {
-  abstract isSame(error: BaseError): boolean;
+/**
+ * The API should return an ApiError in case of an error on the server-side
+ */
+export class ApiRecognisableError extends ApiError {
+  constructor(public error: ApiErrorResponse) {
+    super();
+  }
+}
 
-  constructor(
-    public code: ApiErrorCode,
-    public error: ApiError
-  ) {
+/**
+ * The API can return string body if an error cannot be handled properly
+ */
+export class ServerInternalError extends ApiError {
+  constructor(public error: string) {
+    super();
+  }
+}
+
+/**
+ * If we have an error on the client-side an ErrorEvent is returned
+ */
+export class ServerUnreachableError extends ApiError {
+  constructor(public error: ErrorEvent) {
+    super();
+  }
+}
+
+/**
+ * An error returned with distinct high-level code
+ */
+export class ApiHighLevelError extends ApiRecognisableError {
+  constructor(public error: ApiHighLevelErrorResponse) {
     super(error);
   }
 }
 
-export class ApiNonFieldError extends ApiBaseError {
-  isSame(error: ApiNonFieldError): boolean {
-    return error.code === this.code;
+/**
+ * Authentication fails
+ */
+export class RequestUnauthorizedError extends ApiHighLevelError {}
+
+/**
+ * The requested endpoint is not found
+ */
+export class ApiObjectNotFoundError extends ApiHighLevelError {}
+
+/**
+ * The request method is not allowed for the endpoint
+ */
+export class ApiNotAllowedMethodError extends ApiHighLevelError {}
+
+/**
+ * Nothing above, an error with a high-level code we cannot understand
+ */
+export class ApiUnknownError extends ApiHighLevelError {}
+
+// Common errors should be handled differently from derived errors
+
+/**
+ * Errors derived from `non_field_errors` and `field_errors`
+ */
+export class ApiDerivedError extends ApiRecognisableError {
+  handleGlobally = false;
+
+  isSame(other: ApiDerivedError): boolean {
+    return other.error.code === this.error.code;
   }
 }
 
-export class ApiFieldError extends ApiBaseError {
+/**
+ * An error that not relates to some particular request param
+ */
+export class ApiNonFieldError extends ApiDerivedError {}
+
+/**
+ * An error that relates to some particular request param
+ */
+export class ApiFieldError extends ApiDerivedError {
   constructor(
     public field: string,
-    public code: ApiErrorCode,
-    public error: ApiError
+    public error: ApiErrorResponse
   ) {
-    super(code, error);
+    super(error);
   }
 
-  isSame(error: ApiFieldError): boolean {
-    return (
-      error.field === this.field &&
-      error.code === this.code
-    );
+  isSame(other: ApiFieldError): boolean {
+    return super.isSame(other) && other.field === this.field;
   }
 }
-
-export class ApiObjectNotFoundError extends BaseError {}
-export class ApiNotAllowedMethodError extends BaseError {}
-
-export class ApiUnknownError extends BaseError {}
-
-export class ServerUnreachableError extends BaseError {}
-export class ServerInternalError extends BaseError {}
-export class ServerUnknownError extends BaseError {}
-
-export class RequestUnauthorizedError extends BaseError {}

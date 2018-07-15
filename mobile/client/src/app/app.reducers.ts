@@ -1,17 +1,10 @@
-import {
-  Action,
-  ActionReducer,
-  ActionReducerMap,
-  MetaReducer
-} from '@ngrx/store';
+import { ActionReducer, ActionReducerMap, MetaReducer } from '@ngrx/store';
 import { storeLogger } from 'ngrx-store-logger';
 
 import { ENV } from '~/../environments/environment.default';
 
 import { authPath, authReducer, resetOnLogoutReducer } from '~/core/reducers/auth.reducer';
 import { profilePath, profileReducer } from '~/core/reducers/profile.reducer';
-
-import { AppModule } from '~/app.module';
 
 /**
  * storeFreeze prevents state from being mutated. When mutation occurs, an

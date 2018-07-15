@@ -2,7 +2,7 @@ import { Action, ActionReducer, createFeatureSelector, createSelector, State } f
 
 import { RequestState } from '~/core/api/request.models';
 import { AuthTokenModel } from '~/core/api/auth.models';
-import { BaseError } from '~/core/api/errors.models';
+import { ApiError } from '~/core/api/errors.models';
 
 export enum AuthRequestTypes {
   RequestCode = 'RequestCode',
@@ -41,7 +41,7 @@ export class RequestCodeErrorAction implements Action {
   readonly type = authActionTypes.REQUEST_CODE_ERROR;
   readonly requestState = RequestState.Failed;
   readonly requestType = AuthRequestTypes.RequestCode;
-  constructor(public errors: BaseError[]) {}
+  constructor(public errors: ApiError[]) {}
 }
 
 export class RequestCodeSuccessAction implements Action {
@@ -67,7 +67,7 @@ export class ConfirmCodeErrorAction implements Action {
   readonly type = authActionTypes.CONFIRM_CODE_ERROR;
   readonly requestState = RequestState.Failed;
   readonly requestType = AuthRequestTypes.ConfirmCode;
-  constructor(public errors: BaseError[]) {}
+  constructor(public errors: ApiError[]) {}
 }
 
 export class ConfirmCodeSuccessAction implements Action {
@@ -103,7 +103,7 @@ export interface AuthState {
 
   requestState: RequestState;
   requestType: AuthRequestTypes;
-  errors?: BaseError[];
+  errors?: ApiError[];
 }
 
 const initialState: AuthState = {

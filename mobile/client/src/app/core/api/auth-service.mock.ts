@@ -13,7 +13,7 @@ import {
 
 import { processApiResponseError } from '~/core/api/errors';
 
-import { ApiBaseError, BaseError } from '~/core/api/errors.models';
+import { ApiError } from '~/core/api/errors.models';
 
 import { AuthState } from '~/core/reducers/auth.reducer';
 import { ApiCommonErrorAction } from '~/core/effects/api-common-errors.effects';
@@ -22,7 +22,7 @@ import AuthErrors from '~/core/data/auth.errors.json';
 
 export interface ApiResponse<ReponseType> {
   response: ReponseType;
-  errors?: BaseError[];
+  errors?: ApiError[];
 }
 
 @Injectable()
@@ -47,12 +47,12 @@ export class AuthServiceMock {
     return this.request<ConfirmCodeResponse>(
       Observable.create(observer => {
         setTimeout(() => {
-          // const error = new HttpErrorResponse({
-          //   headers: new HttpHeaders({}),
-          //   status: 400,
-          //   error: AuthErrors.invalid_code
-          // });
-          // observer.error(error);
+          const error = new HttpErrorResponse({
+            headers: new HttpHeaders({}),
+            status: 400,
+            error: AuthErrors.invalid_code
+          });
+          observer.error(error);
           observer.next({
             token: faker.internet.password(),
             created_at: Number(new Date())
@@ -70,10 +70,11 @@ export class AuthServiceMock {
           const errors = processApiResponseError(error);
 
           // Dispatch actions for errors handled by errors.effects.
-          // Skip for fields and non-fields errors.
-          errors
-            .filter(e => !(e instanceof ApiBaseError))
-            .forEach(e => this.store.dispatch(new ApiCommonErrorAction(e)));
+          // A `setTimeout` is used to dispatch globally-handled errors only after errors’ array
+          // returned and handled by the effect that had triggered this request.
+          setTimeout(() => {
+            errors.forEach((err: ApiError) => this.store.dispatch(new ApiCommonErrorAction(err)));
+          });
 
           return Observable.of({ response: undefined, errors });
         })
