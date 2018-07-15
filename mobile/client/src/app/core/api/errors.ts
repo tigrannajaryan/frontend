@@ -47,14 +47,14 @@ export function getRecognisableErrors(error: ApiHighLevelErrorResponse): ApiReco
 
     // An exception occured in the API, the `non_field_errors` or(and) `field_errors` should be returned
     case HighLevelErrorCode.err_api_exception: {
-      const nonFieldErrors = error.non_field_errors.map(e => new ApiNonFieldError(error));
+      const nonFieldErrors = error.non_field_errors.map(e => new ApiNonFieldError(e));
 
       const fieldErrors =
         Object.keys(error.field_errors)
           .reduce((all, field) => {
             const errors = error.field_errors[field];
             return all.concat(
-              errors.map(e => new ApiFieldError(field, error))
+              errors.map(e => new ApiFieldError(field, e))
             );
           }, []);
 

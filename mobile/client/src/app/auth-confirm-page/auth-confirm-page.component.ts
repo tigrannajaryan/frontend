@@ -8,9 +8,11 @@ import { PageNames } from '~/core/page-names';
 import {
   AuthState,
   ConfirmCodeAction,
+  RequestCodeAction,
   selectConfirmCodeErrors,
   selectConfirmCodeLoading,
-  selectPhone
+  selectPhone,
+  selectRequestCodeLoading
 } from '~/core/reducers/auth.reducer';
 import { AuthEffects } from '~/core/effects/auth.effects';
 
@@ -26,7 +28,7 @@ export const CODE_LENGTH = 6;
 export class AuthConfirmPageComponent {
   digits = Array(CODE_LENGTH).fill(undefined);
 
-  phone: Observable<string>;
+  phone: string;
   code: FormControl = new FormControl('', [
     Validators.required,
     Validators.minLength(CODE_LENGTH),
@@ -37,7 +39,9 @@ export class AuthConfirmPageComponent {
   invalidCodeError = new ApiFieldError('code', { code: GenericFieldErrorCode.invalid });
 
   isLoading = false;
+  isPhoneResending: Observable<boolean>;
 
+  phoneSubscription: Subscription;
   codeSubscription: Subscription;
   saveTokenSubscription: Subscription;
   loadingSubscription: Subscription;
@@ -50,8 +54,14 @@ export class AuthConfirmPageComponent {
   }
 
   ionViewWillEnter(): void {
-    this.phone = this.store.select(selectPhone);
     this.errors = this.store.select(selectConfirmCodeErrors);
+
+    this.phoneSubscription = this.store
+      .select(selectPhone)
+      .subscribe((phone: string) => {
+        this.phone = phone;
+      });
+    this.isPhoneResending = this.store.select(selectRequestCodeLoading);
 
     this.codeSubscription = this.code.statusChanges.subscribe(() => {
       if (this.code.valid) {
@@ -75,9 +85,15 @@ export class AuthConfirmPageComponent {
   }
 
   ionViewWillLeave(): void {
+    this.phoneSubscription.unsubscribe();
     this.codeSubscription.unsubscribe();
     this.saveTokenSubscription.unsubscribe();
     this.loadingSubscription.unsubscribe();
+  }
+
+  resendCode(): void {
+    // TODO: add ResendCodeAction and debounce on it
+    this.store.dispatch(new RequestCodeAction(this.phone));
   }
 
   verifyCode(event: any): void {

@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { AlertController } from 'ionic-angular';
 
+import { Logger } from '~/shared/logger';
+
 /**
  * Custom unhandled error handler.
  * This handler class is installed in app.module.ts
@@ -9,7 +11,8 @@ import { AlertController } from 'ionic-angular';
 export class UnhandledErrorHandler {
 
   constructor(
-    private alertCtrl: AlertController
+    private alertCtrl: AlertController,
+    private logger: Logger
   ) {
   }
 
@@ -19,6 +22,8 @@ export class UnhandledErrorHandler {
    * See https://angular.io/api/core/ErrorHandler
    */
   handleError(error: Error): void {
+    this.logger.error(error);
+
     setTimeout(() => {
       // TODO:
       // 1. log

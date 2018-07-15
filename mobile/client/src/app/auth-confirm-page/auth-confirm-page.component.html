@@ -10,8 +10,8 @@
         </div>
       </div>
     </ion-row>
-    <ion-row class="AuthConfirmPage-phoneNumber" justify-content-center>
-      <span>{{ phone | async | formatPhone }}&nbsp;</span><span class="Link" (click)="navCtrl.pop()">Edit</span>
+    <ion-row *ngIf="phone" class="AuthConfirmPage-phoneNumber" justify-content-center>
+      <span>{{ phone | formatPhone }}&nbsp;</span><span class="Link" (click)="navCtrl.pop()">Edit</span>
     </ion-row>
     <ion-row>
       <form (ngSubmit)="submit()">
@@ -21,11 +21,11 @@
           </ion-item>
         </ion-row>
         <ion-row justify-content-center>
-          <div class="AuthConfirmPage-digits">
+          <div class="AuthConfirmPage-digits" [ngClass]="{'is-withError': errors | async | hasError:invalidCodeError}">
             <div *ngFor="let digit of digits; let index = index" class="AuthConfirmPage-digit is-number{{ index + 1 }}"></div>
-            <span *ngIf="errors | async | hasError:invalidCodeError">
+            <div *ngIf="errors | async | hasError:invalidCodeError" class="AuthConfirmPage-error">
               Please enter a&nbsp;valid code
-            </span>
+            </div>
           </div>
         </ion-row>
       </form>
@@ -33,8 +33,9 @@
     <ion-row justify-content-center>
       <span *ngIf="isLoading">Checking the code…</span>
       <span *ngIf="!isLoading">
-        <span>Didn’t get a&nbsp;code? </span><span class="Link">Send a&nbsp;new one</span>
+        <span>Didn’t get a&nbsp;code? </span><span class="Link" (click)="resendCode()">Send a&nbsp;new one</span>
       </span>
+      <span *ngIf="isPhoneResending | async">Sending new code…</span>
     </ion-row>
   </ion-grid>
 </ion-content>
