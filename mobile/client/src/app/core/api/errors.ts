@@ -8,9 +8,9 @@ import {
   ApiNotAllowedMethodError,
   ApiObjectNotFoundError,
   ApiRecognisableError,
+  ApiRequestUnauthorizedError,
   ApiUnknownError,
   HighLevelErrorCode,
-  RequestUnauthorizedError,
   ServerInternalError,
   ServerUnreachableError
 } from '~/core/api/errors.models';
@@ -28,7 +28,7 @@ export function processApiResponseError(error: HttpErrorResponse): ApiError[] {
       return getRecognisableErrors(error.error);
 
     case 401: // unauthorized
-      return [new RequestUnauthorizedError(error.error)];
+      return [new ApiRequestUnauthorizedError(error.error)];
 
     default:
       if (error.status >= 500 && error.status <= 599) {
@@ -64,7 +64,7 @@ export function getRecognisableErrors(error: ApiHighLevelErrorResponse): ApiReco
     // Authentication with provided token is failed
     case HighLevelErrorCode.err_authentication_failed:
     case HighLevelErrorCode.err_unauthorized:
-      return [new RequestUnauthorizedError(error)];
+      return [new ApiRequestUnauthorizedError(error)];
 
     // The endpoint is not found
     case HighLevelErrorCode.err_not_found:

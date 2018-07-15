@@ -29,6 +29,8 @@ type ApiErrorCode =
   | GenericFieldErrorCode
   | string; // specific error codes
 
+// Error responses
+
 /**
  * All errors returned from the API in case of an error
  */
@@ -49,6 +51,8 @@ export interface ApiHighLevelErrorResponse extends ApiErrorResponse {
     [fieldName: string]: ApiErrorResponse[];
   };
 }
+
+// Common errors
 
 /**
  * Base class for all posible errors returned from the API request
@@ -71,7 +75,7 @@ export class ApiRecognisableError extends ApiError {
 }
 
 /**
- * The API can return string body if an error cannot be handled properly
+ * The API can return string body if an error haven’t handled properly on the server-side
  */
 export class ServerInternalError extends ApiError {
   constructor(public error: string) {
@@ -81,12 +85,15 @@ export class ServerInternalError extends ApiError {
 
 /**
  * If we have an error on the client-side an ErrorEvent is returned
+ * (see https://angular.io/guide/http#getting-error-details)
  */
 export class ServerUnreachableError extends ApiError {
   constructor(public error: ErrorEvent) {
     super();
   }
 }
+
+// High-level recognisable errors
 
 /**
  * An error returned with distinct high-level code
@@ -100,7 +107,7 @@ export class ApiHighLevelError extends ApiRecognisableError {
 /**
  * Authentication fails
  */
-export class RequestUnauthorizedError extends ApiHighLevelError {}
+export class ApiRequestUnauthorizedError extends ApiHighLevelError {}
 
 /**
  * The requested endpoint is not found
@@ -117,13 +124,13 @@ export class ApiNotAllowedMethodError extends ApiHighLevelError {}
  */
 export class ApiUnknownError extends ApiHighLevelError {}
 
-// Common errors should be handled differently from derived errors
+// Derived recognisable errors
 
 /**
  * Errors derived from `non_field_errors` and `field_errors`
  */
 export class ApiDerivedError extends ApiRecognisableError {
-  handleGlobally = false;
+  handleGlobally = false; // we are handling them in place
 
   isSame(other: ApiDerivedError): boolean {
     return other.error.code === this.error.code;

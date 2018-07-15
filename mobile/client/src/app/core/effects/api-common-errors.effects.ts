@@ -7,7 +7,7 @@ import { PageNames } from '~/core/page-names';
 
 import {
   ApiError,
-  RequestUnauthorizedError
+  ApiRequestUnauthorizedError
 } from '~/core/api/errors.models';
 
 export const API_COMMON_ERROR = 'API_COMMON_ERROR';
@@ -28,7 +28,7 @@ export class ApiCommonErrorsEffects {
     .filter((action: ApiCommonErrorAction) => action.error.handleGlobally)
     .map((action: ApiCommonErrorAction) => {
 
-      if (action.error instanceof RequestUnauthorizedError) {
+      if (action.error instanceof ApiRequestUnauthorizedError) {
         const [ nav ] = this.app.getActiveNavs();
         nav.setRoot(PageNames.Auth);
       }
