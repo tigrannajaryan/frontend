@@ -25,7 +25,6 @@ export class ApiCommonErrorsEffects {
    */
   @Effect({ dispatch: false }) handleApiCommonError = this.actions
     .ofType(API_COMMON_ERROR)
-    .filter((action: ApiCommonErrorAction) => action.error.handleGlobally)
     .map((action: ApiCommonErrorAction) => {
 
       if (action.error instanceof ApiRequestUnauthorizedError) {
