@@ -21,23 +21,14 @@ export function processApiResponseError(error: HttpErrorResponse): ApiError[] {
     // Client-side error, e.g. network error or exception thrown.
     return [new ServerUnreachableError(error.error)];
   }
-
-  // We have a response, check the status.
-  switch (error.status) {
-    case 400: // bad request
-    case 409: // conflict on post/put
-      // Match API errors:
-      return getRecognisableErrors(error.error);
-
-    case 401: // unauthorized
-      return [new ApiRequestUnauthorizedError(error.error)];
-
-    default:
-      if (error.status >= 500 && error.status <= 599) {
-        return [new ServerInternalError(error.error)];
-      }
-      return [new ServerUnknownError(error.error)];
+  const status = String(error.status);
+  if (/^4\d\d/.test(status)) { // 4xx
+    return getRecognisableErrors(error.error);
   }
+  if (/^5\d\d/.test(status)) { // 5xx
+    return [new ServerInternalError(error.error)];
+  }
+  return [new ServerUnknownError(error.error)];
 }
 
 /**
