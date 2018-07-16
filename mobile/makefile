@@ -66,8 +66,7 @@ preinstall-stylist:
 
 npm-build-dir:
 	$(L)echo Building $(BUILDDIR)...
-	# $(L)cd $(BUILDDIR) && npm run build-full --silent
-	$(L)cd $(BUILDDIR) && npm run build-full
+	$(L)cd $(BUILDDIR) && npm run build-full --silent
 	$(L)echo Build $(BUILDDIR) finished.
 
 build-client: preinstall-client
