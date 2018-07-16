@@ -1,5 +1,4 @@
 {
-  "ignoreFiles": "./src/shared/styles/**/*.scss",
   "extends": [
     "stylelint-config-standard",
     "stylelint-scss",

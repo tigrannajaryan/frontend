@@ -1,9 +1,9 @@
 .AuthConfirmPage {
-  $maxCodeLength: 6;
-  $digitWidth: 38px;
-  $digitHeight: 48px;
-  $digitOffset: 8px;
-  $width: $digitWidth *  $maxCodeLength + $digitOffset * ($maxCodeLength - 1);
+  $max-code-length: 6;
+  $digit-width: 38px;
+  $digit-height: 48px;
+  $digit-offset: 8px;
+  $width: $digit-width * $max-code-length + $digit-offset * ($max-code-length - 1);
 
   .AuthConfirmPage-codeControl {
     width: $width;
@@ -22,6 +22,21 @@
     }
   }
 
+  .AuthConfirmPage-digit {
+    position: absolute;
+    top: -1 * $digit-height;
+    width: $digit-width;
+    height: $digit-height;
+    border: 1px solid color($grayscale, 200);
+    border-radius: 4px;
+
+    @for $i from 1 through $max-code-length {
+      &.is-number#{$i} {
+        left: ($digit-width + $digit-offset) * ($i - 1);
+      }
+    }
+  }
+
   .AuthConfirmPage-digits {
     position: relative;
     width: $width;
@@ -30,21 +45,6 @@
 
     &.is-withError .AuthConfirmPage-digit {
       border-color: color($colors, danger);
-    }
-  }
-
-  .AuthConfirmPage-digit {
-    position: absolute;
-    top: -1 * $digitHeight;
-    width: $digitWidth;
-    height: $digitHeight;
-    border: 1px solid color($grayscale, 200);
-    border-radius: 4px;
-
-    @for $i from 1 through $maxCodeLength {
-      &.is-number#{$i} {
-        left: ($digitWidth + $digitOffset) * ($i - 1);
-      }
     }
   }
 
