@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 
 import { saveToken } from '~/core/utils/token-utils';
 
-import { AuthServiceMock } from '~/core/api/auth-service.mock';
+import { AuthService } from '~/core/api/auth-service';
 import {
   AuthTokenModel,
   ConfirmCodeParams,
@@ -110,7 +110,7 @@ export class AuthEffects {
 
   constructor(
     private actions: Actions,
-    private authService: AuthServiceMock,
+    private authService: AuthService,
     private errorHandler: ErrorHandler,
     private store: Store<AuthState>
   ) {
