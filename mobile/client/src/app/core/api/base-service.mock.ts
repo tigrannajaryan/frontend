@@ -1,8 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-
-import { HttpHeaders } from '@angular/common/http';
 
 import { ApiResponse } from '~/core/api/base.models';
 import { BaseService } from '~/core/api/base-service';
