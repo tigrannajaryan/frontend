@@ -12,6 +12,7 @@ import {
   ApiUnknownError,
   HighLevelErrorCode,
   ServerInternalError,
+  ServerUnknownError,
   ServerUnreachableError
 } from '~/core/api/errors.models';
 
@@ -34,6 +35,7 @@ export function processApiResponseError(error: HttpErrorResponse): ApiError[] {
       if (error.status >= 500 && error.status <= 599) {
         return [new ServerInternalError(error.error)];
       }
+      return [new ServerUnknownError(error.error)];
   }
 }
 

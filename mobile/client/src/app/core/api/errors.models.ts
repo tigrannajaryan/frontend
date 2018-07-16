@@ -93,6 +93,15 @@ export class ServerUnreachableError extends ApiError {
   }
 }
 
+/**
+ * When error.status not from [400, 401, 5xx]
+ */
+export class ServerUnknownError extends ApiError {
+  constructor(public error: ErrorEvent) {
+    super();
+  }
+}
+
 // High-level recognisable errors
 
 /**
