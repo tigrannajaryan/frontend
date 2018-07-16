@@ -91,13 +91,14 @@ export class HomeComponent {
   ) {
   }
 
+  ionViewDidLoad(): void {
+    this.activeTab = this.tabs[TabNames.today].name;
+  }
+
   // we need ionViewDidEnter here because it fire each time when we go to this page
   // for example form adding appointment using nav.pop
   // and ionViewDidLoad fire only once this is not what we need here
   ionViewDidEnter(): void {
-    // init active tab
-    this.activeTab = this.tabs[TabNames.today].name;
-
     if (this.userOptions.get('showHomeScreenHelp')) {
       showAlert('', helpText);
       this.userOptions.set('showHomeScreenHelp', false);
@@ -168,7 +169,7 @@ export class HomeComponent {
   @loading
   protected async cancelAppointment(appointment: Appointment): Promise<void> {
     await this.homeService.changeAppointment(appointment.uuid, { status: AppointmentStatuses.cancelled_by_stylist });
-    this.store.dispatch(new HomeLoadAction(this.activeTab.toLocaleLowerCase()));
+    this.store.dispatch(new HomeLoadAction(this.activeTab.toLowerCase()));
   }
 
   protected async doRefresh(refresher): Promise<void> {
@@ -178,14 +179,18 @@ export class HomeComponent {
   }
 
   // swipe action for tabs
-  protected slideChanged(e): void {
+  protected slideChanged(): void {
+    // if index more or equal to tabs length we got an error
+    if (this.slides.getActiveIndex() >= this.tabs.length) {
+      return;
+    }
     this.activeTab = this.tabs[this.slides.getActiveIndex()].name;
     this.loadAppointments(this.activeTab);
   }
 
   private loadAppointments(tabType: string): void {
-    this.activeTab = tabType;
-    this.store.dispatch(new HomeLoadAction(this.activeTab.toLocaleLowerCase()));
+    this.activeTab = tabType || this.tabs[TabNames.today].name;
+    this.store.dispatch(new HomeLoadAction(this.activeTab.toLowerCase()));
     this.ga.trackView(`Home${this.activeTab}`);
   }
 

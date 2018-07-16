@@ -60,7 +60,7 @@ ion-header ion-icon.back-button-icon.icon {
     border-radius: 50%;
 
     &.is-withPic {
-      box-shadow: 0 0 20px -4px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 0 14px -4px rgba(0, 0, 0, 0.5);
     }
 
     @media ($smartphone) {
@@ -125,11 +125,26 @@ ion-header ion-icon.back-button-icon.icon {
   }
 }
 
-.ion-bb-header .toolbar-ios { // added paddings for header same for content.
-  padding-top: 16px;
-  padding-left: 16px;
-
+.ion-bb-header .toolbar-ios {
   .back-button-icon-ios { //adjust beck arrow size
     font-size: 2rem;
+  }
+}
+
+.md,
+.ios,
+.wp {
+  page-home {
+    ion-header {
+      height: 98px;
+
+      @media ($smartphone) {
+        height: 88px;
+      }
+
+      @media ($phone) {
+        height: 68px;
+      }
+    }
   }
 }

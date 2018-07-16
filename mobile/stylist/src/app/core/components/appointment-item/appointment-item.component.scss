@@ -56,12 +56,12 @@ appointment-item {
   }
 
   .AppointmentItem-topTime {
-    font-size: pxtorem10(80);
+    font-size: pxtorem10(60);
     font-weight: 700;
     white-space: nowrap;
 
     @media ($smartphone) {
-      font-size: pxtorem(60);
+      font-size: pxtorem(50);
     }
 
     @media ($phone) {
