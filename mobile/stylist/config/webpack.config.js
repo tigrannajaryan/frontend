@@ -13,14 +13,20 @@ const config = {
   plugins: [
     new webpack.EnvironmentPlugin({
       BB_ENV: undefined,
+      MB_ENV: undefined,
       IOS_BUILD_NUMBER: undefined
     }),
 
     new webpack.NormalModuleReplacementPlugin(/\.\/environments\/environment\.default/, function (resource) {
-      if (process.env.BB_ENV !== undefined) {
-        let env = process.env.BB_ENV.trim();
+      let env = process.env.BB_ENV;
+      if (env === undefined) {
+        env = process.env.MB_ENV;
+      }
 
-        if (process.env.BB_ENV === 'dev' && fs.existsSync(path.resolve('./src/environments/environment.local.ts'))) {
+      if (env !== undefined) {
+        env = env.trim();
+
+        if (env === 'dev' && fs.existsSync(path.resolve('./src/environments/environment.local.ts'))) {
           if (!global.environmentNameLogged) {
             console.warn('\033[1;33mReplacing "dev" env config with "local"\033[0m');
           }

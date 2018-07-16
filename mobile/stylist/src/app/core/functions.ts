@@ -54,3 +54,10 @@ export function createNavHistoryList(profileStatus: ProfileStatus): PageDescr[] 
   // there will be no navigation history.
   return [{ page: PageNames.Home }];
 }
+
+export function trimStr(s?: string): string {
+  if (s) {
+    return s.trim();
+  }
+  return s;
+}

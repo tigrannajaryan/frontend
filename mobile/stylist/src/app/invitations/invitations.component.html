@@ -11,32 +11,57 @@
     <div class="p-i-title">Invite clients</div>
   </div>
 
-  <div class="p-i-box">
-    <div class="p-i-box-title">
-      Number
-    </div>
-    <ion-grid class="p-i-table">
-      <ion-row class="p-i-table-row" *ngFor="let invitation of invitations">
-        <ion-col col-12 class="p-i-table-row-col">
-          {{ invitation.phone }}
-          <button class="p-i-table-row-button" ion-button item-right (click)="removeInvitation(invitation)">Delete</button>
+  <div *ngIf="displayedContacts === undefined && !loadingContacts">
+    To be able to choose your contacts enable permission in Settings.
+  </div>
+
+  <div *ngIf="loadingContacts">
+    Loading your contacts, please wait.
+  </div>
+
+  <ion-grid *ngIf="displayedContacts">
+    <ion-row>
+      <ion-searchbar placeholder="Search name or phone number" [showCancelButton]="true" (ionInput)="onSearch($event)" (ionCancel)="onSearchCancel()"
+        debounce="100">
+      </ion-searchbar>
+    </ion-row>
+
+    <div *ngFor="let section of displayedContacts">
+      <ion-row>
+        <ion-col col-1></ion-col>
+        <ion-col col-5>
+          <h2>{{ section.sectionName || '-' }}</h2>
+        </ion-col>
+        <ion-col col-6></ion-col>
+      </ion-row>
+
+      <ion-row *ngFor="let contact of section.items">
+        <ion-col col-1>
+          <ion-checkbox [(ngModel)]="contact.item.selected" (ionChange)="onSelectedChange()"></ion-checkbox>
+        </ion-col>
+        <ion-col col-4>
+          <div [innerHtml]="formatField(contact, 'phoneNumber')"></div>
+        </ion-col>
+        <ion-col col-2>{{ contact.item.type ? contact.item.type : '' }}</ion-col>
+        <ion-col col-5>
+          <div [innerHtml]="formatField(contact, 'displayName')"></div>
         </ion-col>
       </ion-row>
-    </ion-grid>
-  </div>
+    </div>
+
+    <ion-row>
+      <ion-col col-12>{{ selectedCount }} contact{{ selectedCount !== 1 ? 's' : '' }} selected.</ion-col>
+    </ion-row>
+
+  </ion-grid>
 
   <div class="p-i-box">
     <ion-item class="p-i-box-item">
-      <ion-label color="color9" stacked>Customer's mobile phone</ion-label>
+      <ion-label color="color9" stacked>Add phone number</ion-label>
       <ion-input type='tel' [(ngModel)]="phoneNumber"></ion-input>
       <button class="p-i-box-item-button" ion-button item-right (click)="addContact()">Add</button>
     </ion-item>
-    <br/>
-    <button class="p-i-box-button" ion-button color="bb_skin" (click)="pickContactPhone()">Add from contacts</button>
   </div>
-
-  <br/>
-
 
   <div padding-top>
     <button class="p-i-button" round ion-button color="bb_skin" (click)="sendInvitations()">
