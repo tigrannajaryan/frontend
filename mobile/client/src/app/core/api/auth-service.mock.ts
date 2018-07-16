@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { HttpErrorResponse, HttpHeaders } from '@angular/common/http';
-import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import * as faker from 'faker';
 
