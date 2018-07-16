@@ -25,6 +25,7 @@ export function processApiResponseError(error: HttpErrorResponse): ApiError[] {
   // We have a response, check the status.
   switch (error.status) {
     case 400: // bad request
+    case 409: // conflict on post/put
       // Match API errors:
       return getRecognisableErrors(error.error);
 
