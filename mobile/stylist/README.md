@@ -23,8 +23,8 @@ files.
 
 The default environment is `environment.default.ts`.
 
-To build non-default environment define BB_ENV env variable before building, e.g.
-`BB_ENV=local npm run build-full`
+To build non-default environment define MB_ENV env variable before building, e.g.
+`MB_ENV=local npm run build-full`
 
 # Coding guidelines
 
