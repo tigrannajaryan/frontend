@@ -84,19 +84,19 @@ export class ServerInternalError extends ApiError {
 }
 
 /**
- * If we have an error on the client-side an ErrorEvent is returned
- * (see https://angular.io/guide/http#getting-error-details)
+ * When error.status not from [400, 401, 5xx]
  */
-export class ServerUnreachableError extends ApiError {
-  constructor(public error: ErrorEvent) {
+export class ServerUnknownError extends ApiError {
+  constructor(public error: string) {
     super();
   }
 }
 
 /**
- * When error.status not from [400, 401, 5xx]
+ * If we have an error on the client-side an ErrorEvent is returned
+ * (see https://angular.io/guide/http#getting-error-details)
  */
-export class ServerUnknownError extends ApiError {
+export class ServerUnreachableError extends ApiError {
   constructor(public error: ErrorEvent) {
     super();
   }
