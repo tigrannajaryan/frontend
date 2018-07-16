@@ -35,7 +35,7 @@ export class AuthServiceMock extends BaseServiceMock {
         setTimeout(() => {
           const error = new HttpErrorResponse({
             headers: new HttpHeaders({}),
-            status: 401,
+            status: 400,
             error: AuthErrors.invalid_code
           });
           observer.error(error);
