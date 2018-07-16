@@ -1,0 +1,16 @@
+{
+  "invalid_code": {
+    "code": "err_api_exception",
+    "non_field_errors": [{
+      "code": "err_invalid_access_token"
+    }],
+    "field_errors": {
+      "code": [{
+        "code": "invalid",
+        "details": {
+          "description": "Wrong verification code is entered"
+        }
+      }]
+    }
+  }
+}

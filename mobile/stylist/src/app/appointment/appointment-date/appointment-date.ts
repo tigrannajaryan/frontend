@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store';
 import { IonicPage, NavController } from 'ionic-angular';
 
 import { AppModule } from '~/app.module';
-import { componentUnloaded } from '~/core/utils/component-unloaded';
+import { componentUnloaded } from '~/shared/component-unloaded';
 
 import {
   AppointmentDatesState,

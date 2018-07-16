@@ -4,6 +4,10 @@
  * to the page name as string (e.g. when passing to lazy loading navCtrl).
  */
 
+// (!) please stick to alphabetical order
+
 export enum PageNames {
-    FirstScreen = 'FirstScreenComponent'
+  Auth = 'AuthPageComponent',
+  AuthConfirm = 'AuthConfirmPageComponent',
+  Services = 'ServicesPageComponent'
 }

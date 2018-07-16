@@ -1,68 +1,77 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { Store } from '@ngrx/store';
 import { MenuController, Nav, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
-import { Logger } from '~/shared/logger';
+import { deleteToken, getToken } from '~/core/utils/token-utils';
+import { LogoutAction } from '~/core/reducers/auth.reducer';
 
+import { Logger } from '~/shared/logger';
 import { PageNames } from '~/core/page-names';
 
-import { FirstScreenComponent } from '~/first-screen/first-screen';
+interface MenuPage {
+  title: string;
+  component: PageNames;
+}
 
 @Component({
   templateUrl: 'app.component.html'
 })
-export class MyAppComponent {
+export class ClientAppComponent implements OnInit {
   @ViewChild(Nav) nav: Nav;
 
-  rootPage: any = PageNames.FirstScreen;
-
-  pages: Array<{ title: string, component: any }>;
+  protected rootPage: any;
+  protected menuPages: MenuPage[];
 
   constructor(
-    public platform: Platform,
-    public statusBar: StatusBar,
-    public splashScreen: SplashScreen,
-    public menuCtrl: MenuController,
-    private logger: Logger
+    private logger: Logger,
+    private menuCtrl: MenuController,
+    private platform: Platform,
+    private splashScreen: SplashScreen,
+    private statusBar: StatusBar,
+    private store: Store<any>
   ) {
-
-    this.initializeApp();
-
-    // used for an example of ngFor and navigation
-    this.pages = [
-      { title: 'Today', component: FirstScreenComponent }
-    ];
-
   }
 
-  initializeApp(): void {
+  async ngOnInit(): Promise<void> {
     this.logger.info('App initializing...');
 
-    this.platform.ready()
-      .then(() => {
-        // Okay, so the platform is ready and our plugins are available.
-        // Here you can do any higher level native things you might need.
-        this.statusBar.styleDefault();
-        this.splashScreen.hide();
-      });
-  }
+    await this.platform.ready();
 
-  openPage(page): void {
-    // selected page different from current?
-    if (page.component !== this.nav.getActive().component) {
-      // yes, push it to history and navigate to it
-      this.nav.push(page.component, {}, { animate: false });
+    this.statusBar.styleDefault();
+    this.splashScreen.hide();
+
+    // TODO: use try/catch
+    const token = await getToken();
+    if (token) {
+      this.rootPage = PageNames.Services;
+    } else {
+      this.rootPage = PageNames.Auth;
+      // no expiration, the only case: deactivation of the account
+      // discover by making a request
+      // discover on next request after the app is started
+      // the first request returns 401 unauthorized, and app reacts to it
+      // load app –> show screen –> do request –> react if unauthorized
     }
   }
 
-  logout(): void {
-    // TODO: Call logout API
+  openPage(page: MenuPage): void {
+    if (page.component !== this.nav.getActive().component) {
+      this.nav.setRoot(page.component, {}, { animate: false });
+    }
+  }
+
+  async logout(): Promise<void> {
+    // TODO: show nice loader
+    await deleteToken();
+
+    this.store.dispatch(new LogoutAction());
 
     // Hide the menu
     this.menuCtrl.close();
 
     // Erase all previous navigation history and make LoginPage the root
-    this.nav.setRoot(PageNames.FirstScreen);
+    this.nav.setRoot(PageNames.Auth);
   }
 }

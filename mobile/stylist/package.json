@@ -8,7 +8,7 @@
     "clean": "ionic-app-scripts clean",
     "build": "ionic-app-scripts build",
     "lint": "ionic-app-scripts lint",
-    "stylelint": "stylelint src/**/*.scss",
+    "lint:styles": "stylelint \"**/*.scss\"",
     "ionic:build-prod": "cross-env BB_ENV=prod ionic-app-scripts build --prod",
     "ionic:build-staging": "cross-env BB_ENV=staging ionic-app-scripts build --prod",
     "ionic:serve": "cross-env BB_ENV=dev ionic-app-scripts serve",

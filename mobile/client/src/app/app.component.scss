@@ -15,10 +15,8 @@
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
 
+@import '../theme/normalize';
 
-@import "../theme/font";
-@import "../theme/functions";
-@import "../theme/global";
-@import "../theme/rewrite";
-@import "../theme/def";
-
+.grid {
+  padding: 0 25px;
+}

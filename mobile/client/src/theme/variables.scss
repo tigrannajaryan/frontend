@@ -23,8 +23,6 @@ $app-direction: ltr;
 // http://ionicframework.com/docs/theming/overriding-ionic-variables/
 
 
-
-
 // Named Color Variables
 // --------------------------------------------------
 // Named colors makes it easy to reuse colors on various components.
@@ -33,19 +31,18 @@ $app-direction: ltr;
 // colors so you can add, rename and remove colors as needed.
 // The "primary" color is the only required color in the map.
 
+$grayscale: (
+  200:        #ECECEC,
+  500:        #999999,
+  800:        black,
+);
+
 $colors: (
-  primary:    #488aff,
-  secondary:  #32db64,
-  danger:     #f53d3d,
-  light:      #f4f4f4,
-  dark:       #000000,
-  white:      #ffffff,
-  bb_beige:   #FFF1E4,
-  bb_violet:  #E6DBE9,
-  bb_gray:  #F1F1F1,
-  bb_honey:  #F2C8A1,
-  bb_gold:  #FEF1E4,
-  bb_warn:  #FF6161
+  primary:    #FEE0D0,
+  danger:     #FF6161,
+
+  honey:      #F4C5AD,
+  orange:     #FBB597,
 );
 
 
@@ -54,20 +51,14 @@ $colors: (
 // iOS only Sass variables can go here
 
 
-
-
 // App Material Design Variables
 // --------------------------------------------------
 // Material Design only Sass variables can go here
 
 
-
-
 // App Windows Variables
 // --------------------------------------------------
 // Windows only Sass variables can go here
-
-
 
 
 // App Theme
@@ -88,17 +79,11 @@ $colors: (
 @import "ionic.ionicons";
 
 
-// Fonts
+// Typography
 // --------------------------------------------------
-
-@import "roboto";
-@import "noto-sans";
-
-
-// Media
-// --------------------------------------------------
-
-$tablet: 'max-width: 600px';
-$smartphone: 'max-width: 500px';
-$phone: 'max-width: 415px';
-
+$t-h1:    38px !default;
+$t-h2:    28px !default;
+$t-h3:    21px !default;
+$t-h4:    18px !default;
+$t-base:  16px !default;
+$t-small: 13px !default;
