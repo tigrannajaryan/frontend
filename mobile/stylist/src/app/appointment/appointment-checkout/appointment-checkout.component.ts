@@ -11,7 +11,6 @@ import {
   AppointmentStatuses,
   CheckOutService
 } from '~/home/home.models';
-import { loading } from '~/core/utils/loading';
 import { PageNames } from '~/core/page-names';
 import { AddServicesComponentParams } from '~/core/popups/add-services/add-services.component';
 import { ServiceItem } from '~/core/stylist-service/stylist-models';
@@ -46,8 +45,10 @@ export class AppointmentCheckoutComponent {
 
   protected subTotalRegularPrice: number;
 
+  protected isLoading = false;
+
   // The initial state of this screen that we need to show
-  private params: AppointmentCheckoutParams;
+  protected params: AppointmentCheckoutParams;
 
   // Services that are currently selected for this checkout
   // and are visible on screen.
@@ -56,20 +57,25 @@ export class AppointmentCheckoutComponent {
   constructor(
     private navCtrl: NavController,
     private navParams: NavParams,
-    private todayService: HomeService
+    private homeService: HomeService
   ) {
   }
 
   async ionViewWillEnter(): Promise<void> {
-    if (!this.params) {
-      // Entering this view for the first time. Load the data.
-      this.params = this.navParams.get('data') as AppointmentCheckoutParams;
-      this.appointment = await this.todayService.getAppointmentById(this.params.appointmentUuid);
-      this.selectedServices = this.appointment.services.map(el => ({ service_uuid: el.service_uuid }));
-      this.hasTaxIncluded = true; // Enable tax by default
-      this.hasCardFeeIncluded = this.appointment.has_card_fee_included;
+    try {
+      this.isLoading = true;
+      if (!this.params) {
+        // Entering this view for the first time. Load the data.
+        this.params = this.navParams.get('data') as AppointmentCheckoutParams;
+        this.appointment = await this.homeService.getAppointmentById(this.params.appointmentUuid);
+        this.selectedServices = this.appointment.services.map(el => ({ service_uuid: el.service_uuid }));
+        this.hasTaxIncluded = true; // Enable tax by default
+        this.hasCardFeeIncluded = this.appointment.has_card_fee_included;
+      }
+      await this.updatePreview();
+    } finally {
+      this.isLoading = false;
     }
-    this.updatePreview();
   }
 
   /**
@@ -77,20 +83,23 @@ export class AppointmentCheckoutComponent {
    * to the backend and receives a preview of final total price, etc,
    * then updates the screen with received data.
    */
-  @loading
   async updatePreview(): Promise<void> {
-    const appointmentPreview: AppointmentPreviewRequest = {
-      appointment_uuid: this.params.appointmentUuid,
-      datetime_start_at: this.appointment.datetime_start_at,
-      services: this.selectedServices,
-      has_tax_included: this.hasTaxIncluded,
-      has_card_fee_included: this.hasCardFeeIncluded
-    };
 
-    this.previewResponse = await this.todayService.getAppointmentPreview(appointmentPreview) as AppointmentPreviewResponse;
-    this.hasTaxIncluded = this.previewResponse.has_tax_included;
-    this.hasCardFeeIncluded = this.previewResponse.has_card_fee_included;
-    this.subTotalRegularPrice = this.previewResponse.services.reduce((a, c) => (a + c.regular_price), 0);
+    try {
+      this.isLoading = true;
+      const appointmentPreview: AppointmentPreviewRequest = {
+        appointment_uuid: this.params.appointmentUuid,
+        datetime_start_at: this.appointment.datetime_start_at,
+        services: this.selectedServices,
+        has_tax_included: this.hasTaxIncluded,
+        has_card_fee_included: this.hasCardFeeIncluded
+      };
+
+      this.previewResponse = await this.homeService.getAppointmentPreview(appointmentPreview) as AppointmentPreviewResponse;
+      this.subTotalRegularPrice = this.previewResponse.services.reduce((a, c) => (a + c.regular_price), 0);
+    } finally {
+      this.isLoading = false;
+    }
   }
 
   protected removeServiceClick(service: AppointmentService): void {
@@ -131,7 +140,7 @@ export class AppointmentCheckoutComponent {
       has_tax_included: this.hasTaxIncluded
     };
 
-    await this.todayService.changeAppointment(this.params.appointmentUuid, request);
+    await this.homeService.changeAppointment(this.params.appointmentUuid, request);
 
     // Replace current page with checkout confirmation page. We push the new page first
     // and then remove the current page to avoid 2 UI transitions.

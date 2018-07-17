@@ -10,8 +10,7 @@
       <div class="p-c-top-user">
         <div [style.backgroundImage]="'url()'" class="p-c-top-user-ava"></div>
         <div class="p-c-top-user-name">
-          {{ appointment.client_first_name }}
-          {{ appointment.client_last_name }}
+          {{ appointment.client_first_name }} {{ appointment.client_last_name }}
         </div>
       </div>
     </div>
@@ -19,10 +18,12 @@
     <div *ngIf="previewResponse" class="p-c-box">
       <div class="p-c-box-title">Your total price is</div>
 
-
       <div no-padding class="p-c-box-price">
-        <div class="p-c-box-price-sign">$</div>
-        <div class="p-c-box-price-num">{{ previewResponse.grand_total.toFixed() }}</div>
+        <ion-spinner *ngIf="isLoading" duration="500"></ion-spinner>
+        <div *ngIf="!isLoading">
+          <div class="p-c-box-price-sign">$</div>
+          <div class="p-c-box-price-num">{{ previewResponse.grand_total.toFixed() }}</div>
+        </div>
       </div>
 
 
@@ -32,8 +33,7 @@
             <div class="p-c-box-change-title">Price before tax</div>
             <div class="p-c-box-change-num">
               <span class="p-c-box-change-num-regular-price">${{ subTotalRegularPrice.toFixed() }}</span>
-              &nbsp;
-              ${{ previewResponse.total_client_price_before_tax.toFixed() }}
+              &nbsp; ${{ previewResponse.total_client_price_before_tax.toFixed() }}
             </div>
           </ion-col>
           <ion-col col-4>
@@ -83,7 +83,6 @@
           </ion-row>
         </ion-grid>
       </div>
-
 
       <button *ngIf="!params?.isAlreadyCheckedOut" (click)="addServicesClick()" col-6 ion-button outline color="bb_violet" class="bb-btn-a">Add service</button>
     </div>

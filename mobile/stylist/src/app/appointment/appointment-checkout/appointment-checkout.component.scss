@@ -132,6 +132,16 @@ page-checkout {
           margin-bottom: pxtorem(45);
         }
 
+        // Set min height to make sure this block occuppies
+        // the same height regardless of its content and does
+        // not expand or shrink when the content changes (e.g. when loading)
+        min-height: pxtorem(80);
+
+        ion-spinner {
+          width: pxtorem(60);
+          height: pxtorem(60);
+        }
+
         &-sign{
           display: inline-block;
           vertical-align: top;
@@ -353,3 +363,4 @@ page-checkout {
     }
   }
 }
+
