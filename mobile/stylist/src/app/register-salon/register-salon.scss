@@ -1,4 +1,18 @@
 page-register-salon {
+  .pac_container_carrier {
+    position: relative;
+    margin: -16px 0 0;
+    padding: 0;
+
+    @media ($smartphone) {
+      margin-top: -18px;
+    }
+  }
+  .pac-container {
+    position: absolute;
+    top: 0 !important;
+    left: 0 !important;
+  }
   .p-rs {
     &-circle {
       position: relative;
