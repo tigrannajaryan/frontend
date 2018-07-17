@@ -18,6 +18,7 @@ import { UnhandledErrorHandler } from '~/shared/unhandled-error-handler';
 import { initSentry } from '~/shared/sentry';
 import { UserOptions } from '~/core/user-options';
 import { AppVersion } from '@ionic-native/app-version';
+import { AgmCoreModule } from '@agm/core';
 
 initSentry();
 
@@ -29,6 +30,10 @@ initSentry();
     BrowserModule,
     HttpClientModule,
     IonicModule.forRoot(MyAppComponent, {backButtonText: '', backButtonIcon: 'md-arrow-back'}),
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyCDZUwZCFNcMDt4N-BbQSEHwofHQttwouo',
+      libraries: ['places']
+    }),
     CoreModule,
 
     /**

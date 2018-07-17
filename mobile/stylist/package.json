@@ -21,6 +21,7 @@
     "build-full": "npm run build && npm run test-headless"
   },
   "dependencies": {
+    "@agm/core": "1.0.0-beta.3",
     "@angular/common": "5.2.9",
     "@angular/compiler": "5.2.9",
     "@angular/compiler-cli": "5.2.9",
@@ -72,6 +73,7 @@
     "@angular/cli": "1.7.4",
     "@angular/router": "5.2.9",
     "@ionic/app-scripts": "3.1.8",
+    "@types/googlemaps": "3.30.11",
     "@types/jasmine": "2.8.6",
     "@types/node": "9.6.5",
     "codelyzer": "4.3.0",
