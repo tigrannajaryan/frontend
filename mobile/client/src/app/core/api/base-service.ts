@@ -54,8 +54,12 @@ export class BaseService {
           const errors = processApiResponseError(error);
 
           // Dispatch actions for errors handled by errors.effects.
-          // A `delay is used to dispatch globally-handled errors only after errors’ array
+          // A `delay` is used to dispatch globally-handled errors only after errors’ array
           // returned and handled by the effect that had triggered this request.
+          // It’s impotant to handle these errors only after they handled in place to not
+          // produce any side-effects after we deal with them globally, i.e.
+          // - handle by the effect that triggered the request;
+          // - handle globally for consistency.
           Observable.from(errors)
             .delay(0)
             .filter((err: ApiError) => err.handleGlobally)
