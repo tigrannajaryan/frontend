@@ -33,8 +33,6 @@ export interface AppointmentPreviewResponse {
   total_client_price_before_tax: number;
   total_tax: number;
   total_card_fee: number;
-  has_tax_included: boolean;
-  has_card_fee_included: boolean;
   services: AppointmentService[];
 }
 

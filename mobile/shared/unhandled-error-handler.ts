@@ -99,6 +99,9 @@ export class UnhandledErrorHandler {
       UnhandledErrorHandler.reportToSentry(error);
     } else {
       errorMsg = 'Unknown error';
+      if (error.stack) {
+        errorMsg = `${errorMsg}<br/>${error.stack}`;
+      }
       errorUIAction = ErrorUIAction.showAlert;
       UnhandledErrorHandler.reportToSentry(error);
     }
