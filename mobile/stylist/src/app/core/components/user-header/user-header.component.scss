@@ -5,9 +5,9 @@ ion-header ion-icon.back-button-icon.icon {
 
 .UserHeader {
   // Add padding to be aligned with context.
-  // Context padding is 16px + 5px.
-  padding-right: 18px;
-  padding-left: 14px;
+  padding-right: 10px;
+  padding-left: 10px;
+  background: white;
 
   &.UserHeader--shadow {
     box-shadow: 0 0 18px 18px white;
@@ -17,9 +17,9 @@ ion-header ion-icon.back-button-icon.icon {
     padding: 0;
 
     .toolbar-title { // ionic’s navbar title
-      text-align: left;
       padding: 0;
       font-size: pxtorem(45);
+      text-align: left;
 
       @media ($smartphone) {
         padding: 0 12px;
@@ -31,21 +31,19 @@ ion-header ion-icon.back-button-icon.icon {
         font-size: pxtorem(24);
       }
     }
-
   }
 
   .UserHeader-subtitle {
     display: block;
-    padding: pxtorem(10) 0 0;
-    font-size: pxtorem(34);
+    font-size: $t-h2;
     color: rgba(0, 0, 0, 0.4);
 
     @media ($smartphone) {
-      font-size: pxtorem(24);
+      font-size: $t-h3;
     }
 
     @media ($phone) {
-      font-size: pxtorem(22);
+      font-size: $t-base;
     }
   }
 
@@ -62,7 +60,7 @@ ion-header ion-icon.back-button-icon.icon {
     border-radius: 50%;
 
     &.is-withPic {
-      border: 1px solid color($colors, color10);
+      box-shadow: 0 0 14px -4px rgba(0, 0, 0, 0.5);
     }
 
     @media ($smartphone) {
@@ -73,14 +71,14 @@ ion-header ion-icon.back-button-icon.icon {
     }
 
     @media ($phone) {
-      $button-size: 50px;
+      $button-size: 60px;
 
       width: $button-size;
       height: $button-size;
     }
 
     @media ($phone-sm) {
-      $button-size: 36px;
+      $button-size: 47px;
 
       width: $button-size;
       height: $button-size;
@@ -89,17 +87,17 @@ ion-header ion-icon.back-button-icon.icon {
 
   .UserHeader-btnMenu {
     display: inline-block;
-    font-size: pxtorem(50);
+    font-size: pxtorem(40);
     color: color($grayscale, 600);
     vertical-align: middle;
 
     @media ($smartphone) {
-      font-size: pxtorem(40);
+      font-size: pxtorem(30);
     }
 
     @media ($phone) {
       margin: 0;
-      font-size: pxtorem(30);
+      font-size: pxtorem(22);
     }
 
     &.UserHeader-btnMenu--dark {
@@ -126,11 +124,27 @@ ion-header ion-icon.back-button-icon.icon {
     }
   }
 }
-.ion-bb-header .toolbar-ios{ // added paddings for header same for content. 
-  padding-left: 16px;
-  padding-top: 16px;
-  
-  .back-button-icon-ios{ //adjust beck arrow size
+
+.ion-bb-header .toolbar-ios {
+  .back-button-icon-ios { //adjust beck arrow size
     font-size: 2rem;
+  }
+}
+
+.md,
+.ios,
+.wp {
+  page-home {
+    ion-header {
+      height: 98px;
+
+      @media ($smartphone) {
+        height: 88px;
+      }
+
+      @media ($phone) {
+        height: 68px;
+      }
+    }
   }
 }

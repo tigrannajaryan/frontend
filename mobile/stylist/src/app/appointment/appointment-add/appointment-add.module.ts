@@ -11,7 +11,7 @@ import {
   appointmentDatesStatePath
 } from '~/appointment/appointment-date/appointment-dates.reducer';
 
-import { TodayService as AppointmentService } from '~/today/today.service';
+import { HomeService as AppointmentService } from '~/home/home.service';
 import { ClientsService } from '~/appointment/appointment-add/clients-service';
 
 import { AppointmentAddComponent } from '~/appointment/appointment-add/appointment-add';

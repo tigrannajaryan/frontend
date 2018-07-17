@@ -1,0 +1,89 @@
+page-home {
+  .swiper-container {
+    overflow: initial;
+  }
+
+  .Home-wp {
+    height: 100%;
+    padding: 16px; // standard ionic content padding
+  }
+
+  .Home-upText {
+    display: flex;
+    align-items: center;
+    padding: 6px 21px 12px;
+    font-size: $t-h1;
+    font-weight: 700;
+
+    @media ($smartphone) {
+      font-size: $t-h2;
+    }
+
+    @media ($phone) {
+      font-size: $t-h3;
+    }
+  }
+
+  .Home-refresh {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .Home-upTextInfo {
+    padding: pxtorem10(3) pxtorem10(9);
+    margin-left: pxtorem10(7);
+    font-size: $t-h4;
+    color: color($colors, white);
+    background: color($colors, color20);
+    border-radius: 20px;
+
+    @media ($smartphone) {
+      font-size: $t-base;
+    }
+  }
+
+  .Home-items {
+    display: block;
+  }
+
+  .Home-itemsNull {
+    margin-top: pxtorem(120);
+    font-size: pxtorem10(35);
+    font-style: italic;
+    text-align: center;
+
+    @media ($smartphone) {
+      font-size: pxtorem10(30);
+    }
+
+    @media ($phone) {
+      font-size: pxtorem10(20);
+    }
+  }
+
+  .Home-btns {
+    border-bottom: 1px solid color($colors, color19);
+  }
+
+  .Home-btnsWp {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .Home-btnsBtn {
+    width: 33.333%;
+    margin: 0;
+    font-size: 13px;
+    text-transform: capitalize;
+    border-bottom: 2px solid transparent;
+    border-radius: initial;
+    opacity: 0.4;
+  }
+
+  .Home-btnsBtn.activated,
+  .Home-btnsBtn.active {
+    border-bottom: 2px solid color($colors, bb_honey);
+    opacity: 1;
+  }
+}

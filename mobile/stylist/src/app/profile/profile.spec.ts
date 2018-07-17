@@ -191,9 +191,9 @@ describe('Pages: Profile / Settings', () => {
   it('should have proper header', async(() => {
     const navControl = fixture.debugElement.injector.get(NavController);
 
-    // Profile is navigated from Today, set pages
+    // Profile is navigated from Home, set pages
     navControl.setPages([
-      { page: PageNames.Today },
+      { page: PageNames.Home },
       { page: PageNames.Profile }
     ]);
 

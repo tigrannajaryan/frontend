@@ -1,5 +1,10 @@
 export const ENV = {
-  apiUrl: 'http://admindev.betterbeauty.io/api/v1/',
+  apiUrl: 'http://betterbeauty.local:8000/api/v1/',
   production: false,
-  version: '0.0.1'
+
+  // Feature flag to enable or disable incomplete features
+  ffEnableIncomplete: true,
+
+  // Disable Sentry reporting by default.
+  sentryDsn: undefined
 };

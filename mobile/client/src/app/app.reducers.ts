@@ -1,8 +1,10 @@
-import {
-  ActionReducer,
-  ActionReducerMap,
-  MetaReducer
-} from '@ngrx/store';
+import { ActionReducer, ActionReducerMap, MetaReducer } from '@ngrx/store';
+import { storeLogger } from 'ngrx-store-logger';
+
+import { ENV } from '~/../environments/environment.default';
+
+import { authPath, authReducer, resetOnLogoutReducer } from '~/core/reducers/auth.reducer';
+import { profilePath, profileReducer } from '~/core/reducers/profile.reducer';
 
 /**
  * storeFreeze prevents state from being mutated. When mutation occurs, an
@@ -10,9 +12,6 @@ import {
  * ensure that none of the reducers accidentally mutates the state.
  */
 import { storeFreeze } from 'ngrx-store-freeze';
-import { Logger } from '~/shared/logger';
-
-import { ENV } from '../environments/environment.default';
 
 /**
  * Every reducer module's default export is the reducer function itself. In
@@ -35,17 +34,15 @@ export interface State {
  * and the current or initial state and return a new immutable state.
  */
 export const reducers: ActionReducerMap<State> = {
+  [authPath]: authReducer,
+  [profilePath]: profileReducer
 };
 
 /**
  * Use meta reducer to log all actions.
  */
-export function loggerReducer(logger: Logger, reducer: ActionReducer<State>): ActionReducer<State> {
-  return (state: State, action: any): State => {
-    logger.info('>>>> Action:', action, 'Current state:', state);
-
-    return reducer(state, action);
-  };
+export function logger(reducer: ActionReducer<State>): ActionReducer<State> {
+  return storeLogger()(reducer);
 }
 
 /**
@@ -53,11 +50,20 @@ export function loggerReducer(logger: Logger, reducer: ActionReducer<State>): Ac
  * the root meta-reducer. To add more meta-reducers, provide an array of meta-reducers
  * that will be composed to form the root meta-reducer.
  */
-export function getMetaReducers(logger: Logger): Array<MetaReducer<State>> {
-  const metaReducers: Array<MetaReducer<State>> = !ENV.production
-    ? [reducer => loggerReducer(logger, reducer),
-       storeFreeze]
-    : [];
+export function getMetaReducers(): Array<MetaReducer<State>> {
+  const metaReducers: Array<MetaReducer<State>> = [];
+
+  if (!ENV.production) { // development and staging
+    metaReducers.push(
+      storeFreeze,
+      logger
+    );
+  }
+
+  // production
+  metaReducers.push(
+    resetOnLogoutReducer
+  );
 
   return metaReducers;
 }

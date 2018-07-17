@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store';
 import { IonicPage, NavController } from 'ionic-angular';
 
 import { AppModule } from '~/app.module';
-import { componentUnloaded } from '~/core/utils/component-unloaded';
+import { componentUnloaded } from '~/shared/component-unloaded';
 
 import {
   AppointmentDatesState,
@@ -15,7 +15,7 @@ import {
 import { selectSelectedService } from '~/appointment/appointment-services/services.reducer';
 import { selectSelectedClient } from '~/appointment/appointment-add/clients.reducer';
 
-import { AppointmentDateOffer } from '~/today/today.models';
+import { AppointmentDateOffer } from '~/home/home.models';
 import { Client } from '~/appointment/appointment-add/clients-models';
 import { ServiceItem } from '~/core/stylist-service/stylist-models';
 

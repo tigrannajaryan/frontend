@@ -4,16 +4,17 @@
   ],
   "extends": ["angular-tslint-rules"],
   "rules": {
-    "no-duplicate-variable": true,
-    "no-unused-variable": [true],
     "array-type": [true, "array-simple"],
-    "curly": true,
-    "i18n": [true, "check-id"],
     "component-selector": [false, "TODO: disabled temporarily. see http://codelyzer.com/rules/component-selector/ for more details and to enable."],
-    "trackBy-function": [false, "TODO: unclear if trackBy universaly needed. Will explore this later."],
+    "curly": true,
+    "directive-selector": [true, "attribute", ["ngx", "test", "made"], "camelCase"],
+    "i18n": [true, "check-id"],
+    "newline-before-return": false,
     "newline-per-chained-call": false,
+    "no-duplicate-variable": true,
     "no-implicit-dependencies": false,
+    "no-unused-variable": [true],
     "prefer-conditional-expression": false,
-    "newline-before-return": false
+    "trackBy-function": [false, "TODO: unclear if trackBy universaly needed. Will explore this later."]
   }
 }

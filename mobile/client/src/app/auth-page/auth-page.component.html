@@ -1,0 +1,33 @@
+<ion-header><ion-navbar></ion-navbar></ion-header>
+
+<ion-content class="AuthPage">
+  <ion-grid fixed>
+    <ion-row justify-content-center>
+      <div class="H1">
+        Phone number
+        <div class="H1-subtitle">
+          Enter your phone number to&nbsp;get a&nbsp;code
+        </div>
+      </div>
+    </ion-row>
+    <ion-row>
+      <form (ngSubmit)="submit()">
+        <ion-row class="AuthPage-phoneInputGroup" justify-content-center>
+          <ion-item class="FormControl AuthPage-countryCodeControl">
+            <ion-select [formControl]="countryCode" (ionChange)="countrySelected()" [selectedText]="getPhoneCode()">
+              <ion-option *ngFor="let country of countries" [value]="country.alpha2">
+                {{ country.name }} {{ country.countryCallingCodes[0] }}
+              </ion-option>
+            </ion-select>
+          </ion-item>
+          <ion-item class="FormControl AuthPage-phoneControl">
+            <ion-input madePhoneInput type="tel" [countryCode]="countryCode.value" [formControl]="phone"></ion-input>
+          </ion-item>
+        </ion-row>
+        <button ion-button class="Button" [ngClass]="{'is-loading': isLoading}" type="submit" [disabled]="isLoading || phone.invalid">
+          {{ isLoading ? 'Loading…' : 'Continue' }}
+        </button>
+      </form>
+    </ion-row>
+  </ion-grid>
+</ion-content>

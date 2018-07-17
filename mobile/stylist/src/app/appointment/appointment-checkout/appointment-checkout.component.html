@@ -40,14 +40,14 @@
             <div class="p-c-box-change-title">Tax incl.</div>
             <div class="p-c-box-change-num">
               ${{ previewResponse.total_tax.toFixed(2) }}
-              <ion-toggle (ionChange)="updatePreview()" [(ngModel)]="hasTaxIncluded" class="ion-bb-toggle"></ion-toggle>
+              <ion-toggle [disabled]="params?.isAlreadyCheckedOut" (ionChange)="updatePreview()" [(ngModel)]="hasTaxIncluded" class="ion-bb-toggle"></ion-toggle>
             </div>
           </ion-col>
           <ion-col col-4>
             <div class="p-c-box-change-title">Card fee</div>
             <div class="p-c-box-change-num">
               ${{ previewResponse.total_card_fee.toFixed(2) }}
-              <ion-toggle (ionChange)="updatePreview()" [(ngModel)]="hasCardFeeIncluded" class="ion-bb-toggle"></ion-toggle>
+              <ion-toggle [disabled]="params?.isAlreadyCheckedOut" (ionChange)="updatePreview()" [(ngModel)]="hasCardFeeIncluded" class="ion-bb-toggle"></ion-toggle>
             </div>
           </ion-col>
         </ion-row>
@@ -65,7 +65,7 @@
             </ion-col>
           </ion-row>
         </ion-grid>
-        <ion-grid no-padding class="p-c-box-service withmargin">
+        <ion-grid [class.lastAndCheckedOut]="params?.isAlreadyCheckedOut" no-padding class="p-c-box-service withmargin">
           <ion-row *ngFor="let service of previewResponse.services; let index = index;">
             <ion-col col-7>
               <div class="p-c-box-service-text">{{ service.service_name }}</div>
@@ -85,10 +85,10 @@
       </div>
 
 
-      <button (click)="addServicesClick()" col-6 ion-button outline color="bb_violet" class="bb-btn-a">Add service</button>
+      <button *ngIf="!params?.isAlreadyCheckedOut" (click)="addServicesClick()" col-6 ion-button outline color="bb_violet" class="bb-btn-a">Add service</button>
     </div>
 
-    <div class="p-c-fin">
+    <div *ngIf="!params?.isAlreadyCheckedOut" class="p-c-fin">
       <button (click)="finalizeCheckoutClick()" col-6 ion-button color="bb_honey" class="bb-btn-a black">Finalize checkout</button>
     </div>
   </div>

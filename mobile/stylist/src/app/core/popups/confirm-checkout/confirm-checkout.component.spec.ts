@@ -6,7 +6,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestUtils } from '../../../../test';
 import { ProfileComponent } from '~/profile/profile';
 import { ProfileInfoComponent } from '~/profile/profile-info/profile-info';
-import { TodayService } from '~/today/today.service';
+import { HomeService } from '~/home/home.service';
 
 let fixture: ComponentFixture<ConfirmCheckoutComponent>;
 let instance: ConfirmCheckoutComponent;
@@ -19,7 +19,7 @@ describe('Pages: ConfirmCheckoutComponent', () => {
   beforeEach(async(() => TestUtils.beforeEachCompiler([
     ProfileComponent,
     ProfileInfoComponent
-  ], [DatePipe, TodayService], [HttpClientTestingModule]).then(compiled => {
+  ], [DatePipe, HomeService], [HttpClientTestingModule]).then(compiled => {
     fixture = compiled.fixture; // https://angular.io/api/core/testing/ComponentFixture
     instance = compiled.instance;
   })));

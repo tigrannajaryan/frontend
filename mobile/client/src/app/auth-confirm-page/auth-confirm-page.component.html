@@ -1,0 +1,41 @@
+<ion-header><ion-navbar></ion-navbar></ion-header>
+
+<ion-content class="AuthConfirmPage">
+  <ion-grid fixed>
+    <ion-row justify-content-center>
+      <div class="H1">
+        Verification code
+        <div class="H1-subtitle">
+          We’ve just sent you a&nbsp;code via text&nbsp;to
+        </div>
+      </div>
+    </ion-row>
+    <ion-row *ngIf="phone" class="AuthConfirmPage-phoneNumber" justify-content-center>
+      <span>{{ phone | formatPhone }}&nbsp;</span><span class="Link" (click)="navCtrl.pop()">Edit</span>
+    </ion-row>
+    <ion-row>
+      <form (ngSubmit)="submit()">
+        <ion-row justify-content-center>
+          <ion-item class="FormControl AuthConfirmPage-codeControl">
+            <ion-input type="tel" ngxInputNumber [formControl]="code" [disabled]="isLoading" (keydown)="verifyCode($event)"></ion-input>
+          </ion-item>
+        </ion-row>
+        <ion-row justify-content-center>
+          <div class="AuthConfirmPage-digits" [ngClass]="{'is-withError': errors | async | hasError:invalidCodeError}">
+            <div *ngFor="let digit of digits; let index = index" class="AuthConfirmPage-digit is-number{{ index + 1 }}"></div>
+            <div *ngIf="errors | async | hasError:invalidCodeError" class="AuthConfirmPage-error">
+              Please enter a&nbsp;valid code
+            </div>
+          </div>
+        </ion-row>
+      </form>
+    </ion-row>
+    <ion-row justify-content-center>
+      <span *ngIf="isLoading">Checking the code…</span>
+      <span *ngIf="!isLoading">
+        <span>Didn’t get a&nbsp;code? </span><span class="Link" (click)="resendCode()">Send a&nbsp;new one</span>
+      </span>
+      <span *ngIf="isPhoneResending | async">Sending new code…</span>
+    </ion-row>
+  </ion-grid>
+</ion-content>

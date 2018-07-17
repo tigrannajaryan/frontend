@@ -4,8 +4,8 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 import { TestUtils } from '../../../test';
 import { ActionSheetController, Haptic, PopoverController, ViewController } from 'ionic-angular';
-import { TodayService } from 'app/today/today.service';
-import { TodayState } from 'app/today/today.reducer';
+import { HomeService } from 'app/home/home.service';
+import { HomeState } from 'app/home/home.reducer';
 import { Store } from '@ngrx/store';
 import { AppointmentCheckoutComponent } from './appointment-checkout.component';
 import { prepareSharedObjectsForTests } from 'app/core/test-utils.spec';
@@ -17,7 +17,7 @@ let fixture: ComponentFixture<AppointmentCheckoutComponent>;
 let instance: AppointmentCheckoutComponent;
 
 let injector: TestBed;
-let store: Store<TodayState>;
+let store: Store<HomeState>;
 
 describe('Pages: AppointmentCheckoutComponent', () => {
 
@@ -33,7 +33,7 @@ describe('Pages: AppointmentCheckoutComponent', () => {
       ],
       providers: [
         ActionSheetController,
-        TodayService,
+        HomeService,
         Haptic,
         { provide: ViewController, useClass: ViewControllerMock },
         { provide: PopoverController, useClass: PopoverControllerMock },

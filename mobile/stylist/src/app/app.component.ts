@@ -8,7 +8,8 @@ import { PageNames } from '~/core/page-names';
 import { Logger } from './shared/logger';
 import { AuthApiService } from '~/core/auth-api-service/auth-api-service';
 import { UnhandledErrorHandler } from '~/shared/unhandled-error-handler';
-import { createNavHistoryList, getBuildNumber } from '~/core/functions';
+import { createNavHistoryList } from '~/core/functions';
+import { getBuildNumber } from '~/shared/get-build-number';
 import { loading } from '~/core/utils/loading';
 import { GAWrapper } from '~/shared/google-analytics';
 import { LogoutAction } from '~/app.reducers';
@@ -23,7 +24,7 @@ export class MyAppComponent {
   @ViewChild(Nav) nav: Nav;
 
   pages: Array<{ title: string, component: any }> = [
-    { title: 'Today', component: PageNames.Today },
+    { title: 'Home', component: PageNames.Home },
     { title: 'My Profile', component: PageNames.Profile }
   ];
 

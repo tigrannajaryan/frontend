@@ -8,8 +8,8 @@
 
 [class*='bb-icon'] {
   display: inline-block;
-  vertical-align: middle;
   line-height: 1;
+  vertical-align: middle;
 
   &:before {
     display: inline-block;
@@ -50,8 +50,6 @@
 .bb-icon-salon-name:before { content: '\0058'; }
 .bb-icon-user:before { content: '\0059'; }
 
-
-
 //<div style="font-size: 50px; color: red;">
 //<i class="bb-icon bb-icon-mail"></i>
 //<i class="bb-icon bb-icon-add-appointment"></i>
@@ -79,3 +77,74 @@
 //<i class="bb-icon bb-icon-salon-name"></i>
 //<i class="bb-icon bb-icon-user"></i>
 //</div>
+
+@font-face {
+  font-family: 'SF Pro Text';
+  src: url('../assets/fonts/SFProText/SFProText-Semibold.woff') format('woff');
+  font-style: normal;
+  font-weight: 600;
+}
+
+@font-face {
+  font-family: 'SF Pro Text';
+  src: url('../assets/fonts/SFProText/SFProText-Medium.woff') format('woff');
+  font-style: normal;
+  font-weight: 500;
+}
+
+@font-face {
+  font-family: 'SF Pro Display';
+  src: url('../assets/fonts/SFProDisplay/SFProDisplay-Bold.woff') format('woff');
+  font-style: normal;
+  font-weight: bold;
+}
+
+@font-face {
+  font-family: 'SF Pro Text';
+  src: url('../assets/fonts/SFProText/SFProText-Light.woff') format('woff');
+  font-style: normal;
+  font-weight: 200;
+}
+
+@font-face {
+  font-family: 'SF Pro Display';
+  src: url('../assets/fonts/SFProDisplay/SFProDisplay-Light.woff') format('woff');
+  font-style: normal;
+  font-weight: 200;
+}
+
+@font-face {
+  font-family: 'SF Pro Text';
+  src: url('../assets/fonts/SFProText/SFProText-Bold.woff') format('woff');
+  font-style: normal;
+  font-weight: bold;
+}
+
+@font-face {
+  font-family: 'SF Pro Display';
+  src: url('../assets/fonts/SFProDisplay/SFProDisplay-Medium.woff') format('woff');
+  font-style: normal;
+  font-weight: 500;
+}
+
+@font-face {
+  font-family: 'SF Pro Display';
+  src: url('../assets/fonts/SFProDisplay/SFProDisplay-Semibold.woff') format('woff');
+  font-style: normal;
+  font-weight: 600;
+}
+
+@font-face {
+  font-family: 'SF Pro Display';
+  src: url('../assets/fonts/SFProDisplay/SFProDisplay-Regular.woff') format('woff');
+  font-style: normal;
+  font-weight: normal;
+}
+
+@font-face {
+  font-family: 'SF Pro Text';
+  src: url('../assets/fonts/SFProText/SFProText-Regular.woff') format('woff');
+  font-style: normal;
+  font-weight: normal;
+}
+

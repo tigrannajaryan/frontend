@@ -1,0 +1,61 @@
+.AuthConfirmPage {
+  $max-code-length: 6;
+  $digit-width: 38px;
+  $digit-height: 48px;
+  $digit-offset: 8px;
+  $width: $digit-width * $max-code-length + $digit-offset * ($max-code-length - 1);
+
+  .AuthConfirmPage-codeControl {
+    width: $width;
+    margin-top: 64px;
+
+    .text-input { // ionic’s
+      width: 100%;
+      padding-left: 13.2px;
+      font-size: $t-h3;
+      letter-spacing: 34.4px;
+    }
+
+    &.item-block .item-inner,
+    &.item-input-has-focus .item-inner { // ionic’s
+      border-bottom: none;
+    }
+  }
+
+  .AuthConfirmPage-digit {
+    position: absolute;
+    top: -1 * $digit-height;
+    width: $digit-width;
+    height: $digit-height;
+    border: 1px solid color($grayscale, 200);
+    border-radius: 4px;
+
+    @for $i from 1 through $max-code-length {
+      &.is-number#{$i} {
+        left: ($digit-width + $digit-offset) * ($i - 1);
+      }
+    }
+  }
+
+  .AuthConfirmPage-digits {
+    position: relative;
+    width: $width;
+    margin-bottom: 122px;
+    pointer-events: none;
+
+    &.is-withError .AuthConfirmPage-digit {
+      border-color: color($colors, danger);
+    }
+  }
+
+  .AuthConfirmPage-error {
+    width: 100%;
+    margin-top: 4px;
+    color: color($colors, danger);
+    text-align: center;
+  }
+
+  .AuthConfirmPage-phoneNumber {
+    margin-top: 12px;
+  }
+}
