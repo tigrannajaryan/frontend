@@ -14,7 +14,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { Logger } from '~/shared/logger';
 
 import { UnhandledErrorHandler } from '~/core/unhandled-error-handler';
-import { AuthServiceMock } from '~/core/api/auth-service.mock';
+import { AuthService } from '~/core/api/auth-service';
 
 import { ClientAppComponent } from '~/app.component';
 import { getMetaReducers, reducers } from '~/app.reducers';
@@ -66,7 +66,7 @@ import { ApiCommonErrorsEffects } from '~/core/effects/api-common-errors.effects
     SplashScreen,
 
     // services
-    AuthServiceMock,
+    AuthService,
 
     {
       // Our custom handler for unhandled exceptions
