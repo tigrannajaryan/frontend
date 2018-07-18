@@ -2,6 +2,9 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Camera, CameraOptions } from '@ionic-native/camera';
+import { } from 'googlemaps';
+import Autocomplete = google.maps.places.Autocomplete;
+import { MapsAPILoader } from '@agm/core';
 
 import {
   ActionSheetController,
@@ -25,6 +28,8 @@ enum PhotoSourceType {
   camera = 1
 }
 
+declare var window: any;
+
 @IonicPage({
   segment: 'register-salon'
 })
@@ -36,6 +41,8 @@ export class RegisterSalonComponent {
   protected PageNames = PageNames;
   isProfile?: Boolean;
   form: FormGroup;
+  autocomplete: Autocomplete;
+  autocompleteInput: HTMLInputElement;
 
   /**
    * @param imageUri uri of the original image file
@@ -97,7 +104,8 @@ export class RegisterSalonComponent {
     private domSanitizer: DomSanitizer,
     private camera: Camera,
     private actionSheetCtrl: ActionSheetController,
-    private logger: Logger
+    private logger: Logger,
+    private mapsAPILoader: MapsAPILoader
   ) {
     this.form = this.formBuilder.group({
       vars: this.formBuilder.group({
@@ -132,8 +140,11 @@ export class RegisterSalonComponent {
 
   ionViewDidLoad(): void {
     this.isProfile = Boolean(this.navParams.get('isProfile'));
-
     this.loadFormInitialData();
+  }
+
+  ionViewDidEnter(): void {
+    this.initAutocomplete();
   }
 
   @loading
@@ -160,6 +171,60 @@ export class RegisterSalonComponent {
       });
     } catch (e) {
       showAlert('Loading profile failed', e.message);
+    }
+  }
+
+  initAutocomplete(): void {
+    const pacContainers = document.getElementsByClassName('pac-container');
+    while (pacContainers.length) {
+      pacContainers[0].remove();
+    }
+    const ionAutocompleteInputs = document.getElementsByClassName('ion_autocomplete');
+    this.autocompleteInput = ionAutocompleteInputs[ionAutocompleteInputs.length - 1].getElementsByTagName('input')[0];
+    this.autocompleteInput.id = 'autocomplete';
+    this.autocompleteInput.oninput = this.autocompleteInput.onfocus = this.fixAutocompletePosition;
+    this.preventAddressInputBlocking();
+
+    if (typeof google === 'undefined') {
+      this.mapsAPILoader.load().then(() => {
+        this.bindAutocompleteToInput();
+      });
+    } else {
+      this.bindAutocompleteToInput();
+    }
+  }
+
+  bindAutocompleteToInput(): void {
+    const newYorkBiasBounds = new google.maps.LatLngBounds(new google.maps.LatLng(40.730610, -73.935242));
+    google.maps.event.clearInstanceListeners(this.autocompleteInput);
+    this.autocomplete = new google.maps.places.Autocomplete(this.autocompleteInput, {
+      bounds: newYorkBiasBounds,
+      types: ['address'] /*address instructs the Places service to return only geocoding results with a precise address.*/
+    });
+    this.autocomplete.addListener('place_changed', () => {
+      const place = this.autocomplete.getPlace();
+      this.form.get('salon_address').patchValue(place.formatted_address);
+    });
+  }
+
+  // Global function called by Google API on auth errors.
+  // Prevent Salon Address input field from blocking on error.
+  preventAddressInputBlocking(): void {
+    window.gm_authFailure = (): boolean => {
+      this.autocompleteInput.disabled = false;
+      this.autocompleteInput.placeholder = '';
+      this.autocompleteInput.style.backgroundImage = '';
+      return false;
+    };
+  }
+
+  // Fix address autocomplete dropdown position relative to address input field.
+  fixAutocompletePosition(): void {
+    const pacContainer = document.getElementsByClassName('pac-container')[0];
+    const pacContainerCarriers = document.getElementsByClassName('pac_container_carrier');
+    const pacContainerCarrierIndex = pacContainerCarriers.length - 1;
+    if (pacContainer && !pacContainerCarriers[pacContainerCarrierIndex].contains(pacContainer)) {
+      pacContainerCarriers[pacContainerCarrierIndex].appendChild(pacContainer);
     }
   }
 
