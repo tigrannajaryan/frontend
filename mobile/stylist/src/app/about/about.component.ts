@@ -4,6 +4,7 @@ import { AppVersion } from '@ionic-native/app-version';
 
 import { getBuildNumber } from '~/shared/get-build-number';
 import { ENV } from '../../environments/environment.default';
+import Licenses from '~/../assets/data/licenses.json';
 
 declare const __COMMIT_HASH__: string;
 
@@ -18,6 +19,7 @@ export class AboutComponent {
   protected __COMMIT_HASH__ = __COMMIT_HASH__;
   protected easterEggCounter = 0;
   protected appVersion: string;
+  protected licenses = Licenses;
 
   constructor(
     public navCtrl: NavController,

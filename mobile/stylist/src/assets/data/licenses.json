@@ -1,0 +1,118 @@
+[
+  {
+    "url": "https://raw.githubusercontent.com/angular/angular/master/LICENSE",
+    "title": "Angular (MIT License)"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/ionic-team/ionic/master/LICENSE",
+    "title": "Ionic (MIT License)"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/ionic-team/ionic-native/master/LICENSE",
+    "title": "Ionic-native (MIT License)"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/stonelasley/ionic-mocks/develop/LICENSE",
+    "title": "ionic-mocks (MIT License)"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/ionic-team/ionicons/master/LICENSE",
+    "title": "ionicons (MIT License)"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/ngrx/platform/master/LICENSE",
+    "title": "ngrx (MIT License)"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/brandonroberts/ngrx-store-freeze/master/LICENSE",
+    "title": "ngrx-store-freeze (MIT License)"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/ngrx/store-devtools/master/LICENSE",
+    "title": "store-devtools (MIT License)"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/apache/cordova-android/master/LICENSE",
+    "title": "cordova-android (Apache License)"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/apache/cordova-ios/master/LICENSE",
+    "title": "cordova-ios (Apache License)"
+  },
+  {
+    "url": "https://www.npmjs.com/package/cordova-ios-plugin-no-export-compliance",
+    "title": "cordova-ios-plugin-no-export-compliance (BSD-3)"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/apache/cordova-plugin-camera/master/LICENSE",
+    "title": "cordova-plugin-camera (Apache License)"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/apache/cordova-plugin-contacts/master/LICENSE",
+    "title": "cordova-plugin-contacts (Apache License)"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/apache/cordova-plugin-device/master/LICENSE",
+    "title": "cordova-plugin-device (Apache License)"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/jeduan/cordova-plugin-facebook4/master/LICENSE",
+    "title": "cordova-plugin-facebook4 (Apache License)"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/danwilson/google-analytics-plugin/master/LICENSE",
+    "title": "cordova-plugin-google-analytics (MIT License)"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/apache/cordova-plugin-splashscreen/master/LICENSE",
+    "title": "cordova-plugin-splashscreen (Apache License)"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/apache/cordova-plugin-statusbar/master/LICENSE",
+    "title": "cordova-plugin-statusbar (Apache License)"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/apache/cordova-plugin-whitelist/master/LICENSE",
+    "title": "cordova-plugin-whitelist (Apache License)"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/ionic-team/cordova-plugin-ionic-keyboard/master/LICENSE",
+    "title": "cordova-plugin-ionic-keyboard (MIT License)"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/ionic-team/cordova-plugin-ionic-webview/master/LICENSE",
+    "title": "cordova-plugin-ionic-webview (Apache License)"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/moment/moment/develop/LICENSE",
+    "title": "moment (MIT License)"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/paperjs/paper.js/develop/LICENSE.txt",
+    "title": "paper (MIT License)"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/ReactiveX/rxjs/master/LICENSE.txt",
+    "title": "rxjs (Apache License)"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/GoogleChromeLabs/sw-toolbox/master/LICENSE",
+    "title": "sw-toolbox (Apache License)"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/angular/zone.js/master/LICENSE",
+    "title": "zone.js (MIT License)"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/getsentry/sentry-cordova/master/LICENSE",
+    "title": "sentry-cordova (MIT License)"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/SebastianM/angular-google-maps/master/LICENSE",
+    "title": "angular-google-maps (MIT License)"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/whiteoctober/cordova-plugin-app-version/master/LICENSE",
+    "title": "cordova-plugin-app-version (MIT License)"
+  }
+]

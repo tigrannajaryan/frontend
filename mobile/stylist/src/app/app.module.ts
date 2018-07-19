@@ -19,40 +19,55 @@ import { initSentry } from '~/shared/sentry';
 import { UserOptions } from '~/core/user-options';
 import { AppVersion } from '@ionic-native/app-version';
 import { AgmCoreModule } from '@agm/core';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { ENV } from '../environments/environment.default';
 
 initSentry();
+
+const imports = [
+  AgmCoreModule.forRoot({
+    apiKey: 'AIzaSyCDZUwZCFNcMDt4N-BbQSEHwofHQttwouo',
+    libraries: ['places']
+  }),
+  BrowserModule,
+  HttpClientModule,
+  CoreModule,
+
+  /**
+   * StoreModule.forRoot is imported once in the root module, accepting a reducer
+   * function or object map of reducer functions. If passed an object of
+   * reducers, combineReducers will be run creating your application
+   * meta-reducer. This returns all providers for an @ngrx/store
+   * based application.
+   */
+  StoreModule.forRoot(reducers),
+
+  /**
+   * EffectsModule.forRoot() is imported once in the root module and
+   * sets up the effects class to be initialized immediately when the
+   * application starts.
+   *
+   * See: https://github.com/ngrx/platform/blob/master/docs/effects/api.md#forroot
+   */
+  EffectsModule.forRoot([])
+];
+
+if (!ENV.production) {
+  imports.push(
+    StoreDevtoolsModule.instrument({
+      logOnly: ENV.production
+    })
+  );
+}
 
 @NgModule({
   declarations: [
     MyAppComponent
   ],
+
   imports: [
-    BrowserModule,
-    HttpClientModule,
     IonicModule.forRoot(MyAppComponent, {backButtonText: '', backButtonIcon: 'md-arrow-back'}),
-    AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyCDZUwZCFNcMDt4N-BbQSEHwofHQttwouo',
-      libraries: ['places']
-    }),
-    CoreModule,
-
-    /**
-     * StoreModule.forRoot is imported once in the root module, accepting a reducer
-     * function or object map of reducer functions. If passed an object of
-     * reducers, combineReducers will be run creating your application
-     * meta-reducer. This returns all providers for an @ngrx/store
-     * based application.
-     */
-    StoreModule.forRoot(reducers),
-
-    /**
-     * EffectsModule.forRoot() is imported once in the root module and
-     * sets up the effects class to be initialized immediately when the
-     * application starts.
-     *
-     * See: https://github.com/ngrx/platform/blob/master/docs/effects/api.md#forroot
-     */
-    EffectsModule.forRoot([])
+    ...imports
   ],
 
   bootstrap: [IonicApp],
