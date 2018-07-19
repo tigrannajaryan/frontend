@@ -1,8 +1,7 @@
 import { Component, ErrorHandler, ViewChild } from '@angular/core';
-import { MenuController, Nav, Platform } from 'ionic-angular';
+import { Nav, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-import { Store } from '@ngrx/store';
 
 import { PageNames } from '~/core/page-names';
 import { Logger } from './shared/logger';
@@ -12,7 +11,6 @@ import { createNavHistoryList } from '~/core/functions';
 import { getBuildNumber } from '~/shared/get-build-number';
 import { loading } from '~/core/utils/loading';
 import { GAWrapper } from '~/shared/google-analytics';
-import { LogoutAction } from '~/app.reducers';
 
 // Google Analytics Id
 const gaTrackingId = 'UA-120898935-1';
@@ -23,21 +21,14 @@ const gaTrackingId = 'UA-120898935-1';
 export class MyAppComponent {
   @ViewChild(Nav) nav: Nav;
 
-  pages: Array<{ title: string, component: any }> = [
-    { title: 'Home', component: PageNames.Home },
-    { title: 'My Profile', component: PageNames.Profile }
-  ];
-
   constructor(
     public platform: Platform,
     public statusBar: StatusBar,
     public splashScreen: SplashScreen,
-    public menuCtrl: MenuController,
     private authApiService: AuthApiService,
     private errorHandler: ErrorHandler,
     private logger: Logger,
-    private ga: GAWrapper,
-    private store: Store<any>
+    private ga: GAWrapper
   ) {
     this.logger.info('App initializing...');
     this.logger.info(`Build number ${getBuildNumber()}`);
@@ -117,27 +108,5 @@ export class MyAppComponent {
 
     // No valid saved authentication, just show the first screen.
     this.nav.setRoot(PageNames.FirstScreen, {}, { animate: false }, () => this.statusBar.hide());
-  }
-
-  openPage(page): void {
-    // selected page different from current?
-    if (page.component !== this.nav.getActive().component) {
-      // yes, push it to history and navigate to it
-      this.nav.setRoot(page.component, {}, { animate: false });
-    }
-  }
-
-  logout(): void {
-    // Hide the menu
-    this.menuCtrl.close();
-
-    // Logout from backend
-    this.authApiService.logout();
-
-    // Dismiss user’s state
-    this.store.dispatch(new LogoutAction());
-
-    // Erase all previous navigation history and make FirstScreen the root
-    this.nav.setRoot(PageNames.FirstScreen);
   }
 }
