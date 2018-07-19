@@ -10,6 +10,8 @@ import {
   StylistServicesList, StylistSummary
 } from './stylist-models';
 import { AppointmentDateOffer } from '~/home/home.models';
+import { Events } from 'ionic-angular';
+import { EventTypes } from '~/core/events/event-types';
 
 export interface ServiceTemplateSetListResponse {
   service_template_sets: ServiceTemplateSetBase[];
@@ -45,6 +47,7 @@ export class StylistServiceProvider extends BaseApiService {
   constructor(
     public http: HttpClient,
     public logger: Logger,
+    private events: Events,
     protected serverStatus: ServerStatusTracker) {
     super(http, logger, serverStatus);
   }
@@ -60,7 +63,13 @@ export class StylistServiceProvider extends BaseApiService {
    * Get the profile of the stylist. The stylist must be already authenticated as a user.
    */
   async getProfile(): Promise<StylistProfile> {
-    return this.get<StylistProfile>('stylist/profile');
+    return this.get<StylistProfile>('stylist/profile')
+      .then(response => {
+        // TODO: remove key from the code when the service returns the api key.
+        // Publish event to update gmap key.
+        this.events.publish(EventTypes.UPDATE_GMAP_KEY, 'AIzaSyCDZUwZCFNcMDt4N-BbQSEHwofHQttwouo');
+        return response;
+      });
   }
 
   /**
