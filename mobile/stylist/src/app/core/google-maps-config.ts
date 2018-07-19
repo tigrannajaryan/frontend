@@ -16,6 +16,7 @@ export class GoogleMapsConfig implements LazyMapsAPILoaderConfigLiteral {
   constructor(private events: Events) {
     this.events.subscribe(EventTypes.UPDATE_GMAP_KEY, apiKey => {
       this.apiKey = apiKey;
+      this.events.unsubscribe(EventTypes.UPDATE_GMAP_KEY);
     });
   }
 }
