@@ -1,6 +1,6 @@
 import { async, ComponentFixture } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ActionSheetController } from 'ionic-angular';
+import {ActionSheetController, Events} from 'ionic-angular';
 import { AppVersion } from '@ionic-native/app-version';
 import { StoreModule } from '@ngrx/store';
 
@@ -25,7 +25,8 @@ describe('Pages: HomeComponent', () => {
     HomeService,
     ActionSheetController,
     GAWrapper,
-    AppVersion
+    AppVersion,
+    Events
   ], [
     HttpClientTestingModule,
     StoreModule.forFeature('home', homeReducer),

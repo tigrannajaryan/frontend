@@ -2,9 +2,9 @@ import * as moment from 'moment';
 import { Component, ViewChild } from '@angular/core';
 import {
   ActionSheetController,
-  AlertController, Content,
+  Content, Events,
   IonicPage,
-  NavController, NavParams, Slides
+  NavController, Slides
 } from 'ionic-angular';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
@@ -80,10 +80,9 @@ export class HomeComponent {
   protected profile: Observable<StylistProfile>;
 
   constructor(
-    public navCtrl: NavController,
-    public navParams: NavParams,
-    public homeService: HomeService,
-    public alertCtrl: AlertController,
+    private navCtrl: NavController,
+    private homeService: HomeService,
+    private events: Events,
     private store: Store<HomeState & ProfileState>,
     private actionSheetCtrl: ActionSheetController,
     private userOptions: UserOptions,
@@ -116,6 +115,15 @@ export class HomeComponent {
     this.store.dispatch(new LoadProfileAction());
 
     this.loadAppointments(this.activeTab);
+
+    // if isFutureAppointment true then set tab to upcoming
+    this.events.subscribe('isFutureAppointment', (isFutureAppointment: boolean) => {
+      if (isFutureAppointment) {
+        this.activeTab = this.tabs[TabNames.upcoming].name;
+      }
+
+      this.events.unsubscribe('isFutureAppointment'); // unsubscribe this event
+    });
   }
 
   protected onAppointmentClick(appointment: Appointment): void {

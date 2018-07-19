@@ -2,12 +2,11 @@ import * as moment from 'moment';
 
 import { Store } from '@ngrx/store';
 import { Component } from '@angular/core';
-import { AlertController, IonicPage, NavController } from 'ionic-angular';
+import { AlertController, Events, IonicPage, NavController } from 'ionic-angular';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { predicateValidator } from '~/shared/validators';
 import { loading } from '~/core/utils/loading';
-import { showAlert } from '~/core/utils/alert';
 import { componentUnloaded } from '~/shared/component-unloaded';
 import { PageNames } from '~/core/page-names';
 import { ServiceItem } from '~/core/stylist-service/stylist-models';
@@ -36,10 +35,6 @@ import {
   ClearSelectedDateAction,
   selectSelectedDate
 } from '~/appointment/appointment-date/appointment-dates.reducer';
-import { UserOptions } from '~/core/user-options';
-
-const helpText = `You added an appointment for a future day, it will not be visible on this screen.
-          You can see future appointments by tapping <strong>Total This Week</strong>`;
 
 @IonicPage()
 @Component({
@@ -65,7 +60,7 @@ export class AppointmentAddComponent {
     private formBuilder: FormBuilder,
     private navCtrl: NavController,
     private store: Store<ServicesState & ClientsState>,
-    private userOptions: UserOptions
+    private events: Events
   ) {
   }
 
@@ -219,17 +214,11 @@ export class AppointmentAddComponent {
       this.store.dispatch(new ClearSelectedServiceAction());
       this.store.dispatch(new ClearSelectedDateAction());
 
-      this.navCtrl.pop();
-
       const isFutureAppointment = moment(data.datetime_start_at).isAfter(new Date());
-      if (isFutureAppointment && this.userOptions.get('showFutureAppointmentHelp')) {
-        showAlert('', helpText, [{
-          text: 'Don\'t show again',
-          handler: () => {
-            this.userOptions.set('showFutureAppointmentHelp', false);
-          }
-        }]);
-      }
+      this.navCtrl.pop().then(() => {
+        // Trigger custom event and pass data to be send back
+        this.events.publish('isFutureAppointment', isFutureAppointment);
+      });
     } catch (e) {
       if (e.errors instanceof Map) {
         return e.errors; // js Map

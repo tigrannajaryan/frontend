@@ -1,6 +1,7 @@
 import * as faker from 'faker';
 import * as moment from 'moment';
 
+import { Events } from 'ionic-angular';
 import { async, ComponentFixture } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Store, StoreModule } from '@ngrx/store';
@@ -45,7 +46,8 @@ describe('Pages: Add Appointment', () => {
   beforeEach(async () => TestUtils.beforeEachCompiler([
     AppointmentAddComponent
   ], [
-    AppointmentService
+    AppointmentService,
+    Events
   ], [
     HttpClientTestingModule,
     StoreModule.forFeature('service', servicesReducer),
