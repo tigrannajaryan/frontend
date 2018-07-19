@@ -18,17 +18,15 @@ import { UnhandledErrorHandler } from '~/shared/unhandled-error-handler';
 import { initSentry } from '~/shared/sentry';
 import { UserOptions } from '~/core/user-options';
 import { AppVersion } from '@ionic-native/app-version';
-import { AgmCoreModule } from '@agm/core';
+import { AgmCoreModule, LAZY_MAPS_API_CONFIG } from '@agm/core';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { ENV } from '../environments/environment.default';
+import { GoogleMapsConfig } from '~/core/google-maps-config';
 
 initSentry();
 
 const imports = [
-  AgmCoreModule.forRoot({
-    apiKey: 'AIzaSyCDZUwZCFNcMDt4N-BbQSEHwofHQttwouo',
-    libraries: ['places']
-  }),
+  AgmCoreModule.forRoot(),
   BrowserModule,
   HttpClientModule,
   CoreModule,
@@ -95,6 +93,10 @@ if (!ENV.production) {
       provide: META_REDUCERS,
       deps: [Logger],
       useFactory: getMetaReducers
+    },
+    {
+      // Override google maps config
+      provide: LAZY_MAPS_API_CONFIG, useClass: GoogleMapsConfig
     }
   ]
 })

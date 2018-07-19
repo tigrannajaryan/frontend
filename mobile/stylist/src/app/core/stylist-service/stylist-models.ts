@@ -9,6 +9,7 @@ export interface StylistProfile {
   salon_address: string;
   profile_photo_id?: string;
   profile_photo_url?: string;
+  gmapsApiKey?: string;
 }
 
 export interface ServiceInSummary {

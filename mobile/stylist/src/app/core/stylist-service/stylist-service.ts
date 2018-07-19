@@ -10,6 +10,7 @@ import {
   StylistServicesList, StylistSummary
 } from './stylist-models';
 import { AppointmentDateOffer } from '~/home/home.models';
+import { Events } from 'ionic-angular';
 
 export interface ServiceTemplateSetListResponse {
   service_template_sets: ServiceTemplateSetBase[];
@@ -45,6 +46,7 @@ export class StylistServiceProvider extends BaseApiService {
   constructor(
     public http: HttpClient,
     public logger: Logger,
+    private events: Events,
     protected serverStatus: ServerStatusTracker) {
     super(http, logger, serverStatus);
   }
@@ -60,7 +62,16 @@ export class StylistServiceProvider extends BaseApiService {
    * Get the profile of the stylist. The stylist must be already authenticated as a user.
    */
   async getProfile(): Promise<StylistProfile> {
-    return this.get<StylistProfile>('stylist/profile');
+    return new Promise<StylistProfile>(async (resolve, reject) => {
+      try {
+        const profile = await this.get<StylistProfile>('stylist/profile');
+        // TODO: change APIKEY to profile.gmapsApiKey
+        this.events.publish('profile:gmapKey', 'AIzaSyCDZUwZCFNcMDt4N-BbQSEHwofHQttwouo');
+        resolve(profile);
+      } catch (e) {
+        reject(e);
+      }
+    });
   }
 
   /**
