@@ -18,10 +18,17 @@ branches:
 
 # cache packages after each build, and restore on next builds
 # if a change is detected after build finishes - update cache
+
+before_cache:
+  - rm -rf $HOME/.gradle/caches/*/plugin-resolution/ || true
+  - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock || true
+
 cache:
   directories:
     - mobile/stylist/node_modules
     - mobile/client/node_modules
+    - $HOME/.gradle/caches/
+    - $HOME/.gradle/wrapper/
 
 # global env variables, common to each build's environment
 env:
@@ -128,8 +135,8 @@ deploy:
     branch: develop
     condition: $TRAVIS_PULL_REQUEST = false
   provider: script # indicates we'll run a bash script here
-  # actually upload resulting iOS app to appStoreConnect using fastlane
-  script: mobile/scripts/should-skip-build.sh || mobile/scripts/deploy-ios-app.sh
+  # actually upload resulting Android and iOS app to Google.Play and appStoreConnect using fastlane
+  script: mobile/scripts/should-skip-build.sh || mobile/scripts/deploy-mobile-apps.sh
 
 after_script:
   # teardown and remove distribution certificate and provisioning profile
