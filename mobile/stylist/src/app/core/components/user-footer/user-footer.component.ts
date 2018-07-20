@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { PageNames } from '~/core/page-names';
+import { ENV } from '../../../../environments/environment.default';
 
 @Component({
   selector: '[madeUserFooter]',
@@ -7,4 +8,5 @@ import { PageNames } from '~/core/page-names';
 })
 export class UserFooterComponent {
   protected PageNames = PageNames;
+  protected ffEnableIncomplete = ENV.ffEnableIncomplete;
 }

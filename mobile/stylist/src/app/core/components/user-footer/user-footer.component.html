@@ -21,5 +21,9 @@
       <i class="bb-icon bb-icon-invite"></i>
       Profile
     </ion-col>
+    <ion-col *ngIf="ffEnableIncomplete" [madeLink]="[PageNames.Invitations, {isProfile: true}]" class="u-f-footer-item">
+      <i class="bb-icon bb-icon-invite"></i>
+      Invite
+    </ion-col>
   </ion-row>
 </ion-grid>

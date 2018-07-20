@@ -33,4 +33,13 @@ export class InvitationsApi extends BaseApiService {
     return this.post<InvitationsResponse>('stylist/invitations', data);
   }
 
+  /**
+   * Return the list of previously sent invitations.
+   */
+  async getInvitations(): Promise<InvitationsResponse> {
+    // return this.get<InvitationsResponse>('stylist/invitations');
+    return Promise.resolve({
+      invitations: [{ phone: '+1 (416) 854-3791', status: 'invited' }, { phone: ' +14168547436', status: 'accepted' }]
+    });
+  }
 }

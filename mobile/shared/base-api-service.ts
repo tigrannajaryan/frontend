@@ -105,6 +105,7 @@ export class BaseApiService {
             }
 
           case HttpStatus.unauthorized:
+          case HttpStatus.methodNotSupported:
             throw new ServerErrorResponse(e.status, e.error);
 
           default:

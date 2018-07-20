@@ -90,9 +90,21 @@ export class UnhandledErrorHandler {
       // should be highlighted in the UI.
       errorMsg = 'Error in the input fields';
       errorUIAction = ErrorUIAction.showAlert;
-    } else if (error instanceof ServerErrorResponse && error.status === HttpStatus.unauthorized) {
-      // Erase all previous navigation history and make LoginPage the root
-      errorUIAction = ErrorUIAction.redirectToFirstPage;
+    } else if (error instanceof ServerErrorResponse) {
+      if (error.status === HttpStatus.unauthorized) {
+        // Erase all previous navigation history and make LoginPage the root
+        errorUIAction = ErrorUIAction.redirectToFirstPage;
+      } else {
+        // Other server error. This should never happen unless we have bugs or
+        // frontend calls an endpoint that doesn't exist, etc. Show detailed
+        // error message for diagnostics.
+        errorMsg = `Server error ${error.status}`;
+        if (error.errorBody) {
+          errorMsg = `errorMsg<br/>${JSON.stringify(error.errorBody)}`;
+        }
+        errorUIAction = ErrorUIAction.showAlert;
+        UnhandledErrorHandler.reportToSentry(error);
+      }
     } else if (error instanceof ServerUnreachableOrInternalError) {
       // Update server status. This will result in server status error banner to appear.
       errorUIAction = ErrorUIAction.markServerUnreachable;

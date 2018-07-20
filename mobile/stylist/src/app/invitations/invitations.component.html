@@ -1,70 +1,96 @@
 <ion-header class="ion-bb-header">
   <ion-navbar>
+    <server-status></server-status>
   </ion-navbar>
 </ion-header>
 
-
 <ion-content padding>
-  <made-nav [activePage]="PageNames.Invitations"></made-nav>
+  <made-nav *ngIf="!isProfile" [activePage]="PageNames.Invitations"></made-nav>
 
   <div class="p-i-top">
     <div class="p-i-title">Invite clients</div>
   </div>
 
+  <!-- This is shown if we do not have persmissions to read phone contacts -->
   <div *ngIf="displayedContacts === undefined && !loadingContacts">
     To be able to choose your contacts enable permission in Settings.
   </div>
 
+  <!-- This is shown while we are loading the data. It should appear briefly only -->
   <div *ngIf="loadingContacts">
     Loading your contacts, please wait.
+    <br/>
+    <ion-spinner duration="500"></ion-spinner>
   </div>
 
   <ion-grid *ngIf="displayedContacts">
+    <!-- Search bar area -->
     <ion-row>
-      <ion-searchbar placeholder="Search name or phone number" [showCancelButton]="true" (ionInput)="onSearch($event)" (ionCancel)="onSearchCancel()"
-        debounce="100">
-      </ion-searchbar>
+      <ion-icon name="search"></ion-icon>
+
+      <!-- Show all selected contact as tags -->
+      <div *ngFor="let contact of selectedContacts" style="background-color: brown; margin: 0px 5px">
+        {{ contact.displayName ? contact.displayName : contact.phoneNumber }}
+        <button clear (click)='onRemoveSelection(contact)'>
+          <ion-icon name="close-circle"></ion-icon>
+        </button>
+      </div>
+
+      <!-- Search input field -->
+      <ion-input placeholder="Search name or phone number" (input)="onSearchChange()" [(ngModel)]="searchInput"></ion-input>
+
+      <!-- Search cancellation button -->
+      <button clear (click)='onSearchCancel()'>
+        <ion-icon name="close"></ion-icon>
+      </button>
     </ion-row>
 
+    <!-- If there is any search input that looks like a phone number show the Add Contact button -->
+    <ion-row *ngIf="seachInputIsLikePhoneNumber">
+      <button ion-button full (click)="onAddManualContact()">Add Contact</button>
+    </ion-row>
+
+    <!-- Display all contacts grouped into sections-->
     <div *ngFor="let section of displayedContacts">
+      <!-- Section name -->
       <ion-row>
-        <ion-col col-1></ion-col>
-        <ion-col col-5>
-          <h2>{{ section.sectionName || '-' }}</h2>
+        <ion-col col-12>
+          <h3>{{ section.sectionName || '-' }}</h3>
         </ion-col>
-        <ion-col col-6></ion-col>
       </ion-row>
 
-      <ion-row *ngFor="let contact of section.items">
-        <ion-col col-1>
-          <ion-checkbox [(ngModel)]="contact.item.selected" (ionChange)="onSelectedChange()"></ion-checkbox>
-        </ion-col>
-        <ion-col col-4>
-          <div [innerHtml]="formatField(contact, 'phoneNumber')"></div>
-        </ion-col>
-        <ion-col col-2>{{ contact.item.type ? contact.item.type : '' }}</ion-col>
-        <ion-col col-5>
-          <div [innerHtml]="formatField(contact, 'displayName')"></div>
-        </ion-col>
+      <!-- Contacts in the section -->
+      <div *ngFor="let contact of section.items" (click)="onContactClick(contact)">
+        <ion-row>
+          <!-- Contact details -->
+          <ion-col col-10>
+            <span [innerHtml]="formatField(contact, 'displayName')"></span>
+            <br/>
+            <span [innerHtml]="formatField(contact, 'phoneNumber')"></span>&nbsp;
+            <span>{{ contact.item.type ? contact.item.type : '' }}</span>
+          </ion-col>
+
+          <!-- Contact status -->
+          <ion-col col-2 align-self-center>
+            <span *ngIf="contact.item.status === ContactStatus.Invited" style="color:orange">Invited</span>
+            <span *ngIf="contact.item.status === ContactStatus.Accepted" style="color:green">Accepted</span>
+            <ion-icon *ngIf="contact.item.selected" name="checkmark"></ion-icon>
+          </ion-col>
+        </ion-row>
+      </div>
+
+      <!-- If there is any search input and no search results show appropriate message -->
+      <ion-row *ngIf="searchInput && displayedContacts.length === 1 && section.items.length === 0">
+          <ion-icon name="contacts"></ion-icon><br/>
+          No contacts
       </ion-row>
+
     </div>
-
-    <ion-row>
-      <ion-col col-12>{{ selectedCount }} contact{{ selectedCount !== 1 ? 's' : '' }} selected.</ion-col>
-    </ion-row>
 
   </ion-grid>
 
-  <div class="p-i-box">
-    <ion-item class="p-i-box-item">
-      <ion-label color="color9" stacked>Add phone number</ion-label>
-      <ion-input type='tel' [(ngModel)]="phoneNumber"></ion-input>
-      <button class="p-i-box-item-button" ion-button item-right (click)="addContact()">Add</button>
-    </ion-item>
-  </div>
-
   <div padding-top>
-    <button class="p-i-button" round ion-button color="bb_skin" (click)="sendInvitations()">
+    <button ion-button full (click)="sendInvitations()">
       Invite Clients
     </button>
   </div>
