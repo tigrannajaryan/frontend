@@ -9,12 +9,29 @@ ion-header ion-icon.back-button-icon.icon {
   padding-left: 10px;
   background: white;
 
+  &.toolbar {
+    height: 98px;
+
+    @media ($smartphone) {
+      height: 88px;
+    }
+
+    @media ($phone) {
+      height: 86px;
+    }
+  }
+
   &.UserHeader--shadow {
     box-shadow: 0 0 18px 18px white;
   }
 
   .UserHeader-title {
     padding: 0;
+
+    &.title-ios {
+      padding-top: 28px !important;
+      height: calc(44px + 28px) !important;
+    }
 
     .toolbar-title { // ionic’s navbar title
       padding: 0;
@@ -131,20 +148,3 @@ ion-header ion-icon.back-button-icon.icon {
   }
 }
 
-.md,
-.ios,
-.wp {
-  page-home {
-    ion-header {
-      height: 98px;
-
-      @media ($smartphone) {
-        height: 88px;
-      }
-
-      @media ($phone) {
-        height: 68px;
-      }
-    }
-  }
-}
