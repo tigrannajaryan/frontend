@@ -35,6 +35,12 @@ export class ClientAppComponent implements OnInit {
   }
 
   async ngOnInit(): Promise<void> {
+    this.menuPages = [
+      {
+        title: 'Profile',
+        component: PageNames.Profile
+      }
+    ];
     this.logger.info('App initializing...');
 
     await this.platform.ready();

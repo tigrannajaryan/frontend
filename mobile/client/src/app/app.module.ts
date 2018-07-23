@@ -21,6 +21,7 @@ import { getMetaReducers, reducers } from '~/app.reducers';
 
 import { AuthEffects } from '~/core/effects/auth.effects';
 import { ApiCommonErrorsEffects } from '~/core/effects/api-common-errors.effects';
+import {ProfileServiceMock} from "~/core/api/profile-service.mock";
 
 @NgModule({
   declarations: [
@@ -64,7 +65,7 @@ import { ApiCommonErrorsEffects } from '~/core/effects/api-common-errors.effects
     Logger,
     StatusBar,
     SplashScreen,
-
+    ProfileServiceMock,
     // services
     AuthService,
 
