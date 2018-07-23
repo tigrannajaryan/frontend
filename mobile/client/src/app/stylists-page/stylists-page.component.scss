@@ -1,0 +1,153 @@
+.Badge {
+  $badge-size: 24px;
+
+  height: $badge-size;
+  padding: 0 12px;
+  margin-left: 12px;
+  font-size: $t-base;
+  font-weight: 500;
+  line-height: $badge-size;
+  color: white;
+  background: color($colors, violet);
+  border-radius: 12px;
+}
+
+.StylistsPage {
+  $pic-size: 64px;
+  $card-padding: 16px;
+
+  background: color($grayscale, 100);
+
+  .StylistsPage-search {
+    font-size: $t-base;
+    border-radius: 10px;
+    box-shadow: 0 7px 43px color($grayscale, 200);
+
+    &.item-block .item-inner { // ionic’s
+      padding: 7.5px 16px;
+    }
+  }
+
+  .StylistsPage-stylists {
+    margin-top: 18px;
+  }
+
+  .StylistsPage-cardImg {
+    position: absolute;
+    top: 50%;
+    left: $card-padding;
+    width: $pic-size;
+    height: $pic-size;
+    margin-top: -1 * $pic-size / 2;
+    background: color($grayscale, 100);
+    border-radius: 50%; // circle
+
+    > img {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  .StylistsPage-cardHeader {
+    width: 0;
+    height: 0;
+    overflow: hidden;
+    font-size: $t-h3;
+    font-weight: 500;
+    text-align: center;
+  }
+
+  .StylistsPage-cardClose {
+    position: absolute;
+    right: $card-padding;
+    background: transparent;
+  }
+
+  .StylistsPage-cardTitle {
+    width: 0;
+    margin: 3px 0 6px;
+    font-size: $t-h3;
+    font-weight: 500;
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  .StylistsPage-cardSubtitle {
+    width: 0;
+    font-size: $t-base;
+    color: color($grayscale, 500);
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  .StylistsPage-submit {
+    margin: 24px 0 18px;
+    border: 2px solid white;
+  }
+
+  .StylistsPage-cardFooter {
+    width: 0;
+    height: 0;
+    overflow: hidden;
+
+    .StylistsPage-cardSubtitle {
+      width: 100%;
+      margin-top: 8px;
+    }
+  }
+
+  .StylistsPage-card {
+    position: relative;
+    padding-left: $card-padding * 2 + $pic-size;
+    background: white;
+
+    &,
+    .StylistsPage-cardImg,
+    .StylistsPage-cardHeader,
+    .StylistsPage-cardTitle,
+    .StylistsPage-cardSubtitle,
+    .StylistsPage-cardFooter {
+      transition: all 0.13s ease-in;
+    }
+
+    &.is-active {
+      $new-pic-size: 120px;
+      $pic-top-offset: 56px;
+
+      padding-left: $card-padding;
+      background: color($colors, primary);
+
+      .StylistsPage-cardImg {
+        top: $pic-top-offset + $pic-size / 2;
+        left: 50%;
+        width: $new-pic-size;
+        height: $new-pic-size;
+        margin-left: -1 * $new-pic-size / 2;
+        background: white;
+      }
+
+      .StylistsPage-cardTitle {
+        margin: 8px 0;
+      }
+
+      .StylistsPage-cardHeader {
+        $header-height: 26px;
+
+        height: $header-height + $card-padding * 2 + $new-pic-size;
+      }
+
+      .StylistsPage-cardFooter {
+        $footer-height: 182px;
+
+        height: $footer-height;
+      }
+
+      .StylistsPage-cardHeader,
+      .StylistsPage-cardTitle,
+      .StylistsPage-cardSubtitle,
+      .StylistsPage-cardFooter {
+        width: 100%;
+      }
+    }
+  }
+}
