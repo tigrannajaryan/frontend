@@ -16,6 +16,7 @@ import { Logger } from '~/shared/logger';
 import { UnhandledErrorHandler } from '~/core/unhandled-error-handler';
 import { AuthService } from '~/core/api/auth-service';
 import { AuthServiceMock } from '~/core/api/auth-service.mock';
+import { ServicesServiceMock } from '~/core/api/services-service.mock';
 import { StylistsServiceMock } from '~/core/api/stylists-service.mock';
 
 import { ClientAppComponent } from '~/app.component';
@@ -23,6 +24,7 @@ import { getMetaReducers, reducers } from '~/app.reducers';
 
 import { AuthEffects } from '~/core/effects/auth.effects';
 import { ApiCommonErrorsEffects } from '~/core/effects/api-common-errors.effects';
+import { ServicesEffects } from '~/core/effects/services.effects';
 import { StylistsEffects } from '~/core/effects/stylists.effects';
 
 @NgModule({
@@ -55,6 +57,7 @@ import { StylistsEffects } from '~/core/effects/stylists.effects';
     EffectsModule.forRoot([
       AuthEffects,
       ApiCommonErrorsEffects,
+      ServicesEffects,
       StylistsEffects
     ])
   ],
@@ -72,6 +75,7 @@ import { StylistsEffects } from '~/core/effects/stylists.effects';
     // services
     AuthService,
     AuthServiceMock,
+    ServicesServiceMock,
     StylistsServiceMock,
 
     {
