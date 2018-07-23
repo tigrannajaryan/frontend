@@ -2,6 +2,7 @@ import { Action, ActionReducer, createFeatureSelector, createSelector, State } f
 
 import { RequestState } from '~/core/api/request.models';
 import { AuthTokenModel } from '~/core/api/auth.models';
+import { StylistModel } from '~/core/api/stylists.models';
 import { ApiError } from '~/core/api/errors.models';
 
 export enum AuthRequestTypes {
@@ -46,8 +47,9 @@ export class RequestCodeErrorAction implements Action {
 
 export class RequestCodeSuccessAction implements Action {
   readonly type = authActionTypes.REQUEST_CODE_SUCCESS;
-  readonly requestState = RequestState.Succeded;
+  readonly requestState = RequestState.Succeeded;
   readonly requestType = AuthRequestTypes.RequestCode;
+  constructor(public timestamp?: number) {}
 }
 
 export class ConfirmCodeAction implements Action {
@@ -72,9 +74,12 @@ export class ConfirmCodeErrorAction implements Action {
 
 export class ConfirmCodeSuccessAction implements Action {
   readonly type = authActionTypes.CONFIRM_CODE_SUCCESS;
-  readonly requestState = RequestState.Succeded;
+  readonly requestState = RequestState.Succeeded;
   readonly requestType = AuthRequestTypes.ConfirmCode;
-  constructor(public token: AuthTokenModel) {}
+  constructor(
+    public token: AuthTokenModel,
+    public invitedBy: StylistModel | undefined
+  ) {}
 }
 
 export class ResetAction implements Action {
@@ -101,21 +106,31 @@ export interface AuthState {
   phone?: string;
   token?: AuthTokenModel;
 
+  codeRequestTimestamp?: number;
+
   requestState: RequestState;
   requestType: AuthRequestTypes;
   errors?: ApiError[];
 }
 
 const initialState: AuthState = {
+  phone: undefined,
+  token: undefined,
+
+  codeRequestTimestamp: undefined,
+
   requestState: RequestState.NotStarted,
-  requestType: AuthRequestTypes.RequestCode
+  requestType: AuthRequestTypes.RequestCode,
+  errors: undefined
 };
 
 export function authReducer(state: AuthState = initialState, action: Actions): AuthState {
   switch (action.type) {
     case authActionTypes.RESET:
       return {
-        ...initialState
+        ...state,
+        requestState: RequestState.NotStarted,
+        requestType: AuthRequestTypes.RequestCode
       };
 
     case authActionTypes.REQUEST_CODE:
@@ -131,10 +146,19 @@ export function authReducer(state: AuthState = initialState, action: Actions): A
       };
 
     case authActionTypes.REQUEST_CODE_LOADING:
-    case authActionTypes.REQUEST_CODE_SUCCESS:
     case authActionTypes.CONFIRM_CODE_LOADING:
       return {
         ...state,
+        requestState: action.requestState,
+        requestType: action.requestType
+      };
+
+    case authActionTypes.REQUEST_CODE_SUCCESS:
+      return {
+        ...state,
+
+        codeRequestTimestamp: action.timestamp || state.codeRequestTimestamp || Number(new Date()),
+
         requestState: action.requestState,
         requestType: action.requestType
       };
@@ -201,11 +225,11 @@ export const selectRequestCodeLoading = createSelector(
     state.requestState === RequestState.Loading
 );
 
-export const selectRequestCodeSucceded = createSelector(
+export const selectRequestCodeSucceeded = createSelector(
   selectAuthFromState,
   (state: AuthState): boolean =>
     state.requestType === AuthRequestTypes.RequestCode &&
-    state.requestState === RequestState.Succeded
+    state.requestState === RequestState.Succeeded
 );
 
 export const selectConfirmCodeLoading = createSelector(
@@ -215,9 +239,27 @@ export const selectConfirmCodeLoading = createSelector(
     state.requestState === RequestState.Loading
 );
 
-export const selectConfirmCodeSucceded = createSelector(
+export const selectConfirmCodeSucceeded = createSelector(
   selectAuthFromState,
   (state: AuthState): boolean =>
     state.requestType === AuthRequestTypes.ConfirmCode &&
-    state.requestState === RequestState.Succeded
+    state.requestState === RequestState.Succeeded
+);
+
+export const RESEND_CODE_TIMEOUT_SECONDS = 120; // 2min
+
+export const selectCanRequestCodeInSeconds = (timestamp = Number(new Date())) => createSelector(
+  selectAuthFromState,
+  (state: AuthState): number => {
+    if (state.codeRequestTimestamp !== undefined) {
+      const seconds = Math.ceil(RESEND_CODE_TIMEOUT_SECONDS - (timestamp - state.codeRequestTimestamp) / 1000);
+      return seconds > 0 ? seconds : 0;
+    }
+    return 0; // can request now
+  }
+);
+
+export const selectCanRequestCode = (timestamp = undefined) => createSelector(
+  selectCanRequestCodeInSeconds(timestamp),
+  (seconds: number): boolean => seconds === 0
 );
