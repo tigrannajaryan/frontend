@@ -1,4 +1,4 @@
-<ion-header><ion-navbar></ion-navbar></ion-header>
+<ion-header madeHeader></ion-header>
 
 <ion-content class="AuthConfirmPage">
   <ion-grid fixed>
@@ -17,7 +17,7 @@
       <form (ngSubmit)="submit()">
         <ion-row justify-content-center>
           <ion-item class="FormControl AuthConfirmPage-codeControl">
-            <ion-input type="tel" ngxInputNumber [formControl]="code" [disabled]="isLoading" (keydown)="verifyCode($event)"></ion-input>
+            <ion-input #input type="tel" ngxInputNumber [formControl]="code" [disabled]="isLoading" (keydown)="verifyCode($event)"></ion-input>
           </ion-item>
         </ion-row>
         <ion-row justify-content-center>
@@ -31,11 +31,14 @@
       </form>
     </ion-row>
     <ion-row justify-content-center>
-      <span *ngIf="isLoading">Checking the code…</span>
-      <span *ngIf="!isLoading">
-        <span>Didn’t get a&nbsp;code? </span><span class="Link" (click)="resendCode()">Send a&nbsp;new one</span>
+      <span *ngIf="sendCodeState === SendCodeState.Timeout">
+        You can send a new code in {{ resendCodeCountdown | async }}
       </span>
-      <span *ngIf="isPhoneResending | async">Sending new code…</span>
+      <span *ngIf="sendCodeState === SendCodeState.NotStarted">
+        Didn’t get a&nbsp;code? <span class="Link" (click)="resendCode()">Send a&nbsp;new one</span>
+      </span>
+      <span *ngIf="sendCodeState === SendCodeState.InProgress">Sending new code…</span>
+      <span *ngIf="sendCodeState === SendCodeState.VerificationInProgress">Verifying the code…</span>
     </ion-row>
   </ion-grid>
 </ion-content>

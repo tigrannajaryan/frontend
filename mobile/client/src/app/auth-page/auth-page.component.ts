@@ -2,8 +2,9 @@ import { Component } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { IonicPage, NavController } from 'ionic-angular';
 import { Store } from '@ngrx/store';
-import { Subscription } from 'rxjs';
 import { getCountryCallingCode } from 'libphonenumber-js';
+
+import { componentIsActive } from '~/core/utils/component-is-active';
 
 import { PageNames } from '~/core/page-names';
 import {
@@ -11,11 +12,11 @@ import {
   RequestCodeAction,
   ResetAction,
   selectRequestCodeLoading,
-  selectRequestCodeSucceded
+  selectRequestCodeSucceeded
 } from '~/core/reducers/auth.reducer';
 import { phoneValidator } from '~/core/validators/phone.validator';
 
-import { DEFAULT_COUNTRY_CODE, getUnifiedPhoneValue } from '~/core/directives/phone-input.directive';
+import { DEFAULT_COUNTRY_CODE, getCountryEmojiFlag, getUnifiedPhoneValue } from '~/core/directives/phone-input.directive';
 import Countries from 'country-data/data/countries.json';
 
 @IonicPage()
@@ -31,9 +32,6 @@ export class AuthPageComponent {
 
   isLoading = false;
 
-  subscriptionOnLoading: Subscription;
-  subscriptionOnSuccess: Subscription;
-
   constructor(
     private navCtrl: NavController,
     private store: Store<AuthState>
@@ -41,26 +39,22 @@ export class AuthPageComponent {
   }
 
   ionViewWillEnter(): void {
-    this.store.dispatch(new ResetAction());
+    this.store.dispatch(new ResetAction()); // reset auth requests state
 
-    this.subscriptionOnLoading = this.store
+    this.store
       .select(selectRequestCodeLoading)
+      .takeWhile(componentIsActive(this))
       .subscribe((isLoading: boolean) => {
         this.isLoading = isLoading;
       });
 
-    this.subscriptionOnSuccess = this.store
-      .select(selectRequestCodeSucceded)
-      .subscribe((isSucceded: boolean) => {
-        if (isSucceded) {
-          this.navCtrl.push(PageNames.AuthConfirm);
-        }
+    this.store
+      .select(selectRequestCodeSucceeded)
+      .takeWhile(componentIsActive(this))
+      .filter(Boolean)
+      .subscribe(() => {
+        this.navCtrl.push(PageNames.AuthConfirm);
       });
-  }
-
-  ionViewWillLeave(): void {
-    this.subscriptionOnLoading.unsubscribe();
-    this.subscriptionOnSuccess.unsubscribe();
   }
 
   countrySelected(): void {
@@ -68,8 +62,7 @@ export class AuthPageComponent {
   }
 
   getPhoneCode(): string {
-    // TODO: show flag instead of code value
-    return `${this.countryCode.value} +${getCountryCallingCode(this.countryCode.value)}`;
+    return `${getCountryEmojiFlag(this.countryCode.value)} +${getCountryCallingCode(this.countryCode.value)}`;
   }
 
   submit(): void {

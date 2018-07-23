@@ -1,6 +1,8 @@
+export const LOADING_DELAY = 250;
+
 export enum RequestState {
   NotStarted = 'Not started',
   Loading = 'Loading',
-  Succeded = 'Succeded',
+  Succeeded = 'Succeeded',
   Failed = 'Failed'
 }
