@@ -1,21 +1,17 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 
-import { AuthConfirmPageComponent } from '~/auth-confirm-page/auth-confirm-page.component';
-import { InputNumberDirective } from '~/core/directives/input-number.directive';
+import { CoreModule } from '~/core/core.module';
 
-import { FormatPhonePipe } from '~/core/pipes/format-phone.pipe';
-import { HasErrorPipe } from '~/core/pipes/has-error.pipe';
+import { AuthConfirmPageComponent } from '~/auth-confirm-page/auth-confirm-page.component';
 
 @NgModule({
   declarations: [
-    AuthConfirmPageComponent,
-    InputNumberDirective,
-    FormatPhonePipe,
-    HasErrorPipe
+    AuthConfirmPageComponent
   ],
   imports: [
-    IonicPageModule.forChild(AuthConfirmPageComponent)
+    IonicPageModule.forChild(AuthConfirmPageComponent),
+    CoreModule
   ]
 })
 export class AuthConfirmPageComponentModule {}

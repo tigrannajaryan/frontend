@@ -1,0 +1,23 @@
+<ion-header madeHeader></ion-header>
+
+<ion-content class="StylistInvitationPage">
+  <ion-grid *ngIf="stylist" fixed>
+    <ion-row justify-content-center>
+      <div class="H1">Your stylist</div>
+    </ion-row>
+    <ion-row justify-content-center>
+      <div class="StylistInvitationPage-pic">
+        <img src="assets/imgs/stylist-avatar.svg" />
+      </div>
+    </ion-row>
+    <ion-row justify-content-center class="StylistInvitationPage-salonName">{{ stylist.salon_name }}</ion-row>
+    <ion-row justify-content-center class="StylistInvitationPage-name">{{ stylist.first_name }} {{ stylist.last_name }}</ion-row>
+    <ion-row justify-content-center class="StylistInvitationPage-address"><img src="assets/icons/location.svg" />&nbsp;{{ stylist.salon_address }}</ion-row>
+    <ion-row justify-content-center class="StylistInvitationPage-phone"><img src="assets/icons/phone.svg" />&nbsp;{{ stylist.phone | formatPhone }}</ion-row>
+    <ion-row justify-content-center class="StylistInvitationPage-phone"><img src="assets/icons/instagram.svg" />&nbsp;{{ stylist.instagram_profile_name }}</ion-row>
+    <ion-row justify-content-center>
+      <button ion-button class="Button" (click)="continueWithStylist()">Continue</button>
+    </ion-row>
+    <ion-row justify-content-center><span class="Link" (click)="seeStylistsList()">It’s not my stylist</span></ion-row>
+  </ion-grid>
+<ion-content>

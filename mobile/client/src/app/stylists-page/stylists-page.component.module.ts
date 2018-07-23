@@ -3,15 +3,15 @@ import { IonicPageModule } from 'ionic-angular';
 
 import { CoreModule } from '~/core/core.module';
 
-import { AuthPageComponent } from '~/auth-page/auth-page.component';
+import { StylistsPageComponent } from '~/stylists-page/stylists-page.component';
 
 @NgModule({
   declarations: [
-    AuthPageComponent
+    StylistsPageComponent
   ],
   imports: [
-    IonicPageModule.forChild(AuthPageComponent),
+    IonicPageModule.forChild(StylistsPageComponent),
     CoreModule
   ]
 })
-export class AuthPageComponentModule {}
+export class StylistsPageComponentModule {}
