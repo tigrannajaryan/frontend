@@ -6,7 +6,7 @@ import { createNavHistoryList } from '~/core/functions';
 import { AuthApiService, AuthCredentials, UserRole } from '~/core/auth-api-service/auth-api-service';
 import { ServerFieldError } from '~/shared/api-errors';
 import { PageNames } from '~/core/page-names';
-import { UserOptions } from '~/core/user-options';
+import { AppStorage } from '~/core/app-storage';
 
 export enum LoginOrRegisterType {
   login,
@@ -33,14 +33,24 @@ export class LoginRegisterComponent {
     public navParams: NavParams,
     private navCtrl: NavController,
     private authService: AuthApiService,
-    private userOptions: UserOptions
+    private appStorage: AppStorage
   ) {
     this.pageType = this.navParams.get('pageType') as LoginOrRegisterType;
+  }
+
+  ionViewWillEnter(): void {
+    // Auto fill email if it was previously remembered
+    if (this.pageType === LoginOrRegisterType.login) {
+      this.formData.email = this.appStorage.get('userEmail');
+    }
   }
 
   @loading
   async login(): Promise<void> {
     try {
+      // Remember the email
+      this.appStorage.set('userEmail', this.formData.email);
+
       // Call auth API
       const authCredentials: AuthCredentials = {
         email: this.formData.email,
@@ -71,9 +81,12 @@ export class LoginRegisterComponent {
     };
     await this.authService.registerByEmail(authCredentialsRecord);
 
+    // Remember the email
+    this.appStorage.set('userEmail', this.formData.email);
+
     // This is a new user, enable help screens
-    this.userOptions.set('showHomeScreenHelp', true);
-    this.userOptions.set('showFutureAppointmentHelp', true);
+    this.appStorage.set('showHomeScreenHelp', true);
+    this.appStorage.set('showFutureAppointmentHelp', true);
 
     this.navCtrl.push(PageNames.RegisterSalon, {}, { animate: false });
   }
