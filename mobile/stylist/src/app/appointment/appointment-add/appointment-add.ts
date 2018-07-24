@@ -36,7 +36,7 @@ import {
   ClearSelectedDateAction,
   selectSelectedDate
 } from '~/appointment/appointment-date/appointment-dates.reducer';
-import { UserOptions } from '~/core/user-options';
+import { AppStorage } from '~/core/app-storage';
 
 const helpText = `You added an appointment for a future day, it will not be visible on this screen.
           You can see future appointments by tapping <strong>Total This Week</strong>`;
@@ -65,7 +65,7 @@ export class AppointmentAddComponent {
     private formBuilder: FormBuilder,
     private navCtrl: NavController,
     private store: Store<ServicesState & ClientsState>,
-    private userOptions: UserOptions
+    private appStorage: AppStorage
   ) {
   }
 
@@ -222,11 +222,11 @@ export class AppointmentAddComponent {
       this.navCtrl.pop();
 
       const isFutureAppointment = moment(data.datetime_start_at).isAfter(new Date());
-      if (isFutureAppointment && this.userOptions.get('showFutureAppointmentHelp')) {
+      if (isFutureAppointment && this.appStorage.get('showFutureAppointmentHelp')) {
         showAlert('', helpText, [{
           text: 'Don\'t show again',
           handler: () => {
-            this.userOptions.set('showFutureAppointmentHelp', false);
+            this.appStorage.set('showFutureAppointmentHelp', false);
           }
         }]);
       }

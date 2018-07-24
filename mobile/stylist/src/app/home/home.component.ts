@@ -23,10 +23,11 @@ import { PageNames } from '~/core/page-names';
 import { AppointmentCheckoutParams } from '~/appointment/appointment-checkout/appointment-checkout.component';
 import { loading } from '~/core/utils/loading';
 import { componentUnloaded } from '~/shared/component-unloaded';
-import { UserOptions } from '~/core/user-options';
 import { showAlert } from '~/core/utils/alert';
 import { LoadProfileAction, ProfileState, selectProfile } from '~/core/components/user-header/profile.reducer';
 import { GAWrapper } from '~/shared/google-analytics';
+import { AppStorage } from '~/core/app-storage';
+import { Logger } from '~/shared/logger';
 
 export enum AppointmentTag {
   NotCheckedOut = 'Not checked out',
@@ -86,9 +87,17 @@ export class HomeComponent {
     public alertCtrl: AlertController,
     private store: Store<HomeState & ProfileState>,
     private actionSheetCtrl: ActionSheetController,
-    private userOptions: UserOptions,
+    private appStorage: AppStorage,
+    private logger: Logger,
     private ga: GAWrapper
   ) {
+  }
+
+  ionViewCanEnter(): Promise<boolean> {
+    this.logger.info('HomeComponent: ionViewCanEnter...', new Date().toISOString());
+
+    // Make sure appStorage is ready before we enter this page
+    return this.appStorage.ready().then(() => true);
   }
 
   ionViewDidLoad(): void {
@@ -98,10 +107,12 @@ export class HomeComponent {
   // we need ionViewDidEnter here because it fire each time when we go to this page
   // for example form adding appointment using nav.pop
   // and ionViewDidLoad fire only once this is not what we need here
-  ionViewDidEnter(): void {
-    if (this.userOptions.get('showHomeScreenHelp')) {
+  ionViewWillEnter(): void {
+    this.logger.info('HomeComponent: entering...', new Date().toISOString());
+
+    if (this.appStorage.get('showHomeScreenHelp')) {
       showAlert('', helpText);
-      this.userOptions.set('showHomeScreenHelp', false);
+      this.appStorage.set('showHomeScreenHelp', false);
     }
 
     this.store.select(selectHomeState)

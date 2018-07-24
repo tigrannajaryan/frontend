@@ -7,6 +7,7 @@ import { StylistProfile } from '../stylist-service/stylist-models';
 import { Logger } from '~/shared/logger';
 import { ServerStatusTracker } from '~/shared/server-status-tracker';
 import { UserContext } from '~/shared/user-context';
+import { AppStorage } from '~/core/app-storage';
 
 export enum UserRole { stylist = 'stylist', client = 'client' }
 
@@ -46,36 +47,26 @@ export interface AuthError {
 }
 
 /**
- * Local storage key for storing the authResponse.
- */
-const storageKey = 'authResponse';
-
-/**
  * AuthServiceProvider provides authentication against server API.
  */
 @Injectable()
 export class AuthApiService extends BaseApiService {
 
-  private authResponse: AuthResponse;
+  private authToken: string;
 
   constructor(
     protected http: HttpClient,
     protected logger: Logger,
     protected serverStatus: ServerStatusTracker,
-    protected appContext: UserContext
+    protected appContext: UserContext,
+    protected storage: AppStorage
   ) {
-
     super(http, logger, serverStatus);
+  }
 
-    // Read previously saved authResponse (if any). We are using
-    // window.localStorage instead of Ionic Storage class because
-    // we need synchronous behavior which window.localStorage
-    // provides and Ionic Storage doesn't (Ionic Storage.get() is async).
-    try {
-      this.setAuthResponse(JSON.parse(window.localStorage.getItem(storageKey)));
-    } catch (e) {
-      this.authResponse = undefined;
-    }
+  init(): void {
+    // Read previously saved authToken (if any).
+    this.authToken = this.storage.get('authToken');
   }
 
   /**
@@ -113,11 +104,11 @@ export class AuthApiService extends BaseApiService {
    * Return token remembered after the last succesfull authentication.
    */
   getAuthToken(): string {
-    return this.authResponse ? this.authResponse.token : undefined;
+    return this.authToken;
   }
 
   async refreshAuth(): Promise<AuthResponse> {
-    const request = { token: this.authResponse.token };
+    const request = { token: this.authToken };
     return this.processAuthResponse(
       () => this.post<AuthResponse>('auth/refresh-token', request));
   }
@@ -148,7 +139,7 @@ export class AuthApiService extends BaseApiService {
    * Passing undefined for response effectively logs out from current session.
    */
   private setAuthResponse(response: AuthResponse): void {
-    this.authResponse = response;
+    this.authToken = response ? response.token : undefined;
 
     if (response && response.profile && response.profile.id) {
       this.appContext.setUserId(response.profile.id.toString());
@@ -156,9 +147,7 @@ export class AuthApiService extends BaseApiService {
       this.appContext.setUserId(undefined);
     }
 
-    // Save the authResponse for later use. This allows us to access any page
-    // without re-login, which is very useful during development/debugging
-    // since you can just refresh the browser window.
-    window.localStorage.setItem(storageKey, JSON.stringify(this.authResponse));
+    // Save the authToken for later use. This allows to use the App without re-login.
+    this.storage.set('authToken', this.authToken);
   }
 }

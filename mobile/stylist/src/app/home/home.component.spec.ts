@@ -35,7 +35,7 @@ describe('Pages: HomeComponent', () => {
     instance = compiled.instance;
 
     // subscribe to store
-    instance.ionViewDidEnter();
+    instance.ionViewWillEnter();
   }));
 
   it('should create the page', async(() => {
