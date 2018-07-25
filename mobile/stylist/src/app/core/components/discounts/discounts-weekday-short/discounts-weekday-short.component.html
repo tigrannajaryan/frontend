@@ -1,0 +1,13 @@
+<div class="Discounts-text">
+  <div class="Discounts-textItem">
+    Fill up your days. Prevent overbooking.
+  </div>
+  <div class="Discounts-textItem">
+    Discounts on slower days bring in clients during times you might otherwise not be making money.
+  </div>
+  <div class="Discounts-textItem">
+    Click on the % below to edit your daily discounts.
+  </div>
+</div>
+
+<discounts-list [list]="discounts" [header]="{ left: 'Day', right: 'Discount'}" (discountChange)="onDiscountChange()"></discounts-list>

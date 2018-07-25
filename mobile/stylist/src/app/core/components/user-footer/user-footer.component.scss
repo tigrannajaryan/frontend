@@ -1,67 +1,48 @@
 [madeUserFooter] {
   background: white;
-  box-shadow: 0 0 60px 35px color($colors, color7);
+  border-top: 1px solid color($colors, color26);
 
   &:before {
     display: none;
+  }
+
+  .grid {
+    padding: 0;
   }
 
 
   .u-f {
     &-footer {
       &-item {
+        padding: 7px 0 0;
+        font-size: pxtorem10(9);
         text-align: center;
+
+        @media ($phone-md) {
+          font-size: pxtorem10(11);
+        }
+
+        @media ($phone-lg) {
+          font-size: pxtorem10(12);
+        }
 
         .bb-icon {
           display: block;
-          margin-bottom: 5px;
-          font-size: $t-h1;
+          margin-bottom: 4px;
+          font-size: pxtorem10(19);
 
-          @media ($smartphone) {
-            font-size: $t-h2;
+          @media ($phone-md) {
+            margin-bottom: 7px;
+            font-size: pxtorem10(22);
           }
 
-          @media ($phone) {
-            font-size: $t-h3;
+          @media ($phone-lg) {
+            font-size: pxtorem10(24);
           }
         }
-      }
-
-      &-circle {
-        position: relative;
-        display: inline-block;
-        width: 70px;
-        height: 70px;
-        margin-top: -50px;
-        font-size: $t-h2;
-        color: color($colors, dark);
-        text-align: center;
-        cursor: pointer;
-        background: rgb(255, 218, 202);
-        border-radius: 50%;
-
-        &.activated {
-          background: rgb(255, 218, 202);
-        }
-
-        @media ($smartphone) {
-          width: 60px;
-          height: 60px;
-          margin-top: -40px;
-        }
-
-        @media ($phone) {
-          width: 50px;
-          height: 50px;
-          margin-top: -35px;
-        }
-
-        ion-icon {
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          font-size: pxtorem(70);
-          transform: translate(-50%, -50%);
+        
+        &.active {
+          color: color($colors, color25);
         }
       }
     }

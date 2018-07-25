@@ -83,6 +83,9 @@ ion-datetime {
 }
 
 .back-button-icon {
+  //adjust beck arrow size
+  font-size: pxtorem10(15);
+
   &:before {
     display: inline-block;
     font-family: 'bb', sans-serif;

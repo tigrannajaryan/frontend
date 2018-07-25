@@ -182,7 +182,7 @@ export class WorktimeComponent {
       return;
     }
 
-    this.navCtrl.push(PageNames.Discounts, {}, { animate: false });
+    this.navCtrl.push(PageNames.DiscountsInfo, {});
   }
 
   @loading

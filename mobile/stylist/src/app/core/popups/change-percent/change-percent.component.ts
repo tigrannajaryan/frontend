@@ -1,9 +1,18 @@
 import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
 
-export interface ChangePercent {
+export enum ChangePercentSymbols {
+  percent = '%',
+  usd = '$'
+}
+
+export interface PercentageSliderSettings {
   label: string;
   percentage: number;
+  symbol?: string;
+  min?: number;
+  max?: number;
+  step?: number;
 }
 
 @IonicPage()
@@ -13,8 +22,9 @@ export interface ChangePercent {
 })
 export class ChangePercentComponent implements AfterViewInit {
   @ViewChild('scrollBar') scrollBar: ElementRef;
-  data: ChangePercent;
-  percentage = 0;
+  protected ChangePercentSymbols = ChangePercentSymbols;
+  protected data: PercentageSliderSettings;
+  protected percentage = 0;
 
   constructor(
     public navCtrl: NavController,
@@ -31,7 +41,16 @@ export class ChangePercentComponent implements AfterViewInit {
   }
 
   init(): void {
-    this.data = this.navParams.get('data') as ChangePercent;
+    this.data = this.navParams.get('data') as PercentageSliderSettings;
+
+    this.data = {
+      ...this.data,
+      symbol: this.data.symbol || ChangePercentSymbols.percent,
+      min: this.data.min || 0,
+      max: this.data.max || 100,
+      step: this.data.step || 1
+    };
+
     this.percentage = this.data.percentage;
   }
 
