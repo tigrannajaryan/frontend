@@ -10,6 +10,13 @@ export enum AuthRequestTypes {
   ConfirmCode = 'ConfirmCode'
 }
 
+// TODO: refactor, combine with request states
+export enum AuthSendCodeState {
+  Timeout = 'Timeout',
+  NotStarted = 'NotStarted',
+  InProgress = 'InProgress'
+}
+
 export enum authActionTypes {
   REQUEST_CODE = 'AUTH_REQUEST_CODE',
   REQUEST_CODE_LOADING = 'AUTH_REQUEST_CODE_LOADING',
@@ -21,7 +28,8 @@ export enum authActionTypes {
   CONFIRM_CODE_ERROR = 'AUTH_CONFIRM_CODE_ERROR',
   CONFIRM_CODE_SUCCESS = 'AUTH_CONFIRM_CODE_SUCCESS',
 
-  RESET = 'AUTH_RESET',
+  CLEAR_SEND_CODE_TIMEOUT = 'AUTH_CLEAR_SEND_CODE_TIMEOUT',
+
   USER_LOGOUT = 'AUTH_USER_LOGOUT'
 }
 
@@ -82,8 +90,8 @@ export class ConfirmCodeSuccessAction implements Action {
   ) {}
 }
 
-export class ResetAction implements Action {
-  readonly type = authActionTypes.RESET;
+export class ClearSendCodeTimeout implements Action {
+  readonly type = authActionTypes.CLEAR_SEND_CODE_TIMEOUT;
 }
 
 // used in meta reducer in app.reducer.ts
@@ -100,13 +108,14 @@ type Actions =
   | ConfirmCodeLoadingAction
   | ConfirmCodeSuccessAction
   | ConfirmCodeErrorAction
-  | ResetAction;
+  | ClearSendCodeTimeout;
 
 export interface AuthState {
   phone?: string;
   token?: AuthTokenModel;
 
   codeRequestTimestamp?: number;
+  sendCodeState: AuthSendCodeState;
 
   requestState: RequestState;
   requestType: AuthRequestTypes;
@@ -118,6 +127,7 @@ const initialState: AuthState = {
   token: undefined,
 
   codeRequestTimestamp: undefined,
+  sendCodeState: AuthSendCodeState.NotStarted,
 
   requestState: RequestState.NotStarted,
   requestType: AuthRequestTypes.RequestCode,
@@ -126,13 +136,6 @@ const initialState: AuthState = {
 
 export function authReducer(state: AuthState = initialState, action: Actions): AuthState {
   switch (action.type) {
-    case authActionTypes.RESET:
-      return {
-        ...state,
-        requestState: RequestState.NotStarted,
-        requestType: AuthRequestTypes.RequestCode
-      };
-
     case authActionTypes.REQUEST_CODE:
     case authActionTypes.CONFIRM_CODE:
       return {
@@ -146,6 +149,14 @@ export function authReducer(state: AuthState = initialState, action: Actions): A
       };
 
     case authActionTypes.REQUEST_CODE_LOADING:
+      return {
+        ...state,
+        requestState: action.requestState,
+        requestType: action.requestType,
+
+        sendCodeState: AuthSendCodeState.InProgress
+      };
+
     case authActionTypes.CONFIRM_CODE_LOADING:
       return {
         ...state,
@@ -158,6 +169,7 @@ export function authReducer(state: AuthState = initialState, action: Actions): A
         ...state,
 
         codeRequestTimestamp: action.timestamp || state.codeRequestTimestamp || Number(new Date()),
+        sendCodeState: AuthSendCodeState.Timeout,
 
         requestState: action.requestState,
         requestType: action.requestType
@@ -176,6 +188,13 @@ export function authReducer(state: AuthState = initialState, action: Actions): A
         ...state,
         requestState: action.requestState,
         token: action.token
+      };
+
+    case authActionTypes.CLEAR_SEND_CODE_TIMEOUT:
+      return {
+        ...state,
+
+        sendCodeState: AuthSendCodeState.NotStarted
       };
 
     default:
@@ -262,4 +281,9 @@ export const selectCanRequestCodeInSeconds = (timestamp = Number(new Date())) =>
 export const selectCanRequestCode = (timestamp = undefined) => createSelector(
   selectCanRequestCodeInSeconds(timestamp),
   (seconds: number): boolean => seconds === 0
+);
+
+export const selectSendCodeState = createSelector(
+  selectAuthFromState,
+  (state: AuthState): AuthSendCodeState => state.sendCodeState
 );

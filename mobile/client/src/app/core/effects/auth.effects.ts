@@ -17,6 +17,7 @@ import {
 import {
   authActionTypes,
   AuthState,
+  ClearSendCodeTimeout,
   ConfirmCodeAction,
   ConfirmCodeErrorAction,
   ConfirmCodeLoadingAction,
@@ -25,6 +26,8 @@ import {
   RequestCodeErrorAction,
   RequestCodeLoadingAction,
   RequestCodeSuccessAction,
+  selectCanRequestCode,
+  selectCanRequestCodeInSeconds,
   selectConfirmCodeSucceeded,
   selectPhone,
   selectRequestCodeSucceeded,
@@ -54,7 +57,8 @@ export class AuthEffects {
             return new RequestCodeSuccessAction(timestamp);
           })
       );
-    });
+    })
+    .share();
 
   @Effect({ dispatch: false }) getCodeLoading = this.actions
     .ofType(authActionTypes.REQUEST_CODE)
@@ -63,8 +67,40 @@ export class AuthEffects {
     .map(([action, state]) => {
       if (!selectRequestCodeSucceeded(state)) {
         this.store.dispatch(new RequestCodeLoadingAction());
+        return true;
       }
-    });
+      return false;
+    })
+    .share();
+
+  @Effect({ dispatch: false }) codeResendCountdown = this.actions
+    .ofType(authActionTypes.REQUEST_CODE_SUCCESS)
+    .map((action: RequestCodeSuccessAction) => action)
+    .withLatestFrom(this.store)
+    .switchMap(([action, state]) => {
+      const seconds = selectCanRequestCodeInSeconds()(state);
+      if (seconds === 0) {
+        this.store.dispatch(new ClearSendCodeTimeout());
+        return Observable.of(0);
+      }
+      return (
+        Observable
+          .timer(0, 1000)
+          .withLatestFrom(this.store)
+          .takeWhile(([i, updatedState]) => {
+            const canRequestCode = selectCanRequestCode()(updatedState);
+            if (canRequestCode) {
+              this.store.dispatch(new ClearSendCodeTimeout());
+            }
+            return !canRequestCode;
+          })
+          .map(([i, updatedState]) => {
+            const remaining = seconds - i;
+            return remaining > 0 ? remaining : 0;
+          })
+      );
+    })
+    .share();
 
   @Effect() confirmCodeRequest = this.actions
     .ofType(authActionTypes.CONFIRM_CODE)

@@ -10,10 +10,10 @@ import { PageNames } from '~/core/page-names';
 import {
   AuthState,
   RequestCodeAction,
-  ResetAction,
-  selectRequestCodeLoading,
-  selectRequestCodeSucceeded
+  RequestCodeSuccessAction,
+  selectRequestCodeLoading
 } from '~/core/reducers/auth.reducer';
+import { AuthEffects } from '~/core/effects/auth.effects';
 import { phoneValidator } from '~/core/validators/phone.validator';
 
 import { DEFAULT_COUNTRY_CODE, getCountryEmojiFlag, getUnifiedPhoneValue } from '~/core/directives/phone-input.directive';
@@ -33,27 +33,18 @@ export class AuthPageComponent {
   isLoading = false;
 
   constructor(
+    private authEffects: AuthEffects,
     private navCtrl: NavController,
     private store: Store<AuthState>
   ) {
   }
 
   ionViewWillEnter(): void {
-    this.store.dispatch(new ResetAction()); // reset auth requests state
-
     this.store
       .select(selectRequestCodeLoading)
       .takeWhile(componentIsActive(this))
       .subscribe((isLoading: boolean) => {
         this.isLoading = isLoading;
-      });
-
-    this.store
-      .select(selectRequestCodeSucceeded)
-      .takeWhile(componentIsActive(this))
-      .filter(Boolean)
-      .subscribe(() => {
-        this.navCtrl.push(PageNames.AuthConfirm);
       });
   }
 
@@ -67,6 +58,14 @@ export class AuthPageComponent {
 
   submit(): void {
     const phone = getUnifiedPhoneValue(this.phone.value, this.countryCode.value);
+
     this.store.dispatch(new RequestCodeAction(phone));
+
+    this.authEffects.getCodeRequest
+      .first() // subscribes once
+      .filter(action => action instanceof RequestCodeSuccessAction)
+      .subscribe(() => {
+        this.navCtrl.push(PageNames.AuthConfirm, { phone });
+      });
   }
 }
