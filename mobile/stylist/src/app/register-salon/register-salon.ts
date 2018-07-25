@@ -246,16 +246,8 @@ export class RegisterSalonComponent {
       // tslint:disable-next-line:no-null-keyword
       salon_name: profile.salon_name || null
     };
-    try {
-      await this.apiService.setProfile(data);
-      this.nextRoute();
-    } catch (e) {
-      if (e.errors instanceof Map && e.errors.size > 0) {
-        showAlert('Saving your info failed', Array.from(e.errors.values())[0][0].code);
-      } else {
-        throw e; // re-throw
-      }
-    }
+    await this.apiService.setProfile(data);
+    this.nextRoute();
   }
 
   processPhoto(): void {
