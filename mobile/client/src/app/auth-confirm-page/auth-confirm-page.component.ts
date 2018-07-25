@@ -1,22 +1,24 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { IonicPage, NavController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Store } from '@ngrx/store';
-import { Observable, Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
+
+import { componentIsActive } from '~/core/utils/component-is-active';
 
 import { PageNames } from '~/core/page-names';
+import { RequestState } from '~/core/api/request.models';
 import {
   AuthState,
   ConfirmCodeAction,
   RequestCodeAction,
   selectConfirmCodeErrors,
-  selectConfirmCodeLoading,
-  selectPhone,
-  selectRequestCodeLoading
+  selectConfirmCodeState,
+  selectRequestCodeState
 } from '~/core/reducers/auth.reducer';
 import { AuthEffects } from '~/core/effects/auth.effects';
 
-import { ApiFieldError, GenericFieldErrorCode } from '~/core/api/errors.models';
+import { ApiFieldError, AuthFieldErrorCodes } from '~/core/api/errors.models';
 
 export const CODE_LENGTH = 6;
 
@@ -26,6 +28,10 @@ export const CODE_LENGTH = 6;
   templateUrl: 'auth-confirm-page.component.html'
 })
 export class AuthConfirmPageComponent {
+  @ViewChild('input') codeInput;
+
+  RequestState = RequestState; // expose to view
+
   digits = Array(CODE_LENGTH).fill(undefined);
 
   phone: string;
@@ -35,68 +41,63 @@ export class AuthConfirmPageComponent {
     Validators.maxLength(CODE_LENGTH)
   ]);
 
+  confirmCodeState: Observable<RequestState>;
+
+  requestCodeState: Observable<RequestState>;
+  resendCodeCountdown: Observable<number>;
+
   errors: Observable<string>;
-  invalidCodeError = new ApiFieldError('code', { code: GenericFieldErrorCode.invalid });
-
-  isLoading = false;
-  isPhoneResending: Observable<boolean>;
-
-  phoneSubscription: Subscription;
-  codeSubscription: Subscription;
-  saveTokenSubscription: Subscription;
-  loadingSubscription: Subscription;
+  invalidCodeError = new ApiFieldError('code', { code: AuthFieldErrorCodes.err_invalid_sms_code });
 
   constructor(
     private authEffects: AuthEffects,
     private navCtrl: NavController,
+    private navParams: NavParams,
     private store: Store<AuthState>
   ) {
   }
 
   ionViewWillEnter(): void {
+    this.phone = this.navParams.get('phone');
+
+    // Send code confirmation request on valid code entered
+    this.code.statusChanges
+      .takeWhile(componentIsActive(this))
+      .filter(() => this.code.valid)
+      .subscribe(() => {
+        this.store.dispatch(new ConfirmCodeAction(this.phone, this.code.value));
+      });
+
+    // Handle confirmation request state
+    this.confirmCodeState = this.store.select(selectConfirmCodeState);
+
+    // Navigate next on token saved
+    this.authEffects.saveToken
+      .takeWhile(componentIsActive(this))
+      .filter((isTokenSaved: boolean) => isTokenSaved)
+      .subscribe(() => {
+        this.navCtrl.setRoot(PageNames.Services);
+      });
+
+    // Handle code verification errors
     this.errors = this.store.select(selectConfirmCodeErrors);
 
-    this.phoneSubscription = this.store
-      .select(selectPhone)
-      .subscribe((phone: string) => {
-        this.phone = phone;
-      });
-    this.isPhoneResending = this.store.select(selectRequestCodeLoading);
-
-    this.codeSubscription = this.code.statusChanges.subscribe(() => {
-      if (this.code.valid) {
-        this.store.dispatch(new ConfirmCodeAction(this.code.value));
-      }
-    });
-
-    this.saveTokenSubscription = this.authEffects.saveToken
-      .subscribe((isTokenSaved: boolean) => {
-        if (isTokenSaved) {
-          // navigate when token done saving
-          this.navCtrl.setRoot(PageNames.Services);
-        }
-      });
-
-    this.loadingSubscription = this.store
-      .select(selectConfirmCodeLoading)
-      .subscribe((isLoading: boolean) => {
-        this.isLoading = isLoading;
-      });
+    // Re-request code
+    this.requestCodeState = this.store.select(selectRequestCodeState);
+    this.resendCodeCountdown = this.authEffects.codeResendCountdown;
   }
 
-  ionViewWillLeave(): void {
-    this.phoneSubscription.unsubscribe();
-    this.codeSubscription.unsubscribe();
-    this.saveTokenSubscription.unsubscribe();
-    this.loadingSubscription.unsubscribe();
+  ionViewDidEnter(): void {
+    setTimeout(() => { // autofocus code input
+      this.codeInput.setFocus();
+    });
   }
 
   resendCode(): void {
-    // TODO: add ResendCodeAction and debounce on it
     this.store.dispatch(new RequestCodeAction(this.phone));
   }
 
-  verifyCode(event: any): void {
+  autoblurCode(event: any): void {
     const code: number = event.which || Number(event.code);
     const key: string = event.key || String.fromCharCode(code);
 

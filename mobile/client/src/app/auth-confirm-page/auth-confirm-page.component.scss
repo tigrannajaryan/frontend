@@ -12,8 +12,9 @@
     .text-input { // ionic’s
       width: 100%;
       padding-left: 13.2px;
+      font-family: monospace;
       font-size: $t-h3;
-      letter-spacing: 34.4px;
+      letter-spacing: 33.4px;
     }
 
     &.item-block .item-inner,

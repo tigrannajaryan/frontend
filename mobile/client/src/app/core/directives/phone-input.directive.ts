@@ -26,6 +26,10 @@ export function getUnifiedPhoneValue(phoneNumber: string, countryCode: CountryCo
   return `+${countryCallingCode}${phone}`;
 }
 
+export function getCountryEmojiFlag(countryCode: CountryCode): string { // from https://stan.sh/posts/emoji-js-snippet
+  return String.fromCodePoint.apply(String, Array.from(countryCode).map(char => char.charCodeAt(0) + 127397));
+}
+
 @Directive({
   selector: '[madePhoneInput]'
 })
