@@ -1,17 +1,17 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 
-import { PhoneInputDirective } from '~/core/directives/phone-input.directive';
+import { CoreModule } from '~/core/core.module';
 
 import { AuthPageComponent } from '~/auth-page/auth-page.component';
 
 @NgModule({
   declarations: [
-    AuthPageComponent,
-    PhoneInputDirective
+    AuthPageComponent
   ],
   imports: [
-    IonicPageModule.forChild(AuthPageComponent)
+    IonicPageModule.forChild(AuthPageComponent),
+    CoreModule
   ]
 })
 export class AuthPageComponentModule {}

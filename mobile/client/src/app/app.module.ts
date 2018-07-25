@@ -15,6 +15,7 @@ import { Logger } from '~/shared/logger';
 
 import { UnhandledErrorHandler } from '~/core/unhandled-error-handler';
 import { AuthService } from '~/core/api/auth-service';
+import { AuthServiceMock } from '~/core/api/auth-service.mock';
 
 import { ClientAppComponent } from '~/app.component';
 import { getMetaReducers, reducers } from '~/app.reducers';
@@ -67,6 +68,7 @@ import { ApiCommonErrorsEffects } from '~/core/effects/api-common-errors.effects
 
     // services
     AuthService,
+    AuthServiceMock,
 
     {
       // Our custom handler for unhandled exceptions
