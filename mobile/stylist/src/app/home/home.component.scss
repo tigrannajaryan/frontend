@@ -94,3 +94,31 @@ page-home {
   border-bottom: 2px solid color($colors, bb_honey);
   opacity: 1;
 }
+
+
+.Home-fab {
+  right: 20px;
+  bottom: 20px;
+}
+
+.Home-fabBtn {
+  width: 48px;
+  height: 48px;
+  font-size: pxtorem10(15);
+  color: color($colors, dark);
+  background: color($colors, color2);
+  border-radius: 50%;
+  box-shadow: 0 9px 28px 0 rgba(254, 224, 208, 0.54);
+
+  &.activated {
+    background: color($colors, color2);
+  }
+
+  ion-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    font-size: pxtorem(70);
+    transform: translate(-50%, -50%);
+  }
+}
