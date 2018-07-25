@@ -1,7 +1,6 @@
 page-invitations {
 
   .p-i {
-
     &-title{
       font-size: pxtoem(40);
       font-weight: bold;
@@ -11,144 +10,93 @@ page-invitations {
         font-size: pxtoem(30);
       }
     }
+  }
 
-    &-text{
-      font-size: pxtoem(30);
-      padding: pxtoem(10) 0px pxtoem(8);
-      color: color($colors, color6, default);
+  .section-name{
+    border-bottom: 1px solid color($grayscale, 100);
 
-      @media ($phone) {
-        font-size: pxtoem(20);
-      }
+    h3 {
+      color: lightgrey; 
+      font-size: pxtorem10(14); 
+      margin: 0px !important;
+      padding-bottom: 0px ;
     }
-
-    &-button {
-
-      margin: auto;
-      display: block;
-      padding: pxtoem(10) pxtoem(20);
-      font-size: pxtoem(32);
-
-      @media ($phone) {
-        font-size: pxtoem(24);
-      }
-
-    }
-
-    &-box{
-
-      box-shadow: 0px 0px 25px 3px color($colors, light, default);
-      border-radius: 10px;
-      padding: 10px 0px;
-      margin: 10px 0px;
-
-      &-title{
-        font-size: pxtoem(24);
-        padding: pxtoem(5) 0px 0px pxtoem(25);
-        color: color($colors, color9, default);
-
-        @media ($phone) {
-          font-size: pxtoem(18);
-        }
-      }
-
-      &-item {
-
-        padding: pxtoem(0) pxtoem(20);
-
-        .item-inner{
-          padding: 0;
-          border-bottom: 1px solid color($colors, bb_skin, default) !important;
-        }
-
-        &-button {
-          font-size: pxtoem(24);
-          background: none;
-          color: color($colors, bb_orange, default);
-          margin-top: 24px !important;
-
-          @media ($phone) {
-            font-size: pxtoem(14);
-          }
-        }
-
-      }
-
-      &-button {
-
-        margin: auto;
-        display: block;
-        padding: pxtoem(10) pxtoem(40);
-        font-size: pxtoem(24);
-  
-        @media ($phone) {
-          font-size: pxtoem(20);
-        }
-  
-      }
-
-    }
-
-    &-table{
-      padding: 0 20px;
-      height: 160px;
-      max-height: 160px;
-      overflow-y: auto;
-
-      &-row{
-        
-        display: grid;
-        padding: pxtoem(25) 0;
-        border-bottom: 2px solid color($colors, light, default);
-
-        @media ($phone) {
-          padding: pxtoem(18) 0;
-        }
-
-        &-col{
-          white-space: normal;
-          font-size: pxtoem(24);
-
-          @media ($phone) {
-            font-size: pxtoem(20);
-          }
-
-          &:first-child{
-            padding-left: 0;
-          }
-
-          &:last-child{
-            padding-right: 0;
-            display: flex;
-            justify-content: space-between;
-          }
-        }
-
-        &-button {
-          font-size: pxtoem(22);
-          background: none;
-          color: color($colors, bb_warn, default);
-
-          @media ($phone) {
-            font-size: pxtoem(18);
-          }
-        }
-      }
+  }
+  .search-box{
+    border-radius: 5px;
+    padding: 8px 5px;
+    margin-bottom: pxtorem10(30);
+    background: color($colors, white);
+    box-shadow: 0 0 50px 15px color($colors, color7);
+    
+    input{font-size:pxtorem10(16);}
+    .icon{
+      font-size: pxtorem10(16);
+      margin-top: 3px;
     }
   }
 
-  #hidden-button{
-    height: 100%;
-    width: 100%;
-    box-shadow: none;
+  .search-input{
+    width:100%;
+ 
+    .contact-name{
+      background: color($colors, bb_beige); 
+      margin:0px 3px 3px 0px; 
+      width:fit-content; 
+      padding: 4px 3px;
+      border-radius: 7px 0px 0px 7px; 
+      float: left;
+
+      .icon{
+        margin-top: 0px;
+        font-size: pxtorem10(12);
+      }
+    }
+
+    .text-input-md{margin:0px;}
+  }
+  
+  .search-icon, .search-cancel{
+    max-width: 23px;
+  }
+  
+  .contact-details{
+    padding: 7px 0px 5px 0px;
+    border-bottom:1px solid color($grayscale, 100);
+    color: darkgrey; 
+    font-size: pxtorem10(14);
+
+    .name{
+      color: black;
+      font-weight: 300; 
+      font-size: pxtorem10(18);
+    }
+    .status{
+      text-align: right;
+      padding-right: 10px;
+
+      .invited{color:#F4C5AD;}
+      .accepted{color:#7ed321;}
+      .icon {font-size: pxtorem10(30);}
+    }  
+
+  }
+  
+  .no-contacts{
+    font-size: pxtorem10(18);
+    padding-top: pxtorem10(14);
+    text-align: center; 
+  }
+
+  .gray-button{
+    border-radius: 5px;
+    background-color: #fafaf9;
+    border: 1px solid color($grayscale, 200);
+    text-transform: none;
+    padding: 10px;
     -webkit-box-shadow: none;
-  }
-}
+  	-moz-box-shadow: none;
+	  box-shadow: none;
 
-.alert-radio-label {
-  font-size: pxtoem(24) !important;
-
-  @media ($phone) {
-    font-size: pxtoem(20) !important;
   }
 }

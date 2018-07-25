@@ -25,64 +25,71 @@
 
   <ion-grid *ngIf="displayedContacts">
     <!-- Search bar area -->
-    <ion-row>
-      <ion-icon name="search"></ion-icon>
-
-      <!-- Show all selected contact as tags -->
-      <div *ngFor="let contact of selectedContacts" style="background-color: brown; margin: 0px 5px">
+    <ion-row class="search-box">
+      <ion-col col1 class="search-icon">
+        <ion-icon name="search"></ion-icon>
+      </ion-col>
+      <ion-col col10 class="search-input">
+         <!-- Show all selected contact as tags -->
+         <div *ngFor="let contact of selectedContacts" class="contact-name">
         {{ contact.displayName ? contact.displayName : contact.phoneNumber }}
-        <button clear (click)='onRemoveSelection(contact)'>
-          <ion-icon name="close-circle"></ion-icon>
-        </button>
-      </div>
-
-      <!-- Search input field -->
-      <ion-input placeholder="Search name or phone number" (input)="onSearchChange()" [(ngModel)]="searchInput"></ion-input>
-
-      <!-- Search cancellation button -->
-      <button clear (click)='onSearchCancel()'>
-        <ion-icon name="close"></ion-icon>
-      </button>
+         
+            <ion-icon name="close-circle"  clear (click)='onRemoveSelection(contact)'></ion-icon>
+        </div> 
+      
+        <!-- Search input field -->
+          <ion-input placeholder="Search name or phone number" (input)="onSearchChange()" [(ngModel)]="searchInput" style="display: inline-block;"></ion-input>
+       
+      </ion-col>
+      
+      <ion-col col1 class="search-cancel">
+         <!-- Search cancellation button -->
+        <ion-icon name="close" clear (click)='onSearchCancel()' ></ion-icon>
+      </ion-col>
     </ion-row>
 
     <!-- If there is any search input that looks like a phone number show the Add Contact button -->
     <ion-row *ngIf="seachInputIsLikePhoneNumber">
-      <button ion-button full (click)="onAddManualContact()">Add Contact</button>
+      <ion-col>
+        <!--Todo remove style-->
+      <button ion-button full (click)="onAddManualContact()" class="gray-button" style="padding:25px 10px; font-size: 1.5rem" >Add Contact</button>
+    </ion-col>
     </ion-row>
 
     <!-- Display all contacts grouped into sections-->
     <div *ngFor="let section of displayedContacts">
       <!-- Section name -->
-      <ion-row>
+      <ion-row class="section-name">
         <ion-col col-12>
-          <h3>{{ section.sectionName || '-' }}</h3>
+          <h3 >{{ section.sectionName || '-' }}</h3>
         </ion-col>
       </ion-row>
 
       <!-- Contacts in the section -->
       <div *ngFor="let contact of section.items" (click)="onContactClick(contact)">
-        <ion-row>
+        <ion-row class="contact-details">
           <!-- Contact details -->
-          <ion-col col-10>
-            <span [innerHtml]="formatField(contact, 'displayName')"></span>
+          <ion-col col-9>
+            <span class="name" [innerHtml]="formatField(contact, 'displayName')" ></span>
             <br/>
-            <span [innerHtml]="formatField(contact, 'phoneNumber')"></span>&nbsp;
+            <span [innerHtml]="formatField(contact, 'phoneNumber')"></span>&nbsp;&nbsp;
             <span>{{ contact.item.type ? contact.item.type : '' }}</span>
           </ion-col>
 
           <!-- Contact status -->
-          <ion-col col-2 align-self-center>
-            <span *ngIf="contact.item.status === ContactStatus.Invited" style="color:orange">Invited</span>
-            <span *ngIf="contact.item.status === ContactStatus.Accepted" style="color:green">Accepted</span>
+          <ion-col col-3 align-self-center class="status">
+            <span *ngIf="contact.item.status === ContactStatus.Invited" class="invited">Invited</span>
+            <span *ngIf="contact.item.status === ContactStatus.Accepted" class="accepted">Accepted</span>
             <ion-icon *ngIf="contact.item.selected" name="checkmark"></ion-icon>
           </ion-col>
         </ion-row>
       </div>
 
       <!-- If there is any search input and no search results show appropriate message -->
-      <ion-row *ngIf="searchInput && displayedContacts.length === 1 && section.items.length === 0">
-          <ion-icon name="contacts"></ion-icon><br/>
-          No contacts
+      <ion-row *ngIf="searchInput && displayedContacts.length === 1 && section.items.length === 0" >
+        <ion-col class="no-contacts">
+          No results found
+        </ion-col>
       </ion-row>
 
     </div>
@@ -90,7 +97,8 @@
   </ion-grid>
 
   <div padding-top>
-    <button ion-button full (click)="sendInvitations()">
+    <!--Todo remove style-->
+    <button class="Button" ion-button full (click)="sendInvitations()" style="padding:25px 10px; font-size: 1.5rem">
       Invite Clients
     </button>
   </div>
