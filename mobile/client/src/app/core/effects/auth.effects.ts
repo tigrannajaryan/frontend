@@ -112,8 +112,8 @@ export class AuthEffects {
     .ofType(authActionTypes.REQUEST_CODE_SUCCESS)
     .map((action: RequestCodeSuccessAction) => action)
     .withLatestFrom(this.store)
-    .switchMap(([action, state]) => {
-      const seconds = selectCanRequestCodeInSeconds()(state);
+    .map(([action, state]) => selectCanRequestCodeInSeconds()(state))
+    .switchMap((seconds: number) => {
       if (seconds === 0) {
         this.store.dispatch(new ClearSendCodeTimeout());
         return Observable.of(0);
