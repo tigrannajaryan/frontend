@@ -7,13 +7,14 @@ import { Observable } from 'rxjs';
 import { componentIsActive } from '~/core/utils/component-is-active';
 
 import { PageNames } from '~/core/page-names';
+import { RequestState } from '~/core/api/request.models';
 import {
-  AuthSendCodeState,
   AuthState,
   ConfirmCodeAction,
   RequestCodeAction,
   selectConfirmCodeErrors,
-  selectSendCodeState
+  selectConfirmCodeState,
+  selectRequestCodeState
 } from '~/core/reducers/auth.reducer';
 import { AuthEffects } from '~/core/effects/auth.effects';
 
@@ -29,7 +30,7 @@ export const CODE_LENGTH = 6;
 export class AuthConfirmPageComponent {
   @ViewChild('input') codeInput;
 
-  AuthSendCodeState = AuthSendCodeState; // expose to view
+  RequestState = RequestState; // expose to view
 
   digits = Array(CODE_LENGTH).fill(undefined);
 
@@ -40,10 +41,9 @@ export class AuthConfirmPageComponent {
     Validators.maxLength(CODE_LENGTH)
   ]);
 
-  // TODO: subscribe to verification request loading
-  isLoading = false;
+  confirmCodeState: Observable<RequestState>;
 
-  sendCodeState: Observable<AuthSendCodeState>;
+  requestCodeState: Observable<RequestState>;
   resendCodeCountdown: Observable<number>;
 
   errors: Observable<string>;
@@ -65,8 +65,11 @@ export class AuthConfirmPageComponent {
       .takeWhile(componentIsActive(this))
       .filter(() => this.code.valid)
       .subscribe(() => {
-        this.store.dispatch(new ConfirmCodeAction(this.code.value));
+        this.store.dispatch(new ConfirmCodeAction(this.phone, this.code.value));
       });
+
+    // Handle confirmation request state
+    this.confirmCodeState = this.store.select(selectConfirmCodeState);
 
     // Navigate next on token saved
     this.authEffects.saveToken
@@ -80,7 +83,7 @@ export class AuthConfirmPageComponent {
     this.errors = this.store.select(selectConfirmCodeErrors);
 
     // Re-request code
-    this.sendCodeState = this.store.select(selectSendCodeState);
+    this.requestCodeState = this.store.select(selectRequestCodeState);
     this.resendCodeCountdown = this.authEffects.codeResendCountdown;
   }
 

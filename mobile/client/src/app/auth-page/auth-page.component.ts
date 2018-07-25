@@ -7,11 +7,12 @@ import { getCountryCallingCode } from 'libphonenumber-js';
 import { componentIsActive } from '~/core/utils/component-is-active';
 
 import { PageNames } from '~/core/page-names';
+import { RequestState } from '~/core/api/request.models';
 import {
   AuthState,
   RequestCodeAction,
   RequestCodeSuccessAction,
-  selectRequestCodeLoading
+  selectRequestCodeState
 } from '~/core/reducers/auth.reducer';
 import { AuthEffects } from '~/core/effects/auth.effects';
 import { phoneValidator } from '~/core/validators/phone.validator';
@@ -41,8 +42,9 @@ export class AuthPageComponent {
 
   ionViewWillEnter(): void {
     this.store
-      .select(selectRequestCodeLoading)
+      .select(selectRequestCodeState)
       .takeWhile(componentIsActive(this))
+      .map((requestState: RequestState) => requestState === RequestState.Loading)
       .subscribe((isLoading: boolean) => {
         this.isLoading = isLoading;
       });
