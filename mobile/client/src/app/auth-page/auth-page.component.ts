@@ -2,20 +2,22 @@ import { Component } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { IonicPage, NavController } from 'ionic-angular';
 import { Store } from '@ngrx/store';
-import { Subscription } from 'rxjs';
 import { getCountryCallingCode } from 'libphonenumber-js';
 
+import { componentIsActive } from '~/core/utils/component-is-active';
+
 import { PageNames } from '~/core/page-names';
+import { RequestState } from '~/core/api/request.models';
 import {
   AuthState,
   RequestCodeAction,
-  ResetAction,
-  selectRequestCodeLoading,
-  selectRequestCodeSucceded
+  RequestCodeSuccessAction,
+  selectRequestCodeState
 } from '~/core/reducers/auth.reducer';
+import { AuthEffects } from '~/core/effects/auth.effects';
 import { phoneValidator } from '~/core/validators/phone.validator';
 
-import { DEFAULT_COUNTRY_CODE, getUnifiedPhoneValue } from '~/core/directives/phone-input.directive';
+import { DEFAULT_COUNTRY_CODE, getCountryEmojiFlag, getUnifiedPhoneValue } from '~/core/directives/phone-input.directive';
 import Countries from 'country-data/data/countries.json';
 
 @IonicPage()
@@ -31,36 +33,21 @@ export class AuthPageComponent {
 
   isLoading = false;
 
-  subscriptionOnLoading: Subscription;
-  subscriptionOnSuccess: Subscription;
-
   constructor(
+    private authEffects: AuthEffects,
     private navCtrl: NavController,
     private store: Store<AuthState>
   ) {
   }
 
   ionViewWillEnter(): void {
-    this.store.dispatch(new ResetAction());
-
-    this.subscriptionOnLoading = this.store
-      .select(selectRequestCodeLoading)
+    this.store
+      .select(selectRequestCodeState)
+      .takeWhile(componentIsActive(this))
+      .map((requestState: RequestState) => requestState === RequestState.Loading)
       .subscribe((isLoading: boolean) => {
         this.isLoading = isLoading;
       });
-
-    this.subscriptionOnSuccess = this.store
-      .select(selectRequestCodeSucceded)
-      .subscribe((isSucceded: boolean) => {
-        if (isSucceded) {
-          this.navCtrl.push(PageNames.AuthConfirm);
-        }
-      });
-  }
-
-  ionViewWillLeave(): void {
-    this.subscriptionOnLoading.unsubscribe();
-    this.subscriptionOnSuccess.unsubscribe();
   }
 
   countrySelected(): void {
@@ -68,12 +55,19 @@ export class AuthPageComponent {
   }
 
   getPhoneCode(): string {
-    // TODO: show flag instead of code value
-    return `${this.countryCode.value} +${getCountryCallingCode(this.countryCode.value)}`;
+    return `${getCountryEmojiFlag(this.countryCode.value)} +${getCountryCallingCode(this.countryCode.value)}`;
   }
 
   submit(): void {
     const phone = getUnifiedPhoneValue(this.phone.value, this.countryCode.value);
+
     this.store.dispatch(new RequestCodeAction(phone));
+
+    this.authEffects.getCodeRequest
+      .first() // subscribes once
+      .filter(action => action instanceof RequestCodeSuccessAction)
+      .subscribe(() => {
+        this.navCtrl.push(PageNames.AuthConfirm, { phone });
+      });
   }
 }
