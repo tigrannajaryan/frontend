@@ -2,7 +2,7 @@ import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/c
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { getToken } from '~/core/utils/token-utils';
-import { AuthTokenModel } from "~/core/api/auth.models";
+import { AuthTokenModel } from '~/core/api/auth.models';
 
 /**
  * AuthInterceptor gets the token from getToken() (token utils)
@@ -10,8 +10,6 @@ import { AuthTokenModel } from "~/core/api/auth.models";
  */
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
-
-  constructor() {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     // Get the auth token from the service.

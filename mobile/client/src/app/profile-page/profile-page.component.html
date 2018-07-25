@@ -8,8 +8,8 @@
 
   <ion-navbar>
     <ion-buttons end>
-      <button ion-button clear>
-        <ion-icon name="md-checkmark" (tap)="submit()"></ion-icon>
+      <button (click)="submit()" [disabled]="!form.valid" ion-button clear>
+        <ion-icon name="md-checkmark"></ion-icon>
       </button>
     </ion-buttons>
   </ion-navbar>
@@ -37,21 +37,28 @@
           </ion-item>
         </ion-row>
         <ion-row>
-          <ion-item>
+          <ion-item col-6>
+            <ion-select formControlName="countryCode" (ionChange)="countrySelected()" [selectedText]="getPhoneCode()">
+              <ion-option *ngFor="let country of countries" [value]="country.alpha2">
+                {{ country.name }} {{ country.countryCallingCodes[0] }}
+              </ion-option>
+            </ion-select>
+          </ion-item>
+          <ion-item col-6>
             <ion-label floating>Phone</ion-label>
-            <ion-input formControlName="phone" type="tel"></ion-input>
+            <ion-input madePhoneInput type="tel" [countryCode]="form.get('countryCode').value" formControlName="phone"></ion-input>
           </ion-item>
         </ion-row>
         <ion-row>
           <ion-item>
             <ion-label floating>Zip Code</ion-label>
-            <ion-input formControlName="zip_code" type="text"></ion-input>
+            <ion-input type="number" formControlName="zip_code"></ion-input>
           </ion-item>
         </ion-row>
         <ion-row>
           <ion-item>
             <ion-label floating>Birthday</ion-label>
-            <ion-input formControlName="birthday" type="text"></ion-input>
+            <ion-datetime formControlName="birthday" displayFormat="MM/DD/YYYY"></ion-datetime>
           </ion-item>
         </ion-row>
       </ion-grid>
