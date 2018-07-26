@@ -67,7 +67,7 @@ export class InvitationsComponent {
   protected formatField = InvitationsComponent.formatField;
 
   protected phoneNumber = '';
-  protected allContacts: PhoneContact[];
+  protected allContacts: PhoneContact[] = [];
   protected displayedContacts: DisplayContactSection[];
   protected loadingContacts = false;
   protected selectedCount = 0;
