@@ -1,35 +1,42 @@
-<ion-header class="ion-bb-header">
-  <ion-navbar>
-  </ion-navbar>
-</ion-header>
+<ion-header madeBackHeader></ion-header>
 
 
-<ion-content padding>
-  <made-nav [activePage]="PageNames.RegisterServices"></made-nav>
+<ion-content no-padding>
+  <made-nav [activePage]="PageNames.Services"></made-nav>
 
-  <div class="p-s-def p-s-wp">
-    <div class="p-s-def-title">Now let’s set your services</div>
-    <div class="p-s-def-title-a">Click one of the images to select services</div>
 
-    <div class="p-s-def-box">
+  <div class="Made-wp Made-wpContent">
+    <div class="Made-h1">Select a service list</div>
+    <div class="Made-text">
+      <div class="Made-textItem">
+        We created two pre-populated list of services for you to help speed things up!
+      </div>
+    </div>
+
+    <div class="Services-itemBox">
       <div *ngFor="let item of serviceTemplateSets; let odd = odd"
            (click)="openService(item)"
-           [style.backgroundImage]="odd ? blackImage : whiteImage"
-           class="p-s-def-box-item">
-        <div class="p-s-def-box-item-footer">
-          <div class="p-s-def-box-item-footer-title">
-            {{ item.name }}
+           class="Services-item">
+        <div class="Services-itemImg">
+          <img *ngIf="!odd" src="../assets/imgs/icons/serviceA.png" alt="">
+          <img *ngIf="odd" src="../assets/imgs/icons/serviceB.png" alt="">
+        </div>
+
+        <div class="Services-itemText">
+          <div class="Services-itemTextLeft">
+            <div class="Services-itemTextTitle">{{ item.name }}</div>
+            <div class="Services-itemTextNum">{{ item.services_count }} Services</div>
           </div>
+
+          <button ion-button class="Services-itemTextBtn">select</button>
         </div>
       </div>
     </div>
 
-    <div class="p-s-list">
-      <div class="p-s-list-empty">
-        <div class="p-s-list-empty-text">Let me do it, I run this like cardio</div>
 
-        <button (click)="openService()" ion-button color="white" class="bb-btn">Start from scratch</button>
-      </div>
+    <div class="Services-info">
+      Let me do it from scratch
     </div>
+    <button (click)="openService()" class="Discounts-btn is-invert" ion-button>Create blank list</button>
   </div>
 </ion-content>

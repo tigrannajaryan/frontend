@@ -1,51 +1,36 @@
-<ion-header class="ion-bb-header ion-bb-showback">
-  <ion-navbar>
+<ion-header class="madeBackHeader">
+  <ion-navbar class="Made-wp BackHeader-backBtn">
+    <ion-buttons end>
+      <button *ngIf="this.data.service" (click)="onServiceDelete()" ion-button icon-only color="dark" class="RightButton">
+        <ion-icon name="ios-trash-outline"></ion-icon>
+      </button>
+      <button [disabled]="form.invalid" (click)="save()" ion-button icon-only color="dark" class="RightButton">
+        <img [src]="'assets/svgicons/check.svg'"/>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
 
-<ion-content padding class="bb-bg-gold">
-  <made-nav [activePage]="PageNames.RegisterServices"></made-nav>
-
-
-  <form [formGroup]="form" (ngSubmit)="submit()">
-    <ion-item class="ion-bb-input">
-      <ion-label stacked>Select category</ion-label>
-      <ion-select formGroupName="vars" placeholder="ex. color" formControlName="categoryUuid">
-        <ion-option *ngFor="let item of form.get('vars.categories').value" [value]="item.uuid">{{ item.name }}</ion-option>
+<ion-content no-padding>
+  <form [formGroup]="form" class="Made-wp Made-wpContent">
+    <ion-item class="ServiceItem-input big">
+      <ion-input placeholder="Service name" formControlName="name" type="text"></ion-input>
+    </ion-item>
+    <ion-item class="ServiceItem-input withPrefix">
+      <span item-left class="ServiceItem-inputPrefix">
+        <ion-icon name="pricetag"></ion-icon>
+        <span class="ServiceItem-inputPrice">$</span>
+      </span>
+      <ion-input formControlName="base_price" type="tel" ngxInputNumber placeholder="Add Price"></ion-input>
+    </ion-item>
+    <ion-item class="ServiceItem-input withPrefix">
+      <span *ngIf="form.value.category?.category_code" item-left class="ServiceItem-inputPrefix">
+        <img [src]="'assets/svgicons/' + form.value.category.category_code + '.svg'"/>
+      </span>
+      <ion-select formGroupName="vars" formControlName="category" placeholder="Select category">
+        <ion-option *ngFor="let item of form.get('vars.categories').value" [value]="item">{{ item.name }}</ion-option>
       </ion-select>
     </ion-item>
-    <ion-item class="ion-bb-input">
-      <ion-label stacked>Service name</ion-label>
-      <ion-input type="text" placeholder="ex. color correction" formControlName="name"></ion-input>
-    </ion-item>
-    <ion-item class="ion-bb-input">
-      <ion-label stacked>Duration</ion-label>
-      <ion-input type="tel" ngxInputNumber placeholder="ex. 30" formControlName="duration_minutes"></ion-input>
-      <span item-right class="ion-bb-input-prefix">min</span>
-    </ion-item>
-    <ion-item class="ion-bb-input">
-      <ion-label stacked>Price</ion-label>
-      <ion-input type="tel" ngxInputNumber placeholder="ex. 120" formControlName="base_price"></ion-input>
-      <span item-right class="ion-bb-input-prefix">$</span>
-    </ion-item>
-
-
-    <ion-row *ngIf="!form.get('categoryUuid').value" justify-content-center align-items-center class="p-si-btns">
-      Add new
-      <button [disabled]="form.invalid" ion-button type="submit" class="bb-btn-circle">
-        <ion-icon name="ios-add-outline"></ion-icon>
-      </button>
-      Service
-    </ion-row>
-    <ion-row *ngIf="form.get('categoryUuid').value" justify-content-center align-items-center class="p-si-btns">
-      <button ion-button color="danger" clear style="visibility: hidden;">Delete</button>
-
-      <button [disabled]="form.invalid" ion-button type="submit" class="bb-btn-circle white">
-        <i class="bb-icon bb-icon-plus"></i>
-      </button>
-
-      <button (click)="onServiceDelete()" type="button" ion-button color="danger" clear>Delete</button>
-    </ion-row>
   </form>
 </ion-content>

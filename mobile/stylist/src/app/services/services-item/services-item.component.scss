@@ -1,14 +1,83 @@
 page-service-item {
-  .p-si {
-    &-btns{
-      margin-top: pxtorem(100);
+}
 
-      @media ($smartphone) {
-        margin-top: pxtorem(80);
-      }
-      @media ($phone) {
-        margin-top: pxtorem(60);
-      }
+.ServiceItem-input {
+  min-height: pxtovw(49px);
+  padding-left: 0;
+
+  .text-input {
+    width: 100%;
+    margin: 0;
+  }
+
+  ion-input,
+  ion-select {
+    font-size: pxtovw(22px);
+    font-weight: 500;
+    line-height: pxtovw(20px);
+  }
+
+  .select {
+    max-width: calc(95% - 40px);
+    padding: 0;
+    margin-left: pxtovw(48px);
+    font-size: pxtovw(18px);
+  }
+
+  .select-icon {
+    position: absolute;
+    right: pxtovw(8px);
+    bottom: 50%;
+    width: pxtovw(9px);
+    height: pxtovw(5px);
+    transform: translateY(50%);
+  }
+
+  ion-select.select .select-icon-inner {
+    top: 0;
+    left: 0;
+    margin: 0;
+    border-top: 4px solid;
+    border-right: 3px solid transparent;
+    border-left: 4px solid transparent;
+  }
+
+
+  &.big {
+    ion-input {
+      font-size: pxtovw(28px);
+      font-weight: 500;
+      line-height: pxtovw(30px);
     }
   }
+
+  &.withPrefix {
+    .text-input {
+      margin-left: pxtovw(66px);
+    }
+  }
+}
+
+.ServiceItem-inputPrefix[item-left] {
+  position: absolute;
+  top: 50%;
+  left: pxtovw(2px);
+  width: pxtovw(22px);
+  height: pxtovw(22px);
+  margin: 0;
+  font-size: pxtovw(18px);
+  text-align: center;
+  transform: translateY(-50%);
+
+  img {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.ServiceItem-inputPrice {
+  position: absolute;
+  top: pxtovw(-3px);
+  right: pxtovw(-37px);
+  font-size: pxtovw(22px);
 }

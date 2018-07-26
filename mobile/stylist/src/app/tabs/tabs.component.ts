@@ -1,10 +1,9 @@
 import { Component } from '@angular/core';
 import { IonicPage, Tab } from 'ionic-angular';
 
-import { ENV } from '~/../environments/environment.default';
-
 import { GAWrapper } from '~/shared/google-analytics';
-import { PageNames } from '../core/page-names';
+import { PageNames } from '~/core/page-names';
+import { ENV } from '~/../environments/environment.default';
 
 interface TabsObject {
   name: string;
@@ -38,7 +37,7 @@ export class TabsComponent {
     },
     {
       name: 'Services',
-      link: PageNames.RegisterServicesItem,
+      link: PageNames.ServicesList,
       params: { isProfile: true }
     }
   ];

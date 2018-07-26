@@ -66,13 +66,18 @@ describe('Pages: ServiceItemComponent', () => {
 
   it('should set form data', () => {
     const data: ServiceItemComponentData = {
-      categoryUuid: 'string'
+      category: {
+        uuid: 'string',
+        name: 'string',
+        services: [],
+        category_code: 'string'
+      }
     };
 
     component.createForm();
 
     component.setFormData(data);
-    expect(component.form.get('categoryUuid').value).toEqual('string');
+    expect(component.form.get('category').value).toEqual(data.category);
   });
 
   it('should dismiss loading on service delete', () => {
@@ -98,7 +103,7 @@ describe('Pages: ServiceItemComponent', () => {
 
     component.createForm();
 
-    component.submit();
+    component.save();
 
     expect(viewController.dismiss).toHaveBeenCalled();
   });

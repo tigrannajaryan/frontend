@@ -114,5 +114,9 @@
   {
     "url": "https://raw.githubusercontent.com/whiteoctober/cordova-plugin-app-version/master/LICENSE",
     "title": "cordova-plugin-app-version (MIT License)"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/arkon/ng-inline-svg/master/LICENSE",
+    "title": "ng-inline-svg (MIT License)"
   }
 ]
