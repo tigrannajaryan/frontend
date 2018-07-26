@@ -5,6 +5,7 @@ import { ENV } from '~/../environments/environment.default';
 
 import { authPath, authReducer, resetOnLogoutReducer } from '~/core/reducers/auth.reducer';
 import { profilePath, profileReducer } from '~/core/reducers/profile.reducer';
+import { stylistsPath, stylistsReducer } from '~/core/reducers/stylists.reducer';
 
 /**
  * storeFreeze prevents state from being mutated. When mutation occurs, an
@@ -35,7 +36,8 @@ export interface State {
  */
 export const reducers: ActionReducerMap<State> = {
   [authPath]: authReducer,
-  [profilePath]: profileReducer
+  [profilePath]: profileReducer,
+  [stylistsPath]: stylistsReducer
 };
 
 /**

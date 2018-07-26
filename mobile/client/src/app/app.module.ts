@@ -17,12 +17,15 @@ import { Logger } from '~/shared/logger';
 import { UnhandledErrorHandler } from '~/core/unhandled-error-handler';
 import { AuthService } from '~/core/api/auth-service';
 import { AuthServiceMock } from '~/core/api/auth-service.mock';
+import { StylistsServiceMock } from '~/core/api/stylists-service.mock';
 
 import { ClientAppComponent } from '~/app.component';
 import { getMetaReducers, reducers } from '~/app.reducers';
 
 import { AuthEffects } from '~/core/effects/auth.effects';
 import { ApiCommonErrorsEffects } from '~/core/effects/api-common-errors.effects';
+import { StylistsEffects } from '~/core/effects/stylists.effects';
+
 import { CoreModule } from '~/core/core.module';
 
 @NgModule({
@@ -56,7 +59,8 @@ import { CoreModule } from '~/core/core.module';
      */
     EffectsModule.forRoot([
       AuthEffects,
-      ApiCommonErrorsEffects
+      ApiCommonErrorsEffects,
+      StylistsEffects
     ])
   ],
 
@@ -74,6 +78,7 @@ import { CoreModule } from '~/core/core.module';
     // services
     AuthService,
     AuthServiceMock,
+    StylistsServiceMock,
 
     {
       // Our custom handler for unhandled exceptions

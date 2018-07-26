@@ -1,0 +1,46 @@
+.StylistInvitationPage {
+  .H1 {
+    margin: 16px 0 24px;
+  }
+
+  .StylistInvitationPage-pic {
+    $pic-size: 152px;
+    $pic-border-size: 232px;
+
+    width: $pic-size;
+    height: $pic-size;
+    margin: ($pic-border-size - $pic-size) / 2 0;
+    background: color($grayscale, 100);
+    border-radius: $pic-size / 2; // circle
+    box-shadow:
+      0 0 0 (($pic-border-size - $pic-size) / 2 - 0.5px) white,
+      0 0 0 ($pic-border-size - $pic-size) / 2 color($grayscale, 300);
+
+    > img {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  .StylistInvitationPage-salonName {
+    margin: 26px 0 8px;
+    font-size: $t-small;
+    color: color($grayscale, 500);
+  }
+
+  .StylistInvitationPage-name {
+    margin-bottom: 16px;
+    font-size: $t-h2;
+    font-weight: bold;
+  }
+
+  .StylistInvitationPage-address,
+  .StylistInvitationPage-phone {
+    margin-bottom: 8px;
+    color: color($grayscale, 500);
+  }
+
+  .Button {
+    margin: 32px 0 20px;
+  }
+}
