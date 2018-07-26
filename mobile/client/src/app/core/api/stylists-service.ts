@@ -9,7 +9,7 @@ import { SearchStylistsResponse } from '~/core/api/stylists.models';
 @Injectable()
 export class StylistsService extends BaseService {
 
-  search(): Observable<ApiResponse<SearchStylistsResponse>> {
-    return this.post<SearchStylistsResponse>('client/search-stylists', {});
+  search(query = ''): Observable<ApiResponse<SearchStylistsResponse>> {
+    return this.post<SearchStylistsResponse>('client/search-stylists', { search_like: query });
   }
 }

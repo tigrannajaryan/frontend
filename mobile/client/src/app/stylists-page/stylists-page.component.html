@@ -1,16 +1,16 @@
 <ion-header madeHeader></ion-header>
 
 <ion-content class="StylistsPage">
-  <ion-grid fixed>
+  <ion-grid>
     <ion-item class="FormControl StylistsPage-search">
-      <ion-input type="text" placeholder="Search stylists…"></ion-input>
+      <ion-input type="text" placeholder="Search stylists…" [formControl]="query" (input)="searchStylists()"></ion-input>
     </ion-item>
     <ion-row class="H2">
       All stylists
       <span class="Badge">{{ (stylists | async)?.length }}</span>
     </ion-row>
   </ion-grid>
-  <ion-grid *ngIf="stylists | async" fixed class="StylistsPage-stylists">
+  <ion-grid *ngIf="stylists | async" class="StylistsPage-stylists">
     <div
       *ngFor="let stylist of stylists | async"
       class="StylistsPage-card Card"

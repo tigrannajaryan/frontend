@@ -1,3 +1,16 @@
+.H2 {
+  margin-top: 32px;
+  font-size: $t-h3;
+  font-weight: 500;
+
+  .H2-subtitle {
+    margin-top: 6px;
+    font-size: $t-small;
+    font-weight: normal;
+    color: color($grayscale, 500);
+  }
+}
+
 .Badge {
   $badge-size: 24px;
 

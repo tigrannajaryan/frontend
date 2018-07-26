@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { Actions, Effect } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
+import { debounce } from 'rxjs/operators';
+import { timer } from 'rxjs/observable/timer';
 
 import { StylistsService } from '~/core/api/stylists-service';
 import {
@@ -13,26 +15,26 @@ import {
   StylistState
 } from '~/core/reducers/stylists.reducer';
 
+export const SEARCHING_DELAY = 250;
+
 @Injectable()
 export class StylistsEffects {
 
   @Effect() searchStylists = this.actions
     .ofType(stylistsActionTypes.SEARCH_STYLISTS)
     .map((action: SearchStylistsAction) => action)
+    .pipe(debounce(() => timer(SEARCHING_DELAY)))
     .withLatestFrom(this.store)
-    .switchMap(([action, state]) => {
-      const stylists = selectStylists(state);
-      if (stylists) { // return from cache
-        return Observable.of(new SearchStylistSuccessAction(stylists));
-      }
-      return this.stylistsService.search()
+    .switchMap(([action, state]) =>
+      this.stylistsService.search(action.query)
         .map(({ response, errors }) => {
           if (errors) {
             return new SearchStylistsErrorAction(errors);
           }
-          return new SearchStylistSuccessAction(response.stylists);
-        });
-    });
+          // TODO: remove `.slice(0, 10)` when implementing portions
+          return new SearchStylistSuccessAction(response.stylists.slice(0, 10));
+        })
+    );
 
   constructor(
     private actions: Actions,

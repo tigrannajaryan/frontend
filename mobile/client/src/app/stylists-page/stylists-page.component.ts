@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { IonicPage, NavController } from 'ionic-angular';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
@@ -12,14 +13,17 @@ import {
   StylistState
 } from '~/core/reducers/stylists.reducer';
 
+export const MIN_QUERY_LENGTH = 2;
+
 @IonicPage()
 @Component({
   selector: 'page-stylists',
   templateUrl: 'stylists-page.component.html'
 })
 export class StylistsPageComponent {
-  stylists: Observable<StylistModel[]>;
+  query: FormControl = new FormControl('');
 
+  stylists: Observable<StylistModel[]>;
   activeStylist?: StylistModel;
 
   constructor(
@@ -30,8 +34,14 @@ export class StylistsPageComponent {
 
   ionViewWillEnter(): void {
     this.stylists = this.store.select(selectStylists);
+    this.searchStylists();
+  }
 
-    this.store.dispatch(new SearchStylistsAction());
+  searchStylists(): void {
+    const query = this.query.value;
+
+    // TODO: search close to client’s location
+    this.store.dispatch(new SearchStylistsAction(query));
   }
 
   setActiveStylist(event: Event, stylist: StylistModel | undefined): void {
