@@ -8,7 +8,6 @@ import { authActionTypes, ConfirmCodeSuccessAction } from '~/core/reducers/auth.
 
 export enum stylistsActionTypes {
   SEARCH_STYLISTS = 'STYLISTS_SEARCH_STYLISTS',
-  SEARCH_STYLISTS_LOADING = 'STYLISTS_SEARCH_STYLISTS_LOADING',
   SEARCH_STYLISTS_ERROR = 'STYLISTS_SEARCH_STYLISTS_ERROR',
   SEARCH_STYLISTS_SUCCESS = 'STYLISTS_SEARCH_STYLISTS_SUCCESS'
 }
@@ -16,10 +15,6 @@ export enum stylistsActionTypes {
 export class SearchStylistsAction implements Action {
   readonly type = stylistsActionTypes.SEARCH_STYLISTS;
   constructor(public query?: string) {}
-}
-
-export class SearchStylistsLoadingAction implements Action {
-  readonly type = stylistsActionTypes.SEARCH_STYLISTS_LOADING;
 }
 
 export class SearchStylistsErrorAction implements Action {
@@ -35,7 +30,6 @@ export class SearchStylistSuccessAction implements Action {
 type Actions =
   | ConfirmCodeSuccessAction // save client invitation
   | SearchStylistsAction
-  | SearchStylistsLoadingAction
   | SearchStylistsErrorAction
   | SearchStylistSuccessAction;
 
@@ -63,14 +57,8 @@ export function stylistsReducer(state: StylistState = initialState, action: Acti
     case stylistsActionTypes.SEARCH_STYLISTS:
       return {
         ...state,
-        requestState: RequestState.NotStarted,
+        requestState: RequestState.Loading,
         errors: undefined
-      };
-
-    case stylistsActionTypes.SEARCH_STYLISTS_LOADING:
-      return {
-        ...state,
-        requestState: RequestState.Loading
       };
 
     case stylistsActionTypes.SEARCH_STYLISTS_ERROR:
@@ -95,6 +83,11 @@ export function stylistsReducer(state: StylistState = initialState, action: Acti
 export const stylistsPath = 'stylists';
 
 const selectStylistFromState = createFeatureSelector<StylistState>(stylistsPath);
+
+export const selectStylistsRequestState = createSelector(
+  selectStylistFromState,
+  (state: StylistState): RequestState => state.requestState
+);
 
 export const selectInvitedByStylist = createSelector(
   selectStylistFromState,

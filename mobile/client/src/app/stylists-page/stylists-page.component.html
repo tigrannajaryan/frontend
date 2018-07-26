@@ -3,33 +3,37 @@
 <ion-content class="StylistsPage">
   <ion-grid>
     <ion-item class="FormControl StylistsPage-search">
-      <ion-input type="text" placeholder="Search stylists…" [formControl]="query" (input)="searchStylists()"></ion-input>
+      <ion-input type="text" placeholder="Search stylists for…" [formControl]="query" (input)="searchStylists()"></ion-input>
     </ion-item>
-    <ion-row class="H2">
-      All stylists
-      <span class="Badge">{{ (stylists | async)?.length }}</span>
+    <ion-row class="H2" align-items-center justify-content-between>
+      <div>
+        <span>All stylists</span>
+        <span *ngIf="(stylists | async)?.length > 0" class="Badge">{{ (stylists | async)?.length }}</span>
+      </div>
+      <div *ngIf="(requestState | async) === RequestState.Loading" class="StylistsPage-loader">searching…</div>
     </ion-row>
-  </ion-grid>
-  <ion-grid *ngIf="stylists | async" class="StylistsPage-stylists">
-    <div
-      *ngFor="let stylist of stylists | async"
-      class="StylistsPage-card Card"
-      [ngClass]="{'is-active': stylist.uuid === activeStylist?.uuid}"
-      (click)="setActiveStylist($event, stylist)">
-      <ion-img class="StylistsPage-cardImg" src="assets/imgs/stylist-avatar.svg"></ion-img>
-      <div class="StylistsPage-cardHeader">
-        Your stylist
-        <ion-img class="StylistsPage-cardClose" src="assets/icons/cross.svg" (click)="setActiveStylist($event, undefined)"></ion-img>
+    <div *ngIf="stylists | async" class="StylistsPage-stylists">
+      <div
+        *ngFor="let stylist of stylists | async"
+        class="StylistsPage-card Card"
+        [ngClass]="{'is-active': stylist.uuid === activeStylist?.uuid}"
+        (click)="setActiveStylist($event, stylist)">
+        <ion-img class="StylistsPage-cardImg" src="assets/imgs/stylist-avatar.svg"></ion-img>
+        <div class="StylistsPage-cardHeader">
+          Your stylist
+          <ion-img class="StylistsPage-cardClose" src="assets/icons/cross.svg" (click)="setActiveStylist($event, undefined)"></ion-img>
+        </div>
+        <div class="StylistsPage-cardSubtitle">{{ stylist.salon_name }}</div>
+        <div class="StylistsPage-cardTitle">{{ stylist.first_name }} {{ stylist.last_name }}</div>
+        <div class="StylistsPage-cardSubtitle"><img src="assets/icons/location.svg" />&nbsp;{{ stylist.salon_address }}</div>
+        <div class="StylistsPage-cardFooter">
+          <div class="StylistsPage-cardSubtitle"><img src="assets/icons/phone.svg" />&nbsp;{{ stylist.phone }}</div>
+          <div class="StylistsPage-cardSubtitle"><img src="assets/icons/instagram.svg" />&nbsp;{{ stylist.instagram_profile_name }}</div>
+          <button ion-button class="Button StylistsPage-submit" (click)="continueWithStylist(stylist)">Continue with {{ stylist.first_name }}</button>
+          <div class="StylistsPage-cardSubtitle" (click)="setActiveStylist($event, undefined)">This is&nbsp;not&nbsp;my stylist</div>
+        </div>
       </div>
-      <div class="StylistsPage-cardSubtitle">{{ stylist.salon_name }}</div>
-      <div class="StylistsPage-cardTitle">{{ stylist.first_name }} {{ stylist.last_name }}</div>
-      <div class="StylistsPage-cardSubtitle"><img src="assets/icons/location.svg" />&nbsp;{{ stylist.salon_address }}</div>
-      <div class="StylistsPage-cardFooter">
-        <div class="StylistsPage-cardSubtitle"><img src="assets/icons/phone.svg" />&nbsp;{{ stylist.phone }}</div>
-        <div class="StylistsPage-cardSubtitle"><img src="assets/icons/instagram.svg" />&nbsp;{{ stylist.instagram_profile_name }}</div>
-        <button ion-button class="Button StylistsPage-submit" (click)="continueWithStylist(stylist)">Continue with {{ stylist.first_name }}</button>
-        <div class="StylistsPage-cardSubtitle" (click)="setActiveStylist($event, undefined)">This is&nbsp;not&nbsp;my stylist</div>
-      </div>
+      <div *ngIf="(stylists | async)?.length === 0">No stylists found</div>
     </div>
   </ion-grid>
 </ion-content>

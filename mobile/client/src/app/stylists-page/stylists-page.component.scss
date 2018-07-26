@@ -39,6 +39,11 @@
 
   background: color($grayscale, 100);
 
+  .StylistsPage-loader {
+    font-size: $t-base;
+    font-weight: normal;
+  }
+
   .StylistsPage-search {
     font-size: $t-base;
     border-radius: 10px;

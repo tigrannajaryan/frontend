@@ -6,10 +6,12 @@ import { Observable } from 'rxjs';
 
 import { PageNames } from '~/core/page-names';
 
+import { RequestState } from '~/core/api/request.models';
 import { StylistModel } from '~/core/api/stylists.models';
 import {
   SearchStylistsAction,
   selectStylists,
+  selectStylistsRequestState,
   StylistState
 } from '~/core/reducers/stylists.reducer';
 
@@ -26,6 +28,9 @@ export class StylistsPageComponent {
   stylists: Observable<StylistModel[]>;
   activeStylist?: StylistModel;
 
+  RequestState = RequestState; // expose to view
+  requestState?: Observable<RequestState>;
+
   constructor(
     private navCtrl: NavController,
     private store: Store<StylistState>
@@ -34,6 +39,8 @@ export class StylistsPageComponent {
 
   ionViewWillEnter(): void {
     this.stylists = this.store.select(selectStylists);
+    this.requestState = this.store.select(selectStylistsRequestState);
+
     this.searchStylists();
   }
 
