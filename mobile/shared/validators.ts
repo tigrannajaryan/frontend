@@ -1,4 +1,4 @@
-import { AbstractControl, ValidatorFn, Validator, ValidationErrors } from '@angular/forms';
+import { AbstractControl, ValidationErrors, Validator, ValidatorFn } from '@angular/forms';
 
 /**
  * Helps to add true/false function to form control validators:
@@ -16,7 +16,6 @@ export function predicateValidator(predicate: (...args: any[]) => boolean): Vali
     return predicate() ? null : { predicate: {value: control.value} };
   };
 }
-
 
 export class EmailValidator implements Validator {
 

@@ -3,7 +3,6 @@ import { Action, createFeatureSelector, createSelector } from '@ngrx/store';
 import { RequestState } from '~/core/api/request.models';
 import { ProfileModel } from '~/core/api/profile.models';
 import { ApiError } from '~/core/api/errors.models';
-import { create } from 'domain';
 
 export enum profileActionTypes {
   SET_PHONE = 'PROFILE_SET_PHONE',
