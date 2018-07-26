@@ -4,8 +4,8 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 import { TestUtils } from '../../../test';
 import { ActionSheetController, Haptic, PopoverController, ViewController } from 'ionic-angular';
-import { HomeService } from 'app/home/home.service';
-import { HomeState } from 'app/home/home.reducer';
+import { HomeService } from 'app/core/api/home/home.service';
+import { HomeState } from 'app/core/reducers/home.reducer';
 import { Store } from '@ngrx/store';
 import { AppointmentCheckoutComponent } from './appointment-checkout.component';
 import { prepareSharedObjectsForTests } from 'app/core/test-utils.spec';

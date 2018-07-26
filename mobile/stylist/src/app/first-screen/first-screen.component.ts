@@ -5,7 +5,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 
 import { loading } from '~/core/utils/loading';
 import { createNavHistoryList } from '~/core/functions';
-import { AuthApiService, FbAuthCredentials, UserRole } from '~/core/auth-api-service/auth-api-service';
+import { AuthApiService, FbAuthCredentials, UserRole } from '~/core/api/auth-api-service/auth-api-service';
 import { PageNames } from '~/core/page-names';
 import { LoginOrRegisterType } from '~/login-register/login-register.component';
 import { showAlert } from '~/core/utils/alert';
@@ -18,7 +18,7 @@ const connected = 'connected';
 @IonicPage()
 @Component({
   selector: 'page-first-screen',
-  templateUrl: 'first-screen.html'
+  templateUrl: 'first-screen.component.html'
 })
 export class FirstScreenComponent {
   // this should be here if we using enum in html

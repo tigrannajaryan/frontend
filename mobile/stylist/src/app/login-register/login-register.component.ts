@@ -3,7 +3,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 import { loading } from '~/core/utils/loading';
 import { createNavHistoryList } from '~/core/functions';
-import { AuthApiService, AuthCredentials, UserRole } from '~/core/auth-api-service/auth-api-service';
+import { AuthApiService, AuthCredentials, UserRole } from '~/core/api/auth-api-service/auth-api-service';
 import { ServerFieldError } from '~/shared/api-errors';
 import { PageNames } from '~/core/page-names';
 import { AppStorage } from '~/core/app-storage';

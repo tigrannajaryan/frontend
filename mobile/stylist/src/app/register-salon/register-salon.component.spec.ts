@@ -1,5 +1,5 @@
 import { async, ComponentFixture } from '@angular/core/testing';
-import { RegisterSalonComponent } from './register-salon';
+import { RegisterSalonComponent } from './register-salon.component';
 import { HttpClient, HttpHandler } from '@angular/common/http';
 import { Logger } from '~/shared/logger';
 import { ServerStatusTracker } from '~/shared/server-status-tracker';

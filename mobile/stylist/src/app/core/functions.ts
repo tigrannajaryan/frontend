@@ -1,4 +1,4 @@
-import { ProfileStatus } from './auth-api-service/auth-api-service';
+import { ProfileStatus } from './api/auth-api-service/auth-api-service';
 import { PageNames } from './page-names';
 import { ENV } from '../../environments/environment.default';
 

@@ -1,9 +1,9 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ModalController } from 'ionic-angular';
 
-import { PercentageSliderSettings } from '~/core/popups/change-percent/change-percent.component';
 import { PageNames } from '~/core/page-names';
-import { WeekdayDiscount } from '~/discounts/discounts.models';
+import { PercentageSliderSettings } from '~/core/popups/change-percent/change-percent.component';
+import { WeekdayDiscount } from '~/core/api/discounts/discounts.models';
 
 export enum DiscountSymbol {
   percent = '%',

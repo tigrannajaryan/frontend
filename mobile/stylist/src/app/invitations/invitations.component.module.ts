@@ -6,7 +6,7 @@ import { IonicPageModule } from 'ionic-angular';
 
 import { CoreModule } from '~/core/core.module';
 import { InvitationsComponent } from './invitations.component';
-import { InvitationsApi } from './invitations.api';
+import { InvitationsApi } from '~/core/api/invitations/invitations.api';
 
 @NgModule({
   imports: [

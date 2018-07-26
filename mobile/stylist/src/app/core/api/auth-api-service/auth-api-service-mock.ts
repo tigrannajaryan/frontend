@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+
 import { AuthCredentials, AuthResponse, UserRole } from './auth-api-service';
 import { StylistProfile } from '../stylist-service/stylist-models';
 

@@ -9,7 +9,7 @@ import {
   ServiceItem, ServiceTemplateSet, ServiceTemplateSetBase, StylistProfile,
   StylistServicesList, StylistSummary
 } from './stylist-models';
-import { AppointmentDateOffer } from '~/home/home.models';
+import { AppointmentDateOffer } from '~/core/api/home/home.models';
 import { Events } from 'ionic-angular';
 import { EventTypes } from '~/core/events/event-types';
 

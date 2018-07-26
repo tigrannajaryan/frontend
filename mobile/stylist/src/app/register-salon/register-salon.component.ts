@@ -18,7 +18,7 @@ import 'rxjs/add/operator/pluck';
 
 import { loading } from '~/core/utils/loading';
 import { PageNames } from '~/core/page-names';
-import { StylistServiceProvider } from '~/core/stylist-service/stylist-service';
+import { StylistServiceProvider } from '~/core/api/stylist-service/stylist-service';
 import { BaseApiService } from '~/shared/base-api-service';
 import { showAlert } from '~/core/utils/alert';
 import { Logger } from '~/shared/logger';
@@ -35,7 +35,7 @@ declare var window: any;
 })
 @Component({
   selector: 'page-register-salon',
-  templateUrl: 'register-salon.html'
+  templateUrl: 'register-salon.component.html'
 })
 export class RegisterSalonComponent {
   protected PageNames = PageNames;

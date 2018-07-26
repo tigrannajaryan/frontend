@@ -1,5 +1,6 @@
 import { Action, createFeatureSelector } from '@ngrx/store';
-import { Home } from './home.models';
+
+import { Home } from '~/core/api/home/home.models';
 
 export enum HomeActionTypes {
   HOME_START_LOAD = 'HOME_START_LOAD',
@@ -39,6 +40,8 @@ export type ActionsUnion =
   | HomeLoadAction
   | HomeLoadedAction;
 
+export const homePath = 'home';
+
 export function homeReducer(state: any = initialState, action: ActionsUnion): HomeState {
   switch (action.type) {
     case HomeActionTypes.HOME_START_LOAD:
@@ -52,4 +55,4 @@ export function homeReducer(state: any = initialState, action: ActionsUnion): Ho
   }
 }
 
-export const selectHomeState = createFeatureSelector<HomeState>('home');
+export const selectHomeState = createFeatureSelector<HomeState>(homePath);

@@ -10,8 +10,8 @@ import { getBuildNumber } from '~/shared/get-build-number';
 import { GAWrapper } from '~/shared/google-analytics';
 
 import { PageNames } from '~/core/page-names';
-import { AuthApiService } from '~/core/auth-api-service/auth-api-service';
 import { arrayEqual, createNavHistoryList } from '~/core/functions';
+import { AuthApiService } from '~/core/api/auth-api-service/auth-api-service';
 import { AppStorage } from '~/core/app-storage';
 
 // Google Analytics Id

@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { Facebook } from '@ionic-native/facebook';
 
-import { FirstScreenComponent } from './first-screen';
+import { FirstScreenComponent } from './first-screen.component';
 import { TestUtils } from '../../test';
 
 let fixture: ComponentFixture<FirstScreenComponent>;

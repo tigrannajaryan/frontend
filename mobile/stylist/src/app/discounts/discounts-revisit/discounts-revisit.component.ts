@@ -3,8 +3,8 @@ import { IonicPage, NavController } from 'ionic-angular';
 
 import { PageNames } from '~/core/page-names';
 import { loading } from '~/core/utils/loading';
-import { Discounts, WeekdayDiscount } from '../discounts.models';
-import { DiscountsApi } from '../discounts.api';
+import { Discounts, WeekdayDiscount } from '~/core/api/discounts/discounts.models';
+import { DiscountsApi } from '~/core/api/discounts/discounts.api';
 
 enum RebookWeek {
   num = 2,

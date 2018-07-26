@@ -2,17 +2,18 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { Actions, Effect } from '@ngrx/effects';
-import { HomeService } from './home.service';
+
+import { Logger } from '~/shared/logger';
+
 import {
   HomeActionTypes,
   HomeLoadAction,
   HomeLoadedAction,
   HomeLoadErrorAction,
   HomeState
-} from './home.reducer';
-
+} from '../reducers/home.reducer';
 import { showAlert } from '~/core/utils/alert';
-import { Logger } from '~/shared/logger';
+import { HomeService } from '~/core/api/home/home.service';
 
 @Injectable()
 export class HomeEffects {

@@ -1,6 +1,6 @@
 import { Action, createFeatureSelector, createSelector } from '@ngrx/store';
 
-import { ServiceCategory, ServiceItem } from '~/core/stylist-service/stylist-models';
+import { ServiceCategory, ServiceItem } from '~/core/api/stylist-service/stylist-models';
 
 export enum servicesActionTypes {
   LOAD = 'SERVICES_LOAD',
@@ -78,7 +78,9 @@ export function servicesReducer(state: ServicesState = initialState, action: Act
   }
 }
 
-export const selectService = createFeatureSelector<ServicesState>('service');
+export const servicePath = 'service';
+
+export const selectService = createFeatureSelector<ServicesState>(servicePath);
 
 export const selectCategories = createSelector(
   selectService,

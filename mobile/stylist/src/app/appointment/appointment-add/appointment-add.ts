@@ -42,7 +42,7 @@ export class AppointmentAddComponent {
 
   constructor(
     private alertCtrl: AlertController,
-    private appointmentService: AppointmentService,
+    private appointmentService: HomeService,
     private formBuilder: FormBuilder,
     private navCtrl: NavController,
     private store: Store<ServicesState>

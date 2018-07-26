@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+
 import { StylistSummary } from './stylist-models';
 
 import * as faker from 'faker';
