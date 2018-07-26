@@ -3,6 +3,7 @@ import { Action, createFeatureSelector, createSelector } from '@ngrx/store';
 import { RequestState } from '~/core/api/request.models';
 import { ProfileModel } from '~/core/api/profile.models';
 import { ApiError } from '~/core/api/errors.models';
+import { create } from 'domain';
 
 export enum profileActionTypes {
   SET_PHONE = 'PROFILE_SET_PHONE',
@@ -14,6 +15,10 @@ export enum profileActionTypes {
 
   // Loading indicator.
   PROFILE_LOADING =  'PROFILE_LOADING',
+
+  REQUEST_UPDATE_IMAGE = 'IMAGE_REQUEST',
+  REQUEST_UPDATE_IMAGE_SUCCESS = 'IMAGE_REQUEST_SUCCESS',
+  REQUEST_UPDATE_IMAGE_ERROR = 'IMAGE_REQUEST_ERROR',
 
   // Profile Post
   REQUEST_UPDATE_PROFILE = 'PROFILE_REQUEST_UPDATE',
@@ -67,6 +72,24 @@ export class RequestUpdateProfileErrorAction implements Action {
   constructor(public errors: ApiError[]) {}
 }
 
+export class RequestUpdateImage implements Action {
+  readonly type = profileActionTypes.REQUEST_UPDATE_IMAGE;
+  readonly requestState = RequestState.NotStarted;
+  constructor(public formData: FormData) {}
+}
+
+export class RequestUpdateImageSuccess implements Action {
+  readonly type = profileActionTypes.REQUEST_UPDATE_IMAGE_SUCCESS;
+  readonly requestState = RequestState.Succeded;
+  constructor(public uuid: any) {}
+}
+
+export class RequestUpdateImageError implements Action {
+  readonly type = profileActionTypes.REQUEST_UPDATE_IMAGE_ERROR;
+  readonly requestState = RequestState.Failed;
+  constructor(public errors: ApiError[]) {}
+}
+
 type Actions =
   | SetPhoneAction
   | RequestUpdateProfileAction
@@ -75,7 +98,10 @@ type Actions =
   | RequestUpdateProfileSuccessAction
   | RequestGetProfileAction
   | RequestGetProfileSuccessAction
-  | RequestGetProfileErrorAction;
+  | RequestGetProfileErrorAction
+  | RequestUpdateImage
+  | RequestUpdateImageSuccess
+  | RequestUpdateImageError;
 
 export interface ProfileState {
   profile: ProfileModel;
@@ -112,16 +138,27 @@ export function profileReducer(state: ProfileState = initialState, action: Actio
     case profileActionTypes.PROFILE_LOADING:
     case profileActionTypes.REQUEST_UPDATE_PROFILE:
     case profileActionTypes.REQUEST_GET_PROFILE:
+    case profileActionTypes.REQUEST_UPDATE_IMAGE:
       return {
         ...state,
         requestState: action.requestState
       };
     case profileActionTypes.REQUEST_UPDATE_PROFILE_ERROR:
     case profileActionTypes.REQUEST_GET_PROFILE_ERROR:
+    case profileActionTypes.REQUEST_UPDATE_IMAGE_ERROR:
       return {
         ...state,
         requestState: action.requestState,
         errors: action.errors
+      };
+    case profileActionTypes.REQUEST_UPDATE_IMAGE_SUCCESS:
+      return {
+        ...state,
+        requestState: action.requestState,
+        profile: {
+          ...state.profile,
+          profile_photo_id: action.uuid
+        }
       };
     default:
       return state;

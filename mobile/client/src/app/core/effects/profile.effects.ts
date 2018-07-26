@@ -5,10 +5,10 @@ import {
   profileActionTypes,
   RequestGetProfileAction,
   RequestGetProfileErrorAction,
-  RequestGetProfileSuccessAction,
+  RequestGetProfileSuccessAction, RequestUpdateImage, RequestUpdateImageError, RequestUpdateImageSuccess,
   RequestUpdateProfileAction,
   RequestUpdateProfileErrorAction,
-  RequestUpdateProfileSuccessAction,
+  RequestUpdateProfileSuccessAction, selectProfile,
   selectRequestSucceeded
 } from '~/core/reducers/profile.reducer';
 import { Observable } from 'rxjs/Observable';
@@ -16,6 +16,10 @@ import { Action, Store } from '@ngrx/store';
 import { ProfileService } from '~/core/api/profile-service';
 import { ProfileModel } from '~/core/api/profile.models';
 import { ApiResponse } from '~/core/api/base.models';
+import { showAlert } from '~/core/utils/alert';
+import { BaseApiService } from '~/shared/base-api-service';
+import { catchError, map } from 'rxjs/operators';
+import { of } from 'rxjs/observable/of';
 
 @Injectable()
 export class ProfileEffects {
@@ -58,9 +62,59 @@ export class ProfileEffects {
       return response.errors ? new RequestGetProfileErrorAction(response.errors) : new RequestGetProfileSuccessAction(response.response);
     });
 
+  @Effect({dispatch: false})
+  profileUpdatedSuccess: Observable<void> = this.actions
+    .ofType<RequestUpdateProfileSuccessAction>(profileActionTypes.REQUEST_UPDATE_PROFILE_SUCCESS)
+    .withLatestFrom(this.store)
+    .map(() => {
+      showAlert('Profile updated.', 'Your profile has been updated.');
+    });
+
+  // This will be removed due to displaying the errors in the form fields.
+  @Effect({dispatch: false})
+  profileUpdatedError: Observable<void> = this.actions
+    .ofType<RequestUpdateProfileErrorAction>(profileActionTypes.REQUEST_UPDATE_PROFILE_ERROR)
+    .withLatestFrom(this.store)
+    .map(() => {
+      showAlert('Error.', 'Your profile has not been updated.');
+    });
+
+  @Effect({dispatch: false})
+  profileGetError: Observable<void> = this.actions
+    .ofType<RequestGetProfileErrorAction>(profileActionTypes.REQUEST_GET_PROFILE_ERROR)
+    .withLatestFrom(this.store)
+    .map(([action, store]) => {
+      const errorMessage = action.errors[0]['error'];
+      showAlert('Error.', errorMessage);
+    });
+
+  @Effect()
+  profileUpdateImage: Observable<Action> = this.actions
+    .ofType<RequestUpdateImage>(profileActionTypes.REQUEST_UPDATE_IMAGE)
+    .switchMap(action => {
+      return Observable.from(this.baseApiService.uploadFile(action.formData))
+        .pipe(
+          map(response => new RequestUpdateImageSuccess(response)),
+          catchError(error => of(new RequestUpdateImageError(error)))
+        );
+    });
+
+  /**
+   * After a profile image has been submitted, trigger an update profile with the current image uuid.
+   */
+  @Effect({dispatch: false})
+  profileUpdateImageSuccess: Observable<void> = this.actions
+    .ofType<RequestUpdateImageSuccess>(profileActionTypes.REQUEST_UPDATE_IMAGE_SUCCESS)
+    .withLatestFrom(this.store)
+    .map(([action, store]) => {
+      const profile = selectProfile(store);
+      this.store.dispatch(new RequestUpdateProfileAction(profile));
+    });
+
   constructor(
     protected actions: Actions,
     protected profileService: ProfileService,
+    protected baseApiService: BaseApiService,
     protected store: Store<ProfileModel>
   ) {
 

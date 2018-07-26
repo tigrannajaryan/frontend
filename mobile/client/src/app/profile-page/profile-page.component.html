@@ -1,11 +1,10 @@
-<!--
+  <!--
   Generated template for the ProfilePage page.
 
   See http://ionicframework.com/docs/components/#navigation for more info on
   Ionic pages and navigation.
 -->
 <ion-header>
-
   <ion-navbar>
     <ion-buttons end>
       <button (click)="submit()" [disabled]="!form.valid" ion-button clear>
@@ -13,58 +12,41 @@
       </button>
     </ion-buttons>
   </ion-navbar>
-
 </ion-header>
 
-<ion-content no-padding>
+<ion-content class="ProfilePage">
+  <div class="ProfilePage-imageContainer--circle">
+    <div [style.backgroundImage]="currentImage" class="ProfilePage-imageContainer-photo"></div>
+    <label (click)="processPhoto()" class="ProfilePage-imageContainer-add">
+      <ion-icon name="md-camera" class="ProfilePage-imageContainer-icon"></ion-icon>
+    </label>
+  </div>
   <form [formGroup]="form">
-    <!--<div>-->
-      <!--<div [style.backgroundImage]=""></div>-->
-      <!--<label (click)="processPhoto()">-->
-        <!--<i class="icon-ok-circle"></i>-->
-      <!--</label>-->
-    <!--</div>-->
     <ion-list>
       <ion-grid>
         <ion-row>
           <ion-item col-6>
-            <ion-label floating>Name</ion-label>
+            <ion-label class="ProfilePage-label" floating>First name</ion-label>
             <ion-input formControlName="first_name" type="text"></ion-input>
           </ion-item>
           <ion-item col-6>
-            <ion-label floating>Last Name</ion-label>
+            <ion-label class="ProfilePage-label" floating>Last name</ion-label>
             <ion-input formControlName="last_name" type="text"></ion-input>
           </ion-item>
         </ion-row>
         <ion-row>
-          <ion-item col-6>
-            <ion-select formControlName="countryCode" (ionChange)="countrySelected()" [selectedText]="getPhoneCode()">
-              <ion-option *ngFor="let country of countries" [value]="country.alpha2">
-                {{ country.name }} {{ country.countryCallingCodes[0] }}
-              </ion-option>
-            </ion-select>
-          </ion-item>
-          <ion-item col-6>
-            <ion-label floating>Phone</ion-label>
-            <ion-input madePhoneInput type="tel" [countryCode]="form.get('countryCode').value" formControlName="phone"></ion-input>
+          <ion-item>
+            <ion-label class="ProfilePage-label" floating>Email</ion-label>
+            <ion-input type="email" formControlName="email"></ion-input>
           </ion-item>
         </ion-row>
         <ion-row>
           <ion-item>
-            <ion-label floating>Zip Code</ion-label>
+            <ion-label class="ProfilePage-label" floating>Zip code</ion-label>
             <ion-input type="number" formControlName="zip_code"></ion-input>
-          </ion-item>
-        </ion-row>
-        <ion-row>
-          <ion-item>
-            <ion-label floating>Birthday</ion-label>
-            <ion-datetime formControlName="birthday" displayFormat="MM/DD/YYYY"></ion-datetime>
           </ion-item>
         </ion-row>
       </ion-grid>
     </ion-list>
-
   </form>
-
-
 </ion-content>

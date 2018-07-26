@@ -4,9 +4,9 @@ export interface ProfileImageModel {
 }
 
 export interface ProfileModel extends ProfileImageModel {
-  phone: string;
+  phone?: string;
   first_name?: string;
   last_name?: string;
   zip_code?: number;
-  birthday?: string;
+  email?: string;
 }

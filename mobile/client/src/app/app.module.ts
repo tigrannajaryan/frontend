@@ -23,6 +23,8 @@ import { AuthEffects } from '~/core/effects/auth.effects';
 import { ApiCommonErrorsEffects } from '~/core/effects/api-common-errors.effects';
 import { httpInterceptorProviders } from '~/core/http-interceptors';
 import { ProfileService } from '~/core/api/profile-service';
+import { BaseApiService } from '~/shared/base-api-service';
+import { ServerStatusTracker } from '~/shared/server-status-tracker';
 
 @NgModule({
   declarations: [
@@ -67,6 +69,8 @@ import { ProfileService } from '~/core/api/profile-service';
     StatusBar,
     SplashScreen,
     ProfileService,
+    BaseApiService,
+    ServerStatusTracker,
     // Interceptors
     httpInterceptorProviders,
     // services

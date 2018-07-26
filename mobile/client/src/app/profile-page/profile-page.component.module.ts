@@ -5,12 +5,14 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { ProfileEffects } from '~/core/effects/profile.effects';
 import { profileReducer } from '~/core/reducers/profile.reducer';
-import { PhoneInputDirective } from '~/core/directives/phone-input.directive';
+import { Camera } from '@ionic-native/camera';
 
 @NgModule({
   declarations: [
-    PhoneInputDirective,
     ProfilePageComponent
+  ],
+  providers: [
+    Camera
   ],
   imports: [
     IonicPageModule.forChild(ProfilePageComponent),

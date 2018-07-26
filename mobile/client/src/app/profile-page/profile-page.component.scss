@@ -1,3 +1,76 @@
 .ProfilePage {
 
+  .ProfilePage-label {
+    font-weight: bold;
+    color: color($colors, warm-grey);
+  }
+
+  .ProfilePage-imageContainer--circle {
+    $image-size: 250px;
+    position: relative;
+    width: $image-size;
+    height: $image-size;
+    padding: 8px;
+    margin: auto;
+    border-radius: 50%;
+
+    .ProfilePage-imageContainer-photo {
+      background: no-repeat center;
+      background-size: cover;
+      border-radius: 50%;
+      height: 100%;
+      width: 100%;
+    }
+
+    .ProfilePage-imageContainer-photo:after {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      content: '';
+      z-index: -1;
+      background: white;
+      border-radius: 50%;
+      opacity: 0.2;
+    }
+
+    .ProfilePage-imageContainer-add {
+      // Icon size should be one third of the size of the image.
+      $icon-size: $image-size / 3;
+      border-radius: 50%;
+      display: block;
+      height: $icon-size;
+      left: 50%;
+      overflow: hidden;
+      opacity: 0.8;
+      position: absolute;
+      transform: translate(30%, -110%);
+      top: 100%;
+      text-align: center;
+      width: $icon-size;
+      z-index: 1;
+
+      &:after {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        content: '';
+        background: color($colors, orange);
+        border-radius: 50%;
+      }
+
+      .ProfilePage-imageContainer-icon {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        z-index: 1;
+        font-size: 3em;
+        color: white;
+        transform: translate(-50%, -50%);
+      }
+    }
+  }
 }
