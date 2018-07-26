@@ -10,10 +10,10 @@ import {
   ServiceCategory,
   ServiceTemplateItem,
   ServiceTemplateSet
-} from '~/core/api/stylist-service/stylist-models';
+} from '~/core/api/stylist-service/stylist.models';
 
 import { loading } from '~/core/utils/loading';
-import { StylistServiceProvider } from '~/core/api/stylist-service/stylist-service';
+import { StylistServiceProvider } from '~/core/api/stylist-service/stylist.api';
 import { PageNames } from '~/core/page-names';
 import { ServiceItemComponentData } from '../services-item/services-item.component';
 

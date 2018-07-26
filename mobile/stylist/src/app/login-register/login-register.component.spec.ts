@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TestUtils } from '../../test';
 import { LoginRegisterComponent } from './login-register.component';
-import { AuthApiService } from '~/core/api/auth-api-service/auth-api-service';
+import { AuthApi } from '~/core/api/auth-api-service/auth.api';
 import { prepareSharedObjectsForTests } from '~/core/test-utils.spec';
 
 let fixture: ComponentFixture<LoginRegisterComponent>;
@@ -25,7 +25,7 @@ describe('Pages: LoginRegisterComponent', () => {
 
   it('should authenticate after login-register is called with valid credentials', async(() => {
 
-    const authService = TestBed.get(AuthApiService);
+    const authService = TestBed.get(AuthApi);
 
     expect(authService.getAuthToken())
       .toEqual(undefined);
@@ -42,7 +42,7 @@ describe('Pages: LoginRegisterComponent', () => {
 
   it('should fail to authenticate after login-register is called with wrong password', async(() => {
 
-    const authService = TestBed.get(AuthApiService);
+    const authService = TestBed.get(AuthApi);
 
     expect(authService.getAuthToken()).toEqual(undefined);
 

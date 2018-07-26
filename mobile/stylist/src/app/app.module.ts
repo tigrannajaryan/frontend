@@ -9,8 +9,8 @@ import { IonicApp, IonicModule } from 'ionic-angular';
 
 import { MyAppComponent } from './app.component';
 import { Logger } from './shared/logger';
-import { AuthApiService } from '~/core/api/auth-api-service/auth-api-service';
-import { StylistServiceProvider } from '~/core/api/stylist-service/stylist-service';
+import { AuthApi } from '~/core/api/auth-api-service/auth.api';
+import { StylistServiceProvider } from '~/core/api/stylist-service/stylist.api';
 import { httpInterceptorProviders } from '~/core/http-interceptors';
 import { CoreModule } from '~/core/core.module';
 import { getMetaReducers, reducers } from './app.reducers';
@@ -22,11 +22,11 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { ENV } from '../environments/environment.default';
 import { HomeEffects } from '~/core/effects/home.effects';
 import { ProfileEffects } from '~/core/effects/profile.effects';
-import { HomeService } from '~/core/api/home/home.service';
+import { HomeApi } from '~/core/api/home/home.api';
 import { ClientsEffects } from '~/core/effects/clients.effects';
 import { AppointmentDatesEffects } from '~/core/effects/appointment-dates.effects';
-import { AppointmentDatesServiceMock } from '~/core/api/appointment/appointment-dates-service-mock';
-import { ClientsService } from '~/core/api/clients/clients-service';
+import { AppointmentDatesMock } from '~/core/api/appointment/appointment-dates.mock';
+import { ClientsApi } from '~/core/api/clients/clients.api';
 import { ServicesEffects } from '~/core/effects/services.effects';
 import { DiscountsApi } from '~/core/api/discounts/discounts.api';
 import { GoogleMapsConfig } from '~/core/google-maps-config';
@@ -92,15 +92,15 @@ if (!ENV.production) {
   providers: [
     StatusBar,
     SplashScreen,
-    AuthApiService,
+    AuthApi,
     StylistServiceProvider,
     httpInterceptorProviders,
     AppVersion,
     AppStorage,
 
-    HomeService,
-    AppointmentDatesServiceMock,
-    ClientsService,
+    HomeApi,
+    AppointmentDatesMock,
+    ClientsApi,
     DiscountsApi,
 
     {

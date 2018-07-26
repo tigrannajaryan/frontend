@@ -18,7 +18,7 @@ import 'rxjs/add/operator/pluck';
 
 import { loading } from '~/core/utils/loading';
 import { PageNames } from '~/core/page-names';
-import { StylistServiceProvider } from '~/core/api/stylist-service/stylist-service';
+import { StylistServiceProvider } from '~/core/api/stylist-service/stylist.api';
 import { BaseApiService } from '~/shared/base-api-service';
 import { showAlert } from '~/core/utils/alert';
 import { Logger } from '~/shared/logger';

@@ -11,7 +11,7 @@ import { GAWrapper } from '~/shared/google-analytics';
 
 import { PageNames } from '~/core/page-names';
 import { arrayEqual, createNavHistoryList } from '~/core/functions';
-import { AuthApiService } from '~/core/api/auth-api-service/auth-api-service';
+import { AuthApi } from '~/core/api/auth-api-service/auth.api';
 import { AppStorage } from '~/core/app-storage';
 
 // Google Analytics Id
@@ -27,7 +27,7 @@ export class MyAppComponent {
     public platform: Platform,
     public statusBar: StatusBar,
     public splashScreen: SplashScreen,
-    private authApiService: AuthApiService,
+    private authApiService: AuthApi,
     private errorHandler: ErrorHandler,
     private logger: Logger,
     private ga: GAWrapper,

@@ -7,7 +7,7 @@ import { StoreModule } from '@ngrx/store';
 import { TestUtils } from '../../test';
 import { prepareSharedObjectsForTests } from '~/core/test-utils.spec';
 import { HomeComponent } from '~/home/home.component';
-import { HomeService } from '~/core/api/home/home.service';
+import { HomeApi } from '~/core/api/home/home.api';
 import { profileReducer, profileStatePath } from '~/core/reducers/profile.reducer';
 import { homeReducer } from '~/core/reducers/home.reducer';
 import { GAWrapper } from '~/shared/google-analytics';
@@ -22,7 +22,7 @@ describe('Pages: HomeComponent', () => {
   beforeEach(async () => TestUtils.beforeEachCompiler([
     HomeComponent
   ], [
-    HomeService,
+    HomeApi,
     ActionSheetController,
     GAWrapper,
     AppVersion

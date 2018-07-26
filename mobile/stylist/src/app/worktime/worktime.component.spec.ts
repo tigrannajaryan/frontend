@@ -4,7 +4,7 @@ import { TestUtils } from '../../test';
 import { WeekdayIso } from '~/shared/weekday';
 import { defaultEndTime, defaultStartTime, WorktimeComponent } from './worktime.component';
 import { WorktimeApi } from '../core/api/worktime/worktime.api';
-import { WorktimeApiMock } from '../core/api/worktime/worktime.api.mock';
+import { WorktimeMock } from '../core/api/worktime/worktime.mock';
 import { prepareSharedObjectsForTests } from '~/core/test-utils.spec';
 
 let fixture: ComponentFixture<WorktimeComponent>;
@@ -69,7 +69,7 @@ describe('Pages: WorktimeComponent', () => {
     // After saving 2 cards must be collapsed into 1
     expect(instance.cards.length).toEqual(1);
 
-    const api = injector.get(WorktimeApi) as WorktimeApiMock;
+    const api = injector.get(WorktimeApi) as WorktimeMock;
 
     // Make sure Mon is not enabled
     expect(api.lastSet.weekdays[WeekdayIso.Mon].is_available).toEqual(false);

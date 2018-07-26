@@ -5,7 +5,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 
 import { loading } from '~/core/utils/loading';
 import { createNavHistoryList } from '~/core/functions';
-import { AuthApiService, FbAuthCredentials, UserRole } from '~/core/api/auth-api-service/auth-api-service';
+import { AuthApi, FbAuthCredentials, UserRole } from '~/core/api/auth-api-service/auth.api';
 import { PageNames } from '~/core/page-names';
 import { LoginOrRegisterType } from '~/login-register/login-register.component';
 import { showAlert } from '~/core/utils/alert';
@@ -27,7 +27,7 @@ export class FirstScreenComponent {
   constructor(
     private navCtrl: NavController,
     private fb: Facebook,
-    private authServiceProvider: AuthApiService,
+    private authServiceProvider: AuthApi,
     private statusBar: StatusBar
   ) {
   }

@@ -15,7 +15,7 @@ import {
 } from '~/core/api/home/home.models';
 
 @Injectable()
-export class HomeService extends BaseApiService {
+export class HomeApi extends BaseApiService {
 
   constructor(
     protected http: HttpClient,

@@ -3,7 +3,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 import { loading } from '~/core/utils/loading';
 import { createNavHistoryList } from '~/core/functions';
-import { AuthApiService, AuthCredentials, UserRole } from '~/core/api/auth-api-service/auth-api-service';
+import { AuthApi, AuthCredentials, UserRole } from '~/core/api/auth-api-service/auth.api';
 import { ServerFieldError } from '~/shared/api-errors';
 import { PageNames } from '~/core/page-names';
 import { AppStorage } from '~/core/app-storage';
@@ -32,7 +32,7 @@ export class LoginRegisterComponent {
   constructor(
     public navParams: NavParams,
     private navCtrl: NavController,
-    private authService: AuthApiService,
+    private authService: AuthApi,
     private appStorage: AppStorage
   ) {
     this.pageType = this.navParams.get('pageType') as LoginOrRegisterType;

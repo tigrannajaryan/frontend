@@ -13,7 +13,7 @@ import {
   HomeState
 } from '../reducers/home.reducer';
 import { showAlert } from '~/core/utils/alert';
-import { HomeService } from '~/core/api/home/home.service';
+import { HomeApi } from '~/core/api/home/home.api';
 
 @Injectable()
 export class HomeEffects {
@@ -41,7 +41,7 @@ export class HomeEffects {
     }));
 
   constructor(private actions: Actions,
-              private homeService: HomeService,
+              private homeService: HomeApi,
               private store: Store<HomeState>) {
   }
 

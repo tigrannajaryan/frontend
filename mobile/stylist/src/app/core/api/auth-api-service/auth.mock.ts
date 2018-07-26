@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 
-import { AuthCredentials, AuthResponse, UserRole } from './auth-api-service';
-import { StylistProfile } from '../stylist-service/stylist-models';
+import { AuthCredentials, AuthResponse, UserRole } from './auth.api';
+import { StylistProfile } from '../stylist-service/stylist.models';
 
 /**
  * AuthServiceProviderMock provides authentication mocked with one
  * hard-coded set of credentials.
  */
 @Injectable()
-export class AuthApiServiceMock {
+export class AuthMock {
 
   /**
    * Credentials that will result in success for doAuth() function.

@@ -4,9 +4,9 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { SafeStyle } from '@angular/platform-browser/src/security/dom_sanitization_service';
 
 import { loading } from '~/core/utils/loading';
-import { StylistServiceProvider } from '~/core/api/stylist-service/stylist-service';
+import { StylistServiceProvider } from '~/core/api/stylist-service/stylist.api';
 import { PageNames } from '~/core/page-names';
-import { ServiceTemplateSetBase } from '~/core/api/stylist-service/stylist-models';
+import { ServiceTemplateSetBase } from '~/core/api/stylist-service/stylist.models';
 
 export enum ServiceListType {
   blank

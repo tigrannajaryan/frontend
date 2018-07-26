@@ -8,7 +8,7 @@ import { ServerStatusTracker } from '~/shared/server-status-tracker';
 import { UserContext } from '~/shared/user-context';
 import { AppStorage } from '~/core/app-storage';
 
-import { StylistProfile } from '../stylist-service/stylist-models';
+import { StylistProfile } from '../stylist-service/stylist.models';
 
 export enum UserRole { stylist = 'stylist', client = 'client' }
 
@@ -51,7 +51,7 @@ export interface AuthError {
  * AuthServiceProvider provides authentication against server API.
  */
 @Injectable()
-export class AuthApiService extends BaseApiService {
+export class AuthApi extends BaseApiService {
 
   private authToken: string;
 

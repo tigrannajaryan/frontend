@@ -7,7 +7,7 @@ import { Worktime } from './worktime.models';
  * hard-coded set of credentials.
  */
 @Injectable()
-export class WorktimeApiMock {
+export class WorktimeMock {
 
   lastSet: Worktime;
 
