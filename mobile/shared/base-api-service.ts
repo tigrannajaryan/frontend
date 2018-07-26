@@ -139,7 +139,7 @@ export class BaseApiService {
     return this.http.post<ResponseType>(url, formData)
       .toPromise()
       .catch(e => {
-        this.logger.error('API request failed:', e);
+        this.logger.error('API request failed:', JSON.stringify(e));
         throw e;
       });
   }
