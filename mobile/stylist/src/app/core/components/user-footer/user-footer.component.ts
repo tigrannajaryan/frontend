@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { App, NavController } from 'ionic-angular';
+import { NavController, ViewController } from 'ionic-angular';
+import { Observable, Subscription } from 'rxjs';
 
 import { PageNames } from '~/core/page-names';
 
@@ -10,11 +11,18 @@ import { PageNames } from '~/core/page-names';
 export class UserFooterComponent {
   protected activePage: PageNames;
   protected PageNames = PageNames;
+  private subscription: Subscription;
 
-  constructor(private navCtrl: NavController, private app: App) {
-    this.app.viewDidLoad.subscribe(() => {
-      this.activePage = this.navCtrl.getActive().name as PageNames;
+  constructor(private navCtrl: NavController) {
+    this.subscription = Observable.merge(
+      this.navCtrl.viewDidLoad,
+      this.navCtrl.viewDidEnter
+    ).subscribe((e: ViewController) => {
+      this.activePage = e.name as PageNames;
     });
   }
 
+  ionViewDidLeave(): void {
+    this.subscription.unsubscribe();
+  }
 }
