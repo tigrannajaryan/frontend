@@ -3,6 +3,7 @@ import { IonicPage, Tab, Tabs } from 'ionic-angular';
 
 import { GAWrapper } from '~/shared/google-analytics';
 import { PageNames } from '../core/page-names';
+import { ENV } from '~/../environments/environment.default';
 
 interface TabsObject {
   name: string;
@@ -51,7 +52,15 @@ export class TabsComponent {
 
   private lastSubsrciption: any;
 
-  constructor(private ga: GAWrapper) { }
+  constructor(private ga: GAWrapper) {
+    if (ENV.ffEnableIncomplete) {
+      this.tabsData.push({
+        name: 'Invite',
+        link: PageNames.Invitations,
+        params: { isProfile: true }
+      });
+    }
+  }
 
   onTabChange(tab: Tab): void {
     // Track all tab changes

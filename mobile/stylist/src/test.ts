@@ -47,6 +47,8 @@ import {
   StatusBarMock
 } from 'ionic-mocks';
 
+import { GoogleAnalytics } from '@ionic-native/google-analytics';
+
 import { AppModule } from '~/app.module';
 
 import { WorktimeApi } from './app/worktime/worktime.api';
@@ -55,7 +57,6 @@ import { AuthApiService } from './app/core/auth-api-service/auth-api-service';
 import { AuthApiServiceMock } from './app/core/auth-api-service/auth-api-service-mock';
 import { StylistServiceProvider } from './app/core/stylist-service/stylist-service';
 import { StylistServiceMock } from './app/core/stylist-service/stylist-service-mock';
-import { GoogleAnalytics } from '@ionic-native/google-analytics';
 import { AppStorage } from '~/core/app-storage';
 import { AppStorageMock } from '~/core/app-storage-mock';
 
