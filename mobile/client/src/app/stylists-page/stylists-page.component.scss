@@ -12,6 +12,14 @@
   border-radius: 12px;
 }
 
+.Card {
+  padding: 16px;
+  margin-bottom: 16px;
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 7px 43px color($grayscale, 200);
+}
+
 .StylistsPage {
   $pic-size: 64px;
   $card-padding: 16px;
