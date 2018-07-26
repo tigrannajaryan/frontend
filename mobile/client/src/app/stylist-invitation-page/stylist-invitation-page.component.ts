@@ -28,7 +28,9 @@ export class StylistInvitationPageComponent {
       .map((invitation?: StylistModel) => {
         this.stylist = invitation;
         if (!this.stylist) { // should pick a stylist first
-          setTimeout(() => this.seeStylistsList());
+          setTimeout(() => {
+            this.navCtrl.setRoot(PageNames.Stylists);
+          });
         }
         return Boolean(this.stylist);
       })

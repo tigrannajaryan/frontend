@@ -3,7 +3,7 @@ import { Actions, Effect } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
-import { StylistsServiceMock } from '~/core/api/stylists-service.mock';
+import { StylistsService } from '~/core/api/stylists-service';
 import {
   SearchStylistsAction,
   SearchStylistsErrorAction,
@@ -37,7 +37,7 @@ export class StylistsEffects {
   constructor(
     private actions: Actions,
     private store: Store<StylistState>,
-    private stylistsService: StylistsServiceMock
+    private stylistsService: StylistsService
   ) {
   }
 }
