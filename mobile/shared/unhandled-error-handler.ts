@@ -1,5 +1,6 @@
 import { ApplicationRef, Injectable, Injector } from '@angular/core';
 import { AlertController, NavControllerBase } from 'ionic-angular';
+import { GoogleAnalytics } from '@ionic-native/google-analytics';
 
 import * as Sentry from 'sentry-cordova';
 
@@ -14,7 +15,6 @@ import {
 import { Logger } from '~/shared/logger';
 import { ServerStatusTracker } from '~/shared/server-status-tracker';
 import { ServerReachabilityAction } from '~/shared/server-status/server-status.reducer';
-import { GoogleAnalytics } from '@ionic-native/google-analytics';
 
 enum ErrorUIAction {
   showAlert,
@@ -86,9 +86,21 @@ export class UnhandledErrorHandler {
       // fields should be highlighted in the UI but if we get here we will show an alert.
       errorMsg = error.getMessage();
       errorUIAction = ErrorUIAction.showAlert;
-    } else if (error instanceof ServerErrorResponse && error.status === HttpStatus.unauthorized) {
-      // Erase all previous navigation history and make LoginPage the root
-      errorUIAction = ErrorUIAction.redirectToFirstPage;
+    } else if (error instanceof ServerErrorResponse) {
+      if (error.status === HttpStatus.unauthorized) {
+        // Erase all previous navigation history and make LoginPage the root
+        errorUIAction = ErrorUIAction.redirectToFirstPage;
+      } else {
+        // Other server error. This should never happen unless we have bugs or
+        // frontend calls an endpoint that doesn't exist, etc. Show detailed
+        // error message for diagnostics.
+        errorMsg = `Server error ${error.status}`;
+        if (error.errorBody) {
+          errorMsg = `${errorMsg}\n${JSON.stringify(error.errorBody)}`;
+        }
+        errorUIAction = ErrorUIAction.showAlert;
+        UnhandledErrorHandler.reportToSentry(error);
+      }
     } else if (error instanceof ServerUnreachableOrInternalError) {
       // Update server status. This will result in server status error banner to appear.
       errorUIAction = ErrorUIAction.markServerUnreachable;

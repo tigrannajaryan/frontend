@@ -13,11 +13,12 @@ import {
 } from 'ionic-angular';
 
 import { Contacts } from '@ionic-native/contacts';
+import { OpenNativeSettings } from '@ionic-native/open-native-settings';
 import { HttpClient } from '@angular/common/http';
 
 import { CoreModule } from '~/core/core.module';
 import { prepareSharedObjectsForTests } from '~/core/test-utils.spec';
-import { InvitationsComponent, DisplayContact } from './invitations.component';
+import { ContactStatus, DisplayContact, InvitationsComponent } from './invitations.component';
 import { InvitationsApi } from './invitations.api';
 
 describe('Pages: InvitationsComponent', () => {
@@ -27,17 +28,20 @@ describe('Pages: InvitationsComponent', () => {
   const c1 = {
     displayName: 'John',
     phoneNumber: '+1234567890',
-    selected: false
+    selected: false,
+    status: ContactStatus.New
   };
   const c2 = {
     displayName: 'Jared',
     phoneNumber: '+2345678901',
-    selected: false
+    selected: false,
+    status: ContactStatus.New
   };
   const c3 = {
     displayName: 'Michael Jackson',
     phoneNumber: '+34567890',
-    selected: false
+    selected: false,
+    status: ContactStatus.New
   };
 
   prepareSharedObjectsForTests();
@@ -55,6 +59,7 @@ describe('Pages: InvitationsComponent', () => {
         ModalController,
         InvitationsApi,
         Contacts,
+        OpenNativeSettings,
         { provide: HttpClient, useClass: class { httpClient = jasmine.createSpy('HttpClient'); } }
       ]
     });
@@ -127,6 +132,17 @@ describe('Pages: InvitationsComponent', () => {
     const f3 = InvitationsComponent.formatField(dc2, 'phoneNumber');
     expect(f3).toEqual('+1234<b>56</b>7890');
 
+  }));
+
+  it('should validate phone numbers', async(() => {
+    expect(InvitationsComponent.validatePhoneNumber('4166352746')).toEqual('+1 416 635 2746');
+    expect(InvitationsComponent.validatePhoneNumber('+1 416 635 2746')).toEqual('+1 416 635 2746');
+
+    expect(InvitationsComponent.validatePhoneNumber('+37493123456')).toEqual('+374 93 123456');
+
+    // 374 is not a valid area code in the US
+    expect(InvitationsComponent.validatePhoneNumber('3746352746')).toEqual(undefined);
+    expect(InvitationsComponent.validatePhoneNumber('+1 374 635 2746')).toEqual(undefined);
   }));
 
 });

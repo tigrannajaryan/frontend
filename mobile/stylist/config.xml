@@ -49,10 +49,15 @@
     <platform name="ios">
         <config-file parent="NSPhotoLibraryUsageDescription" target="*-Info.plist">
             <string>photo library usage description</string>
+            <string>Need photo library access to add to profile</string>
         </config-file>
         <config-file parent="NSCameraUsageDescription" target="*-Info.plist">
             <string>camera usage description</string>
+            <string>Need camera access to add to profile</string>
         </config-file>
+        <edit-config file="*-Info.plist" mode="merge" target="NSContactsUsageDescription">
+            <string>Need contacts access to invite clients</string>
+        </edit-config>
         <allow-intent href="itms:*" />
         <allow-intent href="itms-apps:*" />
         <icon height="57" src="resources/ios/icon/icon.png" width="57" />
@@ -100,6 +105,7 @@
     <plugin name="cordova-plugin-google-analytics" spec="1.8.3" />
     <plugin name="sentry-cordova" spec="0.10.2" />
     <plugin name="cordova-plugin-app-version" spec="0.1.9" />
-    <engine name="ios" spec="4.5.4" />
+    <plugin name="cordova-open-native-settings" spec="1.5.1" />
     <engine name="android" spec="7.0.0" />
+    <engine name="ios" spec="4.5.4" />
 </widget>
