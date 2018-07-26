@@ -33,6 +33,7 @@ export enum PageNames {
   RegisterServices = 'ServicesComponent',
   RegisterServicesItem = 'ServicesListComponent',
   RegisterServicesItemAdd = 'ServiceItemComponent',
+  Tabs = 'TabsComponent',
   Worktime = 'WorktimeComponent',
   UpcomingHistory = 'UpcomingHistoryComponent'
 }

@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 
 import { ServerStatusComponent } from '~/shared/server-status/server-status.component';
 import { UserHeaderComponent } from '~/core/components/user-header/user-header.component';
-import { UserFooterComponent } from '~/core/components/user-footer/user-footer.component';
 
 import { MadeNavComponent } from './made-nav/made-nav.component';
 import { MadeTableComponent } from './made-table/made-table';
@@ -30,7 +29,6 @@ const components = [
   MadeNavComponent,
   ServerStatusComponent,
   UserHeaderComponent,
-  UserFooterComponent,
   MadeTableComponent,
   UserHeaderMenuComponent,
   ServicesPickComponent,

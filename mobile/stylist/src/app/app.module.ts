@@ -64,7 +64,11 @@ if (!ENV.production) {
   ],
 
   imports: [
-    IonicModule.forRoot(MyAppComponent, {backButtonText: '', backButtonIcon: 'md-arrow-back'}),
+    IonicModule.forRoot(MyAppComponent, {
+      backButtonText: '',
+      backButtonIcon: 'md-arrow-back',
+      tabsHideOnSubPages: true
+    }),
     ...imports
   ],
 
