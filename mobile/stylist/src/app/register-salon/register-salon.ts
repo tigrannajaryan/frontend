@@ -143,7 +143,7 @@ export class RegisterSalonComponent {
     this.loadFormInitialData();
   }
 
-  ionViewDidEnter(): void {
+  ionViewWillEnter(): void {
     this.initAutocomplete();
   }
 

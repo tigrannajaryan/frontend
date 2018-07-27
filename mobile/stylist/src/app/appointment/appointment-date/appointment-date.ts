@@ -96,7 +96,7 @@ export class AppointmentDateComponent {
       });
   }
 
-  ionViewDidEnter(): void {
+  ionViewWillEnter(): void {
     if (this.service) {
       this.store.dispatch(new GetDatesAction(this.service, this.client));
     } else {

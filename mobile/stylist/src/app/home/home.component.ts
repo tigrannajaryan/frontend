@@ -104,7 +104,7 @@ export class HomeComponent {
     this.activeTab = this.tabs[TabNames.today].name;
   }
 
-  // we need ionViewDidEnter here because it fire each time when we go to this page
+  // we need ionViewWillEnter here because it fire each time when we go to this page
   // for example form adding appointment using nav.pop
   // and ionViewDidLoad fire only once this is not what we need here
   ionViewWillEnter(): void {
