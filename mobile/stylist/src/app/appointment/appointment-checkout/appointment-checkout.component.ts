@@ -13,7 +13,7 @@ import {
 } from '~/core/api/home/home.models';
 import { PageNames } from '~/core/page-names';
 import { AddServicesComponentParams } from '~/core/popups/add-services/add-services.component';
-import { ServiceItem } from '~/core/api/stylist-service/stylist.models';
+import { ServiceItem } from '~/core/api/stylist/stylist.models';
 
 export interface AppointmentCheckoutParams {
   appointmentUuid: string;

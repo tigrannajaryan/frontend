@@ -53,7 +53,7 @@ export const profileSummaryMock = {
 };
 
 @Injectable()
-export class StylistMock {
+export class StylistApiMock {
 
   async getStylistSummary(): Promise<StylistSummary> {
     return Promise.resolve(profileSummaryMock);

@@ -9,8 +9,8 @@ import { IonicApp, IonicModule } from 'ionic-angular';
 
 import { MyAppComponent } from './app.component';
 import { Logger } from './shared/logger';
-import { AuthApi } from '~/core/api/auth-api-service/auth.api';
-import { StylistServiceProvider } from '~/core/api/stylist-service/stylist.api';
+import { AuthApi } from '~/core/api/auth/auth.api';
+import { StylistServiceProvider } from '~/core/api/stylist/stylist.api';
 import { httpInterceptorProviders } from '~/core/http-interceptors';
 import { CoreModule } from '~/core/core.module';
 import { getMetaReducers, reducers } from './app.reducers';

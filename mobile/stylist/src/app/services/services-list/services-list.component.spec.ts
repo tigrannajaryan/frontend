@@ -3,9 +3,9 @@ import { IonicModule, ModalController, NavController, NavParams, ViewController 
 import { HttpClient } from '@angular/common/http';
 import { ServicesListComponent } from './services-list.component';
 import { CoreModule } from '~/core/core.module';
-import { StylistServiceProvider } from '~/core/api/stylist-service/stylist.api';
+import { StylistServiceProvider } from '~/core/api/stylist/stylist.api';
 import { ServiceItemComponentData } from '../services-item/services-item.component';
-import { ServiceCategory, ServiceTemplateItem } from '~/core/api/stylist-service/stylist.models';
+import { ServiceCategory, ServiceTemplateItem } from '~/core/api/stylist/stylist.models';
 import { PageNames } from '~/core/page-names';
 import { prepareSharedObjectsForTests } from '~/core/test-utils.spec';
 

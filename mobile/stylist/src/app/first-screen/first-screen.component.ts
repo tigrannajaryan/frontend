@@ -5,7 +5,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 
 import { loading } from '~/core/utils/loading';
 import { createNavHistoryList } from '~/core/functions';
-import { AuthApi, FbAuthCredentials, UserRole } from '~/core/api/auth-api-service/auth.api';
+import { AuthApi, FbAuthCredentials, UserRole } from '~/core/api/auth/auth.api';
 import { PageNames } from '~/core/page-names';
 import { LoginOrRegisterType } from '~/login-register/login-register.component';
 import { showAlert } from '~/core/utils/alert';

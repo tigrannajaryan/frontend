@@ -3,7 +3,7 @@ import { ServicesComponent } from './services.component';
 import { IonicModule, NavController, NavParams } from 'ionic-angular';
 import { HttpClient } from '@angular/common/http';
 import { CoreModule } from '~/core/core.module';
-import { StylistServiceProvider } from '~/core/api/stylist-service/stylist.api';
+import { StylistServiceProvider } from '~/core/api/stylist/stylist.api';
 import { prepareSharedObjectsForTests } from '~/core/test-utils.spec';
 
 export class NavMock {

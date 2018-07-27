@@ -18,7 +18,7 @@ import { GAWrapper } from '~/shared/google-analytics';
 import { AppStorage } from '~/core/app-storage';
 import { Logger } from '~/shared/logger';
 import { Appointment, AppointmentStatuses, Home } from '~/core/api/home/home.models';
-import { StylistProfile } from '~/core/api/stylist-service/stylist.models';
+import { StylistProfile } from '~/core/api/stylist/stylist.models';
 import { HomeApi } from '~/core/api/home/home.api';
 import { HomeLoadAction, HomeState, selectHomeState } from '~/core/reducers/home.reducer';
 import { LoadProfileAction, ProfileState, selectProfile } from '~/core/reducers/profile.reducer';

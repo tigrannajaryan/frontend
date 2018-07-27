@@ -6,7 +6,7 @@ import { Store, StoreModule } from '@ngrx/store';
 import { prepareSharedObjectsForTests } from '~/core/test-utils.spec';
 import { TestUtils } from '~/../test';
 
-import { ServiceItem } from '~/core/api/stylist-service/stylist.models';
+import { ServiceItem } from '~/core/api/stylist/stylist.models';
 import { LoadSuccessAction, selectSelectedService, servicesReducer, ServicesState } from '~/core/reducers/services.reducer';
 
 import { AppointmentServicesComponent } from './appointment-services';

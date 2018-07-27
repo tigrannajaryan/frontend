@@ -14,7 +14,7 @@ import {
 } from '../reducers/services.reducer';
 import { withLoader } from '~/core/utils/loading';
 import { showAlert } from '~/core/utils/alert';
-import { StylistServiceProvider } from '~/core/api/stylist-service/stylist.api';
+import { StylistServiceProvider } from '~/core/api/stylist/stylist.api';
 
 @Injectable()
 export class ServicesEffects {

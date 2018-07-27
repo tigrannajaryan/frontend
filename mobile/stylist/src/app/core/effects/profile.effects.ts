@@ -11,7 +11,7 @@ import {
   profileActionTypes
 } from '~/core/reducers/profile.reducer';
 import { showAlert } from '~/core/utils/alert';
-import { StylistServiceProvider } from '~/core/api/stylist-service/stylist.api';
+import { StylistServiceProvider } from '~/core/api/stylist/stylist.api';
 
 @Injectable()
 export class ProfileEffects {

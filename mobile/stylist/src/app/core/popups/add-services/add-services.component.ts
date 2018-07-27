@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { AlertController, IonicPage, NavController, NavParams } from 'ionic-angular';
-import { StylistServiceProvider } from '~/core/api/stylist-service/stylist.api';
+import { StylistServiceProvider } from '~/core/api/stylist/stylist.api';
 import { loading } from '~/core/utils/loading';
-import { ServiceCategory, ServiceItem, StylistServicesList } from '~/core/api/stylist-service/stylist.models';
+import { ServiceCategory, ServiceItem, StylistServicesList } from '~/core/api/stylist/stylist.models';
 import { CheckOutService } from '~/core/api/home/home.models';
 
 export class AddServicesComponentParams {

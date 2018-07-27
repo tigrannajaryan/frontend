@@ -8,7 +8,7 @@ import { ServerStatusTracker } from '~/shared/server-status-tracker';
 import { UserContext } from '~/shared/user-context';
 import { AppStorage } from '~/core/app-storage';
 
-import { StylistProfile } from '../stylist-service/stylist.models';
+import { StylistProfile } from '../stylist/stylist.models';
 
 export enum UserRole { stylist = 'stylist', client = 'client' }
 

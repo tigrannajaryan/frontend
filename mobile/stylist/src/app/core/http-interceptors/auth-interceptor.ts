@@ -1,7 +1,7 @@
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { AuthApi } from '../api/auth-api-service/auth.api';
+import { AuthApi } from '../api/auth/auth.api';
 
 /**
  * AuthInterceptor injects AuthService to get the auth token and adds an

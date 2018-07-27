@@ -11,7 +11,7 @@ import { GAWrapper } from '~/shared/google-analytics';
 
 import { PageNames } from '~/core/page-names';
 import { arrayEqual, createNavHistoryList } from '~/core/functions';
-import { AuthApi } from '~/core/api/auth-api-service/auth.api';
+import { AuthApi } from '~/core/api/auth/auth.api';
 import { AppStorage } from '~/core/app-storage';
 
 // Google Analytics Id
