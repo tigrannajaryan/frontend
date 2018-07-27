@@ -31,6 +31,9 @@ export class DiscountsWeekdayComponent {
   }
 
   protected onContinue(): void {
+    // we need this call to set `has_weekday_discounts_set` to true
+    // otherwise we will go to the discounts registration flow each time after log in
+    this.discountsApi.setDiscounts({ weekdays: this.discounts });
     this.navCtrl.push(PageNames.DiscountsRevisit);
   }
 
