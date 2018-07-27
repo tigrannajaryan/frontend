@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
 import { debounce } from 'rxjs/operators';
 import { timer } from 'rxjs/observable/timer';
 
@@ -10,7 +9,6 @@ import {
   SearchStylistsAction,
   SearchStylistsErrorAction,
   SearchStylistSuccessAction,
-  selectStylists,
   stylistsActionTypes,
   StylistState
 } from '~/core/reducers/stylists.reducer';

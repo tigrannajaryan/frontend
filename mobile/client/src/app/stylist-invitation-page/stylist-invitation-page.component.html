@@ -16,8 +16,10 @@
     <ion-row justify-content-center class="StylistInvitationPage-phone"><img src="assets/icons/phone.svg" />&nbsp;{{ stylist.phone | formatPhone }}</ion-row>
     <ion-row justify-content-center class="StylistInvitationPage-phone"><img src="assets/icons/instagram.svg" />&nbsp;{{ stylist.instagram_profile_name }}</ion-row>
     <ion-row justify-content-center>
-      <button ion-button class="Button" (click)="continueWithStylist()">Continue</button>
+      <button (click)="onContinueWithStylist()" ion-button class="Button">Continue</button>
     </ion-row>
-    <ion-row justify-content-center><span class="Link" (click)="seeStylistsList()">It’s not my stylist</span></ion-row>
+    <ion-row justify-content-center>
+      <span (click)="onSeeStylistsList()" class="Link">It’s not my stylist</span>
+    </ion-row>
   </ion-grid>
 <ion-content>

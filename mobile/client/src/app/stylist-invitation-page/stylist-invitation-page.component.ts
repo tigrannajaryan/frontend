@@ -3,7 +3,6 @@ import { IonicPage, NavController } from 'ionic-angular';
 import { Store } from '@ngrx/store';
 
 import { PageNames } from '~/core/page-names';
-import { componentIsActive } from '~/core/utils/component-is-active';
 
 import { StylistModel } from '~/core/api/stylists.models';
 import { selectInvitedByStylist, StylistState } from '~/core/reducers/stylists.reducer';
@@ -37,12 +36,12 @@ export class StylistInvitationPageComponent {
       .toPromise();
   }
 
-  continueWithStylist(): void {
+  onContinueWithStylist(): void {
     // TODO: uncomment after adding services pages
     // this.navCtrl.push(PageNames.Categories, { stylistUuid: this.stylist.uuid });
   }
 
-  seeStylistsList(): void {
+  onSeeStylistsList(): void {
     this.navCtrl.push(PageNames.Stylists);
   }
 }

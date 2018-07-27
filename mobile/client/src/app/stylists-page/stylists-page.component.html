@@ -3,7 +3,7 @@
 <ion-content class="StylistsPage">
   <ion-grid>
     <ion-item class="FormControl StylistsPage-search">
-      <ion-input type="text" placeholder="Search stylists for…" [formControl]="query" (input)="searchStylists()"></ion-input>
+      <ion-input type="text" placeholder="Search stylists for…" [formControl]="query" (input)="onSearchStylists()"></ion-input>
     </ion-item>
     <ion-row class="H2" align-items-center justify-content-between>
       <div>
@@ -17,11 +17,11 @@
         *ngFor="let stylist of stylists | async"
         class="StylistsPage-card Card"
         [ngClass]="{'is-active': stylist.uuid === activeStylist?.uuid}"
-        (click)="setActiveStylist($event, stylist)">
+        (click)="onSetActiveStylist($event, stylist)">
         <ion-img class="StylistsPage-cardImg" src="assets/imgs/stylist-avatar.svg"></ion-img>
         <div class="StylistsPage-cardHeader">
           Your stylist
-          <ion-img class="StylistsPage-cardClose" src="assets/icons/cross.svg" (click)="setActiveStylist($event, undefined)"></ion-img>
+          <ion-img (click)="onSetActiveStylist($event, undefined)" class="StylistsPage-cardClose" src="assets/icons/cross.svg"></ion-img>
         </div>
         <div class="StylistsPage-cardSubtitle">{{ stylist.salon_name }}</div>
         <div class="StylistsPage-cardTitle">{{ stylist.first_name }} {{ stylist.last_name }}</div>
@@ -29,8 +29,8 @@
         <div class="StylistsPage-cardFooter">
           <div class="StylistsPage-cardSubtitle"><img src="assets/icons/phone.svg" />&nbsp;{{ stylist.phone }}</div>
           <div class="StylistsPage-cardSubtitle"><img src="assets/icons/instagram.svg" />&nbsp;{{ stylist.instagram_profile_name }}</div>
-          <button ion-button class="Button StylistsPage-submit" (click)="continueWithStylist(stylist)">Continue with {{ stylist.first_name }}</button>
-          <div class="StylistsPage-cardSubtitle" (click)="setActiveStylist($event, undefined)">This is&nbsp;not&nbsp;my stylist</div>
+          <button (click)="onContinueWithStylist(stylist)" ion-button class="Button StylistsPage-submit">Continue with {{ stylist.first_name }}</button>
+          <div (click)="onSetActiveStylist($event, undefined)" class="StylistsPage-cardSubtitle">This is&nbsp;not&nbsp;my stylist</div>
         </div>
       </div>
       <div *ngIf="(stylists | async)?.length === 0">No stylists found</div>

@@ -80,7 +80,7 @@ export class AuthEffects {
           }
           const { created_at, token, stylist_invitation } = response;
           const tokenData: AuthTokenModel = { created_at, token };
-          // TODO: replace stylist_invitation[0] with just stylist_invitation when it would be fixed on the backend
+          // TODO: replace stylist_invitation[0] with the latest invitation retrieved from the array (when it would be done on the backend)
           return new ConfirmCodeSuccessAction(params.phone, tokenData, stylist_invitation[0]);
         })
     );
