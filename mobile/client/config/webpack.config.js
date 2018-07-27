@@ -7,13 +7,13 @@ const webpackConfig = require('../node_modules/@ionic/app-scripts/config/webpack
 const config = {
   plugins: [
     new webpack.EnvironmentPlugin({
-      BB_ENV: undefined
+      MB_ENV: undefined
     }),
     new webpack.NormalModuleReplacementPlugin(/\.\/environments\/environment\.default/, function (resource) {
-      if (process.env.BB_ENV !== undefined) {
-        let env = process.env.BB_ENV.trim();
+      if (process.env.MB_ENV !== undefined) {
+        let env = process.env.MB_ENV.trim();
 
-        if (process.env.BB_ENV === 'dev' && fs.existsSync(path.resolve('./src/environments/environment.local.ts'))) {
+        if (process.env.MB_ENV === 'dev' && fs.existsSync(path.resolve('./src/environments/environment.local.ts'))) {
           console.warn('\033[1;33mReplacing .dev env config with .local\033[0m');
           env = 'local';
         }

@@ -12,16 +12,12 @@ const webpackConfig = require('../node_modules/@ionic/app-scripts/config/webpack
 const config = {
   plugins: [
     new webpack.EnvironmentPlugin({
-      BB_ENV: undefined,
       MB_ENV: undefined,
       IOS_BUILD_NUMBER: undefined
     }),
 
     new webpack.NormalModuleReplacementPlugin(/\.\/environments\/environment\.default/, function (resource) {
-      let env = process.env.BB_ENV;
-      if (env === undefined) {
-        env = process.env.MB_ENV;
-      }
+      let env = process.env.MB_ENV;
 
       if (env !== undefined) {
         env = env.trim();
