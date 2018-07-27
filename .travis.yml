@@ -57,7 +57,7 @@ jobs:
     - stage: Stylist Staging Build
       env:
         APP_TYPE=stylist
-        BB_ENV=staging
+        MB_ENV=staging
         IOS_APP_BUNDLE_ID="com.madebeauty.stylist.beta"
         IOS_APP_NAME="Made Pro Staging"
         IOS_APP_DESCRIPTION="Made Pro Staging"
@@ -72,7 +72,7 @@ jobs:
       if: branch = develop AND type = push  # run this stage only if it's not a PR
       env:
         APP_TYPE=stylist
-        BB_ENV=prod
+        MB_ENV=prod
         IOS_APP_BUNDLE_ID="com.madebeauty.stylist.production"
         IOS_APP_NAME="Made Pro"
         IOS_APP_DESCRIPTION="Made Pro"
@@ -86,7 +86,7 @@ jobs:
     - stage: Client Staging Build
       env:
         APP_TYPE=client
-        BB_ENV=staging
+        MB_ENV=staging
         IOS_APP_BUNDLE_ID="com.madebeauty.client.staging"
         IOS_APP_NAME="MadeBeauty Staging"
         IOS_APP_DESCRIPTION="MadeBeauty Staging"
@@ -101,7 +101,7 @@ jobs:
       if: branch = develop AND type = push  # run this stage only if it's not a PR
       env:
         APP_TYPE=client
-        BB_ENV=prod
+        MB_ENV=prod
         IOS_APP_BUNDLE_ID="com.madebeauty.client.production"
         IOS_APP_NAME="MadeBeauty"
         IOS_APP_DESCRIPTION="MadeBeauty"
