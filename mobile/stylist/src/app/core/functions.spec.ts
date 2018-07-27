@@ -44,7 +44,7 @@ describe('Shared functions: profileStatusToPage', () => {
         { page: PageNames.RegisterSalon },
         { page: PageNames.RegisterServices },
         { page: PageNames.Worktime },
-        { page: PageNames.Discounts }
+        { page: PageNames.DiscountsInfo }
       ]);
   }));
 });
