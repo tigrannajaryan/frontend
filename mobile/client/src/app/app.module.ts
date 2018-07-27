@@ -2,6 +2,7 @@ import { ErrorHandler, Injector, NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
+import { AppVersion } from '@ionic-native/app-version';
 
 import { IonicApp, IonicModule } from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -22,6 +23,7 @@ import { getMetaReducers, reducers } from '~/app.reducers';
 
 import { AuthEffects } from '~/core/effects/auth.effects';
 import { ApiCommonErrorsEffects } from '~/core/effects/api-common-errors.effects';
+import { CoreModule } from '~/core/core.module';
 
 @NgModule({
   declarations: [
@@ -31,6 +33,8 @@ import { ApiCommonErrorsEffects } from '~/core/effects/api-common-errors.effects
     BrowserModule,
     HttpClientModule,
     ReactiveFormsModule,
+    CoreModule,
+
     IonicModule.forRoot(ClientAppComponent, {backButtonText: '', backButtonIcon: 'ios-arrow-round-back'}),
     IonicStorageModule.forRoot(),
 
@@ -65,6 +69,7 @@ import { ApiCommonErrorsEffects } from '~/core/effects/api-common-errors.effects
     Logger,
     StatusBar,
     SplashScreen,
+    AppVersion,
 
     // services
     AuthService,

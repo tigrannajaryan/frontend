@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
-import { IonicPage } from 'ionic-angular';
+import { Component, ViewChild } from '@angular/core';
+import { IonicPage, Tab, Tabs } from 'ionic-angular';
+
+import { GAWrapper } from '~/shared/google-analytics';
 import { PageNames } from '../core/page-names';
 
 interface TabsObject {
@@ -16,7 +18,10 @@ interface TabsObject {
   templateUrl: 'tabs.component.html'
 })
 export class TabsComponent {
-  protected tabs: TabsObject[] = [
+
+  @ViewChild('tabs') tabs: Tabs;
+
+  protected tabsData: TabsObject[] = [
     {
       name: 'Home',
       link: PageNames.Home,
@@ -44,4 +49,18 @@ export class TabsComponent {
     }
   ];
 
+  private lastSubsrciption: any;
+
+  constructor(private ga: GAWrapper) { }
+
+  onTabChange(tab: Tab): void {
+    // Track all tab changes
+    this.ga.trackView(tab.tabTitle);
+
+    // Track all screen changes inside tab
+    if (this.lastSubsrciption) {
+      this.lastSubsrciption.unsubscribe();
+    }
+    this.lastSubsrciption = tab.viewDidEnter.subscribe(view => this.ga.trackViewChange(view));
+  }
 }
