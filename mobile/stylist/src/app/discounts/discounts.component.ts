@@ -56,7 +56,7 @@ export class DiscountsComponent {
     this.activeTab = DiscountTabNames.weekday;
   }
 
-  ionViewDidEnter(): void {
+  ionViewWillEnter(): void {
     this.loadInitialData();
   }
 

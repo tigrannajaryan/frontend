@@ -107,7 +107,7 @@ describe('Page: Appointment Date Select', () => {
   it('should throw an error when no service is selected', async(() => {
     let error;
     try {
-      instance.ionViewDidEnter(); // request dates
+      instance.ionViewWillEnter(); // request dates
     } catch (e) {
       error = e;
     }
