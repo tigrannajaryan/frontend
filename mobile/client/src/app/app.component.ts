@@ -4,16 +4,20 @@ import { MenuController, Nav, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
+import { Logger } from '~/shared/logger';
+import { GAWrapper } from '~/shared/google-analytics';
+
 import { deleteToken, getToken } from '~/core/utils/token-utils';
 import { LogoutAction } from '~/core/reducers/auth.reducer';
-
-import { Logger } from '~/shared/logger';
 import { PageNames } from '~/core/page-names';
 
 interface MenuPage {
   title: string;
   component: PageNames;
 }
+
+// Google Analytics Id
+const gaTrackingId = 'UA-122004541-1';
 
 @Component({
   templateUrl: 'app.component.html'
@@ -30,14 +34,27 @@ export class ClientAppComponent implements OnInit {
     private platform: Platform,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
-    private store: Store<any>
+    private store: Store<any>,
+    private ga: GAWrapper
   ) {
   }
 
   async ngOnInit(): Promise<void> {
+    const startTime = Date.now();
+
     this.logger.info('App initializing...');
 
+    // First initialize the platform. We cannot do anything else until the platform is
+    // ready and the plugins are available.
     await this.platform.ready();
+
+    // Now that the platform is ready asynchronously initialize in parallel everything
+    // that our app needs and wait until all initializations finish. Add here any other
+    // initialization operation that must be done before the initial page is shown.
+    await this.ga.init(gaTrackingId);
+
+    // Track all top-level screen changes
+    this.nav.viewDidEnter.subscribe(view => this.ga.trackViewChange(view));
 
     this.statusBar.styleDefault();
     this.splashScreen.hide();
@@ -54,6 +71,12 @@ export class ClientAppComponent implements OnInit {
       // the first request returns 401 unauthorized, and app reacts to it
       // load app –> show screen –> do request –> react if unauthorized
     }
+
+    // All done, measure the loading time and report to GA
+    const loadTime = Date.now() - startTime;
+    this.logger.info('App: loaded in', loadTime, 'ms');
+
+    this.ga.trackTiming('Loading', loadTime, 'AppInitialization', 'FirstLoad');
   }
 
   openPage(page: MenuPage): void {

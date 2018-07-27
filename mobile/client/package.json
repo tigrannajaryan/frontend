@@ -44,6 +44,7 @@
     "cordova-plugin-app-version": "0.1.9",
     "cordova-plugin-device": "2.0.2",
     "cordova-plugin-facebook4": "2.1.0",
+    "cordova-plugin-google-analytics": "1.8.6",
     "cordova-plugin-ionic-keyboard": "2.0.5",
     "cordova-plugin-ionic-webview": "1.2.1",
     "cordova-plugin-splashscreen": "5.0.2",
@@ -103,9 +104,12 @@
         "APP_ID": "199496197324986",
         "APP_NAME": "bb",
         "fb_app_id": "199496197324986",
-        "fb_app_name": "bb"
+        "fb_app_name": "bb",
+        "ANDROID_SDK_VERSION": "4.+"
       },
-      "cordova-plugin-google-analytics": {},
+      "cordova-plugin-google-analytics": {
+        "GMS_VERSION": "11.0.1"
+      },
       "sentry-cordova": {},
       "cordova-plugin-app-version": {},
       "cordova-sqlite-storage": {}

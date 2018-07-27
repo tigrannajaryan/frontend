@@ -55,9 +55,12 @@ export class MyAppComponent {
     // that our app needs and wait until all initializations finish. Add here any other
     // initialization operation that must be done before the initial page is shown.
     await async_all([
-      this.initGa(),
+      this.ga.init(gaTrackingId),
       this.storage.init()
     ]);
+
+    // Track all top-level screen changes
+    this.nav.viewDidEnter.subscribe(view => this.ga.trackViewChange(view));
 
     // All initializations are done, show the initial page to the user
     await this.showInitialPage();
@@ -71,30 +74,6 @@ export class MyAppComponent {
     this.logger.info('App: loaded in', loadTime, 'ms');
 
     this.ga.trackTiming('Loading', loadTime, 'AppInitialization', 'FirstLoad');
-  }
-
-  async initGa(): Promise<void> {
-    try {
-      this.logger.info(`App: Initializing Google Analytics with id=${gaTrackingId}...`);
-
-      await this.ga.init(gaTrackingId);
-
-      this.logger.info('App: Google Analytics is ready now');
-
-      // Track all screen changes
-      this.nav.viewDidEnter.subscribe(view => this.trackViewChange(view));
-    } catch (e) {
-      this.logger.warn('App: Error starting Google Analytics (this is expected if not on the phone):', e);
-    }
-  }
-
-  protected trackViewChange(view: any): void {
-    const viewClassName: string = (view && view.instance) ? view.instance.constructor.name : 'unknown';
-    this.logger.info(`App: Entered ${viewClassName}`);
-
-    // Remove 'Component' suffix for better readability of GA results.
-    const viewName = viewClassName.replace(/Component$/, '');
-    this.ga.trackView(viewName);
   }
 
   async showInitialPage(): Promise<void> {
