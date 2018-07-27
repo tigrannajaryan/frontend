@@ -14,7 +14,7 @@ import { ISubscription } from 'rxjs/Subscription';
 import { ProfileModel } from '~/core/api/profile.models';
 import { EmailValidator } from '~/shared/validators';
 import { PhotoSourceType } from '~/shared/constants';
-import { downscalePhoto, urlToFile } from '../../../../shared/image-utils';
+import { downscalePhoto, urlToFile } from '~/shared/image-utils';
 import { DomSanitizer } from '@angular/platform-browser';
 import { showAlert } from '~/core/utils/alert';
 
@@ -26,17 +26,18 @@ import { showAlert } from '~/core/utils/alert';
 export class ProfilePageComponent {
 
   readonly DEFAULT_IMAGE = 'url(/assets/imgs/user/default_user.png)';
+  currentImage;
+
   protected form: FormGroup;
 
   protected subscriptions: ISubscription[];
-  protected currentImage;
 
   isLoading = false;
 
-  constructor(public navCtrl: NavController,
-              public navParams: NavParams,
-              public formBuilder: FormBuilder,
-              public store: Store<ProfileState>,
+  constructor(protected navCtrl: NavController,
+              protected navParams: NavParams,
+              protected formBuilder: FormBuilder,
+              protected store: Store<ProfileState>,
               protected camera: Camera,
               protected domSanitizer: DomSanitizer,
               protected actionSheetCtrl: ActionSheetController
@@ -89,7 +90,7 @@ export class ProfilePageComponent {
       ]
     };
     if (this.currentImage) {
-      opts.buttons.splice(-1, 0, {
+      opts.buttons.push({
         text: 'Remove Photo',
         role: 'destructive',
         handler: () => {

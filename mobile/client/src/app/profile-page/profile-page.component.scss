@@ -1,12 +1,15 @@
-.ProfilePage {
+// Size of the profile image
+$image-size: 250px;
+// Icon size should be one third of the size of the image.
+$icon-size: $image-size / 3;
 
+.ProfilePage {
   .ProfilePage-label {
     font-weight: bold;
-    color: color($colors, warm-grey);
+    color: color($grayscale, 500);
   }
 
   .ProfilePage-imageContainer--circle {
-    $image-size: 250px;
     position: relative;
     width: $image-size;
     height: $image-size;
@@ -15,41 +18,40 @@
     border-radius: 50%;
 
     .ProfilePage-imageContainer-photo {
+      width: 100%;
+      height: 100%;
       background: no-repeat center;
       background-size: cover;
       border-radius: 50%;
-      height: 100%;
-      width: 100%;
     }
 
     .ProfilePage-imageContainer-photo:after {
       position: absolute;
       top: 0;
-      left: 0;
       right: 0;
       bottom: 0;
-      content: '';
+      left: 0;
       z-index: -1;
+      content: '';
       background: white;
       border-radius: 50%;
       opacity: 0.2;
     }
 
     .ProfilePage-imageContainer-add {
-      // Icon size should be one third of the size of the image.
-      $icon-size: $image-size / 3;
-      border-radius: 50%;
-      display: block;
-      height: $icon-size;
-      left: 50%;
-      overflow: hidden;
-      opacity: 0.8;
       position: absolute;
-      transform: translate(30%, -110%);
       top: 100%;
-      text-align: center;
-      width: $icon-size;
+      left: 50%;
       z-index: 1;
+      display: block;
+      width: $icon-size;
+      height: $icon-size;
+      overflow: hidden;
+      text-align: center;
+      border-radius: 50%;
+      opacity: 0.8;
+      transform: translate(30%, -110%);
+
 
       &:after {
         position: absolute;

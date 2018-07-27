@@ -1,5 +1,5 @@
 import { ErrorHandler, Injector, NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 
@@ -21,10 +21,10 @@ import { getMetaReducers, reducers } from '~/app.reducers';
 
 import { AuthEffects } from '~/core/effects/auth.effects';
 import { ApiCommonErrorsEffects } from '~/core/effects/api-common-errors.effects';
-import { httpInterceptorProviders } from '~/core/http-interceptors';
 import { ProfileService } from '~/core/api/profile-service';
 import { BaseApiService } from '~/shared/base-api-service';
 import { ServerStatusTracker } from '~/shared/server-status-tracker';
+import { AuthInterceptor } from '~/core/http-interceptors/auth-interceptor';
 
 @NgModule({
   declarations: [
@@ -68,14 +68,13 @@ import { ServerStatusTracker } from '~/shared/server-status-tracker';
     Logger,
     StatusBar,
     SplashScreen,
-    ProfileService,
-    BaseApiService,
     ServerStatusTracker,
     // Interceptors
-    httpInterceptorProviders,
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     // services
     AuthService,
-
+    ProfileService,
+    BaseApiService,
     {
       // Our custom handler for unhandled exceptions
       provide: ErrorHandler,
