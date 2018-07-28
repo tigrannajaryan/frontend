@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Contacts } from '@ionic-native/contacts';
 import { OpenNativeSettings } from '@ionic-native/open-native-settings';
+import { SMS } from '@ionic-native/sms';
 import { IonicPageModule } from 'ionic-angular';
 
 import { CoreModule } from '~/core/core.module';
@@ -18,7 +19,8 @@ import { InvitationsApi } from './invitations.api';
   providers: [
     InvitationsApi,
     Contacts,
-    OpenNativeSettings
+    OpenNativeSettings,
+    SMS
   ]
 })
 export class InvitationsModule {}

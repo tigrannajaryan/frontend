@@ -2,7 +2,7 @@
   <ion-navbar>
     <server-status></server-status>
 
-    <ion-buttons *ngIf="!isProfile" end>
+    <ion-buttons *ngIf="!isMainScreen" end>
       <button ion-button icon-only (click)="onSkip()">
         <span class="skip-link">Skip</span>
       </button>
@@ -11,7 +11,7 @@
 </ion-header>
 
 <ion-content padding>
-  <made-nav *ngIf="!isProfile" [activePage]="PageNames.Invitations"></made-nav>
+  <made-nav *ngIf="!isMainScreen" [activePage]="PageNames.Invitations"></made-nav>
 
   <div class="p-i-top">
     <div class="p-i-title">Invite clients</div>
@@ -36,14 +36,14 @@
       <ion-col col1 class="search-icon">
         <ion-icon name="search"></ion-icon>
       </ion-col>
-      <ion-col col10 class="search-input">
+      <ion-col col10 class="search-input" (click)="searchBoxInput.setFocus()">
         <!-- Show all selected contact as tags -->
         <div *ngFor="let contact of selectedContacts" class="contact-name">
           {{ contact.displayName ? contact.displayName : contact.phoneNumber }}
           <ion-icon name="close-circle" clear (click)='onRemoveSelection(contact)'></ion-icon>
         </div>
         <!-- Search input field -->
-        <ion-input placeholder="Search name or phone number" (input)="onSearchChange()" [(ngModel)]="searchInput"></ion-input>
+        <ion-input #searchBoxInput placeholder="Search name or phone number" (input)="onSearchChange()" [(ngModel)]="searchInput"></ion-input>
       </ion-col>
 
       <ion-col col1 class="search-cancel">
@@ -81,10 +81,10 @@
 
           <!-- Contact status -->
           <ion-col col-3 align-self-center class="status">
-            <span *ngIf="contact.item.status === ContactStatus.Invited" class="invited">Invited</span>
-            <span *ngIf="contact.item.status === ContactStatus.InvitationPending" class="invited">Pending</span>
-            <span *ngIf="contact.item.status === ContactStatus.InvitationFailed" class="invited">Failed</span>
-            <span *ngIf="contact.item.status === ContactStatus.Accepted" class="accepted">Accepted</span>
+            <span *ngIf="contact.item.status === InvitationStatus.Invited" class="invited">Invited</span>
+            <span *ngIf="contact.item.status === InvitationStatus.InvitationPending" class="invited">Pending</span>
+            <span *ngIf="contact.item.status === InvitationStatus.InvitationFailed" class="invited">Failed</span>
+            <span *ngIf="contact.item.status === InvitationStatus.Accepted" class="accepted">Accepted</span>
             <ion-icon *ngIf="contact.item.selected" name="checkmark"></ion-icon>
           </ion-col>
         </ion-row>
@@ -102,7 +102,7 @@
   </ion-grid>
 
   <div padding-top>
-    <button ion-button color="bb_skin" class="bb-btn-a wide-btn" full (click)="sendInvitations()">
+    <button ion-button color="bb_skin" class="bb-btn-a wide-btn" full (click)="onInviteClients()">
       Invite Clients
     </button>
   </div>
