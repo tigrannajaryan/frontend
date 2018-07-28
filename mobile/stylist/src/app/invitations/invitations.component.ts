@@ -1,6 +1,6 @@
 import {
+  AlertController,
   IonicPage,
-  ModalController,
   NavController,
   NavParams
 } from 'ionic-angular';
@@ -8,23 +8,20 @@ import {
 import { Component } from '@angular/core';
 import { Contact, Contacts, IContactFindOptions } from '@ionic-native/contacts';
 import { OpenNativeSettings } from '@ionic-native/open-native-settings';
+import { SMS } from '@ionic-native/sms';
 import * as Fuse from 'fuse.js/dist/fuse';
-import { formatNumber, parseNumber } from 'libphonenumber-js';
+
+import { normalizePhoneNumber } from '~/shared/utils/phone-numbers';
 
 import { PageNames } from '~/core/page-names';
-import { ClientInvitation } from './invitations.models';
+import { ClientInvitation, InvitationStatus } from './invitations.models';
 import { InvitationsApi, InvitationsResponse } from './invitations.api';
-import { loading } from '~/core/utils/loading';
 import { trimStr } from '~/core/functions';
 import { showAlert } from '~/core/utils/alert';
-
-export enum ContactStatus {
-  New,
-  Invited,
-  InvitationPending,
-  InvitationFailed,
-  Accepted
-}
+import { StylistServiceProvider } from '~/core/stylist-service/stylist-service';
+import { StylistProfile } from '~/core/stylist-service/stylist-models';
+import { Discounts } from '~/discounts/discounts.models';
+import { DiscountsApi } from '~/discounts/discounts.api';
 
 class ErrorWrapper {
   constructor(readonly error) { }
@@ -39,7 +36,7 @@ interface PhoneContact {
   phoneNumber: string;
   displayName?: string;
   type?: string;
-  status: ContactStatus;
+  status: InvitationStatus;
 }
 
 /**
@@ -84,37 +81,41 @@ const defaultCountry = 'US';
 })
 export class InvitationsComponent {
   // Expose to html template
-  protected PageNames = PageNames;
-  protected formatField = InvitationsComponent.formatField;
-  protected ContactStatus = ContactStatus;
+  PageNames = PageNames;
+  formatField = InvitationsComponent.formatField;
+  InvitationStatus = InvitationStatus;
 
-  // Indicates that this page is opened from the Home screen.
-  protected isProfile: boolean;
+  // Indicates that this page is opened from the Main screen.
+  isMainScreen: boolean;
 
   // The flag that indicates if we can read local contacts successfully.
-  protected canReadPhoneContacts: boolean;
+  canReadPhoneContacts: boolean;
 
   // The list of all contacts as an array and as a map
-  protected allContacts: PhoneContact[] = [];
-  protected allContactsByPhone: Map<string, PhoneContact> = new Map();
+  allContacts: PhoneContact[];
+  allContactsByPhone: Map<string, PhoneContact>;
 
   // Currently visible contacts grouped by sections
-  protected displayedContacts: DisplayContactSection[] = [];
+  displayedContacts: DisplayContactSection[];
 
   // Currently selected contacts
-  protected selectedContacts: PhoneContact[] = [];
+  selectedContacts: PhoneContact[];
 
   // Indicates that the contacts are being loaded
-  protected loadingContacts = false;
+  loadingContacts: boolean;
 
   // Current value of search input field
-  protected searchInput = '';
+  searchInput: string;
 
   // Indicates that search action must be performed. Used for debounce logic
-  protected searchPending: any;
+  searchPending: any;
 
   // Indicates that the search text looks like a phone number
-  protected seachInputIsLikePhoneNumber = false;
+  seachInputIsLikePhoneNumber: boolean;
+
+  // Preloaded stylist profile and discounts promises
+  private stylistProfile: Promise<StylistProfile>;
+  private discounts: Promise<Discounts>;
 
   /**
    * PhoneContact comparison function for sorting
@@ -219,53 +220,13 @@ export class InvitationsComponent {
     return r;
   }
 
-  protected static apiContactStatusStringToEnum(status: string): ContactStatus {
-    switch (status) {
-      case 'unsent':
-        return ContactStatus.InvitationPending;
-
-      case 'undelivered':
-        return ContactStatus.InvitationFailed;
-
-      case 'invited':
-        return ContactStatus.Invited;
-
-      case 'accepted':
-        return ContactStatus.Accepted;
-
-      default: return ContactStatus.New;
-    }
-  }
-
   /**
-   * Normalize phone number for using as a key of Map. Trims whitespace and
-   * removes all invalid characters.
+   * Normalize phone number for using as a key of Map. We need this function to make
+   * sure the same phone number formatted in different ways (e.g. as local number or in international format)
+   * is recognised as the same phone number in Map operations.
    */
   protected static phoneAsKey(phone: string): string {
-    // Remove all characters except digits and +
-    return phone.trim().replace(/[^+0-9]/gm, '');
-  }
-
-  /**
-   * Validate and format a phone number string as a number in default country
-   * or as international number and returns details of parsing.
-   * If the number is valid returns it formatted in Internatioal format.
-   * @returns undefined if the phone number is not valid
-   */
-  static validatePhoneNumber(phone: string): string {
-    try {
-      const intlFormat = formatNumber(parseNumber(phone, defaultCountry), 'International');
-
-      // Due to a bug in libphonenum we need to parse again the resulting international format
-      // to see if it is really a valid number.
-      if (parseNumber(intlFormat, defaultCountry).phone) {
-        return intlFormat;
-      } else {
-        return undefined;
-      }
-    } catch (e) {
-      return undefined;
-    }
+    return normalizePhoneNumber(phone, defaultCountry);
   }
 
   /**
@@ -277,18 +238,25 @@ export class InvitationsComponent {
   }
 
   constructor(
-    public navCtrl: NavController,
-    public navParams: NavParams,
-    public modalCtrl: ModalController,
+    private alertCtrl: AlertController,
     private contacts: Contacts,
+    private discountsApi: DiscountsApi,
+    private invitationsApi: InvitationsApi,
+    private navCtrl: NavController,
+    private navParams: NavParams,
     private openNativeSettings: OpenNativeSettings,
-    private invitationsApi: InvitationsApi
+    private sms: SMS,
+    private stylistApi: StylistServiceProvider
   ) {
   }
 
   protected ionViewWillEnter(): void {
-    this.isProfile = Boolean(this.navParams.get('isProfile'));
+    this.isMainScreen = Boolean(this.navParams.get('isMainScreen'));
     this.loadContacts();
+
+    // Preload stylist profile and discounts that we will need later
+    this.stylistProfile = this.stylistApi.getProfile();
+    this.discounts = this.discountsApi.getDiscounts();
   }
 
   /**
@@ -297,6 +265,15 @@ export class InvitationsComponent {
    * statuses.
    */
   protected loadContacts(): void {
+    // Initialize local state
+    this.allContacts = [];
+    this.allContactsByPhone = new Map();
+    this.displayedContacts = [];
+    this.selectedContacts = [];
+    this.searchInput = '';
+    this.searchPending = false;
+    this.seachInputIsLikePhoneNumber = false;
+
     this.loadingContacts = true;
 
     // Initiate asynchronously in parallel reading local contacts and reading invitations from backend
@@ -372,7 +349,7 @@ export class InvitationsComponent {
             phoneNumber: trimStr(phoneNumber.value),
             displayName: trimStr(contact.name.formatted),
             type: trimStr(phoneNumber.type),
-            status: ContactStatus.New
+            status: InvitationStatus.New
           };
           if (phoneContact.displayName === phoneContact.phoneNumber) {
             // Avoid using dummy displayName if it is exactly the same as the phone number.
@@ -393,11 +370,10 @@ export class InvitationsComponent {
     for (const invitation of invitations.invitations) {
       const phoneNumber = InvitationsComponent.phoneAsKey(invitation.phone);
       const contact = this.allContactsByPhone.get(phoneNumber);
-      const status: ContactStatus = InvitationsComponent.apiContactStatusStringToEnum(invitation.status);
 
       if (contact) {
         // The invited contact exists in local list. Just set the status of the invitation.
-        contact.status = status;
+        contact.status = invitation.status;
       } else {
         // The invited contact does not exists in local list. Probably was deleted from address book
         // or was invited by manually entering the phone number. Add it as a contact to our list.
@@ -405,7 +381,7 @@ export class InvitationsComponent {
           displayName: invitation.name,
           phoneNumber: invitation.phone,
           selected: false,
-          status
+          status: invitation.status
         };
 
         this.addToAllContacts(phoneContact);
@@ -469,22 +445,27 @@ export class InvitationsComponent {
    */
   protected onContactClick(contact: DisplayContact): void {
     // First check if the contact's phone number is valid.
-    if (!InvitationsComponent.validatePhoneNumber(contact.item.phoneNumber)) {
+    if (!normalizePhoneNumber(contact.item.phoneNumber, defaultCountry)) {
       InvitationsComponent.showPhoneNumberError(contact.item.phoneNumber);
       return;
     }
 
-    if (contact.item.status === ContactStatus.New) {
+    if (contact.item.status === InvitationStatus.New) {
       // Toggle the selection state.
       contact.item.selected = !contact.item.selected;
       this.updateSelectedContacts();
+
+      if (contact.item.selected) {
+        // We selected a new item. Clear the search to allow starting over.
+        this.onSearchCancel();
+      }
     } else {
       let msg;
       switch (contact.item.status) {
-        case ContactStatus.InvitationFailed:
+        case InvitationStatus.InvitationFailed:
           msg = 'The invitation of this contact failed. Is the phone number correct?'; break;
 
-        case ContactStatus.InvitationPending:
+        case InvitationStatus.InvitationPending:
           msg = 'The invitation will be sent soon.'; break;
 
         default:
@@ -548,7 +529,7 @@ export class InvitationsComponent {
    * Event handler for Add Contact button.
    */
   protected onAddManualContact(): void {
-    const phoneNumber = InvitationsComponent.validatePhoneNumber(this.searchInput);
+    const phoneNumber = normalizePhoneNumber(this.searchInput, defaultCountry);
     if (!phoneNumber) {
       InvitationsComponent.showPhoneNumberError(this.searchInput.trim());
       return;
@@ -558,7 +539,7 @@ export class InvitationsComponent {
     const phoneContact: PhoneContact = {
       selected: true,
       phoneNumber,
-      status: ContactStatus.New
+      status: InvitationStatus.New
     };
 
     this.addToAllContacts(phoneContact);
@@ -569,44 +550,86 @@ export class InvitationsComponent {
     this.onSearchCancel();
   }
 
+  /**
+   * Event handler for 'Settings' link click.
+   */
   protected onSettingsClick(): void {
+    // Open application settings where the user can manually grant permission to read Contacts
+    // if it was not previously granted.
     this.openNativeSettings.open('application_details');
   }
 
-  @loading
-  protected async sendInvitations(): Promise<void> {
+  /**
+   * Event handler for 'Invite Clients' button click.
+   */
+  protected async onInviteClients(): Promise<void> {
     if (this.selectedContacts.length === 0) {
-      const addButtons = this.isProfile ? [] :
-        [{
-          text: 'Skip',
-          handler: () => this.onSkip()
-        }];
-
-      showAlert('', 'To invite select some contacts by tapping on the contact name or enter a phone number manually in the search box.',
-        addButtons);
+      showAlert('', 'To invite select some contacts by tapping on the contact name or enter a phone number manually in the search box.');
       return;
     }
 
-    // Prepare the list of selected phone numbers
-    const invitations: ClientInvitation[] = [];
-    for (const contact of this.selectedContacts) {
-      const phoneNumber = InvitationsComponent.validatePhoneNumber(contact.phoneNumber);
-
-      invitations.push({
-        name: contact.displayName,
-        phone: phoneNumber
-      });
-    }
-
-    // And send to backend.
-    await this.invitationsApi.sendInvitations(invitations);
-    this.navCtrl.push(PageNames.Tabs);
-
-    this.nextRoute();
+    await this.sendInvitations(await this.composeInvitationText());
   }
 
+  /**
+   * Send invitations to selected contacts
+   */
+  protected async sendInvitations(invitationText: string): Promise<void> {
+    // Go through the list of selected phone numbers
+    for (const contact of this.selectedContacts) {
+      const phoneNumber = normalizePhoneNumber(contact.phoneNumber, defaultCountry);
+      if (!phoneNumber) {
+        // Skip any invalid numbers (there should not be any because we validate earlier, but
+        // we want to be definsive).
+        continue;
+      }
+
+      const invitation: ClientInvitation = {
+        name: contact.displayName,
+        phone: phoneNumber
+      };
+
+      try {
+        // Send the message. On iOS This opens standard SMS App on the phone and the user must manually
+        // tap the Send button. On Android this sends directly without user intervention.
+        await this.sms.send(invitation.phone, invitationText);
+      } catch (e) {
+        // SMS is not sent. Most likely cancelled by the user.
+        const alert = this.alertCtrl.create({
+          title: '', subTitle: 'Not all invitations are sent. You can try again later.',
+          buttons: [{
+            text: 'Dismiss',
+            handler: () => this.sendingFinished()
+          }]
+        });
+        alert.present();
+        return;
+      }
+
+      // Remove the invited contact from the selected list and updates its status
+      contact.selected = false;
+      contact.status = InvitationStatus.Invited;
+      this.updateSelectedContacts();
+
+      // Let our backend know that the message was sent
+      await this.invitationsApi.sendInvitations([invitation]);
+    }
+
+    const alert = this.alertCtrl.create({
+      title: '', subTitle: 'All invitations are sent.',
+      buttons: [{
+        text: 'Dismiss',
+        handler: () => this.sendingFinished()
+      }]
+    });
+    alert.present();
+  }
+
+  /**
+   * Event handler for 'Skip' click.
+   */
   protected onSkip(): void {
-    this.navCtrl.push(PageNames.Home);
+    this.navCtrl.push(PageNames.Tabs);
 
     // Send empty invitations list to backend to make sure the profile's
     // has_invited_clients is marked true and we do not bother the user
@@ -614,12 +637,30 @@ export class InvitationsComponent {
     this.invitationsApi.sendInvitations([]);
   }
 
-  protected nextRoute(): void {
-    if (this.isProfile) {
-      this.navCtrl.pop();
+  /**
+   * Action to perform when sending invitation is finished (successfully or not).
+   */
+  private sendingFinished(): void {
+    if (this.isMainScreen) {
+      // Do nothing if this is a regular view from Main screen.
       return;
     }
 
-    this.navCtrl.push(PageNames.Home);
+    // This is during registation. Show the Main screen next.
+    this.navCtrl.push(PageNames.Tabs);
+  }
+
+  private async composeInvitationText(): Promise<string> {
+    const stylistProfile = await this.stylistProfile;
+    const discounts = await this.discounts;
+
+    let defaultInvitationText = `Hi, ${stylistProfile.first_name} here! I now take appointments via mobile app Made. ` +
+      'Get it from https://www.madebeauty.com/get';
+
+    if (discounts.first_booking > 0) {
+      defaultInvitationText = `${defaultInvitationText} and your first visit will be up to ${discounts.first_booking}% off!`;
+    }
+
+    return defaultInvitationText;
   }
 }

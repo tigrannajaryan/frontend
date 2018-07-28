@@ -11,7 +11,7 @@ describe('Shared functions: profileStatusToPage', () => {
       .toEqual([{ page: PageNames.RegisterSalon }]);
   }));
 
-  it('should correctly map fully complete profile completeness to Tabs', async(() => {
+  it('should correctly map fully complete profile completeness to Tabs screen', async(() => {
     // Full profile
     const profileStatus: ProfileStatus = {
       has_business_hours_set: true,

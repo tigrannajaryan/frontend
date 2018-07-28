@@ -1,5 +1,5 @@
-import { Component, ViewChild } from '@angular/core';
-import { IonicPage, Tab, Tabs } from 'ionic-angular';
+import { Component } from '@angular/core';
+import { IonicPage, Tab } from 'ionic-angular';
 
 import { ENV } from '~/../environments/environment.default';
 
@@ -20,9 +20,6 @@ interface TabsObject {
   templateUrl: 'tabs.component.html'
 })
 export class TabsComponent {
-
-  @ViewChild('tabs') tabs: Tabs;
-
   protected tabsData: TabsObject[] = [
     {
       name: 'Home',
@@ -55,7 +52,7 @@ export class TabsComponent {
       this.tabsData.push({
         name: 'Invite',
         link: PageNames.Invitations,
-        params: { isProfile: true }
+        params: { isMainScreen: true }
       });
     }
   }
