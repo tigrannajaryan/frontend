@@ -1,6 +1,13 @@
 <ion-header class="ion-bb-header" madeUserHeader [profile]="profile | async" [hasBackButton]="false"></ion-header>
 
 <ion-content no-padding>
+
+  <ion-fab right bottom>
+    <button ion-fab [madeLink]="[PageNames.AppointmentAdd]">
+      <ion-icon name="add"></ion-icon>
+    </button>
+  </ion-fab>
+
   <ion-refresher (ionRefresh)="doRefresh($event)" class="Refresh">
     <ion-spinner></ion-spinner>
   </ion-refresher>

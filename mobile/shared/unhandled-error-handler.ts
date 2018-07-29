@@ -84,7 +84,7 @@ export class UnhandledErrorHandler {
     if (error instanceof ServerNonFieldError || error instanceof ServerFieldError) {
       // Normally ServerFieldError should be handled by each specific screen and the incorrect
       // fields should be highlighted in the UI but if we get here we will show an alert.
-      errorMsg = error.getStr();
+      errorMsg = error.getMessage();
       errorUIAction = ErrorUIAction.showAlert;
     } else if (error instanceof ServerErrorResponse && error.status === HttpStatus.unauthorized) {
       // Erase all previous navigation history and make LoginPage the root

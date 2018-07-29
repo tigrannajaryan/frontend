@@ -10,7 +10,6 @@ export interface AppPersistentData {
   userEmail: string;
   authToken: string;
   showHomeScreenHelp: boolean;
-  showFutureAppointmentHelp: boolean;
 }
 
 const storageKey = 'app-storage';
@@ -55,8 +54,7 @@ export class AppStorage {
       this.data = {
         userEmail: undefined,
         authToken: undefined,
-        showHomeScreenHelp: false,
-        showFutureAppointmentHelp: false
+        showHomeScreenHelp: false
       };
     }
   }
