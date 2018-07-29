@@ -1,135 +1,40 @@
 page-appointment-add {
-  .Appointment-content {
-    background: color($colors, bb_skin);
+  .title {
+    padding: pxtoem(12) 0 0;
+    margin-bottom: 4rem;
+    font-size: pxtoem(40);
+    font-weight: bold;
   }
 
-  .Appointment-pic {
-    $pic-size: 140px;
-
-    width: $pic-size;
-    height: $pic-size;
-    padding: pxtorem10(19);
-    margin-bottom: pxtorem10(30);
-    border: 1px solid color($colors, bb_honey);
-    border-radius: 50%;
-
-    .bb-icon {
-      $icon-size: 102px;
-
-      width: $icon-size;
-      height: $icon-size;
-      padding-top: 25px;
-      font-size: pxtorem10(48);
-      text-align: center;
-      background: white;
-      border-radius: 50%;
-    }
+  .app-submit {
+    margin-right: 8px;
   }
 
   .Appointment-form {
-    position: relative;
-  }
-
-  .Appointment-customersList {
-    position: absolute;
-    z-index: 1;
-    width: 100%;
-    max-width: 100%;
-    overflow: hidden;
-    background: white;
-    border-radius: 0 0 10px 10px;
-    transform: translateY(-30px);
-  }
-
-  .Appointment-customersListItem {
-    padding: pxtorem10(16) pxtorem10(14);
-    font-size: $t-base;
-    border-bottom: 1px solid color($grayscale, 200);
-  }
-
-  .Appointment-submit {
-    background: transparent;
-
-    .item-inner {
-      border: none;
+    .item-md {
+      padding-left: 5px;
+      font-size: $t-h3;
     }
 
-    button[type="submit"] {
-      $btn-size: 58px;
-
-      width: $btn-size;
-      height: $btn-size;
-      font-size: $t-h2;
+    ion-label[fixed] {
+      width: 35px;
+      min-width: 25px;
+      max-width: 35px;
+      padding-left: 8px;
       color: color($grayscale, 800);
-      background: white;
-      border-radius: 50%;
-      box-shadow: 0 0 30px darken(color($colors, bb_skin), 2%);
     }
 
-    &.item .item-inner {
-      // remove ionic’s border
-      border: 0;
-    }
-  }
-}
-
-.Input {
-  padding: 0;
-  margin-bottom: pxtorem10(30);
-  background: transparent;
-
-  .Input-btn {
-    display: block;
-    width: 100%;
-    height: 32px; // same as input
-    padding: 0 0 pxtorem10(10);
-    margin: 0;
-    font-size: $t-h3;
-    color: color($grayscale, 800);
-    text-transform: none;
-    border-bottom: 1px solid color($colors, bb_skin_dark);
-    border-radius: 0;
-
-    .button-inner {
-      justify-content: flex-start;
-      text-transform: none;
-    }
-
-    &.is-muted {
-      color: color($colors, bb_skin_dark);
-    }
-  }
-
-  &.item-block .item-inner {
-    padding: 0 0 pxtorem10(10);
-    border-bottom-color: color($colors, bb_skin_dark);
-  }
-
-  .input-wrapper {
-    display: block;
-  }
-
-  .label {
-    font-size: $t-base;
-    color: color($grayscale, 800);
-
-    + ion-input .text-input {
+    .label-md {
       margin: 0;
     }
-  }
 
-  input,
-  ion-datetime {
-    padding: 0;
-    font-size: $t-h4;
-
-    .datetime-placeholder,
-    &::-webkit-input-placeholder {
-      color: color($colors, bb_skin_dark);
+    .item-inner > ion-icon {
+      font-size: $t-h2;
     }
 
-    &:focus::-webkit-input-placeholder {
-      color: transparent;
+    .service-select,
+    .datetime-md {
+      padding-left: 8px;
     }
   }
 }

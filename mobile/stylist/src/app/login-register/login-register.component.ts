@@ -86,7 +86,6 @@ export class LoginRegisterComponent {
 
     // This is a new user, enable help screens
     this.appStorage.set('showHomeScreenHelp', true);
-    this.appStorage.set('showFutureAppointmentHelp', true);
 
     this.navCtrl.push(PageNames.RegisterSalon, {}, { animate: false });
   }

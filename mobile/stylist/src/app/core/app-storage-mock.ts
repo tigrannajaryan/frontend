@@ -12,8 +12,7 @@ export class AppStorageMock {
     this.data = {
       userEmail: undefined,
       authToken: undefined,
-      showHomeScreenHelp: false,
-      showFutureAppointmentHelp: false
+      showHomeScreenHelp: false
     };
   }
 
