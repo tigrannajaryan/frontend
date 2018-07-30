@@ -5,10 +5,13 @@ import {
   profileActionTypes,
   RequestGetProfileAction,
   RequestGetProfileErrorAction,
-  RequestGetProfileSuccessAction, RequestUpdateImage, RequestUpdateImageError, RequestUpdateImageSuccess,
+  RequestGetProfileSuccessAction,
+  RequestUpdateImage,
+  RequestUpdateImageError,
+  RequestUpdateImageSuccess,
   RequestUpdateProfileAction,
   RequestUpdateProfileErrorAction,
-  RequestUpdateProfileSuccessAction, selectProfile,
+  RequestUpdateProfileSuccessAction,
   selectRequestSucceeded
 } from '~/core/reducers/profile.reducer';
 import { Observable } from 'rxjs/Observable';
@@ -30,8 +33,9 @@ export class ProfileEffects {
   @Effect()
   updateProfile: Observable<Action> = this.actions
     .ofType<RequestUpdateProfileAction>(profileActionTypes.REQUEST_UPDATE_PROFILE)
-    .switchMap(action => {
-      return this.profileService.updateProfile(action.profile);
+    .withLatestFrom(this.store)
+    .switchMap(([action, storeState]) => {
+      return this.profileService.updateProfile(storeState);
     })
     .map(response => {
       if (response.errors) {
@@ -83,12 +87,12 @@ export class ProfileEffects {
   profileGetError: Observable<void> = this.actions
     .ofType<RequestGetProfileErrorAction>(profileActionTypes.REQUEST_GET_PROFILE_ERROR)
     .withLatestFrom(this.store)
-    .map(([action, store]) => {
+    .map(([action]) => {
       const errorMessage = action.errors[0]['error'];
       showAlert('Error.', errorMessage);
     });
 
-  @Effect()
+  @Effect({dispatch: false})
   profileUpdateImage: Observable<Action> = this.actions
     .ofType<RequestUpdateImage>(profileActionTypes.REQUEST_UPDATE_IMAGE)
     .switchMap(action => {
@@ -97,18 +101,6 @@ export class ProfileEffects {
           map(response => new RequestUpdateImageSuccess(response)),
           catchError(error => of(new RequestUpdateImageError(error)))
         );
-    });
-
-  /**
-   * After a profile image has been submitted, trigger an update profile with the current image uuid.
-   */
-  @Effect({dispatch: false})
-  profileUpdateImageSuccess: Observable<void> = this.actions
-    .ofType<RequestUpdateImageSuccess>(profileActionTypes.REQUEST_UPDATE_IMAGE_SUCCESS)
-    .withLatestFrom(this.store)
-    .map(([action, store]) => {
-      const profile = selectProfile(store);
-      this.store.dispatch(new RequestUpdateProfileAction(profile));
     });
 
   constructor(

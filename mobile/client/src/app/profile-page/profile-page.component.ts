@@ -96,6 +96,7 @@ export class ProfilePageComponent {
         handler: () => {
           this.currentImage = this.DEFAULT_IMAGE;
           this.form.get('profile_photo_id').setValue(undefined);
+          this.form.get('profile_photo_url').setValue(undefined);
         }
       });
     }
@@ -121,7 +122,6 @@ export class ProfilePageComponent {
         correctOrientation: true,
         sourceType // PHOTOLIBRARY = 0, CAMERA = 1
       };
-
       imageData = await this.camera.getPicture(options);
     } catch (e) {
       showAlert('', 'Cannot take or add photo. Please make sure the App has the necessary permissions.');
@@ -165,9 +165,7 @@ export class ProfilePageComponent {
         Validators.maxLength(15),
         Validators.minLength(5),
         Validators.required
-      ]],
-      profile_photo_id: [''],
-      profile_photo_url: ['']
+      ]]
     });
   }
 
