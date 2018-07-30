@@ -37,8 +37,7 @@ export class StylistInvitationPageComponent {
   }
 
   onContinueWithStylist(): void {
-    // TODO: uncomment after adding services pages
-    // this.navCtrl.push(PageNames.Categories, { stylistUuid: this.stylist.uuid });
+    this.navCtrl.push(PageNames.Categories, { stylistUuid: this.stylist.uuid });
   }
 
   onSeeStylistsList(): void {
