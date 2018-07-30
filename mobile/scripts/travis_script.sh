@@ -24,8 +24,7 @@ npm install -g cordova@8.0.0
 # build Android app only for the Client app
 
 if [[ $APP_TYPE = "client" ]]; then
-    ./node_modules/ionic/bin/ionic cordova platform add android
-    ./node_modules/ionic/bin/ionic cordova build android --release --verbose
+    $TRAVIS_BUILD_DIR/mobile/scripts/build-android-app.sh
 fi
 
 # prepare and build iOS app

@@ -9,8 +9,6 @@
 echo "Installing Android pre-requisites"
 set -ev
 
-ANDROID_SDK=android_sdk
-
 # install Java and Gradle
 brew tap caskroom/versions
 brew cask install java8
@@ -23,8 +21,7 @@ cd $TRAVIS_BUILD_DIR/$ANDROID_SDK
 wget -nv https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip
 unzip -qq sdk-tools-linux-4333796.zip
 
-export ANDROID_HOME="$TRAVIS_BUILD_DIR/$ANDROID_SDK"
 export PATH=${PATH}:$ANDROID_HOME/platform-tools:$ANDROID_HOME/tools
 
 # install build tools auto-accepting Android licenses
-echo y | tools/bin/sdkmanager "build-tools;28.0.1" "platforms;android-28"
+echo y | tools/bin/sdkmanager "build-tools;$ANDROID_BUILD_TOOLS_VERSION" "platforms;android-28"
