@@ -9,7 +9,8 @@ import { GAWrapper } from '~/shared/google-analytics';
 
 import { deleteToken, getToken } from '~/core/utils/token-utils';
 import { LogoutAction } from '~/core/reducers/auth.reducer';
-import { PageNames } from '~/core/page-names';
+
+import { AUTHORIZED_ROOT, PageNames, UNAUTHORIZED_ROOT } from '~/core/page-names';
 
 interface MenuPage {
   title: string;
@@ -62,9 +63,9 @@ export class ClientAppComponent implements OnInit {
     // TODO: use try/catch
     const token = await getToken();
     if (token) {
-      this.rootPage = PageNames.Services;
+      this.rootPage = AUTHORIZED_ROOT;
     } else {
-      this.rootPage = PageNames.Auth;
+      this.rootPage = UNAUTHORIZED_ROOT;
       // no expiration, the only case: deactivation of the account
       // discover by making a request
       // discover on next request after the app is started

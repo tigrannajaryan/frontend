@@ -76,7 +76,7 @@ export class AuthConfirmPageComponent {
       .takeWhile(componentIsActive(this))
       .filter((isTokenSaved: boolean) => isTokenSaved)
       .subscribe(() => {
-        this.navCtrl.setRoot(PageNames.Services);
+        this.navCtrl.setRoot(PageNames.StylistInvitation);
       });
 
     // Handle code verification errors

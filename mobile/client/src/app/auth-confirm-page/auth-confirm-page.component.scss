@@ -9,7 +9,7 @@
     width: $width;
     margin-top: 64px;
 
-    .text-input { // ionic’s
+    .text-input { // override ionic styles
       width: 100%;
       padding-left: 13.2px;
       font-family: monospace;
@@ -18,7 +18,7 @@
     }
 
     &.item-block .item-inner,
-    &.item-input-has-focus .item-inner { // ionic’s
+    &.item-input-has-focus .item-inner { // override ionic styles
       border-bottom: none;
     }
   }

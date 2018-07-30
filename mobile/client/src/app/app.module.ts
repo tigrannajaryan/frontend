@@ -1,5 +1,5 @@
 import { ErrorHandler, Injector, NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppVersion } from '@ionic-native/app-version';
@@ -14,15 +14,20 @@ import { EffectsModule } from '@ngrx/effects';
 
 import { Logger } from '~/shared/logger';
 
+import { AuthInterceptor } from '~/core/http-interceptors/auth-interceptor';
 import { UnhandledErrorHandler } from '~/core/unhandled-error-handler';
 import { AuthService } from '~/core/api/auth-service';
 import { AuthServiceMock } from '~/core/api/auth-service.mock';
+import { StylistsService } from '~/core/api/stylists-service';
+import { StylistsServiceMock } from '~/core/api/stylists-service.mock';
 
 import { ClientAppComponent } from '~/app.component';
 import { getMetaReducers, reducers } from '~/app.reducers';
 
 import { AuthEffects } from '~/core/effects/auth.effects';
 import { ApiCommonErrorsEffects } from '~/core/effects/api-common-errors.effects';
+import { StylistsEffects } from '~/core/effects/stylists.effects';
+
 import { CoreModule } from '~/core/core.module';
 
 @NgModule({
@@ -56,7 +61,8 @@ import { CoreModule } from '~/core/core.module';
      */
     EffectsModule.forRoot([
       AuthEffects,
-      ApiCommonErrorsEffects
+      ApiCommonErrorsEffects,
+      StylistsEffects
     ])
   ],
 
@@ -74,6 +80,13 @@ import { CoreModule } from '~/core/core.module';
     // services
     AuthService,
     AuthServiceMock,
+    StylistsService,
+    StylistsServiceMock,
+
+    { // Add auth token to all requests
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor, multi: true
+    },
 
     {
       // Our custom handler for unhandled exceptions

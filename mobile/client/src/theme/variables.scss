@@ -32,7 +32,9 @@ $app-direction: ltr;
 // The "primary" color is the only required color in the map.
 
 $grayscale: (
+  100:        #F2F2F2,
   200:        #ECECEC,
+  300:        #D4D4D4,
   500:        #999999,
   800:        black,
 );
@@ -43,6 +45,7 @@ $colors: (
 
   honey:      #F4C5AD,
   orange:     #FBB597,
+  violet:     #D5B1FE,
 );
 
 
