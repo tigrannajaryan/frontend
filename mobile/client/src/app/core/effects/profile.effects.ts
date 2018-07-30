@@ -92,7 +92,7 @@ export class ProfileEffects {
       showAlert('Error.', errorMessage);
     });
 
-  @Effect({dispatch: false})
+  @Effect()
   profileUpdateImage: Observable<Action> = this.actions
     .ofType<RequestUpdateImage>(profileActionTypes.REQUEST_UPDATE_IMAGE)
     .switchMap(action => {
