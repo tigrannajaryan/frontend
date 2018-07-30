@@ -38,7 +38,7 @@ export class RequestGetProfileAction implements Action {
 
 export class RequestGetProfileSuccessAction implements Action {
   readonly type = profileActionTypes.REQUEST_GET_PROFILE_SUCCESS;
-  readonly requestState = RequestState.Succeded;
+  readonly requestState = RequestState.Succeeded;
   constructor(public profile: ProfileModel) {}
 }
 
@@ -61,7 +61,7 @@ export class LoadingProfileAction implements Action {
 
 export class RequestUpdateProfileSuccessAction implements Action {
   readonly type = profileActionTypes.REQUEST_UPDATE_PROFILE_SUCCESS;
-  readonly requestState = RequestState.Succeded;
+  readonly requestState = RequestState.Succeeded;
   constructor(public profile: ProfileModel) {}
 }
 
@@ -79,7 +79,7 @@ export class RequestUpdateImage implements Action {
 
 export class RequestUpdateImageSuccess implements Action {
   readonly type = profileActionTypes.REQUEST_UPDATE_IMAGE_SUCCESS;
-  readonly requestState = RequestState.Succeded;
+  readonly requestState = RequestState.Succeeded;
   constructor(public uuid: any) {}
 }
 
@@ -186,5 +186,5 @@ export const selectIsLoading = createSelector(
 
 export const selectRequestSucceeded = createSelector(
   selectProfileFromState,
-  (state: ProfileState) => state.requestState === RequestState.Succeded
+  (state: ProfileState) => state.requestState === RequestState.Succeeded
 );
