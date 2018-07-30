@@ -83,6 +83,9 @@ ion-datetime {
 }
 
 .back-button-icon {
+  //adjust beck arrow size
+  font-size: pxtorem10(15);
+
   &:before {
     display: inline-block;
     font-family: 'bb', sans-serif;
@@ -98,6 +101,54 @@ ion-datetime {
 .has-refresher > .scroll-content {
   border-top: none;
 }
+
+// rewrite ionic tabs icons
+
+ion-icon.tab-button-icon[ng-reflect-name="Home"],
+ion-icon.tab-button-icon[ng-reflect-name="Hours"],
+ion-icon.tab-button-icon[ng-reflect-name="Discount"],
+ion-icon.tab-button-icon[ng-reflect-name="Services"],
+ion-icon.tab-button-icon[ng-reflect-name="Profile"] {
+  display: inline-block;
+  font-family: 'bb', sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1;
+  vertical-align: bottom;
+  content: '\0045';
+}
+
+ion-icon.tab-button-icon[ng-reflect-name="Home"]:after {
+  content: '\0045';
+}
+
+ion-icon.tab-button-icon[ng-reflect-name="Hours"]:after {
+  content: '\004c';
+}
+
+ion-icon.tab-button-icon[ng-reflect-name="Discount"]:after {
+  content: '\004d';
+}
+
+ion-icon.tab-button-icon[ng-reflect-name="Services"]:after {
+  display: inline-block;
+  font-family: 'Ionicons', sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  line-height: 1;
+  text-transform: none;
+  content: "\f169";
+  speak: none;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+ion-icon.tab-button-icon[ng-reflect-name="Profile"]:after {
+  content: '\004e';
+}
+
 
 // wrap and rewrite ionic def style
 .ion-bb {

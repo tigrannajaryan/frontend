@@ -2,12 +2,8 @@ import { Action, ActionReducer, createFeatureSelector, createSelector, State } f
 
 import { RequestState } from '~/core/api/request.models';
 import { AuthTokenModel } from '~/core/api/auth.models';
+import { StylistModel } from '~/core/api/stylists.models';
 import { ApiError } from '~/core/api/errors.models';
-
-export enum AuthRequestTypes {
-  RequestCode = 'RequestCode',
-  ConfirmCode = 'ConfirmCode'
-}
 
 export enum authActionTypes {
   REQUEST_CODE = 'AUTH_REQUEST_CODE',
@@ -20,70 +16,58 @@ export enum authActionTypes {
   CONFIRM_CODE_ERROR = 'AUTH_CONFIRM_CODE_ERROR',
   CONFIRM_CODE_SUCCESS = 'AUTH_CONFIRM_CODE_SUCCESS',
 
-  RESET = 'AUTH_RESET',
+  CLEAR_SEND_CODE_TIMEOUT = 'AUTH_CLEAR_SEND_CODE_TIMEOUT',
+
   USER_LOGOUT = 'AUTH_USER_LOGOUT'
 }
 
 export class RequestCodeAction implements Action {
   readonly type = authActionTypes.REQUEST_CODE;
-  readonly requestState = RequestState.NotStarted;
-  readonly requestType = AuthRequestTypes.RequestCode;
   constructor(public phone: string) {}
 }
 
 export class RequestCodeLoadingAction implements Action {
   readonly type = authActionTypes.REQUEST_CODE_LOADING;
-  readonly requestState = RequestState.Loading;
-  readonly requestType = AuthRequestTypes.RequestCode;
 }
 
 export class RequestCodeErrorAction implements Action {
   readonly type = authActionTypes.REQUEST_CODE_ERROR;
-  readonly requestState = RequestState.Failed;
-  readonly requestType = AuthRequestTypes.RequestCode;
   constructor(public errors: ApiError[]) {}
 }
 
 export class RequestCodeSuccessAction implements Action {
   readonly type = authActionTypes.REQUEST_CODE_SUCCESS;
-  readonly requestState = RequestState.Succeded;
-  readonly requestType = AuthRequestTypes.RequestCode;
+  constructor(public timestamp?: number) {}
 }
 
 export class ConfirmCodeAction implements Action {
   readonly type = authActionTypes.CONFIRM_CODE;
-  readonly requestState = RequestState.NotStarted;
-  readonly requestType = AuthRequestTypes.ConfirmCode;
-  constructor(public code: string) {}
+  constructor(
+    public phone: string,
+    public code: string
+  ) {}
 }
 
 export class ConfirmCodeLoadingAction implements Action {
   readonly type = authActionTypes.CONFIRM_CODE_LOADING;
-  readonly requestState = RequestState.Loading;
-  readonly requestType = AuthRequestTypes.ConfirmCode;
 }
 
 export class ConfirmCodeErrorAction implements Action {
   readonly type = authActionTypes.CONFIRM_CODE_ERROR;
-  readonly requestState = RequestState.Failed;
-  readonly requestType = AuthRequestTypes.ConfirmCode;
   constructor(public errors: ApiError[]) {}
 }
 
 export class ConfirmCodeSuccessAction implements Action {
   readonly type = authActionTypes.CONFIRM_CODE_SUCCESS;
-  readonly requestState = RequestState.Succeded;
-  readonly requestType = AuthRequestTypes.ConfirmCode;
-  constructor(public token: AuthTokenModel) {}
+  constructor(
+    public phone: string,
+    public token: AuthTokenModel,
+    public invitedBy: StylistModel | undefined
+  ) {}
 }
 
-export class ResetAction implements Action {
-  readonly type = authActionTypes.RESET;
-}
-
-// used in meta reducer in app.reducer.ts
-export class LogoutAction implements Action {
-  readonly type = authActionTypes.USER_LOGOUT;
+export class ClearSendCodeTimeout implements Action {
+  readonly type = authActionTypes.CLEAR_SEND_CODE_TIMEOUT;
 }
 
 type Actions =
@@ -95,68 +79,131 @@ type Actions =
   | ConfirmCodeLoadingAction
   | ConfirmCodeSuccessAction
   | ConfirmCodeErrorAction
-  | ResetAction;
+  | ClearSendCodeTimeout;
 
 export interface AuthState {
-  phone?: string;
-  token?: AuthTokenModel;
+  getCodeRequestState: RequestState;
+  getCodeRequestErrors?: ApiError[];
+  getCodeRequestTimestamp?: number;
 
-  requestState: RequestState;
-  requestType: AuthRequestTypes;
-  errors?: ApiError[];
+  confirmCodeRequestState: RequestState;
+  confirmCodeRequestErrors?: ApiError[];
 }
 
 const initialState: AuthState = {
-  requestState: RequestState.NotStarted,
-  requestType: AuthRequestTypes.RequestCode
+  getCodeRequestState: RequestState.NotStarted,
+  confirmCodeRequestState: RequestState.NotStarted
 };
 
 export function authReducer(state: AuthState = initialState, action: Actions): AuthState {
   switch (action.type) {
-    case authActionTypes.RESET:
-      return {
-        ...initialState
-      };
-
     case authActionTypes.REQUEST_CODE:
-    case authActionTypes.CONFIRM_CODE:
       return {
         ...state,
-        phone: action.type === authActionTypes.REQUEST_CODE ? action.phone : state.phone,
-        requestType: action.requestType,
-
-        // reset
-        requestState: RequestState.NotStarted,
-        errors: undefined
+        getCodeRequestState: RequestState.NotStarted,
+        getCodeRequestErrors: undefined
       };
 
     case authActionTypes.REQUEST_CODE_LOADING:
-    case authActionTypes.REQUEST_CODE_SUCCESS:
-    case authActionTypes.CONFIRM_CODE_LOADING:
       return {
         ...state,
-        requestState: action.requestState,
-        requestType: action.requestType
+        getCodeRequestState: RequestState.Loading
       };
 
     case authActionTypes.REQUEST_CODE_ERROR:
+      return {
+        ...state,
+        getCodeRequestState: RequestState.Failed,
+        getCodeRequestErrors: action.errors
+      };
+
+    case authActionTypes.REQUEST_CODE_SUCCESS:
+      return {
+        ...state,
+        getCodeRequestState: RequestState.Succeeded,
+        getCodeRequestTimestamp: action.timestamp || state.getCodeRequestTimestamp || Number(new Date())
+      };
+
+    case authActionTypes.CONFIRM_CODE:
+      return {
+        ...state,
+        confirmCodeRequestState: RequestState.NotStarted,
+        confirmCodeRequestErrors: undefined
+      };
+
+    case authActionTypes.CONFIRM_CODE_LOADING:
+      return {
+        ...state,
+        confirmCodeRequestState: RequestState.Loading
+      };
+
     case authActionTypes.CONFIRM_CODE_ERROR:
       return {
         ...state,
-        requestState: action.requestState,
-        errors: action.errors
+        confirmCodeRequestState: RequestState.Failed,
+        confirmCodeRequestErrors: action.errors
       };
 
     case authActionTypes.CONFIRM_CODE_SUCCESS:
       return {
         ...state,
-        requestState: action.requestState,
-        token: action.token
+        confirmCodeRequestState: RequestState.Succeeded
+      };
+
+    case authActionTypes.CLEAR_SEND_CODE_TIMEOUT:
+      return {
+        ...state,
+        getCodeRequestState: RequestState.NotStarted,
+        getCodeRequestTimestamp: undefined
       };
 
     default:
       return state;
   }
+}
+
+export const authPath = 'auth';
+
+const selectAuthFromState = createFeatureSelector<AuthState>(authPath);
+
+export const selectRequestCodeState = createSelector(
+  selectAuthFromState,
+  (state: AuthState): RequestState => state.getCodeRequestState
+);
+
+export const selectConfirmCodeState = createSelector(
+  selectAuthFromState,
+  (state: AuthState): RequestState => state.confirmCodeRequestState
+);
+
+export const selectConfirmCodeErrors = createSelector(
+  selectAuthFromState,
+  (state: AuthState): any => state.confirmCodeRequestErrors
+);
+
+export const RESEND_CODE_TIMEOUT_SECONDS = 120; // 2min
+
+export const selectCanRequestCodeInSeconds = (timestamp = Number(new Date())) => createSelector(
+  selectAuthFromState,
+  (state: AuthState): number => {
+    if (state.getCodeRequestTimestamp !== undefined) {
+      const seconds = Math.ceil(RESEND_CODE_TIMEOUT_SECONDS - (timestamp - state.getCodeRequestTimestamp) / 1000);
+      return seconds > 0 ? seconds : 0;
+    }
+    return 0; // can request now
+  }
+);
+
+export const selectCanRequestCode = (timestamp?: number) => createSelector(
+  selectCanRequestCodeInSeconds(timestamp),
+  (seconds: number): boolean => seconds === 0
+);
+
+// Next action and reducer used in app.reducer.ts
+// to reset state completely when user logs out
+
+export class LogoutAction implements Action {
+  readonly type = authActionTypes.USER_LOGOUT;
 }
 
 export function resetOnLogoutReducer(reducer: ActionReducer<State<any>>): ActionReducer<State<any>> {
@@ -167,57 +214,3 @@ export function resetOnLogoutReducer(reducer: ActionReducer<State<any>>): Action
     return reducer(state, action);
   };
 }
-
-export const authPath = 'auth';
-
-const selectAuthFromState = createFeatureSelector<AuthState>(authPath);
-
-export const selectPhone = createSelector(
-  selectAuthFromState,
-  (state: AuthState): string | undefined => state.phone
-);
-
-export const selectFormattedPhone = createSelector(
-  selectAuthFromState,
-  (state: AuthState): string | undefined => state.phone
-);
-
-export const selectToken = createSelector(
-  selectAuthFromState,
-  (state: AuthState): AuthTokenModel | undefined => state.token
-);
-
-export const selectConfirmCodeErrors = createSelector(
-  selectAuthFromState,
-  (state: AuthState): any =>
-    state.requestType === AuthRequestTypes.ConfirmCode &&
-    state.errors
-);
-
-export const selectRequestCodeLoading = createSelector(
-  selectAuthFromState,
-  (state: AuthState): boolean =>
-    state.requestType === AuthRequestTypes.RequestCode &&
-    state.requestState === RequestState.Loading
-);
-
-export const selectRequestCodeSucceded = createSelector(
-  selectAuthFromState,
-  (state: AuthState): boolean =>
-    state.requestType === AuthRequestTypes.RequestCode &&
-    state.requestState === RequestState.Succeded
-);
-
-export const selectConfirmCodeLoading = createSelector(
-  selectAuthFromState,
-  (state: AuthState): boolean =>
-    state.requestType === AuthRequestTypes.ConfirmCode &&
-    state.requestState === RequestState.Loading
-);
-
-export const selectConfirmCodeSucceded = createSelector(
-  selectAuthFromState,
-  (state: AuthState): boolean =>
-    state.requestType === AuthRequestTypes.ConfirmCode &&
-    state.requestState === RequestState.Succeded
-);

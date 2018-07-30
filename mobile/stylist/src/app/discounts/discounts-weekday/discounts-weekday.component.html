@@ -1,0 +1,15 @@
+<ion-header madeBackHeader></ion-header>
+
+
+<ion-content no-padding>
+  <made-nav [activePage]="PageNames.DiscountsWeekday"></made-nav>
+
+  <div class="Discounts-wp Discounts-wpBody">
+    <div class="Discounts-title">Weekday Discounts</div>
+
+    <discounts-weekday-short [discounts]="discounts" (weekdayChange)="onWeekdayChange()"></discounts-weekday-short>
+  </div>
+</ion-content>
+
+
+<ion-footer madeDiscountsFooter (continue)="onContinue()"></ion-footer>

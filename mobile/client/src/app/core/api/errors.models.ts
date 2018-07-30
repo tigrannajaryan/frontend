@@ -24,6 +24,14 @@ export enum GenericFieldErrorCode {
   datetime = 'datetime'
 }
 
+export enum AuthNonFieldErrorCodes {
+  err_wait_to_rerequest_new_code = 'err_wait_to_rerequest_new_code'
+}
+
+export enum AuthFieldErrorCodes {
+  err_invalid_sms_code = 'err_invalid_sms_code'
+}
+
 type ApiErrorCode =
   | HighLevelErrorCode
   | GenericFieldErrorCode

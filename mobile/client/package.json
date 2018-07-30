@@ -7,10 +7,11 @@
   "scripts": {
     "clean": "ionic-app-scripts clean",
     "build": "ionic-app-scripts build",
-    "lint": "ionic-app-scripts lint",
+    "lint": "npm run lint:typescript && npm run lint:styles",
+    "lint:typescript": "ionic-app-scripts lint",
     "lint:styles": "stylelint \"**/*.scss\"",
-    "ionic:build": "cross-env BB_ENV=prod ionic-app-scripts build --prod",
-    "ionic:serve": "cross-env BB_ENV=dev ionic-app-scripts serve",
+    "ionic:build": "cross-env MB_ENV=prod ionic-app-scripts build --prod",
+    "ionic:serve": "cross-env MB_ENV=dev ionic-app-scripts serve",
     "mobserve": "ionic serve -c",
     "test-coverage": "ng test --preserve-symlinks --code-coverage",
     "test": "ng test --preserve-symlinks",
@@ -45,6 +46,7 @@
     "cordova-plugin-camera": "4.0.3",
     "cordova-plugin-device": "2.0.2",
     "cordova-plugin-facebook4": "2.1.0",
+    "cordova-plugin-google-analytics": "1.8.6",
     "cordova-plugin-ionic-keyboard": "2.0.5",
     "cordova-plugin-ionic-webview": "1.2.1",
     "cordova-plugin-splashscreen": "5.0.2",
@@ -104,9 +106,12 @@
         "APP_ID": "199496197324986",
         "APP_NAME": "bb",
         "fb_app_id": "199496197324986",
-        "fb_app_name": "bb"
+        "fb_app_name": "bb",
+        "ANDROID_SDK_VERSION": "4.+"
       },
-      "cordova-plugin-google-analytics": {},
+      "cordova-plugin-google-analytics": {
+        "GMS_VERSION": "11.0.1"
+      },
       "sentry-cordova": {},
       "cordova-plugin-app-version": {},
       "cordova-sqlite-storage": {},

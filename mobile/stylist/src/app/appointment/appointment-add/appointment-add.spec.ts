@@ -5,26 +5,16 @@ import { async, ComponentFixture } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Store, StoreModule } from '@ngrx/store';
 
-import { prepareSharedObjectsForTests } from '~/core/test-utils.spec';
 import { TestUtils } from '~/../test';
-
+import { prepareSharedObjectsForTests } from '~/core/test-utils.spec';
 import { HomeService as AppointmentService } from '~/home/home.service';
-
 import { ServiceItem } from '~/core/stylist-service/stylist-models';
-import { clientsMock } from '~/appointment/appointment-add/clients-service-mock';
 import { SelectServiceAction, servicesReducer, ServicesState } from '~/appointment/appointment-services/services.reducer';
-import { clientsReducer, ClientsState, SearchSuccessAction } from '~/appointment/appointment-add/clients.reducer';
-import {
-  appointmentDatesReducer,
-  appointmentDatesStatePath,
-  SelectDateAction
-} from '~/appointment/appointment-date/appointment-dates.reducer';
-
 import { AppointmentAddComponent } from './appointment-add';
 
 let fixture: ComponentFixture<AppointmentAddComponent>;
 let instance: AppointmentAddComponent;
-let store: Store<ServicesState & ClientsState>;
+let store: Store<ServicesState>;
 
 const fakeService: ServiceItem = {
   uuid: faker.random.uuid(),
@@ -48,9 +38,7 @@ describe('Pages: Add Appointment', () => {
     AppointmentService
   ], [
     HttpClientTestingModule,
-    StoreModule.forFeature('service', servicesReducer),
-    StoreModule.forFeature('clients', clientsReducer),
-    StoreModule.forFeature(appointmentDatesStatePath, appointmentDatesReducer)
+    StoreModule.forFeature('service', servicesReducer)
   ]).then(compiled => {
     fixture = compiled.fixture;
     instance = compiled.instance;
@@ -66,42 +54,13 @@ describe('Pages: Add Appointment', () => {
       .toBeTruthy();
   }));
 
-  it('should search for clients', async(() => {
-    const clients = clientsMock.slice(0, 3);
-    store.dispatch(new SearchSuccessAction(clients));
-
-    fixture.detectChanges();
-
-    // expect menu show clients
-    clients.forEach(client => {
-      expect(fixture.nativeElement.textContent)
-        .toContain(`${client.first_name} ${client.last_name}`);
-    });
-
-    const client = fixture.nativeElement.querySelector('.Appointment-customersListItem');
-    expect(client)
-      .toBeTruthy();
-
-    client.click();
-
-    fixture.detectChanges();
-
-    // check value in input updated
-    expect(client.textContent)
-      .toContain(fixture.nativeElement.querySelector('[formcontrolname="client"] input').value);
-
-    // check selected client property updated
-    expect(client.textContent)
-      .toContain(`${instance.selectedClient.first_name} ${instance.selectedClient.last_name}`);
-  }));
-
   it('should receive selected service from store', async(() => {
     store.dispatch(new SelectServiceAction(fakeService));
 
     fixture.detectChanges();
 
     // check value in input updated
-    expect(fixture.nativeElement.querySelector('.Appointment-service').textContent)
+    expect(fixture.nativeElement.querySelector('[id="selectedService"]').textContent)
       .toContain(fakeService.name);
 
     // check selected service property updated
@@ -114,18 +73,19 @@ describe('Pages: Add Appointment', () => {
 
     fixture.detectChanges();
 
-    const client = clientsMock[0];
     const nextWeek = moment().add(7, 'days');
 
-    store.dispatch(new SelectDateAction({
-      date: nextWeek.format('YYYY-MM-DD'),
-      price: faker.commerce.price()
-    }));
+    const client = {
+      first_name: 'Hello',
+      last_name: 'World',
+      phone: '+1234567890'
+    };
 
     // add missed values
     instance.form.patchValue({
       client: `${client.first_name} ${client.last_name}`,
       phone: client.phone,
+      date: nextWeek.format('YYYY-MM-DD'),
       time: nextWeek.format('HH:mm')
     });
 
@@ -145,7 +105,7 @@ describe('Pages: Add Appointment', () => {
     // enables submit
     fixture.detectChanges();
 
-    fixture.nativeElement.querySelector('[type="submit"]').click();
+    fixture.nativeElement.querySelector('[id="submitBtn"]').click();
 
     expect(appointmentsService.createAppointment)
       .toHaveBeenCalledWith(data, forced);

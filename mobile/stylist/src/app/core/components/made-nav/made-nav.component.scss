@@ -1,117 +1,123 @@
 made-nav {
-  .nav {
+  .Nav {
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
     align-items: center;
     justify-content: center;
-    margin-bottom: pxtorem10(25);
+    margin: pxtorem10(15) 0 pxtorem10(9);
 
-    @media ($smartphone) {
-      margin-bottom: pxtorem10(20);
+    @media ($phone-md) {
+      margin: pxtorem10(22) 0 pxtorem10(12);
     }
 
-    @media ($phone) {
-      margin-bottom: pxtorem10(15);
+    @media ($phone-lg) {
+      margin: pxtorem10(28) 0 pxtorem10(14);
+    }
+  }
+
+  .Nav-item {
+    flex: 1;
+    overflow: hidden;
+    white-space: nowrap;
+    transform: translateY(-2px);
+
+    @media ($phone-md) {
+      transform: translateY(-1px);
     }
 
-    &-item {
-      flex: 1;
-      overflow: hidden;
-      white-space: nowrap;
+    &.right {
+      direction: rtl;
+    }
+  }
 
-      &-el {
-        display: inline-block;
-        vertical-align: middle;
+  .Nav-itemEl {
+    display: inline-block;
+    vertical-align: middle;
+  }
 
-        &-dot {
-          position: relative;
-          display: inline-block;
-          width: 10px;
-          height: 10px;
-          margin: 0 5px;
-          vertical-align: middle;
-          background: color($colors, bb_skin);
-          border: 1px solid transparent;
-          border-radius: 50%;
+  .Nav-itemElDot {
+    position: relative;
+    display: inline-block;
+    width: pxtorem10(7);
+    height: pxtorem10(7);
+    margin: 0 pxtorem10(5);
+    vertical-align: middle;
+    background: color($colors, bb_skin);
+    border: 1px solid transparent;
+    border-radius: 50%;
 
-          @media ($smartphone) {
-            width: 8px;
-            height: 8px;
-            margin: 0 8px;
-          }
-
-          @media ($phone) {
-            width: 6px;
-            height: 6px;
-            margin: 0 6px;
-          }
-
-          &.white {
-            background: color($colors, white);
-            border-color: rgba(0, 0, 0, 0.2);
-          }
-
-          &.plus:after {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            display: inline-block;
-            font-family: "Ionicons", sans-serif;
-            font-size: $t-base;
-            font-style: normal;
-            font-weight: normal;
-            font-variant: normal;
-            line-height: 1;
-            color: color($colors, color5);
-            speak: none;
-            text-transform: none;
-            text-rendering: auto;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-            content: "\f102";
-            transform: translate(-50%, -50%);
-          }
-        }
-
-        &-line {
-          display: inline-block;
-          width: 90px;
-          height: 1px;
-          margin: 0 5px;
-          vertical-align: middle;
-          background: color($colors, bb_skin);
-
-          @media ($smartphone) {
-            width: pxtorem10(50);
-            margin: 0 4px;
-          }
-
-          @media ($phone) {
-            width: pxtorem10(30);
-            margin: 0 3px;
-          }
-        }
-      }
-
-      &.right {
-        direction: rtl;
-      }
+    @media ($phone-md) {
+      width: pxtorem10(9);
+      height: pxtorem10(9);
+      margin: 0 pxtorem10(7);
     }
 
-    &-active {
-      margin: 0 10px;
-      font-size: $t-h3;
+    &.white {
+      background: color($colors, white);
+      border-color: rgba(0, 0, 0, 0.2);
+    }
 
-      @media ($smartphone) {
-        margin: 0 8px;
-        font-size: $t-h4;
+    &.plus:after {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      display: inline-block;
+      font-family: "Ionicons", sans-serif;
+      font-size: pxtorem10(6);
+      font-style: normal;
+      font-weight: normal;
+      font-variant: normal;
+      line-height: pxtorem10(7);
+      color: color($colors, color5);
+      speak: none;
+      text-transform: none;
+      text-rendering: auto;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      content: "\f102";
+      transform: translate(-50%, -50%);
+
+      @media ($phone-md) {
+        font-size: pxtorem10(7);
       }
 
-      @media ($phone) {
-        margin: 0 6px;
-        font-size: $t-base;
+      @media ($phone-lg) {
+        font-size: pxtorem10(8);
       }
+    }
+  }
+
+  .Nav-itemElLine {
+    display: inline-block;
+    width: pxtorem10(38);
+    height: 1px;
+    margin: 0 pxtorem10(4);
+    vertical-align: middle;
+    background: color($colors, bb_skin);
+
+    @media ($phone-md) {
+      width: pxtorem10(45);
+    }
+
+    @media ($phone-lg) {
+      width: pxtorem10(50);
+      margin: 0 pxtorem10(5);
+    }
+  }
+
+  .Nav-active {
+    margin: 0 pxtorem10(9);
+    font-size: pxtorem10(9);
+
+    @media ($phone-md) {
+      margin: 0 pxtorem10(8);
+      font-size: pxtorem10(11);
+    }
+
+    @media ($phone-lg) {
+      margin: 0 pxtorem10(10);
+      font-size: pxtorem10(12);
     }
   }
 }

@@ -6,8 +6,22 @@ export interface WeekdayDiscount {
 }
 
 export interface Discounts {
-  weekdays: WeekdayDiscount[];
-  first_booking: number;
-  rebook_within_1_week: number;
-  rebook_within_2_weeks: number;
+  first_booking?: number;
+  rebook_within_1_week?: number;
+  rebook_within_2_weeks?: number;
+  rebook_within_3_weeks?: number;
+  rebook_within_4_weeks?: number;
+  rebook_within_5_weeks?: number;
+  rebook_within_6_weeks?: number;
+  weekdays?: WeekdayDiscount[];
+}
+
+export interface MaximumDiscounts {
+  maximum_discount: number;
+  is_maximum_discount_enabled: boolean;
+}
+
+export interface MaximumDiscountsWithVars extends MaximumDiscounts {
+  maximum_discount_label: string;
+  is_maximum_discount_label: string;
 }

@@ -4,10 +4,9 @@ import { Store } from '@ngrx/store';
 
 import { PageNames } from '~/core/page-names';
 import { StylistProfile } from '~/core/stylist-service/stylist-models';
-
+import { AuthApiService } from '~/core/auth-api-service/auth-api-service';
 import { HomeComponent } from '~/home/home.component';
 import { UserHeaderMenuActions, UserHeaderMenuComponent } from './user-header-menu/user-header-menu.component';
-import { AuthApiService } from '~/core/auth-api-service/auth-api-service';
 import { LogoutAction } from '~/app.reducers';
 
 @Component({

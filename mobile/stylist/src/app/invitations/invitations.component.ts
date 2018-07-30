@@ -305,6 +305,6 @@ export class InvitationsComponent {
     }
 
     await this.invitationsApi.sendInvitations(invitations);
-    this.navCtrl.push(PageNames.Home);
+    this.navCtrl.push(PageNames.Tabs);
   }
 }

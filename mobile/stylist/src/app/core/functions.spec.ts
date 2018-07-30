@@ -11,7 +11,7 @@ describe('Shared functions: profileStatusToPage', () => {
       .toEqual([{ page: PageNames.RegisterSalon }]);
   }));
 
-  it('should correctly map fully complete profile completeness to Home', async(() => {
+  it('should correctly map fully complete profile completeness to Tabs', async(() => {
     // Full profile
     const profileStatus: ProfileStatus = {
       has_business_hours_set: true,
@@ -24,7 +24,7 @@ describe('Shared functions: profileStatusToPage', () => {
     };
 
     expect(createNavHistoryList(profileStatus))
-      .toEqual([{ page: PageNames.Home }]);
+      .toEqual([{ page: PageNames.Tabs }]);
   }));
 
   it('should correctly map half complete profile to the correct list', async(() => {
@@ -44,7 +44,7 @@ describe('Shared functions: profileStatusToPage', () => {
         { page: PageNames.RegisterSalon },
         { page: PageNames.RegisterServices },
         { page: PageNames.Worktime },
-        { page: PageNames.Discounts }
+        { page: PageNames.DiscountsInfo }
       ]);
   }));
 });

@@ -1,101 +1,49 @@
-<ion-header class="ion-bb-header">
-  <ion-navbar>
-  </ion-navbar>
-</ion-header>
+<ion-header madeBackHeader></ion-header>
 
 
-<ion-content padding>
-  <made-nav *ngIf="!isProfile" [activePage]="PageNames.Discounts"></made-nav>
+<ion-content no-padding>
+  <ion-refresher (ionRefresh)="doRefresh($event)" class="Refresh">
+    <ion-spinner></ion-spinner>
+  </ion-refresher>
 
 
-  <div *ngIf="discounts" class="bb-wp">
-    <div *ngIf="discounts.weekdays" class="bb-wp-a bb-table">
-      <div class="bb-table-title">Ok gorgeous, set your custom pricing</div>
-
-      <ion-list class="bb-table ion-bb-sliding">
-        <ion-row class="bb-table-head">
-          <ion-col col-9 class="bb-table-row-col">
-            Day
-          </ion-col>
-          <ion-col col-3 class="bb-table-row-col">
-            Discount
-          </ion-col>
-        </ion-row>
+  <div class="Discounts-wp Discounts-wpBody">
+    <div class="Discounts-title DiscountsSettings-title">Discounts <img src="assets/imgs/icons/discount_w.png" alt="" class="DiscountsSettings-icon"></div>
 
 
-        <ion-item *ngFor="let weekday of discounts.weekdays; let index = index" (click)="weekday.is_working_day && onDiscountChange(DiscountsTypes.weekday, index)">
-          <ion-row class="bb-table-row">
-            <ion-col [attr.col-9]="weekday.is_working_day ? true: null" [attr.col-7]="!weekday.is_working_day ? true: null" class="bb-table-row-col">
-              {{ weekday.weekday_verbose }}
-            </ion-col>
-
-            <ion-col *ngIf="weekday.is_working_day" [attr.col-3]="weekday.is_working_day ? true: null" class="bb-table-row-col">
-              <span *ngIf="!weekday.discount_percent" class="inactive">None</span>
-              <span *ngIf="weekday.discount_percent">{{ weekday.discount_percent }}%</span>
-              <ion-icon name="ios-arrow-forward-outline"></ion-icon>
-            </ion-col>
-
-            <ion-col *ngIf="!weekday.is_working_day" [attr.col-5]="!weekday.is_working_day ? true: null" class="bb-table-row-col">
-              <div class="w100p inactive" text-right>Non-working</div>
-            </ion-col>
-          </ion-row>
-        </ion-item>
-      </ion-list>
+    <div class="Home-btns DiscountsSettings-tabs">
+      <div class="Home-btnsWp">
+        <button (click)="changeTab(DiscountTabNames.weekday)" [class.active]="DiscountTabNames.weekday === activeTab" ion-button clear color="dark" class="Home-btnsBtn active">
+          {{ discountTabs[DiscountTabNames.weekday].name }}
+        </button>
+        <button (click)="changeTab(DiscountTabNames.revisit)" [class.active]="DiscountTabNames.revisit === activeTab" ion-button clear color="dark" class="Home-btnsBtn">
+          {{ discountTabs[DiscountTabNames.revisit].name }}
+        </button>
+        <button (click)="changeTab(DiscountTabNames.firstVisit)" [class.active]="DiscountTabNames.firstVisit === activeTab" ion-button clear color="dark" class="Home-btnsBtn">
+          {{ discountTabs[DiscountTabNames.firstVisit].name }}
+        </button>
+        <button (click)="changeTab(DiscountTabNames.max)" [class.active]="DiscountTabNames.max === activeTab" ion-button clear color="dark" class="Home-btnsBtn">
+          {{ discountTabs[DiscountTabNames.max].name }}
+        </button>
+      </div>
     </div>
 
+    <ion-slides (ionSlideDidChange)="onSlideChanged()" no-padding>
+      <ion-slide>
+        <discounts-weekday-short [discounts]="weekdays" (weekdayChange)="onWeekdayChange()"></discounts-weekday-short>
+      </ion-slide>
 
+      <ion-slide>
+        <discounts-revisit-short [discounts]="rebook" (revisitChange)="onRevisitChange()"></discounts-revisit-short>
+      </ion-slide>
 
-    <div *ngIf="discounts.first_booking >= 0 || discounts.rebook_within_1_week >= 0 || discounts.rebook_within_2_weeks >= 0"
-      class="bb-wp-a bb-table">
-      <div class="bb-table-title">More custom pricing</div>
+      <ion-slide>
+        <discounts-first-booking-short [firstBooking]="firstBooking" (firstVisitChange)="onFirstVisitChange()"></discounts-first-booking-short>
+      </ion-slide>
 
-      <ion-list class="bb-table ion-bb-sliding">
-        <ion-item *ngIf="discounts.first_booking >= 0" (click)="onDiscountChange(DiscountsTypes.first_booking, 0, 'First booking')">
-          <ion-row class="bb-table-row">
-            <ion-col col-9 class="bb-table-row-col">
-              First booking
-            </ion-col>
-            <ion-col col-3 class="bb-table-row-col">
-              <span *ngIf="!discounts.first_booking" class="inactive">None</span>
-              <span *ngIf="discounts.first_booking">{{ discounts.first_booking }}%</span>
-              <ion-icon name="ios-arrow-forward-outline"></ion-icon>
-            </ion-col>
-          </ion-row>
-        </ion-item>
-        <ion-item *ngIf="discounts.rebook_within_1_week >= 0" (click)="onDiscountChange(DiscountsTypes.rebook_within_1_week, 0, 'Revisit within 1 week')">
-          <ion-row class="bb-table-row">
-            <ion-col col-9 class="bb-table-row-col">
-              Revisit within 1 week
-            </ion-col>
-            <ion-col col-3 class="bb-table-row-col">
-              <span *ngIf="!discounts.rebook_within_1_week" class="inactive">None</span>
-              <span *ngIf="discounts.rebook_within_1_week">{{ discounts.rebook_within_1_week }}%</span>
-              <ion-icon name="ios-arrow-forward-outline"></ion-icon>
-            </ion-col>
-          </ion-row>
-        </ion-item>
-        <ion-item *ngIf="discounts.rebook_within_2_weeks >= 0" (click)="onDiscountChange(DiscountsTypes.rebook_within_2_weeks, 0, 'Revisit within 2 weeks')">
-          <ion-row class="bb-table-row">
-            <ion-col col-9 class="bb-table-row-col">
-              Revisit within 2 weeks
-            </ion-col>
-            <ion-col col-3 class="bb-table-row-col">
-              <span *ngIf="!discounts.rebook_within_2_weeks" class="inactive">None</span>
-              <span *ngIf="discounts.rebook_within_2_weeks">{{ discounts.rebook_within_2_weeks }}%</span>
-              <ion-icon name="ios-arrow-forward-outline"></ion-icon>
-            </ion-col>
-          </ion-row>
-        </ion-item>
-      </ion-list>
-    </div>
-
-  </div>
-  <br/> <!--TODO: This tag needs to be removed when button will be extracted as common component-->
-  <!-- TODO: This needs to be extracted as a common component -->
-
-  <div text-center>
-    <button (click)="saveChanges()" ion-button class="bb-btn-circle">
-      <i class="bb-icon bb-icon-confirmation"></i>
-    </button>
+      <ion-slide>
+        <discounts-maximum-short [maximumDiscounts]="maximumDiscounts" (maximumDiscountChange)="onMaximumDiscountChange()"></discounts-maximum-short>
+      </ion-slide>
+    </ion-slides>
   </div>
 </ion-content>

@@ -1,0 +1,30 @@
+<div class="DiscountsList">
+  <ion-row *ngIf="header?.left || header?.right" class="DiscountsList-head">
+    <ion-col *ngIf="header?.left" no-padding col-8 class="">
+      {{ header.left }}
+    </ion-col>
+    <ion-col *ngIf="header?.right" no-padding col-4 class="">
+      {{ header.right }}
+    </ion-col>
+  </ion-row>
+
+
+  <ion-row *ngFor="let weekday of list; let index = index" (click)="weekday.is_working_day && onDiscountChange(index)" class="DiscountsList-row">
+    <ion-col no-padding col-8 class="DiscountsList-col">
+      {{ weekday.weekday_verbose }}
+    </ion-col>
+
+    <ion-col *ngIf="weekday.is_working_day" col-4 no-padding class="DiscountsList-col DiscountsList-colIcon">
+      <div>
+        <span *ngIf="!weekday.discount_percent">None</span>
+        <span *ngIf="weekday.discount_percent && symbol === DiscountSymbol.percent">{{ weekday.discount_percent }}{{ symbol }}</span>
+        <span *ngIf="weekday.discount_percent && symbol === DiscountSymbol.dollar">{{ symbol }}{{ weekday.discount_percent }}</span>
+      </div>
+      <ion-icon name="ios-arrow-forward-outline"></ion-icon>
+    </ion-col>
+
+    <ion-col no-padding *ngIf="!weekday.is_working_day" col-4 class="inactive">
+      Unavailable
+    </ion-col>
+  </ion-row>
+</div>

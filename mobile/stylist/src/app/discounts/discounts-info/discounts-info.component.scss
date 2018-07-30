@@ -1,0 +1,196 @@
+page-discounts-info {
+  .DiscountsInfo-title {
+    padding-top: pxtorem10(3);
+    font-size: pxtorem10(25);
+    font-weight: 600;
+    line-height: pxtorem10(28);
+    text-align: center;
+    letter-spacing: -0.4px;
+
+    @media ($phone-md) {
+      font-size: pxtorem10(29.5);
+      line-height: pxtorem10(33);
+    }
+
+    @media ($phone-lg) {
+      font-size: pxtorem10(32);
+      line-height: pxtorem10(36);
+    }
+  }
+
+  .Discounts-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 85px;
+    height: 85px;
+    padding: 10px;
+    margin: 18px auto 21px;
+    border: 1px solid color($colors, color23);
+    border-radius: 50%;
+
+    @media ($phone-md) {
+      width: 100px;
+      height: 100px;
+      margin: 21px auto 24px;
+    }
+
+    @media ($phone-lg) {
+      width: 108px;
+      height: 108px;
+      margin: 26px auto;
+    }
+
+    img {
+      height: 47px;
+
+      @media ($phone-md) {
+        height: 58px;
+      }
+
+      @media ($phone-lg) {
+        height: 64px;
+      }
+    }
+  }
+
+  .Discounts-list {
+    display: flex;
+    align-items: start;
+    justify-content: start;
+    margin-bottom: pxtorem10(13);
+    font-size: pxtorem10(15);
+    line-height: pxtorem10(21);
+    color: color($colors, color24);
+    letter-spacing: 0.08px;
+
+    @media ($phone-md) {
+      margin-bottom: pxtorem10(15);
+      font-size: pxtorem10(18);
+      line-height: pxtorem10(25);
+      letter-spacing: -0.05px;
+    }
+
+    @media ($phone-lg) {
+      margin-bottom: pxtorem10(17);
+      font-size: pxtorem10(20);
+      line-height: pxtorem10(27);
+      letter-spacing: -0.1px;
+    }
+  }
+
+  .Discounts-listNum {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    margin-right: pxtorem10(7);
+    font-size: pxtorem10(13);
+    color: color($colors, color24);
+    border: 1px solid rgb(212, 212, 212);
+    border-radius: 50%;
+
+    @media ($phone-md) {
+      width: 25px;
+      height: 25px;
+      margin-right: pxtorem10(8);
+      font-size: pxtorem10(16);
+    }
+
+    @media ($phone-lg) {
+      width: 28px;
+      height: 28px;
+      font-size: pxtorem10(17);
+    }
+  }
+}
+
+
+.Discounts-wp {
+  position: relative;
+  min-width: 300px;
+  padding: 0 pxtorem10(19);
+  margin: 0 auto;
+
+  @media ($phone-md) {
+    padding: 0 pxtorem10(21);
+  }
+
+  @media ($phone-lg) {
+    padding: 0 pxtorem10(23);
+  }
+}
+
+.Discounts-wpBody {
+  padding-bottom: pxtorem10(16);
+}
+
+.Discounts-title {
+  padding-top: pxtorem10(3);
+  margin-bottom: pxtorem10(5);
+  font-size: pxtorem10(24);
+  font-weight: 600;
+  letter-spacing: pxtorem10(0.2);
+
+  @media ($phone-md) {
+    margin-bottom: pxtorem10(8);
+    font-size: pxtorem10(29);
+    line-height: pxtorem10(33);
+    letter-spacing: 0;
+  }
+
+  @media ($phone-lg) {
+    margin-bottom: pxtorem10(9);
+    font-size: pxtorem10(32);
+    line-height: pxtorem10(35);
+  }
+}
+
+.Discounts-text {
+  margin-bottom: pxtorem10(20);
+
+  @media ($phone-md) {
+    margin-bottom: pxtorem10(18);
+  }
+
+  @media ($phone-lg) {
+    margin-bottom: pxtorem10(20);
+  }
+}
+
+.Discounts-textItem {
+  margin: 0 0 pxtorem10(5);
+  font-size: pxtorem10(13);
+  line-height: pxtorem10(16);
+  color: color($colors, color24);
+  letter-spacing: pxtorem10(0.1);
+
+  @media ($phone-md) {
+    margin: 0 0 pxtorem10(7);
+    font-size: pxtorem10(16);
+    line-height: pxtorem10(19);
+    letter-spacing: pxtorem10(-0.1);
+  }
+
+  @media ($phone-lg) {
+    margin: 0 0 pxtorem10(9);
+    font-size: pxtorem10(18);
+    line-height: pxtorem10(20);
+    letter-spacing: pxtorem10(-0.25);
+  }
+}
+
+.Discounts-textOffset {
+  min-height: 120px;
+
+  @media ($phone-md) {
+    min-height: 145px;
+  }
+
+  @media ($phone-lg) {
+    min-height: 153px;
+  }
+}
+

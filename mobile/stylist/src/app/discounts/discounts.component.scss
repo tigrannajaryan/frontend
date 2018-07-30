@@ -1,2 +1,73 @@
 page-discounts {
+  .slide-zoom {
+    text-align: left;
+  }
+
+  .DiscountsSettings-title {
+    display: flex;
+    align-items: center;
+    margin-bottom: pxtorem10(11);
+
+    @media ($phone-md) {
+      margin: pxtorem10(9) 0 pxtorem10(20);
+    }
+
+    @media ($phone-lg) {
+      margin: pxtorem10(14) 0 pxtorem10(12);
+    }
+  }
+
+  .DiscountsSettings-icon {
+    width: 20px;
+    margin-left: pxtorem10(7);
+
+    @media ($phone-md) {
+      width: 23px;
+    }
+
+    @media ($phone-lg) {
+      width: 26px;
+    }
+  }
+
+  .DiscountsSettings-tabs {
+    margin-bottom: pxtorem10(20);
+
+    @media ($phone-md) {
+      margin-bottom: pxtorem10(24);
+    }
+
+    @media ($phone-lg) {
+      margin-bottom: pxtorem10(28);
+    }
+  }
+
+  .DiscountsSettings-footer {
+    .toolbar {
+      height: 78px;
+
+      &-title {
+        height: 100%;
+        padding: 0;
+      }
+
+      &-background {
+        background: color($colors, white);
+      }
+    }
+
+    ion-title {
+      align-items: start;
+      padding: 0;
+    }
+
+    &:before {
+      height: 1px;
+      background: rgba(0, 0, 0, 0.1);
+    }
+  }
+
+  .DiscountsSettings-footerWp {
+    padding-top: pxtorem10(13);
+  }
 }

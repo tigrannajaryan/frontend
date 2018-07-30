@@ -2,6 +2,7 @@ import { ErrorHandler, Injector, NgModule } from '@angular/core';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
+import { AppVersion } from '@ionic-native/app-version';
 
 import { IonicApp, IonicModule } from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -15,12 +16,14 @@ import { Logger } from '~/shared/logger';
 
 import { UnhandledErrorHandler } from '~/core/unhandled-error-handler';
 import { AuthService } from '~/core/api/auth-service';
+import { AuthServiceMock } from '~/core/api/auth-service.mock';
 
 import { ClientAppComponent } from '~/app.component';
 import { getMetaReducers, reducers } from '~/app.reducers';
 
 import { AuthEffects } from '~/core/effects/auth.effects';
 import { ApiCommonErrorsEffects } from '~/core/effects/api-common-errors.effects';
+import { CoreModule } from '~/core/core.module';
 import { ProfileService } from '~/core/api/profile-service';
 import { BaseApiService } from '~/shared/base-api-service';
 import { ServerStatusTracker } from '~/shared/server-status-tracker';
@@ -34,6 +37,8 @@ import { AuthInterceptor } from '~/core/http-interceptors/auth-interceptor';
     BrowserModule,
     HttpClientModule,
     ReactiveFormsModule,
+    CoreModule,
+
     IonicModule.forRoot(ClientAppComponent, {backButtonText: '', backButtonIcon: 'ios-arrow-round-back'}),
     IonicStorageModule.forRoot(),
 
@@ -68,11 +73,15 @@ import { AuthInterceptor } from '~/core/http-interceptors/auth-interceptor';
     Logger,
     StatusBar,
     SplashScreen,
+    AppVersion,
+
     ServerStatusTracker,
     // Interceptors
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     // services
     AuthService,
+    AuthServiceMock,
+
     ProfileService,
     BaseApiService,
     {

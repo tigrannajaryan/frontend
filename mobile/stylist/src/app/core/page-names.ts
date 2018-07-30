@@ -16,6 +16,10 @@ export enum PageNames {
   ChangePercent = 'ChangePercentComponent',
   ConfirmCheckoutComponent = 'ConfirmCheckoutComponent',
   Discounts = 'DiscountsComponent',
+  DiscountsInfo = 'DiscountsInfoComponent',
+  DiscountsWeekday = 'DiscountsWeekdayComponent',
+  DiscountsRevisit = 'DiscountsRevisitComponent',
+  DiscountsFirstBooking = 'DiscountsFirstBookingComponent',
   DiscountsAlert = 'DiscountsAlertComponent',
   DiscountsChange = 'DiscountsChangeComponent',
   FirstScreen = 'FirstScreenComponent',
@@ -29,6 +33,7 @@ export enum PageNames {
   RegisterServices = 'ServicesComponent',
   RegisterServicesItem = 'ServicesListComponent',
   RegisterServicesItemAdd = 'ServiceItemComponent',
+  Tabs = 'TabsComponent',
   Worktime = 'WorktimeComponent',
   UpcomingHistory = 'UpcomingHistoryComponent'
 }

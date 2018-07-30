@@ -24,12 +24,6 @@ page-home {
     }
   }
 
-  .Home-refresh {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
   .Home-upTextInfo {
     padding: pxtorem10(3) pxtorem10(9);
     margin-left: pxtorem10(7);
@@ -61,29 +55,42 @@ page-home {
       font-size: pxtorem10(20);
     }
   }
+}
 
-  .Home-btns {
-    border-bottom: 1px solid color($colors, color19);
+
+.Home-btns {
+  border-bottom: 1px solid color($colors, color19);
+}
+
+.Home-btnsWp {
+  display: flex;
+  justify-content: space-between;
+}
+
+.Home-btnsBtn {
+  width: 33.333%;
+  padding: 0 pxtorem10(10) pxtorem10(2);
+  margin: 0;
+  font-size: pxtorem10(13);
+  text-transform: capitalize;
+  border-bottom: 2px solid transparent;
+  border-radius: initial;
+  opacity: 0.4;
+
+  @media ($phone-md) {
+    padding: 0 pxtorem10(10) pxtorem10(8);
+    font-size: pxtorem10(15);
   }
 
-  .Home-btnsWp {
-    display: flex;
-    justify-content: space-between;
+  @media ($phone-lg) {
+    height: pxtorem10(48);
+    padding: 0 pxtorem10(14);
+    font-size: pxtorem10(17);
   }
+}
 
-  .Home-btnsBtn {
-    width: 33.333%;
-    margin: 0;
-    font-size: 13px;
-    text-transform: capitalize;
-    border-bottom: 2px solid transparent;
-    border-radius: initial;
-    opacity: 0.4;
-  }
-
-  .Home-btnsBtn.activated,
-  .Home-btnsBtn.active {
-    border-bottom: 2px solid color($colors, bb_honey);
-    opacity: 1;
-  }
+.Home-btnsBtn.activated,
+.Home-btnsBtn.active {
+  border-bottom: 2px solid color($colors, bb_honey);
+  opacity: 1;
 }

@@ -16,12 +16,12 @@ import { CoreModule } from '~/core/core.module';
 import { getMetaReducers, reducers } from './app.reducers';
 import { UnhandledErrorHandler } from '~/shared/unhandled-error-handler';
 import { initSentry } from '~/shared/sentry';
-import { UserOptions } from '~/core/user-options';
 import { AppVersion } from '@ionic-native/app-version';
 import { AgmCoreModule, LAZY_MAPS_API_CONFIG } from '@agm/core';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { ENV } from '../environments/environment.default';
 import { GoogleMapsConfig } from '~/core/google-maps-config';
+import { AppStorage } from '~/core/app-storage';
 
 initSentry();
 
@@ -64,7 +64,11 @@ if (!ENV.production) {
   ],
 
   imports: [
-    IonicModule.forRoot(MyAppComponent, {backButtonText: '', backButtonIcon: 'md-arrow-back'}),
+    IonicModule.forRoot(MyAppComponent, {
+      backButtonText: '',
+      backButtonIcon: 'md-arrow-back',
+      tabsHideOnSubPages: true
+    }),
     ...imports
   ],
 
@@ -79,8 +83,8 @@ if (!ENV.production) {
     AuthApiService,
     StylistServiceProvider,
     httpInterceptorProviders,
-    UserOptions,
     AppVersion,
+    AppStorage,
 
     {
       // Our custom handler for unhandled exceptions

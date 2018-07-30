@@ -38,7 +38,7 @@ export function createNavHistoryList(profileStatus: ProfileStatus): PageDescr[] 
     return pages;
   }
 
-  pages.push({ page: PageNames.Discounts });
+  pages.push({ page: PageNames.DiscountsInfo });
   if (!profileStatus.has_weekday_discounts_set && !profileStatus.has_other_discounts_set) {
     return pages;
   }
@@ -52,7 +52,7 @@ export function createNavHistoryList(profileStatus: ProfileStatus): PageDescr[] 
 
   // Everything is complete, go to Home screen. We are return a single page here,
   // there will be no navigation history.
-  return [{ page: PageNames.Home }];
+  return [{ page: PageNames.Tabs }];
 }
 
 export function trimStr(s?: string): string {
@@ -60,4 +60,21 @@ export function trimStr(s?: string): string {
     return s.trim();
   }
   return s;
+}
+
+/**
+ * Perform one-level deep comparison of arrays
+ */
+export function arrayEqual(a1: any[], a2: any[]): boolean {
+  if (a1.length !== a2.length) {
+    return false;
+  }
+
+  for (let i = 0; i < a1.length; i++) {
+    if (a1[i] !== a2[i]) {
+      return false;
+    }
+  }
+
+  return true;
 }

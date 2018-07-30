@@ -81,14 +81,10 @@ export class UnhandledErrorHandler {
     let errorUIAction: ErrorUIAction;
     let errorMsg = '';
 
-    if (error instanceof ServerNonFieldError) {
-      errorMsg = error.getStr();
-      errorUIAction = ErrorUIAction.showAlert;
-    } else if (error instanceof ServerFieldError) {
-      // This case should never end up here, it should be properly
-      // handled by each specific screen and the incorrect fields
-      // should be highlighted in the UI.
-      errorMsg = 'Error in the input fields';
+    if (error instanceof ServerNonFieldError || error instanceof ServerFieldError) {
+      // Normally ServerFieldError should be handled by each specific screen and the incorrect
+      // fields should be highlighted in the UI but if we get here we will show an alert.
+      errorMsg = error.getMessage();
       errorUIAction = ErrorUIAction.showAlert;
     } else if (error instanceof ServerErrorResponse && error.status === HttpStatus.unauthorized) {
       // Erase all previous navigation history and make LoginPage the root
@@ -100,7 +96,7 @@ export class UnhandledErrorHandler {
     } else {
       errorMsg = 'Unknown error';
       if (error.stack) {
-        errorMsg = `${errorMsg}<br/>${error.stack}`;
+        errorMsg = `${errorMsg}\n${error.stack}`;
       }
       errorUIAction = ErrorUIAction.showAlert;
       UnhandledErrorHandler.reportToSentry(error);
@@ -118,6 +114,7 @@ export class UnhandledErrorHandler {
   private performUIAction(action: ErrorUIAction, errorMsg: string): void {
     switch (action) {
       case ErrorUIAction.showAlert:
+        errorMsg = errorMsg.replace(/\n/gm, '<br/>');
         this.popup(errorMsg);
         break;
 

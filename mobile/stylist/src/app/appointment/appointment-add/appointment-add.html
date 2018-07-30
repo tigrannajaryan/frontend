@@ -1,52 +1,56 @@
-<ion-header class="bb-wp-a ion-bb-header"><ion-navbar></ion-navbar></ion-header>
+<ion-header class="bb-wp-a ion-bb-header">
+  <ion-navbar>
+    <ion-buttons end>
+      <button id="submitBtn" ion-button icon-only [disabled]="form.invalid" (click)="onSubmit()">
+        <ion-icon name="checkmark" class="app-submit"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
 
 <ion-content padding class="Appointment-content">
-  <ion-row justify-content-center align-items-center>
-    <div class="Appointment-pic">
-      <i class="bb-icon bb-icon-add-appointment"></i>
-    </div>
-  </ion-row>
+  <div class="title"> Create appointment</div>
 
-  <form [formGroup]="form" class="Appointment-form" (ngSubmit)="submit()">
-    <ion-item class="Input">
-      <ion-label>Client’s name</ion-label>
-      <ion-input type="text" placeholder="Enter full name" formControlName="client" (focus)="search()" (keyup)="clearSelectedClient()" (input)="search()" (blur)="clearClientsList()"></ion-input>
+  <form [formGroup]="form" class="Appointment-form">
+    <ion-item>
+      <ion-label fixed>
+        <ion-icon name="person" item-start></ion-icon>
+      </ion-label>
+      <ion-input type="text" placeholder="Client name" formControlName="client"></ion-input>
+
     </ion-item>
 
-    <div class="Appointment-customersList" *ngIf="clientsList">
-      <div *ngFor="let client of clientsList" (click)="selectClient(client)" class="Appointment-customersListItem">
-        {{ client.first_name }} {{ client.last_name }}
-      </div>
-    </div>
-
-    <ion-item class="Input">
-      <ion-label>Client’s phone number</ion-label>
-      <ion-input type="tel" placeholder="Enter number" formControlName="phone" [disabled]="selectedClient"></ion-input>
+    <ion-item>
+      <ion-label fixed>
+        <ion-icon name="call" item-start></ion-icon>
+      </ion-label>
+      <ion-input type="tel" placeholder="Add phone (optional)" formControlName="phone"></ion-input>
     </ion-item>
 
-    <div class="Input Appointment-service">
-      <ion-label>Service</ion-label>
-      <button ion-button clear (click)="selectService($event)" class="Input-btn" [ngClass]="{ 'is-muted': !selectedService }">
-        {{ form.value.service }}
-      </button>
-    </div>
-
-    <div class="Input">
-      <ion-label>Date</ion-label>
-      <button ion-button clear (click)="selectDate($event)" class="Input-btn" [disabled]="!selectedService" [ngClass]="{ 'is-muted': !selectedDate }">
-        {{ form.value.date }}
-      </button>
-    </div>
-
-    <ion-item class="Input">
-      <ion-label>Time</ion-label>
-      <ion-datetime displayFormat="h:mm a" pickerFormat="h mm A" placeholder="Select time" formControlName="time" [minuteValues]="minuteValues"></ion-datetime>
+    <ion-item (click)="datePicker.open()">
+      <ion-label fixed>
+        <ion-icon name="calendar" item-start itemscope></ion-icon>
+      </ion-label>
+      <ion-datetime #datePicker displayFormat="DDD, MMM D, YYYY" pickerFormat="MMM D YYYY" placeholder="Select date" formControlName="date"
+        initialValue="{{ defaultDate }}"></ion-datetime>
+      <ion-icon name="md-arrow-dropdown" item-end></ion-icon>
     </ion-item>
 
-    <ion-item class="Appointment-submit" text-center>
-      <button type="submit" [disabled]="form.invalid" ion-button icon-only clear>
-        <i class="bb-icon bb-icon-plus"></i>
-      </button>
+    <ion-item (click)="timePicker.open()">
+      <ion-label fixed>
+        <ion-icon name="time" item-start></ion-icon>
+      </ion-label>
+      <ion-datetime #timePicker displayFormat="h:mm a" pickerFormat="h mm A" placeholder="Select time" formControlName="time" [minuteValues]="minuteValues"
+        initialValue="{{ defaultTime }}"></ion-datetime>
+      <ion-icon name="md-arrow-dropdown" item-end></ion-icon>
+    </ion-item>
+
+    <ion-item (click)="selectService()">
+      <ion-label fixed>
+        <ion-icon name="cut" item-start></ion-icon>
+      </ion-label>
+      <ion-label id='selectedService' class="service-select">{{ selectedService ? selectedService.name : 'Select service (optional)' }}</ion-label>
+      <ion-icon name="ios-arrow-forward" item-end></ion-icon>
     </ion-item>
   </form>
 </ion-content>

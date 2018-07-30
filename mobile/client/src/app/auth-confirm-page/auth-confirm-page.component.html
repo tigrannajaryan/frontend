@@ -1,4 +1,4 @@
-<ion-header><ion-navbar></ion-navbar></ion-header>
+<ion-header madeHeader></ion-header>
 
 <ion-content class="AuthConfirmPage">
   <ion-grid fixed>
@@ -6,7 +6,7 @@
       <div class="H1">
         Verification code
         <div class="H1-subtitle">
-          We’ve just sent you a&nbsp;code via text&nbsp;to
+          We’ve sent you a&nbsp;code via text&nbsp;to
         </div>
       </div>
     </ion-row>
@@ -17,7 +17,7 @@
       <form (ngSubmit)="submit()">
         <ion-row justify-content-center>
           <ion-item class="FormControl AuthConfirmPage-codeControl">
-            <ion-input type="tel" ngxInputNumber [formControl]="code" [disabled]="isLoading" (keydown)="verifyCode($event)"></ion-input>
+            <ion-input #input type="tel" ngxInputNumber [formControl]="code" [disabled]="isLoading" (keydown)="autoblurCode($event)"></ion-input>
           </ion-item>
         </ion-row>
         <ion-row justify-content-center>
@@ -31,11 +31,20 @@
       </form>
     </ion-row>
     <ion-row justify-content-center>
-      <span *ngIf="isLoading">Checking the code…</span>
-      <span *ngIf="!isLoading">
-        <span>Didn’t get a&nbsp;code? </span><span class="Link" (click)="resendCode()">Send a&nbsp;new one</span>
+      <span *ngIf="(confirmCodeState | async) === RequestState.Loading">
+        Verifying the code…
       </span>
-      <span *ngIf="isPhoneResending | async">Sending new code…</span>
+      <span *ngIf="(confirmCodeState | async) !== RequestState.Loading">
+        <span *ngIf="(requestCodeState | async) === RequestState.Succeeded">
+          You can send a&nbsp;new code in&nbsp;{{ resendCodeCountdown | async }}
+        </span>
+        <span *ngIf="(requestCodeState | async) === RequestState.NotStarted">
+          Didn’t get a&nbsp;code? <span class="Link" (click)="resendCode()">Send a&nbsp;new one</span>
+        </span>
+        <span *ngIf="(requestCodeState | async) === RequestState.Loading">
+          Sending a&nbsp;new code…
+        </span>
+      </span>
     </ion-row>
   </ion-grid>
 </ion-content>
