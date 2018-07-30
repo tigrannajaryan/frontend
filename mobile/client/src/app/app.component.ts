@@ -40,6 +40,12 @@ export class ClientAppComponent implements OnInit {
   }
 
   async ngOnInit(): Promise<void> {
+    this.menuPages = [
+      {
+        title: 'Profile',
+        component: PageNames.Profile
+      }
+    ];
     const startTime = Date.now();
 
     this.logger.info('App initializing...');

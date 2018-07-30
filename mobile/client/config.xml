@@ -95,5 +95,6 @@
     <plugin name="cordova-ios-plugin-no-export-compliance" spec="0.0.5" />
     <plugin name="cordova-plugin-facebook4" spec="2.1.0" />
     <plugin name="cordova-sqlite-storage" spec="2.3.3" />
+    <plugin name="cordova-plugin-camera" spec="^4.0.3" />
     <engine name="android" spec="7.0.0" />
 </widget>

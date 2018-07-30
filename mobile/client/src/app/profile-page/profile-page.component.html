@@ -1,0 +1,46 @@
+<ion-header>
+  <ion-navbar>
+    <ion-buttons end>
+      <button (click)="submit()" [disabled]="!form.valid" ion-button clear>
+        <ion-icon name="md-checkmark"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="ProfilePage">
+  <div class="ProfilePage-imageContainer--circle">
+    <div [style.backgroundImage]="currentImage" class="ProfilePage-imageContainer-photo"></div>
+    <label (click)="processPhoto()" class="ProfilePage-imageContainer-add">
+      <ion-icon name="md-camera" class="ProfilePage-imageContainer-icon"></ion-icon>
+    </label>
+  </div>
+  <form [formGroup]="form">
+    <ion-list>
+      <ion-grid>
+        <ion-row>
+          <ion-item col-6>
+            <ion-label class="ProfilePage-label" floating>First name</ion-label>
+            <ion-input formControlName="first_name" type="text"></ion-input>
+          </ion-item>
+          <ion-item col-6>
+            <ion-label class="ProfilePage-label" floating>Last name</ion-label>
+            <ion-input formControlName="last_name" type="text"></ion-input>
+          </ion-item>
+        </ion-row>
+        <ion-row>
+          <ion-item>
+            <ion-label class="ProfilePage-label" floating>Email</ion-label>
+            <ion-input type="email" formControlName="email"></ion-input>
+          </ion-item>
+        </ion-row>
+        <ion-row>
+          <ion-item>
+            <ion-label class="ProfilePage-label" floating>Zip code</ion-label>
+            <ion-input type="number" formControlName="zip_code"></ion-input>
+          </ion-item>
+        </ion-row>
+      </ion-grid>
+    </ion-list>
+  </form>
+</ion-content>
