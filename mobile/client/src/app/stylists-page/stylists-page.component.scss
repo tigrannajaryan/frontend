@@ -49,7 +49,7 @@
     border-radius: 10px;
     box-shadow: 0 7px 43px color($grayscale, 200);
 
-    &.item-block .item-inner { // ionic’s
+    &.item-block .item-inner { // override ionic styles
       padding: 7.5px 16px;
     }
   }
