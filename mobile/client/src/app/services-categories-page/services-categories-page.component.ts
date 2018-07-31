@@ -15,10 +15,10 @@ import { ServiceCategoryModel } from '~/core/api/services.models';
 
 @IonicPage()
 @Component({
-  selector: 'page-categories',
-  templateUrl: 'categories-page.component.html'
+  selector: 'page-services-categories',
+  templateUrl: 'services-categories-page.component.html'
 })
-export class CategoriesPageComponent {
+export class ServicesCategoriesPageComponent {
   stylistUuid: string;
 
   loadingCategories = Array(2).fill(undefined);

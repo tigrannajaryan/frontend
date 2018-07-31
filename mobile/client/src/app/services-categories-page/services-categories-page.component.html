@@ -1,6 +1,6 @@
 <ion-header madeHeader></ion-header>
 
-<ion-content class="CategoriesPage">
+<ion-content class="ServicesCategoriesPage">
   <ion-grid fixed>
     <div class="H2">
       Choose a&nbsp;service category
@@ -11,19 +11,19 @@
     </div>
 
     <!-- Showing loading cards -->
-    <div *ngIf="(requestState | async) === RequestState.Loading" class="CategoriesPage-categories">
+    <div *ngIf="(requestState | async) === RequestState.Loading" class="ServicesCategoriesPage-categories">
       <div *ngFor="let category of loadingCategories" class="Card is-loading">
-        <div class="CategoriesPage-cardTitle">&nbsp;</div>
-        <div class="CategoriesPage-cardSubtitle">&nbsp;</div>
+        <div class="ServicesCategoriesPage-cardTitle">&nbsp;</div>
+        <div class="ServicesCategoriesPage-cardSubtitle">&nbsp;</div>
       </div>
     </div>
 
     <!-- Showing categories cards -->
     <div *ngIf="(requestState | async) === RequestState.Succeeded">
-      <div *ngIf="(categories | async)?.length > 0" class="CategoriesPage-categories">
+      <div *ngIf="(categories | async)?.length > 0" class="ServicesCategoriesPage-categories">
         <div *ngFor="let category of categories | async" class="Card" (click)="onProceedToServices(category.uuid)">
-          <div class="CategoriesPage-cardTitle">{{ category.name }}</div>
-          <div class="CategoriesPage-cardSubtitle">{{ category.services.length }} services</div>
+          <div class="ServicesCategoriesPage-cardTitle">{{ category.name }}</div>
+          <div class="ServicesCategoriesPage-cardSubtitle">{{ category.services.length }} services</div>
         </div>
       </div>
     </div>

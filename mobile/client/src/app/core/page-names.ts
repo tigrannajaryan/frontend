@@ -9,8 +9,8 @@
 export enum PageNames {
   Auth = 'AuthPageComponent',
   AuthConfirm = 'AuthConfirmPageComponent',
-  Categories = 'CategoriesPageComponent',
   Services = 'ServicesPageComponent',
+  ServicesCategories = 'ServicesCategoriesPageComponent',
   StylistInvitation = 'StylistInvitationPageComponent',
   Stylists = 'StylistsPageComponent'
 }

@@ -14,6 +14,6 @@ export class ServicesService extends BaseService {
 
   getStylistServices(params: GetStylistServicesParams): Observable<ApiResponse<GetStylistServicesResponse>> {
     const path = `client/stylists/${params.stylist_uuid}/services`;
-    return this.get<GetStylistServicesResponse>(path);
+    return this.get<GetStylistServicesResponse>(path).delay(2000);
   }
 }

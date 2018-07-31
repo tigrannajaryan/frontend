@@ -59,6 +59,6 @@ export class StylistsPageComponent {
   }
 
   onContinueWithStylist(stylist: StylistModel): void {
-    this.navCtrl.push(PageNames.Categories, { stylistUuid: stylist.uuid });
+    this.navCtrl.push(PageNames.ServicesCategories, { stylistUuid: stylist.uuid });
   }
 }

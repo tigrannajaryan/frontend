@@ -37,7 +37,7 @@ export class StylistInvitationPageComponent {
   }
 
   onContinueWithStylist(): void {
-    this.navCtrl.push(PageNames.Categories, { stylistUuid: this.stylist.uuid });
+    this.navCtrl.push(PageNames.ServicesCategories, { stylistUuid: this.stylist.uuid });
   }
 
   onSeeStylistsList(): void {
