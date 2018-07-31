@@ -7,8 +7,8 @@ import { LOADING_DELAY, RequestState } from '~/core/api/request.models';
 import { ServicesService } from '~/core/api/services-service';
 import {
   GetStylistServicesAction,
-  GetStylistServicesLoadingAction,
   GetStylistServicesErrorAction,
+  GetStylistServicesLoadingAction,
   GetStylistServicesSuccessAction,
   selectServicesRequestState,
   selectStylistServiceCategories,

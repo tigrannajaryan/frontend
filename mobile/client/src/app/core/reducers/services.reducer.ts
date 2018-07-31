@@ -39,10 +39,6 @@ type Actions =
   | GetStylistServicesErrorAction
   | GetStylistServicesSuccessAction;
 
-interface ServiceCategoriesByStylist {
-  [stylistUuid: string]: ServiceCategoryModel[];
-}
-
 export interface ServicesState {
   stylistUuid?: string;
   serviceCategories?: ServiceCategoryModel[];
