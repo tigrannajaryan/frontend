@@ -2,28 +2,27 @@
 
 <ion-content class="ServicesCategoriesPage">
   <ion-grid fixed>
-    <div class="H2">
-      Choose a&nbsp;service category
-      <div class="H2-subtitle">
-        Select your category first, select your specific service on&nbsp;the&nbsp;next screen.
-        You can also add additional services before checkout.
-      </div>
-    </div>
+    <div class="H2">Choose a&nbsp;service category</div>
 
     <!-- Showing loading cards -->
     <div *ngIf="(requestState | async) === RequestState.Loading" class="ServicesCategoriesPage-categories">
       <div *ngFor="let category of loadingCategories" class="Card is-loading">
-        <div class="ServicesCategoriesPage-cardTitle">&nbsp;</div>
-        <div class="ServicesCategoriesPage-cardSubtitle">&nbsp;</div>
+        <div>
+          <div class="ServicesCategoriesPage-cardTitle">&nbsp;</div>
+          <div class="ServicesCategoriesPage-cardSubtitle">&nbsp;</div>
+        </div>
       </div>
     </div>
 
     <!-- Showing categories cards -->
     <div *ngIf="(requestState | async) === RequestState.Succeeded">
       <div *ngIf="(categories | async)?.length > 0" class="ServicesCategoriesPage-categories">
-        <div *ngFor="let category of categories | async" class="Card" (click)="onProceedToServices(category.uuid)">
-          <div class="ServicesCategoriesPage-cardTitle">{{ category.name }}</div>
-          <div class="ServicesCategoriesPage-cardSubtitle">{{ category.services.length }} services</div>
+        <div *ngFor="let category of categories | async" class="ServicesCategoriesPage-card Card" (click)="onProceedToServices(category.uuid)">
+          <img class="ServicesCategoriesPage-cardImg" src="assets/icons/services-categories/{{ category.category_code }}.svg" />
+          <div>
+            <div class="ServicesCategoriesPage-cardTitle">{{ category.name }}</div>
+            <div class="ServicesCategoriesPage-cardSubtitle">{{ category.services.length }} services</div>
+          </div>
         </div>
       </div>
     </div>

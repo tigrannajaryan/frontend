@@ -1,5 +1,16 @@
 .ServicesPage {
+  .ServicesPage-img {
+    $pic-size: 80px;
+
+    width: $pic-size;
+    height: $pic-size;
+  }
+
   .ServicesPage-services {
     margin-top: 32px;
+  }
+
+  .ServicesPage-servicesArrow {
+    text-align: right;
   }
 }

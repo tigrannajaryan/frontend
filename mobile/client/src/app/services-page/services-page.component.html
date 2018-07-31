@@ -3,6 +3,9 @@
 <ion-content class="ServicesPage">
   <ion-grid fixed>
     <ion-row justify-content-center>
+      <img *ngIf="category | async" src="assets/icons/services-categories/{{ (category | async)?.category_code }}.svg" class="ServicesPage-img" />
+    </ion-row>
+    <ion-row justify-content-center>
       <div class="H1">
         {{ (category | async)?.name }}
         <span *ngIf="services | async" class="Badge">{{ (services | async)?.length }}</span>
@@ -14,13 +17,16 @@
       <thead class="Table-header">
         <tr class="Table-row">
           <th class="Table-col">Service</th>
-          <th class="Table-col">Base Price</th>
+          <th colspan="2" class="Table-col">Base Price</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let service of services | async">
           <td class="Table-col">{{ service.name }}</td>
           <td class="Table-col">{{ service.base_price | price }}</td>
+          <td class="ServicesPage-servicesArrow Table-col">
+            <img src="assets/icons/arrow-right.svg" />
+          </td>
         </tr>
       </tbody>
     </table>
