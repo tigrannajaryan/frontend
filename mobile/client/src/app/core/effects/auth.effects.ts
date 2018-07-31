@@ -61,7 +61,7 @@ export class AuthEffects {
     .delay(LOADING_DELAY)
     .withLatestFrom(this.store)
     .map(([action, state]) => {
-      if (selectRequestCodeState(state) !== RequestState.Succeeded) {
+      if (selectRequestCodeState(state) === RequestState.NotStarted) {
         this.store.dispatch(new RequestCodeLoadingAction());
         return true;
       }
@@ -90,7 +90,7 @@ export class AuthEffects {
     .delay(LOADING_DELAY)
     .withLatestFrom(this.store)
     .map(([action, state]) => {
-      if (selectConfirmCodeState(state) !== RequestState.Succeeded) {
+      if (selectConfirmCodeState(state) === RequestState.NotStarted) {
         this.store.dispatch(new ConfirmCodeLoadingAction());
       }
     });

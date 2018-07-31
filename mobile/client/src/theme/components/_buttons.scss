@@ -1,0 +1,18 @@
+.Button {
+  width: 100%;
+  min-height: 55px;
+  background-color: color($colors, primary);
+  border-radius: 10px;
+  box-shadow: 0 6px 34px rgba(color($colors, primary), 50%);
+
+  &.is-loading {
+    box-shadow: none;
+  }
+}
+
+.Link {
+  font-weight: 500;
+  line-height: 1.2;
+  color: color($colors, honey);
+  white-space: nowrap;
+}

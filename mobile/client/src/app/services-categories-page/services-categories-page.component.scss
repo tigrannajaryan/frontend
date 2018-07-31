@@ -1,0 +1,28 @@
+.ServicesCategoriesPage {
+  .ServicesCategoriesPage-categories {
+    margin-top: 24px;
+  }
+
+  .ServicesCategoriesPage-card {
+    display: flex;
+  }
+
+  .ServicesCategoriesPage-cardImg {
+    $icon-size: 48px;
+
+    width: $icon-size;
+    height: $icon-size;
+    margin-right: 28px;
+  }
+
+  .ServicesCategoriesPage-cardTitle {
+    margin-top: 2px;
+    font-size: $t-h4;
+    font-weight: 500;
+  }
+
+  .ServicesCategoriesPage-cardSubtitle {
+    font-size: $t-base;
+    color: color($grayscale, 500);
+  }
+}

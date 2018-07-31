@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { IonicPage } from 'ionic-angular';
+import { IonicPage, NavController } from 'ionic-angular';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
+
+import { PageNames } from '~/core/page-names';
 
 import { RequestState } from '~/core/api/request.models';
 import { StylistModel } from '~/core/api/stylists.models';
@@ -23,6 +25,8 @@ export const MIN_QUERY_LENGTH = 2;
 export class StylistsPageComponent {
   query: FormControl = new FormControl('');
 
+  loadingStylists = Array(2).fill(undefined);
+
   stylists: Observable<StylistModel[]>;
   activeStylist?: StylistModel;
 
@@ -30,6 +34,7 @@ export class StylistsPageComponent {
   requestState?: Observable<RequestState>;
 
   constructor(
+    private navCtrl: NavController,
     private store: Store<StylistState>
   ) {
   }
@@ -54,7 +59,6 @@ export class StylistsPageComponent {
   }
 
   onContinueWithStylist(stylist: StylistModel): void {
-    // TODO: import NavController, PageNames and uncomment after adding services pages
-    // this.navCtrl.push(PageNames.Categories, { stylistUuid: stylist.uuid });
+    this.navCtrl.push(PageNames.ServicesCategories, { stylistUuid: stylist.uuid });
   }
 }

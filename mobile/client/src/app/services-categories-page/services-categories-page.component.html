@@ -1,0 +1,34 @@
+<ion-header madeHeader></ion-header>
+
+<ion-content class="ServicesCategoriesPage">
+  <ion-grid fixed>
+    <div class="H2">Choose a&nbsp;service category</div>
+
+    <!-- Showing loading cards -->
+    <div *ngIf="(requestState | async) === RequestState.Loading" class="ServicesCategoriesPage-categories">
+      <div *ngFor="let category of loadingCategories" class="Card is-loading">
+        <div>
+          <div class="ServicesCategoriesPage-cardTitle">&nbsp;</div>
+          <div class="ServicesCategoriesPage-cardSubtitle">&nbsp;</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Showing categories cards -->
+    <div *ngIf="(requestState | async) === RequestState.Succeeded">
+      <div *ngIf="(categories | async)?.length > 0" class="ServicesCategoriesPage-categories">
+        <div *ngFor="let category of categories | async" class="ServicesCategoriesPage-card Card" (click)="onProceedToServices(category.uuid)">
+          <img class="ServicesCategoriesPage-cardImg" src="assets/icons/services-categories/{{ category.category_code }}.svg" />
+          <div>
+            <div class="ServicesCategoriesPage-cardTitle">{{ category.name }}</div>
+            <div class="ServicesCategoriesPage-cardSubtitle">{{ category.services.length }} services</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- This could happen only if we show incomplete stylists porfiles when a client is searching for stylists. -->
+      <p *ngIf="(categories | async)?.length === 0">This client has no services yet.</p>
+    </div>
+
+  </ion-grid>
+<ion-content>

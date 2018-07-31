@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 
+import { CoreModule } from '~/core/core.module';
+
 import { ServicesPageComponent } from '~/services-page/services-page.component';
 
 @NgModule({
@@ -8,7 +10,8 @@ import { ServicesPageComponent } from '~/services-page/services-page.component';
     ServicesPageComponent
   ],
   imports: [
-    IonicPageModule.forChild(ServicesPageComponent)
+    IonicPageModule.forChild(ServicesPageComponent),
+    CoreModule
   ]
 })
 export class ServicesPageComponentModule {}
