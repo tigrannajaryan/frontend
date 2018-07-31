@@ -29,7 +29,7 @@
         class="StylistsPage-card Card"
         [ngClass]="{'is-active': stylist.uuid === activeStylist?.uuid}"
         (click)="onSetActiveStylist($event, stylist)">
-        <ion-img class="StylistsPage-cardImg" src="assets/imgs/stylist-avatar.svg"></ion-img>
+        <ion-img class="StylistsPage-cardImg" src="assets/icons/stylist-avatar.svg"></ion-img>
         <div class="StylistsPage-cardHeader">
           Your stylist
           <ion-img (click)="onSetActiveStylist($event, undefined)" class="StylistsPage-cardClose" src="assets/icons/cross.svg"></ion-img>
