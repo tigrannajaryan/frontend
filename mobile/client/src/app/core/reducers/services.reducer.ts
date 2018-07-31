@@ -113,8 +113,12 @@ export const selectStylistServiceCategories = (stylistUuid: string) => createSel
     if (stylistUuid !== state.stylistUuid) {
       return undefined;
     }
-    // TODO: remove when done `category_code` is added on the backend side
-    return state.serviceCategories && state.serviceCategories.map(getCategoryWithCategoryCode);
+    return (
+      state.serviceCategories &&
+      state.serviceCategories
+        .filter((category: ServiceCategoryModel) => category.services.length > 0)
+        .map(getCategoryWithCategoryCode) // TODO: remove after adding `category_code` on the backend
+    );
   }
 );
 

@@ -25,6 +25,10 @@
           </div>
         </div>
       </div>
+
+      <!-- This could happen only if we show incomplete stylists porfiles when a client is searching for stylists. -->
+      <p *ngIf="(categories | async)?.length === 0">This client has no services yet.</p>
     </div>
+
   </ion-grid>
 <ion-content>
