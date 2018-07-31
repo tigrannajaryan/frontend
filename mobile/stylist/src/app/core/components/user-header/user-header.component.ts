@@ -5,7 +5,6 @@ import { Store } from '@ngrx/store';
 import { PageNames } from '~/core/page-names';
 import { StylistProfile } from '~/core/stylist-service/stylist-models';
 import { AuthApiService } from '~/core/auth-api-service/auth-api-service';
-import { HomeComponent } from '~/home/home.component';
 import { UserHeaderMenuActions, UserHeaderMenuComponent } from './user-header-menu/user-header-menu.component';
 import { LogoutAction } from '~/app.reducers';
 
@@ -14,11 +13,7 @@ import { LogoutAction } from '~/app.reducers';
   templateUrl: 'user-header.component.html'
 })
 export class UserHeaderComponent {
-  @Input() hasBackButton: boolean;
-  @Input() hasShadow: boolean;
   @Input() profile: StylistProfile;
-
-  protected PageNames = PageNames;
 
   constructor(
     public popoverCtrl: PopoverController,
@@ -30,16 +25,6 @@ export class UserHeaderComponent {
 
   getToday(): Date {
     return new Date();
-  }
-
-  goToHome(): void {
-    const previous = this.navCtrl.getPrevious();
-    if (previous && previous.component === HomeComponent) {
-      // When click on house icon navigate back if previous route is Home
-      this.navCtrl.pop();
-    } else {
-      this.navCtrl.push(PageNames.Home);
-    }
   }
 
   protected openPopover(myEvent: Event): void {
@@ -71,5 +56,9 @@ export class UserHeaderComponent {
     popover.present({
       ev: myEvent
     });
+  }
+
+  onProfileClick(): void {
+    this.navCtrl.push(PageNames.RegisterSalon, { isMainScreen: true });
   }
 }

@@ -35,8 +35,7 @@ export class MadeNavComponent {
     { name: 'Revisit', page: PageNames.DiscountsRevisit },
     { name: 'First Visit', page: PageNames.DiscountsFirstBooking },
 
-    { name: 'Invite Clients', page: PageNames.Invitations },
-    { name: 'Summary', page: PageNames.Profile }
+    { name: 'Invite Clients', page: PageNames.Invitations }
   ];
 
   constructor(public navCtrl: NavController) {
