@@ -1,15 +1,15 @@
 <ion-header class="bb-wp-a ion-bb-header">
   <ion-navbar>
-    <ion-buttons end>
+    <ion-buttons class="app-submit" end>
       <button id="submitBtn" ion-button icon-only [disabled]="form.invalid" (click)="onSubmit()">
-        <ion-icon name="checkmark" class="app-submit"></ion-icon>
+        <ion-icon name="checkmark"></ion-icon>
       </button>
     </ion-buttons>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding class="Appointment-content">
-  <div class="title"> Create appointment</div>
+  <div class="title"> Create appointment or block time</div>
 
   <form [formGroup]="form" class="Appointment-form">
     <ion-item>

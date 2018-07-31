@@ -4,15 +4,20 @@
 </ion-header>
 
 
-<ion-content padding class="worktime">
+<ion-content no-padding>
   <made-nav *ngIf="!isProfile" [activePage]="PageNames.Worktime"></made-nav>
-
+<div class="worktime">
   <div class="title">
     Hair is my hustle
     <p>Block days you don’t work and adjust your work hours</p>
   </div>
   <!--shifts block start -->
-  <ion-grid *ngFor="let card of cards" class="workingtime_shifts_block" item-content>
+  <ion-grid *ngFor="let card of cards" class="workingtime-shifts-block" item-content>
+    <ion-row>
+      <ion-col  class="worktime-head">
+        <ion-icon name="close"></ion-icon>
+      </ion-col>
+    </ion-row>
     <ion-row class="wd-row">
       <ion-col>
         <ion-label>Start</ion-label>
@@ -30,7 +35,7 @@
     <ion-row class="wd-row">
       <ion-col>
         <!--Week days grid start-->
-        <div class="wd_greed">
+        <div class="wd-greed">
           <ion-grid>
             <ion-row>
               <ion-col *ngFor="let day of card.weekdays">
@@ -51,7 +56,7 @@
   </div>
 
   <ion-grid>
-    <ion-row class="last_row">
+    <ion-row class="last-row">
       <ion-col>Hours I slay ‘em</ion-col>
       <ion-col>{{ calcTotals().days }} days</ion-col>
       <ion-col>{{ calcTotals().hoursMins }} </ion-col>
@@ -64,5 +69,6 @@
       <i class="bb-icon bb-icon-confirmation"></i>
     </button>
   </div>
-
+</div>
 </ion-content>
+

@@ -8,6 +8,16 @@ page-appointment-add {
 
   .app-submit {
     margin-right: 8px;
+
+    .bar-button-ios[icon-only] ion-icon {
+      font-size: 5rem;
+    }
+
+    .bar-button-default-ios,
+    .bar-button-default.bar-button-ios-default,
+    .bar-button-clear-ios-default {
+      color: color($grayscale, 800);
+    }
   }
 
   .Appointment-form {
@@ -16,12 +26,17 @@ page-appointment-add {
       font-size: $t-h3;
     }
 
+    ion-item {
+      padding-left: 0;
+    }
+
     ion-label[fixed] {
       width: 35px;
       min-width: 25px;
       max-width: 35px;
       padding-left: 8px;
       color: color($grayscale, 800);
+      text-overflow: clip;
     }
 
     .label-md {
