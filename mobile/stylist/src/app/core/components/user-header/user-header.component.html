@@ -1,23 +1,14 @@
-<ion-navbar [hideBackButton]="true" class="UserHeader bb-wp-a" [ngClass]="{'UserHeader--shadow': hasShadow}">
-  <ion-buttons *ngIf="hasBackButton && navCtrl.canGoBack()" left>
-    <button navPop ion-button icon-only class="UserHeader-btnMenu UserHeader-btnMenu--dark">
-      <i class="bb-icon bb-icon-back"></i>
-    </button>
-    <div class="UserHeader-delimeter"></div>
-    <button (click)="goToHome()" ion-button icon-only class="UserHeader-btnMenu UserHeader-btnMenu--dark">
-      <i class="bb-icon bb-icon-home"></i>
-    </button>
-  </ion-buttons>
+<ion-navbar class="UserHeader bb-wp-a">
 
-  <ion-title *ngIf="!hasBackButton && profile" class="UserHeader-title">
-    <span [madeLink]="[PageNames.Profile]">{{ profile.first_name }} {{ profile.last_name }}</span>
+  <ion-title *ngIf="profile" class="UserHeader-title" (click)="onProfileClick()">
+    <span >{{ profile.first_name }} {{ profile.last_name }}</span>
     <div class="UserHeader-subtitle">
-      <span [madeLink]="[PageNames.Profile]">{{ getToday() | date: 'EEEE, dd LLL' }}</span>
+      <span >{{ getToday() | date: 'EEEE, dd LLL' }}</span>
     </div>
   </ion-title>
 
   <ion-buttons end>
-    <button *ngIf="!hasBackButton && profile" [madeLink]="[PageNames.Profile]" [style.background-image]="'url(' + profile.profile_photo_url + ')'" ion-button icon-only class="UserHeader-btnUser is-withPic">
+    <button *ngIf="profile" (click)="onProfileClick()" [style.background-image]="'url(' + profile.profile_photo_url + ')'" ion-button icon-only class="UserHeader-btnUser is-withPic">
       <ion-icon *ngIf="false" name="ios-contact-outline"></ion-icon>
     </button>
     <div class="UserHeader-delimeter"></div>

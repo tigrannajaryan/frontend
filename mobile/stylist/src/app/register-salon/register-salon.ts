@@ -39,7 +39,7 @@ declare var window: any;
 })
 export class RegisterSalonComponent {
   protected PageNames = PageNames;
-  protected isProfile?: Boolean;
+  protected isMainScreen?: Boolean;
   protected form: FormGroup;
   protected autocomplete: Autocomplete;
   protected autocompleteInput: HTMLInputElement;
@@ -138,12 +138,9 @@ export class RegisterSalonComponent {
 
   }
 
-  ionViewDidLoad(): void {
-    this.isProfile = Boolean(this.navParams.get('isProfile'));
-    this.loadFormInitialData();
-  }
-
   ionViewWillEnter(): void {
+    this.isMainScreen = Boolean(this.navParams.get('isMainScreen'));
+    this.loadFormInitialData();
     this.initAutocomplete();
   }
 
@@ -229,7 +226,7 @@ export class RegisterSalonComponent {
   }
 
   nextRoute(): void {
-    if (this.isProfile) {
+    if (this.isMainScreen) {
       this.navCtrl.pop();
       return;
     }

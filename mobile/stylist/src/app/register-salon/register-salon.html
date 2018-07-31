@@ -1,20 +1,19 @@
 <ion-header class="ion-bb-header">
   <ion-navbar>
+    <server-status></server-status>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
-  <made-nav *ngIf="!isProfile" [activePage]="PageNames.RegisterSalon"></made-nav>
-
+  <made-nav *ngIf="!isMainScreen" [activePage]="PageNames.RegisterSalon"></made-nav>
 
   <form class="form" [formGroup]="form" (ngSubmit)="submit()">
     <div class="p-rs-circle">
-        <div [style.backgroundImage]="form.get('vars.image').value" class="p-rs-circle-photo"></div>
-        <label (click)="processPhoto()" class="p-rs-circle-add">
-          <i class="bb-icon bb-icon-add-photo p-rs-circle-add-icon"></i>
-        </label>
-      </div>
-
+      <div [style.backgroundImage]="form.get('vars.image').value" class="p-rs-circle-photo"></div>
+      <label (click)="processPhoto()" class="p-rs-circle-add">
+        <i class="bb-icon bb-icon-add-photo p-rs-circle-add-icon"></i>
+      </label>
+    </div>
 
     <ion-grid class="p-rs-inputs">
       <ion-row>
@@ -40,8 +39,6 @@
         </div>
       </ion-row>
 
-
-
       <ion-row>
         <ion-col>
           <div class="p-rs-input">
@@ -54,8 +51,6 @@
           </div>
         </ion-col>
       </ion-row>
-
-
 
       <ion-row>
         <ion-col>

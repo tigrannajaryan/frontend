@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 import { Workday, Worktime } from './worktime.models';
@@ -8,7 +8,6 @@ import { WeekdayIso } from '~/shared/weekday';
 import { Logger } from '~/shared/logger';
 import { PageNames } from '~/core/page-names';
 import { loading } from '~/core/utils/loading';
-import { showAlert } from '~/core/utils/alert';
 
 const firstWeekday = WeekdayIso.Mon;
 const lastWeekday = WeekdayIso.Sun;
@@ -81,11 +80,6 @@ export class WorktimeComponent {
 
   cards: VisualWeekCard[] = [];
 
-  // Indicates if this screen should work in registration mode
-  // TODO: use instead of isProfile
-  @Input()
-  registrationMode = true;
-
   /**
    * Create an array of 7 weekday elements.
    * @param enabled set all days to enabled or disabled state
@@ -125,13 +119,9 @@ export class WorktimeComponent {
 
   @loading
   async loadInitialData(): Promise<void> {
-    try {
-      // Load data from backend and show it
-      const worktime = await this.api.getWorktime();
-      this.cards = this.api2presentation(worktime);
-    } catch (e) {
-      showAlert('Loading wroking hours failed', e.message);
-    }
+    // Load data from backend and show it
+    const worktime = await this.api.getWorktime();
+    this.cards = this.api2presentation(worktime);
   }
 
   /**
@@ -177,12 +167,9 @@ export class WorktimeComponent {
   }
 
   nextRoute(): void {
-    if (this.isProfile) {
-      this.navCtrl.pop();
-      return;
+    if (!this.isProfile) {
+      this.navCtrl.push(PageNames.DiscountsInfo, {});
     }
-
-    this.navCtrl.push(PageNames.DiscountsInfo, {});
   }
 
   @loading
@@ -190,7 +177,7 @@ export class WorktimeComponent {
     // Save to backend
     const worktime = await this.api.setWorktime(this.presentation2api(this.cards));
 
-    if (this.registrationMode) {
+    if (!this.isProfile) {
       // Continue registration on the next page
       this.nextRoute();
     } else {

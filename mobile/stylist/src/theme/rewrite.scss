@@ -108,7 +108,7 @@ ion-icon.tab-button-icon[aria-label="Home"],
 ion-icon.tab-button-icon[aria-label="Hours"],
 ion-icon.tab-button-icon[aria-label="Discount"],
 ion-icon.tab-button-icon[aria-label="Services"],
-ion-icon.tab-button-icon[aria-label="Profile"] {
+ion-icon.tab-button-icon[aria-label="Invite"] {
   display: inline-block;
   font-family: 'bb', sans-serif;
   font-style: normal;
@@ -145,7 +145,7 @@ ion-icon.tab-button-icon[aria-label="Services"]:after {
   -moz-osx-font-smoothing: grayscale;
 }
 
-ion-icon.tab-button-icon[aria-label="Profile"]:after {
+ion-icon.tab-button-icon[aria-label="Invite"]:after {
   content: '\004e';
 }
 
