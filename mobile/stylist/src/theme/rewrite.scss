@@ -104,11 +104,11 @@ ion-datetime {
 
 // rewrite ionic tabs icons
 
-ion-icon.tab-button-icon[ng-reflect-name="Home"],
-ion-icon.tab-button-icon[ng-reflect-name="Hours"],
-ion-icon.tab-button-icon[ng-reflect-name="Discount"],
-ion-icon.tab-button-icon[ng-reflect-name="Services"],
-ion-icon.tab-button-icon[ng-reflect-name="Profile"] {
+ion-icon.tab-button-icon[aria-label="Home"],
+ion-icon.tab-button-icon[aria-label="Hours"],
+ion-icon.tab-button-icon[aria-label="Discount"],
+ion-icon.tab-button-icon[aria-label="Services"],
+ion-icon.tab-button-icon[aria-label="Profile"] {
   display: inline-block;
   font-family: 'bb', sans-serif;
   font-style: normal;
@@ -118,19 +118,19 @@ ion-icon.tab-button-icon[ng-reflect-name="Profile"] {
   content: '\0045';
 }
 
-ion-icon.tab-button-icon[ng-reflect-name="Home"]:after {
+ion-icon.tab-button-icon[aria-label="Home"]:after {
   content: '\0045';
 }
 
-ion-icon.tab-button-icon[ng-reflect-name="Hours"]:after {
+ion-icon.tab-button-icon[aria-label="Hours"]:after {
   content: '\004c';
 }
 
-ion-icon.tab-button-icon[ng-reflect-name="Discount"]:after {
+ion-icon.tab-button-icon[aria-label="Discount"]:after {
   content: '\004d';
 }
 
-ion-icon.tab-button-icon[ng-reflect-name="Services"]:after {
+ion-icon.tab-button-icon[aria-label="Services"]:after {
   display: inline-block;
   font-family: 'Ionicons', sans-serif;
   font-style: normal;
@@ -145,7 +145,7 @@ ion-icon.tab-button-icon[ng-reflect-name="Services"]:after {
   -moz-osx-font-smoothing: grayscale;
 }
 
-ion-icon.tab-button-icon[ng-reflect-name="Profile"]:after {
+ion-icon.tab-button-icon[aria-label="Profile"]:after {
   content: '\004e';
 }
 
