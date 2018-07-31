@@ -3,12 +3,14 @@ import { Actions, Effect } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
-import { LOADING_DELAY } from '~/core/api/request.models';
+import { LOADING_DELAY, RequestState } from '~/core/api/request.models';
 import { ServicesService } from '~/core/api/services-service';
 import {
   GetStylistServicesAction,
+  GetStylistServicesLoadingAction,
   GetStylistServicesErrorAction,
   GetStylistServicesSuccessAction,
+  selectServicesRequestState,
   selectStylistServiceCategories,
   servicesActionTypes,
   ServicesState
@@ -42,12 +44,12 @@ export class ServicesEffects {
     });
 
   @Effect({ dispatch: false }) getStylistServicesLoading = this.actions
-    .ofType(servicesActionTypes.GET_STYLIST_SERVICES_LOADING)
+    .ofType(servicesActionTypes.GET_STYLIST_SERVICES)
     .delay(LOADING_DELAY)
     .withLatestFrom(this.store)
     .map(([action, store]) => {
-      if (!selectRequestCodeSucceeded(store)) {
-        this.store.dispatch(new RequestCodeLoadingAction());
+      if (selectServicesRequestState(store) === RequestState.NotStarted) {
+        this.store.dispatch(new GetStylistServicesLoadingAction());
       }
     });
 

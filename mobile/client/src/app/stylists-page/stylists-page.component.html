@@ -10,8 +10,19 @@
         <span>All stylists</span>
         <span *ngIf="(stylists | async)?.length > 0" class="Badge">{{ (stylists | async)?.length }}</span>
       </div>
-      <div *ngIf="(requestState | async) === RequestState.Loading" class="StylistsPage-loader">searching…</div>
+      <div *ngIf="(requestState | async) === RequestState.Loading && (stylists | async) !== undefined" class="StylistsPage-loader">searching…</div>
     </ion-row>
+
+    <!-- Showing loading cards -->
+    <div *ngIf="(requestState | async) === RequestState.Loading && (stylists | async) === undefined" class="StylistsPage-stylists">
+      <div *ngFor="let stylist of loadingStylists" class="Card is-loading">
+        <div class="StylistsPage-cardSubtitle">&nbsp;</div>
+        <div class="StylistsPage-cardTitle">&nbsp;</div>
+        <div class="StylistsPage-cardSubtitle">&nbsp;</div>
+      </div>
+    </div>
+
+    <!-- Showing stylists -->
     <div *ngIf="stylists | async" class="StylistsPage-stylists">
       <div
         *ngFor="let stylist of stylists | async"

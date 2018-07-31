@@ -1,0 +1,22 @@
+.Table {
+  width: 100%;
+
+  .Table-col {
+    padding: 16px;
+    border-bottom: 1px solid color($grayscale, 200);
+
+    &:first-child { padding-left: 0; }
+    &:last-child { padding-right: 0; }
+  }
+
+  .Table-header {
+    .Table-col {
+      padding-top: 0;
+      padding-bottom: 0;
+      font-weight: normal;
+      color: color($grayscale, 500);
+      text-align: left;
+      border-bottom: none;
+    }
+  }
+}

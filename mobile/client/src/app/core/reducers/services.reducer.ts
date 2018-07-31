@@ -73,7 +73,7 @@ export function servicesReducer(state: ServicesState = initialState, action: Act
     case servicesActionTypes.GET_STYLIST_SERVICES_ERROR:
       return {
         ...state,
-        requestState: action.requestState,
+        requestState: RequestState.Failed,
         errors: action.errors
       };
 
@@ -82,7 +82,7 @@ export function servicesReducer(state: ServicesState = initialState, action: Act
         ...state,
         stylistUuid: action.stylistUuid,
         serviceCategories: action.serviceCategories,
-        requestState: action.requestState
+        requestState: RequestState.Succeeded
       };
 
     default:
@@ -93,6 +93,11 @@ export function servicesReducer(state: ServicesState = initialState, action: Act
 export const servicesPath = 'services';
 
 const selectServicesFromState = createFeatureSelector<ServicesState>(servicesPath);
+
+export const selectServicesRequestState = createSelector(
+  selectServicesFromState,
+  (state: ServicesState): RequestState => state.requestState
+);
 
 export const selectRequestedStylistUuid = createSelector(
   selectServicesFromState,

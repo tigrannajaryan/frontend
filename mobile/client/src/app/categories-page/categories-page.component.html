@@ -2,18 +2,30 @@
 
 <ion-content class="CategoriesPage">
   <ion-grid fixed>
-    <ion-row class="H2">
+    <div class="H2">
       Choose a&nbsp;service category
       <div class="H2-subtitle">
         Select your category first, select your specific service on&nbsp;the&nbsp;next screen.
         You can also add additional services before checkout.
       </div>
-    </ion-row>
-  </ion-grid>
-  <ion-grid *ngIf="categories | async" fixed class="CategoriesPage-categories">
-    <div *ngFor="let category of categories | async" class="Card" (click)="proceedToServices(category.uuid)">
-      <div class="CategoriesPage-cardTitle">{{ category.name }}</div>
-      <div class="CategoriesPage-cardSubtitle">{{ category.services.length }} services</div>
+    </div>
+
+    <!-- Showing loading cards -->
+    <div *ngIf="(requestState | async) === RequestState.Loading" class="CategoriesPage-categories">
+      <div *ngFor="let category of loadingCategories" class="Card is-loading">
+        <div class="CategoriesPage-cardTitle">&nbsp;</div>
+        <div class="CategoriesPage-cardSubtitle">&nbsp;</div>
+      </div>
+    </div>
+
+    <!-- Showing categories cards -->
+    <div *ngIf="(requestState | async) === RequestState.Succeeded">
+      <div *ngIf="(categories | async)?.length > 0" class="CategoriesPage-categories">
+        <div *ngFor="let category of categories | async" class="Card" (click)="onProceedToServices(category.uuid)">
+          <div class="CategoriesPage-cardTitle">{{ category.name }}</div>
+          <div class="CategoriesPage-cardSubtitle">{{ category.services.length }} services</div>
+        </div>
+      </div>
     </div>
   </ion-grid>
 <ion-content>

@@ -25,6 +25,8 @@ export const MIN_QUERY_LENGTH = 2;
 export class StylistsPageComponent {
   query: FormControl = new FormControl('');
 
+  loadingStylists = Array(2).fill(undefined);
+
   stylists: Observable<StylistModel[]>;
   activeStylist?: StylistModel;
 

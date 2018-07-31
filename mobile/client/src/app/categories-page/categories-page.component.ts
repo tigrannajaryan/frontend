@@ -4,8 +4,10 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
 import { PageNames } from '~/core/page-names';
+import { RequestState } from '~/core/api/request.models';
 import {
   GetStylistServicesAction,
+  selectServicesRequestState,
   selectStylistServiceCategories,
   ServicesState
 } from '~/core/reducers/services.reducer';
@@ -19,7 +21,12 @@ import { ServiceCategoryModel } from '~/core/api/services.models';
 export class CategoriesPageComponent {
   stylistUuid: string;
 
+  loadingCategories = Array(2).fill(undefined);
+
   categories: Observable<ServiceCategoryModel[]>;
+  requestState: Observable<RequestState>;
+
+  RequestState = RequestState; // expose to view
 
   constructor(
     private navCtrl: NavController,
@@ -32,11 +39,12 @@ export class CategoriesPageComponent {
     this.stylistUuid = this.navParams.get('stylistUuid');
 
     this.categories = this.store.select(selectStylistServiceCategories(this.stylistUuid));
+    this.requestState = this.store.select(selectServicesRequestState);
 
     this.store.dispatch(new GetStylistServicesAction(this.stylistUuid));
   }
 
-  proceedToServices(categoryUuid: string): void {
+  onProceedToServices(categoryUuid: string): void {
     this.navCtrl.push(PageNames.Services, { stylistUuid: this.stylistUuid, categoryUuid });
   }
 }
