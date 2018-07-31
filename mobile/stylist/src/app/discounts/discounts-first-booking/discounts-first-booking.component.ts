@@ -48,7 +48,7 @@ export class DiscountsFirstBookingComponent {
     if (ENV.ffEnableIncomplete) {
       this.navCtrl.push(PageNames.Invitations);
     } else {
-      this.navCtrl.push(PageNames.Home);
+      this.navCtrl.push(PageNames.Tabs);
     }
   }
 
