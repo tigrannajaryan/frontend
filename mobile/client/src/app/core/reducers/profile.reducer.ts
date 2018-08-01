@@ -74,7 +74,10 @@ export class RequestUpdateProfileErrorAction implements Action {
 export class RequestUpdateImage implements Action {
   readonly type = profileActionTypes.REQUEST_UPDATE_IMAGE;
   readonly requestState = RequestState.NotStarted;
-  constructor(public formData: FormData) {}
+  constructor(
+    public localImgUrl: string,
+    public formData: FormData
+  ) {}
 }
 
 export class RequestUpdateImageSuccess implements Action {
@@ -126,6 +129,7 @@ export function profileReducer(state: ProfileState = initialState, action: Actio
           phone: action.phone
         }
       };
+
     case profileActionTypes.REQUEST_GET_PROFILE_SUCCESS:
     case profileActionTypes.REQUEST_UPDATE_PROFILE_SUCCESS:
       return {
@@ -135,14 +139,25 @@ export function profileReducer(state: ProfileState = initialState, action: Actio
           ...action.profile
         }
       };
+
     case profileActionTypes.PROFILE_LOADING:
     case profileActionTypes.REQUEST_UPDATE_PROFILE:
     case profileActionTypes.REQUEST_GET_PROFILE:
-    case profileActionTypes.REQUEST_UPDATE_IMAGE:
       return {
         ...state,
         requestState: action.requestState
       };
+
+    case profileActionTypes.REQUEST_UPDATE_IMAGE:
+      return {
+        ...state,
+        requestState: action.requestState,
+        profile: {
+          ...state.profile,
+          profile_photo_url: action.localImgUrl
+        }
+      };
+
     case profileActionTypes.REQUEST_UPDATE_PROFILE_ERROR:
     case profileActionTypes.REQUEST_GET_PROFILE_ERROR:
     case profileActionTypes.REQUEST_UPDATE_IMAGE_ERROR:
@@ -151,6 +166,7 @@ export function profileReducer(state: ProfileState = initialState, action: Actio
         requestState: action.requestState,
         errors: action.errors
       };
+
     case profileActionTypes.REQUEST_UPDATE_IMAGE_SUCCESS:
       return {
         ...state,
@@ -160,6 +176,7 @@ export function profileReducer(state: ProfileState = initialState, action: Actio
           profile_photo_id: action.uuid
         }
       };
+
     default:
       return state;
   }
@@ -177,6 +194,11 @@ export const selectPhone = createSelector(
 export const selectProfile = createSelector(
   selectProfileFromState,
   (state: ProfileState): ProfileModel => state.profile
+);
+
+export const selectProfileErrors = createSelector(
+  selectProfileFromState,
+  (state: ProfileState): ApiError[] | undefined => state.errors
 );
 
 export const selectProfileRequestState = createSelector(

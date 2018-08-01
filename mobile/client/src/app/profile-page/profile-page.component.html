@@ -9,7 +9,7 @@
 </ion-header>
 
 <ion-content class="ProfilePage">
-  <div (click)="onProcessPhoto()" [style.backgroundImage]="currentImage" class="ProfilePage-pic">
+  <div (click)="onProcessPhoto()" [style.backgroundImage]="photoUrl" class="ProfilePage-pic">
     <div class="ProfilePage-add">
       <ion-icon name="md-camera"></ion-icon>
     </div>
@@ -18,23 +18,23 @@
     <ion-list>
       <ion-grid>
         <ion-row>
-          <ion-item class="FormControl" col-6>
+          <ion-item class="ProfilePage-formControl FormControl" col-6>
             <ion-label floating>First name</ion-label>
             <ion-input formControlName="first_name" type="text"></ion-input>
           </ion-item>
-          <ion-item class="FormControl" col-6>
+          <ion-item class="ProfilePage-formControl FormControl" col-6>
             <ion-label floating>Last name</ion-label>
             <ion-input formControlName="last_name" type="text"></ion-input>
           </ion-item>
         </ion-row>
         <ion-row>
-          <ion-item class="FormControl">
+          <ion-item class="ProfilePage-formControl FormControl">
             <ion-label floating>Email</ion-label>
             <ion-input type="email" formControlName="email"></ion-input>
           </ion-item>
         </ion-row>
         <ion-row>
-          <ion-item class="FormControl">
+          <ion-item class="ProfilePage-formControl FormControl">
             <ion-label floating>Zip code</ion-label>
             <ion-input type="number" formControlName="zip_code"></ion-input>
           </ion-item>

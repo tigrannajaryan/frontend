@@ -25,7 +25,6 @@ import { StylistsService } from '~/core/api/stylists-service';
 import { ServicesService } from '~/core/api/services-service';
 
 import { AuthServiceMock } from '~/core/api/auth-service.mock';
-import { ProfileServiceMock } from '~/core/api/profile-service.mock';
 import { StylistsServiceMock } from '~/core/api/stylists-service.mock';
 import { ServicesServiceMock } from '~/core/api/services-service.mock';
 
@@ -103,7 +102,6 @@ import { ServerStatusTracker } from '~/shared/server-status-tracker';
 
     // services mocks
     AuthServiceMock,
-    ProfileServiceMock,
     StylistsServiceMock,
     ServicesServiceMock,
     ScreenOrientation,

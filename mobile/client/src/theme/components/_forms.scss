@@ -1,6 +1,10 @@
 .FormControl {
   padding: 0;
 
+  .label {
+    color: color($grayscale, 500);
+  }
+
   &.item-block .item-inner { // override ionic styles
     padding: 0;
     border-bottom: 1px solid color($grayscale, 200);

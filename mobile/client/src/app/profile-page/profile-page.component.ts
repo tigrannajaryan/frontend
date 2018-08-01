@@ -1,10 +1,9 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { DomSanitizer } from '@angular/platform-browser';
-import { ActionSheetController, ActionSheetOptions, IonicPage, NavController, NavParams } from 'ionic-angular';
+import { DomSanitizer, SafeStyle } from '@angular/platform-browser';
+import { ActionSheetController, ActionSheetOptions, IonicPage } from 'ionic-angular';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { Store } from '@ngrx/store';
-import { Subscription } from 'rxjs/Subscription';
 
 import { EmailValidator } from '~/shared/validators';
 import { PhotoSourceType } from '~/shared/constants';
@@ -29,8 +28,8 @@ import { ProfileModel } from '~/core/api/profile.models';
 })
 export class ProfilePageComponent {
   readonly DEFAULT_IMAGE = 'url(/assets/imgs/user/default_user.png)';
-  currentImage;
 
+  photoUrl: SafeStyle;
   form: FormGroup;
 
   isLoading = false;
@@ -40,8 +39,6 @@ export class ProfilePageComponent {
     private camera: Camera,
     private domSanitizer: DomSanitizer,
     private formBuilder: FormBuilder,
-    private navCtrl: NavController,
-    private navParams: NavParams,
     private store: Store<ProfileState>
   ) {
   }
@@ -81,7 +78,7 @@ export class ProfilePageComponent {
     this.store.select(selectProfile)
       .takeWhile(componentIsActive(this))
       .subscribe((profile: ProfileModel) => {
-        this.currentImage = profile.profile_photo_url || this.DEFAULT_IMAGE;
+        this.photoUrl = this.domSanitizer.bypassSecurityTrustStyle(`url(${profile.profile_photo_url || this.DEFAULT_IMAGE})`);
         this.form.patchValue(profile);
       });
 
@@ -107,14 +104,12 @@ export class ProfilePageComponent {
         }
       ]
     };
-    if (this.currentImage) {
+    if (this.photoUrl) {
       opts.buttons.push({
         text: 'Remove Photo',
         role: 'destructive',
         handler: () => {
-          this.currentImage = this.DEFAULT_IMAGE;
-          this.form.get('profile_photo_id').setValue(undefined);
-          this.form.get('profile_photo_url').setValue(undefined);
+          this.photoUrl = this.DEFAULT_IMAGE;
         }
       });
     }
@@ -147,13 +142,11 @@ export class ProfilePageComponent {
       // If it's base64:
       const originalBase64Image = `data:image/jpeg;base64,${imageData}`;
       const downscaledBase64Image = await downscalePhoto(originalBase64Image);
-      // set image preview
-      this.currentImage = this.domSanitizer.bypassSecurityTrustStyle(`url(${downscaledBase64Image})`);
       // convert base64 to File after to formData and send it to server
       const file = await urlToFile(downscaledBase64Image, 'file.png');
       const formData = new FormData();
       formData.append('file', file);
-      this.store.dispatch(new RequestUpdateImage(formData));
+      this.store.dispatch(new RequestUpdateImage(downscaledBase64Image, formData));
     } catch (e) {
       showAlert('Saving photo failed', e.message);
     }

@@ -7,14 +7,12 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class ProfileService extends BaseService {
 
-  private readonly API_PATH = 'client/profile' ;
-
   getProfile(): Observable<ApiResponse<ProfileModel>> {
-    return super.get<ProfileModel>(this.API_PATH);
+    return this.get<ProfileModel>('client/profile');
   }
 
   updateProfile(profile: ProfileModel): Observable<ApiResponse<ProfileModel>> {
-    return super.post<ProfileModel>(this.API_PATH, profile);
+    return this.post<ProfileModel>('client/profile', profile);
   }
 
 }
