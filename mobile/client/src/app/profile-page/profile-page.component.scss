@@ -1,0 +1,39 @@
+.ProfilePage {
+  .ProfilePage-pic {
+    $image-size: 120px;
+
+    position: relative;
+    width: $image-size;
+    height: $image-size;
+    margin: 0 auto 24px;
+    background-color: color($grayscale, 100);
+    background-repeat: no-repeat;
+    background-size: cover;
+    border-radius: 50%; // circle
+  }
+
+  .ProfilePage-add {
+    $add-btn-size: 48px;
+    $add-btn-opacity: 0.7;
+
+    position: absolute;
+    top: 100%;
+    left: 100%;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: $add-btn-size;
+    height: $add-btn-size;
+    margin: (-1 * $add-btn-size) 0 0 (-1 * $add-btn-size); // shift top left
+    color: white;
+    background: rgba(color($colors, orange), $add-btn-opacity);
+    border: 1px solid rgba(white, 1);
+    border-radius: 50%; // circle
+
+    ion-icon {
+      margin: 2px 0 0 2px; // fix centered align
+      font-size: $t-h3;
+    }
+  }
+}

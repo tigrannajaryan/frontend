@@ -20,10 +20,12 @@ import { AuthInterceptor } from '~/core/http-interceptors/auth-interceptor';
 import { ClientUnhandledErrorHandler } from '~/core/unhandled-error-handler';
 
 import { AuthService } from '~/core/api/auth-service';
+import { ProfileService } from '~/core/api/profile-service';
 import { StylistsService } from '~/core/api/stylists-service';
 import { ServicesService } from '~/core/api/services-service';
 
 import { AuthServiceMock } from '~/core/api/auth-service.mock';
+import { ProfileServiceMock } from '~/core/api/profile-service.mock';
 import { StylistsServiceMock } from '~/core/api/stylists-service.mock';
 import { ServicesServiceMock } from '~/core/api/services-service.mock';
 
@@ -38,6 +40,9 @@ import { StylistsEffects } from '~/core/effects/stylists.effects';
 import { CoreModule } from '~/core/core.module';
 
 initSentry();
+
+import { BaseApiService } from '~/shared/base-api-service';
+import { ServerStatusTracker } from '~/shared/server-status-tracker';
 
 @NgModule({
   declarations: [
@@ -87,13 +92,18 @@ initSentry();
     SplashScreen,
     AppVersion,
 
+    BaseApiService,
+    ServerStatusTracker,
+
     // services
     AuthService,
+    ProfileService,
     StylistsService,
     ServicesService,
 
     // services mocks
     AuthServiceMock,
+    ProfileServiceMock,
     StylistsServiceMock,
     ServicesServiceMock,
     ScreenOrientation,
