@@ -19,7 +19,7 @@
   }
 
   &:before {
-    height: 1px;
+    height: pxtovw(1px);
     background: rgba(0, 0, 0, 0.1);
   }
 }
@@ -34,13 +34,13 @@
 .Discounts-btn {
   width: 100%;
   height: auto;
-  padding: pxtovw(17.5px) 0;
+  padding: pxtovw(20px) 0;
   margin: 0;
   font-size: pxtovw(15px);
   color: color($grayscale, 800);
   text-transform: capitalize;
   background: color($colors, secondary);
-  border-radius: pxtovw(7px);
+  border-radius: pxtovw(10px);
   box-shadow: none;
 
   &.is-invert {

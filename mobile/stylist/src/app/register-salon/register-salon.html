@@ -1,95 +1,88 @@
-<ion-header class="ion-bb-header">
-  <ion-navbar>
-    <server-status></server-status>
+<ion-header class="madeBackHeader">
+  <ion-navbar class="Made-wp BackHeader-backBtn">
+    <ion-buttons *ngIf="isMainScreen" end>
+      <button [disabled]="form.invalid" (click)="onContinue()" ion-button icon-only color="dark" class="RightButton">
+        <img src="assets/svgicons/check.svg"/>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
+
+<ion-content no-padding>
   <made-nav *ngIf="!isMainScreen" [activePage]="PageNames.RegisterSalon"></made-nav>
 
-  <form class="form" [formGroup]="form" (ngSubmit)="submit()">
-    <div class="p-rs-circle">
-      <div [style.backgroundImage]="form.get('vars.image').value" class="p-rs-circle-photo"></div>
-      <label (click)="processPhoto()" class="p-rs-circle-add">
-        <i class="bb-icon bb-icon-add-photo p-rs-circle-add-icon"></i>
+  <form [formGroup]="form" class="Made-wp Made-wpContent">
+    <div class="Salon-circle">
+      <div [style.backgroundImage]="form.get('vars.image').value" class="Salon-circle-photo"></div>
+      <label (click)="processPhoto()" class="Salon-circle-add">
+        <i class="bb-icon bb-icon-add-photo Salon-circle-add-icon"></i>
       </label>
     </div>
 
-    <ion-grid class="p-rs-inputs">
+    <ion-grid class="Salon-inputsOffset">
       <ion-row>
-        <div col-6>
-          <div class="p-rs-input">
-            <div class="p-rs-input-label">First name</div>
-
-            <ion-item>
-              <ion-input type="text" formControlName="first_name"></ion-input>
-              <i class="bb-icon bb-icon-user" item-right></i>
-            </ion-item>
-          </div>
-        </div>
-        <div col-6>
-          <div class="p-rs-input">
-            <div class="p-rs-input-label">Last name</div>
-
-            <ion-item>
-              <ion-input type="text" formControlName="last_name"></ion-input>
-              <i class="bb-icon bb-icon-user" item-right></i>
-            </ion-item>
-          </div>
-        </div>
-      </ion-row>
-
-      <ion-row>
-        <ion-col>
-          <div class="p-rs-input">
-            <div class="p-rs-input-label">Salon name</div>
-
-            <ion-item>
-              <ion-input type="text" formControlName="salon_name"></ion-input>
-              <i class="bb-icon bb-icon-home" item-right></i>
-            </ion-item>
-          </div>
+        <ion-col col-6>
+          <ion-item class="Salon-input">
+            <ion-label floating>First name</ion-label>
+            <ion-input formControlName="first_name" type="text"></ion-input>
+          </ion-item>
+        </ion-col>
+        <ion-col col-6>
+          <ion-item class="Salon-input">
+            <ion-label floating>Last name</ion-label>
+            <ion-input formControlName="last_name" type="text"></ion-input>
+          </ion-item>
         </ion-col>
       </ion-row>
 
       <ion-row>
         <ion-col>
-          <div class="p-rs-input">
-            <div class="p-rs-input-label">Address</div>
-
-            <ion-item>
-              <ion-input type="text" formControlName="salon_address" class="ion_autocomplete"></ion-input>
-              <i class="bb-icon bb-icon-location" item-right></i>
-            </ion-item>
-          </div>
+          <ion-item class="Salon-input">
+            <ion-label floating>Salon name</ion-label>
+            <ion-input formControlName="salon_name" type="text"></ion-input>
+          </ion-item>
         </ion-col>
       </ion-row>
 
-      <div class="pac_container_carrier"></div>
+      <ion-row>
+        <ion-col>
+          <ion-item class="Salon-input">
+            <ion-label floating>Address</ion-label>
+            <ion-input formControlName="salon_address" type="text" class="ion_autocomplete"></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
 
       <ion-row>
         <ion-col>
-          <div class="p-rs-input">
-            <div class="p-rs-input-label">Phone number</div>
+          <ion-item class="Salon-input">
+            <ion-label floating>Phone number</ion-label>
+            <ion-input formControlName="phone" type="tel"></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
 
-            <ion-item>
-              <ion-input type="tel" formControlName="phone"></ion-input>
-              <i class="bb-icon bb-icon-phone" item-right></i>
-            </ion-item>
-          </div>
+      <ion-row>
+        <ion-col>
+          <ion-item class="Salon-input">
+            <ion-label floating>Instagrem</ion-label>
+            <ion-input formControlName="instagram_url" type="text"></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col>
+          <ion-item class="Salon-input">
+            <ion-label floating>Website</ion-label>
+            <ion-input formControlName="website_url" type="text"></ion-input>
+          </ion-item>
         </ion-col>
       </ion-row>
     </ion-grid>
-
-
-    <ion-row justify-content-center align-items-center>
-      <button ion-button color="danger" clear style="visibility: hidden;">Delete</button>
-
-      <button [disabled]="form.invalid" ion-button type="submit" class="bb-btn-circle">
-        <i class="bb-icon bb-icon-confirmation"></i>
-      </button>
-
-      <button type="reset" ion-button color="danger" class="p-rs-reset" clear>Reset</button>
-    </ion-row>
   </form>
 </ion-content>
+
+
+<ion-footer *ngIf="!isMainScreen" [disabled]="form.invalid" (continue)="onContinue()" madeDiscountsFooter></ion-footer>
