@@ -16,6 +16,7 @@ if (!appName) {
 var buildNumber = (process.env.IOS_BUILD_NUMBER || '0').trim();
 var appDescription = (process.env.IOS_APP_DESCRIPTION || '').trim();
 var iosAppBundleId = (process.env.IOS_APP_BUNDLE_ID || '').trim();
+var androidAppBundleId = (process.env.ANDROID_APP_BUNDLE_ID || '').trim();
 
 
 // Read config.xml
@@ -25,6 +26,7 @@ fs.readFile('config.xml', 'utf8', function(err, data) {
   console.log('iOS / Android App Name: ', appName);
   console.log('iOS / Android App Description: ', appDescription);
   console.log('iOS Bundle ID: ', iosAppBundleId);
+  console.log('Android Bundle ID: ', androidAppBundleId);
   console.log('\n--------------------------\n');
 
   if(err) {
@@ -46,8 +48,11 @@ fs.readFile('config.xml', 'utf8', function(err, data) {
     obj['widget']['$']['ios-CFBundleVersion'] = buildNumber;
     obj['widget']['$']['android-versionCode'] = buildNumber;
 
-    // set iOS bundle id
-    obj['widget']['$']['id'] = iosAppBundleId;
+    // set iOS and Android bundle id
+    obj['widget']['$']['id'] = 'madeBeauty.mobile';
+    obj['widget']['$']['ios-CFBundleIdentifier'] = iosAppBundleId;
+    obj['widget']['$']['android-packageName'] = androidAppBundleId;
+
 
     // set name and descripition
     obj['widget']['name'] = appName;
