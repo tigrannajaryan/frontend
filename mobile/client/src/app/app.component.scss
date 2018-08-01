@@ -17,6 +17,15 @@
 
 @import '../theme/normalize';
 
+// Components
+@import '../theme/components/badges';
+@import '../theme/components/buttons';
+@import '../theme/components/cards';
+@import '../theme/components/forms';
+@import '../theme/components/tables';
+@import '../theme/components/titles';
+
+// App basic styles
 .grid {
   padding: 0 25px;
 }

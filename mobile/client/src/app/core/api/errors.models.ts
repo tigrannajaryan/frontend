@@ -63,9 +63,18 @@ export interface ApiHighLevelErrorResponse extends ApiErrorResponse {
 // Common errors
 
 /**
- * Base class for all posible errors returned from the API request
+ * Base class for all posible errors returned from the API request.
+ *
+ * This class is inherited from built-in Error class to make sure it is treated properly
+ * by frameworks (Angular, I am looking at you) which assume that anything that
+ * is not derived from Error is not worth to be treated as first class citizen
+ * (see e.g. https://github.com/angular/angular/blob/master/packages/core/src/view/errors.ts#L25)
+ * Inheriting this from Error ensure Angular doesn't try to tinker with this object
+ * when it catches and delivers to unhandled ErrorHandler and that ErrorHandler receives
+ * the error call stack intact.
+ * Solution inspired by https://medium.com/@xjamundx/custom-javascript-errors-in-es6-aa891b173f87
  */
-export class ApiError {
+export class ApiError extends Error {
   /**
    * This is used to indicate that dispatching of ApiCommonErrorAction
    * is needed when this error occures.

@@ -3,11 +3,11 @@
 <ion-content class="StylistInvitationPage">
   <ion-grid *ngIf="stylist" fixed>
     <ion-row justify-content-center>
-      <div class="H1">Your stylist</div>
+      <div class="StylistInvitationPage-title H1">Your stylist</div>
     </ion-row>
     <ion-row justify-content-center>
       <div class="StylistInvitationPage-pic">
-        <img src="assets/imgs/stylist-avatar.svg" />
+        <img src="assets/icons/stylist-avatar.svg" />
       </div>
     </ion-row>
     <ion-row justify-content-center class="StylistInvitationPage-salonName">{{ stylist.salon_name }}</ion-row>
@@ -16,7 +16,7 @@
     <ion-row justify-content-center class="StylistInvitationPage-phone"><img src="assets/icons/phone.svg" />&nbsp;{{ stylist.phone | formatPhone }}</ion-row>
     <ion-row justify-content-center class="StylistInvitationPage-phone"><img src="assets/icons/instagram.svg" />&nbsp;{{ stylist.instagram_profile_name }}</ion-row>
     <ion-row justify-content-center>
-      <button (click)="onContinueWithStylist()" ion-button class="Button">Continue</button>
+      <button (click)="onContinueWithStylist()" ion-button class="StylistInvitationPage-submit Button">Continue</button>
     </ion-row>
     <ion-row justify-content-center>
       <span (click)="onSeeStylistsList()" class="Link">It’s not my stylist</span>

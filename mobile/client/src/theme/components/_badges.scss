@@ -1,0 +1,13 @@
+.Badge {
+  $badge-size: 24px;
+
+  height: $badge-size;
+  padding: 0 12px;
+  margin-left: 12px;
+  font-size: $t-base;
+  font-weight: 500;
+  line-height: $badge-size;
+  color: white;
+  background: color($colors, violet);
+  border-radius: 12px;
+}

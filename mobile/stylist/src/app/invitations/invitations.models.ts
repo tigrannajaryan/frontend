@@ -1,7 +1,15 @@
-// Client to invite
+export enum InvitationStatus {
+  New,
+  Invited = 'invited',
+  InvitationPending = 'unsent',
+  InvitationFailed = 'undelivered',
+  Accepted = 'accepted'
+}
+
+// Invited Client information
 
 export interface ClientInvitation {
   name?: string;
   phone: string;
-  status?: string;
+  status?: InvitationStatus;
 }

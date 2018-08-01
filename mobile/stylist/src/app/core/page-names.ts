@@ -27,7 +27,6 @@ export enum PageNames {
   Invitations = 'InvitationsComponent',
   Login = 'LoginComponent',
   LoginRegister = 'LoginRegisterComponent',
-  Profile = 'ProfileComponent',
   RegisterByEmail = 'RegisterByEmailComponent',
   RegisterSalon = 'RegisterSalonComponent',
   RegisterServices = 'ServicesComponent',

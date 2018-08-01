@@ -13,22 +13,30 @@ import { META_REDUCERS, StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 
 import { Logger } from '~/shared/logger';
+import { initSentry } from '~/shared/sentry';
 
 import { AuthInterceptor } from '~/core/http-interceptors/auth-interceptor';
-import { UnhandledErrorHandler } from '~/core/unhandled-error-handler';
+import { ClientUnhandledErrorHandler } from '~/core/unhandled-error-handler';
+
 import { AuthService } from '~/core/api/auth-service';
-import { AuthServiceMock } from '~/core/api/auth-service.mock';
 import { StylistsService } from '~/core/api/stylists-service';
+import { ServicesService } from '~/core/api/services-service';
+
+import { AuthServiceMock } from '~/core/api/auth-service.mock';
 import { StylistsServiceMock } from '~/core/api/stylists-service.mock';
+import { ServicesServiceMock } from '~/core/api/services-service.mock';
 
 import { ClientAppComponent } from '~/app.component';
 import { getMetaReducers, reducers } from '~/app.reducers';
 
 import { AuthEffects } from '~/core/effects/auth.effects';
 import { ApiCommonErrorsEffects } from '~/core/effects/api-common-errors.effects';
+import { ServicesEffects } from '~/core/effects/services.effects';
 import { StylistsEffects } from '~/core/effects/stylists.effects';
 
 import { CoreModule } from '~/core/core.module';
+
+initSentry();
 
 @NgModule({
   declarations: [
@@ -62,6 +70,7 @@ import { CoreModule } from '~/core/core.module';
     EffectsModule.forRoot([
       AuthEffects,
       ApiCommonErrorsEffects,
+      ServicesEffects,
       StylistsEffects
     ])
   ],
@@ -79,9 +88,13 @@ import { CoreModule } from '~/core/core.module';
 
     // services
     AuthService,
-    AuthServiceMock,
     StylistsService,
+    ServicesService,
+
+    // services mocks
+    AuthServiceMock,
     StylistsServiceMock,
+    ServicesServiceMock,
 
     { // Add auth token to all requests
       provide: HTTP_INTERCEPTORS,
@@ -91,7 +104,7 @@ import { CoreModule } from '~/core/core.module';
     {
       // Our custom handler for unhandled exceptions
       provide: ErrorHandler,
-      useClass: UnhandledErrorHandler
+      useClass: ClientUnhandledErrorHandler
     },
 
     {

@@ -1,9 +1,10 @@
-import { Component, ViewChild } from '@angular/core';
-import { IonicPage, Tab, Tabs } from 'ionic-angular';
+import { Component } from '@angular/core';
+import { IonicPage, Tab } from 'ionic-angular';
+
+import { ENV } from '~/../environments/environment.default';
 
 import { GAWrapper } from '~/shared/google-analytics';
 import { PageNames } from '../core/page-names';
-import { ENV } from '~/../environments/environment.default';
 
 interface TabsObject {
   name: string;
@@ -19,9 +20,6 @@ interface TabsObject {
   templateUrl: 'tabs.component.html'
 })
 export class TabsComponent {
-
-  @ViewChild('tabs') tabs: Tabs;
-
   protected tabsData: TabsObject[] = [
     {
       name: 'Home',
@@ -42,22 +40,19 @@ export class TabsComponent {
       name: 'Services',
       link: PageNames.RegisterServicesItem,
       params: { isProfile: true }
-    },
-    {
-      name: 'Profile',
-      link: PageNames.Profile,
-      params: undefined
     }
   ];
 
   private lastSubsrciption: any;
 
-  constructor(private ga: GAWrapper) {
+  constructor(
+    private ga: GAWrapper
+  ) {
     if (ENV.ffEnableIncomplete) {
       this.tabsData.push({
         name: 'Invite',
         link: PageNames.Invitations,
-        params: { isProfile: true }
+        params: { isMainScreen: true }
       });
     }
   }
