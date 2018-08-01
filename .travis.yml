@@ -83,8 +83,8 @@ jobs:
         IOS_PROVISIONING_PROFILE_ID="b36b0583-9122-4176-becf-38d769edee4d"
         FB_APP_ID=877860949068191
         FB_APP_NAME="Made"
-        FASTLANE_SKIP_WAITING=false
-        FASTLANE_DISTRIBUTE_EXTERNAL='true --groups "MadeBeauty Staff"'
+        FASTLANE_SKIP_WAITING=true
+        FASTLANE_DISTRIBUTE_EXTERNAL=false
 
     - stage: Client Staging Build
       env:
