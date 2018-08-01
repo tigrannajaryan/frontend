@@ -13,7 +13,7 @@ if (!appName) {
   process.exit(0);
 }
 
-var buildNumber = (process.env.IOS_BUILD_NUMBER || '0').trim();
+var buildNumber = (process.env.TRAVIS_BUILD_NUMBER || '0').trim();
 var appDescription = (process.env.IOS_APP_DESCRIPTION || '').trim();
 var iosAppBundleId = (process.env.IOS_APP_BUNDLE_ID || '').trim();
 var androidAppBundleId = (process.env.ANDROID_APP_BUNDLE_ID || '').trim();
