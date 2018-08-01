@@ -13,9 +13,10 @@ import { META_REDUCERS, StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 
 import { Logger } from '~/shared/logger';
+import { initSentry } from '~/shared/sentry';
 
 import { AuthInterceptor } from '~/core/http-interceptors/auth-interceptor';
-import { UnhandledErrorHandler } from '~/core/unhandled-error-handler';
+import { ClientUnhandledErrorHandler } from '~/core/unhandled-error-handler';
 
 import { AuthService } from '~/core/api/auth-service';
 import { StylistsService } from '~/core/api/stylists-service';
@@ -34,6 +35,8 @@ import { ServicesEffects } from '~/core/effects/services.effects';
 import { StylistsEffects } from '~/core/effects/stylists.effects';
 
 import { CoreModule } from '~/core/core.module';
+
+initSentry();
 
 @NgModule({
   declarations: [
@@ -101,7 +104,7 @@ import { CoreModule } from '~/core/core.module';
     {
       // Our custom handler for unhandled exceptions
       provide: ErrorHandler,
-      useClass: UnhandledErrorHandler
+      useClass: ClientUnhandledErrorHandler
     },
 
     {
