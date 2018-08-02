@@ -13,11 +13,12 @@ import { showAlert } from '~/core/utils/alert';
 import { componentIsActive } from '~/core/utils/component-is-active';
 
 import {
+  GetProfileAction,
   ProfileState,
-  RequestGetProfileAction, RequestUpdateImage,
-  RequestUpdateProfileAction,
   selectIsLoading,
-  selectProfile
+  selectProfile,
+  UpdateImage,
+  UpdateProfileAction
 } from '~/core/reducers/profile.reducer';
 import { ProfileModel } from '~/core/api/profile.models';
 
@@ -27,12 +28,12 @@ import { ProfileModel } from '~/core/api/profile.models';
   templateUrl: 'profile-page.component.html'
 })
 export class ProfilePageComponent {
-  readonly DEFAULT_IMAGE = 'url(/assets/imgs/user/default_user.png)';
-
   photoUrl: SafeStyle;
   form: FormGroup;
 
   isLoading = false;
+
+  private readonly DEFAULT_IMAGE = 'url(/assets/imgs/user/default_user.png)';
 
   constructor(
     private actionSheetCtrl: ActionSheetController,
@@ -82,7 +83,7 @@ export class ProfilePageComponent {
         this.form.patchValue(profile);
       });
 
-    this.store.dispatch(new RequestGetProfileAction());
+    this.store.dispatch(new GetProfileAction());
   }
 
   onProcessPhoto(): void {
@@ -118,7 +119,7 @@ export class ProfilePageComponent {
   }
 
   onSubmit(): void {
-    this.store.dispatch(new RequestUpdateProfileAction(this.form.value));
+    this.store.dispatch(new UpdateProfileAction(this.form.value));
   }
 
   private async takePhoto(sourceType: PhotoSourceType): Promise<void> {
@@ -146,7 +147,7 @@ export class ProfilePageComponent {
       const file = await urlToFile(downscaledBase64Image, 'file.png');
       const formData = new FormData();
       formData.append('file', file);
-      this.store.dispatch(new RequestUpdateImage(downscaledBase64Image, formData));
+      this.store.dispatch(new UpdateImage(downscaledBase64Image, formData));
     } catch (e) {
       showAlert('Saving photo failed', e.message);
     }
