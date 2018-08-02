@@ -12,6 +12,7 @@ import { HasErrorPipe } from '~/core/pipes/has-error.pipe';
 import { PricePipe } from '~/core/pipes/price.pipe';
 
 import { MadeHeaderComponent } from '~/core/components/made-header/made-header.component';
+import { AppointmentItemComponent } from '~/core/components/appointment-item/appointment-item.component';
 
 const declarations = [
   InputNumberDirective,
@@ -19,7 +20,8 @@ const declarations = [
   FormatPhonePipe,
   HasErrorPipe,
   PricePipe,
-  MadeHeaderComponent
+  MadeHeaderComponent,
+  AppointmentItemComponent
 ];
 
 @NgModule({

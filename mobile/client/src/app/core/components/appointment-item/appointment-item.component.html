@@ -1,0 +1,25 @@
+<!-- date of the appointment -->
+<div>{{ appointment.datetime_start_at | date: 'E, LLLL d' }}</div>
+
+<!-- rebooking link -->
+<span (click)="onRebookClick()">Re-book appointment</span>
+
+<!-- the card -->
+<div (click)="onCardClick()">
+  <div>
+    <!-- time of the appointment -->
+    <span>{{ appointment.datetime_start_at | date: 'h:mmaaaaa' }}</span>
+
+    <!-- show price -->
+    <span>{{ appointment.total_price_before_tax | price }}</span>
+
+    <!-- list of services -->
+    <span>{{ getServices() }}</span>
+
+    <!-- TODO: replace avatar with real photo when it is added to API  -->
+    <img width="16" height="16" src="assets/icons/stylist-avatar.svg" />
+
+    <!-- stylists's full name -->
+    <span>{{ appointment.stylist_first_name }}&nbsp;{{ appointment.stylist_last_name }}</span>
+  </div>
+</div>

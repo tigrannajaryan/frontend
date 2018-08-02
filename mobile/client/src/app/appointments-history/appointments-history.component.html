@@ -1,0 +1,32 @@
+<ion-header madeHeader></ion-header>
+
+<ion-content padding>
+  <!-- Use refresher to initiate loading -->
+  <ion-refresher (ionRefresh)="onLoad()">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <h1>History</h1>
+
+  <!-- TODO: add profile image. Need a separate component for it. -->
+
+  <!-- Show spinner if loading is in progress and refresher is not active (to avoid double loading indicators) -->
+  <ion-spinner *ngIf="isLoading && refresher.state === 'inactive'"></ion-spinner>
+
+  <div *ngIf="!isLoading">
+    <div *ngIf="appointments; else noAppointments">
+      <h2>Past Visits <span>{{ appointments.length }}</span></h2>
+      <div *ngFor="let appointment of appointments">
+        <appointment-item [appointment]="appointment" (cardClick)="onAppointmentClick(appointment)" (rebookClick)="onRebookClick(appointment)"></appointment-item>
+      </div>
+    </div>
+
+    <ng-template #noAppointments>
+      No history to report yet.
+      <ion-icon name="sad"></ion-icon>
+      <p>Once you check out of your first visit all of your history will show up here!</p>
+    </ng-template>
+
+  </div>
+
+</ion-content>
