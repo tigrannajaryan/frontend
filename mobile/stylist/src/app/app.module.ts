@@ -6,6 +6,7 @@ import { ErrorHandler, Injector, NgModule } from '@angular/core';
 import { META_REDUCERS, StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { IonicApp, IonicModule } from 'ionic-angular';
+import { ScreenOrientation } from '@ionic-native/screen-orientation';
 
 import { MyAppComponent } from './app.component';
 import { Logger } from './shared/logger';
@@ -85,6 +86,7 @@ if (!ENV.production) {
     httpInterceptorProviders,
     AppVersion,
     AppStorage,
+    ScreenOrientation,
 
     {
       // Our custom handler for unhandled exceptions

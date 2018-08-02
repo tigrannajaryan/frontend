@@ -8,6 +8,7 @@ import { IonicApp, IonicModule } from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import { IonicStorageModule } from '@ionic/storage';
+import { ScreenOrientation } from '@ionic-native/screen-orientation';
 
 import { META_REDUCERS, StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
@@ -95,6 +96,7 @@ initSentry();
     AuthServiceMock,
     StylistsServiceMock,
     ServicesServiceMock,
+    ScreenOrientation,
 
     { // Add auth token to all requests
       provide: HTTP_INTERCEPTORS,

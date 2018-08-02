@@ -2,6 +2,7 @@ import { Component, ErrorHandler, ViewChild } from '@angular/core';
 import { Nav, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import { ScreenOrientation } from '@ionic-native/screen-orientation';
 
 import { async_all } from '~/shared/async-helpers';
 import { Logger } from '~/shared/logger';
@@ -31,7 +32,8 @@ export class MyAppComponent {
     private errorHandler: ErrorHandler,
     private logger: Logger,
     private ga: GAWrapper,
-    private storage: AppStorage
+    private storage: AppStorage,
+    private screenOrientation: ScreenOrientation
   ) {
     this.logger.info('App: initializing...');
     this.logger.info(`App: Build number ${getBuildNumber()}`);
@@ -56,7 +58,8 @@ export class MyAppComponent {
     // initialization operation that must be done before the initial page is shown.
     await async_all([
       this.ga.init(gaTrackingId),
-      this.storage.init()
+      this.storage.init(),
+      this.screenOrientation.lock('portrait') // Lock screen orientation to portrait
     ]);
 
     // Track all top-level screen changes

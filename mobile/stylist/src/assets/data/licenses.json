@@ -118,5 +118,9 @@
   {
     "url": "https://raw.githubusercontent.com/arkon/ng-inline-svg/master/LICENSE",
     "title": "ng-inline-svg (MIT License)"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/apache/cordova-plugin-screen-orientation/master/LICENSE",
+    "title": "cordova-plugin-screen-orientation (Apache License)"
   }
 ]
