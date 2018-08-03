@@ -7,7 +7,7 @@ import { saveToken } from '~/core/utils/token-utils';
 import { hasError } from '~/core/pipes/has-error.pipe';
 
 import { LOADING_DELAY, RequestState } from '~/core/api/request.models';
-import { ApiNonFieldError, AuthNonFieldErrorCodes } from '~/core/api/errors.models';
+import { ApiNonFieldError } from '~/core/api/errors.models';
 import { AuthService } from '~/core/api/auth-service';
 import {
   AuthTokenModel,
@@ -44,7 +44,7 @@ export class AuthEffects {
         .map(({ response, errors }) => {
           const timestamp = Number(new Date());
           if (errors) {
-            const requestCodeTimeoutError = new ApiNonFieldError({ code: AuthNonFieldErrorCodes.err_wait_to_rerequest_new_code });
+            const requestCodeTimeoutError = new ApiNonFieldError({ code: 'err_wait_to_rerequest_new_code' });
             if (hasError(errors, requestCodeTimeoutError)) {
               // code already sent, consider it as success for simplicity
               return new RequestCodeSuccessAction();

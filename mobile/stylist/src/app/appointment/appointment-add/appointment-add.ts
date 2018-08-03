@@ -18,7 +18,8 @@ import {
   ServicesState
 } from '~/appointment/appointment-services/services.reducer';
 
-import { ApiError, FieldErrorCode, ServerFieldError, ServerNonFieldError } from '~/shared/api-errors';
+import { ApiError, ServerFieldError, ServerNonFieldError } from '~/shared/api-errors';
+import { FieldErrorCode } from '~/shared/api-error-codes';
 
 function isOverridableError(errorCodeStr: FieldErrorCode): boolean {
   return errorCodeStr === 'err_appointment_in_the_past' ||

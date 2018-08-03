@@ -21,7 +21,7 @@ export class ApiCommonErrorAction implements Action {
 export class ApiCommonErrorsEffects {
 
   /**
-   * Handle different types of API errors with `handleGlobally` flag set to ”true”
+   * Handle different types of API errors with `handleGlobally()` flag set to ”true”
    */
   @Effect({ dispatch: false }) handleApiCommonError = this.actions
     .ofType(API_COMMON_ERROR)
