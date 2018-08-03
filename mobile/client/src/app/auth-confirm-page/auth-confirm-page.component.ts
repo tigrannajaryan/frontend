@@ -18,7 +18,7 @@ import {
 } from '~/core/reducers/auth.reducer';
 import { AuthEffects } from '~/core/effects/auth.effects';
 
-import { ApiFieldError, AuthFieldErrorCodes } from '~/core/api/errors.models';
+import { ApiFieldError } from '~/core/api/errors.models';
 
 export const CODE_LENGTH = 6;
 
@@ -47,7 +47,7 @@ export class AuthConfirmPageComponent {
   resendCodeCountdown: Observable<number>;
 
   errors: Observable<string>;
-  invalidCodeError = new ApiFieldError('code', { code: AuthFieldErrorCodes.err_invalid_sms_code });
+  invalidCodeError = new ApiFieldError('code', { code: 'err_invalid_sms_code' });
 
   constructor(
     private authEffects: AuthEffects,

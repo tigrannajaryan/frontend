@@ -62,7 +62,7 @@ export class BaseService {
           // - handle globally for consistency.
           Observable.from(errors)
             .delay(0)
-            .filter((err: ApiError) => err.handleGlobally)
+            .filter((err: ApiError) => err.handleGlobally())
             .combineLatest(Observable.of(AppModule.injector.get(Store)))
             .map(([err, store]) => store.dispatch(new ApiCommonErrorAction(err)))
             .subscribe();
