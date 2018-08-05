@@ -25,6 +25,10 @@ export function composeRequest(...extensions): Promise<any> {
   // The last argument is a request itself:
   let [ request ] = extensions.splice(-1);
 
+  if (!request || !(request instanceof Observable)) {
+    throw new Error('The last argument should be a request Observable.');
+  }
+
   if (extensions.length === 0) {
     console.warn('You are using composeRequest without additional extensions. Consider just calling the request as is.');
   }
@@ -54,7 +58,7 @@ export const cached = (cacheKey: string, options = { forced: false }) => request
       storage.get(cacheKey).catch(() => undefined)
   );
 
-  // Observable.prototype.switchMap is used to return cached Observable instead of original request Observable if needed.
+  // Observable.prototype.switchMap is used to return cached Observable instead of original request Observable if needed:
   return cachedDataObservable.switchMap(cachedResponse => {
 
     // Restore from cache.
