@@ -32,6 +32,9 @@ export class AppointmentsHistoryApiMock {
         };
       })
     };
-    return Observable.of({ response });
+    return Observable.of({ response }).delay(2000).map(r => {
+      console.log('-- API request done');
+      return r;
+    });
   }
 }
