@@ -45,9 +45,9 @@ export function composeRequest(...extensions): Promise<any> {
 }
 
 /**
- * Delayed loading solution.
+ * Delayed loading extension.
  */
-export const loading: Extension = (component: { isLoading: boolean }) => (request: Request): Request => {
+export const loading = (component: { isLoading: boolean }) => (request: Request): Request => {
   component.isLoading = false;
 
   // Show loader after LOADING_DELAY ms passed:
@@ -66,9 +66,9 @@ export const loading: Extension = (component: { isLoading: boolean }) => (reques
 };
 
 /**
- * Completes refresing on request done.
+ * Complete refresing on request done extension.
  */
-export const withRefresher: Extension = (refresher: Refresher) => (request: Request): Request =>
+export const withRefresher = (refresher: Refresher) => (request: Request): Request =>
   request.map(response => {
     if (refresher && refresher.state === 'refreshing') {
       refresher.complete();
