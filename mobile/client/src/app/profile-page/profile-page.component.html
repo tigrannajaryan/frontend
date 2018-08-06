@@ -1,7 +1,8 @@
 <ion-header>
   <ion-navbar>
     <ion-buttons end>
-      <button (click)="onSubmit()" [disabled]="!form.valid" ion-button clear>
+      <ion-spinner *ngIf="isUpdating"></ion-spinner>
+      <button *ngIf="!isUpdating" (click)="onSubmit()" [disabled]="!form.valid" ion-button clear>
         <ion-icon name="md-checkmark"></ion-icon>
       </button>
     </ion-buttons>
@@ -29,13 +30,21 @@
         </ion-row>
         <ion-row>
           <ion-item class="ProfilePage-formControl FormControl">
-            <ion-label floating>Email</ion-label>
+            <ion-label floating>
+              <span>Email</span>
+              <span *ngIf="form.controls.email.hasError('email')" class="FormControl-errorMsg">enter a valid email</span>
+            </ion-label>
             <ion-input type="email" formControlName="email"></ion-input>
           </ion-item>
         </ion-row>
         <ion-row>
           <ion-item class="ProfilePage-formControl FormControl">
-            <ion-label floating>Zip code</ion-label>
+            <ion-label floating>
+              <span>Zip code</span>
+              <span *ngIf="form.controls.zip_code.hasError('minlength')" class="FormControl-errorMsg">
+                minimum {{ form.controls.zip_code.errors.minlength.requiredLength }} digits
+              </span>
+            </ion-label>
             <ion-input type="number" formControlName="zip_code"></ion-input>
           </ion-item>
         </ion-row>

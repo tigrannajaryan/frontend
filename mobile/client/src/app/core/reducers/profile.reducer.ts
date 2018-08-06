@@ -25,6 +25,11 @@ export enum profileActionTypes {
   UPDATE_PROFILE_ERROR = 'PROFILE_UPDATE_ERROR'
 }
 
+export enum ProfileRequestType {
+  GetProfile = 'GetProfile',
+  UpdateProfile = 'UpdateProfile'
+}
+
 export class SetPhoneAction implements Action {
   readonly type = profileActionTypes.SET_PHONE;
   constructor(public phone: string) {}
@@ -96,6 +101,7 @@ type Actions =
 
 export interface ProfileState {
   profile: ProfileModel;
+  requestType: ProfileRequestType;
   requestState: RequestState;
   imageToUpload?: FormData;
   errors?: ApiError[];
@@ -120,10 +126,17 @@ export function profileReducer(state: ProfileState = initialState, action: Actio
       };
 
     case profileActionTypes.UPDATE_PROFILE:
+      return {
+        ...state,
+        requestType: ProfileRequestType.UpdateProfile,
+        requestState: RequestState.NotStarted
+      };
+
     case profileActionTypes.GET_PROFILE:
       return {
         ...state,
-        requestState: action.NotStarted
+        requestType: ProfileRequestType.GetProfile,
+        requestState: RequestState.NotStarted
       };
 
     case profileActionTypes.UPDATE_IMAGE:
@@ -133,13 +146,13 @@ export function profileReducer(state: ProfileState = initialState, action: Actio
           ...state.profile,
           profile_photo_url: action.localImgUrl
         },
-        requestState: action.NotStarted
+        requestState: RequestState.NotStarted
       };
 
     case profileActionTypes.PROFILE_LOADING:
       return {
         ...state,
-        requestState: action.Loading
+        requestState: RequestState.Loading
       };
 
     case profileActionTypes.UPDATE_PROFILE_ERROR:
@@ -147,7 +160,7 @@ export function profileReducer(state: ProfileState = initialState, action: Actio
     case profileActionTypes.UPDATE_IMAGE_ERROR:
       return {
         ...state,
-        requestState: action.Failed,
+        requestState: RequestState.Failed,
         errors: action.errors
       };
 
@@ -158,7 +171,7 @@ export function profileReducer(state: ProfileState = initialState, action: Actio
         profile: {
           ...action.profile
         },
-        requestState: action.Succeeded
+        requestState: RequestState.Succeeded
       };
 
     case profileActionTypes.UPDATE_IMAGE_SUCCESS:
@@ -168,7 +181,7 @@ export function profileReducer(state: ProfileState = initialState, action: Actio
           ...state.profile,
           profile_photo_id: action.uuid
         },
-        requestState: action.Succeeded
+        requestState: RequestState.Succeeded
       };
 
     default:
@@ -201,6 +214,8 @@ export const selectProfileRequestState = createSelector(
 );
 
 export const selectIsLoading = createSelector(
-  selectProfileRequestState,
-  (requestState: RequestState) => requestState === RequestState.Loading
+  selectProfileFromState,
+  (state: ProfileState) =>
+    state.requestState === RequestState.Loading && state.requestType
+
 );

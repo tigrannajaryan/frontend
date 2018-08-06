@@ -20,4 +20,14 @@
     max-width: 100%;
     padding: 0 8px 0 0;
   }
+
+  .FormControl-errorMsg {
+    color: color($colors, danger);
+  }
+
+  // spaced when used in label
+  ion-label .FormControl-errorMsg {
+    display: inline;
+    margin-left: 10px;
+  }
 }

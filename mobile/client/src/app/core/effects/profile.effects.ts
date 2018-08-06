@@ -7,8 +7,6 @@ import { catchError, map } from 'rxjs/operators';
 
 import { BaseApiService } from '~/shared/base-api-service';
 
-import { showAlert } from '~/core/utils/alert';
-
 import { LOADING_DELAY, RequestState } from '~/core/api/request.models.ts';
 import { ApiResponse } from '~/core/api/base.models';
 import { ProfileModel } from '~/core/api/profile.models';
@@ -68,32 +66,9 @@ export class ProfileEffects {
       return new UpdateProfileSuccessAction(response.response);
     });
 
-  @Effect({ dispatch: false }) profileUpdatedSuccess: Observable<void> = this.actions
-    .ofType<UpdateProfileSuccessAction>(profileActionTypes.UPDATE_PROFILE_SUCCESS)
-    .map(() => {
-      showAlert('Profile updated', 'Your profile has been updated.');
-    });
-
-  // This will be removed due to displaying the errors in the form fields.
-  @Effect({ dispatch: false }) profileUpdatedError: Observable<void> = this.actions
-    .ofType<UpdateProfileErrorAction>(profileActionTypes.UPDATE_PROFILE_ERROR)
-    .map(() => {
-      // TODO: better errors
-      showAlert('Error', 'Your profile has not been updated.');
-    });
-
-  @Effect({ dispatch: false }) profileGetError: Observable<void> = this.actions
-    .ofType<GetProfileErrorAction>(profileActionTypes.GET_PROFILE_ERROR)
-    .map(action => {
-      // TODO: change this, smth wrong
-      const errorMessage = action.errors[0]['error'];
-      showAlert('Error', errorMessage);
-    });
-
   @Effect() profileUpdateImage: Observable<Action> = this.actions
     .ofType<UpdateImage>(profileActionTypes.UPDATE_IMAGE)
     .switchMap(action =>
-      // TODO: refactor
       Observable
         .from(this.baseApiService.uploadFile<{ uuid: string }>(action.formData))
         .pipe(

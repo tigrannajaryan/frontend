@@ -5,15 +5,18 @@ import { ActionSheetController, ActionSheetOptions, IonicPage } from 'ionic-angu
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { Store } from '@ngrx/store';
 
-import { EmailValidator } from '~/shared/validators';
 import { PhotoSourceType } from '~/shared/constants';
 import { downscalePhoto, urlToFile } from '~/shared/image-utils';
+
+import { emptyOr } from '~/shared/validators';
+import { emailValidator } from '~/core/validators/email.validator';
 
 import { showAlert } from '~/core/utils/alert';
 import { componentIsActive } from '~/core/utils/component-is-active';
 
 import {
   GetProfileAction,
+  ProfileRequestType,
   ProfileState,
   selectIsLoading,
   selectProfile,
@@ -32,6 +35,7 @@ export class ProfilePageComponent {
   form: FormGroup;
 
   isLoading = false;
+  isUpdating = false;
 
   private readonly DEFAULT_IMAGE = 'url(/assets/imgs/user/default_user.png)';
 
@@ -46,24 +50,13 @@ export class ProfilePageComponent {
 
   ionViewWillLoad(): void {
     this.form = this.formBuilder.group({
-      first_name: ['', [
-        Validators.maxLength(25),
-        Validators.minLength(2),
-        Validators.required
-      ]],
-      last_name: ['', [
-        Validators.maxLength(25),
-        Validators.minLength(2),
-        Validators.required
-      ]],
+      first_name: [''],
+      last_name: [''],
       email: ['', [
-        new EmailValidator(),
-        Validators.required
+        emptyOr(emailValidator())
       ]],
       zip_code: ['', [
-        Validators.maxLength(15),
-        Validators.minLength(5),
-        Validators.required
+        emptyOr(Validators.minLength(5))
       ]]
     });
   }
@@ -71,9 +64,15 @@ export class ProfilePageComponent {
   ionViewWillEnter(): void {
     this.store.select(selectIsLoading)
       .takeWhile(componentIsActive(this))
-      .subscribe(isLoading => {
-        // TODO: change to request state
-        this.isLoading = isLoading;
+      .subscribe(requestType => {
+        if (requestType === ProfileRequestType.GetProfile) {
+          this.isLoading = true;
+        } else if (requestType === ProfileRequestType.UpdateProfile) {
+          this.isUpdating = true;
+        } else {
+          this.isLoading = false;
+          this.isUpdating = false;
+        }
       });
 
     this.store.select(selectProfile)
