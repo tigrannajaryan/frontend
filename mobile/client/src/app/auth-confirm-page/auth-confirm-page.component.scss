@@ -11,15 +11,23 @@
 
     .text-input { // override ionic styles
       width: 100%;
-      padding-left: 13.2px;
       font-family: monospace;
       font-size: $t-h3;
       letter-spacing: 33.4px;
+
+      &.text-input-md {
+        padding-left: 4.2px;
+      }
+
+      &.text-input-ios {
+        padding-left: 13.2px;
+      }
     }
 
     &.item-block .item-inner,
     &.item-input-has-focus .item-inner { // override ionic styles
       border-bottom: none;
+      box-shadow: none !important; // fix android input styles (long selectors without !important)
     }
   }
 

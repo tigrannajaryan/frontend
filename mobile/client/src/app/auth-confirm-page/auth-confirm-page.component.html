@@ -17,7 +17,7 @@
       <form (ngSubmit)="submit()">
         <ion-row justify-content-center>
           <ion-item class="FormControl AuthConfirmPage-codeControl">
-            <ion-input #input type="tel" ngxInputNumber [formControl]="code" [disabled]="isLoading" (keydown)="autoblurCode($event)"></ion-input>
+            <ion-input #input type="tel" ngxInputNumber [formControl]="code" [disabled]="isLoading" (keydown)="onAutoblurCode($event)" (focus)="onFocusCode()"></ion-input>
           </ion-item>
         </ion-row>
         <ion-row justify-content-center>
@@ -39,7 +39,7 @@
           You can send a&nbsp;new code in&nbsp;{{ resendCodeCountdown | async }}
         </span>
         <span *ngIf="(requestCodeState | async) === RequestState.NotStarted">
-          Didn’t get a&nbsp;code? <span class="Link" (click)="resendCode()">Send a&nbsp;new one</span>
+          Didn’t get a&nbsp;code? <span class="Link" (click)="onResendCode()">Send a&nbsp;new one</span>
         </span>
         <span *ngIf="(requestCodeState | async) === RequestState.Loading">
           Sending a&nbsp;new code…
