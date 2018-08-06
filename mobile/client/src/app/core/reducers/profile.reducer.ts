@@ -101,7 +101,7 @@ type Actions =
 
 export interface ProfileState {
   profile: ProfileModel;
-  requestType: ProfileRequestType;
+  requestType?: ProfileRequestType;
   requestState: RequestState;
   imageToUpload?: FormData;
   errors?: ApiError[];
