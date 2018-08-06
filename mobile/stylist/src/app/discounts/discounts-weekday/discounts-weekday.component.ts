@@ -3,8 +3,8 @@ import { IonicPage, NavController } from 'ionic-angular';
 
 import { loading } from '~/core/utils/loading';
 import { PageNames } from '~/core/page-names';
-import { Discounts, WeekdayDiscount } from '~/discounts/discounts.models';
-import { DiscountsApi } from '~/discounts/discounts.api';
+import { Discounts, WeekdayDiscount } from '~/core/api/discounts/discounts.models';
+import { DiscountsApi } from '~/core/api/discounts/discounts.api';
 
 @IonicPage({
   segment: 'discounts-weekday'

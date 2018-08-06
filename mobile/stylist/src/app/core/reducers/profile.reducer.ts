@@ -1,6 +1,6 @@
 import { Action, createFeatureSelector } from '@ngrx/store';
 
-import { StylistProfile } from '~/core/stylist-service/stylist-models';
+import { StylistProfile } from '~/core/api/stylist/stylist.models';
 
 export enum profileActionTypes {
   LOAD = 'PROFILE_LOAD',

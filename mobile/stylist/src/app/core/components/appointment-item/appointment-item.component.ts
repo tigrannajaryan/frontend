@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Appointment } from '~/home/home.models';
+import { Appointment } from '~/core/api/home/home.models';
 
 @Component({
   selector: 'appointment-item',

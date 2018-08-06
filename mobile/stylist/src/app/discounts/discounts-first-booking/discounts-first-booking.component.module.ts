@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 import { DiscountsFirstBookingComponent } from './discounts-first-booking.component';
 import { CoreModule } from '~/core/core.module';
-import { DiscountsApi } from '~/discounts/discounts.api';
+import { DiscountsApi } from '~/core/api/discounts/discounts.api';
 
 @NgModule({
   declarations: [

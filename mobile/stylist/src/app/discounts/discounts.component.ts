@@ -3,8 +3,13 @@ import { Content, IonicPage, Slides } from 'ionic-angular';
 
 import { PageNames } from '~/core/page-names';
 import { loading } from '~/core/utils/loading';
-import { Discounts, MaximumDiscounts, MaximumDiscountsWithVars, WeekdayDiscount } from '~/discounts/discounts.models';
-import { DiscountsApi } from '~/discounts/discounts.api';
+import { DiscountsApi } from '~/core/api/discounts/discounts.api';
+import {
+  Discounts,
+  MaximumDiscounts,
+  MaximumDiscountsWithVars,
+  WeekdayDiscount
+} from '~/core/api/discounts/discounts.models';
 import { FirstBooking } from '~/discounts/discounts-first-booking/discounts-first-booking.component';
 import { DiscountsRevisitComponent } from '~/discounts/discounts-revisit/discounts-revisit.component';
 

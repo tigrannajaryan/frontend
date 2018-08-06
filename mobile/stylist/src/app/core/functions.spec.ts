@@ -1,7 +1,7 @@
 import { async } from '@angular/core/testing';
 import { createNavHistoryList } from './functions';
 import { PageNames } from './page-names';
-import { ProfileStatus } from './auth-api-service/auth-api-service';
+import { ProfileStatus } from './api/auth/auth.api';
 
 describe('Shared functions: profileStatusToPage', () => {
 

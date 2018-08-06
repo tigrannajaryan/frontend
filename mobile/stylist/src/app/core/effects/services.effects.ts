@@ -3,9 +3,6 @@ import { Store } from '@ngrx/store';
 import { Actions, Effect } from '@ngrx/effects';
 import { Observable } from 'rxjs';
 
-import { StylistServiceProvider } from '~/core/stylist-service/stylist-service';
-import { withLoader } from '~/core/utils/loading';
-import { showAlert } from '~/core/utils/alert';
 import { Logger } from '~/shared/logger';
 
 import {
@@ -14,7 +11,10 @@ import {
   LoadSuccessAction,
   servicesActionTypes,
   ServicesState
-} from './services.reducer';
+} from '../reducers/services.reducer';
+import { withLoader } from '~/core/utils/loading';
+import { showAlert } from '~/core/utils/alert';
+import { StylistServiceProvider } from '~/core/api/stylist/stylist.api';
 
 @Injectable()
 export class ServicesEffects {

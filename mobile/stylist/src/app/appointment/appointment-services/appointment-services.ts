@@ -3,7 +3,7 @@ import { Store } from '@ngrx/store';
 import { IonicPage, NavController } from 'ionic-angular';
 
 import { componentUnloaded } from '~/shared/component-unloaded';
-import { ServiceCategory, ServiceItem } from '~/core/stylist-service/stylist-models';
+import { ServiceCategory, ServiceItem } from '~/core/api/stylist/stylist.models';
 
 import {
   LoadAction,
@@ -11,7 +11,7 @@ import {
   selectSelectedService,
   SelectServiceAction,
   ServicesState
-} from './services.reducer';
+} from '../../core/reducers/services.reducer';
 
 @IonicPage()
 @Component({

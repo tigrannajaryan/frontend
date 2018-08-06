@@ -9,25 +9,19 @@ import {
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
-import {
-  HomeLoadAction,
-  HomeState,
-  selectHomeState
-} from './home.reducer';
-
-import { AppointmentStatuses, Home } from './home.models';
-import { StylistProfile } from '~/core/stylist-service/stylist-models';
-import { Appointment } from '~/home/home.models';
-import { HomeService } from '~/home/home.service';
 import { PageNames } from '~/core/page-names';
 import { AppointmentCheckoutParams } from '~/appointment/appointment-checkout/appointment-checkout.component';
 import { loading } from '~/core/utils/loading';
 import { componentUnloaded } from '~/shared/component-unloaded';
 import { showAlert } from '~/core/utils/alert';
-import { LoadProfileAction, ProfileState, selectProfile } from '~/core/components/user-header/profile.reducer';
 import { GAWrapper } from '~/shared/google-analytics';
 import { AppStorage } from '~/core/app-storage';
 import { Logger } from '~/shared/logger';
+import { Appointment, AppointmentStatuses, Home } from '~/core/api/home/home.models';
+import { StylistProfile } from '~/core/api/stylist/stylist.models';
+import { HomeApi } from '~/core/api/home/home.api';
+import { HomeLoadAction, HomeState, selectHomeState } from '~/core/reducers/home.reducer';
+import { LoadProfileAction, ProfileState, selectProfile } from '~/core/reducers/profile.reducer';
 
 export enum AppointmentTag {
   NotCheckedOut = 'Not checked out',
@@ -83,7 +77,7 @@ export class HomeComponent {
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
-    public homeService: HomeService,
+    public homeService: HomeApi,
     public alertCtrl: AlertController,
     private store: Store<HomeState & ProfileState>,
     private actionSheetCtrl: ActionSheetController,

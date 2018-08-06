@@ -14,6 +14,15 @@ import { ENV } from '../environments/environment.default';
  * ensure that none of the reducers accidentally mutates the state.
  */
 import { storeFreeze } from 'ngrx-store-freeze';
+import { homePath, homeReducer } from '~/core/reducers/home.reducer';
+import { profileReducer, profileStatePath } from '~/core/reducers/profile.reducer';
+import { servicePath, servicesReducer } from '~/core/reducers/services.reducer';
+import { clientsPath, clientsReducer } from '~/core/reducers/clients.reducer';
+import {
+  appointmentDatesReducer,
+  appointmentDatesStatePath
+} from '~/core/reducers/appointment-dates.reducer';
+import { serverStatusReducer, serverStatusStateName } from '~/shared/server-status/server-status.reducer';
 
 /**
  * Every reducer module's default export is the reducer function itself. In
@@ -36,6 +45,12 @@ export interface State {
  * and the current or initial state and return a new immutable state.
  */
 export const reducers: ActionReducerMap<State> = {
+  [homePath]: homeReducer,
+  [profileStatePath]: profileReducer,
+  [servicePath]: servicesReducer,
+  [clientsPath]: clientsReducer,
+  [appointmentDatesStatePath]: appointmentDatesReducer,
+  [serverStatusStateName]: serverStatusReducer
 };
 
 /**

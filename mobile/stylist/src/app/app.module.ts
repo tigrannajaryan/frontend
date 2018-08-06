@@ -9,8 +9,8 @@ import { IonicApp, IonicModule } from 'ionic-angular';
 
 import { MyAppComponent } from './app.component';
 import { Logger } from './shared/logger';
-import { AuthApiService } from '~/core/auth-api-service/auth-api-service';
-import { StylistServiceProvider } from '~/core/stylist-service/stylist-service';
+import { AuthApi } from '~/core/api/auth/auth.api';
+import { StylistServiceProvider } from '~/core/api/stylist/stylist.api';
 import { httpInterceptorProviders } from '~/core/http-interceptors';
 import { CoreModule } from '~/core/core.module';
 import { getMetaReducers, reducers } from './app.reducers';
@@ -20,6 +20,15 @@ import { AppVersion } from '@ionic-native/app-version';
 import { AgmCoreModule, LAZY_MAPS_API_CONFIG } from '@agm/core';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { ENV } from '../environments/environment.default';
+import { HomeEffects } from '~/core/effects/home.effects';
+import { ProfileEffects } from '~/core/effects/profile.effects';
+import { HomeApi } from '~/core/api/home/home.api';
+import { ClientsEffects } from '~/core/effects/clients.effects';
+import { AppointmentDatesEffects } from '~/core/effects/appointment-dates.effects';
+import { AppointmentDatesMock } from '~/core/api/appointment/appointment-dates.mock';
+import { ClientsApi } from '~/core/api/clients/clients.api';
+import { ServicesEffects } from '~/core/effects/services.effects';
+import { DiscountsApi } from '~/core/api/discounts/discounts.api';
 import { GoogleMapsConfig } from '~/core/google-maps-config';
 import { AppStorage } from '~/core/app-storage';
 
@@ -29,33 +38,11 @@ const imports = [
   AgmCoreModule.forRoot(),
   BrowserModule,
   HttpClientModule,
-  CoreModule,
-
-  /**
-   * StoreModule.forRoot is imported once in the root module, accepting a reducer
-   * function or object map of reducer functions. If passed an object of
-   * reducers, combineReducers will be run creating your application
-   * meta-reducer. This returns all providers for an @ngrx/store
-   * based application.
-   */
-  StoreModule.forRoot(reducers),
-
-  /**
-   * EffectsModule.forRoot() is imported once in the root module and
-   * sets up the effects class to be initialized immediately when the
-   * application starts.
-   *
-   * See: https://github.com/ngrx/platform/blob/master/docs/effects/api.md#forroot
-   */
-  EffectsModule.forRoot([])
+  CoreModule
 ];
 
 if (!ENV.production) {
-  imports.push(
-    StoreDevtoolsModule.instrument({
-      logOnly: ENV.production
-    })
-  );
+  imports.push(StoreDevtoolsModule.instrument());
 }
 
 @NgModule({
@@ -69,6 +56,31 @@ if (!ENV.production) {
       backButtonIcon: 'md-arrow-back',
       tabsHideOnSubPages: true
     }),
+
+    /**
+     * StoreModule.forRoot is imported once in the root module, accepting a reducer
+     * function or object map of reducer functions. If passed an object of
+     * reducers, combineReducers will be run creating your application
+     * meta-reducer. This returns all providers for an @ngrx/store
+     * based application.
+     */
+    StoreModule.forRoot(reducers),
+
+    /**
+     * EffectsModule.forRoot() is imported once in the root module and
+     * sets up the effects class to be initialized immediately when the
+     * application starts.
+     *
+     * See: https://github.com/ngrx/platform/blob/master/docs/effects/api.md#forroot
+     */
+    EffectsModule.forRoot([
+      HomeEffects,
+      ProfileEffects,
+      ClientsEffects,
+      AppointmentDatesEffects,
+      ServicesEffects
+    ]),
+
     ...imports
   ],
 
@@ -80,11 +92,16 @@ if (!ENV.production) {
   providers: [
     StatusBar,
     SplashScreen,
-    AuthApiService,
+    AuthApi,
     StylistServiceProvider,
     httpInterceptorProviders,
     AppVersion,
     AppStorage,
+
+    HomeApi,
+    AppointmentDatesMock,
+    ClientsApi,
+    DiscountsApi,
 
     {
       // Our custom handler for unhandled exceptions

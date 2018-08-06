@@ -3,8 +3,8 @@ import { IonicPage, NavController } from 'ionic-angular';
 
 import { PageNames } from '~/core/page-names';
 import { loading } from '~/core/utils/loading';
-import { Discounts } from '../discounts.models';
-import { DiscountsApi } from '../discounts.api';
+import { DiscountsApi } from '~/core/api/discounts/discounts.api';
+import { Discounts } from '~/core/api/discounts/discounts.models';
 import { ENV } from '../../../environments/environment.default';
 
 export interface FirstBooking {

@@ -2,8 +2,6 @@ import { Injectable } from '@angular/core';
 import { Actions, Effect } from '@ngrx/effects';
 import { Observable } from 'rxjs';
 
-import { StylistServiceProvider } from '~/core/stylist-service/stylist-service';
-import { showAlert } from '~/core/utils/alert';
 import { Logger } from '~/shared/logger';
 
 import {
@@ -11,7 +9,9 @@ import {
   LoadProfileErrorAction,
   LoadProfileSuccessAction,
   profileActionTypes
-} from '~/core/components/user-header/profile.reducer';
+} from '~/core/reducers/profile.reducer';
+import { showAlert } from '~/core/utils/alert';
+import { StylistServiceProvider } from '~/core/api/stylist/stylist.api';
 
 @Injectable()
 export class ProfileEffects {

@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
-import { Worktime } from './worktime.models';
-import { BaseApiService } from '~/shared/base-api-service';
 import { HttpClient } from '@angular/common/http';
+
+import { BaseApiService } from '~/shared/base-api-service';
 import { Logger } from '~/shared/logger';
 import { ServerStatusTracker } from '~/shared/server-status-tracker';
+
+import { Worktime } from './worktime.models';
 
 /**
  * WorktimeApi allows getting and setting the working time for stylist.

@@ -10,8 +10,8 @@ import { getBuildNumber } from '~/shared/get-build-number';
 import { GAWrapper } from '~/shared/google-analytics';
 
 import { PageNames } from '~/core/page-names';
-import { AuthApiService } from '~/core/auth-api-service/auth-api-service';
 import { arrayEqual, createNavHistoryList } from '~/core/functions';
+import { AuthApi } from '~/core/api/auth/auth.api';
 import { AppStorage } from '~/core/app-storage';
 
 // Google Analytics Id
@@ -27,7 +27,7 @@ export class MyAppComponent {
     public platform: Platform,
     public statusBar: StatusBar,
     public splashScreen: SplashScreen,
-    private authApiService: AuthApiService,
+    private authApiService: AuthApi,
     private errorHandler: ErrorHandler,
     private logger: Logger,
     private ga: GAWrapper,

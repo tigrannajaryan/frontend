@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
-import { HomeService } from '~/home/home.service';
+import { HomeApi } from '~/core/api/home/home.api';
 import {
   Appointment,
   AppointmentChangeRequest,
@@ -10,10 +10,10 @@ import {
   AppointmentService,
   AppointmentStatuses,
   CheckOutService
-} from '~/home/home.models';
+} from '~/core/api/home/home.models';
 import { PageNames } from '~/core/page-names';
 import { AddServicesComponentParams } from '~/core/popups/add-services/add-services.component';
-import { ServiceItem } from '~/core/stylist-service/stylist-models';
+import { ServiceItem } from '~/core/api/stylist/stylist.models';
 
 export interface AppointmentCheckoutParams {
   appointmentUuid: string;
@@ -57,7 +57,7 @@ export class AppointmentCheckoutComponent {
   constructor(
     private navCtrl: NavController,
     private navParams: NavParams,
-    private homeService: HomeService
+    private homeService: HomeApi
   ) {
   }
 

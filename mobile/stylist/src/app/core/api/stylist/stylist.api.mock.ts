@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { StylistSummary } from './stylist-models';
+
+import { StylistSummary } from './stylist.models';
 
 import * as faker from 'faker';
 
@@ -52,7 +53,7 @@ export const profileSummaryMock = {
 };
 
 @Injectable()
-export class StylistServiceMock {
+export class StylistApiMock {
 
   async getStylistSummary(): Promise<StylistSummary> {
     return Promise.resolve(profileSummaryMock);
