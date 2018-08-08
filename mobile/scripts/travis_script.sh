@@ -11,7 +11,8 @@ fi
 
 # if app type is client - install android pre-requisites
 if [[ $APP_TYPE = "client" ]]; then
-    source $TRAVIS_BUILD_DIR/mobile/scripts/install-android.sh
+    $TRAVIS_BUILD_DIR/mobile/scripts/install-android.sh
+    export PATH=${PATH}:$ANDROID_HOME/platform-tools:$ANDROID_HOME/tools
 fi
 
 

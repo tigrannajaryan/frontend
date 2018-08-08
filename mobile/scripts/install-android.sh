@@ -15,15 +15,12 @@ touch ~/.android/repositories.cfg
 brew tap caskroom/versions
 brew cask install java8
 brew install gradle
-export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home
 
 # install Android SDK
 mkdir -p $TRAVIS_BUILD_DIR/$ANDROID_SDK
 cd $TRAVIS_BUILD_DIR/$ANDROID_SDK
 wget -nv https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip
 unzip -qq sdk-tools-linux-4333796.zip
-
-export PATH=${PATH}:$ANDROID_HOME/platform-tools:$ANDROID_HOME/tools
 
 # install build tools auto-accepting Android licenses
 echo y | $TRAVIS_BUILD_DIR/$ANDROID_SDK/tools/bin/sdkmanager "build-tools;$ANDROID_BUILD_TOOLS_VERSION" "platforms;android-28"
