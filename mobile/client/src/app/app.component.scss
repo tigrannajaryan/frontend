@@ -16,6 +16,8 @@
 // automatically applied to the <body> element in the app.
 
 @import '../theme/normalize';
+@import '../theme/rewrite';
+@import '../theme/font';
 
 // Components
 @import '../theme/components/badges';

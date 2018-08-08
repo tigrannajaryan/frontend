@@ -14,7 +14,8 @@ export enum PageNames {
   Services = 'ServicesPageComponent',
   ServicesCategories = 'ServicesCategoriesPageComponent',
   StylistInvitation = 'StylistInvitationPageComponent',
-  Stylists = 'StylistsPageComponent'
+  Stylists = 'StylistsPageComponent',
+  MainTabs = 'MainTabsComponent'
 }
 
 export const UNAUTHORIZED_ROOT = PageNames.Auth;

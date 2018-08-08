@@ -1,0 +1,45 @@
+// rewrite ionic main-tabs icons
+ion-icon.tab-button-icon[aria-label^="Home"],
+ion-icon.tab-button-icon[aria-label^="History"],
+ion-icon.tab-button-icon[aria-label^="Stylists"],
+ion-icon.tab-button-icon[aria-label^="Book"],
+ion-icon.tab-button-icon[aria-label^="Invite"] {
+  display: inline-block;
+  font-family: 'bb', sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1;
+  vertical-align: bottom;
+  content: '\0045';
+}
+
+ion-icon.tab-button-icon[aria-label^="Home"]:after {
+  content: '\0045';
+}
+
+ion-icon.tab-button-icon[aria-label^="History"]:after {
+  content: '\004c';
+}
+
+ion-icon.tab-button-icon[aria-label^="Stylists"]:after {
+  content: '\004d';
+}
+
+ion-icon.tab-button-icon[aria-label^="Book"]:after {
+  display: inline-block;
+  font-family: 'Ionicons', sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  line-height: 1;
+  text-transform: none;
+  content: "\f169";
+  speak: none;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+ion-icon.tab-button-icon[aria-label^="Invite"]:after {
+  content: '\004e';
+}

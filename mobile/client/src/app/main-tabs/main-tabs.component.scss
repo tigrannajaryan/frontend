@@ -1,0 +1,29 @@
+page-tabs ion-tabs.tabs {
+  .tabbar {
+    background: white;
+    border-top: none;
+    box-shadow: 0 -4px 27px 0 rgba(0, 0, 0, 0.08);
+
+    &:before {
+      display: none;
+    }
+
+    .tab-button {
+      min-height: auto;
+      padding: 7px 0 0;
+
+      ion-icon {
+        height: 20px;
+        margin: 0;
+        font-size: 19px;
+      }
+
+      .tab-button-text {
+        margin-top: 3px;
+        font-size: 9px;
+        letter-spacing: 0.2px;
+      }
+    }
+  }
+}
+
