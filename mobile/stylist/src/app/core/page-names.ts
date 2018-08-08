@@ -29,9 +29,9 @@ export enum PageNames {
   LoginRegister = 'LoginRegisterComponent',
   RegisterByEmail = 'RegisterByEmailComponent',
   RegisterSalon = 'RegisterSalonComponent',
-  RegisterServices = 'ServicesComponent',
-  RegisterServicesItem = 'ServicesListComponent',
-  RegisterServicesItemAdd = 'ServiceItemComponent',
+  Services = 'ServicesComponent',
+  ServicesList = 'ServicesListComponent',
+  ServicesItem = 'ServiceItemComponent',
   Tabs = 'TabsComponent',
   Worktime = 'WorktimeComponent',
   UpcomingHistory = 'UpcomingHistoryComponent'

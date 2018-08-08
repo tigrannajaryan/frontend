@@ -9,7 +9,7 @@ import { PageNames } from '~/core/page-names';
 import { ServiceTemplateSetBase } from '~/core/stylist-service/stylist-models';
 
 export enum ServiceListType {
-  blank
+  blank = 'blank'
 }
 
 @IonicPage({
@@ -44,6 +44,6 @@ export class ServicesComponent {
   openService(serviceItem?: ServiceTemplateSetBase): void {
     const serviceItemUuid = serviceItem ? serviceItem.uuid : ServiceListType.blank;
 
-    this.navCtrl.push(PageNames.RegisterServicesItem, { uuid: serviceItemUuid });
+    this.navCtrl.push(PageNames.ServicesList, { uuid: serviceItemUuid });
   }
 }

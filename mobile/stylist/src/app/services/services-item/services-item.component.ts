@@ -10,7 +10,6 @@ import {
 import { loading } from '~/core/utils/loading';
 import { StylistServiceProvider } from '~/core/stylist-service/stylist-service';
 import { PageNames } from '~/core/page-names';
-import { showAlert } from '~/core/utils/alert';
 
 /**
  * Represents the data that is passed in and out of
@@ -18,7 +17,7 @@ import { showAlert } from '~/core/utils/alert';
  */
 export interface ServiceItemComponentData {
   categories?: ServiceCategory[];
-  categoryUuid?: string;
+  category?: ServiceCategory;
   service?: ServiceTemplateItem;
 }
 
@@ -66,18 +65,14 @@ export class ServiceItemComponent {
 
   @loading
   async deleteService(service: ServiceTemplateItem): Promise<void> {
-    try {
-      await this.stylistService.deleteStylistService(service.uuid);
-    } catch (e) {
-      showAlert('Error', e);
-    }
+    await this.stylistService.deleteStylistService(service.uuid);
   }
 
   /**
    * Submit the data and close the modal.
    */
-  submit(): void {
-    const { vars, categoryUuid, uuid, ...service } = this.form.value;
+  save(): void {
+    const { vars, category, uuid, ...service } = this.form.value;
 
     // uuid should be added only if present
     if (uuid !== null) {
@@ -87,10 +82,9 @@ export class ServiceItemComponent {
     const newData: ServiceItemComponentData = {
       service: {
         ...service,
-        base_price: Number(service.base_price),
-        duration_minutes: Number(service.duration_minutes)
+        base_price: Number(service.base_price)
       },
-      categoryUuid
+      category
     };
 
     this.viewCtrl.dismiss(newData);
@@ -102,12 +96,10 @@ export class ServiceItemComponent {
         categories: ''
       }),
 
-      categoryUuid: ['', Validators.required],
+      category: ['', Validators.required],
 
       uuid: undefined,
       base_price: ['', Validators.required],
-      description: [''],
-      duration_minutes: ['', Validators.required],
       name: ['', Validators.required]
     });
   }
@@ -119,27 +111,16 @@ export class ServiceItemComponent {
   private setFormData(data: ServiceItemComponentData): void {
     if (data) {
       if (data.categories) {
-        const categoriesNameUuidArr = [];
-
-        for (const curCategory of data.categories) {
-          categoriesNameUuidArr.push({
-            name: curCategory.name,
-            uuid: curCategory.uuid
-          });
-        }
-
-        this.setFormControl('vars.categories', categoriesNameUuidArr);
+        this.setFormControl('vars.categories', data.categories);
       }
 
-      if (data.categoryUuid) {
-        this.setFormControl('categoryUuid', data.categoryUuid);
+      if (data.category) {
+        this.setFormControl('category', data.category);
       }
 
       if (data.service) {
         this.setFormControl('uuid', data.service.uuid);
         this.setFormControl('base_price', data.service.base_price);
-        this.setFormControl('description', data.service.description);
-        this.setFormControl('duration_minutes', data.service.duration_minutes);
         this.setFormControl('name', data.service.name);
       }
     }

@@ -323,6 +323,10 @@ ion-icon.tab-button-icon[aria-label="Invite"]:after {
 
     .range {
       &-knob {
+        top: 10px;
+        left: 10px;
+        width: 20px;
+        height: 20px;
         background: color($colors, bb_skin);
       }
 

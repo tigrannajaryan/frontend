@@ -22,3 +22,11 @@ $browser-context: 16;
 @function pxtorem10($size) {
   @return pxtorem($size * 1.6);
 }
+
+// above should be deleted when all pages will be restyled
+$src-layout-width: 375;
+@function pxtovw($target) { // pxtovw(22px)
+  $vw: ($src-layout-width * 0.01) * 1px;
+  @return ($target / $vw) * 1vw;
+}
+

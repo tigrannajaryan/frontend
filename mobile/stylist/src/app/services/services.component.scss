@@ -1,134 +1,67 @@
 page-services {
-  // p = page
-  // -asd = first letter of each word (in this case just -s)
-  .p-s{
-    &-wp{
-      max-width: 557px;
-      margin: 0 auto;
-    }
+  .Services {
+
+  }
+
+  .Services-itemBox {
+
+  }
+
+  .Services-item {
+    padding: pxtovw(12px) pxtovw(16px) pxtovw(17px);
+    margin-bottom: pxtovw(16px);
+    border-radius: pxtovw(16px);
+    box-shadow: 0 pxtovw(7px) pxtovw(43px) 0 rgba(0, 0, 0, 0.08);
+  }
+
+  .Services-itemImg {
+    margin: pxtovw(21px) 0 pxtovw(36px);
+    text-align: center;
 
 
-    &-def{
-      padding: pxtoem(45) 0 0;
-
-      @media ($phone) {
-        padding: pxtoem(40) 0 0;
-      }
-
-      &-title{
-        font-size: pxtoem(36);
-        margin-bottom: pxtoem(18);
-        color: color($colors, dark);
-
-        @media ($phone) {
-          font-size: pxtoem(29);
-        }
-
-        &-a{
-          font-size: pxtoem(20);
-          margin-bottom: pxtoem(27);
-          color: color($colors, dark);
-          opacity: 0.4;
-
-          @media ($phone) {
-            margin-bottom: pxtoem(17);
-          }
-        }
-      }
-
-      &-box{
-        position: relative;
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-        margin-bottom: pxtorem(70);
-
-        @media ($phone) {
-          margin-bottom: pxtorem(50);
-        }
-
-        &-item{
-          position: relative;
-          z-index: 1;
-          width: 46%;
-          min-height: pxtorem(800);
-          border-radius: 30px;
-          display: flex;
-          flex-direction: column;
-          justify-content: flex-end;
-          color: color($colors, white);
-          background: color($colors, dark);
-          background-size: cover;
-          background-repeat: no-repeat;
-          background-position: center;
-          box-shadow: 0 10px 25px -7px rgba(0, 0, 0, 0.13);
-          overflow: hidden;
-
-          @media ($smartphone) {
-            min-height: pxtorem(600);
-            border-radius: 20px;
-          }
-          @media ($phone) {
-            min-height: pxtorem(400);
-            border-radius: 10px;
-          }
-
-          &-footer{
-            padding: pxtoem(20) pxtoem(25);
-            background: color($colors, white);
-            color: rgba(0, 0, 0, 0.4);
-
-            @media ($smartphone) {
-              font-size: pxtorem(20);
-            }
-            @media ($phone) {
-              font-size: pxtorem(18);
-            }
-
-            &-title{
-              font-size: pxtorem(36);
-              color: color($colors, dark);
-
-              @media ($smartphone) {
-                font-size: pxtorem(24);
-              }
-              @media ($phone) {
-                font-size: pxtorem(22);
-              }
-            }
-          }
-        }
-      }
-    }
-
-
-    &-list{
-      margin-bottom: pxtorem(40);
-
-      &-empty{
-        text-align: center;
-        border-radius: 30px;
-        background: color($colors, bb_skin);
-        padding: pxtorem(50) 0;
-        box-shadow: 0 10px 32px 0 rgba(0, 0, 0, 0.06);
-
-        @media ($smartphone) {
-          border-radius: 20px;
-        }
-        @media ($phone) {
-          padding: pxtorem(35) 0;
-          border-radius: 10px;
-        }
-
-        &-text{
-          font-size: pxtorem(34);
-          margin-bottom: pxtorem(25);
-
-          @media ($phone) {
-            font-size: pxtorem(26);
-          }
-        }
-      }
+    img {
+      width: pxtovw(120px);
     }
   }
+
+  .Services-itemTextLeft {
+    max-width: 60%;
+  }
+
+  .Services-itemText {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+  }
+
+  .Services-itemTextTitle {
+    margin: 0 0 pxtovw(8px);
+    font-size: pxtovw(21.6px);
+    font-weight: 600;
+    line-height: pxtovw(24px);
+    letter-spacing: pxtovw(-0.2px);
+  }
+
+  .Services-itemTextNum {
+    font-size: pxtovw(14px);
+    letter-spacing: pxtovw(0.7px);
+  }
+
+  .Services-itemTextBtn {
+    height: auto;
+    padding: pxtovw(8px) pxtovw(21px);
+    margin: 0 0 pxtovw(19px);
+    font-size: pxtovw(15.2px);
+    text-transform: uppercase;
+    background: color($colors, secondary);
+    border-radius: 9px;
+    box-shadow: 0 12px 43px 0 rgba(254, 224, 208, 0.49);
+  }
+
+  .Services-info {
+    margin: pxtovw(28px) 0 pxtovw(10px);
+    font-size: pxtovw(22.5px);
+    text-align: center;
+  }
 }
+

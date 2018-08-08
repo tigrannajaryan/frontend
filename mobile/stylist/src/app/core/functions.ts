@@ -28,7 +28,7 @@ export function createNavHistoryList(profileStatus: ProfileStatus): PageDescr[] 
     return pages;
   }
 
-  pages.push({ page: PageNames.RegisterServices });
+  pages.push({ page: PageNames.Services });
   if (!profileStatus.has_services_set) {
     return pages;
   }

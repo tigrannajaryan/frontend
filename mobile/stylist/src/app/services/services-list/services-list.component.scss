@@ -1,59 +1,114 @@
 page-services-list {
-  // p = page
-  // -asd = first letter of each word (in this case just -si)
-  .p-sl-title {
-    padding: 0 20px;
-    margin-bottom: pxtoem(10);
-    font-size: $t-h2;
-    color: color($colors, dark);
+}
 
-    @media ($phone) {
-      font-size: $t-h3;
-    }
+.ServicesLis {
+  padding: 0;
+  margin-bottom: 0;
+  font-size: pxtovw(16px);
+
+  ion-label {
+    margin: 0;
   }
 
-  .p-sl-title-a {
-    padding: 0 20px;
-    font-size: $t-h4;
-    color: color($colors, dark);
+  ion-item {
+    min-height: pxtovw(48px);
   }
+}
 
-  .p-sl-gap {
-    padding: pxtoem(67) pxtoem(60) pxtoem(72);
-    margin: pxtoem(60) 0;
-    text-align: center;
-    background: color($colors, white);
-    border-radius: 30px;
-    box-shadow: 0 13px 85px 0 rgba(0, 0, 0, 0.08);
+.ServicesLis-offset {
+  margin-top: pxtovw(25px);
+}
 
-    @media ($smartphone) {
-      border-radius: 20px;
-    }
+.ServicesLis-title {
+  display: flex;
+  align-items: center;
+  height: pxtovw(48px);
+  margin-bottom: pxtovw(17px);
+  font-size: pxtovw(21px);
+  font-weight: 600;
+  border-bottom: 0.55px solid color($colors, color28);
 
-    @media ($phone) {
-      padding: pxtoem(43) pxtoem(30) pxtoem(15);
-      margin: pxtoem(47) 0;
-      border-radius: 10px;
-    }
 
-    &-icon {
-      margin: 0 0 pxtoem(7);
-      font-size: pxtoem(60);
+  i {
+    display: inline-block;
+    width: pxtovw(23px);
+    height: pxtovw(23px);
+    margin-right: pxtovw(9px);
+    vertical-align: middle;
 
-      @media ($phone) {
-        margin: 0 0 pxtoem(6);
-        font-size: pxtoem(50);
-      }
-    }
-
-    &-title {
-      margin: 0 0 pxtoem(10);
-      font-size: pxtoem(36);
-
-      @media ($phone) {
-        margin: 0;
-        font-size: pxtoem(25);
-      }
+    svg {
+      width: 100%;
+      height: 100%;
     }
   }
+}
+
+.ServicesLis-item {
+  margin: 0 0 pxtovw(29px);
+
+  .item-block .item-inner {
+    padding: 0;
+  }
+}
+
+.ServicesLis-row {
+  padding: pxtovw(25px) 0;
+  font-size: pxtovw(14px);
+}
+
+.ServicesLis-head {
+  font-size: pxtovw(13px);
+  color: color($colors, color24);
+}
+
+.ServicesLis-rowCol {
+  display: flex;
+  align-items: center;
+  white-space: normal;
+
+  &:last-child {
+    display: flex;
+    justify-content: space-between;
+    padding-right: pxtovw(7px);
+
+    ion-icon {
+      font-size: pxtovw(26px);
+      color: color($colors, color24);
+    }
+  }
+}
+
+.ServicesLis-rowColDel {
+  height: auto;
+  padding: pxtovw(13px) pxtovw(16px);
+  margin: 0;
+  font-size: pxtovw(18px);
+  color: color($colors, color24);
+  border-radius: 4px;
+}
+
+.ServicesLis-swipe {
+  font-size: pxtovw(14px);
+  text-transform: capitalize;
+}
+
+.ServicesGap {
+  padding: pxtovw(30px) pxtovw(20px) pxtovw(6px);
+  margin: pxtovw(56px) 0 pxtovw(78px);
+  text-align: center;
+  background: color($colors, white);
+  border-radius: pxtovw(16px);
+  box-shadow: 0 7px 43px 0 rgba(0, 0, 0, 0.08);
+}
+
+.ServicesGap-icon {
+  margin-bottom: pxtovw(14px);
+  font-size: pxtovw(51px);
+}
+
+.ServicesGap-title {
+  margin: 0 0 pxtovw(3px);
+  font-size: pxtovw(19px);
+  font-weight: 500;
+  line-height: pxtovw(22px);
 }

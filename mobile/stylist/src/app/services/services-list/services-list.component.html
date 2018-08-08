@@ -1,105 +1,85 @@
-<ion-header class="ion-bb-header">
-  <ion-navbar>
-  </ion-navbar>
-</ion-header>
+<ion-header madeBackHeader></ion-header>
 
 
-<ion-content padding>
-  <made-nav *ngIf="!isProfile" [activePage]="PageNames.RegisterServices"></made-nav>
-
-  <div class="bb-wp">
-    <div class="p-sl-title">Now let’s set your services</div>
-    <div *ngIf="!isProfile" class="p-sl-title-a">We pre-populated a list of services for you. Click on any service to delete,
-      add or change the price in the list below. Scroll to the bottom and save when you are done.</div>
-
-    <ion-row *ngIf="isEmptyCategories" class="bb-table-add">
-      <ion-col col-3>
-      </ion-col>
-      <ion-col col-6>
-        <button (click)="openServiceModal()" ion-button full color="bb_skin" class="bb-btn-a">
-          Add service
-        </button>
-      </ion-col>
-      <ion-col col-3>
-      </ion-col>
-    </ion-row>
-
-    <div *ngIf="categories" class="bb-table">
-      <div *ngFor="let category of categories" [hidden]="category.services.length === 0">
-        <div class="bb-table-title">{{ category.name }} <sup class="bb-table-title-sup">{{ category.services.length }}</sup></div>
+<ion-content no-padding>
+  <made-nav *ngIf="!isProfile" [activePage]="PageNames.Services"></made-nav>
 
 
-        <ion-list class="bb-table ion-bb-sliding">
-          <ion-row class="bb-table-head">
-            <ion-col col-6 class="bb-table-row-col">
-              Service
-            </ion-col>
-            <ion-col col-3 class="bb-table-row-col">
-              Duration
-            </ion-col>
-            <ion-col col-3 class="bb-table-row-col">
-              Price
-            </ion-col>
-          </ion-row>
+  <ion-fab right bottom>
+    <button (click)="openServiceModal()" ion-fab>
+      <ion-icon name="add"></ion-icon>
+    </button>
+  </ion-fab>
 
 
-          <ion-item-sliding *ngFor="let service of category.services; let i = index" (click)="openServiceModal(category, service)" class="bb-table-row">
-            <ion-item>
-              <ion-row class="bb-table-row">
-                <ion-col col-6 class="bb-table-row-col">
-                  {{ service.name }}
-                </ion-col>
-                <ion-col col-3 class="bb-table-row-col">
-                  {{ convertMinsToHrsMins(service.duration_minutes) }}
-                </ion-col>
-                <ion-col col-3 class="bb-table-row-col">
-                  ${{ service.base_price }}
-                  <ion-icon name="ios-arrow-forward-outline"></ion-icon>
-                </ion-col>
-              </ion-row>
-            </ion-item>
-            <ion-item-options side="right" class="bb-table-swipe">
-              <button (click)="deleteService(category, i)" ion-button color="danger">DELETE</button>
-            </ion-item-options>
-          </ion-item-sliding>
-        </ion-list>
-
-
-
-        <ion-row class="bb-table-add">
-          <ion-col col-3>
-          </ion-col>
-          <ion-col col-6>
-            <button (click)="openServiceModal(category)" ion-button full color="bb_skin" class="bb-btn-a">
-              Add service
-            </button>
-          </ion-col>
-          <ion-col col-3>
-          </ion-col>
-        </ion-row>
+  <div class="Made-wp Made-wpContent">
+    <div class="Made-h1">My Services</div>
+    <div class="Made-text">
+      <div class="Made-textItem">
+        This is your current list of services. You can click to edit your service name or price, add a new service, or delete any of the services below.
       </div>
     </div>
 
 
-
-    <div class="p-sl-gap">
-      <i class="bb-icon bb-icon-time-gap p-sl-gap-icon"></i>
-
-      <div class="p-sl-gap-title">How many mins between client bookings?</div>
-
-      <ion-range min="15" max="60" step="5" [(ngModel)]="timeGap" color="dark" class="ion-bb-range">
-        <div range-right>
-          {{ timeGap }} min
+    <div *ngIf="categories" class="ServicesLis-offset">
+      <div *ngFor="let category of categories" [hidden]="category.services.length === 0">
+        <div class="ServicesLis-title">
+          <i [inlineSVG]="'assets/svgicons/' + category.category_code + '.svg'"></i>
+          {{ category.name }}
         </div>
-      </ion-range>
-    </div>
+
+
+        <ion-list class="ServicesLis">
+          <ion-row class="ServicesLis-head">
+            <ion-col no-padding col-9 class="ServicesLis-rowCol">
+              Services
+            </ion-col>
+            <ion-col no-padding col-3 class="ServicesLis-rowCol">
+              Pricing
+            </ion-col>
+          </ion-row>
+
+
+          <div class="ServicesLis-item">
+            <ion-item-sliding *ngFor="let service of category.services; let i = index">
+              <ion-item no-padding>
+                <ion-row no-padding class="ServicesLis-row">
+                  <ion-col (click)="deleteService(category, i)" no-padding col-2 class="ServicesLis-rowCol">
+                    <button ion-button color="dark" clear class="ServicesLis-rowColDel"><ion-icon name="ios-trash-outline"></ion-icon></button>
+                  </ion-col>
+                  <ion-col (click)="openServiceModal(category, service)" no-padding col-7 class="ServicesLis-rowCol">
+                    {{ service.name }}
+                  </ion-col>
+                  <ion-col (click)="openServiceModal(category, service)" no-padding col-3 class="ServicesLis-rowCol">
+                    ${{ service.base_price }}
+                    <ion-icon name="ios-arrow-forward-outline"></ion-icon>
+                  </ion-col>
+                </ion-row>
+              </ion-item>
+              <ion-item-options side="right" class="ServicesLis-swipe">
+                <button (click)="deleteService(category, i)" ion-button color="danger">Delete</button>
+              </ion-item-options>
+            </ion-item-sliding>
+          </div>
+        </ion-list>
+      </div>
 
 
 
-    <div text-center>
-      <button (click)="saveChanges()" ion-button class="bb-btn-circle">
-        <i class="bb-icon bb-icon-confirmation"></i>
-      </button>
+      <div *ngIf="!isEmptyCategories" class="ServicesGap">
+        <i class="bb-icon bb-icon-time-gap ServicesGap-icon"></i>
+
+        <div class="ServicesGap-title">How many minutes between client bookings?</div>
+
+        <ion-range min="15" max="120" step="5" [(ngModel)]="timeGap" color="dark" class="ion-bb-range">
+          <div range-right>
+            {{ timeGap }} min
+          </div>
+        </ion-range>
+      </div>
     </div>
   </div>
 </ion-content>
+
+
+<ion-footer *ngIf="!isProfile" (continue)="onContinue()" madeDiscountsFooter></ion-footer>

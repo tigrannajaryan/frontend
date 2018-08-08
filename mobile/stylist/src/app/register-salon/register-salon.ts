@@ -231,7 +231,7 @@ export class RegisterSalonComponent {
       return;
     }
 
-    this.navCtrl.push(PageNames.RegisterServices, {}, { animate: false });
+    this.navCtrl.push(PageNames.Services, {}, { animate: false });
   }
 
   @loading

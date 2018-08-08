@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { IonicModule } from 'ionic-angular';
 import { GoogleAnalytics } from '@ionic-native/google-analytics';
 import { IonicStorageModule } from '@ionic/storage';
+import { InlineSVGModule } from 'ng-inline-svg';
 
 import { BaseApiService } from '~/shared/base-api-service';
 import { ComponentsModule } from './components/components.module';
@@ -16,12 +17,14 @@ import { DirectivesModule } from '~/core/directives/directive.module';
     IonicModule,
     ComponentsModule,
     DirectivesModule,
-    IonicStorageModule.forRoot()
+    IonicStorageModule.forRoot(),
+    InlineSVGModule.forRoot()
   ],
   exports: [
     IonicModule,
     ComponentsModule,
-    DirectivesModule
+    DirectivesModule,
+    InlineSVGModule
   ],
   providers: [
     BaseApiService,

@@ -8,8 +8,7 @@ import {
 
 import {
   ServiceCategory,
-  ServiceTemplateItem,
-  ServiceTemplateSet
+  ServiceTemplateItem
 } from '~/core/stylist-service/stylist-models';
 
 import { loading } from '~/core/utils/loading';
@@ -17,7 +16,6 @@ import { StylistServiceProvider } from '~/core/stylist-service/stylist-service';
 import { PageNames } from '~/core/page-names';
 import { ServiceItemComponentData } from '../services-item/services-item.component';
 
-import * as time from '~/shared/time';
 import { showAlert } from '~/core/utils/alert';
 import { ServiceListType } from '~/services/services.component';
 
@@ -32,7 +30,6 @@ export class ServicesListComponent {
   protected categories: ServiceCategory[] = [];
   protected isEmptyCategories = false;
   protected isProfile?: Boolean;
-  protected templateSet: ServiceTemplateSet;
   protected timeGap = 30;
 
   static checkIfEmptyCategories(categories: ServiceCategory[]): boolean {
@@ -92,10 +89,10 @@ export class ServicesListComponent {
     const itemToEdit: ServiceItemComponentData = {
       categories: this.categories,
       service,
-      categoryUuid: category ? category.uuid : undefined
+      category: category || undefined
     };
 
-    const profileModal = this.modalCtrl.create(PageNames.RegisterServicesItemAdd,
+    const profileModal = this.modalCtrl.create(PageNames.ServicesItem,
       {
         data: itemToEdit
       });
@@ -106,8 +103,21 @@ export class ServicesListComponent {
   }
 
   @loading
-  async saveChanges(): Promise<void> {
-    const categoriesServices =
+  async onContinue(): Promise<void> {
+    const categoriesServices = this.checkCategoriesServices();
+
+    if (categoriesServices) {
+      await this.stylistService.setStylistServices({
+        services: categoriesServices,
+        service_time_gap_minutes: this.timeGap
+      });
+
+      this.navCtrl.push(PageNames.Worktime);
+    }
+  }
+
+  protected checkCategoriesServices(): ServiceCategory[] | undefined {
+    const categoriesServices: ServiceCategory[] =
       this.categories.reduce((services, category) => (
         services.concat(
           category.services.map(service => ({
@@ -122,21 +132,7 @@ export class ServicesListComponent {
       showAlert('Services are empty', 'At least one service should be added.');
       return;
     }
-
-    try {
-      await this.stylistService.setStylistServices({
-        services: categoriesServices,
-        service_time_gap_minutes: this.timeGap
-      });
-      if (this.isProfile) {
-        this.navCtrl.pop();
-      } else {
-        this.navCtrl.push(PageNames.Worktime);
-      }
-    } catch (e) {
-      // Show an error message
-      showAlert('Error', e);
-    }
+    return categoriesServices;
   }
 
   /**
@@ -144,10 +140,6 @@ export class ServicesListComponent {
    */
   resetList(): void {
     this.ionViewWillLoad();
-  }
-
-  convertMinsToHrsMins(mins: number): string {
-    return time.convertMinsToHrsMins(mins);
   }
 
   async deleteService(category: ServiceCategory, idx: number): Promise<void> {
@@ -179,11 +171,11 @@ export class ServicesListComponent {
     }
 
     // Find old item
-    let categoryIndex = this.categories.findIndex(x => x.uuid === itemToEdit.categoryUuid);
+    let categoryIndex = this.categories.findIndex(x => x.uuid === itemToEdit.category.uuid);
     let category: ServiceCategory = this.categories[categoryIndex];
     let serviceIndex: number = itemToEdit.service ? category.services.findIndex(x => x === itemToEdit.service) : -1;
 
-    if (itemToEdit.categoryUuid !== editedItem.categoryUuid) {
+    if (itemToEdit.category.uuid !== editedItem.category.uuid) {
       // Remove from old category
       if (serviceIndex !== -1) {
         category.services.splice(serviceIndex, 1);
@@ -192,7 +184,7 @@ export class ServicesListComponent {
       // Edit item not empty (indicates deletion if it is empty)
       if (editedItem.service) {
         // Not empty. Add to new category.
-        categoryIndex = this.categories.findIndex(x => x.uuid === editedItem.categoryUuid);
+        categoryIndex = this.categories.findIndex(x => x.uuid === editedItem.category.uuid);
         category = this.categories[categoryIndex];
         category.services.push(editedItem.service);
       }
@@ -206,5 +198,14 @@ export class ServicesListComponent {
     }
 
     this.isEmptyCategories = ServicesListComponent.checkIfEmptyCategories(this.categories);
+
+    const categoriesServices = this.checkCategoriesServices();
+
+    if (categoriesServices) {
+      this.stylistService.setStylistServices({
+        services: categoriesServices,
+        service_time_gap_minutes: this.timeGap
+      });
+    }
   }
 }

@@ -42,7 +42,7 @@ describe('Shared functions: profileStatusToPage', () => {
     expect(createNavHistoryList(profileStatus))
       .toEqual([
         { page: PageNames.RegisterSalon },
-        { page: PageNames.RegisterServices },
+        { page: PageNames.Services },
         { page: PageNames.Worktime },
         { page: PageNames.DiscountsInfo }
       ]);

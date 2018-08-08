@@ -21,7 +21,6 @@ const fakeService: ServiceItem = {
   name: faker.commerce.productName(),
   description: faker.lorem.sentence(),
   base_price: faker.commerce.price(),
-  duration_minutes: faker.random.number(),
   category_name: faker.commerce.productMaterial(),
   category_uuid: faker.random.uuid(),
   is_enabled: true,

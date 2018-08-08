@@ -1,6 +1,7 @@
-[madebackheader] {
+[madebackheader],
+.madeBackHeader {
   .toolbar {
-    min-height: 42px;
+    min-height: pxtovw(44px);
 
     &-title {
       padding: 0;
@@ -21,21 +22,20 @@
     .back-button {
       position: absolute;
       z-index: 1;
+      display: block;
       min-width: auto;
       padding: 0;
       margin: 0;
 
       ion-icon {
-        font-size: pxtorem10(14);
-
-        @media ($phone-md) {
-          font-size: pxtorem10(18);
-        }
-
-        @media ($phone-lg) {
-          font-size: pxtorem10(20);
-        }
+        font-size: pxtovw(18px);
       }
     }
+  }
+
+  .RightButton {
+    max-width: pxtovw(17px);
+    margin-left: pxtovw(20px);
+    font-size: pxtovw(16px);
   }
 }

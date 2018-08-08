@@ -62,6 +62,7 @@ export interface ServiceName {
 
 export interface ServiceTemplateSetBase {
   uuid: string;
+  services_count: string;
 }
 
 export interface ServiceUuid {
@@ -81,6 +82,7 @@ export interface ServiceCategory {
   uuid: string;
   name: string;
   services: Array<ServiceTemplateItem | ServiceItem>;
+  category_code: string;
 }
 
 export interface ServiceTemplateItem {
@@ -93,7 +95,6 @@ export interface ServiceTemplateItem {
   name: string;
   description: string;
   base_price: number;
-  duration_minutes: number;
 }
 
 // Services

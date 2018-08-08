@@ -5,26 +5,14 @@ made-nav {
     flex-wrap: nowrap;
     align-items: center;
     justify-content: center;
-    margin: pxtorem10(15) 0 pxtorem10(9);
-
-    @media ($phone-md) {
-      margin: pxtorem10(22) 0 pxtorem10(12);
-    }
-
-    @media ($phone-lg) {
-      margin: pxtorem10(28) 0 pxtorem10(14);
-    }
+    margin: pxtovw(19px) auto pxtovw(12px);
   }
 
   .Nav-item {
     flex: 1;
     overflow: hidden;
     white-space: nowrap;
-    transform: translateY(-2px);
-
-    @media ($phone-md) {
-      transform: translateY(-1px);
-    }
+    transform: translateY(-1px);
 
     &.right {
       direction: rtl;
@@ -39,19 +27,14 @@ made-nav {
   .Nav-itemElDot {
     position: relative;
     display: inline-block;
-    width: pxtorem10(7);
-    height: pxtorem10(7);
-    margin: 0 pxtorem10(5);
+    width: pxtovw(8px);
+    height: pxtovw(8px);
+    margin: 0 pxtovw(4px);
     vertical-align: middle;
     background: color($colors, bb_skin);
     border: 1px solid transparent;
     border-radius: 50%;
 
-    @media ($phone-md) {
-      width: pxtorem10(9);
-      height: pxtorem10(9);
-      margin: 0 pxtorem10(7);
-    }
 
     &.white {
       background: color($colors, white);
@@ -64,11 +47,10 @@ made-nav {
       left: 50%;
       display: inline-block;
       font-family: "Ionicons", sans-serif;
-      font-size: pxtorem10(6);
+      font-size: pxtovw(7px);
       font-style: normal;
       font-weight: normal;
       font-variant: normal;
-      line-height: pxtorem10(7);
       color: color($colors, color5);
       speak: none;
       text-transform: none;
@@ -77,48 +59,21 @@ made-nav {
       -moz-osx-font-smoothing: grayscale;
       content: "\f102";
       transform: translate(-50%, -50%);
-
-      @media ($phone-md) {
-        font-size: pxtorem10(7);
-      }
-
-      @media ($phone-lg) {
-        font-size: pxtorem10(8);
-      }
     }
   }
 
   .Nav-itemElLine {
     display: inline-block;
-    width: pxtorem10(38);
+    width: pxtovw(43px);
     height: 1px;
-    margin: 0 pxtorem10(4);
+    margin: 0 pxtovw(8px);
     vertical-align: middle;
     background: color($colors, bb_skin);
-
-    @media ($phone-md) {
-      width: pxtorem10(45);
-    }
-
-    @media ($phone-lg) {
-      width: pxtorem10(50);
-      margin: 0 pxtorem10(5);
-    }
   }
 
   .Nav-active {
-    margin: 0 pxtorem10(9);
-    font-size: pxtorem10(9);
-
-    @media ($phone-md) {
-      margin: 0 pxtorem10(8);
-      font-size: pxtorem10(11);
-    }
-
-    @media ($phone-lg) {
-      margin: 0 pxtorem10(10);
-      font-size: pxtorem10(12);
-    }
+    margin: 0 pxtovw(5px);
+    font-size: pxtovw(10.7px);
   }
 }
 
