@@ -1,68 +1,59 @@
-<ion-header class="ion-bb-header">
-  <ion-navbar>
-  </ion-navbar>
-</ion-header>
+<ion-header madeBackHeader></ion-header>
 
 
-<ion-content padding class="worktime">
+<ion-content no-padding>
   <made-nav *ngIf="!isProfile" [activePage]="PageNames.Worktime"></made-nav>
 
 
-  <div class="title">
-    My Work Hours
-    <p>Block days you don’t work and adjust your work hours</p>
-  </div>
-  <!--shifts block start -->
-  <ion-grid *ngFor="let card of cards" class="workingtime_shifts_block" item-content>
-    <ion-row class="wd-row">
-      <ion-col>
-        <ion-label>Start</ion-label>
-        <ion-datetime displayFormat="h:mm a" pickerFormat="h mm A" [(ngModel)]="card.workStartAt"></ion-datetime>
-      </ion-col>
-      <ion-col>
-        <ion-label>End</ion-label>
-        <ion-datetime displayFormat="h:mm a" [(ngModel)]="card.workEndAt"></ion-datetime>
-      </ion-col>
-      <ion-col>
-        <ion-label>Daily work hours</ion-label>
-        <span>{{ card.getDurationStr() }}</span>
-      </ion-col>
-    </ion-row>
-    <ion-row class="wd-row">
-      <ion-col>
-        <!--Week days grid start-->
-        <div class="wd_greed">
-          <ion-grid>
-            <ion-row>
-              <ion-col *ngFor="let day of card.weekdays">
-                <a [ngClass]="{'disabled': !day.enabled}" (click)="toggleWeekday(day)">{{ day.label }}</a>
-              </ion-col>
-            </ion-row>
-          </ion-grid>
+  <div class="Made-wp Made-wpContent">
+    <div class="Made-h1">Worktime</div>
+    <div class="Made-text">
+      <div class="Made-textItem">
+        Tap to block days you don't work and adjust your work hours.
+      </div>
+    </div>
+
+
+
+    <!--shifts block start -->
+    <div *ngFor="let card of cards; let index = index" class="Workingtime">
+      <button *ngIf="index != 0" (click)="deleteCard(index)" ion-button clear class="Workingtime-delete">
+        <ion-icon name="ios-trash-outline"></ion-icon>
+      </button>
+
+      <div class="Workingtime-head">
+        <div class="Workingtime-headItem">
+          <ion-label class="Workingtime-headLabel">Start</ion-label>
+          <ion-datetime (ionChange)="autoSave()" [(ngModel)]="card.workStartAt" displayFormat="h:mma" pickerFormat="h mm A" class="Workingtime-headTime"></ion-datetime>
         </div>
-        <!--Week days grid start-->
-      </ion-col>
+        <div class="Workingtime-headItem">
+          <ion-label class="Workingtime-headLabel">End</ion-label>
+          <ion-datetime (ionChange)="autoSave()" [(ngModel)]="card.workEndAt" displayFormat="h:mma" class="Workingtime-headTime"></ion-datetime>
+        </div>
+        <div class="Workingtime-headItemBig">
+          <ion-label class="Workingtime-headLabel">Duration</ion-label>
+          <span class="Workingtime-headTime">{{ card.getDurationStr() }}</span>
+        </div>
+      </div>
+
+
+      <div class="Workingtime-days">
+        <div *ngFor="let day of card.weekdays" [class.is-available]="day.enabled" class="Workingtime-daysItem">
+          <span (click)="toggleWeekday(day)">{{ day.label }}</span>
+        </div>
+      </div>
+    </div>
+
+
+    <h3 class="Workingtime-info">Tap button below to add another shift</h3>
+
+    <ion-row text-center>
+      <ion-col col-2></ion-col>
+      <ion-col col-8><button (click)="addNewCard()" class="Discounts-btn" ion-button>Add new shift</button></ion-col>
+      <ion-col col-2></ion-col>
     </ion-row>
-  </ion-grid>
-  <!--shifts block end -->
-  <h3 class="wd-text">Tap the button below to add another shift</h3>
-
-  <div text-center>
-    <button (click)="addNewCard()" ion-button color="bb_skin" class="bb-btn-a">Add new shift</button>
-  </div>
-
-  <ion-grid>
-    <ion-row class="last_row">
-      <ion-col>Hours I slay ‘em</ion-col>
-      <ion-col>{{ calcTotals().days }} days</ion-col>
-      <ion-col>{{ calcTotals().hoursMins }} </ion-col>
-    </ion-row>
-  </ion-grid>
-
-  <!-- TODO: This needs to be extracted as a common component -->
-  <div text-center>
-    <button (click)="saveChanges()" ion-button class="bb-btn-circle">
-      <i class="bb-icon bb-icon-confirmation"></i>
-    </button>
   </div>
 </ion-content>
+
+
+<ion-footer *ngIf="!isProfile" (continue)="onContinue()" madeDiscountsFooter></ion-footer>

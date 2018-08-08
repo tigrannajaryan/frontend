@@ -51,14 +51,6 @@ class VisualWeekCard {
 }
 
 /**
- * Represent weekly grand totals.
- */
-interface WeekTotals {
-  days: number;
-  hoursMins: string;
-}
-
-/**
  * Default start/end times for new worktime cards.
  */
 export const defaultStartTime = '09:00'; // 24 hour hh:mm format
@@ -142,48 +134,31 @@ export class WorktimeComponent {
     }
     // Now toggle the day
     toogleDay.enabled = !toogleDay.enabled;
-  }
 
-  calcTotals(): WeekTotals {
-    let days = 0;
-    let mins = 0;
-
-    if (this.cards) {
-      for (const card of this.cards) {
-        card.weekdays.map(day => {
-          if (day.enabled) {
-            days++;
-            mins += card.calcDurationInMins();
-          }
-        });
-      }
-    }
-
-    return { days, hoursMins: convertMinsToHrsMins(mins) };
+    this.autoSave();
   }
 
   addNewCard(): void {
     this.cards.push(WorktimeComponent.createCard(false));
   }
 
-  nextRoute(): void {
+  deleteCard(index: number): void {
+    this.cards.splice(index, 1);
+
+    this.autoSave();
+  }
+
+  onContinue(): void {
     if (!this.isProfile) {
+      // Continue registration on the next page
       this.navCtrl.push(PageNames.DiscountsInfo, {});
+      this.autoSave();
     }
   }
 
-  @loading
-  async saveChanges(): Promise<void> {
+  async autoSave(): Promise<void> {
     // Save to backend
-    const worktime = await this.api.setWorktime(this.presentation2api(this.cards));
-
-    if (!this.isProfile) {
-      // Continue registration on the next page
-      this.nextRoute();
-    } else {
-      // And load the response back to make sure client shows what backend understood.
-      this.cards = this.api2presentation(worktime);
-    }
+   this.api.setWorktime(this.presentation2api(this.cards));
   }
 
   /**

@@ -28,7 +28,7 @@ export class MadeNavComponent {
   private pages = [
     { name: 'Personal Info', page: PageNames.RegisterSalon },
     { name: 'Services', page: PageNames.Services },
-    { name: 'Schedule', page: PageNames.Worktime },
+    { name: 'Worktime', page: PageNames.Worktime },
 
     { name: 'Discounts', page: PageNames.DiscountsInfo },
     { name: 'Weekdays', page: PageNames.DiscountsWeekday },
