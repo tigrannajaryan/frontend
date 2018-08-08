@@ -7,7 +7,6 @@
 # SDK and build tools
 
 echo "Installing Android pre-requisites"
-set -ev
 
 mkdir -p ~/.android || true
 touch ~/.android/repositories.cfg
@@ -27,4 +26,4 @@ unzip -qq sdk-tools-linux-4333796.zip
 export PATH=${PATH}:$ANDROID_HOME/platform-tools:$ANDROID_HOME/tools
 
 # install build tools auto-accepting Android licenses
-echo y | tools/bin/sdkmanager "build-tools;$ANDROID_BUILD_TOOLS_VERSION" "platforms;android-28"
+echo y | $TRAVIS_BUILD_DIR/$ANDROID_SDK/tools/bin/sdkmanager "build-tools;$ANDROID_BUILD_TOOLS_VERSION" "platforms;android-28"
