@@ -9,6 +9,9 @@
 echo "Installing Android pre-requisites"
 set -ev
 
+mkdir -p ~/.android || true
+touch ~/.android/repositories.cfg
+
 # install Java and Gradle
 brew tap caskroom/versions
 brew cask install java8
