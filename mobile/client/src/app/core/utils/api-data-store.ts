@@ -214,6 +214,9 @@ export class ApiDataStore<T> {
     if (cachedData && !refreshCache) {
       // We have a cached value and no refreshing is required, so just return it
       retVal = { response: cachedData };
+      if (!this.data.value || cachedData !== this.data.value.response) {
+        this.data.next(retVal);
+      }
     } else {
       // We don't have a cached value or we were asked to refresh it, so load it from the original data source
       retVal = await dataSourceToPromise(this.apiEndpoint());
