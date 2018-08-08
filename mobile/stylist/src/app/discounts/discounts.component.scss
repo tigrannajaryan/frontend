@@ -6,45 +6,21 @@ page-discounts {
   .DiscountsSettings-title {
     display: flex;
     align-items: center;
-    margin-bottom: pxtorem10(11);
-
-    @media ($phone-md) {
-      margin: pxtorem10(9) 0 pxtorem10(20);
-    }
-
-    @media ($phone-lg) {
-      margin: pxtorem10(14) 0 pxtorem10(12);
-    }
+    margin: pxtovw(9px) 0 pxtovw(20px);
   }
 
   .DiscountsSettings-icon {
-    width: 20px;
-    margin-left: pxtorem10(7);
-
-    @media ($phone-md) {
-      width: 23px;
-    }
-
-    @media ($phone-lg) {
-      width: 26px;
-    }
+    width: 23px;
+    margin-left: pxtovw(7px);
   }
 
   .DiscountsSettings-tabs {
-    margin-bottom: pxtorem10(20);
-
-    @media ($phone-md) {
-      margin-bottom: pxtorem10(24);
-    }
-
-    @media ($phone-lg) {
-      margin-bottom: pxtorem10(28);
-    }
+    margin-bottom: pxtovw(24px);
   }
 
   .DiscountsSettings-footer {
     .toolbar {
-      height: 78px;
+      height: pxtovw(78px);
 
       &-title {
         height: 100%;
@@ -68,6 +44,6 @@ page-discounts {
   }
 
   .DiscountsSettings-footerWp {
-    padding-top: pxtorem10(13);
+    padding-top: pxtovw(13px);
   }
 }

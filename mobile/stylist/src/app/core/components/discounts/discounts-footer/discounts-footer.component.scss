@@ -1,15 +1,7 @@
 [madediscountsfooter] {
   .toolbar {
-    height: pxtorem10(81);
-    padding: 4px 0;
-
-    @media ($phone-md) {
-      height: pxtorem10(92);
-    }
-
-    @media ($phone-lg) {
-      height: pxtorem10(105);
-    }
+    height: pxtovw(92px);
+    padding: pxtovw(4px) 0;
 
     &-title {
       height: 100%;
@@ -42,13 +34,13 @@
 .Discounts-btn {
   width: 100%;
   height: auto;
-  padding: pxtorem10(17.5) 0;
+  padding: pxtovw(17.5px) 0;
   margin: 0;
   font-size: pxtovw(15px);
   color: color($grayscale, 800);
   text-transform: capitalize;
   background: color($colors, secondary);
-  border-radius: pxtorem10(7);
+  border-radius: pxtovw(7px);
   box-shadow: none;
 
   &.is-invert {

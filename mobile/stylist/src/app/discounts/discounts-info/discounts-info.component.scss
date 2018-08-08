@@ -1,56 +1,26 @@
 page-discounts-info {
   .DiscountsInfo-title {
-    padding-top: pxtorem10(3);
-    font-size: pxtorem10(25);
+    padding-top: pxtovw(2px);
+    font-size: pxtovw(29px);
     font-weight: 600;
-    line-height: pxtorem10(28);
+    line-height: pxtovw(33px);
     text-align: center;
-    letter-spacing: -0.4px;
-
-    @media ($phone-md) {
-      font-size: pxtorem10(29.5);
-      line-height: pxtorem10(33);
-    }
-
-    @media ($phone-lg) {
-      font-size: pxtorem10(32);
-      line-height: pxtorem10(36);
-    }
+    letter-spacing: pxtovw(-0.4px);
   }
 
   .Discounts-icon {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 85px;
-    height: 85px;
-    padding: 10px;
-    margin: 18px auto 21px;
+    width: pxtovw(96px);
+    height: pxtovw(96px);
+    padding: pxtovw(10px);
+    margin: pxtovw(21px) auto pxtovw(24px);
     border: 1px solid color($colors, color23);
     border-radius: 50%;
 
-    @media ($phone-md) {
-      width: 100px;
-      height: 100px;
-      margin: 21px auto 24px;
-    }
-
-    @media ($phone-lg) {
-      width: 108px;
-      height: 108px;
-      margin: 26px auto;
-    }
-
     img {
-      height: 47px;
-
-      @media ($phone-md) {
-        height: 58px;
-      }
-
-      @media ($phone-lg) {
-        height: 64px;
-      }
+      height: pxtovw(58px);
     }
   }
 
@@ -58,25 +28,11 @@ page-discounts-info {
     display: flex;
     align-items: start;
     justify-content: start;
-    margin-bottom: pxtorem10(13);
-    font-size: pxtorem10(15);
-    line-height: pxtorem10(21);
+    margin-bottom: pxtovw(16px);
+    font-size: pxtovw(18px);
+    line-height: pxtovw(24px);
     color: color($colors, color24);
-    letter-spacing: 0.08px;
-
-    @media ($phone-md) {
-      margin-bottom: pxtorem10(15);
-      font-size: pxtorem10(18);
-      line-height: pxtorem10(25);
-      letter-spacing: -0.05px;
-    }
-
-    @media ($phone-lg) {
-      margin-bottom: pxtorem10(17);
-      font-size: pxtorem10(20);
-      line-height: pxtorem10(27);
-      letter-spacing: -0.1px;
-    }
+    letter-spacing: pxtovw(-0.2px);
   }
 
   .Discounts-listNum {
@@ -84,38 +40,17 @@ page-discounts-info {
     flex-shrink: 0;
     align-items: center;
     justify-content: center;
-    width: 20px;
-    height: 20px;
-    margin-right: pxtorem10(7);
-    font-size: pxtorem10(13);
+    width: pxtovw(25px);
+    height: pxtovw(25px);
+    margin-right: pxtovw(8px);
+    font-size: pxtovw(16px);
     color: color($colors, color24);
     border: 1px solid rgb(212, 212, 212);
     border-radius: 50%;
-
-    @media ($phone-md) {
-      width: 25px;
-      height: 25px;
-      margin-right: pxtorem10(8);
-      font-size: pxtorem10(16);
-    }
-
-    @media ($phone-lg) {
-      width: 28px;
-      height: 28px;
-      font-size: pxtorem10(17);
-    }
   }
 }
 
 .Discounts-textOffset {
-  min-height: 120px;
-
-  @media ($phone-md) {
-    min-height: 145px;
-  }
-
-  @media ($phone-lg) {
-    min-height: 153px;
-  }
+  min-height: pxtovw(145px);
 }
 

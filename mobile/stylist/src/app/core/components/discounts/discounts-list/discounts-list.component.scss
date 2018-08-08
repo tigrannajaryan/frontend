@@ -1,30 +1,12 @@
 .DiscountsList-head {
-  font-size: pxtorem10(11);
+  font-size: pxtovw(13px);
   color: color($colors, color24);
-
-  @media ($phone-md) {
-    font-size: pxtorem10(13);
-  }
-
-  @media ($phone-lg) {
-    font-size: pxtorem10(14);
-  }
 }
 
 .DiscountsList-row {
-  padding: pxtorem10(9) 0;
-  font-size: pxtorem10(13);
+  padding: pxtovw(11px) 0;
+  font-size: pxtovw(16px);
   border-bottom: 1px solid color($grayscale, 200);
-
-  @media ($phone-md) {
-    padding: pxtorem10(12) 0;
-    font-size: pxtorem10(16);
-  }
-
-  @media ($phone-lg) {
-    padding: pxtorem10(13) 0 pxtorem10(12);
-    font-size: pxtorem10(17);
-  }
 }
 
 .DiscountsList-col {
@@ -35,16 +17,8 @@
 
 .DiscountsList-colIcon {
   ion-icon {
-    padding-right: pxtorem10(7);
-    font-size: pxtorem10(22);
+    padding-right: pxtovw(7px);
+    font-size: pxtovw(25px);
     color: rgba(0, 0, 0, 0.3);
-
-    @media ($phone-md) {
-      font-size: pxtorem10(25);
-    }
-
-    @media ($phone-lg) {
-      font-size: pxtorem10(30);
-    }
   }
 }
