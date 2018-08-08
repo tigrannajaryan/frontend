@@ -104,11 +104,11 @@ ion-datetime {
 
 // rewrite ionic tabs icons
 
-ion-icon.tab-button-icon[aria-label="Home"],
-ion-icon.tab-button-icon[aria-label="Hours"],
-ion-icon.tab-button-icon[aria-label="Discount"],
-ion-icon.tab-button-icon[aria-label="Services"],
-ion-icon.tab-button-icon[aria-label="Invite"] {
+ion-icon.tab-button-icon[aria-label^="Home"],
+ion-icon.tab-button-icon[aria-label^="Hours"],
+ion-icon.tab-button-icon[aria-label^="Discount"],
+ion-icon.tab-button-icon[aria-label^="Services"],
+ion-icon.tab-button-icon[aria-label^="Invite"] {
   display: inline-block;
   font-family: 'bb', sans-serif;
   font-style: normal;
@@ -118,19 +118,19 @@ ion-icon.tab-button-icon[aria-label="Invite"] {
   content: '\0045';
 }
 
-ion-icon.tab-button-icon[aria-label="Home"]:after {
+ion-icon.tab-button-icon[aria-label^="Home"]:after {
   content: '\0045';
 }
 
-ion-icon.tab-button-icon[aria-label="Hours"]:after {
+ion-icon.tab-button-icon[aria-label^="Hours"]:after {
   content: '\004c';
 }
 
-ion-icon.tab-button-icon[aria-label="Discount"]:after {
+ion-icon.tab-button-icon[aria-label^="Discount"]:after {
   content: '\004d';
 }
 
-ion-icon.tab-button-icon[aria-label="Services"]:after {
+ion-icon.tab-button-icon[aria-label^="Services"]:after {
   display: inline-block;
   font-family: 'Ionicons', sans-serif;
   font-style: normal;
@@ -145,7 +145,7 @@ ion-icon.tab-button-icon[aria-label="Services"]:after {
   -moz-osx-font-smoothing: grayscale;
 }
 
-ion-icon.tab-button-icon[aria-label="Invite"]:after {
+ion-icon.tab-button-icon[aria-label^="Invite"]:after {
   content: '\004e';
 }
 
@@ -351,12 +351,24 @@ ion-icon.tab-button-icon[aria-label="Invite"]:after {
     .toggle {
       &-icon {
         background-color: color($colors, color13);
+
+        &:before {
+          display: none;
+        }
       }
 
       &-inner {
         top: 2px;
         width: 20px;
         height: 20px;
+        box-shadow: none;
+        transform: translate3d(1px, 0, 0);
+      }
+    }
+
+    &.toggle-checked {
+      .toggle-inner {
+        transform: translate3d(17px, 0, 0);
       }
     }
 

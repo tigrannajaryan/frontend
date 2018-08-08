@@ -3,6 +3,7 @@ import { Store } from '@ngrx/store';
 import { MenuController, Nav, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import { ScreenOrientation } from '@ionic-native/screen-orientation';
 
 import { Logger } from '~/shared/logger';
 import { GAWrapper } from '~/shared/google-analytics';
@@ -36,7 +37,8 @@ export class ClientAppComponent implements OnInit {
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
     private store: Store<any>,
-    private ga: GAWrapper
+    private ga: GAWrapper,
+    private screenOrientation: ScreenOrientation
   ) {
   }
 
@@ -48,6 +50,9 @@ export class ClientAppComponent implements OnInit {
     // First initialize the platform. We cannot do anything else until the platform is
     // ready and the plugins are available.
     await this.platform.ready();
+
+    // Lock screen orientation to portrait
+    this.screenOrientation.lock('portrait');
 
     // Now that the platform is ready asynchronously initialize in parallel everything
     // that our app needs and wait until all initializations finish. Add here any other
