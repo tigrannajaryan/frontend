@@ -48,8 +48,8 @@ env:
 
 # define build stages order
 stages:
-  - Stylist Staging Build
   - Client Staging Build
+  - Stylist Staging Build
   - Stylist Production Build
   - Client Production Build
 
