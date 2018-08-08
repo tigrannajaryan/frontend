@@ -37,6 +37,7 @@ import { ServicesEffects } from '~/core/effects/services.effects';
 import { StylistsEffects } from '~/core/effects/stylists.effects';
 
 import { CoreModule } from '~/core/core.module';
+import { DataModule } from '~/core/api/data.module';
 
 initSentry();
 
@@ -52,6 +53,7 @@ import { ServerStatusTracker } from '~/shared/server-status-tracker';
     HttpClientModule,
     ReactiveFormsModule,
     CoreModule,
+    DataModule.forRoot(),
 
     IonicModule.forRoot(ClientAppComponent, {backButtonText: '', backButtonIcon: 'ios-arrow-round-back'}),
     IonicStorageModule.forRoot(),
