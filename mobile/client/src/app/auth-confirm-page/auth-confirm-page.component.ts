@@ -12,6 +12,7 @@ import {
   AuthState,
   ConfirmCodeAction,
   RequestCodeAction,
+  ResetConfirmCodeErrorAction,
   selectConfirmCodeErrors,
   selectConfirmCodeState,
   selectRequestCodeState
@@ -93,11 +94,18 @@ export class AuthConfirmPageComponent {
     });
   }
 
-  resendCode(): void {
+  onResendCode(): void {
     this.store.dispatch(new RequestCodeAction(this.phone));
   }
 
-  autoblurCode(event: any): void {
+  onFocusCode(): void {
+    if (this.code.value.length === CODE_LENGTH) { // only happen when error occurred
+      this.code.patchValue('');
+      this.store.dispatch(new ResetConfirmCodeErrorAction());
+    }
+  }
+
+  onAutoblurCode(event: any): void {
     const code: number = event.which || Number(event.code);
     const key: string = event.key || String.fromCharCode(code);
 

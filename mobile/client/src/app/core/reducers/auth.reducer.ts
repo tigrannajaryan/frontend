@@ -18,6 +18,8 @@ export enum authActionTypes {
 
   CLEAR_SEND_CODE_TIMEOUT = 'AUTH_CLEAR_SEND_CODE_TIMEOUT',
 
+  RESET_CONFIRM_CODE_ERROR = 'AUTH_RESET_CONFIRM_CODE_ERROR',
+
   USER_LOGOUT = 'AUTH_USER_LOGOUT'
 }
 
@@ -70,6 +72,10 @@ export class ClearSendCodeTimeout implements Action {
   readonly type = authActionTypes.CLEAR_SEND_CODE_TIMEOUT;
 }
 
+export class ResetConfirmCodeErrorAction implements Action {
+  readonly type = authActionTypes.RESET_CONFIRM_CODE_ERROR;
+}
+
 type Actions =
   | RequestCodeAction
   | RequestCodeLoadingAction
@@ -79,7 +85,8 @@ type Actions =
   | ConfirmCodeLoadingAction
   | ConfirmCodeSuccessAction
   | ConfirmCodeErrorAction
-  | ClearSendCodeTimeout;
+  | ClearSendCodeTimeout
+  | ResetConfirmCodeErrorAction;
 
 export interface AuthState {
   getCodeRequestState: RequestState;
@@ -155,6 +162,12 @@ export function authReducer(state: AuthState = initialState, action: Actions): A
         ...state,
         getCodeRequestState: RequestState.NotStarted,
         getCodeRequestTimestamp: undefined
+      };
+
+    case authActionTypes.RESET_CONFIRM_CODE_ERROR:
+      return {
+        ...state,
+        confirmCodeRequestErrors: undefined
       };
 
     default:

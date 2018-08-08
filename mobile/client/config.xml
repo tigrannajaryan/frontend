@@ -20,6 +20,7 @@
     <preference name="SplashShowOnlyFirstTime" value="false" />
     <preference name="SplashScreen" value="screen" />
     <preference name="SplashScreenDelay" value="3000" />
+    <preference name="ShowSplashScreenSpinner" value="false" />
     <preference name="KeyboardDisplayRequiresUserAction" value="false" />
     <platform name="android">
         <config-file parent="/resources" target="./res/values/strings.xml">
