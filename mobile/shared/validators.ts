@@ -16,3 +16,10 @@ export function predicateValidator(predicate: (...args: any[]) => boolean): Vali
     return predicate() ? null : { predicate: {value: control.value} };
   };
 }
+
+export function emptyOr(validator: ValidatorFn): ValidatorFn {
+  return (control: AbstractControl): {[key: string]: any} | null => {
+    // tslint:disable-next-line:no-null-keyword
+    return control.value.toString().trim().length === 0 ? null : validator(control);
+  };
+}

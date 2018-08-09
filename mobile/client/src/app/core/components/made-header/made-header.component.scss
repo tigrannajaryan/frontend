@@ -6,9 +6,10 @@ ion-header {
       background: transparent;
       border: 0;
     }
+  }
 
-    .back-button {
-      color: black;
-    }
+  .bar-button,
+  .toolbar .back-button {
+    color: black;
   }
 }

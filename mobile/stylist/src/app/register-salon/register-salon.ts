@@ -22,11 +22,8 @@ import { StylistServiceProvider } from '~/core/stylist-service/stylist-service';
 import { BaseApiService } from '~/shared/base-api-service';
 import { showAlert } from '~/core/utils/alert';
 import { Logger } from '~/shared/logger';
-
-enum PhotoSourceType {
-  photoLibrary = 0,
-  camera = 1
-}
+import { downscalePhoto, urlToFile } from '~/shared/image-utils';
+import { PhotoSourceType } from '~/shared/constants';
 
 declare var window: any;
 
@@ -38,62 +35,11 @@ declare var window: any;
   templateUrl: 'register-salon.html'
 })
 export class RegisterSalonComponent {
-  protected PageNames = PageNames;
-  protected isMainScreen?: Boolean;
-  protected form: FormGroup;
-  protected autocomplete: Autocomplete;
-  protected autocompleteInput: HTMLInputElement;
-
-  /**
-   * @param imageUri uri of the original image file
-   * @returns uri of downscaled image file
-   */
-  private static downscalePhoto(imageUri: string): Promise<string> {
-    return new Promise((resolve: Function, reject: Function) => {
-      const maxDimension = 512;
-      const downscaleQuality = 0.7;
-
-      // Use canvas to draw downscaled image on it
-      const canvas: any = document.createElement('canvas');
-
-      // Load the original image
-      const image = new Image();
-
-      image.onload = () => {
-        try {
-          let width = image.width;
-          let height = image.height;
-
-          // Enforce max dimensions
-          if (width > height) {
-            if (width > maxDimension) {
-              height *= maxDimension / width;
-              width = maxDimension;
-            }
-          } else {
-            if (height > maxDimension) {
-              width *= maxDimension / height;
-              height = maxDimension;
-            }
-          }
-          canvas.width = width;
-          canvas.height = height;
-          const ctx = canvas.getContext('2d');
-
-          // Draw original image downscaled
-          ctx.drawImage(image, 0, 0, width, height);
-
-          // And get the result with required quality
-          const dataUri = canvas.toDataURL('image/jpeg', downscaleQuality);
-
-          resolve(dataUri);
-        } catch (e) {
-          reject(e);
-        }
-      };
-      image.src = imageUri;
-    });
-  }
+  PageNames = PageNames;
+  isMainScreen?: Boolean;
+  form: FormGroup;
+  autocomplete: Autocomplete;
+  autocompleteInput: HTMLInputElement;
 
   constructor(
     public navCtrl: NavController,
@@ -133,7 +79,9 @@ export class RegisterSalonComponent {
         Validators.nullValidator
       ]],
       salon_address: ['', Validators.required],
-      profile_photo_id: undefined
+      profile_photo_id: undefined,
+      instagram_url: [''],
+      website_url: ['']
     });
 
   }
@@ -154,7 +102,9 @@ export class RegisterSalonComponent {
         phone,
         salon_name,
         salon_address,
-        profile_photo_id
+        profile_photo_id,
+        instagram_url,
+        website_url
       } = await this.apiService.getProfile();
 
       this.form.patchValue({
@@ -164,16 +114,18 @@ export class RegisterSalonComponent {
         phone,
         salon_name,
         salon_address,
-        profile_photo_id
+        profile_photo_id,
+        instagram_url,
+        website_url
       });
     } catch (e) {
       showAlert('Loading profile failed', e.message);
     }
   }
 
-  protected initAutocomplete(): void {
+  initAutocomplete(): void {
     const pacContainers = document.getElementsByClassName('pac-container');
-    while (pacContainers.length) {
+    while (pacContainers && pacContainers.length) {
       pacContainers[0].remove();
     }
     const ionAutocompleteInputs = document.getElementsByClassName('ion_autocomplete');
@@ -191,7 +143,7 @@ export class RegisterSalonComponent {
     }
   }
 
-  protected bindAutocompleteToInput(): void {
+  bindAutocompleteToInput(): void {
     const newYorkBiasBounds = new google.maps.LatLngBounds(new google.maps.LatLng(40.730610, -73.935242));
     google.maps.event.clearInstanceListeners(this.autocompleteInput);
     this.autocomplete = new google.maps.places.Autocomplete(this.autocompleteInput, {
@@ -206,7 +158,7 @@ export class RegisterSalonComponent {
 
   // Global function called by Google API on auth errors.
   // Prevent Salon Address input field from blocking on error.
-  protected preventAddressInputBlocking(): void {
+  preventAddressInputBlocking(): void {
     window.gm_authFailure = (): boolean => {
       this.autocompleteInput.disabled = false;
       this.autocompleteInput.placeholder = '';
@@ -216,12 +168,18 @@ export class RegisterSalonComponent {
   }
 
   // Fix address autocomplete dropdown position relative to address input field.
-  protected fixAutocompletePosition(): void {
+  fixAutocompletePosition(): void {
     const pacContainer = document.getElementsByClassName('pac-container')[0];
-    const pacContainerCarriers = document.getElementsByClassName('pac_container_carrier');
-    const pacContainerCarrierIndex = pacContainerCarriers.length - 1;
-    if (pacContainer && !pacContainerCarriers[pacContainerCarrierIndex].contains(pacContainer)) {
-      pacContainerCarriers[pacContainerCarrierIndex].appendChild(pacContainer);
+    if (pacContainer) {
+      const pacContainerCarriers = document.getElementsByClassName('pac_container_carrier');
+      const pacContainerCarrierIndex = pacContainerCarriers.length - 1;
+      if (
+        pacContainer &&
+        pacContainerCarriers[pacContainerCarrierIndex] &&
+        !pacContainerCarriers[pacContainerCarrierIndex].contains(pacContainer)
+      ) {
+        pacContainerCarriers[pacContainerCarrierIndex].appendChild(pacContainer);
+      }
     }
   }
 
@@ -235,7 +193,7 @@ export class RegisterSalonComponent {
   }
 
   @loading
-  async submit(): Promise<void> {
+  async onContinue(): Promise<void> {
     const { vars, ...profile } = this.form.value;
     const data = {
       ...profile,
@@ -284,7 +242,7 @@ export class RegisterSalonComponent {
   }
 
   // convert base64 to File
-  protected urlToFile(url: string, filename: string, mimeType?): Promise<File> {
+  urlToFile(url: string, filename: string, mimeType?): Promise<File> {
     mimeType = mimeType || (url.match(/^data:([^;]+);/) || '')[1];
     return (fetch(url).catch(e => { throw e; })
       .then(res => res.arrayBuffer())
@@ -315,14 +273,14 @@ export class RegisterSalonComponent {
       // If it's base64:
       const originalBase64Image = `data:image/jpeg;base64,${imageData}`;
 
-      const downscaledBase64Image = await RegisterSalonComponent.downscalePhoto(originalBase64Image);
+      const downscaledBase64Image = await downscalePhoto(originalBase64Image);
 
       // set image preview
       this.form.get('vars.image')
         .setValue(this.domSanitizer.bypassSecurityTrustStyle(`url(${downscaledBase64Image})`));
 
       // convert base64 to File after to formData and send it to server
-      const file = await this.urlToFile(downscaledBase64Image, 'file.png');
+      const file = await urlToFile(downscaledBase64Image, 'file.png');
       const formData = new FormData();
       formData.append('file', file);
 
