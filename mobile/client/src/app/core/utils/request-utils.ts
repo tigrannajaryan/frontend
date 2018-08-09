@@ -26,7 +26,7 @@ export type Extension = (...args: any[]) => (request: Request) => Request;
  *   );
  * ```
  */
-export function composeRequest(...extensions): Promise<any> {
+export function composeRequest(...extensions): Promise<ApiResponse<any>> {
   // The last argument is a request itself:
   let [ request ] = extensions.splice(-1);
 
