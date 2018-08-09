@@ -50,30 +50,6 @@ export function composeRequest(...extensions): Promise<any> {
 }
 
 /**
- * Cache solution based on ApiDataStore.
- */
-export const cache = (cacheKey: string, refreshCache = false) => (request: Request): Request => {
-  const store: ApiDataStore<Request> = new ApiDataStore(cacheKey, () => request);
-  return Observable.from(store.get(refreshCache));
-};
-
-/**
- * Manual cache patching with request response.
- * E.g:
- *   - GET profile is cached,
- *   - update the cache on PATCH profile
- */
-export const updateCacheWithResponse = (cacheKey: string) => (request: Request): Request => {
-  const store: ApiDataStore<Request> = new ApiDataStore(cacheKey, () => request);
-  return request.map(response => {
-    if (response) {
-      store.set(response.response);
-    }
-    return response;
-  });
-};
-
-/**
  * Delayed loading extension.
  */
 export const loading = (setLoading: (isLoading: boolean) => any) => (request: Request): Request => {
