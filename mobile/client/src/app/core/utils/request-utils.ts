@@ -26,6 +26,11 @@ export function composeRequest<T>(...extensions): Promise<ApiResponse<T>> {
   // The last argument is a request itself:
   let [ request ] = extensions.splice(-1);
 
+  // In case of using it with ApiDataStore.get or any other promise-based requests:
+  if (request && request instanceof Promise) {
+    request = Observable.from(request);
+  }
+
   if (!request || !(request instanceof Observable)) {
     throw new Error('The last argument should be a request Observable.');
   }
@@ -41,9 +46,8 @@ export function composeRequest<T>(...extensions): Promise<ApiResponse<T>> {
   }
 
   // (!) Never subscribe in extensions because subscribe emits request.
-  // Note: we use .first() call to deal with BehaviorSubject (https://github.com/Reactive-Extensions/RxJS/issues/1088).
   // We emit request only once by calling toPromise:
-  return request.first().toPromise();
+  return request.toPromise();
 }
 
 /**
