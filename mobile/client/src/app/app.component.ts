@@ -29,7 +29,7 @@ export class ClientAppComponent implements OnInit {
 
   rootPage: any;
   menuPages: MenuPage[] = [
-    { title: 'Profile', component: PageNames.Profile }
+    { title: 'Profile', component: PageNames.ProfileSummary }
   ];
 
   constructor(

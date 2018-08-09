@@ -1,0 +1,25 @@
+<ion-header madeHeader></ion-header>
+
+<ion-content>
+  <ion-grid fixed>
+    <div *ngIf="profile">
+      <ion-row justify-content-center>
+        <span *ngIf="isProfileCompleted()">{{ profile.first_name }} {{ profile.last_name }}</span>
+        <span *ngIf="!isProfileCompleted()">{{ profile.phone | formatPhone }}</span>
+      </ion-row>
+      <ion-row *ngIf="!isProfileCompleted()" justify-content-center>
+        <span>Completed 20%</span>
+      </ion-row>
+      <button ion-button class="Button" (click)="onEdit()">Edit your info</button>
+    </div>
+    <ion-spinner *ngIf="isLoading"></ion-spinner>
+    <ion-row>How pricing works</ion-row>
+    <ion-row>How MADE works</ion-row>
+    <ion-row justify-content-center>
+      <span>FAQ@madebeauty.com</span>
+    </ion-row>
+    <ion-row justify-content-center>
+      <span>Logout</span>
+    </ion-row>
+  </ion-grid>
+</ion-content>
