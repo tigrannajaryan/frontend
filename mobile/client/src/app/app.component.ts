@@ -29,9 +29,9 @@ export class ClientAppComponent implements OnInit {
 
   rootPage: any;
   menuPages: MenuPage[] = [
-    { title: 'Profile', component: PageNames.Profile },
     { title: 'Home', component: PageNames.Home },
-    { title: 'History', component: PageNames.AppointmentsHistory }
+    { title: 'History', component: PageNames.AppointmentsHistory },
+    { title: 'Profile', component: PageNames.ProfileSummary }
   ];
 
   constructor(

@@ -10,7 +10,7 @@
 </ion-header>
 
 <ion-content class="ProfilePage">
-  <div (click)="onProcessPhoto()" [style.backgroundImage]="photoUrl" class="ProfilePage-pic">
+  <div (click)="onProcessPhoto()" [style.backgroundImage]="'url(' + (this.form.value.profile_photo_url || DEFAULT_IMAGE) + ')'" class="ProfilePage-pic">
     <div class="ProfilePage-add">
       <ion-icon name="md-camera"></ion-icon>
     </div>
@@ -32,6 +32,7 @@
           <ion-item class="ProfilePage-formControl FormControl">
             <ion-label floating>
               <span>Email</span>
+              <span *ngIf="form.controls.zip_code.hasError('required')" class="FormControl-errorMsg">required</span>
               <span *ngIf="form.controls.email.hasError('email')" class="FormControl-errorMsg">enter a valid email</span>
             </ion-label>
             <ion-input type="email" formControlName="email"></ion-input>
@@ -41,11 +42,12 @@
           <ion-item class="ProfilePage-formControl FormControl">
             <ion-label floating>
               <span>Zip code</span>
+              <span *ngIf="form.controls.zip_code.hasError('required')" class="FormControl-errorMsg">required</span>
               <span *ngIf="form.controls.zip_code.hasError('minlength')" class="FormControl-errorMsg">
                 minimum {{ form.controls.zip_code.errors.minlength.requiredLength }} digits
               </span>
             </ion-label>
-            <ion-input type="number" formControlName="zip_code"></ion-input>
+            <ion-input type="text" formControlName="zip_code"></ion-input>
           </ion-item>
         </ion-row>
       </ion-grid>
