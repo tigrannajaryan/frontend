@@ -22,11 +22,8 @@ import { StylistServiceProvider } from '~/core/stylist-service/stylist-service';
 import { BaseApiService } from '~/shared/base-api-service';
 import { showAlert } from '~/core/utils/alert';
 import { Logger } from '~/shared/logger';
-
-enum PhotoSourceType {
-  photoLibrary = 0,
-  camera = 1
-}
+import { downscalePhoto, urlToFile } from '~/shared/image-utils';
+import { PhotoSourceType } from '~/shared/constants';
 
 declare var window: any;
 
@@ -43,57 +40,6 @@ export class RegisterSalonComponent {
   protected form: FormGroup;
   protected autocomplete: Autocomplete;
   protected autocompleteInput: HTMLInputElement;
-
-  /**
-   * @param imageUri uri of the original image file
-   * @returns uri of downscaled image file
-   */
-  private static downscalePhoto(imageUri: string): Promise<string> {
-    return new Promise((resolve: Function, reject: Function) => {
-      const maxDimension = 512;
-      const downscaleQuality = 0.7;
-
-      // Use canvas to draw downscaled image on it
-      const canvas: any = document.createElement('canvas');
-
-      // Load the original image
-      const image = new Image();
-
-      image.onload = () => {
-        try {
-          let width = image.width;
-          let height = image.height;
-
-          // Enforce max dimensions
-          if (width > height) {
-            if (width > maxDimension) {
-              height *= maxDimension / width;
-              width = maxDimension;
-            }
-          } else {
-            if (height > maxDimension) {
-              width *= maxDimension / height;
-              height = maxDimension;
-            }
-          }
-          canvas.width = width;
-          canvas.height = height;
-          const ctx = canvas.getContext('2d');
-
-          // Draw original image downscaled
-          ctx.drawImage(image, 0, 0, width, height);
-
-          // And get the result with required quality
-          const dataUri = canvas.toDataURL('image/jpeg', downscaleQuality);
-
-          resolve(dataUri);
-        } catch (e) {
-          reject(e);
-        }
-      };
-      image.src = imageUri;
-    });
-  }
 
   constructor(
     public navCtrl: NavController,
@@ -283,14 +229,6 @@ export class RegisterSalonComponent {
     actionSheet.present();
   }
 
-  // convert base64 to File
-  protected urlToFile(url: string, filename: string, mimeType?): Promise<File> {
-    mimeType = mimeType || (url.match(/^data:([^;]+);/) || '')[1];
-    return (fetch(url).catch(e => { throw e; })
-      .then(res => res.arrayBuffer())
-      .then(buf => new File([buf], filename, { type: mimeType })));
-  }
-
   @loading
   private async takePhoto(sourceType: PhotoSourceType): Promise<void> {
     let imageData;
@@ -315,14 +253,14 @@ export class RegisterSalonComponent {
       // If it's base64:
       const originalBase64Image = `data:image/jpeg;base64,${imageData}`;
 
-      const downscaledBase64Image = await RegisterSalonComponent.downscalePhoto(originalBase64Image);
+      const downscaledBase64Image = await downscalePhoto(originalBase64Image);
 
       // set image preview
       this.form.get('vars.image')
         .setValue(this.domSanitizer.bypassSecurityTrustStyle(`url(${downscaledBase64Image})`));
 
       // convert base64 to File after to formData and send it to server
-      const file = await this.urlToFile(downscaledBase64Image, 'file.png');
+      const file = await urlToFile(downscaledBase64Image, 'file.png');
       const formData = new FormData();
       formData.append('file', file);
 

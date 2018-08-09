@@ -138,13 +138,13 @@ export class BaseApiService {
     return this.request<ResponseType>('delete', apiPath);
   }
 
-  uploadFile(formData: FormData): Promise<ResponseType> {
+  uploadFile<ResponseType>(formData: FormData): Promise<ResponseType> {
     const url = `${ENV.apiUrl}common/image/upload`;
 
     return this.http.post<ResponseType>(url, formData)
       .toPromise()
       .catch(e => {
-        this.logger.error('API request failed:', e);
+        this.logger.error('API request failed:', JSON.stringify(e));
         throw e;
       });
   }

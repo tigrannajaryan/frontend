@@ -98,4 +98,5 @@
     <plugin name="cordova-sqlite-storage" spec="2.3.3" />
     <engine name="android" spec="7.0.0" />
     <plugin name="cordova-plugin-screen-orientation" spec="3.0.1" />
+    <plugin name="cordova-plugin-camera" spec="4.0.3" />
 </widget>

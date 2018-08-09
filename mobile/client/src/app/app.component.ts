@@ -27,8 +27,10 @@ const gaTrackingId = 'UA-122004541-1';
 export class ClientAppComponent implements OnInit {
   @ViewChild(Nav) nav: Nav;
 
-  protected rootPage: any;
-  protected menuPages: MenuPage[];
+  rootPage: any;
+  menuPages: MenuPage[] = [
+    { title: 'Profile', component: PageNames.Profile }
+  ];
 
   constructor(
     private logger: Logger,

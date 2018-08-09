@@ -1,6 +1,10 @@
 .FormControl {
   padding: 0;
 
+  .label {
+    color: color($grayscale, 500);
+  }
+
   &.item-block .item-inner { // override ionic styles
     padding: 0;
     border-bottom: 1px solid color($grayscale, 200);
@@ -15,5 +19,15 @@
     align-items: center;
     max-width: 100%;
     padding: 0 8px 0 0;
+  }
+
+  .FormControl-errorMsg {
+    color: color($colors, danger);
+  }
+
+  // spaced when used in label
+  ion-label .FormControl-errorMsg {
+    display: inline;
+    margin-left: 10px;
   }
 }
