@@ -41,8 +41,9 @@ export function composeRequest<T>(...extensions): Promise<ApiResponse<T>> {
   }
 
   // (!) Never subscribe in extensions because subscribe emits request.
+  // Note: we use .first() call to deal with BehaviorSubject (https://github.com/Reactive-Extensions/RxJS/issues/1088).
   // We emit request only once by calling toPromise:
-  return request.toPromise();
+  return request.first().toPromise();
 }
 
 /**
