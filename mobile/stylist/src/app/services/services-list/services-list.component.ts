@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import {
+  AlertController,
   IonicPage,
   ModalController,
   NavController,
@@ -49,7 +50,8 @@ export class ServicesListComponent {
     public navCtrl: NavController,
     public navParams: NavParams,
     public modalCtrl: ModalController,
-    private stylistService: StylistServiceProvider
+    private stylistService: StylistServiceProvider,
+    private alertCtrl: AlertController
   ) {
   }
 
@@ -140,6 +142,24 @@ export class ServicesListComponent {
    */
   resetList(): void {
     this.ionViewWillLoad();
+  }
+
+  deleteConfirm(category: ServiceCategory, idx: number): void {
+    const confirm = this.alertCtrl.create({
+      message: 'Are you sure you want to delete this service?',
+      buttons: [
+        {
+          text: 'Cancel'
+        },
+        {
+          text: 'Ok',
+          handler: () => {
+            this.deleteService(category, idx);
+          }
+        }
+      ]
+    });
+    confirm.present();
   }
 
   async deleteService(category: ServiceCategory, idx: number): Promise<void> {
