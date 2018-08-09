@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { NavController, PopoverController } from 'ionic-angular';
+import { App, NavController, PopoverController } from 'ionic-angular';
 import { Store } from '@ngrx/store';
 
 import { PageNames } from '~/core/page-names';
@@ -18,6 +18,7 @@ export class UserHeaderComponent {
   constructor(
     public popoverCtrl: PopoverController,
     protected navCtrl: NavController,
+    private app: App,
     private authApiService: AuthApiService,
     private store: Store<any>
   ) {
@@ -41,7 +42,7 @@ export class UserHeaderComponent {
           this.store.dispatch(new LogoutAction());
 
           // Erase all previous navigation history and make FirstScreen the root
-          this.navCtrl.setRoot(PageNames.FirstScreen);
+          this.app.getRootNav().setRoot(PageNames.FirstScreen);
           break;
 
         case UserHeaderMenuActions.about:

@@ -58,9 +58,13 @@ export class MyAppComponent {
     // initialization operation that must be done before the initial page is shown.
     await async_all([
       this.ga.init(gaTrackingId),
-      this.storage.init(),
-      this.screenOrientation.lock('portrait') // Lock screen orientation to portrait
+      this.storage.init()
     ]);
+
+    // Lock screen orientation to portrait if this is real device
+    if (!(this.platform.is('core') || this.platform.is('mobileweb'))) {
+      this.screenOrientation.lock('portrait');
+    }
 
     // Track all top-level screen changes
     this.nav.viewDidEnter.subscribe(view => this.ga.trackViewChange(view));

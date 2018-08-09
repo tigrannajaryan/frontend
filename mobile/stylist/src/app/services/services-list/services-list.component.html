@@ -1,4 +1,4 @@
-<ion-header madeBackHeader></ion-header>
+<ion-header madeBackHeader [hasBackButton]="isProfile"></ion-header>
 
 
 <ion-content no-padding>
@@ -24,7 +24,7 @@
     <div *ngIf="categories" class="ServicesLis-offset">
       <div *ngFor="let category of categories" [hidden]="category.services.length === 0">
         <div class="ServicesLis-title">
-          <i [inlineSVG]="'assets/svgicons/' + category.category_code + '.svg'"></i>
+          <img [src]="'assets/svgicons/' + category.category_code + '.svg'"/>
           {{ category.name }}
         </div>
 
@@ -44,7 +44,7 @@
             <ion-item-sliding *ngFor="let service of category.services; let i = index">
               <ion-item no-padding>
                 <ion-row no-padding class="ServicesLis-row">
-                  <ion-col (click)="deleteService(category, i)" no-padding col-2 class="ServicesLis-rowCol">
+                  <ion-col (click)="deleteConfirm(category, i)" no-padding col-2 class="ServicesLis-rowCol">
                     <button ion-button color="dark" clear class="ServicesLis-rowColDel"><ion-icon name="ios-trash-outline"></ion-icon></button>
                   </ion-col>
                   <ion-col (click)="openServiceModal(category, service)" no-padding col-7 class="ServicesLis-rowCol">
@@ -57,7 +57,7 @@
                 </ion-row>
               </ion-item>
               <ion-item-options side="right" class="ServicesLis-swipe">
-                <button (click)="deleteService(category, i)" ion-button color="danger">Delete</button>
+                <button (click)="deleteConfirm(category, i)" ion-button color="danger">Delete</button>
               </ion-item-options>
             </ion-item-sliding>
           </div>

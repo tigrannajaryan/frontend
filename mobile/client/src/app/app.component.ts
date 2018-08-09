@@ -53,8 +53,10 @@ export class ClientAppComponent implements OnInit {
     // ready and the plugins are available.
     await this.platform.ready();
 
-    // Lock screen orientation to portrait
-    this.screenOrientation.lock('portrait');
+    // Lock screen orientation to portrait if this is real device
+    if (!(this.platform.is('core') || this.platform.is('mobileweb'))) {
+      this.screenOrientation.lock('portrait');
+    }
 
     // Now that the platform is ready asynchronously initialize in parallel everything
     // that our app needs and wait until all initializations finish. Add here any other
