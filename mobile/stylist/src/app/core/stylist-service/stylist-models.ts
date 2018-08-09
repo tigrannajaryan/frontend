@@ -7,6 +7,8 @@ export interface StylistProfile {
   phone: string;
   salon_name: string;
   salon_address: string;
+  instagram_url: string;
+  website_url: string;
   profile_photo_id?: string;
   profile_photo_url?: string;
   gmapsApiKey?: string;

@@ -10,7 +10,9 @@ export const profileSummaryMock = {
     last_name: faker.name.lastName(),
     phone: faker.phone.phoneNumber(),
     salon_address: faker.fake('{{address.city}} {{address.streetAddress}}'),
-    salon_name: faker.company.companyName()
+    salon_name: faker.company.companyName(),
+    instagram_url: faker.internet.url(),
+    website_url: faker.internet.url()
   },
   services: [
     {name: faker.commerce.productName(), base_price: Number(faker.commerce.price()), duration_minutes: 40},

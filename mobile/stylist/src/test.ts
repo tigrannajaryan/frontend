@@ -51,12 +51,12 @@ import { GoogleAnalytics } from '@ionic-native/google-analytics';
 
 import { AppModule } from '~/app.module';
 
-import { WorktimeApi } from './app/worktime/worktime.api';
-import { WorktimeApiMock } from './app/worktime/worktime.api.mock';
-import { AuthApiService } from './app/core/auth-api-service/auth-api-service';
-import { AuthApiServiceMock } from './app/core/auth-api-service/auth-api-service-mock';
-import { StylistServiceProvider } from './app/core/stylist-service/stylist-service';
-import { StylistServiceMock } from './app/core/stylist-service/stylist-service-mock';
+import { WorktimeApi } from '~/worktime/worktime.api';
+import { WorktimeApiMock } from '~/worktime/worktime.api.mock';
+import { AuthApiService } from '~/core/auth-api-service/auth-api-service';
+import { AuthApiServiceMock } from '~/core/auth-api-service/auth-api-service-mock';
+import { StylistServiceProvider } from '~/core/stylist-service/stylist-service';
+import { StylistServiceMock } from '~/core/stylist-service/stylist-service-mock';
 import { AppStorage } from '~/core/app-storage';
 import { AppStorageMock } from '~/core/app-storage-mock';
 
