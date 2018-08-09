@@ -8,8 +8,8 @@ import { LOADING_DELAY } from '~/core/api/request.models';
 
 import { ApiDataStore } from '~/core/utils/api-data-store';
 
-export type Request = Observable<ApiResponse<any>>;
-export type Extension = (...args: any[]) => (request: Request) => Request;
+export type Request<T> = Observable<ApiResponse<T>>;
+export type Extension<T> = (...args: any[]) => (request: Request<T>) => Request<T>;
 
 /**
  * The function that helps to enhance requests.
@@ -26,7 +26,7 @@ export type Extension = (...args: any[]) => (request: Request) => Request;
  *   );
  * ```
  */
-export function composeRequest(...extensions): Promise<ApiResponse<any>> {
+export function composeRequest<T>(...extensions): Promise<ApiResponse<T>> {
   // The last argument is a request itself:
   let [ request ] = extensions.splice(-1);
 
@@ -52,7 +52,7 @@ export function composeRequest(...extensions): Promise<ApiResponse<any>> {
 /**
  * Delayed loading extension.
  */
-export const loading = (setLoading: (isLoading: boolean) => any) => (request: Request): Request => {
+export const loading = <T>(setLoading: (isLoading: boolean) => any) => (request: Request<T>): Request<T> => {
   setLoading(false);
 
   // Show loader after LOADING_DELAY ms passed:
@@ -73,7 +73,7 @@ export const loading = (setLoading: (isLoading: boolean) => any) => (request: Re
 /**
  * Complete refresing on request done extension.
  */
-export const withRefresher = (refresher: Refresher) => (request: Request): Request =>
+export const withRefresher = <T>(refresher: Refresher) => (request: Request<T>): Request<T> =>
   request.map(response => {
     if (refresher && refresher.state === 'refreshing') {
       refresher.complete();
