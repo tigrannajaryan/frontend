@@ -31,6 +31,12 @@
         font-size: pxtovw(18px);
       }
     }
+
+    &.is-hiddenBackButton {
+      .back-button {
+        display: none;
+      }
+    }
   }
 
   .RightButton {

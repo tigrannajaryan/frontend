@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { Content, IonicPage, Slides } from 'ionic-angular';
+import { Content, IonicPage, NavParams, Slides } from 'ionic-angular';
 
 import { PageNames } from '~/core/page-names';
 import { loading } from '~/core/utils/loading';
@@ -23,31 +23,33 @@ export enum DiscountTabNames {
   templateUrl: 'discounts.component.html'
 })
 export class DiscountsComponent {
-  protected PageNames = PageNames;
-  protected DiscountTabNames = DiscountTabNames;
-  protected weekdays: WeekdayDiscount[];
-  protected rebook: WeekdayDiscount[];
-  protected firstBooking: FirstBooking = {
+  PageNames = PageNames;
+  DiscountTabNames = DiscountTabNames;
+  weekdays: WeekdayDiscount[];
+  rebook: WeekdayDiscount[];
+  firstBooking: FirstBooking = {
     label: 'First booking',
     percentage: 0
   };
-  protected maximumDiscounts: MaximumDiscountsWithVars = {
+  maximumDiscounts: MaximumDiscountsWithVars = {
     is_maximum_discount_label: 'Enable Maximum Discount',
     maximum_discount_label: 'Maximum Discount',
     maximum_discount: 0,
     is_maximum_discount_enabled: false
   };
-  protected discountTabs = [
+  discountTabs = [
     {name: 'Weekday'},
     {name: 'Revisit'},
     {name: 'First visit'},
     {name: 'Maximum'}
   ];
-  protected activeTab: DiscountTabNames;
+  activeTab: DiscountTabNames;
+  isProfile: Boolean;
   @ViewChild(Slides) slides: Slides;
   @ViewChild(Content) content: Content;
 
   constructor(
+    public navParams: NavParams,
     private discountsApi: DiscountsApi
   ) {
   }
@@ -57,6 +59,7 @@ export class DiscountsComponent {
   }
 
   ionViewWillEnter(): void {
+    this.isProfile = Boolean(this.navParams.get('isProfile'));
     this.loadInitialData();
   }
 
@@ -72,20 +75,20 @@ export class DiscountsComponent {
     this.maximumDiscounts.is_maximum_discount_enabled = maximumDiscounts.is_maximum_discount_enabled;
   }
 
-  protected async doRefresh(refresher): Promise<void> {
+  async doRefresh(refresher): Promise<void> {
     await this.loadInitialData();
 
     refresher.complete();
   }
 
-  protected changeTab(activeTab: DiscountTabNames): void {
+  changeTab(activeTab: DiscountTabNames): void {
     this.activeTab = activeTab;
 
     this.updateSlider(activeTab);
   }
 
   // swipe action for tabs
-  protected onSlideChanged(): void {
+  onSlideChanged(): void {
     // if index more or equal to tabs length we got an error
     if (this.slides.getActiveIndex() >= this.discountTabs.length) {
       return;
@@ -94,29 +97,29 @@ export class DiscountsComponent {
     this.updateSlider(this.activeTab);
   }
 
-  protected updateSlider(activeTab: DiscountTabNames): void {
+  updateSlider(activeTab: DiscountTabNames): void {
     const animationSpeedMs = 500;
     this.slides.slideTo(activeTab, animationSpeedMs);
     this.content.scrollToTop(animationSpeedMs);
   }
 
-  protected onWeekdayChange(): void {
+  onWeekdayChange(): void {
     this.discountsApi.setDiscounts({
       weekdays: this.weekdays
     });
   }
 
-  protected onRevisitChange(): void {
+  onRevisitChange(): void {
     this.discountsApi.setDiscounts(DiscountsRevisitComponent.transformDiscountsToRebook(this.rebook));
   }
 
-  protected onFirstVisitChange(): void {
+  onFirstVisitChange(): void {
     this.discountsApi.setDiscounts({
       first_booking: this.firstBooking.percentage
     });
   }
 
-  protected onMaximumDiscountChange(): void {
+  onMaximumDiscountChange(): void {
     this.discountsApi.setMaximumDiscounts({
       maximum_discount: this.maximumDiscounts.maximum_discount,
       is_maximum_discount_enabled: this.maximumDiscounts.is_maximum_discount_enabled
