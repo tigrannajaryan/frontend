@@ -11,7 +11,7 @@ import { emptyOr } from '~/shared/validators';
 import { BaseApiService } from '~/shared/base-api-service';
 
 import { showAlert } from '~/core/utils/alert';
-import { composeRequest, loading, withForm } from '~/core/utils/request-utils';
+import { composeRequest, loading, updateCacheWithResponse, withForm } from '~/core/utils/request-utils';
 import { emailValidator } from '~/core/validators/email.validator';
 import { ProfileService } from '~/core/api/profile-service';
 import { ProfileModel } from '~/core/api/profile.models';
@@ -110,6 +110,7 @@ export class ProfileEditComponent {
     composeRequest(
       withForm(this.form),
       loading(isLoading => this.isUpdating = isLoading),
+      updateCacheWithResponse('profile'),
       this.profileService.updateProfile(this.form.value)
     );
   }

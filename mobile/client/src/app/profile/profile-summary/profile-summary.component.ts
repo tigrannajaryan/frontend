@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController } from 'ionic-angular';
 
 import { PageNames } from '~/core/page-names';
-import { composeRequest, loading } from '~/core/utils/request-utils';
+import { cache, composeRequest, loading } from '~/core/utils/request-utils';
 
 import { ProfileService } from '~/core/api/profile-service';
 import { ProfileModel } from '~/core/api/profile.models';
@@ -25,6 +25,7 @@ export class ProfileSummaryComponent {
 
   async ionViewWillEnter(): Promise<void> {
     const { response } = await composeRequest(
+      cache('profile'),
       loading(isLoading => this.isLoading = isLoading),
       this.profileService.getProfile()
     );
