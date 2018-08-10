@@ -1,25 +1,49 @@
 <ion-header madeHeader></ion-header>
 
-<ion-content>
+<ion-content class="ProfilePage">
   <ion-grid fixed>
     <div *ngIf="profile">
-      <ion-row justify-content-center>
+      <div [style.backgroundImage]="'url(' + (profile.profile_photo_url || DEFAULT_IMAGE) + ')'" class="ProfilePage-pic">
+        <div class="ProfilePage-add">
+          <ion-icon name="md-camera"></ion-icon>
+        </div>
+      </div>
+      <ion-row justify-content-center class="ProfilePage-title">
         <span *ngIf="isProfileCompleted()">{{ profile.first_name }} {{ profile.last_name }}</span>
         <span *ngIf="!isProfileCompleted()">{{ profile.phone | formatPhone }}</span>
       </ion-row>
       <ion-row *ngIf="!isProfileCompleted()" justify-content-center>
         <span>Completed 20%</span>
       </ion-row>
-      <button ion-button class="Button" (click)="onEdit()">Edit your info</button>
+      <ion-row justify-content-center>
+        <button ion-button block="false" small (click)="onEdit()" class="ProfilePage-edit Button">Edit your info</button>
+      </ion-row>
     </div>
-    <ion-spinner *ngIf="isLoading"></ion-spinner>
-    <ion-row>How pricing works</ion-row>
-    <ion-row>How MADE works</ion-row>
-    <ion-row justify-content-center>
-      <span>FAQ@madebeauty.com</span>
-    </ion-row>
-    <ion-row justify-content-center>
-      <span>Logout</span>
-    </ion-row>
+    <table class="ProfilePage-table Table Table--bordered">
+      <tbody>
+        <tr>
+          <td class="Table-col">How pricing works</td>
+          <td class="ProfilePage-arrow Table-col">
+            <img src="assets/icons/arrow-right.svg" />
+          </td>
+        </tr>
+        <tr>
+          <td class="Table-col">How MADE works</td>
+          <td class="ProfilePage-arrow Table-col">
+            <img src="assets/icons/arrow-right.svg" />
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2" class="ProfilePage-tableCenteredText Table-col">
+            <span class="Link">FAQ@madebeauty.com</span>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2" class="ProfilePage-tableCenteredText Table-col">
+            <span class="ProfilePage-logout Link">Logout</span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </ion-grid>
 </ion-content>

@@ -1,0 +1,27 @@
+.ProfilePage {
+  .ProfilePage-title {
+    font-size: $t-h2;
+    font-weight: 500;
+  }
+
+  .ProfilePage-edit {
+    margin: 16px auto 45px;
+  }
+
+  .ProfilePage-table {
+    font-size: $t-base;
+  }
+
+  .ProfilePage-arrow {
+    text-align: right;
+  }
+
+  .ProfilePage-tableCenteredText {
+    text-align: center;
+  }
+
+  .ProfilePage-logout {
+    font-weight: 500;
+    color: color($colors, danger);
+  }
+}

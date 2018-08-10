@@ -11,6 +11,6 @@ import { AppointmentsHistoryApi } from './appointments-history.api';
 @Injectable()
 export class AppointmentsHistoryDataStore extends ApiDataStore<AppointmentsResponse> {
   constructor(historyApi: AppointmentsHistoryApi) {
-    super(PageNames.AppointmentsHistory, historyApi.getHistory);
+    super(PageNames.AppointmentsHistory, () => historyApi.getHistory());
   }
 }
