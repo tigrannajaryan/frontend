@@ -28,7 +28,7 @@ export class ProfileSummaryComponent {
   async ionViewWillEnter(): Promise<void> {
     const { response } = await composeRequest<ProfileModel>(
       loading(isLoading => this.isLoading = isLoading),
-      this.profileDataStore.get(true)
+      this.profileDataStore.get()
     );
     if (response) {
       this.profile = response;

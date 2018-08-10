@@ -12,9 +12,12 @@
         <span *ngIf="isProfileCompleted()">{{ profile.first_name }} {{ profile.last_name }}</span>
         <span *ngIf="!isProfileCompleted()">{{ profile.phone | formatPhone }}</span>
       </ion-row>
-      <ion-row *ngIf="!isProfileCompleted()" justify-content-center>
-        <span>Completed 20%</span>
-      </ion-row>
+      <div *ngIf="!isProfileCompleted()" class="ProfilePage-completion">
+        <ion-row justify-content-center>Completed 20%</ion-row>
+        <ion-row justify-content-center>
+          <div class="ProfilePage-completionBar"></div>
+        </ion-row>
+      </div>
       <ion-row justify-content-center>
         <button ion-button block="false" small (click)="onEdit()" class="ProfilePage-edit Button">Edit your info</button>
       </ion-row>

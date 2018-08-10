@@ -23,14 +23,14 @@
           <ion-item class="ProfilePage-formControl FormControl" col-6>
             <ion-label floating>
               <span>First name</span>
-              <span *ngIf="form.controls.first_name.hasError('required')" class="FormControl-errorMsg">required</span>
+              <span *ngIf="form.get('first_name').touched && form.get('first_name').hasError('required')" class="FormControl-errorMsg">required</span>
             </ion-label>
             <ion-input formControlName="first_name" type="text"></ion-input>
           </ion-item>
           <ion-item class="ProfilePage-formControl FormControl" col-6>
             <ion-label floating>
               <span>Last name</span>
-              <span *ngIf="form.controls.last_name.hasError('required')" class="FormControl-errorMsg">required</span>
+              <span *ngIf="form.get('last_name').touched && form.get('last_name').hasError('required')" class="FormControl-errorMsg">required</span>
             </ion-label>
             <ion-input formControlName="last_name" type="text"></ion-input>
           </ion-item>
@@ -39,8 +39,8 @@
           <ion-item class="ProfilePage-formControl FormControl">
             <ion-label floating>
               <span>Email</span>
-              <span *ngIf="form.controls.zip_code.hasError('required')" class="FormControl-errorMsg">required</span>
-              <span *ngIf="form.controls.email.hasError('email')" class="FormControl-errorMsg">enter a valid email</span>
+              <span *ngIf="form.get('zip_code').touched && form.get('zip_code').hasError('required')" class="FormControl-errorMsg">required</span>
+              <span *ngIf="form.get('email').touched && form.get('email').hasError('email')" class="FormControl-errorMsg">enter a valid email</span>
             </ion-label>
             <ion-input type="email" formControlName="email"></ion-input>
           </ion-item>
@@ -49,8 +49,8 @@
           <ion-item class="ProfilePage-formControl FormControl">
             <ion-label floating>
               <span>Zip code</span>
-              <span *ngIf="form.controls.zip_code.hasError('required')" class="FormControl-errorMsg">required</span>
-              <span *ngIf="form.controls.zip_code.hasError('minlength')" class="FormControl-errorMsg">
+              <span *ngIf="form.get('zip_code').touched && form.get('zip_code').hasError('required')" class="FormControl-errorMsg">required</span>
+              <span *ngIf="form.get('zip_code').touched && form.get('zip_code').hasError('minlength')" class="FormControl-errorMsg">
                 minimum {{ form.controls.zip_code.errors.minlength.requiredLength }} digits
               </span>
             </ion-label>
