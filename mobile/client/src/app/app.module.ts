@@ -43,7 +43,6 @@ import { ServerStatusTracker } from '~/shared/server-status-tracker';
     BrowserModule,
     HttpClientModule,
     ReactiveFormsModule,
-    ScreenOrientation,
     CoreModule,
 
     DataModule.forRoot(),
@@ -88,6 +87,7 @@ import { ServerStatusTracker } from '~/shared/server-status-tracker';
     StatusBar,
     SplashScreen,
     AppVersion,
+    ScreenOrientation,
 
     BaseApiService,
     ServerStatusTracker,

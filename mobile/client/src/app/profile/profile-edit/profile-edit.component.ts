@@ -149,7 +149,7 @@ export class ProfileEditComponent {
       const response = await this.baseApiService.uploadFile<{ uuid: string }>(formData);
       uuid = response.uuid;
     } catch (e) {
-      showAlert('Saving photo failed');
+      showAlert('Saving photo failed', 'We are working on fixing it, please, retry later.');
       return;
     }
 
