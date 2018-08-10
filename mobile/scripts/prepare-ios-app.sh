@@ -41,7 +41,7 @@ SENTRY_SKIP_WIZARD=true cordova plugin add sentry-cordova@0.10.2 ||true
 cp sentry.properties.bak sentry.properties
 
 # generate xcode source
-./node_modules/ionic/bin/ionic cordova prepare ios
+./node_modules/ionic/bin/ionic cordova prepare ios --prod
 
 echo "--Patching build config to remove standard signing credentials"
 sed -i.bak /CODE_SIGN_IDENTITY.*/d platforms/ios/cordova/build.xcconfig
