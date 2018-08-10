@@ -55,7 +55,10 @@ import { ServerStatusTracker } from '~/shared/server-status-tracker';
     CoreModule,
     DataModule.forRoot(),
 
-    IonicModule.forRoot(ClientAppComponent, {backButtonText: '', backButtonIcon: 'ios-arrow-round-back'}),
+    IonicModule.forRoot(ClientAppComponent, {
+      backButtonText: '',
+      backButtonIcon: 'ios-arrow-round-back'
+    }),
     IonicStorageModule.forRoot(),
 
     /**

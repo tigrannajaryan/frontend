@@ -2,9 +2,9 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController } from 'ionic-angular';
 
 import { PageNames } from '~/core/page-names';
-import { cache, composeRequest, loading } from '~/core/utils/request-utils';
+import { composeRequest, loading } from '~/core/utils/request-utils';
 
-import { ProfileService } from '~/core/api/profile-service';
+import { ProfileDataStore } from '~/profile/profile.data';
 import { ProfileModel } from '~/core/api/profile.models';
 
 @IonicPage()
@@ -17,17 +17,18 @@ export class ProfileSummaryComponent {
 
   isLoading = false;
 
+  readonly DEFAULT_IMAGE = 'url(/assets/imgs/user/default_user.png)';
+
   constructor(
     private navCtrl: NavController,
-    private profileService: ProfileService
+    private profileDataStore: ProfileDataStore
   ) {
   }
 
   async ionViewWillEnter(): Promise<void> {
-    const { response } = await composeRequest(
-      cache('profile'),
+    const { response } = await composeRequest<ProfileModel>(
       loading(isLoading => this.isLoading = isLoading),
-      this.profileService.getProfile()
+      this.profileDataStore.get(true)
     );
     if (response) {
       this.profile = response;

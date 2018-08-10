@@ -16,6 +16,8 @@ import { PricePipe } from '~/core/pipes/price.pipe';
 import { MadeHeaderComponent } from '~/core/components/made-header/made-header.component';
 import { AppointmentItemComponent } from '~/core/components/appointment-item/appointment-item.component';
 
+import { ProfileDataStore } from '~/profile/profile.data';
+
 const declarations = [
   InputNumberDirective,
   PhoneInputDirective,
@@ -25,6 +27,10 @@ const declarations = [
   ServerStatusComponent,
   MadeHeaderComponent,
   AppointmentItemComponent
+];
+
+const dataStores = [
+  ProfileDataStore
 ];
 
 @NgModule({
@@ -38,6 +44,7 @@ const declarations = [
     IonicModule
   ],
   providers: [
+    ...dataStores,
     GoogleAnalytics,
     GAWrapper
   ]

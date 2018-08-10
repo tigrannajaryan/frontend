@@ -75,11 +75,11 @@ export function getImageFormData(imageUrl: string): Promise<FormData> {
     })
     .switchMap((base64: string) => {
       // Reduce size of the image:
-      return Observable.from(downscalePhoto(base64))
+      return Observable.from(downscalePhoto(base64));
     })
     .switchMap((dataUri: string) => {
       // Get file from image data string:
-      return Observable.from(urlToFile(dataUri, 'file.png'))
+      return Observable.from(urlToFile(dataUri, 'file.png'));
     })
     .map((file: File) => {
       // Prepare form data:

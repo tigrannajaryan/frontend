@@ -19,4 +19,8 @@
       border-bottom: none;
     }
   }
+
+  &.Table--bordered {
+    border-top: 1px solid color($grayscale, 200);
+  }
 }

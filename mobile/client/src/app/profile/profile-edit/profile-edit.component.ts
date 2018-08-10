@@ -1,9 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { DomSanitizer, SafeStyle } from '@angular/platform-browser';
 import { ActionSheetController, ActionSheetOptions, IonicPage, NavParams } from 'ionic-angular';
 import { Camera, CameraOptions } from '@ionic-native/camera';
-import { Store } from '@ngrx/store';
 
 import { PhotoSourceType } from '~/shared/constants';
 import { getImageFormData } from '~/shared/image-utils';
@@ -11,9 +9,11 @@ import { emptyOr } from '~/shared/validators';
 import { BaseApiService } from '~/shared/base-api-service';
 
 import { showAlert } from '~/core/utils/alert';
-import { composeRequest, loading, updateCacheWithResponse, withForm } from '~/core/utils/request-utils';
+import { composeRequest, loading } from '~/core/utils/request-utils';
+import { animateFailed, animateSucceeded } from '~/core/utils/animation-utils';
 import { emailValidator } from '~/core/validators/email.validator';
 import { ProfileService } from '~/core/api/profile-service';
+import { ProfileDataStore } from '~/profile/profile.data';
 import { ProfileModel } from '~/core/api/profile.models';
 
 @IonicPage()
@@ -26,11 +26,13 @@ export class ProfileEditComponent {
 
   isLoading = false;
   isUpdating = false;
+  isFailed = false;
+  isSucceeded = false;
+
+  readonly DEFAULT_IMAGE = 'url(/assets/imgs/user/default_user.png)';
 
   private photoUploadOptions: ActionSheetOptions;
   private cameraOptions: CameraOptions;
-
-  private readonly DEFAULT_IMAGE = 'url(/assets/imgs/user/default_user.png)';
 
   constructor(
     private actionSheetCtrl: ActionSheetController,
@@ -38,6 +40,7 @@ export class ProfileEditComponent {
     private camera: Camera,
     private formBuilder: FormBuilder,
     private navParams: NavParams,
+    private profileDataStore: ProfileDataStore,
     private profileService: ProfileService
   ) {
   }
@@ -50,17 +53,26 @@ export class ProfileEditComponent {
     const profile: ProfileModel = this.navParams.get('profile');
 
     this.form = this.formBuilder.group({
-      first_name: [profile.first_name],
-      last_name: [profile.last_name],
+      first_name: [profile.first_name, [
+        Validators.required
+      ]],
+      last_name: [profile.last_name, [
+        Validators.required
+      ]],
       email: [profile.email, [
-        emptyOr(emailValidator())
+        Validators.required,
+        emailValidator()
       ]],
       zip_code: [profile.zip_code, [
-        emptyOr(Validators.minLength(5))
+        Validators.required,
+        Validators.minLength(5)
       ]],
       profile_photo_url: [profile.profile_photo_url],
       profile_photo_id: [profile.profile_photo_id]
     });
+
+    // Configure errors showing on blur:
+    this.form = new FormGroup(this.form.controls, { updateOn: 'blur' });
 
     this.photoUploadOptions = {
       buttons: [
@@ -106,13 +118,19 @@ export class ProfileEditComponent {
     this.actionSheetCtrl.create(options).present();
   }
 
-  onSubmit(): void {
-    composeRequest(
-      withForm(this.form),
+  async onSubmit(): Promise<void> {
+    const { response, errors } = await composeRequest<ProfileModel>(
       loading(isLoading => this.isUpdating = isLoading),
-      updateCacheWithResponse('profile'),
+      animateFailed(isFailed => this.isFailed = isFailed),
+      animateSucceeded(isSucceeded => this.isSucceeded = isSucceeded),
       this.profileService.updateProfile(this.form.value)
     );
+    if (response) {
+      this.profileDataStore.set(response);
+      this.form.patchValue(response);
+    } else if (errors) {
+      // TODO: handle ”email is already taken by another user”
+    }
   }
 
   private async takePhoto(sourceType: PhotoSourceType): Promise<void> {
