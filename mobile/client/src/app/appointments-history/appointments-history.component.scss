@@ -1,0 +1,121 @@
+.AppHistoryPage {  
+  .AppHistoryPage-title {
+    display: flex;
+    width: 100%;
+
+    .AppHistoryPage-h1 {
+      display: inline-block;
+      align-self: flex-start;
+      width: 80%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .AppHistoryPage-avatar {
+      align-self: flex-end;
+      width: 20%;
+      text-align: center;
+      vertical-align: top;
+    }
+  }
+
+  .AppHistoryPage-subtitleContainer {
+    display: flex;
+    align-items: flex-start;
+    margin: 10px 0;
+
+    .AppHistoryPage-subtitle {
+      display: inline-block;
+      width: auto;
+      font-size: $t-h3;
+      font-weight: 600;
+    }
+
+    .AppHistoryPage-labelPurpul {
+      display: inline-block;
+      width: auto;
+      padding: 4px 10px;
+      margin: -2px 0 0 5px;
+      font-size: $t-base;
+      color: color($colors, white);
+      vertical-align: text-top;
+      background: color($colors, violet);
+      border-radius: 50%;
+    }
+  }
+
+  .AppHistoryPage-cardHeader {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin: 13px 0 5px;
+
+    .AppHistoryPage-cardHeaderVisitDate {
+      align-self: flex-start;
+      font-size: $t-small;
+      color: color($grayscale, 500);
+    }
+
+    .AppHistoryPage-cardHeaderLink {
+      font-weight: 600;
+      color: color($colors, orange);
+    }
+  }
+
+  .AppHistoryPage-cardGrid {
+    width: 100%;
+    font-size: $t-h4;
+    font-weight: 600;
+
+    .AppHistoryPage-cardGridStylistDetails {
+      margin: 0;
+      font-size: 14px; //need this size measurement unit may be changed
+      font-weight: normal;
+      color: color($grayscale, 500);
+    }
+
+    .AppHistoryPage-cardGridStylistDetailsImage {
+      display: inline-block;
+      width: 21px;
+      height: 21px;
+      padding: 2px;
+      margin-right: 3px;
+      text-align: center;
+      vertical-align: middle;
+      border: 1px solid color($grayscale, 300);
+      border-radius: 50%;
+    }
+
+    .AppHistoryPage-cardGridPrice {
+      text-align: right;
+    }
+
+    .AppHistoryPage-cardGridPrice::first-letter {
+      font-size: $t-small;
+      vertical-align: text-top;
+    }
+
+    .AppHistoryPage-cardGridServiceName {
+      overflow: hidden;
+      font-size: $t-h3;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+
+  .AppHistoryPage-cardGrid span {
+    display: inline-block;
+    margin: 4px 0;
+  }
+
+  .AppHistoryPage-nohistory {
+    margin-top: 180px;
+    font-size: $t-base;
+    text-align: center;
+    
+    .AppHistoryPage-nohistoryP {
+      font-weight: bold;
+    }
+  }
+}
