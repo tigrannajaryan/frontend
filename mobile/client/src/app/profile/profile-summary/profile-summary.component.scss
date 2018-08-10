@@ -5,17 +5,17 @@
   }
 
   .ProfilePage-completion {
-    margin-top: 16px;
+    margin-top: pxtovw(16px);
   }
 
   .ProfilePage-completionBar {
-    $bar-height: 4px;
-    $bar-border-radius: 4px;
+    $bar-height: pxtovw(4px);
+    $bar-border-radius: pxtovw(4px);
 
     position: relative;
-    width: 227px;
+    width: pxtovw(227px);
     height: $bar-height;
-    margin-top: 8px;
+    margin-top: pxtovw(8px);
     background: color($grayscale, 300);
     border-radius: $bar-border-radius;
 
@@ -23,7 +23,7 @@
       position: absolute;
       top: 0;
       left: 0;
-      width: 65px;
+      width: pxtovw(65px);
       height: $bar-height;
       content: '';
       background: color($colors, orange);
@@ -32,7 +32,7 @@
   }
 
   .ProfilePage-edit {
-    margin: 16px auto 45px;
+    margin: pxtovw(16px) auto pxtovw(45px);
   }
 
   .ProfilePage-table {

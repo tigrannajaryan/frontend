@@ -6,7 +6,7 @@ interface AlertBtn {
   handler(): any;
 }
 
-export function showAlert(title: string, subTitle = '', addBtns: AlertBtn[] = []): void {
+export function showAlert(title: string, subTitle: string, addBtns: AlertBtn[] = []): void {
   const alertCtrl = AppModule.injector.get(AlertController);
   const alert = alertCtrl.create({
     title,

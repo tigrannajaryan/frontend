@@ -19,6 +19,13 @@
 @import '../theme/rewrite';
 @import '../theme/font';
 
+// Common functions
+$src-layout-width: 375;
+
+@function pxtovw($target) {
+  @return ($target / $src-layout-width) * 1vw;
+}
+
 // Components
 @import '../theme/components/badges';
 @import '../theme/components/buttons';

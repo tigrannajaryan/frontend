@@ -15,9 +15,11 @@
         "error",
         "extend",
         "for",
+        "function",
         "import",
         "include",
         "mixin",
+        "return",
         "warn"
       ]
     }],

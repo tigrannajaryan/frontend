@@ -4,6 +4,8 @@ import { IonicPage, NavController } from 'ionic-angular';
 import { PageNames } from '~/core/page-names';
 import { composeRequest, loading } from '~/core/utils/request-utils';
 
+import { DefaultImage } from '~/core/core.module';
+
 import { ProfileDataStore } from '~/profile/profile.data';
 import { ProfileModel } from '~/core/api/profile.models';
 
@@ -17,7 +19,7 @@ export class ProfileSummaryComponent {
 
   isLoading = false;
 
-  readonly DEFAULT_IMAGE = 'url(/assets/imgs/user/default_user.png)';
+  readonly DEFAULT_IMAGE = `url(${DefaultImage.User})`;
 
   constructor(
     private navCtrl: NavController,
