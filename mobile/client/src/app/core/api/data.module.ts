@@ -5,7 +5,17 @@ import { AppointmentsApi } from './appointments.api';
 import { AppointmentsDataStore } from './appointments.datastore';
 import { AppointmentsApiMock } from '~/core/api/appointments.api.mock';
 
+import { AuthService } from '~/core/api/auth-service';
+import { AuthServiceMock } from '~/core/api/auth-service.mock';
+
+import { ProfileService } from '~/core/api/profile-service';
 import { ProfileDataStore } from '~/profile/profile.data';
+
+import { ServicesService } from '~/core/api/services-service';
+import { ServicesServiceMock } from '~/core/api/services-service.mock';
+
+import { StylistsService } from '~/core/api/stylists-service';
+import { StylistsServiceMock } from '~/core/api/stylists-service.mock';
 
 /**
  * Common data module that includes ApiDataStore singletons for the entire app.
@@ -17,8 +27,18 @@ import { ProfileDataStore } from '~/profile/profile.data';
   ],
   // Add API service providers in the 'providers' array here
   providers: [
+    // services
     AppointmentsApi,
-    AppointmentsApiMock
+    AppointmentsApiMock,
+    AuthService,
+    ProfileService,
+    StylistsService,
+    ServicesService,
+
+    // services mocks
+    AuthServiceMock,
+    StylistsServiceMock,
+    ServicesServiceMock
   ]
 })
 export class DataModule {
