@@ -10,6 +10,7 @@ export enum PageNames {
   AppointmentsHistory = 'AppointmentsHistoryComponent',
   Auth = 'AuthPageComponent',
   AuthConfirm = 'AuthConfirmPageComponent',
+  Home = 'HomePageComponent',
   Profile = 'ProfilePageComponent',
   Services = 'ServicesPageComponent',
   ServicesCategories = 'ServicesCategoriesPageComponent',
@@ -19,4 +20,4 @@ export enum PageNames {
 }
 
 export const UNAUTHORIZED_ROOT = PageNames.Auth;
-export const AUTHORIZED_ROOT = PageNames.Stylists;
+export const AUTHORIZED_ROOT = PageNames.MainTabs;

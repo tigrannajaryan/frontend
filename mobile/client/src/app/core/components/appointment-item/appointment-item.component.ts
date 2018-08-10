@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
-import { AppointmentModel } from '~/core/api/appointments.models';
+import { AppointmentModel, AppointmentStatus } from '~/core/api/appointments.models';
 
 /**
  * A component that shows a single appointment item (card). Used by Home and History screens.
@@ -10,6 +10,8 @@ import { AppointmentModel } from '~/core/api/appointments.models';
   templateUrl: 'appointment-item.component.html'
 })
 export class AppointmentItemComponent {
+
+  AppointmentStatus = AppointmentStatus;
 
   @Input()
   appointment: AppointmentModel;

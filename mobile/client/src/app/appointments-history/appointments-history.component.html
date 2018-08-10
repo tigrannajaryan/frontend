@@ -2,11 +2,14 @@
 
 <ion-content class="AppHistoryPage">
   <!-- Use refresher to initiate loading -->
-  <ion-refresher (ionRefresh)="onLoad(true)">
+  <ion-refresher (ionRefresh)="onLoad()">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 
   <ion-grid fixed>
+
+    <!-- Show spinner if loading is in progress and refresher is not active (to avoid double loading indicators) -->
+    <ion-spinner *ngIf="isLoading && refresher.state === 'inactive'" class="AppHistoryPage-spinner"></ion-spinner>
 
     <div class="AppHistoryPage-title">
       <h1 class="AppHistoryPage-h1">History</h1>
@@ -17,12 +20,9 @@
       </div>
     </div>
 
-    <!-- Show spinner if loading is in progress and refresher is not active (to avoid double loading indicators) -->
-    <ion-spinner *ngIf="isLoading && refresher.state === 'inactive'"></ion-spinner>
-
-    <div *ngIf="!isLoading">
-
-      <div *ngIf="(historyData | async)?.response.appointments as appointments; else noAppointments">
+    <div *ngIf="(historyObservable | async)?.response.appointments as appointments">
+      <div *ngIf="appointments.length > 0; else noAppointments">
+        <!-- show appointment cards -->
         <div class="AppHistoryPage-subtitleContainer">
           <span class="AppHistoryPage-subtitle">Past Visits</span>
           <span class="AppHistoryPage-labelPurpul">{{ appointments.length }}</span>
@@ -31,16 +31,17 @@
           <appointment-item [appointment]="appointment" (cardClick)="onAppointmentClick(appointment)" (rebookClick)="onRebookClick(appointment)"></appointment-item>
         </div>
       </div>
-
-      <ng-template #noAppointments>
-        <div class="AppHistoryPage-nohistory">
-          No history to report yet.
-          <ion-icon name="sad"></ion-icon>
-          <p class="AppHistoryPage-nohistoryP">Once you check out of your first visit all of your history will show up here!</p>
-        </div>
-      </ng-template>
-
     </div>
+
+    <!-- we do not have appointments -->
+    <ng-template #noAppointments>
+      <!-- only show this section when loading is finished -->
+      <div *ngIf="!isLoading" class="AppHistoryPage-nohistory">
+        No history to report yet.
+        <ion-icon name="sad"></ion-icon>
+        <p class="AppHistoryPage-nohistoryP">Once you check out of your first visit all of your history will show up here!</p>
+      </div>
+    </ng-template>
 
   </ion-grid>
 </ion-content>

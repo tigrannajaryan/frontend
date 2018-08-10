@@ -4,14 +4,14 @@ import { IonicStorageModule } from '@ionic/storage';
 
 import { CoreModule } from '~/core/core.module';
 import { AppointmentsDataStore } from '~/core/api/appointments.datastore';
-import { AppointmentsHistoryComponent } from './appointments-history.component';
+import { HomePageComponent } from './home-page.component';
 
 @NgModule({
   declarations: [
-    AppointmentsHistoryComponent
+    HomePageComponent
   ],
   imports: [
-    IonicPageModule.forChild(AppointmentsHistoryComponent),
+    IonicPageModule.forChild(HomePageComponent),
     IonicStorageModule.forRoot(),
     CoreModule
   ],
@@ -19,4 +19,4 @@ import { AppointmentsHistoryComponent } from './appointments-history.component';
     AppointmentsDataStore
   ]
 })
-export class AppointmentsHistoryPageModule {}
+export class HomePageModule {}

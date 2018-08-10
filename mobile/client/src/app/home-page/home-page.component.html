@@ -1,0 +1,78 @@
+<ion-header madeHeader></ion-header>
+
+<ion-content class="HomePage">
+  <!-- Use refresher to initiate loading -->
+  <ion-refresher (ionRefresh)="onLoad()">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <ion-grid fixed class="HomePage-grid">
+
+    <!-- Show spinner if loading is in progress and refresher is not active (to avoid double loading indicators) -->
+    <ion-spinner *ngIf="isLoading && refresher.state === 'inactive'" class="HomePage-spinner"></ion-spinner>
+
+    <div class="HomePage-title">
+      <h1 class="HomePage-h1">Home</h1>
+      <div class="HomePage-avatar">
+        <!-- TODO: add profile image. Need a separate component for it. -->
+        <!--img should be removed-->
+        <img width="40" height="40" src="assets/icons/stylist-avatar.svg" />
+      </div>
+    </div>
+
+    <ion-grid no-padding class="HomePage-grid" *ngIf="(homeObservable | async)?.response as homeData">
+      <div *ngIf="homeData.upcoming.length !== 0 || homeData.previous.length !== 0" class="HomePage-subtitleContainer">
+        <span class="HomePage-subtitle">Upcoming Visits</span>
+        <span class="HomePage-labelPurpul">{{ homeData.upcoming.length }}</span>
+      </div>
+      <div *ngIf="homeData.upcoming.length > 0; else noUpcoming">
+        <!-- show upcoming appointment cards -->
+        <div *ngFor="let appointment of homeData.upcoming">
+          <appointment-item [appointment]="appointment" (cardClick)="onAppointmentClick(appointment)"></appointment-item>
+        </div>
+      </div>
+
+      <ng-template #noUpcoming>
+        <div class="HomePage-upcomingEmpty" *ngIf="homeData.previous.length !== 0">
+          <!-- There are no upcoming visits but there is a past visit -->
+          <!--To Do png change to svg-->
+          Your future visits will show up here
+          <img src="../assets/icons/invalidName.png">
+        </div>
+      </ng-template>
+
+      <div *ngIf="homeData.previous.length > 0">
+        <!-- show previous appointment cards -->
+        <div class="HomePage-subtitleContainer">
+          <span class="HomePage-subtitle">Last Visit</span>
+        </div>
+        <appointment-item [appointment]="homeData.previous[0]" (cardClick)="onAppointmentClick(appointment)" (rebookClick)="onRebookClick(appointment)"></appointment-item>
+      </div>
+
+
+      <!-- show this if there are no past or upcoming visits, i.e. this is a new client -->
+      <ion-grid no-padding class="HomePage-grid HomePage-homeEmpty" *ngIf="homeData.upcoming.length === 0 && homeData.previous.length === 0">
+        <ion-row>
+          <ion-col>
+            <!--ToDo the image will be replaced once SVG is ready-->
+            <img src="../assets/icons/tmp_remove.png" width="100" height="100">
+          </ion-col>
+        </ion-row>
+        <ion-row class="HomePage-wText">
+          <ion-col align-self-center>
+            Welcome!
+            <br/> Time to get MADE
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col align-self-end>
+            <button ion-button class="Button" (click)="onBoockClick()">Book appointment</button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+
+
+    </ion-grid>
+
+  </ion-grid>
+</ion-content>

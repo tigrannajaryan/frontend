@@ -21,7 +21,7 @@ export class MainTabsComponent {
   protected tabsData: TabsObject[] = [
     {
       name: 'Home',
-      link: PageNames.Stylists,
+      link: PageNames.Home,
       params: { isMain: true }
     },
     {
