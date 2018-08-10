@@ -1,0 +1,122 @@
+@font-face {
+  font-family: 'bb';
+  font-style: normal;
+  font-weight: normal;
+  src: url('../assets/fonts/bb-font/bb.eot');
+  src: url('../assets/fonts/bb-font/bb.eot?#iefix') format('embedded-opentype'), url('../assets/fonts/bb-font/bb.woff') format('woff'), url('../assets/fonts/bb-font/bb.ttf') format('truetype'), url('../assets/fonts/bb-font/bb.svg#bb') format('svg');
+}
+
+[class*='bb-icon'] {
+  display: inline-block;
+  line-height: 1;
+  vertical-align: middle;
+
+  &:before {
+    display: inline-block;
+    font-family: 'bb', sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    line-height: 1;
+    vertical-align: bottom;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+
+.bb-icon-mail:before { content: '\0041'; }
+.bb-icon-add-appointment:before { content: '\0042'; }
+.bb-icon-back:before { content: '\0043'; }
+.bb-icon-plus:before { content: '\0044'; }
+.bb-icon-home:before { content: '\0045'; }
+.bb-icon-followers:before { content: '\0046'; }
+.bb-icon-rating:before { content: '\0047'; }
+.bb-icon-confirmation:before { content: '\0048'; }
+.bb-icon-vote-up:before { content: '\0049'; }
+.bb-icon-vote-down:before { content: '\004a'; }
+.bb-icon-phone:before { content: '\004b'; }
+.bb-icon-history:before { content: '\004c'; }
+.bb-icon-pricing:before { content: '\004d'; }
+.bb-icon-invite:before { content: '\004e'; }
+.bb-icon-filter:before { content: '\004f'; }
+.bb-icon-time-gap:before { content: '\0050'; }
+.bb-icon-login:before { content: '\0051'; }
+.bb-icon-show-password:before { content: '\0052'; }
+.bb-icon-accept-button:before { content: '\0053'; }
+.bb-icon-discounts:before { content: '\0054'; }
+.bb-icon-add:before { content: '\0055'; }
+.bb-icon-location:before { content: '\0056'; }
+.bb-icon-add-photo:before { content: '\0057'; }
+.bb-icon-salon-name:before { content: '\0058'; }
+.bb-icon-user:before { content: '\0059'; }
+
+@font-face {
+  font-family: 'SF Pro Text';
+  src: url('../assets/fonts/SFProText/SFProText-Semibold.woff') format('woff');
+  font-style: normal;
+  font-weight: 600;
+}
+
+@font-face {
+  font-family: 'SF Pro Text';
+  src: url('../assets/fonts/SFProText/SFProText-Medium.woff') format('woff');
+  font-style: normal;
+  font-weight: 500;
+}
+
+@font-face {
+  font-family: 'SF Pro Display';
+  src: url('../assets/fonts/SFProDisplay/SFProDisplay-Bold.woff') format('woff');
+  font-style: normal;
+  font-weight: bold;
+}
+
+@font-face {
+  font-family: 'SF Pro Text';
+  src: url('../assets/fonts/SFProText/SFProText-Light.woff') format('woff');
+  font-style: normal;
+  font-weight: 200;
+}
+
+@font-face {
+  font-family: 'SF Pro Display';
+  src: url('../assets/fonts/SFProDisplay/SFProDisplay-Light.woff') format('woff');
+  font-style: normal;
+  font-weight: 200;
+}
+
+@font-face {
+  font-family: 'SF Pro Text';
+  src: url('../assets/fonts/SFProText/SFProText-Bold.woff') format('woff');
+  font-style: normal;
+  font-weight: bold;
+}
+
+@font-face {
+  font-family: 'SF Pro Display';
+  src: url('../assets/fonts/SFProDisplay/SFProDisplay-Medium.woff') format('woff');
+  font-style: normal;
+  font-weight: 500;
+}
+
+@font-face {
+  font-family: 'SF Pro Display';
+  src: url('../assets/fonts/SFProDisplay/SFProDisplay-Semibold.woff') format('woff');
+  font-style: normal;
+  font-weight: 600;
+}
+
+@font-face {
+  font-family: 'SF Pro Display';
+  src: url('../assets/fonts/SFProDisplay/SFProDisplay-Regular.woff') format('woff');
+  font-style: normal;
+  font-weight: normal;
+}
+
+@font-face {
+  font-family: 'SF Pro Text';
+  src: url('../assets/fonts/SFProText/SFProText-Regular.woff') format('woff');
+  font-style: normal;
+  font-weight: normal;
+}
+
