@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 
 import { ApiResponse } from '~/core/api/base.models';
 import { AppModule } from '~/app.module';
-import { ApiDataStore } from './api-data-store';
+import { DataStore } from './data-store';
 import { StorageMock } from './storage-mock';
 
 type ResponseType = string;
@@ -32,49 +32,49 @@ describe('ApiDataStore', () => {
     }));
 
   it('should initialize with undefined value', () => {
-    const store = new ApiDataStore('mykey', fakeApi.endpoint);
+    const store = new DataStore('mykey', fakeApi.endpoint);
     expect(store.value()).toEqual(undefined);
   });
 
-  it('should call endpoint on first get(false)', async () => {
+  it('should call endpoint on first get({ refresh: false })', async () => {
 
     counter = 0;
     const spy = spyOn(fakeApi, 'endpoint').and.callThrough();
 
-    const store = new ApiDataStore('mykey', fakeApi.endpoint);
+    const store = new DataStore('mykey', fakeApi.endpoint);
 
     expect(spy.calls.count()).toEqual(0);
 
     // Ensure we can get the data from API
-    expect(await (store.get(false))).toEqual({ response: 'hello0' });
+    expect(await (store.get({ refresh: false }))).toEqual({ response: 'hello0' });
     expect(store.value()).toEqual({ response: 'hello0' });
 
     // Ensure API was called once
     expect(spy).toHaveBeenCalled();
     expect(spy.calls.count()).toEqual(1);
 
-    expect(await (store.get(false))).toEqual({ response: 'hello0' });
+    expect(await (store.get({ refresh: false }))).toEqual({ response: 'hello0' });
     expect(store.value()).toEqual({ response: 'hello0' });
 
-    // Ensure second get(false) does not call the API again
+    // Ensure second get({ refresh: false}) does not call the API again
     expect(spy.calls.count()).toEqual(1);
   });
 
-  it('should refresh call endpoint on get(true)', async () => {
+  it('should refresh call endpoint on get({ refresh: true })', async () => {
 
     counter = 10;
 
     const spy = spyOn(fakeApi, 'endpoint').and.callThrough();
 
-    const store = new ApiDataStore('mykey', fakeApi.endpoint);
+    const store = new DataStore('mykey', fakeApi.endpoint);
 
     expect(spy.calls.count()).toEqual(0);
 
-    expect(await (store.get(false))).toEqual({ response: 'hello10' });
+    expect(await (store.get({ refresh: false }))).toEqual({ response: 'hello10' });
     expect(store.value()).toEqual({ response: 'hello10' });
 
-    // Ensure get(true) calls the API again
-    expect(await (store.get(true))).toEqual({ response: 'hello11' });
+    // Ensure get({ refresh: true}) calls the API again
+    expect(await (store.get({ refresh: true }))).toEqual({ response: 'hello11' });
     expect(store.value()).toEqual({ response: 'hello11' });
 
     expect(spy.calls.count()).toEqual(2);
@@ -86,12 +86,12 @@ describe('ApiDataStore', () => {
 
     const spy = spyOn(fakeApi, 'endpoint').and.callThrough();
 
-    const store = new ApiDataStore('mykey', fakeApi.endpoint);
+    const store = new DataStore('mykey', fakeApi.endpoint);
     await store.set('mydata');
 
-    expect(await (store.get(false))).toEqual({ response: 'mydata' });
+    expect(await (store.get({ refresh: false }))).toEqual({ response: 'mydata' });
 
     // Now refresh and read again
-    expect(await (store.get(true))).toEqual({ response: 'hello20' });
+    expect(await (store.get({ refresh: true }))).toEqual({ response: 'hello20' });
   });
 });

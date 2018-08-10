@@ -1,3 +1,63 @@
-appointment-item {
+.AppCard-Header {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin: 13px 0 5px;
 
+  .AppCard-HeaderVisitDate {
+    align-self: flex-start;
+    font-size: $t-small;
+    color: color($grayscale, 500);
+  }
+
+  .AppCard-HeaderLink {
+    font-weight: 600;
+    color: color($colors, orange);
+  }
+}
+
+.AppCard-Grid {
+  width: 100%;
+  font-size: $t-h4;
+  font-weight: 600;
+
+  .AppCard-GridStylistDetails {
+    margin: 0;
+    font-size: 14px; //need this size measurement unit may be changed
+    font-weight: normal;
+    color: color($grayscale, 500);
+  }
+
+  .AppCard-GridStylistDetailsImage {
+    display: inline-block;
+    width: 21px;
+    height: 21px;
+    padding: 2px;
+    margin-right: 3px;
+    text-align: center;
+    vertical-align: middle;
+    border: 1px solid color($grayscale, 300);
+    border-radius: 50%;
+  }
+
+  .AppCard-GridPrice {
+    text-align: right;
+  }
+
+  .AppCard-GridPrice:first-letter {
+    font-size: $t-small;
+    vertical-align: text-top;
+  }
+
+  .AppCard-GridServiceName {
+    overflow: hidden;
+    font-size: $t-h3;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+.AppCard-Grid span {
+  display: inline-block;
+  margin: 4px 0;
 }

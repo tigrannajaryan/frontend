@@ -19,8 +19,17 @@ function dataSourceToPromise<T>(dataSource: AsyncDataSource<T>): Promise<T> {
   return dataSource;
 }
 
+interface DataStorePersistent<T> {
+  response: T;
+  lastUpdated: Date;
+}
+
+interface GetOptions {
+  refresh?: boolean;
+}
+
 /**
- * ApiDataStore is a simple local storage of API responses that we
+ * DataStore is a simple local storage of API responses that we
  * can use on many Client App screens to easily support the following:
  *
  * - Centralized stored of a data that is used by many different screens
@@ -45,23 +54,26 @@ function dataSourceToPromise<T>(dataSource: AsyncDataSource<T>): Promise<T> {
  * in the data which is exposed as an Observable and will be pushed to you
  * when the changes happen.
  *
- * The typical usage pattern is to create a singleton that derives from ApiDataStore
+ * The typical usage pattern is to create a singleton that contains a DataStore
  * and is Injectable in views which need to works with this data. For example let's
  * assume we have ClientProfileApi class which implements getProfile() function
- * which returns ClientProfileResponse data. We can declare ClientProfileDataStore like this
+ * which returns ClientProfileResponse data. We can declare MyDataStore like this:
  *
  *   @Injectable()
- *   export class ClientProfileDataStore extends ApiDataStore<ClientProfileResponse> {
- *   constructor(profileApi: ClientProfileApi) {
- *     super('client-profile', profileApi.getProfile);
+ *   export class MyDataStore {
+ *     readonly profile: DataStore<ClientProfileResponse>;
+ *     constructor(api: MyApiClass) {
+ *       this.profile = new DataStore('clientProfile', api.getProfile);
+ *     }
  *   }
  *
  * then we can use it from ClientProfileView TS like this:
  *
- *   constructor(private dataStore: ClientProfileDataStore) {}
+ *   constructor(private dataStore: MyDataStore) {
+ *     this.profileData = this.dataStore.profile.asObservable();
+ *   }
  *   ionViewWillEnter(): void {
- *     this.profileData = this.dataStore.asObservable();
- *     this.dataStore.get();
+ *     this.dataStore.profile.get();
  *   }
  *
  * and in the HTML do this:
@@ -71,7 +83,10 @@ function dataSourceToPromise<T>(dataSource: AsyncDataSource<T>): Promise<T> {
  * Alternatively we can use subscribe() function to work with data in the code, e.g.:
  *
  *   ionViewWillEnter(): void {
- *     this.subscription = dataStore.subscribe(data => { this.profile = data; });
+ *     this.subscription = dataStore.subscribe('clientProfile', data => { this.profile = data; });
+ *   }
+ *   ionViewWillLeave(): void {
+ *     this.subscription.unsubscribe();
  *   }
  *
  * and in the HTML do this:
@@ -81,44 +96,51 @@ function dataSourceToPromise<T>(dataSource: AsyncDataSource<T>): Promise<T> {
  * You can also set the data directly if it is modified in a view, e.g.
  *   submit(): void {
  *      const profileData = { first_name: ... };
- *      this.dataStore.set(profileData);
+ *      this.dataStore.profile.set(profileData);
  *   }
  *
- * To perform preloading of data from any other view just inject ClientProfileDataStore
+ * To perform preloading of data from any other view just inject MyDataStore
  * into that view and call the get() method, e.g.:
  *
- *   constructor(private dataStore: ClientProfileDataStore) {}
+ *   constructor(private dataStore: MyDataStore) {}
  *   ionViewDidEnter(): void {
- *     this.dataStore.get(true);
+ *     this.dataStore.profile.get({ refresh: true });
  *   }
  *
  * Note: how we use ionViewDidEnter() instead of ionViewWillEnter to avoid delaying
  * the loading of this view due to processing time spent on preloading operation.
  *
  */
-export class ApiDataStore<T> {
+export class DataStore<T> {
 
   // Last value of API response
-  private data = new BehaviorSubject<ApiResponse<T>>(undefined);
+  private subject: BehaviorSubject<ApiResponse<T>>;
 
-  // Currently ongoing get() operation
+  // Currently ongoing get or set operation
   private promise: Promise<ApiResponse<T>>;
 
+  // The key for Ionic Storage
   private storageKey: string;
 
   /**
-   * Creates a ApiDataStore instance that is linked to the original data source.
+   * The cached data is persisted in Ionic Storage with a storeName that must be unique across the app.
+   * You can use a descriptive key name for easier debugging or use any unique
+   * id that remains the same when App restarts.
    *
-   * The cached data is associated with a key that must be unique across the app.
+   * Link to an API endpoint and make it the source of the data for a specified
+   * prpeorty of data model T.
+   *
+   * The cached data is associated with storeName that must be unique across the app.
    * You can use a descriptive key name for easier debugging or use any uniquely
    * generated id.
    *
-   * @param cacheKey a globally unique cache key string
+   * @param storeName globally unique store name string
    * @param apiEndpoint a function that returns any async data source that returns an ApiResponse<T>
    */
-  constructor(cacheKey: string, private apiEndpoint: () => AsyncDataSource<ApiResponse<T>>) {
-    this.storageKey = `cached_data_${cacheKey}`;
+  constructor(storeName: string, private apiEndpoint: () => AsyncDataSource<ApiResponse<T>>) {
     this.promise = Promise.resolve(undefined);
+    this.subject = new BehaviorSubject<ApiResponse<T>>(undefined);
+    this.storageKey = `DataStore.${storeName}`;
   }
 
   /**
@@ -137,10 +159,10 @@ export class ApiDataStore<T> {
    * called while the previous async get() request is not yet completed the new
    * call is queued and will be executed after the previous get() is completed.
    *
-   * @param refreshCache if true will refresh the data from original data source otherwise
-   *                     will return cached value if available.
+   * if options.refresh is true will refresh the data from original data source otherwise
+   * will return cached value if available.
    */
-  get(refreshCache = false): Promise<ApiResponse<T>> {
+  get(options?: GetOptions): Promise<ApiResponse<T>> {
     // Chain executions. We create a queue of promises to avoid concurrent get() or set() operations.
     // This prevents concurrent calls to API or concurrent calls to get() or set() functions.
     // Why we need it? It is needed for preloader scenarios.
@@ -155,7 +177,7 @@ export class ApiDataStore<T> {
     // Instead because we have this mechanism the second get(false) call will wait until the first one
     // is completed and will return the same value from the cache.
     this.promise = this.promise.then(() => {
-      return this.performGet(refreshCache);
+      return this.performGet(options);
     });
 
     return this.promise;
@@ -166,7 +188,7 @@ export class ApiDataStore<T> {
    * changes to the data.
    */
   asObservable(): Observable<ApiResponse<T>> {
-    return this.data.asObservable();
+    return this.subject.asObservable();
   }
 
   /**
@@ -174,14 +196,14 @@ export class ApiDataStore<T> {
    * is changed (e.g. new data is received from the API).
    */
   subscribe(next?: (value: ApiResponse<T>) => void): Subscription {
-    return this.data.subscribe(next);
+    return this.subject.subscribe(next);
   }
 
   /**
    * Return currently stored value of the data.
    */
   value(): ApiResponse<T> {
-    return this.data.value;
+    return this.subject.value;
   }
 
   /**
@@ -193,41 +215,49 @@ export class ApiDataStore<T> {
       const value: ApiResponse<T> = { response: data };
 
       // Publish the result to observers
-      this.data.next(value);
+      this.subject.next(value);
 
       // And save in storage
       const storage = AppModule.injector.get(Storage);
-      storage.set(this.storageKey, data);
+      const cachedData: DataStorePersistent<T> = {
+        response: data,
+        lastUpdated: new Date()
+      };
+      storage.set(this.storageKey, cachedData);
 
       return value;
     });
     return this.promise;
   }
 
-  private async performGet(refreshCache: boolean): Promise<ApiResponse<T>> {
+  private async performGet(options: GetOptions): Promise<ApiResponse<T>> {
     const storage = AppModule.injector.get(Storage);
 
     let retVal: ApiResponse<T>;
 
     // Get last cached value
-    const cachedData = await storage.get(this.storageKey);
-    if (cachedData && !refreshCache) {
+    let cachedData: DataStorePersistent<T> = await storage.get(this.storageKey);
+    if (cachedData && (!options || !options.refresh)) {
       // We have a cached value and no refreshing is required, so just return it
-      retVal = { response: cachedData };
-      if (!this.data.value || cachedData !== this.data.value.response) {
-        this.data.next(retVal);
+      retVal = { response: cachedData.response };
+      if (!this.subject.value || cachedData.response !== this.subject.value.response) {
+        this.subject.next(retVal);
       }
     } else {
-      // We don't have a cached value or we were asked to refresh it, so load it from the original data source
+      // We don't have a cached value or we were asked to refresh it, so load it from the api endpoint
       retVal = await dataSourceToPromise(this.apiEndpoint());
       if (retVal.errors) {
         // Data loading failed. Return previously cached successful response and current errors.
-        retVal.response = cachedData;
+        retVal.response = cachedData ? cachedData.response : undefined;
       } else {
         // Publish the result to observers
-        this.data.next(retVal);
+        this.subject.next(retVal);
         // The call was successfull, save the response in the cache
-        storage.set(this.storageKey, retVal.response);
+        cachedData = {
+          response: retVal.response,
+          lastUpdated: new Date()
+        };
+        storage.set(this.storageKey, cachedData);
       }
     }
 

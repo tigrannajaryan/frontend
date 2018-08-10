@@ -27,6 +27,11 @@ export interface AppointmentModel {
   services: AppointmentServiceModel[];
 }
 
-export interface AppointmentsResponse {
+export interface AppointmentsHistoryResponse {
   appointments: AppointmentModel[];
+}
+
+export interface HomeResponse {
+  upcoming: AppointmentModel[];
+  previous: AppointmentModel[];
 }

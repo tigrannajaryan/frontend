@@ -1,13 +1,34 @@
-.AppHistoryPage {
-  .AppHistoryPage-spinner {
+.HomePage {
+  .HomePage-grid {
+    height: 100%;
+  }
+
+  .HomePage-spinner {
     margin: 10px auto 0;
   }
 
-  .AppHistoryPage-title {
+  .HomePage-homeEmpty ion-row:first-child {
+    height: 40%;
+    text-align: center;
+  }
+
+  .HomePage-homeEmpty ion-row:last-child {
+    height: 25%;
+  }
+
+  .HomePage-wText {
+    height: 30%;
+    font-size: $t-h3;
+    font-weight: bold;
+    line-height: 1.5;
+    text-align: center;
+  }
+
+  .HomePage-title {
     display: flex;
     width: 100%;
 
-    .AppHistoryPage-h1 {
+    .HomePage-h1 {
       display: inline-block;
       align-self: flex-start;
       width: 80%;
@@ -16,7 +37,7 @@
       white-space: nowrap;
     }
 
-    .AppHistoryPage-avatar {
+    .HomePage-avatar {
       align-self: flex-end;
       width: 20%;
       text-align: center;
@@ -24,19 +45,19 @@
     }
   }
 
-  .AppHistoryPage-subtitleContainer {
+  .HomePage-subtitleContainer {
     display: flex;
     align-items: flex-start;
     margin: 10px 0;
 
-    .AppHistoryPage-subtitle {
+    .HomePage-subtitle {
       display: inline-block;
       width: auto;
       font-size: $t-h3;
       font-weight: 600;
     }
 
-    .AppHistoryPage-labelPurpul {
+    .HomePage-labelPurpul {
       display: inline-block;
       padding: 1px 12px;
       margin-left: 7px; 
@@ -48,13 +69,14 @@
     }
   }
 
-  .AppHistoryPage-nohistory {
-    margin-top: 180px;
+  .HomePage-upcomingEmpty {
+    padding: 20px 5px;
     font-size: $t-base;
     text-align: center;
+  }
 
-    .AppHistoryPage-nohistoryP {
-      font-weight: bold;
-    }
+  .HomePage-upcomingEmpty img {
+    margin-left: 5px;
+    vertical-align: middle;
   }
 }

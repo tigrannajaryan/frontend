@@ -4,40 +4,40 @@ import { Observable } from 'rxjs';
 
 import { Logger } from '~/shared/logger';
 import { loading } from '~/core/utils/loading';
-import { AppointmentModel, AppointmentsHistoryResponse } from '~/core/api/appointments.models';
+import { AppointmentModel, HomeResponse } from '~/core/api/appointments.models';
 import { ApiResponse } from '~/core/api/base.models';
 import { AppointmentsDataStore } from '~/core/api/appointments.datastore';
 
 @IonicPage()
 @Component({
-  selector: 'page-history',
-  templateUrl: 'appointments-history.component.html'
+  selector: 'page-home',
+  templateUrl: 'home-page.component.html'
 })
-export class AppointmentsHistoryComponent {
+export class HomePageComponent {
 
   // Declare refresher to make it accessible for loading() function
   @ViewChild(Refresher) refresher: Refresher;
 
-  historyObservable: Observable<ApiResponse<AppointmentsHistoryResponse>>;
+  homeObservable: Observable<ApiResponse<HomeResponse>>;
   isLoading: boolean;
 
   constructor(
     private dataStore: AppointmentsDataStore,
     private logger: Logger
   ) {
-    this.historyObservable = this.dataStore.history.asObservable();
+    this.homeObservable = this.dataStore.home.asObservable();
   }
 
   ionViewWillEnter(): void {
-    this.logger.info('HistoryPageComponent.ionViewWillEnter');
+    this.logger.info('HomePageComponent.ionViewWillEnter');
     this.onLoad();
   }
 
   onLoad(): void {
-    this.logger.info('HistoryPageComponent.onLoad');
+    this.logger.info('HomePageComponent.onLoad');
 
     // Load the data. Indicate loading.
-    loading(this, this.dataStore.history.get({ refresh: true }));
+    loading(this, this.dataStore.home.get({ refresh: true }));
   }
 
   onAppointmentClick(appointment: AppointmentModel): void {
@@ -48,5 +48,10 @@ export class AppointmentsHistoryComponent {
   onRebookClick(appointment: AppointmentModel): void {
     // TODO: add rebooking logic when appointment creation flow is implemented
     this.logger.info('onRebookClick', appointment);
+  }
+
+  onBoockClick(): void {
+    // TODO: add booking logic when appointment creation flow is implemented
+    this.logger.info('onBookClick');
   }
 }

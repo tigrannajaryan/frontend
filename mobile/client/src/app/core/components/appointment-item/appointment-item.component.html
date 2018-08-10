@@ -1,26 +1,26 @@
-<div class="AppHistoryPage-cardHeader">
+<div class="AppCard-Header">
   <!-- date of the appointment -->
-  <div class="AppHistoryPage-cardHeaderVisitDate">{{ appointment.datetime_start_at | date: 'E, LLLL d' }}</div>
+  <div class="AppCard-HeaderVisitDate">{{ appointment.datetime_start_at | date: 'E, LLLL d' }}</div>
 
   <!-- rebooking link -->
-  <div (click)="onRebookClick()" class="AppHistoryPage-cardHeaderLink">Re-book appointment</div>
+  <div *ngIf="appointment.status !== AppointmentStatus.new" (click)="onRebookClick()" class="AppCard-HeaderLink">Re-book appointment</div>
 </div>
 <!-- the card -->
 <div (click)="onCardClick()" class="Card">
-  <ion-grid no-padding class='AppHistoryPage-cardGrid'>
+  <ion-grid no-padding class='AppCard-Grid'>
     <ion-row>
       <ion-col>
         <!-- time of the appointment -->
         <span>{{ appointment.datetime_start_at | date: 'h:mmaaaaa' }}</span>
 
       </ion-col>
-      <ion-col class="AppHistoryPage-cardGridPrice" >
+      <ion-col class="AppCard-GridPrice" >
         <!-- show price -->
         {{ appointment.total_price_before_tax | price }}
       </ion-col>
     </ion-row>
     <ion-row>
-      <ion-col class="AppHistoryPage-cardGridServiceName">
+      <ion-col class="AppCard-GridServiceName">
         <!-- list of services -->
         <span>{{ getServices() }}</span>
       </ion-col>
@@ -28,9 +28,9 @@
     <ion-row>
       <ion-col>
         <!-- TODO: replace avatar with real photo when it is added to API  -->
-       <div class="AppHistoryPage-cardGridStylistDetailsImage"> <img width="16" height="16" src="assets/icons/stylist-avatar.svg" /></div>
+       <div class="AppCard-GridStylistDetailsImage"> <img width="16" height="16" src="assets/icons/stylist-avatar.svg" /></div>
         <!-- stylists's full name -->
-        <span  class="AppHistoryPage-cardGridStylistDetails">{{ appointment.stylist_first_name }}&nbsp;{{ appointment.stylist_last_name }}</span>
+        <span  class="AppCard-GridStylistDetails">{{ appointment.stylist_first_name }}&nbsp;{{ appointment.stylist_last_name }}</span>
       </ion-col>
     </ion-row>
   </ion-grid>

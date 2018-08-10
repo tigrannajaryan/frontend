@@ -1,8 +1,9 @@
 import { ModuleWithProviders, NgModule } from '@angular/core';
 
 import { IonicModule } from 'ionic-angular';
-import { AppointmentsHistoryApi } from './appointments-history.api';
-import { AppointmentsHistoryDataStore } from './appointments-history.data';
+import { AppointmentsApi } from './appointments.api';
+import { AppointmentsDataStore } from './appointments.datastore';
+import { AppointmentsApiMock } from '~/core/api/appointments.api.mock';
 
 /**
  * Common data module that includes ApiDataStore singletons for the entire app.
@@ -14,7 +15,8 @@ import { AppointmentsHistoryDataStore } from './appointments-history.data';
   ],
   // Add API service providers in the 'providers' array here
   providers: [
-    AppointmentsHistoryApi
+    AppointmentsApi,
+    AppointmentsApiMock
   ]
 })
 export class DataModule {
@@ -22,7 +24,7 @@ export class DataModule {
     return {
       ngModule: DataModule,
       // Add ApiDataStore singletons in the 'providers' array here
-      providers: [AppointmentsHistoryDataStore]
+      providers: [AppointmentsDataStore]
     };
   }
 }
