@@ -70,9 +70,6 @@ export class ProfileEditComponent {
       profile_photo_id: [profile.profile_photo_id]
     });
 
-    // Configure errors showing on blur:
-    this.form = new FormGroup(this.form.controls, { updateOn: 'blur' });
-
     this.photoUploadOptions = {
       buttons: [
         {
