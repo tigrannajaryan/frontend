@@ -86,9 +86,9 @@ $colors: (
 
 // Typography
 // --------------------------------------------------
-$t-h1:    38px !default;
-$t-h2:    28px !default;
-$t-h3:    21px !default;
-$t-h4:    18px !default;
-$t-base:  16px !default;
-$t-small: 13px !default;
+$t-h1:    pxtovw(38px) !default;
+$t-h2:    pxtovw(28px) !default;
+$t-h3:    pxtovw(21px) !default;
+$t-h4:    pxtovw(18px) !default;
+$t-base:  pxtovw(16px) !default;
+$t-small: pxtovw(13px) !default;

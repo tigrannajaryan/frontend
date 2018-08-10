@@ -16,7 +16,9 @@ import { PricePipe } from '~/core/pipes/price.pipe';
 import { MadeHeaderComponent } from '~/core/components/made-header/made-header.component';
 import { AppointmentItemComponent } from '~/core/components/appointment-item/appointment-item.component';
 
-import { ProfileDataStore } from '~/profile/profile.data';
+export enum DefaultImage {
+  User = '/assets/imgs/user/default_user.png'
+}
 
 const declarations = [
   InputNumberDirective,
@@ -27,10 +29,6 @@ const declarations = [
   ServerStatusComponent,
   MadeHeaderComponent,
   AppointmentItemComponent
-];
-
-const dataStores = [
-  ProfileDataStore
 ];
 
 @NgModule({
@@ -44,7 +42,6 @@ const dataStores = [
     IonicModule
   ],
   providers: [
-    ...dataStores,
     GoogleAnalytics,
     GAWrapper
   ]

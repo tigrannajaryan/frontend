@@ -10,7 +10,7 @@ import { BaseApiService } from '~/shared/base-api-service';
 import { showAlert } from '~/core/utils/alert';
 import { composeRequest, loading } from '~/core/utils/request-utils';
 import { animateFailed, animateSucceeded } from '~/core/utils/animation-utils';
-import { emailValidator } from '~/core/validators/email.validator';
+import { DefaultImage } from '~/core/core.module';
 import { ProfileService } from '~/core/api/profile-service';
 import { ProfileDataStore } from '~/profile/profile.data';
 import { ProfileModel } from '~/core/api/profile.models';
@@ -28,7 +28,7 @@ export class ProfileEditComponent {
   isFailed = false;
   isSucceeded = false;
 
-  readonly DEFAULT_IMAGE = 'url(/assets/imgs/user/default_user.png)';
+  readonly DEFAULT_IMAGE = `url(${DefaultImage.User})`;
 
   private photoUploadOptions: ActionSheetOptions;
   private cameraOptions: CameraOptions;
@@ -60,7 +60,7 @@ export class ProfileEditComponent {
       ]],
       email: [profile.email, [
         Validators.required,
-        emailValidator()
+        Validators.email
       ]],
       zip_code: [profile.zip_code, [
         Validators.required,
