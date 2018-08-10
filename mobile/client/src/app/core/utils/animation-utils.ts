@@ -1,3 +1,5 @@
+import { Request } from '~/core/utils/request-utils';
+
 /**
  * Indicate request failed for a short amount of time.
  */

@@ -5,7 +5,6 @@ import { Camera, CameraOptions } from '@ionic-native/camera';
 
 import { PhotoSourceType } from '~/shared/constants';
 import { getImageFormData } from '~/shared/image-utils';
-import { emptyOr } from '~/shared/validators';
 import { BaseApiService } from '~/shared/base-api-service';
 
 import { showAlert } from '~/core/utils/alert';
