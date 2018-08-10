@@ -23,7 +23,9 @@
 $src-layout-width: 375;
 
 @function pxtovw($target) {
-  @return ($target / $src-layout-width) * 1vw;
+  $vw: ($src-layout-width * 0.01) * 1px;
+
+  @return ($target / $vw) * 1vw;
 }
 
 // Components
