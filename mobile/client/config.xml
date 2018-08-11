@@ -48,6 +48,14 @@
         <splash density="port-xxxhdpi" src="resources/android/splash/drawable-port-xxxhdpi-screen.png" />
     </platform>
     <platform name="ios">
+        <config-file parent="NSPhotoLibraryUsageDescription" target="*-Info.plist">
+            <string>photo library usage description</string>
+            <string>Need photo library access to add to profile</string>
+        </config-file>
+        <config-file parent="NSCameraUsageDescription" target="*-Info.plist">
+            <string>camera usage description</string>
+            <string>Need camera access to add to profile</string>
+        </config-file>
         <config-file parent="/resources" target="./res/values/strings.xml">
             <string name="fb_app_id">1332946860139961</string>
             <string name="fb_app_name">bb</string>
