@@ -43,6 +43,7 @@ export class ServerUnknownError extends ServerUnreachableOrInternalError {
 export enum HttpStatus {
   badRequest = 400,
   unauthorized = 401,
+  notFound = 404,
   methodNotSupported = 405
 }
 

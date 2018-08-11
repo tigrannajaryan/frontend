@@ -7,18 +7,13 @@ import {
   NavParams
 } from 'ionic-angular';
 
-import {
-  ServiceCategory,
-  ServiceTemplateItem
-} from '~/core/stylist-service/stylist-models';
-
 import { loading } from '~/core/utils/loading';
-import { StylistServiceProvider } from '~/core/stylist-service/stylist-service';
-import { PageNames } from '~/core/page-names';
-import { ServiceItemComponentData } from '../services-item/services-item.component';
-
 import { showAlert } from '~/core/utils/alert';
+import { PageNames } from '~/core/page-names';
+import { StylistServiceProvider } from '~/core/stylist-service/stylist-service';
+import { ServiceCategory, ServiceTemplateItem } from '~/core/stylist-service/stylist-models';
 import { ServiceListType } from '~/services/services.component';
+import { ServiceItemComponentData } from '~/services/services-item/services-item.component';
 
 // this is required for saving uuid (page refresh will not remove it)
 @IonicPage({ segment: 'services/:uuid' })
@@ -62,24 +57,20 @@ export class ServicesListComponent {
 
   @loading
   async loadInitialData(): Promise<void> {
-    try {
-      const uuid = this.navParams.get('uuid');
-      let response;
+    const uuid = this.navParams.get('uuid');
+    let response;
 
-      if (uuid && uuid !== ServiceListType.blank) {
-        response = await this.stylistService.getServiceTemplateSetByUuid(uuid);
-      } else if (uuid === ServiceListType.blank) {
-        response = await this.stylistService.getStylistServices();
-        response.categories = ServicesListComponent.buildBlankCategoriesList(response.categories);
-      } else {
-        response = await this.stylistService.getStylistServices();
-      }
-      this.categories = response.categories;
-      this.timeGap = response.service_time_gap_minutes;
-      this.isEmptyCategories = ServicesListComponent.checkIfEmptyCategories(this.categories);
-    } catch (e) {
-      showAlert('Loading services failed', e.message);
+    if (uuid && uuid !== ServiceListType.blank) {
+      response = await this.stylistService.getServiceTemplateSetByUuid(uuid);
+    } else if (uuid === ServiceListType.blank) {
+      response = await this.stylistService.getStylistServices();
+      response.categories = ServicesListComponent.buildBlankCategoriesList(response.categories);
+    } else {
+      response = await this.stylistService.getStylistServices();
     }
+    this.categories = response.categories;
+    this.timeGap = response.service_time_gap_minutes;
+    this.isEmptyCategories = ServicesListComponent.checkIfEmptyCategories(this.categories);
   }
 
   /**

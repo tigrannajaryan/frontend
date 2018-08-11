@@ -9,7 +9,6 @@ import { ComponentsModule } from './components/components.module';
 import { Logger } from '~/shared/logger';
 import { UserContext } from '~/shared/user-context';
 import { GAWrapper } from '~/shared/google-analytics';
-import { ServerStatusTracker } from '~/shared/server-status-tracker';
 import { DirectivesModule } from '~/core/directives/directive.module';
 
 @NgModule({
@@ -29,7 +28,6 @@ import { DirectivesModule } from '~/core/directives/directive.module';
   providers: [
     BaseApiService,
     Logger,
-    ServerStatusTracker,
     GoogleAnalytics,
     GAWrapper,
     UserContext

@@ -14,12 +14,10 @@ import {
 
 import { Logger } from '~/shared/logger';
 import { ServerStatusTracker } from '~/shared/server-status-tracker';
-import { ServerReachabilityAction } from '~/shared/server-status/server-status.reducer';
 
 enum ErrorUIAction {
   showAlert,
-  redirectToFirstPage,
-  markServerUnreachable
+  redirectToFirstPage
 }
 
 /**
@@ -102,9 +100,9 @@ export class UnhandledErrorHandler {
         UnhandledErrorHandler.reportToSentry(error);
       }
     } else if (error instanceof ServerUnreachableOrInternalError) {
-      // Update server status. This will result in server status error banner to appear.
-      errorUIAction = ErrorUIAction.markServerUnreachable;
+      // Report the error to sentry, no UI action.
       UnhandledErrorHandler.reportToSentry(error);
+      return;
     } else {
       errorMsg = 'Unknown error';
       if (error.stack) {
@@ -133,11 +131,6 @@ export class UnhandledErrorHandler {
       case ErrorUIAction.redirectToFirstPage:
         // Erase all previous navigation history and make LoginPage the root
         this.nav.setRoot(this.firstPageName);
-        break;
-
-      case ErrorUIAction.markServerUnreachable:
-        // Update server status. This will result in server status error banner to appear.
-        this.serverStatus.dispatch(new ServerReachabilityAction(false));
         break;
 
       default:

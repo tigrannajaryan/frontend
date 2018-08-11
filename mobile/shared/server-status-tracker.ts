@@ -1,21 +1,44 @@
 import { Injectable } from '@angular/core';
-import { Store } from '@ngrx/store';
+import { BehaviorSubject, Observable } from 'rxjs';
 
-import { ServerStatusActionsUnion, ServerStatusState } from './server-status/server-status.reducer';
+import { Logger } from '~/shared/logger';
+
+export enum ServerStatusErrorType {
+  noConnection = 1,
+  unauthorized,
+  internalServerError,
+  clientRequestError,
+  unknownServerError
+}
+
+export interface ServerStatusError {
+  type: ServerStatusErrorType;
+}
 
 /**
- * A helper class to work with server status state and its visual indicator.
+ * A singleton that serves as central dispatching and subscribing point for all
+ * centrally handled server errors.
  */
 @Injectable()
 export class ServerStatusTracker {
 
-  constructor(private store: Store<ServerStatusState>) {}
+  private subject = new BehaviorSubject<ServerStatusError>(undefined);
+
+  constructor(
+    private logger: Logger) { }
 
   /**
-   * Something happened with the status of the server.
-   * @param action describes what exactly happened.
+   * Notify observers about an error. Called by API services classes.
    */
-  dispatch(action: ServerStatusActionsUnion): void {
-    this.store.dispatch(action);
+  notify(error: ServerStatusError): void {
+    this.logger.info('ServerStatusTracker.notify', error);
+    this.subject.next(error);
+  }
+
+  /**
+   * Used by views or anyone else who is interested in observing server error.
+   */
+  asObservable(): Observable<ServerStatusError> {
+    return this.subject.asObservable();
   }
 }

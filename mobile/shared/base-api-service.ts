@@ -8,8 +8,6 @@ import 'rxjs/add/operator/map';
 import { Logger } from '~/shared/logger';
 import { ENV } from '../../environments/environment.default';
 
-import { ServerIsOkAction } from '~/shared/server-status/server-status.reducer';
-
 import {
   HttpStatus,
   ServerErrorResponse,
@@ -20,18 +18,11 @@ import {
   ServerUnreachableError
 } from '~/shared/api-errors';
 
-import { ServerStatusTracker } from '~/shared/server-status-tracker';
+import { ServerStatusErrorType, ServerStatusTracker } from '~/shared/server-status-tracker';
+import { HighLevelErrorCode } from '~/shared/api-error-codes';
 
 enum HttpContentType {
   ApplicationJson = 'application/json'
-}
-
-enum HighLevelErrorCode {
-  err_api_exception = 'err_api_exception',
-  err_authentication_failed = 'err_authentication_failed',
-  err_unauthorized = 'err_unauthorized',
-  err_not_found = 'err_not_found',
-  err_method_not_allowed = 'err_method_not_allowed'
 }
 
 /**
@@ -56,22 +47,16 @@ export class BaseApiService {
     // Prepare the header and the body
     const httpOptions = {
       headers: new HttpHeaders({
-        // TODO: are standard HTTP headers defined as a constant anywhere?
         'Content-Type': HttpContentType.ApplicationJson
       }),
-        body: data ? JSON.stringify(data) : undefined,
-        params: queryParams
+      body: data ? JSON.stringify(data) : undefined,
+      params: queryParams
     };
 
     const url = ENV.apiUrl + apiPath;
 
     return this.http.request<ResponseType>(method, url, httpOptions)
       .toPromise()
-      .then(response => {
-        // Successful response. Let ServerStatus know about it.
-        this.serverStatus.dispatch(new ServerIsOkAction());
-        return response;
-      })
       .catch(e => {
         this.processResponseError(e, method, url);
         throw e;
@@ -79,11 +64,12 @@ export class BaseApiService {
   }
 
   protected processResponseError(e: any, method: string, url: string): void {
-    this.logger.error(`API request ${method.toUpperCase()} ${url} failed:`, JSON.stringify(e));
+    this.logger.error(`Error in response to API request ${method.toUpperCase()} ${url} failed:`, JSON.stringify(e));
 
     if (e instanceof HttpErrorResponse) {
       if (!e.status) {
         // No response at all, probably no network connection or server is down.
+        this.serverStatus.notify({ type: ServerStatusErrorType.noConnection });
         throw new ServerUnreachableError();
       } else {
         // We have a response, check the status.
@@ -104,14 +90,21 @@ export class BaseApiService {
               throw new ServerUnknownError(e.message);
             }
 
-          case HttpStatus.unauthorized:
+          case HttpStatus.notFound:
           case HttpStatus.methodNotSupported:
+            this.serverStatus.notify({ type: ServerStatusErrorType.clientRequestError });
+            throw new ServerErrorResponse(e.status, e.error);
+
+          case HttpStatus.unauthorized:
+            this.serverStatus.notify({ type: ServerStatusErrorType.unauthorized });
             throw new ServerErrorResponse(e.status, e.error);
 
           default:
             if (BaseApiService.isInternalErrorStatus(e.status)) {
+              this.serverStatus.notify({ type: ServerStatusErrorType.internalServerError });
               throw new ServerInternalError(e.message);
             } else {
+              this.serverStatus.notify({ type: ServerStatusErrorType.unknownServerError });
               throw new ServerUnknownError(e.message);
             }
         }
@@ -119,10 +112,11 @@ export class BaseApiService {
     }
 
     // Server returned something we don't understand or some other unexpected error happened.
+    this.serverStatus.notify({ type: ServerStatusErrorType.unknownServerError });
     throw new ServerUnknownError();
   }
 
-  protected get<ResponseType>(apiPath: string, queryParams ?: HttpParams): Promise<ResponseType> {
+  protected get<ResponseType>(apiPath: string, queryParams?: HttpParams): Promise<ResponseType> {
     return this.request<ResponseType>('get', apiPath, undefined, queryParams);
   }
 

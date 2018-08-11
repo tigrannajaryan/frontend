@@ -7,19 +7,20 @@ import { META_REDUCERS, StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { IonicApp, IonicModule } from 'ionic-angular';
 import { ScreenOrientation } from '@ionic-native/screen-orientation';
+import { AppVersion } from '@ionic-native/app-version';
+import { AgmCoreModule, LAZY_MAPS_API_CONFIG } from '@agm/core';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
+import { UnhandledErrorHandler } from '~/shared/unhandled-error-handler';
+import { initSentry } from '~/shared/sentry';
+import { Logger } from '~/shared/logger';
+import { SharedSingletonsModule } from '~/shared/shared-singletons.module';
 import { MyAppComponent } from './app.component';
-import { Logger } from './shared/logger';
 import { AuthApiService } from '~/core/auth-api-service/auth-api-service';
 import { StylistServiceProvider } from '~/core/stylist-service/stylist-service';
 import { httpInterceptorProviders } from '~/core/http-interceptors';
 import { CoreModule } from '~/core/core.module';
 import { getMetaReducers, reducers } from './app.reducers';
-import { UnhandledErrorHandler } from '~/shared/unhandled-error-handler';
-import { initSentry } from '~/shared/sentry';
-import { AppVersion } from '@ionic-native/app-version';
-import { AgmCoreModule, LAZY_MAPS_API_CONFIG } from '@agm/core';
-import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { ENV } from '../environments/environment.default';
 import { GoogleMapsConfig } from '~/core/google-maps-config';
 import { AppStorage } from '~/core/app-storage';
@@ -31,6 +32,7 @@ const imports = [
   BrowserModule,
   HttpClientModule,
   CoreModule,
+  SharedSingletonsModule,
 
   /**
    * StoreModule.forRoot is imported once in the root module, accepting a reducer
