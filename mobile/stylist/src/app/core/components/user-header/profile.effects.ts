@@ -3,7 +3,6 @@ import { Actions, Effect } from '@ngrx/effects';
 import { Observable } from 'rxjs';
 
 import { StylistServiceProvider } from '~/core/stylist-service/stylist-service';
-import { showAlert } from '~/core/utils/alert';
 import { Logger } from '~/shared/logger';
 
 import {
@@ -24,7 +23,6 @@ export class ProfileEffects {
         const profile = await this.stylistService.getProfile();
         return new LoadProfileSuccessAction(profile);
       } catch (error) {
-        showAlert('Loading profile failed', error.message);
         const logger = new Logger();
         logger.error(error);
         return new LoadProfileErrorAction(error);

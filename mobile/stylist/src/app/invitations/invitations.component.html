@@ -1,8 +1,6 @@
 <ion-header class="ion-bb-header">
-  <ion-navbar>
-    <server-status></server-status>
-
-    <ion-buttons *ngIf="!isMainScreen" end>
+  <ion-navbar *ngIf="!isMainScreen">
+    <ion-buttons end>
       <button ion-button icon-only (click)="onSkip()">
         <span class="skip-link">Skip</span>
       </button>

@@ -94,33 +94,29 @@ export class RegisterSalonComponent {
 
   @loading
   async loadFormInitialData(): Promise<void> {
-    try {
-      const {
-        profile_photo_url,
-        first_name,
-        last_name,
-        phone,
-        salon_name,
-        salon_address,
-        profile_photo_id,
-        instagram_url,
-        website_url
-      } = await this.apiService.getProfile();
+    const {
+      profile_photo_url,
+      first_name,
+      last_name,
+      phone,
+      salon_name,
+      salon_address,
+      profile_photo_id,
+      instagram_url,
+      website_url
+    } = await this.apiService.getProfile();
 
-      this.form.patchValue({
-        vars: { image: `url(${profile_photo_url})` },
-        first_name,
-        last_name,
-        phone,
-        salon_name,
-        salon_address,
-        profile_photo_id,
-        instagram_url,
-        website_url
-      });
-    } catch (e) {
-      showAlert('Loading profile failed', e.message);
-    }
+    this.form.patchValue({
+      vars: { image: `url(${profile_photo_url})` },
+      first_name,
+      last_name,
+      phone,
+      salon_name,
+      salon_address,
+      profile_photo_id,
+      instagram_url,
+      website_url
+    });
   }
 
   initAutocomplete(): void {
@@ -137,7 +133,10 @@ export class RegisterSalonComponent {
     if (typeof google === 'undefined') {
       this.mapsAPILoader.load().then(() => {
         this.bindAutocompleteToInput();
-      });
+      })
+        .catch(e => {
+          this.logger.warn('Cannot load maps API, address automplete will not work.', e);
+        });
     } else {
       this.bindAutocompleteToInput();
     }
@@ -268,28 +267,23 @@ export class RegisterSalonComponent {
       return;
     }
 
-    try {
-      // imageData is either a base64 encoded string or a file URI
-      // If it's base64:
-      const originalBase64Image = `data:image/jpeg;base64,${imageData}`;
+    // imageData is either a base64 encoded string or a file URI
+    // If it's base64:
+    const originalBase64Image = `data:image/jpeg;base64,${imageData}`;
 
-      const downscaledBase64Image = await downscalePhoto(originalBase64Image);
+    const downscaledBase64Image = await downscalePhoto(originalBase64Image);
 
-      // set image preview
-      this.form.get('vars.image')
-        .setValue(this.domSanitizer.bypassSecurityTrustStyle(`url(${downscaledBase64Image})`));
+    // set image preview
+    this.form.get('vars.image')
+      .setValue(this.domSanitizer.bypassSecurityTrustStyle(`url(${downscaledBase64Image})`));
 
-      // convert base64 to File after to formData and send it to server
-      const file = await urlToFile(downscaledBase64Image, 'file.png');
-      const formData = new FormData();
-      formData.append('file', file);
+    // convert base64 to File after to formData and send it to server
+    const file = await urlToFile(downscaledBase64Image, 'file.png');
+    const formData = new FormData();
+    formData.append('file', file);
 
-      const response: any = await this.baseService.uploadFile(formData);
-      this.form.get('profile_photo_id')
-        .setValue(response.uuid);
-
-    } catch (e) {
-      showAlert('Saving photo failed', e.message);
-    }
+    const response: any = await this.baseService.uploadFile(formData);
+    this.form.get('profile_photo_id')
+      .setValue(response.uuid);
   }
 }

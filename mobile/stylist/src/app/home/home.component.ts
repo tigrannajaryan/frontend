@@ -9,35 +9,34 @@ import {
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
-import {
-  HomeLoadAction,
-  HomeState,
-  selectHomeState
-} from './home.reducer';
-
-import { AppointmentStatuses, Home } from './home.models';
+import { Logger } from '~/shared/logger';
+import { GAWrapper } from '~/shared/google-analytics';
+import { PageNames } from '~/core/page-names';
+import { showAlert } from '~/core/utils/alert';
+import { AppStorage } from '~/core/app-storage';
 import { StylistProfile } from '~/core/stylist-service/stylist-models';
+import { AppointmentStatuses, Home } from './home.models';
 import { Appointment } from '~/home/home.models';
 import { HomeService } from '~/home/home.service';
-import { PageNames } from '~/core/page-names';
 import { AppointmentCheckoutParams } from '~/appointment/appointment-checkout/appointment-checkout.component';
-import { loading } from '~/core/utils/loading';
-import { componentUnloaded } from '~/shared/component-unloaded';
-import { showAlert } from '~/core/utils/alert';
 import { LoadProfileAction, ProfileState, selectProfile } from '~/core/components/user-header/profile.reducer';
-import { GAWrapper } from '~/shared/google-analytics';
-import { AppStorage } from '~/core/app-storage';
-import { Logger } from '~/shared/logger';
 
 export enum AppointmentTag {
   NotCheckedOut = 'Not checked out',
   Now = 'Now',
   Next = 'Next'
 }
-export enum TabNames {
+
+export enum Tabs {
   today = 0,
   upcoming = 1,
   past = 2
+}
+
+export enum TabNames {
+  today = 'Today',
+  upcoming = 'Upcoming',
+  past = 'Past'
 }
 
 const helpText = `Congratulations! Your registration is complete.<br/><br/>
@@ -53,25 +52,25 @@ export class HomeComponent {
   protected appointmentTags: AppointmentTag[];
   protected AppointmentTag = AppointmentTag;
   protected PageNames = PageNames;
-  protected TabNames = TabNames;
+  protected Tabs = Tabs;
   protected tabs = [
     {
-      name: 'Today',
+      name: TabNames.today,
       loaded: false,
       appointments: []
     },
     {
-      name: 'Upcoming',
+      name: TabNames.upcoming,
       loaded: false,
       appointments: []
     },
     {
-      name: 'Past',
+      name: TabNames.past,
       loaded: false,
       appointments: []
     }
   ];
-  protected activeTab: string;
+  protected activeTab: TabNames;
   protected home: Home;
   protected isLoading: boolean;
   @ViewChild(Slides) slides: Slides;
@@ -84,7 +83,7 @@ export class HomeComponent {
     public navParams: NavParams,
     public homeService: HomeService,
     public alertCtrl: AlertController,
-    private store: Store<HomeState & ProfileState>,
+    private store: Store<ProfileState>,
     private actionSheetCtrl: ActionSheetController,
     private appStorage: AppStorage,
     private logger: Logger,
@@ -93,33 +92,26 @@ export class HomeComponent {
   }
 
   ionViewCanEnter(): Promise<boolean> {
-    this.logger.info('HomeComponent: ionViewCanEnter...', new Date().toISOString());
+    this.logger.info('HomeComponent: ionViewCanEnter');
 
     // Make sure appStorage is ready before we enter this page
     return this.appStorage.ready().then(() => true);
   }
 
   ionViewDidLoad(): void {
-    this.activeTab = this.tabs[TabNames.today].name;
+    this.activeTab = this.tabs[Tabs.today].name;
   }
 
   // we need ionViewWillEnter here because it fire each time when we go to this page
   // for example form adding appointment using nav.pop
   // and ionViewDidLoad fire only once this is not what we need here
   ionViewWillEnter(): void {
-    this.logger.info('HomeComponent: entering...', new Date().toISOString());
+    this.logger.info('HomeComponent: entering.');
 
     if (this.appStorage.get('showHomeScreenHelp')) {
       showAlert('', helpText);
       this.appStorage.set('showHomeScreenHelp', false);
     }
-
-    this.store.select(selectHomeState)
-      .takeUntil(componentUnloaded(this))
-      .subscribe((homeState: HomeState) => {
-        this.isLoading = homeState.loading;
-        this.processHomeData(homeState.home);
-      });
 
     // Load profile info
     this.profile = this.store.select(selectProfile);
@@ -130,7 +122,7 @@ export class HomeComponent {
 
   protected onAppointmentClick(appointment: Appointment): void {
     // if this is past tab => open checkout page immediately
-    if (this.activeTab === this.tabs[TabNames.past].name) {
+    if (this.activeTab === this.tabs[Tabs.past].name) {
       this.checkOutAppointmentClick(appointment);
       return;
     }
@@ -154,7 +146,7 @@ export class HomeComponent {
     ];
 
     // remove 'Checkout Client' if this is upcoming tab
-    if (this.activeTab === this.tabs[TabNames.upcoming].name) {
+    if (this.activeTab === this.tabs[Tabs.upcoming].name) {
       buttons.splice(0, 1);
     }
 
@@ -176,16 +168,26 @@ export class HomeComponent {
   /**
    * Handler for 'Cancel' action.
    */
-  @loading
   protected async cancelAppointment(appointment: Appointment): Promise<void> {
     await this.homeService.changeAppointment(appointment.uuid, { status: AppointmentStatuses.cancelled_by_stylist });
-    this.store.dispatch(new HomeLoadAction(this.activeTab.toLowerCase()));
+    this.loadAppointments(this.activeTab);
   }
 
-  protected async doRefresh(refresher): Promise<void> {
-    await this.loadAppointments(this.activeTab);
+  protected async onRefresh(refresher): Promise<void> {
+    try {
+      // Reload the profile information
+      this.store.dispatch(new LoadProfileAction());
 
-    refresher.complete();
+      // and reload the appointments list on active tab
+      await this.loadAppointments(this.activeTab);
+    } finally {
+
+      // When appointment reloading is done close the refresher. This is a bit hacky
+      // because it not wait for profile loading to compelte but is likely good enough
+      // since all we need is to indicate loading and in reality profile will be
+      // loaded faster that the list of appointments.
+      refresher.complete();
+    }
   }
 
   // swipe action for tabs
@@ -196,12 +198,20 @@ export class HomeComponent {
     }
     this.activeTab = this.tabs[this.slides.getActiveIndex()].name;
     this.loadAppointments(this.activeTab);
+    this.ga.trackView(`Home${this.activeTab}`);
   }
 
-  private loadAppointments(tabType: string): void {
-    this.activeTab = tabType || this.tabs[TabNames.today].name;
-    this.store.dispatch(new HomeLoadAction(this.activeTab.toLowerCase()));
-    this.ga.trackView(`Home${this.activeTab}`);
+  private async loadAppointments(tabType: TabNames): Promise<void> {
+    this.activeTab = tabType || this.tabs[Tabs.today].name;
+    const query = this.activeTab.toLowerCase();
+
+    this.isLoading = true;
+    try {
+      const home = await this.homeService.getHome(query);
+      this.processHomeData(home);
+    } finally {
+      this.isLoading = false;
+    }
   }
 
   /**
@@ -216,15 +226,13 @@ export class HomeComponent {
 
     this.home = home;
 
-    if (!this.isLoading) {
-      this.tabs[index].appointments = home.appointments;
-      this.tabs[index].loaded = true;
-    }
+    this.tabs[index].appointments = home.appointments;
+    this.tabs[index].loaded = true;
 
     this.appointmentTags = [];
 
     // appointmentTags for today tab
-    if (this.activeTab === this.tabs[TabNames.today].name) {
+    if (this.activeTab === this.tabs[Tabs.today].name) {
       // Create tags for each appointment based on their start/end times
       let metNext = false;
       for (const appointment of this.home.appointments) {

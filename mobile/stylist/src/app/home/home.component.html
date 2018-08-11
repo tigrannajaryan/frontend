@@ -8,7 +8,7 @@
     </button>
   </ion-fab>
 
-  <ion-refresher (ionRefresh)="doRefresh($event)" class="Refresh">
+  <ion-refresher (ionRefresh)="onRefresh($event)" class="Refresh">
     <ion-spinner></ion-spinner>
   </ion-refresher>
 
@@ -23,66 +23,64 @@
 
   <div *ngIf="home" class="Home-btns">
     <div class="bb-wp-a Home-btnsWp">
-      <button (click)="loadAppointments(tabs[TabNames.today].name)" [class.active]="tabs[TabNames.today].name === activeTab" ion-button clear color="dark" class="Home-btnsBtn active">
-        {{ tabs[TabNames.today].name }}
-        &nbsp;
+      <button (click)="loadAppointments(tabs[Tabs.today].name)" [class.active]="tabs[Tabs.today].name === activeTab" ion-button
+        clear color="dark" class="Home-btnsBtn active">
+        {{ tabs[Tabs.today].name }} &nbsp;
         <b>{{ home.today_visits_count }}</b>
       </button>
-      <button (click)="loadAppointments(tabs[TabNames.upcoming].name)" [class.active]="tabs[TabNames.upcoming].name === activeTab" ion-button clear color="dark" class="Home-btnsBtn">
-        {{ tabs[TabNames.upcoming].name }}
-        &nbsp;
+      <button (click)="loadAppointments(tabs[Tabs.upcoming].name)" [class.active]="tabs[Tabs.upcoming].name === activeTab" ion-button
+        clear color="dark" class="Home-btnsBtn">
+        {{ tabs[Tabs.upcoming].name }} &nbsp;
         <b>{{ home.upcoming_visits_count }}</b>
       </button>
-      <button (click)="loadAppointments(tabs[TabNames.past].name)" [class.active]="tabs[TabNames.past].name === activeTab" ion-button clear color="dark" class="Home-btnsBtn">
-        {{ tabs[TabNames.past].name }}
+      <button (click)="loadAppointments(tabs[Tabs.past].name)" [class.active]="tabs[Tabs.past].name === activeTab" ion-button clear
+        color="dark" class="Home-btnsBtn">
+        {{ tabs[Tabs.past].name }}
       </button>
     </div>
   </div>
 
   <ion-slides (ionSlideDidChange)="slideChanged()" no-padding class="bb-wp-a">
     <ion-slide class="Home-items Home-wp">
-      <div *ngIf="!tabs[TabNames.today].loaded"><ion-spinner></ion-spinner></div>
+      <div *ngIf="!tabs[Tabs.today].loaded">
+        <ion-spinner></ion-spinner>
+      </div>
 
-      <div *ngIf="tabs[TabNames.today].loaded">
-        <div *ngIf="tabs[TabNames.today]?.appointments?.length === 0" class="Home-itemsNull">Your scheduled visits will show up here.</div>
+      <div *ngIf="tabs[Tabs.today].loaded">
+        <div *ngIf="tabs[Tabs.today]?.appointments?.length === 0" class="Home-itemsNull">Your scheduled visits will show up here.</div>
 
-        <appointment-item
-          *ngFor="let appointment of tabs[TabNames.today].appointments; let index = index"
-          [appointment]="appointment"
-          [appointmentTag]="appointmentTags[index]"
-          (click)="onAppointmentClick(appointment)">
+        <appointment-item *ngFor="let appointment of tabs[Tabs.today].appointments; let index = index" [appointment]="appointment"
+          [appointmentTag]="appointmentTags[index]" (click)="onAppointmentClick(appointment)">
         </appointment-item>
       </div>
     </ion-slide>
 
 
     <ion-slide class="Home-items Home-wp">
-      <div *ngIf="!tabs[TabNames.upcoming].loaded"><ion-spinner></ion-spinner></div>
+      <div *ngIf="!tabs[Tabs.upcoming].loaded">
+        <ion-spinner></ion-spinner>
+      </div>
 
-      <div *ngIf="tabs[TabNames.upcoming].loaded">
-        <div *ngIf="tabs[TabNames.upcoming]?.appointments?.length === 0" class="Home-itemsNull">Your scheduled visits will show up here.</div>
+      <div *ngIf="tabs[Tabs.upcoming].loaded">
+        <div *ngIf="tabs[Tabs.upcoming]?.appointments?.length === 0" class="Home-itemsNull">Your scheduled visits will show up here.</div>
 
-        <appointment-item
-          *ngFor="let appointment of tabs[TabNames.upcoming].appointments; let index = index"
-          [appointment]="appointment"
-          (click)="onAppointmentClick(appointment)"
-          [hasDate]="true">
+        <appointment-item *ngFor="let appointment of tabs[Tabs.upcoming].appointments; let index = index" [appointment]="appointment"
+          (click)="onAppointmentClick(appointment)" [hasDate]="true">
         </appointment-item>
       </div>
     </ion-slide>
 
 
     <ion-slide class="Home-items Home-wp">
-      <div *ngIf="!tabs[TabNames.past].loaded"><ion-spinner></ion-spinner></div>
+      <div *ngIf="!tabs[Tabs.past].loaded">
+        <ion-spinner></ion-spinner>
+      </div>
 
-      <div *ngIf="tabs[TabNames.past].loaded">
-        <div *ngIf="tabs[TabNames.past]?.appointments?.length === 0" class="Home-itemsNull">Your past visits will show up here.</div>
+      <div *ngIf="tabs[Tabs.past].loaded">
+        <div *ngIf="tabs[Tabs.past]?.appointments?.length === 0" class="Home-itemsNull">Your past visits will show up here.</div>
 
-        <appointment-item
-          *ngFor="let appointment of tabs[TabNames.past].appointments; let index = index"
-          [appointment]="appointment"
-          [appointmentTag]="appointment.status === 'new' ? AppointmentTag.NotCheckedOut : null"
-          (click)="onAppointmentClick(appointment)"
+        <appointment-item *ngFor="let appointment of tabs[Tabs.past].appointments; let index = index" [appointment]="appointment"
+          [appointmentTag]="appointment.status === 'new' ? AppointmentTag.NotCheckedOut : null" (click)="onAppointmentClick(appointment)"
           [hasDate]="true">
         </appointment-item>
       </div>
