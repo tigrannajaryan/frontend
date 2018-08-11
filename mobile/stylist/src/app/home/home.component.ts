@@ -40,10 +40,9 @@ export enum TabNames {
   past = 2
 }
 
-const helpText = `Congratulations! You completed your registration.<br/><br/>
-  This is your home screen where you will see all appointments for today
-  and can add new appointments using the big plus button.<br/><br/>
-  You can also tap the icons at the bottom of the screen to edit your settings.`;
+const helpText = `Congratulations! Your registration is complete.<br/><br/>
+  This is your homescreen. Your appointments will show up here.<br/><br/>
+  You can also edit your information from the tab bar listed below.<br/>Let's get started.`;
 
 @IonicPage({ segment: 'home' })
 @Component({
