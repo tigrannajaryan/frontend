@@ -14,7 +14,7 @@ export const API_COMMON_ERROR = 'API_COMMON_ERROR';
 
 export class ApiCommonErrorAction implements Action {
   readonly type = API_COMMON_ERROR;
-  constructor(public error: ApiError) {}
+  constructor(public error: ApiError) { }
 }
 
 @Injectable()
@@ -28,7 +28,7 @@ export class ApiCommonErrorsEffects {
     .map((action: ApiCommonErrorAction) => {
 
       if (action.error instanceof ApiRequestUnauthorizedError) {
-        const [ nav ] = this.app.getActiveNavs();
+        const [nav] = this.app.getActiveNavs();
         nav.setRoot(PageNames.Auth);
         return;
       }
@@ -40,5 +40,5 @@ export class ApiCommonErrorsEffects {
     private actions: Actions,
     private app: App,
     private errorHandler: ErrorHandler
-  ) {}
+  ) { }
 }

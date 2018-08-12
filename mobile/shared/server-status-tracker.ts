@@ -15,10 +15,55 @@ export interface ServerStatusError {
   type: ServerStatusErrorType;
 }
 
-/**
- * A singleton that serves as central dispatching and subscribing point for all
- * centrally handled server errors.
- */
+/*
+ServerStatusTracker - a singleton that serves as central dispatching and subscribing point
+for all centrally handled server errors.
+
++------------+
+| +------------+
+| | +------------+
+| | |            |         +---------------------+
+| | |  Screen    |         |ServerStatusComponent|
++-+ |  Views     |         |                     |
+  +-+            |         |       (Toast)       |
+    +---+---+----+         +----------+----------+
+        |   ^                         ^
+        |   |response                 |
+   get()|   |or                       |  notify
+        |   |error                    |(Observable)
+        v   |                         |
+    +---+---+----+         +----------+-----------+
+    |            |         |                      |
+    |    Data    |         | ServerStatusTracker  |
+    |   Stores   |         |                      |
+    |            |         |                      |
+    +---+---+----+         +----------+-----------+
+        |   ^                         ^
+        |   |response                 |
+ request|   |or                       |
+        |   |error                    |notify about
+        v   |                         |general errors
+    +---+---+----+                    |
+  +-+            |                    |
++-+ |    API     +--------------------+
+| | |  Services  |
+| | |            |
+| | +------------+
+| +------------+
++------------+
+          |
+          | HTTP
+          |
+          v
+        +-+ +
+    +-+     +-+
+   +           +--++
+   ++  Backend    |
+   ++             |
+      +-+ +-+    +++
+        +   + +--+
+
+*/
 @Injectable()
 export class ServerStatusTracker {
 

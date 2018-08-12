@@ -55,4 +55,3 @@ Note: to run successfully on VSTS this requires Hosted VS2017 agent.
 
 To build and run on Android emulator or connected Android device
 use command `ionic cordova run android --device`
-

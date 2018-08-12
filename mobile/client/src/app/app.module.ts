@@ -18,6 +18,7 @@ import { EffectsModule } from '@ngrx/effects';
 
 import { Logger } from '~/shared/logger';
 import { initSentry } from '~/shared/sentry';
+import { SharedSingletonsModule } from '~/shared/shared-singletons.module';
 
 import { AuthInterceptor } from '~/core/http-interceptors/auth-interceptor';
 import { ClientUnhandledErrorHandler } from '~/core/unhandled-error-handler';
@@ -37,8 +38,8 @@ import { DataModule } from '~/core/api/data.module';
 
 initSentry();
 
-import { BaseApiService } from '~/shared/base-api-service';
 import { ServerStatusTracker } from '~/shared/server-status-tracker';
+import { BaseService } from '~/core/api/base-service';
 
 @NgModule({
   declarations: [
@@ -49,7 +50,7 @@ import { ServerStatusTracker } from '~/shared/server-status-tracker';
     HttpClientModule,
     ReactiveFormsModule,
     CoreModule,
-
+    SharedSingletonsModule,
     DataModule.forRoot(),
 
     IonicModule.forRoot(ClientAppComponent, {
@@ -101,7 +102,7 @@ import { ServerStatusTracker } from '~/shared/server-status-tracker';
     ScreenOrientation,
 
     // Shared:
-    BaseApiService,
+    BaseService,
     ServerStatusTracker,
 
     { // Add auth token to all requests
