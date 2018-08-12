@@ -1,6 +1,7 @@
 .Button {
   width: 100%;
   min-height: 55px;
+  text-transform: none;  //Added to remove upercase No button in design is upercase 
   background-color: color($colors, primary);
   border-radius: 10px;
   box-shadow: 0 6px 34px rgba(color($colors, primary), 50%);

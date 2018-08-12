@@ -1,0 +1,49 @@
+.BookingCompletePage {
+  .BookingComplete-grid {
+    height: 100%;
+    text-align: center;
+
+    .BookingComplete-gridRow {
+      height: 28%;
+    }
+
+    .BookingComplete-checkmarkRow {
+      height: 44%; 
+     }
+
+  }
+
+  .BookingComplete-checkmarkCircle {
+    width: 220px;
+    height: 220px;
+    padding: 28px;
+    margin: 20px auto;
+    border: 1px solid color($grayscale, 300);
+    border-radius: 50%;
+
+    .BookingComplete-checkmarkCircleInner {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+      margin: auto;
+      background: color($colors, primary);
+      border-radius: 50%;
+
+      ion-icon {
+        font-size: 9rem;
+        font-weight: 100;
+      }
+    }
+  }
+  
+  .BookingComplete-h2 {
+    font-weight: 700;
+    line-height: 1.2;
+  }
+
+  .BookingComplete-button {
+    margin-bottom: 20px;
+  }
+}
