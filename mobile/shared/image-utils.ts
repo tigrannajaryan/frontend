@@ -1,5 +1,3 @@
-import { Observable } from 'rxjs';
-
 /**
  * Converts a base64 string to a file.
  * @param url base64
@@ -65,27 +63,4 @@ export function downscalePhoto(imageUri: string): Promise<string> {
     };
     image.src = imageUri;
   });
-}
-
-export function getImageFormData(imageUrl: string): Promise<FormData> {
-  return Observable.of(imageUrl)
-    .map((url: string) => {
-      // Get base64 string out of image url:
-      return `data:image/jpeg;base64,${url}`;
-    })
-    .switchMap((base64: string) => {
-      // Reduce size of the image:
-      return Observable.from(downscalePhoto(base64));
-    })
-    .switchMap((dataUri: string) => {
-      // Get file from image data string:
-      return Observable.from(urlToFile(dataUri, 'file.png'));
-    })
-    .map((file: File) => {
-      // Prepare form data:
-      const formData = new FormData();
-      formData.append('file', file);
-      return formData;
-    })
-    .toPromise();
 }
