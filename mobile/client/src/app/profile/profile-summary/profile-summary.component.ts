@@ -1,8 +1,11 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController } from 'ionic-angular';
+import { Clipboard } from '@ionic-native/clipboard';
+import { EmailComposer } from '@ionic-native/email-composer';
 
 import { PageNames } from '~/core/page-names';
 import { composeRequest, loading } from '~/core/utils/request-utils';
+import { showAlert } from '~/core/utils/alert';
 
 import { DefaultImage } from '~/core/core.module';
 
@@ -22,6 +25,8 @@ export class ProfileSummaryComponent {
   readonly DEFAULT_IMAGE = `url(${DefaultImage.User})`;
 
   constructor(
+    private clipboard: Clipboard,
+    private emailComposer: EmailComposer,
     private navCtrl: NavController,
     private profileDataStore: ProfileDataStore
   ) {
@@ -43,5 +48,15 @@ export class ProfileSummaryComponent {
 
   onEdit(): void {
     this.navCtrl.push(PageNames.ProfileEdit, { profile: this.profile });
+  }
+
+  async onContactByEmail(mailTo: string): Promise<void> {
+    const isAvailable = await this.emailComposer.isAvailable();
+    if (!isAvailable) { // if sending emails is not supported on the device
+      this.clipboard.copy(mailTo);
+      showAlert('Email copied', 'Email successfully copied to the clipboard.');
+      return;
+    }
+    this.emailComposer.open({ to: mailTo });
   }
 }
