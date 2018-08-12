@@ -1,128 +1,77 @@
 page-worktime-component {
-  .title{
-    font-size: pxtoem(30);
-    margin-bottom: 4rem;
-    padding: pxtoem(12) 0 0;
-     
-    p{
-        font-size: pxtoem(10);
-        color: color($grayscale, 400);
-        margin: 1rem 0px;
-        font-weight: normal;
-
-      }
-  }
-  //Shifts block
-  .workingtime_shifts_block{
-    border-radius: 5px;
-    padding: 0px;
-    margin-bottom: 3rem;
-    min-width: 240px;
+  .Workingtime {
+    position: relative;
+    padding: pxtovw(26px) pxtovw(24px) pxtovw(24px);
+    margin-bottom: pxtovw(20px);
     background: color($colors, white);
-    box-shadow: 0 0 50px 15px color($colors, color7);
+    border-radius: pxtovw(16px);
+    box-shadow: 0 7px 43px 0 rgba(black, 0.08);
+  }
 
-    .wd-row ion-col{ 
-      padding: 0px;
+  .Workingtime-head {
+    display: flex;
+    justify-content: space-between;
+    margin: 0 0 pxtovw(24px);
+  }
+
+  .Workingtime-headItem {
+    width: 27%;
+    border-bottom: 3px solid color($colors, secondary);
+  }
+
+  .Workingtime-headItemBig {
+    width: 40%;
+  }
+
+  .Workingtime-headLabel {
+    margin: 0 0 pxtovw(10px);
+    font-size: pxtovw(14px);
+  }
+
+  .Workingtime-headTime {
+    padding: 0 0 pxtovw(10px);
+    font-size: pxtovw(18px);
+    font-weight: 700;
+    line-height: pxtovw(24px);
+
+    .item-cover {
+      padding: 0;
     }
-    .wd-row:first-child ion-col{
-      padding-left: 10px;
-      width: 20%;
-    }
-    .wd-row ion-col:nth-child(2){
-      width: 20%;
-    }
-    .label-md{
-      margin: 13px 0px 0px 10px;
-    }
-    .datetime-ios,
-    .datetime-md{
-      margin: 5px 8px 13px 10px;
-      border-bottom: 1px solid color($colors, bb_honey);
-      padding: 0px;
-      font-size: $t-h3;
-      
-      @media ($phone){
-        font-size: $t-h3;
-      }
-    }
-    
-    span{
-      padding-top: 5px;
-      font-size: $t-h3;
-      display:inline-block;
-      margin-left: 10px;
-    }
-    // week days greed
-    .wd_greed{
-      width: 88%;
-      background-color: color($colors, white);
-      border-radius:5px;
-      border: 1px solid color($grayscale, 200);
-      box-shadow: 0 0 5px 1px color($colors, color7);
-      margin:10px auto 25px auto;
-    }
-    .wd_greed ion-grid.grid{
-      width: auto;
-      padding: 5px 5px 0px 5px;
-    }
-    .wd_greed a{
+  }
+
+  .Workingtime-days {
+    display: flex;
+    justify-content: space-between;
+    border: 1px solid color($grayscale, 200);
+    border-radius: 4px;
+  }
+
+  .Workingtime-daysItem {
+    padding: pxtovw(6px) pxtovw(5px) pxtovw(4px);
+    font-size: pxtovw(15px);
+    color: color($colors, color24);
+    letter-spacing: pxtovw(0.5px);
+    border-bottom: 3px solid transparent;
+
+    &.is-available {
       color: color($grayscale, 800);
-      font-size: $t-base;
-      display: inline-block;
-      padding: 0px 3px 3px 3px;
-      border-bottom:2px solid color($colors, bb_skin);
-      
+      border-bottom: 3px solid color($colors, secondary);
     }
-    .wd_greed ion-grid ion-col:nth-child(5) a{
-      padding: 0px 7px 3px 4px;
-
-    }
-    .wd_greed a.disabled{
-      color: color($grayscale, 400);
-      border-bottom:none;
-      box-shadow:none;
-    }
-    .wd_greed ion-row ion-col{
-      padding: 0px 5px;
-    }  
-    //week days end
   }
-  //sifts block end
 
-  .wd-text{
-    font-size: 1.5em;
-    margin: 4rem 7rem 4rem 7rem;
-    font-weight: normal;
+  .Workingtime-info {
+    margin: pxtovw(24px) 0 pxtovw(22px);
+    font-size: pxtovw(18px);
     text-align: center;
-    line-height: 2.5rem;
   }
 
-  //Last row
-  .last_row {
-    margin:3rem 0rem 2rem 0rem;
-    padding-top: 5px;
-    border-top: 1px solid color($grayscale, 400);
-    font-size: $t-h4;
-  
-    ion-col:first-child{
-      min-width: 120px !important;
-    }
-
-    ion-col:nth-child(2){
-      text-align: center;
-    }
-    ion-col:last-child{
-      text-align: right;
-    }
+  .Workingtime-delete {
+    position: absolute;
+    top: pxtovw(5px);
+    right: pxtovw(12px);
+    padding: pxtovw(10px);
+    margin: 0;
+    font-size: pxtovw(18px);
+    color: color($grayscale, 800);
   }
-  //last row end
-  .add_new_block ion-col{
-    padding-top: 30px;
-   text-align: center;
-
-  }
-  .button-md{
-    text-transform: none;
-  }
-
 }

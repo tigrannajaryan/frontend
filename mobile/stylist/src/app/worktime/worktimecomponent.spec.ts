@@ -64,10 +64,7 @@ describe('Pages: WorktimeComponent', () => {
     expect(instance.cards[0].weekdays[WeekdayIso.Mon].enabled).toEqual(false);
     expect(instance.cards[1].weekdays[WeekdayIso.Mon].enabled).toEqual(false);
 
-    await instance.saveChanges();
-
-    // After saving 2 cards must be collapsed into 1
-    expect(instance.cards.length).toEqual(1);
+    await instance.autoSave();
 
     const api = injector.get(WorktimeApi) as WorktimeApiMock;
 
