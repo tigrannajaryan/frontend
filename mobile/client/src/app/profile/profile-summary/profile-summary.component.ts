@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController } from 'ionic-angular';
+import { AlertController, IonicPage, NavController } from 'ionic-angular';
 import { Clipboard } from '@ionic-native/clipboard';
 import { EmailComposer } from '@ionic-native/email-composer';
+import { Store } from '@ngrx/store';
 
 import { PageNames } from '~/core/page-names';
 import { composeRequest, loading } from '~/core/utils/request-utils';
@@ -11,6 +12,7 @@ import { DefaultImage } from '~/core/core.module';
 
 import { ProfileDataStore } from '~/profile/profile.data';
 import { ProfileModel } from '~/core/api/profile.models';
+import { LogoutAction } from '~/core/reducers/auth.reducer';
 
 @IonicPage()
 @Component({
@@ -25,10 +27,12 @@ export class ProfileSummaryComponent {
   readonly DEFAULT_IMAGE = `url(${DefaultImage.User})`;
 
   constructor(
+    private alertCtrl: AlertController,
     private clipboard: Clipboard,
     private emailComposer: EmailComposer,
     private navCtrl: NavController,
-    private profileDataStore: ProfileDataStore
+    private profileDataStore: ProfileDataStore,
+    private store: Store<{}>
   ) {
   }
 
@@ -58,5 +62,20 @@ export class ProfileSummaryComponent {
       return;
     }
     this.emailComposer.open({ to: mailTo });
+  }
+
+  async onLogout(): Promise<void> {
+    const prompt = this.alertCtrl.create({
+      title: '',
+      subTitle: 'Do you want to logout?',
+      buttons: [{
+        text: 'Logout now',
+        handler: () => this.store.dispatch(new LogoutAction())
+      }, {
+        text: 'Cancel',
+        role: 'cancel'
+      }]
+    });
+    prompt.present();
   }
 }

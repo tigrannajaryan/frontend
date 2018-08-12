@@ -2,9 +2,12 @@ import { ErrorHandler, Injector, NgModule } from '@angular/core';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
-import { AppVersion } from '@ionic-native/app-version';
 
 import { IonicApp, IonicModule } from 'ionic-angular';
+
+import { AppVersion } from '@ionic-native/app-version';
+import { Clipboard } from '@ionic-native/clipboard';
+import { EmailComposer } from '@ionic-native/email-composer';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import { IonicStorageModule } from '@ionic/storage';
@@ -21,6 +24,8 @@ import { ClientUnhandledErrorHandler } from '~/core/unhandled-error-handler';
 
 import { ClientAppComponent } from '~/app.component';
 import { getMetaReducers, reducers } from '~/app.reducers';
+
+import { LogoutEffects } from '~/core/effects/logout.effects';
 
 import { AuthEffects } from '~/core/effects/auth.effects';
 import { ApiCommonErrorsEffects } from '~/core/effects/api-common-errors.effects';
@@ -70,6 +75,8 @@ import { ServerStatusTracker } from '~/shared/server-status-tracker';
      * See: https://github.com/ngrx/platform/blob/master/docs/effects/api.md#forroot
      */
     EffectsModule.forRoot([
+      LogoutEffects,
+
       AuthEffects,
       ApiCommonErrorsEffects,
       ServicesEffects,
@@ -84,11 +91,16 @@ import { ServerStatusTracker } from '~/shared/server-status-tracker';
   ],
   providers: [
     Logger,
-    StatusBar,
-    SplashScreen,
+
+    // Plugins
     AppVersion,
+    Clipboard,
+    EmailComposer,
+    SplashScreen,
+    StatusBar,
     ScreenOrientation,
 
+    // Shared:
     BaseApiService,
     ServerStatusTracker,
 
