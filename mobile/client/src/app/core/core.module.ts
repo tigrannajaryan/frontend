@@ -28,7 +28,8 @@ const declarations = [
   PricePipe,
   ServerStatusComponent,
   MadeHeaderComponent,
-  AppointmentItemComponent
+  AppointmentItemComponent,
+  ServerStatusComponent
 ];
 
 @NgModule({

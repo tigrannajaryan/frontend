@@ -1,6 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 
 import { HighLevelErrorCode } from '~/shared/api-error-codes';
+import { ServerStatusErrorType, ServerStatusTracker } from '~/shared/server-status-tracker';
 
 import {
   ApiError,
@@ -16,12 +17,16 @@ import {
   ServerUnreachableError
 } from '~/core/api/errors.models';
 
+import { AppModule } from '~/app.module';
+
 /**
  * Process HttpErrorResponse and convert it to an array of ApiError items.
  */
 export function processApiResponseError(error: HttpErrorResponse): ApiError[] {
-  if (error.error instanceof ErrorEvent) {
+  const serverStatus = AppModule.injector.get(ServerStatusTracker);
+  if (error.error instanceof ErrorEvent || !error.status) {
     // Client-side error, e.g. network error or exception thrown.
+    serverStatus.notify({ type: ServerStatusErrorType.noConnection });
     return [new ServerUnreachableError(error.error)];
   }
   const status = String(error.status);
@@ -29,8 +34,10 @@ export function processApiResponseError(error: HttpErrorResponse): ApiError[] {
     return convertErrorResponseToArray(error.error);
   }
   if (/^5\d\d/.test(status)) { // 5xx
+    serverStatus.notify({ type: ServerStatusErrorType.internalServerError });
     return [new ServerInternalError(error.error)];
   }
+  serverStatus.notify({ type: ServerStatusErrorType.unknownServerError });
   return [new ServerUnknownError(error.error)];
 }
 
