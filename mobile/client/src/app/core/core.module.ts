@@ -3,6 +3,8 @@ import { IonicModule } from 'ionic-angular';
 import { GoogleAnalytics } from '@ionic-native/google-analytics';
 
 import { GAWrapper } from '~/shared/google-analytics';
+import { HasErrorPipe } from '~/shared/pipes/has-error.pipe';
+import { PricePipe } from '~/shared/pipes/price.pipe';
 
 import { ServerStatusComponent } from '~/shared/server-status/server-status.component';
 
@@ -10,8 +12,6 @@ import { InputNumberDirective } from '~/core/directives/input-number.directive';
 import { PhoneInputDirective } from '~/core/directives/phone-input.directive';
 
 import { FormatPhonePipe } from '~/core/pipes/format-phone.pipe';
-import { HasErrorPipe } from '~/core/pipes/has-error.pipe';
-import { PricePipe } from '~/core/pipes/price.pipe';
 
 import { MadeHeaderComponent } from '~/core/components/made-header/made-header.component';
 import { AppointmentItemComponent } from '~/core/components/appointment-item/appointment-item.component';

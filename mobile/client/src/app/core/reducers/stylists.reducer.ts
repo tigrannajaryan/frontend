@@ -1,9 +1,8 @@
 import { Action, createFeatureSelector, createSelector } from '@ngrx/store';
 
+import { ApiError } from '~/shared/api-errors';
 import { RequestState } from '~/core/api/request.models';
-import { ApiError } from '~/core/api/errors.models';
 import { StylistModel } from '~/core/api/stylists.models';
-
 import { authActionTypes, ConfirmCodeSuccessAction } from '~/core/reducers/auth.reducer';
 
 export enum stylistsActionTypes {
@@ -19,7 +18,7 @@ export class SearchStylistsAction implements Action {
 
 export class SearchStylistsErrorAction implements Action {
   readonly type = stylistsActionTypes.SEARCH_STYLISTS_ERROR;
-  constructor(public errors: ApiError[]) {}
+  constructor(public error: ApiError) {}
 }
 
 export class SearchStylistSuccessAction implements Action {
@@ -39,7 +38,7 @@ export interface StylistState {
   stylists?: StylistModel[];
 
   requestState: RequestState;
-  errors?: ApiError[];
+  error?: ApiError;
 }
 
 const initialState: StylistState = {
@@ -58,14 +57,14 @@ export function stylistsReducer(state: StylistState = initialState, action: Acti
       return {
         ...state,
         requestState: RequestState.Loading,
-        errors: undefined
+        error: undefined
       };
 
     case stylistsActionTypes.SEARCH_STYLISTS_ERROR:
       return {
         ...state,
         requestState: RequestState.Failed,
-        errors: action.errors
+        error: action.error
       };
 
     case stylistsActionTypes.SEARCH_STYLISTS_SUCCESS:

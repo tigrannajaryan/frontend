@@ -3,11 +3,10 @@ import { Actions, Effect } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
+import { NonFieldErrorItem } from '~/shared/api-errors';
+import { hasError } from '~/shared/pipes/has-error.pipe';
 import { saveToken } from '~/core/utils/token-utils';
-import { hasError } from '~/core/pipes/has-error.pipe';
-
 import { LOADING_DELAY, RequestState } from '~/core/api/request.models';
-import { ApiNonFieldError } from '~/core/api/errors.models';
 import { AuthService } from '~/core/api/auth-service';
 import {
   AuthTokenModel,
@@ -41,15 +40,15 @@ export class AuthEffects {
     .map((action: RequestCodeAction) => ({ phone: action.phone }))
     .switchMap((params: GetCodeParams) =>
       this.authService.getCode(params)
-        .map(({ response, errors }) => {
+        .map(({ response, error }) => {
           const timestamp = Number(new Date());
-          if (errors) {
-            const requestCodeTimeoutError = new ApiNonFieldError({ code: 'err_wait_to_rerequest_new_code' });
-            if (hasError(errors, requestCodeTimeoutError)) {
+          if (error) {
+            const requestCodeTimeoutError = new NonFieldErrorItem({ code: 'err_wait_to_rerequest_new_code' });
+            if (hasError(error, requestCodeTimeoutError)) {
               // code already sent, consider it as success for simplicity
               return new RequestCodeSuccessAction();
             }
-            return new RequestCodeErrorAction(errors);
+            return new RequestCodeErrorAction(error);
           }
           return new RequestCodeSuccessAction(timestamp);
         })
@@ -74,9 +73,9 @@ export class AuthEffects {
     .map((action: ConfirmCodeAction) => ({ phone: action.phone, code: action.code }))
     .switchMap((params: ConfirmCodeParams) =>
       this.authService.confirmCode(params)
-        .map(({ response, errors }) => {
-          if (errors) {
-            return new ConfirmCodeErrorAction(errors);
+        .map(({ response, error }) => {
+          if (error) {
+            return new ConfirmCodeErrorAction(error);
           }
           const { created_at, token, stylist_invitation } = response;
           const tokenData: AuthTokenModel = { created_at, token };

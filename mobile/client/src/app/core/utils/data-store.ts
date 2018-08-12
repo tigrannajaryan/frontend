@@ -246,7 +246,7 @@ export class DataStore<T> {
     } else {
       // We don't have a cached value or we were asked to refresh it, so load it from the api endpoint
       retVal = await dataSourceToPromise(this.apiEndpoint());
-      if (retVal.errors) {
+      if (retVal.error) {
         // Data loading failed. Return previously cached successful response and current errors.
         retVal.response = cachedData ? cachedData.response : undefined;
       } else {

@@ -6,12 +6,11 @@ import { Observable } from 'rxjs';
 
 import { ENV } from '~/../environments/environment.default';
 
+import { processApiResponseError } from '~/shared/api-errors';
 import { ApiRequest, ApiResponse } from '~/core/api/base.models';
-import { ApiError } from '~/core/api/errors.models';
-import { processApiResponseError } from '~/core/api/errors';
 import { ApiCommonErrorAction } from '~/core/effects/api-common-errors.effects';
-
 import { AppModule } from '~/app.module';
+import { ServerStatusTracker } from '~/shared/server-status-tracker';
 
 @Injectable()
 export class BaseService {
@@ -44,30 +43,29 @@ export class BaseService {
   }
 
   /**
-   * Always return { response, errors } to suppress the catch of an outside subscription.
+   * Always return { response, error } to suppress the catch of an outside subscription.
    */
-  protected prepareResponse<ResponseType>(request: Observable<ResponseType>): Observable<ApiResponse<ResponseType>> {
+  protected prepareResponse<ResponseType>(httpResponse: Observable<ResponseType>): Observable<ApiResponse<ResponseType>> {
     return (
-      request
+      httpResponse
         .map(response => ({ response }))
         .catch(error => {
-          const errors = processApiResponseError(error);
+          const { apiError, serverStatusError } = processApiResponseError(error);
 
-          // Dispatch actions for errors handled by errors.effects.
-          // A `delay` is used to dispatch globally-handled errors only after errors’ array
-          // returned and handled by the effect that had triggered this request.
-          // It’s impotant to handle these errors only after they handled in place to not
-          // produce any side-effects after we deal with them globally, i.e.
-          // - handle by the effect that triggered the request;
-          // - handle globally for consistency.
-          Observable.from(errors)
-            .delay(0)
-            .filter((err: ApiError) => err.handleGlobally())
-            .combineLatest(Observable.of(AppModule.injector.get(Store)))
-            .map(([err, store]) => store.dispatch(new ApiCommonErrorAction(err)))
-            .subscribe();
+          if (serverStatusError) {
+            // there is a server status error, notify status tracker about it
+            const serverStatus = AppModule.injector.get(ServerStatusTracker);
+            serverStatus.notify(serverStatusError);
+          }
 
-          return Observable.of({ response: undefined, errors });
+          if (apiError.handleGlobally) {
+            const store = AppModule.injector.get(Store);
+            // Dispatch actions for errors handled by errors.effects.
+            store.dispatch(new ApiCommonErrorAction(apiError));
+          }
+
+          // and return the error for callers to process if they are interested
+          return Observable.of({ response: undefined, error: apiError });
         })
     );
   }

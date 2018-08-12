@@ -25,9 +25,9 @@ export class StylistsEffects {
     .withLatestFrom(this.store)
     .switchMap(([action, state]) =>
       this.stylistsService.search(action.query)
-        .map(({ response, errors }) => {
-          if (errors) {
-            return new SearchStylistsErrorAction(errors);
+        .map(({ response, error }) => {
+          if (error) {
+            return new SearchStylistsErrorAction(error);
           }
           // TODO: remove `.slice(0, 10)` when implementing portions
           return new SearchStylistSuccessAction(response.stylists.slice(0, 10));

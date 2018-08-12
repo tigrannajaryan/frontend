@@ -4,11 +4,7 @@ import { Action } from '@ngrx/store';
 import { Actions, Effect } from '@ngrx/effects';
 
 import { PageNames } from '~/core/page-names';
-
-import {
-  ApiError,
-  ApiRequestUnauthorizedError
-} from '~/core/api/errors.models';
+import { ApiClientError, ApiError, HttpStatus } from '~/shared/api-errors';
 
 export const API_COMMON_ERROR = 'API_COMMON_ERROR';
 
@@ -27,7 +23,8 @@ export class ApiCommonErrorsEffects {
     .ofType(API_COMMON_ERROR)
     .map((action: ApiCommonErrorAction) => {
 
-      if (action.error instanceof ApiRequestUnauthorizedError) {
+      if (action.error instanceof ApiClientError &&
+        action.error.status === HttpStatus.unauthorized) {
         const [nav] = this.app.getActiveNavs();
         nav.setRoot(PageNames.Auth);
         return;

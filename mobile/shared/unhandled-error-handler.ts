@@ -5,10 +5,9 @@ import { GoogleAnalytics } from '@ionic-native/google-analytics';
 import * as Sentry from 'sentry-cordova';
 
 import {
+  ApiClientError,
+  ApiFieldAndNonFieldErrors,
   HttpStatus,
-  ServerErrorResponse,
-  ServerFieldError,
-  ServerNonFieldError,
   ServerUnreachableOrInternalError
 } from './api-errors';
 
@@ -79,12 +78,12 @@ export class UnhandledErrorHandler {
     let errorUIAction: ErrorUIAction;
     let errorMsg = '';
 
-    if (error instanceof ServerNonFieldError || error instanceof ServerFieldError) {
+    if (error instanceof ApiFieldAndNonFieldErrors) {
       // Normally ServerFieldError should be handled by each specific screen and the incorrect
       // fields should be highlighted in the UI but if we get here we will show an alert.
       errorMsg = error.getMessage();
       errorUIAction = ErrorUIAction.showAlert;
-    } else if (error instanceof ServerErrorResponse) {
+    } else if (error instanceof ApiClientError) {
       if (error.status === HttpStatus.unauthorized) {
         // Erase all previous navigation history and make LoginPage the root
         errorUIAction = ErrorUIAction.redirectToFirstPage;

@@ -35,7 +35,7 @@ export class ProfileEffects {
     .ofType<GetProfileAction>(profileActionTypes.GET_PROFILE)
     .switchMap(() => this.profileService.getProfile())
     .map((response: ApiResponse<ProfileModel>) => {
-      return response.errors ? new GetProfileErrorAction(response.errors) : new GetProfileSuccessAction(response.response);
+      return response.error ? new GetProfileErrorAction(response.error) : new GetProfileSuccessAction(response.response);
     });
 
   @Effect({ dispatch: false }) profileLoading = this.actions
@@ -60,8 +60,8 @@ export class ProfileEffects {
       return this.profileService.updateProfile(profile);
     })
     .map(response => {
-      if (response.errors) {
-        return new UpdateProfileErrorAction(response.errors);
+      if (response.error) {
+        return new UpdateProfileErrorAction(response.error);
       }
       return new UpdateProfileSuccessAction(response.response);
     });

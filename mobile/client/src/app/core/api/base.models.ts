@@ -1,7 +1,7 @@
 import { HttpHeaders } from '@angular/common/http';
 import { HttpParams } from '@angular/common/http/src/params';
 
-import { ApiError } from '~/core/api/errors.models';
+import { ApiError } from '~/shared/api-errors';
 
 export interface ApiRequest {
   data?: any;
@@ -11,5 +11,5 @@ export interface ApiRequest {
 
 export interface ApiResponse<ReponseType> {
   response: ReponseType;
-  errors?: ApiError[];
+  error?: ApiError;
 }

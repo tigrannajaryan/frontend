@@ -7,7 +7,7 @@ export const animateFailed = <T>(setFailed: (isFailed: boolean) => any) => (requ
   setFailed(false);
 
   return request.map(response => {
-    if (response.errors) {
+    if (response.error) {
       setFailed(true);
       setTimeout(() => setFailed(false), 750);
     }
@@ -23,7 +23,7 @@ export const animateSucceeded = <T>(setSucceeded: (isSucceeded: boolean) => any)
   setSucceeded(false);
 
   return request.map(response => {
-    if (!response.errors) {
+    if (!response.error) {
       setSucceeded(true);
       setTimeout(() => setSucceeded(false), 750);
     }

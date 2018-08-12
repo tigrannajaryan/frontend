@@ -18,7 +18,7 @@ import {
   ServicesState
 } from '~/appointment/appointment-services/services.reducer';
 
-import { ApiError, ServerFieldError, ServerNonFieldError } from '~/shared/api-errors';
+import { ApiFieldAndNonFieldErrors, FieldErrorItem } from '~/shared/api-errors';
 import { FieldErrorCode } from '~/shared/api-error-codes';
 
 function isOverridableError(errorCodeStr: FieldErrorCode): boolean {
@@ -85,13 +85,13 @@ export class AppointmentAddComponent {
     this.createAppointment(data, forced);
   }
 
-  private showErrorMsg(e: ApiError): void {
+  private showErrorMsg(e: ApiFieldAndNonFieldErrors): void {
     const alertAdditionalBtns = [];
     let canOverride = false;
-    if (e instanceof ServerFieldError) {
-      // Check if it is one specific error and it is overridable
-      const errors = Array.from(e.errors.values());
-      if (errors.length === 1 && errors[0].length === 1 && isOverridableError(errors[0][0].code)) {
+    // Check if it is one specific error and it is overridable
+    if (e.errors.length === 1) {
+      const error = e.errors[0];
+      if (error instanceof FieldErrorItem && isOverridableError(error.error.code)) {
         // Add a button to allow overriding.
         canOverride = true;
         alertAdditionalBtns.push({
@@ -124,7 +124,7 @@ export class AppointmentAddComponent {
       this.navCtrl.pop();
 
     } catch (e) {
-      if (e instanceof ServerFieldError || e instanceof ServerNonFieldError) {
+      if (e instanceof ApiFieldAndNonFieldErrors) {
         // Process our specific errors here
         this.showErrorMsg(e);
       } else {

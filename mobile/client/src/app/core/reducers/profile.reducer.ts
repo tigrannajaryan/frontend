@@ -2,7 +2,7 @@ import { Action, createFeatureSelector, createSelector } from '@ngrx/store';
 
 import { RequestState } from '~/core/api/request.models';
 import { ProfileModel } from '~/core/api/profile.models';
-import { ApiError } from '~/core/api/errors.models';
+import { ApiError } from '~/shared/api-errors';
 
 export enum profileActionTypes {
   SET_PHONE = 'PROFILE_SET_PHONE',
@@ -46,7 +46,7 @@ export class GetProfileSuccessAction implements Action {
 
 export class GetProfileErrorAction implements Action {
   readonly type = profileActionTypes.GET_PROFILE_ERROR;
-  constructor(public errors: ApiError[]) {}
+  constructor(public error: ApiError) {}
 }
 
 export class UpdateProfileAction implements Action {
@@ -65,7 +65,7 @@ export class UpdateProfileSuccessAction implements Action {
 
 export class UpdateProfileErrorAction implements Action {
   readonly type = profileActionTypes.UPDATE_PROFILE_ERROR;
-  constructor(public errors: ApiError[]) {}
+  constructor(public error: ApiError) {}
 }
 
 export class UpdateImage implements Action {
@@ -83,7 +83,7 @@ export class UpdateImageSuccess implements Action {
 
 export class UpdateImageError implements Action {
   readonly type = profileActionTypes.UPDATE_IMAGE_ERROR;
-  constructor(public errors: ApiError[]) {}
+  constructor(public error: ApiError) {}
 }
 
 type Actions =
@@ -104,7 +104,7 @@ export interface ProfileState {
   requestType?: ProfileRequestType;
   requestState: RequestState;
   imageToUpload?: FormData;
-  errors?: ApiError[];
+  error?: ApiError;
 }
 
 const initialState: ProfileState = {
@@ -161,7 +161,7 @@ export function profileReducer(state: ProfileState = initialState, action: Actio
       return {
         ...state,
         requestState: RequestState.Failed,
-        errors: action.errors
+        error: action.error
       };
 
     case profileActionTypes.GET_PROFILE_SUCCESS:
@@ -205,7 +205,7 @@ export const selectProfile = createSelector(
 
 export const selectProfileErrors = createSelector(
   selectProfileFromState,
-  (state: ProfileState): ApiError[] | undefined => state.errors
+  (state: ProfileState): ApiError | undefined => state.error
 );
 
 export const selectProfileRequestState = createSelector(

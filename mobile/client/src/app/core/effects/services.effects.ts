@@ -34,9 +34,9 @@ export class ServicesEffects {
       };
       return (
         this.servicesService.getStylistServices(params)
-          .map(({ response, errors }) => {
-            if (errors) {
-              return new GetStylistServicesErrorAction(errors);
+          .map(({ response, error }) => {
+            if (error) {
+              return new GetStylistServicesErrorAction(error);
             }
             return new GetStylistServicesSuccessAction(response.stylist_uuid, response.categories);
           })

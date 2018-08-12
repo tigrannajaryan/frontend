@@ -13,13 +13,13 @@ import {
   ConfirmCodeAction,
   RequestCodeAction,
   ResetConfirmCodeErrorAction,
-  selectConfirmCodeErrors,
+  selectConfirmCodeError,
   selectConfirmCodeState,
   selectRequestCodeState
 } from '~/core/reducers/auth.reducer';
 import { AuthEffects } from '~/core/effects/auth.effects';
 
-import { ApiFieldError } from '~/core/api/errors.models';
+import { ApiError, FieldErrorItem } from '~/shared/api-errors';
 
 export const CODE_LENGTH = 6;
 
@@ -47,8 +47,8 @@ export class AuthConfirmPageComponent {
   requestCodeState: Observable<RequestState>;
   resendCodeCountdown: Observable<number>;
 
-  errors: Observable<string>;
-  invalidCodeError = new ApiFieldError('code', { code: 'err_invalid_sms_code' });
+  error: Observable<ApiError>;
+  invalidCodeError = new FieldErrorItem('code', { code: 'err_invalid_sms_code' });
 
   constructor(
     private authEffects: AuthEffects,
@@ -80,8 +80,8 @@ export class AuthConfirmPageComponent {
         this.navCtrl.setRoot(PageNames.StylistInvitation);
       });
 
-    // Handle code verification errors
-    this.errors = this.store.select(selectConfirmCodeErrors);
+    // Handle code verification error
+    this.error = this.store.select(selectConfirmCodeError);
 
     // Re-request code
     this.requestCodeState = this.store.select(selectRequestCodeState);
