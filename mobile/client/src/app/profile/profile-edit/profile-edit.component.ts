@@ -4,7 +4,7 @@ import { ActionSheetController, ActionSheetOptions, IonicPage, NavParams } from 
 import { Camera, CameraOptions } from '@ionic-native/camera';
 
 import { PhotoSourceType } from '~/shared/constants';
-import { getImageFormData } from '~/shared/image-utils';
+import { downscalePhoto, urlToFile } from '~/shared/image-utils';
 import { BaseApiService } from '~/shared/base-api-service';
 
 import { showAlert } from '~/core/utils/alert';
@@ -98,8 +98,8 @@ export class ProfileEditComponent {
     const options: ActionSheetOptions = {
       buttons: [
         ...this.photoUploadOptions.buttons,
-        Boolean(this.form.value.profile_photo_url) &&
-          {
+        ...Boolean(this.form.value.profile_photo_url) ?
+          [{
             text: 'Remove Photo',
             role: 'destructive',
             handler: () => {
@@ -108,7 +108,7 @@ export class ProfileEditComponent {
                 profile_photo_id: undefined
               });
             }
-          }
+          }] : []
       ]
     };
     this.actionSheetCtrl.create(options).present();
@@ -130,10 +130,10 @@ export class ProfileEditComponent {
   }
 
   private async takePhoto(sourceType: PhotoSourceType): Promise<void> {
-    let imageUrl;
+    let imageData;
     try {
       // Get photo from camera plugin:
-      imageUrl = await this.camera.getPicture({
+      imageData = await this.camera.getPicture({
         ...this.cameraOptions,
         sourceType // PHOTOLIBRARY = 0, CAMERA = 1
       });
@@ -142,21 +142,28 @@ export class ProfileEditComponent {
       return;
     }
 
-    let uuid;
     try {
-      // Upload photo to the API:
-      const formData = await getImageFormData(imageUrl);
-      const response = await this.baseApiService.uploadFile<{ uuid: string }>(formData);
-      uuid = response.uuid;
+      // imageData is either a base64 encoded string or a file URI
+      // If it's base64:
+      const originalBase64Image = `data:image/jpeg;base64,${imageData}`;
+      const downscaledBase64Image = await downscalePhoto(originalBase64Image);
+
+      // convert base64 to File after to formData and send it to server
+      const file = await urlToFile(downscaledBase64Image, 'file.png');
+      const formData = new FormData();
+      formData.append('file', file);
+
+      const response: any = await this.baseApiService.uploadFile<{ uuid: string }>(formData);
+
+      // Update url and save id to the form:
+      this.form.patchValue({
+        profile_photo_url: downscaledBase64Image,
+        profile_photo_id: response.uuid
+      });
+
     } catch (e) {
       showAlert('Saving photo failed', 'We are working on fixing it, please, retry later.');
       return;
     }
-
-    // Update url and save id to the form:
-    this.form.patchValue({
-      profile_photo_url: imageUrl,
-      profile_photo_id: uuid
-    });
   }
 }
