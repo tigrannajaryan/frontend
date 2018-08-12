@@ -4,9 +4,9 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { loading } from '~/core/utils/loading';
 import { createNavHistoryList } from '~/core/functions';
 import { AuthApiService, AuthCredentials, UserRole } from '~/core/auth-api-service/auth-api-service';
-import { ServerFieldError } from '~/shared/api-errors';
 import { PageNames } from '~/core/page-names';
 import { AppStorage } from '~/core/app-storage';
+import { ApiFieldAndNonFieldErrors } from '~/shared/api-errors';
 
 export enum LoginOrRegisterType {
   login,
@@ -65,7 +65,7 @@ export class LoginRegisterComponent {
       const pages = createNavHistoryList(authResponse.profile_status);
       this.navCtrl.setPages(pages);
     } catch (e) {
-      if (e instanceof ServerFieldError) {
+      if (e instanceof ApiFieldAndNonFieldErrors) {
         // TODO: Iterate over e.errors Map and show all errors on the form.
       }
       throw e;

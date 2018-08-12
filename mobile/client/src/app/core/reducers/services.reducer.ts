@@ -1,7 +1,7 @@
 import { Action, createFeatureSelector, createSelector } from '@ngrx/store';
 
+import { ApiError } from '~/shared/api-errors';
 import { RequestState } from '~/core/api/request.models';
-import { ApiError } from '~/core/api/errors.models';
 import { ServiceCategoryModel, ServiceModel } from '~/core/api/services.models';
 
 export enum servicesActionTypes {
@@ -22,7 +22,7 @@ export class GetStylistServicesLoadingAction implements Action {
 
 export class GetStylistServicesErrorAction implements Action {
   readonly type = servicesActionTypes.GET_STYLIST_SERVICES_ERROR;
-  constructor(public errors: ApiError[]) {}
+  constructor(public error: ApiError) {}
 }
 
 export class GetStylistServicesSuccessAction implements Action {
@@ -44,7 +44,7 @@ export interface ServicesState {
   serviceCategories?: ServiceCategoryModel[];
 
   requestState: RequestState;
-  errors?: ApiError[];
+  error?: ApiError;
 }
 
 const initialState = {
@@ -57,7 +57,7 @@ export function servicesReducer(state: ServicesState = initialState, action: Act
       return {
         ...state,
         requestState: RequestState.NotStarted,
-        errors: undefined
+        error: undefined
       };
 
     case servicesActionTypes.GET_STYLIST_SERVICES_LOADING:
@@ -70,7 +70,7 @@ export function servicesReducer(state: ServicesState = initialState, action: Act
       return {
         ...state,
         requestState: RequestState.Failed,
-        errors: action.errors
+        error: action.error
       };
 
     case servicesActionTypes.GET_STYLIST_SERVICES_SUCCESS:

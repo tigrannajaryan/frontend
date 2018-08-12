@@ -3,7 +3,7 @@ import { Action, ActionReducer, createFeatureSelector, createSelector, State } f
 import { RequestState } from '~/core/api/request.models';
 import { AuthTokenModel } from '~/core/api/auth.models';
 import { StylistModel } from '~/core/api/stylists.models';
-import { ApiError } from '~/core/api/errors.models';
+import { ApiError } from '~/shared/api-errors';
 
 export enum authActionTypes {
   REQUEST_CODE = 'AUTH_REQUEST_CODE',
@@ -34,7 +34,7 @@ export class RequestCodeLoadingAction implements Action {
 
 export class RequestCodeErrorAction implements Action {
   readonly type = authActionTypes.REQUEST_CODE_ERROR;
-  constructor(public errors: ApiError[]) {}
+  constructor(public error: ApiError) {}
 }
 
 export class RequestCodeSuccessAction implements Action {
@@ -56,7 +56,7 @@ export class ConfirmCodeLoadingAction implements Action {
 
 export class ConfirmCodeErrorAction implements Action {
   readonly type = authActionTypes.CONFIRM_CODE_ERROR;
-  constructor(public errors: ApiError[]) {}
+  constructor(public error: ApiError) {}
 }
 
 export class ConfirmCodeSuccessAction implements Action {
@@ -90,11 +90,11 @@ type Actions =
 
 export interface AuthState {
   getCodeRequestState: RequestState;
-  getCodeRequestErrors?: ApiError[];
+  getCodeRequestError?: ApiError;
   getCodeRequestTimestamp?: number;
 
   confirmCodeRequestState: RequestState;
-  confirmCodeRequestErrors?: ApiError[];
+  confirmCodeRequestError?: ApiError;
 }
 
 const initialState: AuthState = {
@@ -108,7 +108,7 @@ export function authReducer(state: AuthState = initialState, action: Actions): A
       return {
         ...state,
         getCodeRequestState: RequestState.NotStarted,
-        getCodeRequestErrors: undefined
+        getCodeRequestError: undefined
       };
 
     case authActionTypes.REQUEST_CODE_LOADING:
@@ -121,7 +121,7 @@ export function authReducer(state: AuthState = initialState, action: Actions): A
       return {
         ...state,
         getCodeRequestState: RequestState.Failed,
-        getCodeRequestErrors: action.errors
+        getCodeRequestError: action.error
       };
 
     case authActionTypes.REQUEST_CODE_SUCCESS:
@@ -135,7 +135,7 @@ export function authReducer(state: AuthState = initialState, action: Actions): A
       return {
         ...state,
         confirmCodeRequestState: RequestState.NotStarted,
-        confirmCodeRequestErrors: undefined
+        confirmCodeRequestError: undefined
       };
 
     case authActionTypes.CONFIRM_CODE_LOADING:
@@ -148,7 +148,7 @@ export function authReducer(state: AuthState = initialState, action: Actions): A
       return {
         ...state,
         confirmCodeRequestState: RequestState.Failed,
-        confirmCodeRequestErrors: action.errors
+        confirmCodeRequestError: action.error
       };
 
     case authActionTypes.CONFIRM_CODE_SUCCESS:
@@ -167,7 +167,7 @@ export function authReducer(state: AuthState = initialState, action: Actions): A
     case authActionTypes.RESET_CONFIRM_CODE_ERROR:
       return {
         ...state,
-        confirmCodeRequestErrors: undefined
+        confirmCodeRequestError: undefined
       };
 
     default:
@@ -189,9 +189,9 @@ export const selectConfirmCodeState = createSelector(
   (state: AuthState): RequestState => state.confirmCodeRequestState
 );
 
-export const selectConfirmCodeErrors = createSelector(
+export const selectConfirmCodeError = createSelector(
   selectAuthFromState,
-  (state: AuthState): any => state.confirmCodeRequestErrors
+  (state: AuthState): any => state.confirmCodeRequestError
 );
 
 export const RESEND_CODE_TIMEOUT_SECONDS = 120; // 2min
