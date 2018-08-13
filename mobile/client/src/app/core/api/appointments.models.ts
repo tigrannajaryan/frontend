@@ -18,6 +18,8 @@ export interface AppointmentModel {
   uuid: string;
   stylist_first_name: string;
   stylist_last_name: string;
+  stylist_photo_url: string;
+  salon_name: string;
   total_price_before_tax: number;
   total_card_fee: number;
   total_tax: number;

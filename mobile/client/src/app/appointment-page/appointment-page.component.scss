@@ -1,0 +1,97 @@
+.AppointmentPage {
+  .AppointmentPage-cardGrid {
+    width: 100%;
+    font-size: pxtovw(15px);
+    font-weight: 600;
+    font-weight: normal;
+  }
+
+  .AppointmentPage-card {
+    margin-top: pxtovw(15px);
+  }
+
+  .AppointmentPage-cardAppStylist img,
+  .AppointmentPage-cardAppDate img {
+    width: pxtovw(32px);
+    height: pxtovw(32px);
+  }
+
+  .AppointmentPage-cardAppDateTime {
+    font-size: pxtovw(18px);
+    font-weight: bold;
+  }
+
+  .AppointmentPage-cardAppDateDay {
+    font-size: pxtovw(15px);
+  }
+
+  .AppointmentPage-cardAppStylist {
+    color: color($grayscale, 500);
+    text-align: right;
+  }
+
+  .AppointmentPage-cardAppStylist span {
+    display: inline-block;
+  }
+
+  .AppointmentPage-cardAppPrice {
+    font-size: pxtovw(64px);
+    font-weight: bold;
+    text-align: center;
+
+    .priceEstimated {
+      color: color($grayscale, 500);
+    }
+  }
+
+  .AppointmentPage-cardAppPrice .price {
+    margin-top: pxtovw(- 10px);
+  }
+
+  .AppointmentPage-cardAppPrice .price:first-letter {
+    font-size: pxtovw(18px);
+    vertical-align: super;
+  }
+
+  .AppointmentPage-cardAppPrice label {
+    font-size: pxtovw(15px);
+    font-weight: normal;
+    color: color($grayscale, 500);
+  }
+
+  .AppointmentPage-redLabel {
+    display: inline-block;
+    padding: pxtovw(2px) pxtovw(3px) pxtovw(1px);
+    font-size: pxtovw(10px);
+    font-weight: normal;
+    color: white;
+    background: color($colors, warning);
+    border-radius: pxtovw(3px);
+  }
+
+  .AppointmentPage-cardAppService,
+  .AppointmentPage-cardAppServiceFees {
+    padding: pxtovw(15px) 0;
+    border-bottom: 1px solid color($grayscale, 300);
+  }
+
+  .AppointmentPage-cardAppTip {
+    margin-top: pxtovw(8px);
+    color: color($grayscale, 500);
+    text-align: right;
+  }
+
+  .AppointmentPage-actions {
+    margin: pxtovw(20px) auto  pxtovw(10px);
+  }
+
+  .AppointmentPage-cancelBooking {
+    font-size: pxtovw(16px);
+    color: color($colors, warning);
+  }
+
+  .AppointmentPage-reBook {
+    font-size: pxtovw(16px);
+    color: color($colors, orange);
+  }
+}
