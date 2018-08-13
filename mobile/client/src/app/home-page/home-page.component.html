@@ -6,13 +6,13 @@
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 
-  <ion-grid fixed class="HomePage-grid">
+  <div class="contentSidePadding">
 
     <!-- Show spinner if loading is in progress and refresher is not active (to avoid double loading indicators) -->
     <ion-spinner *ngIf="isLoading && refresher.state === 'inactive'" class="HomePage-spinner"></ion-spinner>
 
     <div class="HomePage-title">
-      <h1 class="HomePage-h1">Home</h1>
+      <h1 class="HomePage-h1 pageTitle">Home</h1>
       <div class="HomePage-avatar">
         <!-- TODO: add profile image. Need a separate component for it. -->
         <!--img should be removed-->
@@ -74,5 +74,5 @@
 
     </ion-grid>
 
-  </ion-grid>
+  </div>
 </ion-content>

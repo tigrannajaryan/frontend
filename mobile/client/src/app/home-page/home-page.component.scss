@@ -1,10 +1,11 @@
 .HomePage {
-  .HomePage-grid {
+  .contentSidePadding { //move this class to general style
     height: 100%;
+    padding: 0 pxtovw(25px);
   }
 
   .HomePage-spinner {
-    margin: 10px auto 0;
+    margin: pxtovw(10px) auto 0;
   }
 
   .HomePage-homeEmpty ion-row:first-child {
@@ -60,7 +61,7 @@
     .HomePage-labelPurpul {
       display: inline-block;
       padding: 1px 12px;
-      margin-left: 7px; 
+      margin-left: 7px;
       font-size: $t-base;
       color: color($colors, white);
       vertical-align: text-top;
