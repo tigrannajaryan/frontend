@@ -1,0 +1,548 @@
+$icomoon-font-family: "mb-icon" !default;
+$icomoon-font-path: "../assets/fonts/mb-icon" !default;
+
+$mb-icon-1: "\e94e";
+$mb-icon-2: "\e94f";
+$mb-icon-3: "\e930";
+$mb-icon-4: "\e92d";
+$mb-icon-5: "\e944";
+$mb-icon-6: "\e941";
+$mb-icon-7: "\e94c";
+$mb-icon-8: "\e92e";
+$mb-icon-9: "\e92f";
+$mb-icon-10: "\e943";
+$mb-icon-11: "\e93f";
+$mb-icon-12: "\e93b";
+$mb-icon-13: "\e931";
+$mb-icon-14: "\e942";
+$mb-icon-15: "\e917";
+$mb-icon-16: "\e918";
+$mb-icon-17: "\e947";
+$mb-icon-18: "\e948";
+$mb-icon-19: "\e91d";
+$mb-icon-20: "\e91e";
+$mb-icon-21: "\e92b";
+$mb-icon-22: "\e92c";
+$mb-icon-23: "\e915";
+$mb-icon-24: "\e91a";
+$mb-icon-25: "\e920";
+$mb-icon-26: "\e902";
+$mb-icon-27: "\e903";
+$mb-icon-28: "\e904";
+$mb-icon-29: "\e905";
+$mb-icon-30: "\e913";
+$mb-icon-31: "\e911";
+$mb-icon-32: "\e910";
+$mb-icon-33: "\e90f";
+$mb-icon-34: "\e916";
+$mb-icon-35: "\e900";
+$mb-icon-36: "\e921";
+$mb-icon-37: "\e922";
+$mb-icon-38: "\e923";
+$mb-icon-39: "\e924";
+$mb-icon-40: "\e925";
+$mb-icon-41: "\e906";
+$mb-icon-42: "\e907";
+$mb-icon-43: "\e909";
+$mb-icon-44: "\e90a";
+$mb-icon-45: "\e90b";
+$mb-icon-46: "\e914";
+$mb-icon-47: "\e901";
+$mb-icon-48: "\e926";
+$mb-icon-49: "\e91b";
+$mb-icon-50: "\e927";
+$mb-icon-51: "\e90d";
+$mb-icon-52: "\e928";
+$mb-icon-53: "\e929";
+$mb-icon-54: "\e90e";
+$mb-icon-55: "\e908";
+$mb-icon-56: "\e90c";
+$mb-icon-57: "\e912";
+$mb-icon-58: "\e919";
+
+@font-face {
+  font-family: '#{$icomoon-font-family}';
+  src: url('#{$icomoon-font-path}/#{$icomoon-font-family}.eot?hblwyv');
+  src: url('#{$icomoon-font-path}/#{$icomoon-font-family}.eot?hblwyv#iefix') format('embedded-opentype'), url('#{$icomoon-font-path}/#{$icomoon-font-family}.ttf?hblwyv') format('truetype'), url('#{$icomoon-font-path}/#{$icomoon-font-family}.woff?hblwyv') format('woff'), url('#{$icomoon-font-path}/#{$icomoon-font-family}.svg?hblwyv##{$icomoon-font-family}') format('svg');
+  font-style: normal;
+  font-weight: normal;
+}
+
+.mb-icon {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: '#{$icomoon-font-family}';
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  line-height: 1;
+  text-transform: none;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.mb-icon-1 {
+  @extend .mb-icon;
+
+  &:before {
+    content: $mb-icon-1;
+  }
+}
+
+.mb-icon-2 {
+  @extend .mb-icon;
+
+  &:before {
+    content: $mb-icon-2;
+  }
+}
+
+.mb-icon-3 {
+  @extend .mb-icon;
+
+  &:before {
+    content: $mb-icon-3;
+  }
+}
+
+.mb-icon-4 {
+  @extend .mb-icon;
+
+  &:before {
+    content: $mb-icon-4;
+  }
+}
+
+.mb-icon-5 {
+  @extend .mb-icon;
+
+  &:before {
+    content: $mb-icon-5;
+  }
+}
+
+.mb-icon-6 {
+  @extend .mb-icon;
+
+  &:before {
+    content: $mb-icon-6;
+  }
+}
+
+.mb-icon-7 {
+  @extend .mb-icon;
+
+  &:before {
+    content: $mb-icon-7;
+  }
+}
+
+.mb-icon-8 {
+  @extend .mb-icon;
+
+  &:before {
+    content: $mb-icon-8;
+  }
+}
+
+.mb-icon-9 {
+  @extend .mb-icon;
+
+  &:before {
+    content: $mb-icon-9;
+  }
+}
+
+.mb-icon-10 {
+  @extend .mb-icon;
+
+  &:before {
+    content: $mb-icon-10;
+  }
+}
+
+.mb-icon-11 {
+  @extend .mb-icon;
+
+  &:before {
+    content: $mb-icon-11;
+  }
+}
+
+.mb-icon-12 {
+  @extend .mb-icon;
+
+  &:before {
+    content: $mb-icon-12;
+  }
+}
+
+.mb-icon-13 {
+  @extend .mb-icon;
+
+  &:before {
+    content: $mb-icon-13;
+  }
+}
+
+.mb-icon-14 {
+  @extend .mb-icon;
+
+  &:before {
+    content: $mb-icon-14;
+  }
+}
+
+.mb-icon-15 {
+  @extend .mb-icon;
+
+  &:before {
+    content: $mb-icon-15;
+  }
+}
+
+.mb-icon-16 {
+  @extend .mb-icon;
+
+  &:before {
+    content: $mb-icon-16;
+  }
+}
+
+.mb-icon-17 {
+  @extend .mb-icon;
+
+  &:before {
+    content: $mb-icon-17;
+  }
+}
+
+.mb-icon-18 {
+  @extend .mb-icon;
+
+  &:before {
+    content: $mb-icon-18;
+  }
+}
+
+.mb-icon-19 {
+  @extend .mb-icon;
+
+  &:before {
+    content: $mb-icon-19;
+  }
+}
+
+.mb-icon-20 {
+  @extend .mb-icon;
+
+  &:before {
+    content: $mb-icon-20;
+  }
+}
+
+.mb-icon-21 {
+  @extend .mb-icon;
+
+  &:before {
+    content: $mb-icon-21;
+  }
+}
+
+.mb-icon-22 {
+  @extend .mb-icon;
+
+  &:before {
+    content: $mb-icon-22;
+  }
+}
+
+.mb-icon-23 {
+  @extend .mb-icon;
+
+  &:before {
+    content: $mb-icon-23;
+  }
+}
+
+.mb-icon-24 {
+  @extend .mb-icon;
+
+  &:before {
+    content: $mb-icon-24;
+  }
+}
+
+.mb-icon-25 {
+  @extend .mb-icon;
+
+  &:before {
+    content: $mb-icon-25;
+  }
+}
+
+.mb-icon-26 {
+  @extend .mb-icon;
+
+  &:before {
+    content: $mb-icon-26;
+  }
+}
+
+.mb-icon-27 {
+  @extend .mb-icon;
+
+  &:before {
+    content: $mb-icon-27;
+  }
+}
+
+.mb-icon-28 {
+  @extend .mb-icon;
+
+  &:before {
+    content: $mb-icon-28;
+  }
+}
+
+.mb-icon-29 {
+  @extend .mb-icon;
+
+  &:before {
+    content: $mb-icon-29;
+  }
+}
+
+.mb-icon-30 {
+  @extend .mb-icon;
+
+  &:before {
+    content: $mb-icon-30;
+  }
+}
+
+.mb-icon-31 {
+  @extend .mb-icon;
+
+  &:before {
+    content: $mb-icon-31;
+  }
+}
+
+.mb-icon-32 {
+  @extend .mb-icon;
+
+  &:before {
+    content: $mb-icon-32;
+  }
+}
+
+.mb-icon-33 {
+  @extend .mb-icon;
+
+  &:before {
+    content: $mb-icon-33;
+  }
+}
+
+.mb-icon-34 {
+  @extend .mb-icon;
+
+  &:before {
+    content: $mb-icon-34;
+  }
+}
+
+.mb-icon-35 {
+  @extend .mb-icon;
+
+  &:before {
+    content: $mb-icon-35;
+  }
+}
+
+.mb-icon-36 {
+  @extend .mb-icon;
+
+  &:before {
+    content: $mb-icon-36;
+  }
+}
+
+.mb-icon-37 {
+  @extend .mb-icon;
+
+  &:before {
+    content: $mb-icon-37;
+  }
+}
+
+.mb-icon-38 {
+  @extend .mb-icon;
+
+  &:before {
+    content: $mb-icon-38;
+  }
+}
+
+.mb-icon-39 {
+  @extend .mb-icon;
+
+  &:before {
+    content: $mb-icon-39;
+  }
+}
+
+.mb-icon-40 {
+  @extend .mb-icon;
+
+  &:before {
+    content: $mb-icon-40;
+  }
+}
+
+.mb-icon-41 {
+  @extend .mb-icon;
+
+  &:before {
+    content: $mb-icon-41;
+  }
+}
+
+.mb-icon-42 {
+  @extend .mb-icon;
+
+  &:before {
+    content: $mb-icon-42;
+  }
+}
+
+.mb-icon-43 {
+  @extend .mb-icon;
+
+  &:before {
+    content: $mb-icon-43;
+  }
+}
+
+.mb-icon-44 {
+  @extend .mb-icon;
+
+  &:before {
+    content: $mb-icon-44;
+  }
+}
+
+.mb-icon-45 {
+  @extend .mb-icon;
+
+  &:before {
+    content: $mb-icon-45;
+  }
+}
+
+.mb-icon-46 {
+  @extend .mb-icon;
+
+  &:before {
+    content: $mb-icon-46;
+  }
+}
+
+.mb-icon-47 {
+  @extend .mb-icon;
+
+  &:before {
+    content: $mb-icon-47;
+  }
+}
+
+.mb-icon-48 {
+  @extend .mb-icon;
+
+  &:before {
+    content: $mb-icon-48;
+  }
+}
+
+.mb-icon-49 {
+  @extend .mb-icon;
+
+  &:before {
+    content: $mb-icon-49;
+  }
+}
+
+.mb-icon-50 {
+  @extend .mb-icon;
+
+  &:before {
+    content: $mb-icon-50;
+  }
+}
+
+.mb-icon-51 {
+  @extend .mb-icon;
+
+  &:before {
+    content: $mb-icon-51;
+  }
+}
+
+.mb-icon-52 {
+  @extend .mb-icon;
+
+  &:before {
+    content: $mb-icon-52;
+  }
+}
+
+.mb-icon-53 {
+  @extend .mb-icon;
+
+  &:before {
+    content: $mb-icon-53;
+  }
+}
+
+.mb-icon-54 {
+  @extend .mb-icon;
+
+  &:before {
+    content: $mb-icon-54;
+  }
+}
+
+.mb-icon-55 {
+  @extend .mb-icon;
+
+  &:before {
+    content: $mb-icon-55;
+  }
+}
+
+.mb-icon-56 {
+  @extend .mb-icon;
+
+  &:before {
+    content: $mb-icon-56;
+  }
+}
+
+.mb-icon-57 {
+  @extend .mb-icon;
+
+  &:before {
+    content: $mb-icon-57;
+  }
+}
+
+.mb-icon-58 {
+  @extend .mb-icon;
+
+  &:before {
+    content: $mb-icon-58;
+  }
+}
