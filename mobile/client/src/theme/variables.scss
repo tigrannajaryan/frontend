@@ -84,6 +84,17 @@ $colors: (
 @import "ionic.ionicons";
 
 
+// Global functions
+// --------------------------------------------------
+$src-layout-width: 375;
+
+@function pxtovw($target) {
+  $vw: ($src-layout-width * 0.01) * 1px;
+
+  @return ($target / $vw) * 1vw;
+}
+
+
 // Typography
 // --------------------------------------------------
 $t-h1:    pxtovw(38px) !default;

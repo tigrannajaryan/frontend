@@ -34,12 +34,12 @@
         </tr>
         <tr>
           <td colspan="2" class="ProfilePage-tableCenteredText Table-col">
-            <span class="Link">FAQ@madebeauty.com</span>
+            <span (click)="onContactByEmail('faq@madebeauty.com')" class="Link">FAQ@madebeauty.com</span>
           </td>
         </tr>
         <tr>
           <td colspan="2" class="ProfilePage-tableCenteredText Table-col">
-            <span class="ProfilePage-logout Link">Logout</span>
+            <span (click)="onLogout()" class="ProfilePage-logout Link">Logout</span>
           </td>
         </tr>
       </tbody>
