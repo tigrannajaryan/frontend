@@ -4,6 +4,8 @@ import { GoogleAnalytics } from '@ionic-native/google-analytics';
 
 import { GAWrapper } from '~/shared/google-analytics';
 
+import { ServerStatusComponent } from '~/shared/server-status/server-status.component';
+
 import { InputNumberDirective } from '~/core/directives/input-number.directive';
 import { PhoneInputDirective } from '~/core/directives/phone-input.directive';
 
@@ -20,6 +22,7 @@ const declarations = [
   FormatPhonePipe,
   HasErrorPipe,
   PricePipe,
+  ServerStatusComponent,
   MadeHeaderComponent,
   AppointmentItemComponent
 ];
