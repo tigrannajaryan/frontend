@@ -9,7 +9,6 @@ import { ProfileService } from '~/core/api/profile-service';
 import { ServicesService } from '~/core/api/services-service';
 import { StylistsService } from '~/core/api/stylists-service';
 
-import { AppointmentsHistoryDataStore } from '~/core/api/appointments-history.data';
 import { ProfileDataStore } from '~/profile/profile.data';
 
 /**
