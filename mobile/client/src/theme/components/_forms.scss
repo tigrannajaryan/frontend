@@ -22,6 +22,7 @@
   }
 
   .FormControl-errorMsg {
+    font-size: $t-base;
     color: color($colors, danger);
   }
 

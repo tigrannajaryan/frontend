@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { ErrorHandler, Injectable } from '@angular/core';
 import { App } from 'ionic-angular';
 import { Action } from '@ngrx/store';
 import { Actions, Effect } from '@ngrx/effects';
@@ -30,11 +30,15 @@ export class ApiCommonErrorsEffects {
       if (action.error instanceof ApiRequestUnauthorizedError) {
         const [ nav ] = this.app.getActiveNavs();
         nav.setRoot(PageNames.Auth);
+        return;
       }
+
+      this.errorHandler.handleError(action.error);
     });
 
   constructor(
     private actions: Actions,
-    private app: App
+    private app: App,
+    private errorHandler: ErrorHandler
   ) {}
 }

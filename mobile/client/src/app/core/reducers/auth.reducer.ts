@@ -217,6 +217,7 @@ export const selectCanRequestCode = (timestamp?: number) => createSelector(
 
 export class LogoutAction implements Action {
   readonly type = authActionTypes.USER_LOGOUT;
+  constructor(public onSuccess?: (...args: any[]) => any) {}
 }
 
 export function resetOnLogoutReducer(reducer: ActionReducer<State<any>>): ActionReducer<State<any>> {

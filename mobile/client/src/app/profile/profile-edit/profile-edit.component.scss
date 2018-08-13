@@ -1,11 +1,11 @@
 .ProfilePage {
   .ProfilePage-pic {
-    $image-size: 120px;
+    $image-size: pxtovw(120px);
 
     position: relative;
     width: $image-size;
     height: $image-size;
-    margin: 0 auto 24px;
+    margin: 0 auto pxtovw(24px);
     background-color: color($grayscale, 100);
     background-repeat: no-repeat;
     background-size: cover;
@@ -13,7 +13,7 @@
   }
 
   .ProfilePage-add {
-    $add-btn-size: 48px;
+    $add-btn-size: pxtovw(48px);
     $add-btn-opacity: 0.7;
 
     position: absolute;
@@ -28,16 +28,40 @@
     margin: (-1 * $add-btn-size) 0 0 (-1 * $add-btn-size); // shift top left
     color: white;
     background: rgba(color($colors, orange), $add-btn-opacity);
-    border: 1px solid rgba(white, 1);
+    border: pxtovw(1px) solid rgba(white, 1);
     border-radius: 50%; // circle
 
     ion-icon {
-      margin: 2px 0 0 2px; // fix centered align
+      margin: pxtovw(2px) 0 0 pxtovw(2px); // fix centered align
       font-size: $t-h3;
     }
   }
 
   .ProfilePage-formControl {
-    margin-bottom: 6px;
+    margin-bottom: pxtovw(6px);
   }
+}
+
+.ProfilePage-submit {
+  $icon-width: pxtovw(28px);
+
+  min-width: $icon-width;
+  text-align: center;
+}
+
+@keyframes zoomIn {
+  0 { transform: scale(1); }
+  50% { transform: scale(1.5); }
+  100% { transform: scale(1); }
+}
+
+.ProfilePage-animatedFail {
+  color: color($colors, danger);
+  animation: 0.3s ease-in-out zoomIn;
+  animation-fill-mode: forwards;
+}
+
+.ProfilePage-animatedSuccess {
+  color: color($colors, success);
+  animation: 0.3s ease-in-out zoomIn;
 }

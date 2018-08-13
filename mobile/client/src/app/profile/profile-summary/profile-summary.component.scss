@@ -1,0 +1,54 @@
+.ProfilePage {
+  .ProfilePage-title {
+    font-size: $t-h2;
+    font-weight: 500;
+  }
+
+  .ProfilePage-completion {
+    margin-top: pxtovw(16px);
+  }
+
+  .ProfilePage-completionBar {
+    $bar-height: pxtovw(4px);
+    $bar-border-radius: pxtovw(4px);
+
+    position: relative;
+    width: pxtovw(227px);
+    height: $bar-height;
+    margin-top: pxtovw(8px);
+    background: color($grayscale, 300);
+    border-radius: $bar-border-radius;
+
+    &:after {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: pxtovw(65px);
+      height: $bar-height;
+      content: '';
+      background: color($colors, orange);
+      border-radius: $bar-border-radius 0 0 $bar-border-radius;
+    }
+  }
+
+  .ProfilePage-edit {
+    margin: pxtovw(16px) auto pxtovw(45px);
+  }
+
+  .ProfilePage-table {
+    font-size: $t-base;
+  }
+
+  .ProfilePage-arrow {
+    text-align: right;
+  }
+
+  .ProfilePage-tableCenteredText {
+    text-align: center;
+  }
+
+  .ProfilePage-logout {
+    font-weight: 500;
+    color: color($colors, danger);
+  }
+}

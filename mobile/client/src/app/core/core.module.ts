@@ -16,6 +16,10 @@ import { PricePipe } from '~/core/pipes/price.pipe';
 import { MadeHeaderComponent } from '~/core/components/made-header/made-header.component';
 import { AppointmentItemComponent } from '~/core/components/appointment-item/appointment-item.component';
 
+export enum DefaultImage {
+  User = '/assets/imgs/user/default_user.png'
+}
+
 const declarations = [
   InputNumberDirective,
   PhoneInputDirective,

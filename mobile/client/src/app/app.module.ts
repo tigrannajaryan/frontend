@@ -2,9 +2,12 @@ import { ErrorHandler, Injector, NgModule } from '@angular/core';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
-import { AppVersion } from '@ionic-native/app-version';
 
 import { IonicApp, IonicModule } from 'ionic-angular';
+
+import { AppVersion } from '@ionic-native/app-version';
+import { Clipboard } from '@ionic-native/clipboard';
+import { EmailComposer } from '@ionic-native/email-composer';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import { IonicStorageModule } from '@ionic/storage';
@@ -19,17 +22,10 @@ import { initSentry } from '~/shared/sentry';
 import { AuthInterceptor } from '~/core/http-interceptors/auth-interceptor';
 import { ClientUnhandledErrorHandler } from '~/core/unhandled-error-handler';
 
-import { AuthService } from '~/core/api/auth-service';
-import { ProfileService } from '~/core/api/profile-service';
-import { StylistsService } from '~/core/api/stylists-service';
-import { ServicesService } from '~/core/api/services-service';
-
-import { AuthServiceMock } from '~/core/api/auth-service.mock';
-import { StylistsServiceMock } from '~/core/api/stylists-service.mock';
-import { ServicesServiceMock } from '~/core/api/services-service.mock';
-
 import { ClientAppComponent } from '~/app.component';
 import { getMetaReducers, reducers } from '~/app.reducers';
+
+import { LogoutEffects } from '~/core/effects/logout.effects';
 
 import { AuthEffects } from '~/core/effects/auth.effects';
 import { ApiCommonErrorsEffects } from '~/core/effects/api-common-errors.effects';
@@ -53,9 +49,13 @@ import { ServerStatusTracker } from '~/shared/server-status-tracker';
     HttpClientModule,
     ReactiveFormsModule,
     CoreModule,
+
     DataModule.forRoot(),
 
-    IonicModule.forRoot(ClientAppComponent, {backButtonText: '', backButtonIcon: 'ios-arrow-round-back'}),
+    IonicModule.forRoot(ClientAppComponent, {
+      backButtonText: '',
+      backButtonIcon: 'ios-arrow-round-back'
+    }),
     IonicStorageModule.forRoot(),
 
     /**
@@ -75,6 +75,8 @@ import { ServerStatusTracker } from '~/shared/server-status-tracker';
      * See: https://github.com/ngrx/platform/blob/master/docs/effects/api.md#forroot
      */
     EffectsModule.forRoot([
+      LogoutEffects,
+
       AuthEffects,
       ApiCommonErrorsEffects,
       ServicesEffects,
@@ -89,24 +91,18 @@ import { ServerStatusTracker } from '~/shared/server-status-tracker';
   ],
   providers: [
     Logger,
-    StatusBar,
-    SplashScreen,
-    AppVersion,
 
+    // Plugins
+    AppVersion,
+    Clipboard,
+    EmailComposer,
+    SplashScreen,
+    StatusBar,
+    ScreenOrientation,
+
+    // Shared:
     BaseApiService,
     ServerStatusTracker,
-
-    // services
-    AuthService,
-    ProfileService,
-    StylistsService,
-    ServicesService,
-
-    // services mocks
-    AuthServiceMock,
-    StylistsServiceMock,
-    ServicesServiceMock,
-    ScreenOrientation,
 
     { // Add auth token to all requests
       provide: HTTP_INTERCEPTORS,

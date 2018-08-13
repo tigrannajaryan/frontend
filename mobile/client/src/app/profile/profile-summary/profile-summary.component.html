@@ -1,0 +1,51 @@
+<ion-header madeHeader></ion-header>
+
+<ion-content class="ProfilePage">
+  <ion-grid fixed>
+    <div *ngIf="profile">
+      <div [style.backgroundImage]="'url(' + (profile.profile_photo_url || DEFAULT_IMAGE) + ')'" class="ProfilePage-pic"></div>
+      <ion-row justify-content-center class="ProfilePage-title">
+        <span *ngIf="isProfileCompleted()">{{ profile.first_name }} {{ profile.last_name }}</span>
+        <span *ngIf="!isProfileCompleted()">{{ profile.phone | formatPhone }}</span>
+      </ion-row>
+      <div *ngIf="!isProfileCompleted()" class="ProfilePage-completion">
+        <ion-row justify-content-center>Completed 20%</ion-row>
+        <ion-row justify-content-center>
+          <div class="ProfilePage-completionBar"></div>
+        </ion-row>
+      </div>
+      <ion-row justify-content-center>
+        <button ion-button block="false" small (click)="onEdit()" class="ProfilePage-edit Button">Edit your info</button>
+      </ion-row>
+    </div>
+    <ion-row *ngIf="isLoading" justify-content-center>
+      <ion-spinner></ion-spinner>
+    </ion-row>
+    <table class="ProfilePage-table Table Table--bordered">
+      <tbody>
+        <tr>
+          <td class="Table-col">How pricing works</td>
+          <td class="ProfilePage-arrow Table-col">
+            <img src="assets/icons/arrow-right.svg" />
+          </td>
+        </tr>
+        <tr>
+          <td class="Table-col">How MADE works</td>
+          <td class="ProfilePage-arrow Table-col">
+            <img src="assets/icons/arrow-right.svg" />
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2" class="ProfilePage-tableCenteredText Table-col">
+            <span (click)="onContactByEmail('faq@madebeauty.com')" class="Link">FAQ@madebeauty.com</span>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2" class="ProfilePage-tableCenteredText Table-col">
+            <span (click)="onLogout()" class="ProfilePage-logout Link">Logout</span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </ion-grid>
+</ion-content>

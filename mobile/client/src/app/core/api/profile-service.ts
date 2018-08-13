@@ -14,5 +14,4 @@ export class ProfileService extends BaseService {
   updateProfile(profile: ProfileModel): Observable<ApiResponse<ProfileModel>> {
     return this.post<ProfileModel>('client/profile', profile);
   }
-
 }

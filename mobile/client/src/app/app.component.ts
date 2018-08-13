@@ -8,7 +8,7 @@ import { ScreenOrientation } from '@ionic-native/screen-orientation';
 import { Logger } from '~/shared/logger';
 import { GAWrapper } from '~/shared/google-analytics';
 
-import { deleteToken, getToken } from '~/core/utils/token-utils';
+import { getToken } from '~/core/utils/token-utils';
 import { LogoutAction } from '~/core/reducers/auth.reducer';
 
 import { AUTHORIZED_ROOT, PageNames, UNAUTHORIZED_ROOT } from '~/core/page-names';
@@ -29,9 +29,9 @@ export class ClientAppComponent implements OnInit {
 
   rootPage: any;
   menuPages: MenuPage[] = [
-    { title: 'Profile', component: PageNames.Profile },
     { title: 'Home', component: PageNames.Home },
-    { title: 'History', component: PageNames.AppointmentsHistory }
+    { title: 'History', component: PageNames.AppointmentsHistory },
+    { title: 'Profile', component: PageNames.ProfileSummary }
   ];
 
   constructor(
@@ -40,7 +40,7 @@ export class ClientAppComponent implements OnInit {
     private platform: Platform,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
-    private store: Store<any>,
+    private store: Store<{}>,
     private ga: GAWrapper,
     private screenOrientation: ScreenOrientation
   ) {
@@ -55,10 +55,10 @@ export class ClientAppComponent implements OnInit {
     // ready and the plugins are available.
     await this.platform.ready();
 
-    // Lock screen orientation to portrait if this is real device
-    if (!(this.platform.is('core') || this.platform.is('mobileweb'))) {
-      this.screenOrientation.lock('portrait');
-    }
+    // Lock screen orientation to portrait if it’s available
+    this.screenOrientation.lock('portrait').catch(error => {
+      this.logger.warn(error);
+    });
 
     // Now that the platform is ready asynchronously initialize in parallel everything
     // that our app needs and wait until all initializations finish. Add here any other
@@ -98,15 +98,6 @@ export class ClientAppComponent implements OnInit {
   }
 
   async logout(): Promise<void> {
-    // TODO: show nice loader
-    await deleteToken();
-
-    this.store.dispatch(new LogoutAction());
-
-    // Hide the menu
-    this.menuCtrl.close();
-
-    // Erase all previous navigation history and make LoginPage the root
-    this.nav.setRoot(PageNames.Auth);
+    this.store.dispatch(new LogoutAction(() => this.menuCtrl.close()));
   }
 }

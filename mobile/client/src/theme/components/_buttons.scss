@@ -1,10 +1,23 @@
 .Button {
+  $button-height: 55px;
+
   width: 100%;
-  min-height: 55px;
-  text-transform: none;  //Added to remove upercase No button in design is upercase 
+  min-height: $button-height;
+  line-height: $button-height;
+  text-transform: none;  //Added to remove upercase No button in design is upercase
   background-color: color($colors, primary);
   border-radius: 10px;
   box-shadow: 0 6px 34px rgba(color($colors, primary), 50%);
+
+  &.button-small {
+    $button-height: 40px;
+
+    width: auto;
+    min-height: $button-height;
+    padding: 0 40px;
+    font-size: $t-base;
+    line-height: $button-height;
+  }
 
   &.is-loading {
     box-shadow: none;
