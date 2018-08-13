@@ -35,12 +35,11 @@ export interface State {
  * These reducer functions are called with each dispatched action
  * and the current or initial state and return a new immutable state.
  */
-export const reducers: ActionReducerMap<State> = {
-  [authPath]: authReducer,
-  [profilePath]: profileReducer,
-  [stylistsPath]: stylistsReducer,
-  [servicesPath]: servicesReducer
-};
+export const reducers: ActionReducerMap<State> = {};
+reducers[authPath] = authReducer;
+reducers[profilePath] = profileReducer;
+reducers[stylistsPath] = stylistsReducer;
+reducers[servicesPath] = servicesReducer;
 
 /**
  * Use meta reducer to log all actions.
