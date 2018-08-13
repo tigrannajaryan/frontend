@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { IonicPage, Refresher } from 'ionic-angular';
+import { IonicPage, NavController, Refresher } from 'ionic-angular';
 import { Observable } from 'rxjs';
 
 import { Logger } from '~/shared/logger';
@@ -7,6 +7,8 @@ import { loading } from '~/core/utils/loading';
 import { AppointmentModel, AppointmentsHistoryResponse } from '~/core/api/appointments.models';
 import { ApiResponse } from '~/core/api/base.models';
 import { AppointmentsDataStore } from '~/core/api/appointments.datastore';
+import { PageNames } from '~/core/page-names';
+import { AppointmentPageParams } from '~/appointment-page/appointment-page.component';
 
 @IonicPage()
 @Component({
@@ -23,13 +25,14 @@ export class AppointmentsHistoryComponent {
 
   constructor(
     private dataStore: AppointmentsDataStore,
-    private logger: Logger
+    private logger: Logger,
+    private navCtrl: NavController
   ) {
     this.historyObservable = this.dataStore.history.asObservable();
   }
 
-  ionViewWillEnter(): void {
-    this.logger.info('HistoryPageComponent.ionViewWillEnter');
+  ionViewDidLoad(): void {
+    this.logger.info('HistoryPageComponent.ionViewDidLoad');
     this.onLoad();
   }
 
@@ -41,8 +44,11 @@ export class AppointmentsHistoryComponent {
   }
 
   onAppointmentClick(appointment: AppointmentModel): void {
-    // TODO: show details of appointment
-    this.logger.info('onAppointmentClick', appointment);
+    const params: AppointmentPageParams = {
+      appointment,
+      hasConfirmButton: false
+    };
+    this.navCtrl.push(PageNames.Appointment, { params });
   }
 
   onRebookClick(appointment: AppointmentModel): void {

@@ -16,6 +16,8 @@ export class AppointmentsApiMock {
           uuid: faker.random.uuid(),
           stylist_first_name: name,
           stylist_last_name: lastName,
+          stylist_photo_url: undefined,
+          salon_name: faker.company.companyName(),
           total_price_before_tax: Math.random() * 200,
           total_card_fee: Math.random() * 5,
           total_tax: Math.random() * 15,
