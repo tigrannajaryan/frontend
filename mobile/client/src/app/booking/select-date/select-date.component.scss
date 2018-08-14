@@ -1,0 +1,77 @@
+.SelectDate {
+  .SelectDate-title {
+    padding-bottom: pxtovw(8px);
+    margin-top: 0;
+    font-weight: 500;
+    text-align: left;
+    border-bottom: pxtovw(1px) solid color($grayscale, 100);
+  }
+}
+
+// TODO: move to a sep file
+.Calendar {
+  .Calendar-title {
+    margin-top: pxtovw(24px);
+    font-size: $t-h3;
+    font-weight: 500;
+    color: color($grayscale, 500);
+  }
+
+  .Calendar-legend,
+  .Calendar-month {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .Calendar-day {
+    $day-width: 100 / 7 * 1%;
+    $day-height: pxtovw(40px);
+    $day-offset: pxtovw(3px);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: calc(#{$day-width} - #{$day-offset * 2});
+    height: $day-height;
+    margin: $day-offset;
+    font-size: $t-base;
+    color: color($grayscale, 500);
+    text-align: center;
+
+    .Calendar-price {
+      padding-top: pxtovw(2px);
+      font-size: $t-small;
+    }
+
+    .Calendar-selectable {
+      width: 100%;
+      height: $day-height;
+      padding-top: pxtovw(3px);
+      color: black;
+      background: color($grayscale, 200);
+      border-radius: pxtovw(4px);
+
+      &.is-fullyBooked,
+      &.is-nonWorking {
+        padding-top: 0;
+        line-height: $day-height;
+        color: color($grayscale, 500);
+        background: white !important; // do not allow to override background color from js
+
+        .Calendar-price { // and hide price
+          display: none;
+        }
+      }
+    }
+  }
+
+  .Calendar-legend {
+    border-bottom: pxtovw(1px) solid color($grayscale, 100);
+
+    .Calendar-day {
+      height: pxtovw(16px);
+      margin-top: pxtovw(8px);
+      margin-bottom: pxtovw(8px);
+    }
+  }
+}

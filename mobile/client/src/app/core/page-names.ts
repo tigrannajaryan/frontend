@@ -14,6 +14,7 @@ export enum PageNames {
   Home = 'HomePageComponent',
   ProfileEdit = 'ProfileEditComponent',
   ProfileSummary = 'ProfileSummaryComponent',
+  SelectDate = 'SelectDateComponent',
   Services = 'ServicesPageComponent',
   ServicesCategories = 'ServicesCategoriesPageComponent',
   StylistInvitation = 'StylistInvitationPageComponent',
