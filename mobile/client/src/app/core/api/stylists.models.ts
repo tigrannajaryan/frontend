@@ -9,6 +9,6 @@ export interface StylistModel {
   profile_photo_url?: string;
 }
 
-export interface SearchStylistsResponse {
+export interface StylistsListResponse {
   stylists: StylistModel[];
 }

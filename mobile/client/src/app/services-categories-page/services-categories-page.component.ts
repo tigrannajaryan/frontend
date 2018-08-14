@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController } from 'ionic-angular';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
@@ -12,6 +12,7 @@ import {
   ServicesState
 } from '~/core/reducers/services.reducer';
 import { ServiceCategoryModel } from '~/core/api/services.models';
+import { StylistsService } from '~/core/api/stylists-service';
 
 @IonicPage()
 @Component({
@@ -30,14 +31,31 @@ export class ServicesCategoriesPageComponent {
 
   constructor(
     private navCtrl: NavController,
-    private navParams: NavParams,
+    private stylistsService: StylistsService,
     private store: Store<ServicesState>
   ) {
   }
 
-  ionViewWillEnter(): void {
-    this.stylistUuid = this.navParams.get('stylistUuid');
+  async ionViewCanEnter(): Promise<boolean> {
+    return this.stylistsService.getPreferredStylists()
+      .map(({ response }) => {
+        if (!response.stylists || response.stylists.length === 0) {
+          // Can happen when exiting the app before selecting a preferred stylist.
+          // TODO: remove after implementing restore to last viewed screen (onboarding)
+          setTimeout(() => {
+            this.navCtrl.setRoot(PageNames.Stylists);
+          });
+          return false;
+        }
+        // For the Client App V1 we have only one preferred Stylist:
+        this.stylistUuid = response.stylists[0].uuid;
+        return true;
+      })
+      .first()
+      .toPromise();
+  }
 
+  ionViewWillEnter(): void {
     this.categories = this.store.select(selectStylistServiceCategories(this.stylistUuid));
     this.requestState = this.store.select(selectServicesRequestState);
 

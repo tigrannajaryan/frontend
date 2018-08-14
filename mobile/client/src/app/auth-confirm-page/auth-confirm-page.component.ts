@@ -17,6 +17,7 @@ import {
   selectConfirmCodeState,
   selectRequestCodeState
 } from '~/core/reducers/auth.reducer';
+import { selectInvitedByStylist, StylistState } from '~/core/reducers/stylists.reducer';
 import { AuthEffects } from '~/core/effects/auth.effects';
 
 import { ApiError, FieldErrorItem } from '~/shared/api-errors';
@@ -54,7 +55,7 @@ export class AuthConfirmPageComponent {
     private authEffects: AuthEffects,
     private navCtrl: NavController,
     private navParams: NavParams,
-    private store: Store<AuthState>
+    private store: Store<AuthState & StylistState>
   ) {
   }
 
@@ -76,8 +77,14 @@ export class AuthConfirmPageComponent {
     this.authEffects.saveToken
       .takeWhile(componentIsActive(this))
       .filter((isTokenSaved: boolean) => isTokenSaved)
-      .subscribe(() => {
-        this.navCtrl.setRoot(PageNames.StylistInvitation);
+      .withLatestFrom(this.store)
+      .subscribe(([isTokenSaved, state]) => {
+        const invitation = selectInvitedByStylist(state);
+        if (invitation) {
+          this.navCtrl.setRoot(PageNames.StylistInvitation);
+        } else {
+          this.navCtrl.setRoot(PageNames.Stylists);
+        }
       });
 
     // Handle code verification error
