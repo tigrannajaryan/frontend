@@ -17,7 +17,7 @@ const fakeApi = {
   }
 };
 
-describe('ApiDataStore', () => {
+describe('DataStore', () => {
 
   beforeEach(async(() => TestBed.configureTestingModule({
     providers: [
