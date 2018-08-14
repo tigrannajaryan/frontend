@@ -6,12 +6,12 @@ import * as moment from 'moment';
 import { ApiResponse } from '~/core/api/base.models';
 import { BaseServiceMock } from '~/core/api/base-service.mock';
 
+import { WeekdayIso } from '~/shared/weekday';
 import {
   GetPricelistParams,
   GetPricelistResponse,
   GetStylistServicesParams,
-  GetStylistServicesResponse,
-  ISOWeekday
+  GetStylistServicesResponse
 } from '~/core/api/services.models';
 
 @Injectable()
@@ -36,7 +36,7 @@ export class ServicesServiceMock extends BaseServiceMock {
     );
   }
 
-  getPricelist(params?: GetPricelistParams): Observable<ApiResponse<GetPricelistResponse>> {
+  getPricelist(params: GetPricelistParams): Observable<ApiResponse<GetPricelistResponse>> {
     return this.mockRequest<GetPricelistResponse>(
       Observable.create(observer => {
         const prices = [];
@@ -48,7 +48,7 @@ export class ServicesServiceMock extends BaseServiceMock {
             date: i.format('YYYY-MM-DD'),
             price: Number((Math.random() * 300).toFixed()),
             is_fully_booked: false,
-            is_working_day: [ISOWeekday.Tue, ISOWeekday.Fri].indexOf(weekDay) === -1
+            is_working_day: [WeekdayIso.Tue, WeekdayIso.Fri].indexOf(weekDay) === -1
           });
         }
         observer.next({

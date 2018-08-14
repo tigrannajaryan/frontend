@@ -29,21 +29,26 @@ export class SelectDateComponent {
   ) {
   }
 
-  ionViewWillLoad(): void {
-    this.servicesService.getPricelist().subscribe(({ response }) => {
-      if (response && response.prices.length > 0) {
+  async ionViewWillLoad(): Promise<void> {
+    // TODO: retrieve from nav params, test data:
+    const params = {
+      selectedServices: [],
+      service: { uuid: '' }
+    };
 
-        // Create offers Map {[ISODate]: DayOffer} to easily get an offer by date:
-        this.offers = new Map();
-        for (const offer of getPricesWithOpacity(response.prices)) {
-          this.offers.set(offer.date, offer);
-        }
+    const { response } = await this.servicesService.getPricelist({ service_uuid: params.service.uuid }).first().toPromise();
+    if (response && response.prices.length > 0) {
 
-        // Set period boundaries to understand what months of calendar to create:
-        this.start = moment(response.prices[0].date).startOf('month').format('YYYY-MM-DD');
-        this.end = moment(response.prices[response.prices.length - 1].date).endOf('month').format('YYYY-MM-DD');
+      // Create offers Map {[ISODate]: DayOffer} to easily get an offer by date:
+      this.offers = new Map();
+      for (const offer of getPricesWithOpacity(response.prices)) {
+        this.offers.set(offer.date, offer);
       }
-    });
+
+      // Set period boundaries to understand what months of calendar to create:
+      this.start = moment(response.prices[0].date).startOf('month').format('YYYY-MM-DD');
+      this.end = moment(response.prices[response.prices.length - 1].date).endOf('month').format('YYYY-MM-DD');
+    }
   }
 
   onSelectOffer(offer: DayOffer): void {

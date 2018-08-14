@@ -30,16 +30,6 @@ export enum DiscountType {
   Weekday = 'weekday'
 }
 
-export enum ISOWeekday {
-  Mon = 1,
-  Tue,
-  Wed,
-  Thu,
-  Fri,
-  Sat,
-  Sun
-}
-
 export type ISODate = string; // ISO 8601: YYYY-MM-DD
 
 export interface DayOffer {
