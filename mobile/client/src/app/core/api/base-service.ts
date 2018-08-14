@@ -58,7 +58,7 @@ export class BaseService {
             serverStatus.notify(serverStatusError);
           }
 
-          if (apiError.handleGlobally) {
+          if (apiError.handleGlobally()) {
             const store = AppModule.injector.get(Store);
             // Dispatch actions for errors handled by errors.effects.
             store.dispatch(new ApiCommonErrorAction(apiError));
