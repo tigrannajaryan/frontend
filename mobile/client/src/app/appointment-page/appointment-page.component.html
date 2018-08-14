@@ -1,104 +1,106 @@
 <ion-header madeHeader></ion-header>
 
 <ion-content class="AppointmentPage">
-    <ion-grid fixed>
-  <ng-template [ngIf]="params && params.appointment">
+  <div class="contentSidePadding">
+    <ng-template [ngIf]="params && params.appointment">
 
-    <h1 class="pageTitle" *ngIf="params.appointment.status === AppointmentStatus.checked_out">Thanks for your visit!</h1>
+      <h1 class="pageTitle" *ngIf="params.appointment.status === AppointmentStatus.checked_out">Thanks for your visit!</h1>
 
-    <div class="Card AppointmentPage-card" >
-      <ion-grid no-padding class="AppointmentPage-cardGrid">
-        <ion-row>
+      <div class="Card AppointmentPage-card">
+        <ion-grid no-padding class="AppointmentPage-cardGrid">
+          <ion-row>
 
-          <ion-col col-6 class="AppointmentPage-cardAppDate">
-            <!-- for new appointments show calendar icon - ToDo Allpng should be changed to font -->
-            <img src="assets/icons/calendar-2x.png" *ngIf="params.appointment.status === AppointmentStatus.new"/>
-          
-            <!-- for checked out appointments show checkmark - ToDo Allpng should be changed to font-->
-            <img src="assets/icons/check-2x.png" *ngIf="params.appointment.status === AppointmentStatus.checked_out"/>
+            <ion-col col-6 class="AppointmentPage-cardAppDate">
+              <!-- for new appointments show calendar icon - ToDo Allpng should be changed to font -->
+              <img src="assets/icons/calendar-2x.png" *ngIf="params.appointment.status === AppointmentStatus.new" />
 
-            <!-- date and time of the appointment -->
-            <div style="display: inline-block;">
-            <span class="AppointmentPage-cardAppDateTime">{{ params.appointment.datetime_start_at | date: 'h:mmaaaaa' }}</span><br/>
-            <span class="AppointmentPage-cardAppDateDay">{{ params.appointment.datetime_start_at | date: 'E, LLL d' }}</span>
-          </div>
-          </ion-col>
+              <!-- for checked out appointments show checkmark - ToDo Allpng should be changed to font-->
+              <img src="assets/icons/check-2x.png" *ngIf="params.appointment.status === AppointmentStatus.checked_out" />
 
-          <ion-col col-6 class="AppointmentPage-cardAppStylist" align-self-end>
-            <!-- stylists's full name -->
-            <span>{{ params.appointment.stylist_first_name }}<br/>
-            {{ params.appointment.stylist_last_name }}</span>
-
-            <!-- show photo or avatar if photo is missing -->
-            <img *ngIf="params.appointment.stylist_photo_url; else showAvatar" src="{{ params.appointment.stylist_photo_url }}"
-            />
-            <ng-template #showAvatar>
-              <img src="assets/icons/stylist-avatar.svg" />
-            </ng-template>
-          </ion-col>
-        </ion-row>
-
-        <ion-row>
-          <ion-col col-12 class="AppointmentPage-cardAppPrice">
-            <!-- Estimated price -->
-            <div *ngIf="params.appointment.status === AppointmentStatus.new; else showFinalPrice"  class="priceEstimated">
-              <label> Estimated price</label>
-              <div class="price" >{{ (params.appointment.total_price_before_tax + params.appointment.total_tax) | price }}</div>
-            </div>
-
-            <!-- Final price -->
-            <ng-template #showFinalPrice>
-              <div>
-                <label>Final price</label>
-                <div class="price" > {{ (params.appointment.total_price_before_tax + params.appointment.total_tax) | price }}</div>
+              <!-- date and time of the appointment -->
+              <div class="AppointmentPage-appDate">
+                <span class="AppointmentPage-cardAppDateTime">{{ params.appointment.datetime_start_at | date: 'h:mmaaaaa' }}</span>
+                <br/>
+                <span class="AppointmentPage-cardAppDateDay">{{ params.appointment.datetime_start_at | date: 'E, LLL d' }}</span>
               </div>
-            </ng-template>
-          </ion-col>
-        </ion-row>
-        <!-- services, one row per service -->
-      <ion-row *ngFor="let service of params.appointment.services" class="AppointmentPage-cardAppService">
-          <ion-col col-7>{{ service.service_name }}</ion-col>
-          <ion-col col-2>{{ service.client_price | price }}0</ion-col>
-          <ion-col col-3>
-           <div class="AppointmentPage-redLabel"> <span>WAS</span> {{ service.regular_price | price }}</div>
-          </ion-col>
-        </ion-row>
+            </ion-col>
+
+            <ion-col col-6 class="AppointmentPage-cardAppStylist" align-self-end>
+              <!-- stylists's full name -->
+              <span>{{ params.appointment.stylist_first_name }}
+                <br/> {{ params.appointment.stylist_last_name }}</span>
+
+              <!-- show photo or avatar if photo is missing -->
+              <img *ngIf="params.appointment.stylist_photo_url; else showAvatar" src="{{ params.appointment.stylist_photo_url }}" />
+              <ng-template #showAvatar>
+                <img src="assets/icons/stylist-avatar.svg" />
+              </ng-template>
+            </ion-col>
+          </ion-row>
+
+          <ion-row>
+            <ion-col col-12 class="AppointmentPage-cardAppPrice">
+              <!-- Estimated price -->
+              <div *ngIf="params.appointment.status === AppointmentStatus.new; else showFinalPrice" class="priceEstimated">
+                <label> Estimated price</label>
+                <div class="price">{{ (params.appointment.total_price_before_tax + params.appointment.total_tax) | price }}</div>
+              </div>
+
+              <!-- Final price -->
+              <ng-template #showFinalPrice>
+                <div>
+                  <label>Final price</label>
+                  <div class="price"> {{ (params.appointment.total_price_before_tax + params.appointment.total_tax) | price }}</div>
+                </div>
+              </ng-template>
+            </ion-col>
+          </ion-row>
+          <!-- services, one row per service -->
+          <ion-row *ngFor="let service of params.appointment.services" class="AppointmentPage-cardAppService">
+            <ion-col col-8>{{ service.service_name }}</ion-col>
+            <ion-col col-2>{{ service.client_price | price }}</ion-col>
+            <ion-col col-2>
+              <div class="AppointmentPage-redLabel">
+                <span>WAS</span> {{ service.regular_price | price }}</div>
+            </ion-col>
+          </ion-row>
           <!-- show tax if it is present -->
-      <ion-row *ngIf="params.appointment.total_tax && params.appointment.total_price_before_tax" class="AppointmentPage-cardAppServiceFees">
-          <ion-col col-7>
-            {{ params.appointment.status === AppointmentStatus.new ? 'Est. tax' : 'Taxes' }} ({{ 100*(params.appointment.total_tax /
-            params.appointment.total_price_before_tax) | number:'1.0-3' }}%)
-          </ion-col>
-          <ion-col col-5>
-            ${{ params.appointment.total_tax | number:'1.0-2' }}
-          </ion-col>
-        </ion-row>
-  
-        <!-- show card fee if it is present -->
-        <ion-row *ngIf="params.appointment.status === AppointmentStatus.checked_out && params.appointment.total_card_fee && params.appointment.total_price_before_tax" class="AppointmentPage-cardAppServiceFees">
-          <ion-col col-7>
-            Card fee ({{ 100*(params.appointment.total_card_fee / (params.appointment.total_price_before_tax + params.appointment.total_tax))
-            | number:'1.0-3' }}%)
-          </ion-col>
-          <ion-col col-5>
-            ${{ params.appointment.total_card_fee | number:'1.0-2' }}
-          </ion-col>
-        </ion-row>
-        <ion-row>
+          <ion-row *ngIf="params.appointment.total_tax && params.appointment.total_price_before_tax" class="AppointmentPage-cardAppServiceFees">
+            <ion-col col-8>
+              {{ params.appointment.status === AppointmentStatus.new ? 'Est. tax' : 'Taxes' }} ({{ 100*(params.appointment.total_tax /
+              params.appointment.total_price_before_tax) | number:'1.0-3' }}%)
+            </ion-col>
+            <ion-col col-4>
+              ${{ params.appointment.total_tax | number:'1.0-2' }}
+            </ion-col>
+          </ion-row>
+
+          <!-- show card fee if it is present -->
+          <ion-row *ngIf="params.appointment.status === AppointmentStatus.checked_out && params.appointment.total_card_fee && params.appointment.total_price_before_tax"
+            class="AppointmentPage-cardAppServiceFees">
+            <ion-col col-8>
+              Card fee ({{ 100*(params.appointment.total_card_fee / (params.appointment.total_price_before_tax + params.appointment.total_tax))
+              | number:'1.0-3' }}%)
+            </ion-col>
+            <ion-col col-4>
+              ${{ params.appointment.total_card_fee | number:'1.0-2' }}
+            </ion-col>
+          </ion-row>
+          <ion-row>
             <ion-col col-12 class="AppointmentPage-cardAppTip">Tip not included</ion-col>
           </ion-row>
-      </ion-grid>
+        </ion-grid>
 
-    </div>
-<div class="AppointmentPage-actions">
-    <button ion-button class="Button" *ngIf="params.hasConfirmButton" (click)="onConfirmClick()">Confirm booking</button>
+      </div>
+      <div class="AppointmentPage-actions">
+        <button ion-button class="Button" *ngIf="params.hasConfirmButton" (click)="onConfirmClick()">Confirm booking</button>
 
-    <!-- rebooking link -->
-    <div class="AppointmentPage-reBook" *ngIf="params.appointment.status === AppointmentStatus.checked_out" (click)="onRebookClick()">Re-book appointment</div>
+        <!-- rebooking link -->
+        <div class="AppointmentPage-reBook" *ngIf="params.appointment.status === AppointmentStatus.checked_out" (click)="onRebookClick()">Re-book appointment</div>
 
-    <!-- cancelation link -->
-    <a class="AppointmentPage-cancelBooking"  *ngIf="params.appointment.status === AppointmentStatus.new" (click)="onCancelClick()">Cancel booking</a>
+        <!-- cancelation link -->
+        <a class="AppointmentPage-cancelBooking" *ngIf="params.appointment.status === AppointmentStatus.new" (click)="onCancelClick()">Cancel booking</a>
+      </div>
+    </ng-template>
   </div>
-  </ng-template>
-    </ion-grid>
 </ion-content>

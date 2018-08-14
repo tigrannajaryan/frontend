@@ -1,9 +1,14 @@
 .AppHistoryPage {
-  .AppHistoryPage-spinner {
-    margin: 10px auto 0;
+  .contentSidePadding { //move this class to general style
+    height: 100%;
+    padding: 0 pxtovw(25px);
   }
 
-  .AppHistoryPage-title {
+  .AppHistoryPage-spinner {
+    margin: pxtovw(10px) auto 0;
+  }
+
+  .AppHistoryPage-title { //the same for home make it general
     display: flex;
     width: 100%;
 
@@ -27,7 +32,7 @@
   .AppHistoryPage-subtitleContainer {
     display: flex;
     align-items: flex-start;
-    margin: 10px 0;
+    margin: pxtovw(10px) 0;
 
     .AppHistoryPage-subtitle {
       display: inline-block;
@@ -38,13 +43,13 @@
 
     .AppHistoryPage-labelPurpul {
       display: inline-block;
-      padding: 1px 12px;
-      margin-left: 7px; 
+      padding: pxtovw(1px) pxtovw(12px);
+      margin-left: pxtovw(7px);
       font-size: $t-base;
       color: color($colors, white);
       vertical-align: text-top;
       background: color($colors, violet);
-      border-radius: 20px;
+      border-radius: pxtovw(20px);
     }
   }
 

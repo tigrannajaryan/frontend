@@ -2,7 +2,7 @@
   display: flex;
   justify-content: space-between;
   width: 100%;
-  margin: 13px 0 5px;
+  margin: pxtovw(20px) 0 pxtovw(5px);
 
   .AppCard-HeaderVisitDate {
     align-self: flex-start;
@@ -11,7 +11,8 @@
   }
 
   .AppCard-HeaderLink {
-    font-weight: 600;
+    font-size: pxtovw(15px);
+    //font-weight: 600;
     color: color($colors, orange);
   }
 }
@@ -23,21 +24,26 @@
 
   .AppCard-GridStylistDetails {
     margin: 0;
-    font-size: 14px; //need this size measurement unit may be changed
+    font-size: pxtovw(15px);
     font-weight: normal;
     color: color($grayscale, 500);
   }
 
   .AppCard-GridStylistDetailsImage {
     display: inline-block;
-    width: 21px;
-    height: 21px;
-    padding: 2px;
-    margin-right: 3px;
+    width: pxtovw(21px);
+    height: pxtovw(21px);
+    padding: pxtovw(2px);
+    margin-right: pxtovw(3px);
     text-align: center;
     vertical-align: middle;
     border: 1px solid color($grayscale, 300);
     border-radius: 50%;
+  }
+
+  .AppCard-GridStylistDetailsImage img {
+    width: pxtovw(16px);
+    height: pxtovw(16px);
   }
 
   .AppCard-GridPrice {
@@ -59,5 +65,5 @@
 
 .AppCard-Grid span {
   display: inline-block;
-  margin: 4px 0;
+  margin: pxtovw(4px) 0;
 }
