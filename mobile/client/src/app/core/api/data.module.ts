@@ -11,9 +11,12 @@ import { ServicesService } from '~/core/api/services-service';
 import { StylistsService } from '~/core/api/stylists-service';
 
 import { ProfileDataStore } from '~/profile/profile.data';
+import { BookingData } from '~/core/api/booking.data';
+import { BookingApi } from '~/core/api/booking.api';
+import { BookingApiMock } from '~/core/api/booking.api.mock';
 
 /**
- * Common data module that includes ApiDataStore singletons for the entire app.
+ * Common data module that includes singletons for the entire app.
  */
 
 @NgModule({
@@ -26,6 +29,8 @@ import { ProfileDataStore } from '~/profile/profile.data';
     AppointmentsApi,
     AppointmentsApiMock, // TODO: remove
     AuthService,
+    BookingApi,
+    BookingApiMock,
     ProfileService,
     StylistsService,
     ServicesService
@@ -35,10 +40,11 @@ export class DataModule {
   static forRoot(): ModuleWithProviders {
     return {
       ngModule: DataModule,
-      // Add ApiDataStore singletons in the 'providers' array here
+      // Add singletons in the 'providers' array here
       providers: [
         AppointmentsDataStore,
-        ProfileDataStore
+        ProfileDataStore,
+        BookingData
       ]
     };
   }

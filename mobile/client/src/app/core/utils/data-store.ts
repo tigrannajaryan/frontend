@@ -28,6 +28,10 @@ interface GetOptions {
   refresh?: boolean;
 }
 
+interface DataStoreOptions {
+  cacheTtlMilliseconds?: number;
+}
+
 /**
  * DataStore is a simple local storage of API responses that we
  * can use on many Client App screens to easily support the following:
@@ -137,7 +141,11 @@ export class DataStore<T> {
    * @param storeName globally unique store name string
    * @param apiEndpoint a function that returns any async data source that returns an ApiResponse<T>
    */
-  constructor(storeName: string, private apiEndpoint: () => AsyncDataSource<ApiResponse<T>>) {
+  constructor(
+    storeName: string,
+    private apiEndpoint: () => AsyncDataSource<ApiResponse<T>>,
+    private options: DataStoreOptions = {}
+  ) {
     this.promise = Promise.resolve(undefined);
     this.subject = new BehaviorSubject<ApiResponse<T>>(undefined);
     this.storageKey = `DataStore.${storeName}`;
@@ -238,27 +246,33 @@ export class DataStore<T> {
     // Get last cached value
     let cachedData: DataStorePersistent<T> = await storage.get(this.storageKey);
     if (cachedData && (!options || !options.refresh)) {
-      // We have a cached value and no refreshing is required, so just return it
-      retVal = { response: cachedData.response };
-      if (!this.subject.value || cachedData.response !== this.subject.value.response) {
-        this.subject.next(retVal);
+      // Check if cache is expired
+      if (this.options.cacheTtlMilliseconds === undefined ||
+        cachedData.lastUpdated.valueOf() + this.options.cacheTtlMilliseconds > new Date().valueOf()) {
+
+        // We have a cached value and no refreshing is required, so just return it
+        retVal = { response: cachedData.response };
+        if (!this.subject.value || cachedData.response !== this.subject.value.response) {
+          this.subject.next(retVal);
+        }
+        return retVal;
       }
+    }
+
+    // We don't have a cached value or we need to refresh it, so load it from the api endpoint
+    retVal = await dataSourceToPromise(this.apiEndpoint());
+    if (retVal.error) {
+      // Data loading failed. Return previously cached successful response and current errors.
+      retVal.response = cachedData ? cachedData.response : undefined;
     } else {
-      // We don't have a cached value or we were asked to refresh it, so load it from the api endpoint
-      retVal = await dataSourceToPromise(this.apiEndpoint());
-      if (retVal.error) {
-        // Data loading failed. Return previously cached successful response and current errors.
-        retVal.response = cachedData ? cachedData.response : undefined;
-      } else {
-        // Publish the result to observers
-        this.subject.next(retVal);
-        // The call was successfull, save the response in the cache
-        cachedData = {
-          response: retVal.response,
-          lastUpdated: new Date()
-        };
-        storage.set(this.storageKey, cachedData);
-      }
+      // Publish the result to observers
+      this.subject.next(retVal);
+      // The call was successfull, save the response in the cache
+      cachedData = {
+        response: retVal.response,
+        lastUpdated: new Date()
+      };
+      storage.set(this.storageKey, cachedData);
     }
 
     return retVal;
