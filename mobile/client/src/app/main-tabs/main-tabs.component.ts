@@ -26,7 +26,7 @@ export class MainTabsComponent {
     },
     {
       name: 'Book',
-      link: PageNames.Stylists,
+      link: PageNames.ServicesCategories,
       params: { isMain: true }
     },
     {
