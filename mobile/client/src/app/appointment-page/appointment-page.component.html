@@ -19,7 +19,7 @@
 
               <!-- date and time of the appointment -->
               <div class="AppointmentPage-appDate">
-                <span class="AppointmentPage-cardAppDateTime">{{ params.appointment.datetime_start_at | date: 'h:mmaaaaa' }}</span>
+                <span class="AppointmentPage-cardAppDateTime">{{ formatTimeInZone(params.appointment.datetime_start_at) }}</span>
                 <br/>
                 <span class="AppointmentPage-cardAppDateDay">{{ params.appointment.datetime_start_at | date: 'E, LLL d' }}</span>
               </div>
@@ -99,7 +99,8 @@
         <div class="AppointmentPage-reBook" *ngIf="params.appointment.status === AppointmentStatus.checked_out" (click)="onRebookClick()">Re-book appointment</div>
 
         <!-- cancelation link -->
-        <a class="AppointmentPage-cancelBooking" *ngIf="params.appointment.status === AppointmentStatus.new" (click)="onCancelClick()">Cancel booking</a>
+        <a class="AppointmentPage-cancelBooking" *ngIf="!params.hasConfirmButton && params.appointment.status === AppointmentStatus.new"
+          (click)="onCancelClick()">Cancel booking</a>
       </div>
     </ng-template>
   </div>

@@ -1,9 +1,13 @@
 import { Component } from '@angular/core';
-import { IonicPage } from 'ionic-angular';
+import { IonicPage, NavController } from 'ionic-angular';
 import * as moment from 'moment';
 
+import { Logger } from '~/shared/logger';
+import { PageNames } from '~/core/page-names';
 import { DayOffer, ISODate } from '~/core/api/services.models';
 import { ServicesServiceMock } from '~/core/api/services-service.mock';
+import { SelectTimeParams } from '~/booking/select-time/select-time.component';
+import { BookingData } from '~/core/api/booking.data';
 
 interface ExtendedDayOffer extends DayOffer {
   opacity: number;
@@ -25,6 +29,9 @@ export class SelectDateComponent {
   moment = moment;
 
   constructor(
+    private bookingData: BookingData,
+    private logger: Logger,
+    private navCtrl: NavController,
     private servicesService: ServicesServiceMock
   ) {
   }
@@ -51,8 +58,25 @@ export class SelectDateComponent {
     }
   }
 
+  ionViewWillEnter(): void {
+    // TODO: start() should be moved to the first screen in booking process when it is are ready
+    const fakeStylistUuid = 'fakeid'; // replace with preferred stylist uuid when we have it
+    this.bookingData.start(fakeStylistUuid);
+  }
+
   onSelectOffer(offer: DayOffer): void {
-    // TODO: implement when connecting with other screens
+    this.logger.info('onSelectOffer', offer);
+
+    const date = new Date(offer.date);
+    this.bookingData.setDate(date);
+    this.bookingData.setTotalClientPrice(offer.price);
+
+    const params: SelectTimeParams = {
+      clientTotalPrice: offer.price,
+      regularTotalPrice: 200, // TODO: replace fake price and services with real ones when we have them
+      services: []
+    };
+    this.navCtrl.push(PageNames.SelectTime, { params });
   }
 }
 

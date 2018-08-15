@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import * as moment from 'moment';
 
 import { DataStore } from '~/core/utils/data-store';
 import { PricelistResponse, TimeslotsResponse } from '~/core/api/booking.api';
@@ -28,9 +29,12 @@ function sameServices(l1: ServiceModel[], l2: ServiceModel[]): boolean {
  */
 @Injectable()
 export class BookingData {
+  selectedTime: moment.Moment;
+
   private _stylistUuid: string;
   private _selectedServices: ServiceModel[];
   private _date: Date;
+  private _totalClientPrice: number;
   private _pricelist: DataStore<PricelistResponse>;
   private _timeslots: DataStore<TimeslotsResponse>;
 
@@ -41,15 +45,13 @@ export class BookingData {
    * @param stylistUuid the uuid of the stylist with whom to start booking.
    */
   start(stylistUuid: string): void {
-    if (this._stylistUuid !== stylistUuid) {
-      this._stylistUuid = stylistUuid;
-
-      // clear previous booking information
-      this._selectedServices = undefined;
-      this._date = undefined;
-      this._pricelist = undefined;
-      this._timeslots = undefined;
-    }
+    this._stylistUuid = stylistUuid;
+    // clear previous booking information
+    this._selectedServices = undefined;
+    this._date = undefined;
+    this.selectedTime = undefined;
+    this._pricelist = undefined;
+    this._timeslots = undefined;
   }
 
   /**
@@ -79,6 +81,14 @@ export class BookingData {
         () => this.api.getTimeslots(this._stylistUuid, date),
         { cacheTtlMilliseconds: 1000 * 60 }); // TTL for timeslots cache is 1 min
     }
+  }
+
+  setTotalClientPrice(price: number): void {
+    this._totalClientPrice = price;
+  }
+
+  get totalClientPrice(): number {
+    return this._totalClientPrice;
   }
 
   get date(): Date {

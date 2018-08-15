@@ -33,13 +33,21 @@ export class HomePageComponent {
 
   ionViewDidLoad(): void {
     this.logger.info('HomePageComponent.ionViewDidLoad');
-    this.onLoad();
+
+    // When loading the first time perform full refresh
+    this.onRefresh();
   }
 
-  onLoad(): void {
+  ionViewWillEnter(): void {
+    this.logger.info('HomePageComponent.ionViewWillEnter');
+    // Trigger loading of data via this.homeObservable
+    this.dataStore.home.get({ refresh: false });
+  }
+
+  onRefresh(): void {
     this.logger.info('HomePageComponent.onLoad');
 
-    // Load the data. Indicate loading.
+    // Refresh and load the data. Indicate loading.
     loading(this, this.dataStore.home.get({ refresh: true }));
   }
 
@@ -47,7 +55,7 @@ export class HomePageComponent {
     const params: AppointmentPageParams = {
       appointment,
       hasConfirmButton: false,
-      onCancelClick: () => this.onLoad()
+      onCancelClick: () => this.onRefresh()
     };
     this.navCtrl.push(PageNames.Appointment, { params });
   }
@@ -57,8 +65,9 @@ export class HomePageComponent {
     this.logger.info('onRebookClick', appointment);
   }
 
-  onBoockClick(): void {
+  onBookClick(): void {
     // TODO: add booking logic when appointment creation flow is implemented
     this.logger.info('onBookClick');
+    this.navCtrl.push(PageNames.SelectDate);
   }
 }

@@ -31,9 +31,9 @@ describe('DataStore', () => {
       AppModule.injector = injector;
     }));
 
-  it('should initialize with undefined value', () => {
+  it('should initialize with undefined response value', () => {
     const store = new DataStore('mykey', fakeApi.endpoint);
-    expect(store.value()).toEqual(undefined);
+    expect(store.value()).toEqual({ response: undefined });
   });
 
   it('should call endpoint on first get({ refresh: false })', async () => {

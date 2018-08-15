@@ -11,7 +11,7 @@
     <ion-row>
       <ion-col>
         <!-- time of the appointment -->
-        <span>{{ appointment.datetime_start_at | date: 'h:mmaaaaa' }}</span>
+        <span>{{ formatTimeInZone(appointment.datetime_start_at) }}</span>
 
       </ion-col>
       <ion-col class="AppCard-GridPrice" >

@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 
 import { ApiResponse } from '~/core/api/base.models';
 import { LOADING_DELAY } from '~/core/api/request.models';
+import { showAlert } from '~/core/utils/alert';
 
 export type Request<T> = Observable<ApiResponse<T>>;
 export type Extension<T> = (...args: any[]) => (request: Request<T>) => Request<T>;
@@ -24,7 +25,7 @@ export type Extension<T> = (...args: any[]) => (request: Request<T>) => Request<
  */
 export function composeRequest<T>(...extensions): Promise<ApiResponse<T>> {
   // The last argument is a request itself:
-  let [ request ] = extensions.splice(-1);
+  let [request] = extensions.splice(-1);
 
   // In case of using it with ApiDataStore.get or any other promise-based requests:
   if (request && request instanceof Promise) {
@@ -72,12 +73,24 @@ export const loading = <T>(setLoading: (isLoading: boolean) => any) => (request:
 };
 
 /**
- * Complete refresing on request done extension.
+ * Complete refreshing on request done extension.
  */
 export const withRefresher = <T>(refresher: Refresher) => (request: Request<T>): Request<T> =>
   request.map(response => {
     if (refresher && refresher.state === 'refreshing') {
       refresher.complete();
+    }
+    return response;
+  });
+
+/**
+ * If the response is an ApiError that is not handled globally then show an alert
+ * with the error message.
+ */
+export const alertError = <T>() => (request: Request<T>): Request<T> =>
+  request.map(response => {
+    if (response.error && !response.error.handleGlobally()) {
+      showAlert('', response.error.getMessage());
     }
     return response;
   });

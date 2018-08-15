@@ -37,8 +37,8 @@ export class AppointmentsApiMock {
   }
 
   getHome(): Observable<ApiResponse<HomeResponse>> {
-    const upcoming = AppointmentsApiMock.genFake(2, AppointmentStatus.new);
-    const previous = AppointmentsApiMock.genFake(1, AppointmentStatus.checked_out);
+    const upcoming = AppointmentsApiMock.genFake(0, AppointmentStatus.new);
+    const previous = AppointmentsApiMock.genFake(0, AppointmentStatus.checked_out);
     return new Observable(observer => {
       setTimeout(() => {
         observer.next({
@@ -48,7 +48,7 @@ export class AppointmentsApiMock {
           }
         });
         observer.complete();
-      }, 1000);
+      }, 0);
     });
   }
 
