@@ -65,7 +65,7 @@ export class PreferredStylistsData {
   /**
    * In V1 implementation we should have only one preferred stylist and would like to clear all before adding a new one.
    */
-  async clearAll(): Promise<void> {
+  private async clearAll(): Promise<void> {
     const preferredStylists = await this.get();
     await Promise.all(
       preferredStylists.map(stylist => this.api.deletePreferredStylist(stylist.preference_uuid).first().toPromise())
