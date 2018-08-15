@@ -6,21 +6,21 @@
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 
-  <ion-grid fixed class="HomePage-grid">
+  <div class="contentSidePadding">
 
     <!-- Show spinner if loading is in progress and refresher is not active (to avoid double loading indicators) -->
     <ion-spinner *ngIf="isLoading && refresher.state === 'inactive'" class="HomePage-spinner"></ion-spinner>
 
-    <div class="HomePage-title">
-      <h1 class="HomePage-h1">Home</h1>
+    <div class="titleBox">
+      <h1 class="HomePage-h1 pageTitle">Home</h1>
       <div class="HomePage-avatar">
         <!-- TODO: add profile image. Need a separate component for it. -->
         <!--img should be removed-->
-        <img width="40" height="40" src="assets/icons/stylist-avatar.svg" />
+        <img src="assets/icons/stylist-avatar.svg" />
       </div>
     </div>
 
-    <ion-grid no-padding class="HomePage-grid" *ngIf="(homeObservable | async)?.response as homeData">
+    <div *ngIf="(homeObservable | async)?.response as homeData">
       <div *ngIf="homeData.upcoming.length !== 0 || homeData.previous.length !== 0" class="HomePage-subtitleContainer">
         <span class="HomePage-subtitle">Upcoming Visits</span>
         <span class="HomePage-labelPurpul">{{ homeData.upcoming.length }}</span>
@@ -55,11 +55,11 @@
         <ion-row>
           <ion-col>
             <!--ToDo the image will be replaced once SVG is ready-->
-            <img src="assets/icons/tmp_remove.png" width="100" height="100">
+            <img src="assets/icons/tmp_remove.png">
           </ion-col>
         </ion-row>
         <ion-row class="HomePage-wText">
-          <ion-col align-self-center>
+          <ion-col align-self-center >
             Welcome!
             <br/> Time to get MADE
           </ion-col>
@@ -72,7 +72,7 @@
       </ion-grid>
 
 
-    </ion-grid>
+    </div>
 
-  </ion-grid>
+  </div>
 </ion-content>

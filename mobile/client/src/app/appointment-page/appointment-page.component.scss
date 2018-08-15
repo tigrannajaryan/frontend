@@ -16,6 +16,10 @@
     height: pxtovw(32px);
   }
 
+  .AppointmentPage-appDate {
+    display: inline-block;
+  }
+
   .AppointmentPage-cardAppDateTime {
     font-size: pxtovw(18px);
     font-weight: bold;
@@ -82,7 +86,8 @@
   }
 
   .AppointmentPage-actions {
-    margin: pxtovw(20px) auto  pxtovw(10px);
+    margin: pxtovw(20px) auto pxtovw(10px);
+    text-align: center;
   }
 
   .AppointmentPage-cancelBooking {
