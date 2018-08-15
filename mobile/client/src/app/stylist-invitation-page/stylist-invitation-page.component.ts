@@ -22,19 +22,6 @@ export class StylistInvitationPageComponent {
   ) {
   }
 
-  async ionViewCanEnter(): Promise<boolean> {
-    const preferredStylists = await this.preferredStylistsData.get();
-    if (preferredStylists.length !== 0) {
-      // Redirect to Home when has a preferred stylist.
-      // This can be an indicator of already passed onboarding.
-      setTimeout(() => {
-        this.navCtrl.setRoot(PageNames.MainTabs);
-      });
-      return false;
-    }
-    return true;
-  }
-
   async ionViewWillEnter(): Promise<void> {
     this.stylist = await this.store.select(selectInvitedByStylist).first().toPromise();
   }
