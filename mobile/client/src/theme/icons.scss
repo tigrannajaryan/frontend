@@ -1,64 +1,64 @@
 $icomoon-font-family: "mb-icon" !default;
 $icomoon-font-path: "../assets/fonts/mb-icon" !default;
 
-$mb-icon-1: "\e94e";
-$mb-icon-2: "\e94f";
-$mb-icon-3: "\e930";
-$mb-icon-4: "\e92d";
-$mb-icon-5: "\e944";
-$mb-icon-6: "\e941";
-$mb-icon-7: "\e94c";
-$mb-icon-8: "\e92e";
-$mb-icon-9: "\e92f";
-$mb-icon-10: "\e943";
-$mb-icon-11: "\e93f";
-$mb-icon-12: "\e93b";
-$mb-icon-13: "\e931";
-$mb-icon-14: "\e942";
-$mb-icon-15: "\e917";
-$mb-icon-16: "\e918";
-$mb-icon-17: "\e947";
-$mb-icon-18: "\e948";
-$mb-icon-19: "\e91d";
-$mb-icon-20: "\e91e";
-$mb-icon-21: "\e92b";
-$mb-icon-22: "\e92c";
-$mb-icon-23: "\e915";
-$mb-icon-24: "\e91a";
-$mb-icon-25: "\e920";
-$mb-icon-26: "\e902";
-$mb-icon-27: "\e903";
-$mb-icon-28: "\e904";
-$mb-icon-29: "\e905";
-$mb-icon-30: "\e913";
-$mb-icon-31: "\e911";
-$mb-icon-32: "\e910";
-$mb-icon-33: "\e90f";
-$mb-icon-34: "\e916";
-$mb-icon-35: "\e900";
-$mb-icon-36: "\e921";
-$mb-icon-37: "\e922";
-$mb-icon-38: "\e923";
-$mb-icon-39: "\e924";
-$mb-icon-40: "\e925";
-$mb-icon-41: "\e906";
-$mb-icon-42: "\e907";
-$mb-icon-43: "\e909";
-$mb-icon-44: "\e90a";
-$mb-icon-45: "\e90b";
-$mb-icon-46: "\e914";
-$mb-icon-47: "\e901";
-$mb-icon-48: "\e926";
-$mb-icon-49: "\e91b";
-$mb-icon-50: "\e927";
-$mb-icon-51: "\e90d";
-$mb-icon-52: "\e928";
-$mb-icon-53: "\e929";
-$mb-icon-54: "\e90e";
-$mb-icon-55: "\e908";
-$mb-icon-56: "\e90c";
-$mb-icon-57: "\e912";
-$mb-icon-58: "\e919";
+$mb-icon-conditioners: "\e94f";
+$mb-icon-conditioners-a: "\e94e";
+$mb-icon-clock: "\e930";
+$mb-icon-clock-a: "\e94c";
+$mb-icon-invite: "\e92d";
+$mb-icon-invite-a: "\e92e";
+$mb-icon-stylists: "\e941";
+$mb-icon-stylists-a: "\e944";
+$mb-icon-plus: "\e92f";
+$mb-icon-timer: "\e93f";
+$mb-icon-discounts: "\e931";
+$mb-icon-braids-and-locs: "\e93b";
+$mb-icon-special-occassions: "\e943";
+$mb-icon-home: "\e948";
+$mb-icon-home-a: "\e947";
+$mb-icon-home-b: "\e942";
+$mb-icon-discounts-c: "\e90e";
+$mb-icon-discounts-a: "\e916";
+$mb-icon-discounts-b: "\e915";
+$mb-icon-right-arrow: "\e917";
+$mb-icon-circle-check: "\e918";
+$mb-icon-triangle-down: "\e91d";
+$mb-icon-send: "\e91e";
+$mb-icon-camera: "\e92b";
+$mb-icon-calendar: "\e92c";
+$mb-icon-logo: "\e920";
+$mb-icon-trash: "\e902";
+$mb-icon-phone: "\e903";
+$mb-icon-clock-b: "\e904";
+$mb-icon-circle: "\e905";
+$mb-icon-faq: "\e922";
+$mb-icon-dots: "\e913";
+$mb-icon-chain: "\e911";
+$mb-icon-mail: "\e910";
+$mb-icon-chain-a: "\e90f";
+$mb-icon-dollar: "\e928";
+$mb-icon-heart: "\e90d";
+$mb-icon-calendar-add: "\e900";
+$mb-icon-wash-and-style: "\e90a";
+$mb-icon-treatments: "\e90b";
+$mb-icon-color: "\e914";
+$mb-icon-cuts: "\e901";
+$mb-icon-check: "\e921";
+$mb-icon-hair-a: "\e909";
+$mb-icon-hairs: "\e91a";
+$mb-icon-search: "\e923";
+$mb-icon-cross: "\e924";
+$mb-icon-arrow-left: "\e925";
+$mb-icon-circle-add: "\e906";
+$mb-icon-woman: "\e907";
+$mb-icon-marker: "\e926";
+$mb-icon-badge: "\e91b";
+$mb-icon-phone-a: "\e927";
+$mb-icon-instagram: "\e929";
+$mb-icon-money: "\e908";
+$mb-icon-globe: "\e90c";
+$mb-icon-lock: "\e912";
+$mb-icon-users: "\e919";
 
 @font-face {
   font-family: '#{$icomoon-font-family}';
@@ -83,466 +83,409 @@ $mb-icon-58: "\e919";
   -moz-osx-font-smoothing: grayscale;
 }
 
-.mb-icon-1 {
-  @extend .mb-icon;
 
+.mb-icon-conditioners {
+  @extend .mb-icon;
   &:before {
-    content: $mb-icon-1;
+    content: $mb-icon-conditioners;
   }
 }
 
-.mb-icon-2 {
+.mb-icon-conditioners-a {
   @extend .mb-icon;
-
   &:before {
-    content: $mb-icon-2;
+    content: $mb-icon-conditioners-a;
   }
 }
 
-.mb-icon-3 {
+.mb-icon-clock {
   @extend .mb-icon;
-
   &:before {
-    content: $mb-icon-3;
+    content: $mb-icon-clock;
   }
 }
 
-.mb-icon-4 {
+.mb-icon-clock-a {
   @extend .mb-icon;
-
   &:before {
-    content: $mb-icon-4;
+    content: $mb-icon-clock-a;
   }
 }
 
-.mb-icon-5 {
+.mb-icon-invite {
   @extend .mb-icon;
-
   &:before {
-    content: $mb-icon-5;
+    content: $mb-icon-invite;
   }
 }
 
-.mb-icon-6 {
+.mb-icon-invite-a {
   @extend .mb-icon;
-
   &:before {
-    content: $mb-icon-6;
+    content: $mb-icon-invite-a;
   }
 }
 
-.mb-icon-7 {
+.mb-icon-stylists {
   @extend .mb-icon;
-
   &:before {
-    content: $mb-icon-7;
+    content: $mb-icon-stylists;
   }
 }
 
-.mb-icon-8 {
+.mb-icon-stylists-a {
   @extend .mb-icon;
-
   &:before {
-    content: $mb-icon-8;
+    content: $mb-icon-stylists-a;
   }
 }
 
-.mb-icon-9 {
+.mb-icon-plus {
   @extend .mb-icon;
-
   &:before {
-    content: $mb-icon-9;
+    content: $mb-icon-plus;
   }
 }
 
-.mb-icon-10 {
+.mb-icon-timer {
   @extend .mb-icon;
-
   &:before {
-    content: $mb-icon-10;
+    content: $mb-icon-timer;
   }
 }
 
-.mb-icon-11 {
+.mb-icon-discounts {
   @extend .mb-icon;
-
   &:before {
-    content: $mb-icon-11;
+    content: $mb-icon-discounts;
   }
 }
 
-.mb-icon-12 {
+.mb-icon-braids-and-locs {
   @extend .mb-icon;
-
   &:before {
-    content: $mb-icon-12;
+    content: $mb-icon-braids-and-locs;
   }
 }
 
-.mb-icon-13 {
+.mb-icon-special-occassions {
   @extend .mb-icon;
-
   &:before {
-    content: $mb-icon-13;
+    content: $mb-icon-special-occassions;
   }
 }
 
-.mb-icon-14 {
+.mb-icon-home {
   @extend .mb-icon;
-
   &:before {
-    content: $mb-icon-14;
+    content: $mb-icon-home;
   }
 }
 
-.mb-icon-15 {
+.mb-icon-home-a {
   @extend .mb-icon;
-
   &:before {
-    content: $mb-icon-15;
+    content: $mb-icon-home-a;
   }
 }
 
-.mb-icon-16 {
+.mb-icon-home-b {
   @extend .mb-icon;
-
   &:before {
-    content: $mb-icon-16;
+    content: $mb-icon-home-b;
   }
 }
 
-.mb-icon-17 {
+.mb-icon-discounts-c {
   @extend .mb-icon;
-
   &:before {
-    content: $mb-icon-17;
+    content: $mb-icon-discounts-c;
   }
 }
 
-.mb-icon-18 {
+.mb-icon-discounts-a {
   @extend .mb-icon;
-
   &:before {
-    content: $mb-icon-18;
+    content: $mb-icon-discounts-a;
   }
 }
 
-.mb-icon-19 {
+.mb-icon-discounts-b {
   @extend .mb-icon;
-
   &:before {
-    content: $mb-icon-19;
+    content: $mb-icon-discounts-b;
   }
 }
 
-.mb-icon-20 {
+.mb-icon-right-arrow {
   @extend .mb-icon;
-
   &:before {
-    content: $mb-icon-20;
+    content: $mb-icon-right-arrow;
   }
 }
 
-.mb-icon-21 {
+.mb-icon-circle-check {
   @extend .mb-icon;
-
   &:before {
-    content: $mb-icon-21;
+    content: $mb-icon-circle-check;
   }
 }
 
-.mb-icon-22 {
+.mb-icon-triangle-down {
   @extend .mb-icon;
-
   &:before {
-    content: $mb-icon-22;
+    content: $mb-icon-triangle-down;
   }
 }
 
-.mb-icon-23 {
+.mb-icon-send {
   @extend .mb-icon;
-
   &:before {
-    content: $mb-icon-23;
+    content: $mb-icon-send;
   }
 }
 
-.mb-icon-24 {
+.mb-icon-camera {
   @extend .mb-icon;
-
   &:before {
-    content: $mb-icon-24;
+    content: $mb-icon-camera;
   }
 }
 
-.mb-icon-25 {
+.mb-icon-calendar {
   @extend .mb-icon;
-
   &:before {
-    content: $mb-icon-25;
+    content: $mb-icon-calendar;
   }
 }
 
-.mb-icon-26 {
+.mb-icon-logo {
   @extend .mb-icon;
-
   &:before {
-    content: $mb-icon-26;
+    content: $mb-icon-logo;
   }
 }
 
-.mb-icon-27 {
+.mb-icon-trash {
   @extend .mb-icon;
-
   &:before {
-    content: $mb-icon-27;
+    content: $mb-icon-trash;
   }
 }
 
-.mb-icon-28 {
+.mb-icon-phone {
   @extend .mb-icon;
-
   &:before {
-    content: $mb-icon-28;
+    content: $mb-icon-phone;
   }
 }
 
-.mb-icon-29 {
+.mb-icon-clock-b {
   @extend .mb-icon;
-
   &:before {
-    content: $mb-icon-29;
+    content: $mb-icon-clock-b;
   }
 }
 
-.mb-icon-30 {
+.mb-icon-circle {
   @extend .mb-icon;
-
   &:before {
-    content: $mb-icon-30;
+    content: $mb-icon-circle;
   }
 }
 
-.mb-icon-31 {
+.mb-icon-faq {
   @extend .mb-icon;
-
   &:before {
-    content: $mb-icon-31;
+    content: $mb-icon-faq;
   }
 }
 
-.mb-icon-32 {
+.mb-icon-dots {
   @extend .mb-icon;
-
   &:before {
-    content: $mb-icon-32;
+    content: $mb-icon-dots;
   }
 }
 
-.mb-icon-33 {
+.mb-icon-chain {
   @extend .mb-icon;
-
   &:before {
-    content: $mb-icon-33;
+    content: $mb-icon-chain;
   }
 }
 
-.mb-icon-34 {
+.mb-icon-mail {
   @extend .mb-icon;
-
   &:before {
-    content: $mb-icon-34;
+    content: $mb-icon-mail;
   }
 }
 
-.mb-icon-35 {
+.mb-icon-chain-a {
   @extend .mb-icon;
-
   &:before {
-    content: $mb-icon-35;
+    content: $mb-icon-chain-a;
   }
 }
 
-.mb-icon-36 {
+.mb-icon-dollar {
   @extend .mb-icon;
-
   &:before {
-    content: $mb-icon-36;
+    content: $mb-icon-dollar;
   }
 }
 
-.mb-icon-37 {
+.mb-icon-heart {
   @extend .mb-icon;
-
   &:before {
-    content: $mb-icon-37;
+    content: $mb-icon-heart;
   }
 }
 
-.mb-icon-38 {
+.mb-icon-calendar-add {
   @extend .mb-icon;
-
   &:before {
-    content: $mb-icon-38;
+    content: $mb-icon-calendar-add;
   }
 }
 
-.mb-icon-39 {
+.mb-icon-wash-and-style {
   @extend .mb-icon;
-
   &:before {
-    content: $mb-icon-39;
+    content: $mb-icon-wash-and-style;
   }
 }
 
-.mb-icon-40 {
+.mb-icon-treatments {
   @extend .mb-icon;
-
   &:before {
-    content: $mb-icon-40;
+    content: $mb-icon-treatments;
   }
 }
 
-.mb-icon-41 {
+.mb-icon-color {
   @extend .mb-icon;
-
   &:before {
-    content: $mb-icon-41;
+    content: $mb-icon-color;
   }
 }
 
-.mb-icon-42 {
+.mb-icon-cuts {
   @extend .mb-icon;
-
   &:before {
-    content: $mb-icon-42;
+    content: $mb-icon-cuts;
   }
 }
 
-.mb-icon-43 {
+.mb-icon-check {
   @extend .mb-icon;
-
   &:before {
-    content: $mb-icon-43;
+    content: $mb-icon-check;
   }
 }
 
-.mb-icon-44 {
+.mb-icon-hair-a {
   @extend .mb-icon;
-
   &:before {
-    content: $mb-icon-44;
+    content: $mb-icon-hair-a;
   }
 }
 
-.mb-icon-45 {
+.mb-icon-hairs {
   @extend .mb-icon;
-
   &:before {
-    content: $mb-icon-45;
+    content: $mb-icon-hairs;
   }
 }
 
-.mb-icon-46 {
+.mb-icon-search {
   @extend .mb-icon;
-
   &:before {
-    content: $mb-icon-46;
+    content: $mb-icon-search;
   }
 }
 
-.mb-icon-47 {
+.mb-icon-cross {
   @extend .mb-icon;
-
   &:before {
-    content: $mb-icon-47;
+    content: $mb-icon-cross;
   }
 }
 
-.mb-icon-48 {
+.mb-icon-arrow-left {
   @extend .mb-icon;
-
   &:before {
-    content: $mb-icon-48;
+    content: $mb-icon-arrow-left;
   }
 }
 
-.mb-icon-49 {
+.mb-icon-circle-add {
   @extend .mb-icon;
-
   &:before {
-    content: $mb-icon-49;
+    content: $mb-icon-circle-add;
   }
 }
 
-.mb-icon-50 {
+.mb-icon-woman {
   @extend .mb-icon;
-
   &:before {
-    content: $mb-icon-50;
+    content: $mb-icon-woman;
   }
 }
 
-.mb-icon-51 {
+.mb-icon-marker {
   @extend .mb-icon;
-
   &:before {
-    content: $mb-icon-51;
+    content: $mb-icon-marker;
   }
 }
 
-.mb-icon-52 {
+.mb-icon-badge {
   @extend .mb-icon;
-
   &:before {
-    content: $mb-icon-52;
+    content: $mb-icon-badge;
   }
 }
 
-.mb-icon-53 {
+.mb-icon-phone-a {
   @extend .mb-icon;
-
   &:before {
-    content: $mb-icon-53;
+    content: $mb-icon-phone-a;
   }
 }
 
-.mb-icon-54 {
+.mb-icon-instagram {
   @extend .mb-icon;
-
   &:before {
-    content: $mb-icon-54;
+    content: $mb-icon-instagram;
   }
 }
 
-.mb-icon-55 {
+.mb-icon-money {
   @extend .mb-icon;
-
   &:before {
-    content: $mb-icon-55;
+    content: $mb-icon-money;
   }
 }
 
-.mb-icon-56 {
+.mb-icon-globe {
   @extend .mb-icon;
-
   &:before {
-    content: $mb-icon-56;
+    content: $mb-icon-globe;
   }
 }
 
-.mb-icon-57 {
+.mb-icon-lock {
   @extend .mb-icon;
-
   &:before {
-    content: $mb-icon-57;
+    content: $mb-icon-lock;
   }
 }
 
-.mb-icon-58 {
+.mb-icon-users {
   @extend .mb-icon;
-
   &:before {
-    content: $mb-icon-58;
+    content: $mb-icon-users;
   }
 }
