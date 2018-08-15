@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 import { AppointmentModel, AppointmentStatus } from '~/core/api/appointments.models';
+import { formatTimeInZone } from '~/shared/utils/string-utils';
 
 /**
  * A component that shows a single appointment item (card). Used by Home and History screens.
@@ -12,6 +13,7 @@ import { AppointmentModel, AppointmentStatus } from '~/core/api/appointments.mod
 export class AppointmentItemComponent {
 
   AppointmentStatus = AppointmentStatus;
+  formatTimeInZone = formatTimeInZone;
 
   @Input()
   appointment: AppointmentModel;

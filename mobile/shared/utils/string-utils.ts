@@ -1,3 +1,5 @@
+import * as moment from 'moment';
+
 /**
  * Simple string formatting function. Substitutes parameters in the
  * form {d} by correspoding item in args array.
@@ -16,4 +18,25 @@ export function capitalizeFirstChar(str: string): string {
     return str;
   }
   return str[0].toLocaleUpperCase() + str.substring(1);
+}
+
+/**
+ * Set a/p format instead of am/pm for time formatting.
+ */
+moment.updateLocale('en', {
+  meridiem: (hours, minutes, isLower) => {
+    if (hours > 11) {
+      return isLower ? 'p' : 'P';
+    } else {
+      return isLower ? 'a' : 'A';
+    }
+  }
+});
+
+/**
+ * Format time that is in ISO 8601 format in the timezone that is specified in the input.
+ * For example 2018-08-18T14:00:00-06:00 will return 2:00pm.
+ */
+export function formatTimeInZone(dt: moment.MomentInput): string {
+  return moment.parseZone(dt).format('h:mma');
 }

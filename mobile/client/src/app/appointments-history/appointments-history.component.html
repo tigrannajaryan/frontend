@@ -20,7 +20,7 @@
       </div>
     </div>
 
-    <div *ngIf="(historyObservable | async)?.response.appointments as appointments">
+    <div *ngIf="(historyObservable | async)?.response?.appointments as appointments">
       <div *ngIf="appointments.length > 0; else noAppointments">
         <!-- show appointment cards -->
         <div class="AppHistoryPage-subtitleContainer">
