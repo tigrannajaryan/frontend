@@ -1,18 +1,9 @@
 .AppHistoryPage {
-  .contentSidePadding { //move this class to general style
-    height: 100%;
-    padding: 0 pxtovw(25px);
-  }
-
   .AppHistoryPage-spinner {
     margin: pxtovw(10px) auto 0;
   }
 
-  .AppHistoryPage-title { //the same for home make it general
-    display: flex;
-    width: 100%;
-
-    .AppHistoryPage-h1 {
+     .AppHistoryPage-h1 {
       display: inline-block;
       align-self: flex-start;
       width: 80%;
@@ -27,7 +18,6 @@
       text-align: center;
       vertical-align: top;
     }
-  }
 
   .AppHistoryPage-subtitleContainer {
     display: flex;

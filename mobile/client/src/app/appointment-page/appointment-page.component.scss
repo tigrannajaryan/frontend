@@ -1,9 +1,4 @@
 .AppointmentPage {
-  .contentSidePadding { //move this class to general style
-    height: 100%;
-    padding: 0 pxtovw(25px);
-  }
-
   .AppointmentPage-cardGrid {
     width: 100%;
     font-size: pxtovw(15px);

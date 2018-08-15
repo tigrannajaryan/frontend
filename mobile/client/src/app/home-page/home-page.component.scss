@@ -1,9 +1,4 @@
 .HomePage {
-  .contentSidePadding { //move this class to general style
-    height: 100%;
-    padding: 0 pxtovw(25px);
-  }
-
   .HomePage-spinner {
     margin: pxtovw(10px) auto 0;
   }
@@ -20,30 +15,25 @@
     text-align: center;
   }
 
-  .HomePage-title { //the same for history make it general
-    display: flex;
-    width: 100%;
+  .HomePage-h1 {
+    display: inline-block;
+    align-self: flex-start;
+    width: 80%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 
-    .HomePage-h1 {
-      display: inline-block;
-      align-self: flex-start;
-      width: 80%;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
+  .HomePage-avatar {
+    align-self: flex-end;
+    width: 20%;
+    text-align: center;
+    vertical-align: top;
+  }
 
-    .HomePage-avatar {
-      align-self: flex-end;
-      width: 20%;
-      text-align: center;
-      vertical-align: top;
-    }
-
-    .HomePage-avatar img {
-      width: pxtovw(40px);
-      height: pxtovw(40px);
-    }
+  .HomePage-avatar img {
+    width: pxtovw(40px);
+    height: pxtovw(40px);
   }
 
   .HomePage-subtitleContainer {
