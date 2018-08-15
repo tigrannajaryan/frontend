@@ -2,13 +2,10 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController } from 'ionic-angular';
 import { Store } from '@ngrx/store';
 
-import { FieldErrorItem } from '~/shared/api-errors';
-import { hasError } from '~/shared/pipes/has-error.pipe';
-
 import { PageNames } from '~/core/page-names';
 import { StylistModel } from '~/core/api/stylists.models';
 import { selectInvitedByStylist, StylistState } from '~/core/reducers/stylists.reducer';
-import { StylistsService } from '~/core/api/stylists-service';
+import { PreferredStylistsData } from '~/core/api/preferred-stylists.data';
 
 @IonicPage()
 @Component({
@@ -20,34 +17,35 @@ export class StylistInvitationPageComponent {
 
   constructor(
     private navCtrl: NavController,
-    private stylistsService: StylistsService,
+    private preferredStylistsData: PreferredStylistsData,
     private store: Store<StylistState>
   ) {
   }
 
-  ionViewCanEnter(): Promise<boolean> {
-    return this.store.select(selectInvitedByStylist)
-      .map((invitation?: StylistModel) => {
-        this.stylist = invitation;
-        if (!this.stylist) { // should pick a stylist first
-          setTimeout(() => {
-            this.navCtrl.setRoot(PageNames.Stylists);
-          });
-        }
-        return Boolean(this.stylist);
-      })
-      .first()
-      .toPromise();
+  async ionViewCanEnter(): Promise<boolean> {
+    const preferredStylists = await this.preferredStylistsData.get();
+    if (preferredStylists.length !== 0) {
+      // Redirect to Home when has a preferred stylist.
+      // This can be an indicator of already passed onboarding.
+      setTimeout(() => {
+        this.navCtrl.setRoot(PageNames.MainTabs);
+      });
+      return false;
+    }
+    return true;
+  }
+
+  async ionViewWillEnter(): Promise<void> {
+    this.stylist = await this.store.select(selectInvitedByStylist).first().toPromise();
   }
 
   async onContinueWithStylist(): Promise<void> {
-    const { response, error } = await this.stylistsService.setPreferredStylist(this.stylist.uuid).first().toPromise();
-    if (response || error && hasError(error, new FieldErrorItem('stylist_uuid', { code: 'err_stylist_is_already_in_preference' }))) {
-      this.navCtrl.push(PageNames.MainTabs);
-    }
+    await this.preferredStylistsData.set(this.stylist);
+
+    this.navCtrl.push(PageNames.HowMadeWorks);
   }
 
-  onSeeStylistsList(): void {
-    this.navCtrl.push(PageNames.Stylists);
+  async onSeeStylistsList(): Promise<void> {
+    this.navCtrl.push(PageNames.HowMadeWorks);
   }
 }
