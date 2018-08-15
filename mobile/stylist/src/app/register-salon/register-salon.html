@@ -14,7 +14,8 @@
 
   <form [formGroup]="form" class="Made-wp Made-wpContent">
     <div class="Salon-circle">
-      <div [style.backgroundImage]="form.get('vars.image').value" class="Salon-circle-photo"></div>
+      <div [style.background-image]="form.get('vars.image').value ? 'url(' + form.get('vars.image').value + ')' : null"
+           class="Salon-circle-photo"></div>
       <label (click)="processPhoto()" class="Salon-circle-add">
         <i class="bb-icon bb-icon-add-photo Salon-circle-add-icon"></i>
       </label>
@@ -24,13 +25,13 @@
       <ion-row>
         <ion-col col-6>
           <ion-item class="Salon-input">
-            <ion-label floating>First name</ion-label>
+            <ion-label floating>First name*</ion-label>
             <ion-input formControlName="first_name" type="text"></ion-input>
           </ion-item>
         </ion-col>
         <ion-col col-6>
           <ion-item class="Salon-input">
-            <ion-label floating>Last name</ion-label>
+            <ion-label floating>Last name*</ion-label>
             <ion-input formControlName="last_name" type="text"></ion-input>
           </ion-item>
         </ion-col>
@@ -39,7 +40,7 @@
       <ion-row>
         <ion-col>
           <ion-item class="Salon-input">
-            <ion-label floating>Salon name</ion-label>
+            <ion-label floating>Salon name*</ion-label>
             <ion-input formControlName="salon_name" type="text"></ion-input>
           </ion-item>
         </ion-col>
@@ -48,7 +49,7 @@
       <ion-row>
         <ion-col>
           <ion-item class="Salon-input">
-            <ion-label floating>Address</ion-label>
+            <ion-label floating>Address*</ion-label>
             <ion-input formControlName="salon_address" type="text" class="ion_autocomplete"></ion-input>
           </ion-item>
         </ion-col>
@@ -57,7 +58,7 @@
       <ion-row>
         <ion-col>
           <ion-item class="Salon-input">
-            <ion-label floating>Phone number</ion-label>
+            <ion-label floating>Phone number*</ion-label>
             <ion-input formControlName="phone" type="tel"></ion-input>
           </ion-item>
         </ion-col>
@@ -66,8 +67,9 @@
       <ion-row>
         <ion-col>
           <ion-item class="Salon-input">
-            <ion-label floating>Instagrem</ion-label>
+            <ion-label floating>Instagram user name</ion-label>
             <ion-input formControlName="instagram_url" type="text"></ion-input>
+            <span [class.is-active]="form.get('instagram_url').errors" class="Salon-inputError" item-end>Wrong name</span>
           </ion-item>
         </ion-col>
       </ion-row>

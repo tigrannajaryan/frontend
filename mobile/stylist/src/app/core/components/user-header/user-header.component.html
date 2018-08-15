@@ -8,8 +8,12 @@
   </ion-title>
 
   <ion-buttons end>
-    <button *ngIf="profile" (click)="onProfileClick()" [style.background-image]="'url(' + profile.profile_photo_url + ')'" ion-button icon-only class="UserHeader-btnUser is-withPic">
-      <ion-icon *ngIf="false" name="ios-contact-outline"></ion-icon>
+    <button *ngIf="profile"
+            (click)="onProfileClick()"
+            [style.background-image]="profile.profile_photo_url ? 'url(' + profile.profile_photo_url + ')' : null"
+            ion-button
+            icon-only
+            class="UserHeader-btnUser is-withPic">
     </button>
     <div class="UserHeader-delimeter"></div>
     <button (click)="openPopover($event)" ion-button icon-only class="UserHeader-btnMenu">

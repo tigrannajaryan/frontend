@@ -1,4 +1,4 @@
-<ion-header madeBackHeader></ion-header>
+<ion-header madeBackHeader [hasBackButton]="isProfile"></ion-header>
 
 
 <ion-content no-padding>
@@ -17,7 +17,7 @@
 
     <!--shifts block start -->
     <div *ngFor="let card of cards; let index = index" class="Workingtime">
-      <button *ngIf="index != 0" (click)="deleteCard(index)" ion-button clear class="Workingtime-delete">
+      <button *ngIf="cards.length > 1" (click)="deleteCard(index)" ion-button clear class="Workingtime-delete">
         <ion-icon name="ios-trash-outline"></ion-icon>
       </button>
 
