@@ -1,15 +1,15 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
-import { UiComponent } from './ui.component';
+import { UiKitPreviewComponent } from './ui-kit-preview.component';
 import { CoreModule } from '~/core/core.module';
 
 @NgModule({
   declarations: [
-    UiComponent
+    UiKitPreviewComponent
   ],
   imports: [
-    IonicPageModule.forChild(UiComponent),
+    IonicPageModule.forChild(UiKitPreviewComponent),
     CoreModule
   ]
 })
-export class UiComponentModule {}
+export class UiKitPreviewComponentModule {}

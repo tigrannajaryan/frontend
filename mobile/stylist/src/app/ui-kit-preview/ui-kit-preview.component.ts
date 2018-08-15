@@ -5,8 +5,8 @@ import { IonicPage } from 'ionic-angular';
   segment: 'ui'
 })
 @Component({
-  selector: 'page-ui',
-  templateUrl: 'ui.component.html'
+  selector: 'page-ui-kit-preview',
+  templateUrl: 'ui-kit-preview.component.html'
 })
-export class UiComponent {
+export class UiKitPreviewComponent {
 }
