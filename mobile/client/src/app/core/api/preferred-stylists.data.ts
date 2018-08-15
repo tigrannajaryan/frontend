@@ -39,7 +39,11 @@ export class PreferredStylistsData {
 
     // Already preferred stylist, return:
     if (preferredStylist) {
-      return Promise.resolve({ response: { preference_uuid: preferredStylist.preference_uuid } });
+      return {
+        response: {
+          preference_uuid: preferredStylist.preference_uuid
+        }
+      };
     }
 
     // TODO: remove next when work with multiple preferred stylists
