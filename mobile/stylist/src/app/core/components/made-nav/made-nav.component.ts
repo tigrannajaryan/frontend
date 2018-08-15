@@ -30,10 +30,12 @@ export class MadeNavComponent {
     { name: 'Services', page: PageNames.Services },
     { name: 'Worktime', page: PageNames.Worktime },
 
-    { name: 'Discounts', page: PageNames.DiscountsInfo },
+    { name: 'Welcome', page: PageNames.DiscountsInfo },
+    { name: 'Welcome', page: PageNames.DiscountsWelcome },
     { name: 'Weekdays', page: PageNames.DiscountsWeekday },
     { name: 'Revisit', page: PageNames.DiscountsRevisit },
     { name: 'First Visit', page: PageNames.DiscountsFirstBooking },
+    { name: 'Welcome', page: PageNames.DiscountsDone },
 
     { name: 'Invite Clients', page: PageNames.Invitations }
   ];

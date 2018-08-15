@@ -1,0 +1,30 @@
+<ion-header madeBackHeader></ion-header>
+
+
+<ion-content no-padding>
+  <made-nav [activePage]="PageNames.DiscountsDone"></made-nav>
+
+  <div class="Made-wp Made-wpContent">
+    <div class="Made-h1">Almost done!</div>
+
+    <div class="MadeCheckList">
+      <div class="MadeCheckList-title">
+        Remember,
+      </div>
+      <div class="MadeCheckList-item">
+        <ion-icon name="md-checkmark"></ion-icon>
+        <span class="MadeCheckList-itemText">As your schedule fills up, your preset discounts reduce automatically!</span>
+      </div>
+      <div class="MadeCheckList-item">
+        <ion-icon name="md-checkmark"></ion-icon>
+        <span class="MadeCheckList-itemText">Reduced rates motivate your clients to book more often and work around your schedule.</span>
+      </div>
+    </div>
+
+    <div class="Made-h3">What clients see at booking:</div>
+    <img src="assets/imgs/discounts/done.png" alt="">
+  </div>
+</ion-content>
+
+
+<ion-footer madeDiscountsFooter (continue)="onContinue()"></ion-footer>
