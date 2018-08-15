@@ -9,6 +9,18 @@ export interface StylistModel {
   profile_photo_url?: string;
 }
 
+export interface PreferredStylistModel extends StylistModel {
+  preference_uuid: string;
+}
+
 export interface StylistsListResponse {
   stylists: StylistModel[];
+}
+
+export interface PreferredStylistsListResponse {
+  stylists: PreferredStylistModel[];
+}
+
+export interface SetPreferredStylistResponse {
+  preference_uuid: string;
 }

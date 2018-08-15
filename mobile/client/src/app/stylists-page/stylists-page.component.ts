@@ -4,13 +4,10 @@ import { IonicPage, NavController } from 'ionic-angular';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
-import { FieldErrorItem } from '~/shared/api-errors';
-import { hasError } from '~/shared/pipes/has-error.pipe';
-
 import { PageNames } from '~/core/page-names';
 import { RequestState } from '~/core/api/request.models';
 import { StylistModel } from '~/core/api/stylists.models';
-import { StylistsService } from '~/core/api/stylists-service';
+import { PreferredStylistsData } from '~/core/api/preferred-stylists.data';
 import {
   SearchStylistsAction,
   selectStylists,
@@ -38,7 +35,7 @@ export class StylistsPageComponent {
 
   constructor(
     private navCtrl: NavController,
-    private stylistsService: StylistsService,
+    private preferredStylistsData: PreferredStylistsData,
     private store: Store<StylistState>
   ) {
   }
@@ -63,9 +60,7 @@ export class StylistsPageComponent {
   }
 
   async onContinueWithStylist(stylist: StylistModel): Promise<void> {
-    const { response, error } = await this.stylistsService.setPreferredStylist(stylist.uuid).first().toPromise();
-    if (response || error && hasError(error, new FieldErrorItem('stylist_uuid', { code: 'err_stylist_is_already_in_preference' }))) {
-      this.navCtrl.push(PageNames.MainTabs);
-    }
+    await this.preferredStylistsData.set(stylist);
+    this.navCtrl.setRoot(PageNames.MainTabs);
   }
 }

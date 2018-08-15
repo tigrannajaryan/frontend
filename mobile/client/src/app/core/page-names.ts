@@ -12,6 +12,8 @@ export enum PageNames {
   Auth = 'AuthPageComponent',
   AuthConfirm = 'AuthConfirmPageComponent',
   Home = 'HomePageComponent',
+  HowMadeWorks = 'HowMadeWorksComponent',
+  HowPricingWorks = 'HowPricingWorksComponent',
   ProfileEdit = 'ProfileEditComponent',
   ProfileSummary = 'ProfileSummaryComponent',
   SelectDate = 'SelectDateComponent',

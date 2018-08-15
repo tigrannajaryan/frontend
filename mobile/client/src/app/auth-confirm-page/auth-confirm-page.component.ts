@@ -83,7 +83,7 @@ export class AuthConfirmPageComponent {
         if (invitation) {
           this.navCtrl.setRoot(PageNames.StylistInvitation);
         } else {
-          this.navCtrl.setRoot(PageNames.Stylists);
+          this.navCtrl.setRoot(PageNames.HowMadeWorks);
         }
       });
 

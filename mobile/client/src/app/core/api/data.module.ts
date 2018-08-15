@@ -6,14 +6,14 @@ import { AppointmentsApiMock } from '~/core/api/appointments.api.mock';
 import { AppointmentsDataStore } from '~/core/api/appointments.datastore';
 
 import { AuthService } from '~/core/api/auth-service';
-import { ProfileService } from '~/core/api/profile-service';
-import { ServicesService } from '~/core/api/services-service';
-import { StylistsService } from '~/core/api/stylists-service';
-
-import { ProfileDataStore } from '~/profile/profile.data';
 import { BookingData } from '~/core/api/booking.data';
 import { BookingApi } from '~/core/api/booking.api';
 import { BookingApiMock } from '~/core/api/booking.api.mock';
+import { ServicesService } from '~/core/api/services-service';
+import { StylistsService } from '~/core/api/stylists-service';
+import { PreferredStylistsData } from '~/core/api/preferred-stylists.data';
+import { ProfileService } from '~/core/api/profile-service';
+import { ProfileDataStore } from '~/profile/profile.data';
 
 /**
  * Common data module that includes singletons for the entire app.
@@ -43,6 +43,7 @@ export class DataModule {
       // Add singletons in the 'providers' array here
       providers: [
         AppointmentsDataStore,
+        PreferredStylistsData,
         ProfileDataStore,
         BookingData
       ]
