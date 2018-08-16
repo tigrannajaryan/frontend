@@ -16,6 +16,7 @@ import { FormatPhonePipe } from '~/core/pipes/format-phone.pipe';
 
 import { MadeHeaderComponent } from '~/core/components/made-header/made-header.component';
 import { AppointmentItemComponent } from '~/core/components/appointment-item/appointment-item.component';
+import { BookServicesHeaderComponent } from '~/booking/services-header/services-header';
 
 export enum DefaultImage {
   User = '/assets/imgs/user/default_user.png'
@@ -30,7 +31,8 @@ const declarations = [
   ServerStatusComponent,
   MadeHeaderComponent,
   AppointmentItemComponent,
-  MbIconsComponent
+  MbIconsComponent,
+  BookServicesHeaderComponent
 ];
 
 @NgModule({

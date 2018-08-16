@@ -3,31 +3,32 @@
 <ion-content class="SelectTimeslot">
   <div class="contentSidePadding">
     <h1 class="pageTitle">Select time</h1>
-    <ng-container *ngIf="params">
-      <div class="SelectTimeslot-pricing">
-        <div class="SelectTimeslot-pricingRegular">Regular price
-          <div>{{ params.regularTotalPrice | price }}</div>
-        </div>
-        <div class="SelectTimeslot-pricingYour">Your price
-          <div>{{ params.clientTotalPrice | price }}</div>
-        </div>
-      </div>
-      <ng-container *ngFor="let slotSection of slotSections">
-        <!-- section of timeslots -->
-        <div class="SelectTimeslot-sectionTitle">{{ slotSection.sectionName }}</div>
 
-        <div class="SelectTimeslot-slotsContainer">
-          <ng-container *ngFor="let slot of slotSection.slots">
-            <!-- timeslot -->
-            <div class="SelectTimeslot-timeslot" [ngClass]="{
+    <book-services-header [services]="this.bookingData.selectedServices" (deleteClick)="onDeleteService($event)" (addClick)="onAddService()"></book-services-header>
+
+    <div class="SelectTimeslot-pricing">
+      <div class="SelectTimeslot-pricingRegular">Regular price
+        <div>{{ this.bookingData.totalRegularPrice | price }}</div>
+      </div>
+      <div class="SelectTimeslot-pricingYour">Your price
+        <div>{{ this.bookingData.totalClientPrice | price }}</div>
+      </div>
+    </div>
+    <ng-container *ngFor="let slotSection of slotSections">
+      <!-- section of timeslots -->
+      <div class="SelectTimeslot-sectionTitle">{{ slotSection.sectionName }}</div>
+
+      <div class="SelectTimeslot-slotsContainer">
+        <ng-container *ngFor="let slot of slotSection.slots">
+          <!-- timeslot -->
+          <div class="SelectTimeslot-timeslot" [ngClass]="{
               'SelectTimeslot-timeslotBooked': slot.isBooked,
               'SelectTimeslot-timeslotAvailable': !slot.isBooked,
               'SelectTimeslot-timeslotSelected': slot.startTime.isSame(this.bookingData.selectedTime)}" (click)="onSlotClick(slot)">
-              {{ slot.isBooked ? 'Booked' : slot.displayTime }}
-            </div>
-          </ng-container>
-        </div>
-      </ng-container>
+            {{ slot.isBooked ? 'Booked' : slot.displayTime }}
+          </div>
+        </ng-container>
+      </div>
     </ng-container>
   </div>
 </ion-content>

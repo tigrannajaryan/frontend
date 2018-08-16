@@ -4,9 +4,8 @@ import * as moment from 'moment';
 
 import { Logger } from '~/shared/logger';
 import { PageNames } from '~/core/page-names';
-import { DayOffer, ISODate } from '~/core/api/services.models';
+import { DayOffer, ISODate, ServiceModel } from '~/core/api/services.models';
 import { ServicesServiceMock } from '~/core/api/services-service.mock';
-import { SelectTimeParams } from '~/booking/select-time/select-time.component';
 import { BookingData } from '~/core/api/booking.data';
 
 interface ExtendedDayOffer extends DayOffer {
@@ -20,6 +19,18 @@ interface ExtendedDayOffer extends DayOffer {
 })
 export class SelectDateComponent {
   offers: Map<ISODate, ExtendedDayOffer>;
+  services: ServiceModel[] = [ // TODO: remove after service selection is implemented
+    {
+      uuid: '123',
+      name: 'Silkpress',
+      regular_price: 100
+    },
+    {
+      uuid: '234',
+      name: 'Balayage',
+      regular_price: 200
+    }
+  ];
 
   start: ISODate;
   end: ISODate;
@@ -60,8 +71,10 @@ export class SelectDateComponent {
 
   ionViewWillEnter(): void {
     // TODO: start() should be moved to the first screen in booking process when it is are ready
+    // and setSelectedServices() should be moved to service selection screen.
     const fakeStylistUuid = 'fakeid'; // replace with preferred stylist uuid when we have it
     this.bookingData.start(fakeStylistUuid);
+    this.bookingData.setSelectedServices(this.services);
   }
 
   onSelectOffer(offer: DayOffer): void {
@@ -71,12 +84,15 @@ export class SelectDateComponent {
     this.bookingData.setDate(date);
     this.bookingData.setTotalClientPrice(offer.price);
 
-    const params: SelectTimeParams = {
-      clientTotalPrice: offer.price,
-      regularTotalPrice: 200, // TODO: replace fake price and services with real ones when we have them
-      services: []
-    };
-    this.navCtrl.push(PageNames.SelectTime, { params });
+    this.navCtrl.push(PageNames.SelectTime);
+  }
+
+  onDeleteService(service: ServiceModel): void {
+    this.bookingData.deleteService(service);
+  }
+
+  onAddService(): void {
+    // TODO: navigate to Add Service screen
   }
 }
 

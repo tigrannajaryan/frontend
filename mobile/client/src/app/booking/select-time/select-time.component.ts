@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController } from 'ionic-angular';
 import * as moment from 'moment';
 
 import { Logger } from '~/shared/logger';
-import { ServiceModel } from '~/core/api/services.models';
 import { TimeslotsResponse } from '~/core/api/booking.api';
 import { BookingData } from '~/core/api/booking.data';
 import { ApiResponse } from '~/core/api/base.models';
@@ -13,12 +12,7 @@ import { AppointmentsDataStore } from '~/core/api/appointments.datastore';
 import { AppointmentModel, AppointmentStatus } from '~/core/api/appointments.models';
 import { AppointmentPageParams } from '~/appointment-page/appointment-page.component';
 import { formatTimeInZone } from '~/shared/utils/string-utils';
-
-export interface SelectTimeParams {
-  services: ServiceModel[];
-  regularTotalPrice: number;
-  clientTotalPrice: number;
-}
+import { ServiceModel } from '~/core/api/services.models';
 
 interface DisplayTimeslot {
   displayTime: string;
@@ -44,7 +38,6 @@ interface TimeslotSection {
 })
 export class SelectTimeComponent {
 
-  params: SelectTimeParams;
   slotSections: TimeslotSection[];
 
   static groupTimeslotsBySections(timeslots: TimeslotsResponse): TimeslotSection[] {
@@ -96,8 +89,7 @@ export class SelectTimeComponent {
     private appointmentsData: AppointmentsDataStore,
     private bookingData: BookingData,
     private logger: Logger,
-    private navCtrl: NavController,
-    private navParams: NavParams) {
+    private navCtrl: NavController) {
   }
 
   ionViewDidLoad(): void {
@@ -106,7 +98,6 @@ export class SelectTimeComponent {
 
   async ionViewWillEnter(): Promise<void> {
     this.logger.info('SelectTimeComponent.ionViewWillEnter');
-    this.params = this.navParams.get('params');
     if (this.bookingData.timeslots) {
       this.displayTimeslots(await this.bookingData.timeslots.get());
     } else {
@@ -177,5 +168,13 @@ export class SelectTimeComponent {
     // End of debugging code. Remove code up to here.
 
     this.navCtrl.push(PageNames.BookingComplete);
+  }
+
+  onDeleteService(service: ServiceModel): void {
+    this.bookingData.deleteService(service);
+  }
+
+  onAddService(): void {
+    // TODO: navigate to Add Service screen
   }
 }

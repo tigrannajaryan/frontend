@@ -3,6 +3,9 @@
 <ion-content class="SelectDate">
   <ion-grid fixed>
     <div class="SelectDate-title H1">Select date</div>
+
+    <book-services-header [services]="this.bookingData.selectedServices" (deleteClick)="onDeleteService($event)" (addClick)="onAddService()"></book-services-header>
+
     <div *ngIf="offers">
       <!-- Calculate count of months to be displayed: -->
       <div *ngIf="(moment(end).diff(start, 'months') + 1) as monthsCount" class="Calendar">
