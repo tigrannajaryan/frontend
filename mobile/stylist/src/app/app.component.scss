@@ -16,7 +16,8 @@
 // automatically applied to the <body> element in the app.
 
 @import "../theme/components/titles";
-@import "../theme/components/wrappers";
+@import "../theme/layout/wrappers";
+@import "../theme/components/lists";
 
 @import "../theme/font";
 @import "../theme/functions";

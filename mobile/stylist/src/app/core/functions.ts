@@ -38,7 +38,7 @@ export function createNavHistoryList(profileStatus: ProfileStatus): PageDescr[] 
     return pages;
   }
 
-  pages.push({ page: PageNames.DiscountsInfo });
+  pages.push({ page: PageNames.DiscountsWelcome });
   if (!profileStatus.has_weekday_discounts_set && !profileStatus.has_other_discounts_set) {
     return pages;
   }
