@@ -25,16 +25,12 @@ page-home {
   }
 
   .Home-upTextInfo {
-    padding: pxtorem10(3) pxtorem10(9);
+    padding: pxtovw(7px) pxtovw(13px);
     margin-left: pxtorem10(7);
     font-size: $t-h4;
     color: color($colors, white);
     background: color($colors, color20);
     border-radius: 20px;
-
-    @media ($smartphone) {
-      font-size: $t-base;
-    }
   }
 
   .Home-items {

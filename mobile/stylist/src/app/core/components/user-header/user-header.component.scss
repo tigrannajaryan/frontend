@@ -72,7 +72,7 @@ ion-header ion-icon.back-button-icon.icon {
     height: $button-size;
     font-size: pxtorem(40);
     vertical-align: middle;
-    background: no-repeat center transparent;
+    background: url('../assets/imgs/icons/avatar.png') no-repeat center;
     background-size: cover !important;
     border-radius: 50%;
 

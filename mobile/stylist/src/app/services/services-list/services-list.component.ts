@@ -181,12 +181,17 @@ export class ServicesListComponent {
       return;
     }
 
+    if (!itemToEdit.category) {
+      // This is new category in blank list
+      itemToEdit.category = editedItem.category;
+    }
+
     // Find old item
     let categoryIndex = this.categories.findIndex(x => x.uuid === itemToEdit.category.uuid);
     let category: ServiceCategory = this.categories[categoryIndex];
     let serviceIndex: number = itemToEdit.service ? category.services.findIndex(x => x === itemToEdit.service) : -1;
 
-    if (itemToEdit.category.uuid !== editedItem.category.uuid) {
+    if (editedItem.category && itemToEdit.category.uuid !== editedItem.category.uuid) {
       // Remove from old category
       if (serviceIndex !== -1) {
         category.services.splice(serviceIndex, 1);
@@ -199,6 +204,9 @@ export class ServicesListComponent {
         category = this.categories[categoryIndex];
         category.services.push(editedItem.service);
       }
+    } else if (!editedItem.category) {
+      // Item removed from new category in blank list
+      category.services.splice(serviceIndex, 1);
     } else {
       // Update the service item
       if (serviceIndex === -1) {

@@ -72,10 +72,12 @@ page-register-salon {
   }
 
   .Salon-input {
+    overflow: initial;
+
     &.item-label-floating {
       min-height: auto;
-      padding: 0;
-      margin: 0 0 pxtovw(15.5px);
+      padding: 0 0 pxtovw(15.5px);
+      margin: 0;
 
       .label[floating] {
         position: absolute;
@@ -99,6 +101,7 @@ page-register-salon {
 
       .item-inner {
         padding: pxtovw(14px) 0 pxtovw(7px);
+        overflow: initial;
       }
 
       &.input-has-focus,
@@ -108,6 +111,21 @@ page-register-salon {
           font-size: pxtovw(13px);
         }
       }
+    }
+  }
+
+  [item-end].Salon-inputError {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    margin: 0 !important; // rewrite ionic styles
+    font-size: 12px;
+    color: color($colors, danger);
+    opacity: 0;
+    transition: opacity 100ms linear;
+
+    &.is-active {
+      opacity: 1;
     }
   }
 }
