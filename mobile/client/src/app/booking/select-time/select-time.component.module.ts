@@ -1,15 +1,15 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
-import { UiKitPreviewComponent } from './ui-kit-preview.component';
+import { SelectTimeComponent } from './select-time.component';
 import { CoreModule } from '~/core/core.module';
 
 @NgModule({
   declarations: [
-    UiKitPreviewComponent
+    SelectTimeComponent
   ],
   imports: [
-    IonicPageModule.forChild(UiKitPreviewComponent),
+    IonicPageModule.forChild(SelectTimeComponent),
     CoreModule
   ]
 })
-export class UiKitPreviewComponentModule {}
+export class SelectTimeComponentModule {}

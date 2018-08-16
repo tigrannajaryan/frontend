@@ -138,6 +138,8 @@ export class DataStore<T> {
    * You can use a descriptive key name for easier debugging or use any uniquely
    * generated id.
    *
+   * The initial observed value if no get() or set() operation is performed is equal to { response: undefined }
+   *
    * @param storeName globally unique store name string
    * @param apiEndpoint a function that returns any async data source that returns an ApiResponse<T>
    */
@@ -147,8 +149,10 @@ export class DataStore<T> {
     private options: DataStoreOptions = {}
   ) {
     this.promise = Promise.resolve(undefined);
-    this.subject = new BehaviorSubject<ApiResponse<T>>(undefined);
     this.storageKey = `DataStore.${storeName}`;
+
+    const initialValue: ApiResponse<T> = { response: undefined };
+    this.subject = new BehaviorSubject<ApiResponse<T>>(initialValue);
   }
 
   /**

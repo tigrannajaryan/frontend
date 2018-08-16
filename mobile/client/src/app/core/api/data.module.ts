@@ -40,7 +40,9 @@ export class DataModule {
   static forRoot(): ModuleWithProviders {
     return {
       ngModule: DataModule,
-      // Add singletons in the 'providers' array here
+      // Add singletons in the 'providers' array here. Note: do not add these providers anywhere else in
+      // 'providers' property of any other module, otherwise you will have duplicate objects instead
+      // of singletons.
       providers: [
         AppointmentsDataStore,
         PreferredStylistsData,

@@ -10,13 +10,46 @@ export class BookingApiMock {
 
   getTimeslots(stylistUuid: string, date: Date): Observable<ApiResponse<TimeslotsResponse>> {
     const response: TimeslotsResponse = {
-      time_slots: Array(1).fill(undefined).map(() => ({
-        start: '11:00',
-        end: '12:00'
-      })),
-      service_gap_minutes: 30,
-      day_start: '08:00',
-      day_end: '17:00'
+      time_slots: [{
+        start: '2018-08-18T09:00:00-06:00',
+        end: '2018-06-18T09:30:00-06:00',
+        is_booked: false
+      },
+      {
+        start: '2018-08-18T10:00:00-06:00',
+        end: '2018-06-18T10:30:00-06:00',
+        is_booked: true
+      },
+      {
+        start: '2018-08-18T10:30:00-06:00',
+        end: '2018-06-18T11:00:00-06:00',
+        is_booked: false
+      },
+      {
+        start: '2018-08-18T12:00:00-06:00',
+        end: '2018-06-18T12:30:00-06:00',
+        is_booked: false
+      },
+      {
+        start: '2018-08-18T12:30:00-06:00',
+        end: '2018-06-18T13:00:00-06:00',
+        is_booked: true
+      },
+      {
+        start: '2018-08-18T13:30:00-06:00',
+        end: '2018-06-18T14:00:00-06:00',
+        is_booked: false
+      },
+      {
+        start: '2018-08-18T14:00:00-06:00',
+        end: '2018-06-18T14:30:00-06:00',
+        is_booked: false
+      },
+      {
+        start: '2018-08-18T15:00:00-06:00',
+        end: '2018-06-18T15:30:00-06:00',
+        is_booked: false
+      }]
     };
     return Observable.of({ response });
   }

@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 
 import { ServerStatusComponent } from '~/shared/server-status/server-status.component';
-import { MbIconsComponent } from '~/shared/components/mb-icons/mb-icons.component';
+import { UserHeaderComponent } from '~/core/components/user-header/user-header.component';
 
 import { MadeNavComponent } from './made-nav/made-nav.component';
 import { MadeTableComponent } from './made-table/made-table';
@@ -22,7 +22,6 @@ import {
   DiscountsMaximumShortComponent
 } from '~/core/components/discounts/discounts-maximum-short/discounts-maximum-short.component';
 import { BackHeaderComponent } from '~/core/components/back-header/back-header.component';
-import { UserHeaderComponent } from '~/core/components/user-header/user-header.component';
 
 const components = [
   MadeNavComponent,
@@ -38,8 +37,7 @@ const components = [
   DiscountsRevisitShortComponent,
   DiscountsFirstBookingShortComponent,
   DiscountsMaximumShortComponent,
-  BackHeaderComponent,
-  MbIconsComponent
+  BackHeaderComponent
 ];
 
 @NgModule({

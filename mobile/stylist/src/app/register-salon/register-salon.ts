@@ -20,10 +20,10 @@ import { loading } from '~/core/utils/loading';
 import { PageNames } from '~/core/page-names';
 import { StylistServiceProvider } from '~/core/stylist-service/stylist-service';
 import { BaseApiService } from '~/shared/base-api-service';
-import { showAlert } from '~/core/utils/alert';
 import { Logger } from '~/shared/logger';
 import { downscalePhoto, urlToFile } from '~/shared/image-utils';
 import { PhotoSourceType } from '~/shared/constants';
+import { showAlert } from '~/core/utils/alert';
 
 declare var window: any;
 
@@ -79,8 +79,9 @@ export class RegisterSalonComponent {
         Validators.nullValidator
       ]],
       salon_address: ['', Validators.required],
-      profile_photo_id: undefined,
-      instagram_url: [''],
+      // tslint:disable-next-line:no-null-keyword
+      profile_photo_id: null,
+      instagram_url: ['', Validators.pattern(/@([A-Za-z0-9_](?:(?:[A-Za-z0-9_]|(?:\\.(?!\\.))){0,28}(?:[A-Za-z0-9_]))?)/)],
       website_url: ['']
     });
 
@@ -231,21 +232,14 @@ export class RegisterSalonComponent {
         role: 'destructive',
         handler: () => {
           this.form.get('vars.image').setValue('');
-          this.form.get('profile_photo_id').setValue(undefined);
+          // tslint:disable-next-line:no-null-keyword
+          this.form.get('profile_photo_id').setValue(null);
         }
       });
     }
 
     const actionSheet = this.actionSheetCtrl.create(opts);
     actionSheet.present();
-  }
-
-  // convert base64 to File
-  urlToFile(url: string, filename: string, mimeType?): Promise<File> {
-    mimeType = mimeType || (url.match(/^data:([^;]+);/) || '')[1];
-    return (fetch(url).catch(e => { throw e; })
-      .then(res => res.arrayBuffer())
-      .then(buf => new File([buf], filename, { type: mimeType })));
   }
 
   @loading

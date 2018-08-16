@@ -11,13 +11,11 @@ type ISODateTime = string;
 interface TimeslotModel {
   start: ISODateTime; // ISO 8601 date and time
   end: ISODateTime; // ISO 8601 date and time
+  is_booked: boolean;
 }
 
 export interface TimeslotsResponse {
   time_slots: TimeslotModel[];
-  service_gap_minutes: number;
-  day_start: ISODateTime;
-  day_end: ISODateTime;
 }
 
 // tslint:disable-next-line:no-empty-interface

@@ -2,12 +2,14 @@ import { Component } from '@angular/core';
 import { AlertController, IonicPage, NavController, NavParams } from 'ionic-angular';
 
 import { Logger } from '~/shared/logger';
+import { formatTimeInZone } from '~/shared/utils/string-utils';
 import { AppointmentModel, AppointmentStatus } from '~/core/api/appointments.models';
 
 export interface AppointmentPageParams {
   appointment: AppointmentModel;
   hasConfirmButton: boolean;
   onCancelClick?: Function;
+  onConfirmClick?: Function;
 }
 
 @IonicPage()
@@ -18,6 +20,7 @@ export interface AppointmentPageParams {
 export class AppointmentPageComponent {
 
   AppointmentStatus = AppointmentStatus;
+  formatTimeInZone = formatTimeInZone;
 
   params: AppointmentPageParams;
   hasConfirmButton: boolean;
@@ -40,10 +43,9 @@ export class AppointmentPageComponent {
   }
 
   onConfirmClick(): void {
-    // TODO: call appointment creation API when it is ready
-
-    // and navigate back
-    this.navCtrl.pop();
+    if (this.params.onConfirmClick) {
+      this.params.onConfirmClick();
+    }
   }
 
   onRebookClick(): void {

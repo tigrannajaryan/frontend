@@ -41,15 +41,17 @@ page-worktime-component {
 
   .Workingtime-days {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     border: 1px solid color($grayscale, 200);
     border-radius: 4px;
   }
 
   .Workingtime-daysItem {
-    padding: pxtovw(6px) pxtovw(5px) pxtovw(4px);
+    width: pxtovw(32px);
+    padding: pxtovw(6px) 0 pxtovw(4px);
     font-size: pxtovw(15px);
     color: color($colors, color24);
+    text-align: center;
     letter-spacing: pxtovw(0.5px);
     border-bottom: 3px solid transparent;
 

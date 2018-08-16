@@ -2,7 +2,7 @@
 
 <ion-content class="HomePage">
   <!-- Use refresher to initiate loading -->
-  <ion-refresher (ionRefresh)="onLoad()">
+  <ion-refresher (ionRefresh)="onRefresh()">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 
@@ -66,7 +66,7 @@
         </ion-row>
         <ion-row>
           <ion-col align-self-end>
-            <button ion-button class="Button" (click)="onBoockClick()">Book appointment</button>
+            <button ion-button class="Button" (click)="onBookClick()">Book appointment</button>
           </ion-col>
         </ion-row>
       </ion-grid>
