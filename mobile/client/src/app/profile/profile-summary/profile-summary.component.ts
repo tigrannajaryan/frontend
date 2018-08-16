@@ -12,7 +12,7 @@ import { DefaultImage } from '~/core/core.module';
 
 import { ProfileDataStore } from '~/profile/profile.data';
 import { ProfileModel } from '~/core/api/profile.models';
-import { LogoutAction } from '~/core/reducers/auth.reducer';
+import { LogoutAction } from '~/auth/auth.reducer';
 
 @IonicPage()
 @Component({

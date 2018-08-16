@@ -16,10 +16,10 @@ import {
   selectConfirmCodeError,
   selectConfirmCodeState,
   selectRequestCodeState
-} from '~/core/reducers/auth.reducer';
+} from '~/auth/auth.reducer';
 import { selectInvitedByStylist, StylistState } from '~/core/reducers/stylists.reducer';
 import { PreferredStylistsData } from '~/core/api/preferred-stylists.data';
-import { AuthEffects } from '~/core/effects/auth.effects';
+import { AuthEffects } from '~/auth/auth.effects';
 
 import { ApiError, FieldErrorItem } from '~/shared/api-errors';
 
@@ -28,7 +28,7 @@ export const CODE_LENGTH = 6;
 @IonicPage()
 @Component({
   selector: 'page-auth-confirm',
-  templateUrl: 'auth-confirm-page.component.html'
+  templateUrl: 'auth-confirm.component.html'
 })
 export class AuthConfirmPageComponent {
   @ViewChild('input') codeInput;

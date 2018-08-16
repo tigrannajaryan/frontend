@@ -10,7 +10,7 @@ import { GAWrapper } from '~/shared/google-analytics';
 import { ServerStatusTracker } from '~/shared/server-status-tracker';
 
 import { getToken } from '~/core/utils/token-utils';
-import { LogoutAction } from '~/core/reducers/auth.reducer';
+import { LogoutAction } from '~/auth/auth.reducer';
 
 import { AUTHORIZED_ROOT, PageNames, UNAUTHORIZED_ROOT } from '~/core/page-names';
 

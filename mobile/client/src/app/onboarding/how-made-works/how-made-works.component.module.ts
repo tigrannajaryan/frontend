@@ -3,7 +3,7 @@ import { IonicPageModule } from 'ionic-angular';
 
 import { CoreModule } from '~/core/core.module';
 
-import { HowMadeWorksComponent } from '~/about/how-made-works/how-made-works.component';
+import { HowMadeWorksComponent } from '~/onboarding/how-made-works/how-made-works.component';
 
 @NgModule({
   declarations: [

@@ -3,7 +3,7 @@ import { storeLogger } from 'ngrx-store-logger';
 
 import { ENV } from '~/../environments/environment.default';
 
-import { authPath, authReducer, resetOnLogoutReducer } from '~/core/reducers/auth.reducer';
+import { authPath, authReducer, resetOnLogoutReducer } from '~/auth/auth.reducer';
 import { profilePath, profileReducer } from '~/core/reducers/profile.reducer';
 import { stylistsPath, stylistsReducer } from '~/core/reducers/stylists.reducer';
 import { servicesPath, servicesReducer } from '~/core/reducers/services.reducer';

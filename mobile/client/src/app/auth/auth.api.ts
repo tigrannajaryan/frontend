@@ -9,7 +9,7 @@ import {
   ConfirmCodeResponse,
   GetCodeParams,
   GetCodeResponse
-} from '~/core/api/auth.models';
+} from '~/auth/auth.models';
 
 @Injectable()
 export class AuthService extends BaseService {

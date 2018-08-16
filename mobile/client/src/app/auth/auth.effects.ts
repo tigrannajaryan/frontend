@@ -7,12 +7,12 @@ import { NonFieldErrorItem } from '~/shared/api-errors';
 import { hasError } from '~/shared/pipes/has-error.pipe';
 import { saveToken } from '~/core/utils/token-utils';
 import { LOADING_DELAY, RequestState } from '~/core/api/request.models';
-import { AuthService } from '~/core/api/auth-service';
+import { AuthService } from '~/auth/auth.api';
 import {
   AuthTokenModel,
   ConfirmCodeParams,
   GetCodeParams
-} from '~/core/api/auth.models';
+} from '~/auth/auth.models';
 import {
   authActionTypes,
   AuthState,
@@ -29,7 +29,7 @@ import {
   selectCanRequestCodeInSeconds,
   selectConfirmCodeState,
   selectRequestCodeState
-} from '~/core/reducers/auth.reducer';
+} from '~/auth/auth.reducer';
 import { SetPhoneAction } from '~/core/reducers/profile.reducer';
 
 @Injectable()

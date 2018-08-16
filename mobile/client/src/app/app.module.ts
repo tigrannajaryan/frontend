@@ -28,7 +28,7 @@ import { getMetaReducers, reducers } from '~/app.reducers';
 
 import { LogoutEffects } from '~/core/effects/logout.effects';
 
-import { AuthEffects } from '~/core/effects/auth.effects';
+import { AuthEffects } from '~/auth/auth.effects';
 import { ServicesEffects } from '~/core/effects/services.effects';
 import { StylistsEffects } from '~/core/effects/stylists.effects';
 

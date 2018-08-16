@@ -1,7 +1,7 @@
 import { Action, ActionReducer, createFeatureSelector, createSelector, State } from '@ngrx/store';
 
 import { RequestState } from '~/core/api/request.models';
-import { AuthTokenModel } from '~/core/api/auth.models';
+import { AuthTokenModel } from '~/auth/auth.models';
 import { StylistModel } from '~/core/api/stylists.models';
 import { ApiError } from '~/shared/api-errors';
 
