@@ -2,8 +2,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import * as moment from 'moment';
 
-import { BaseApiService } from '~/shared/base-api-service';
 import { Logger } from '~/shared/logger';
+import { BaseApiService } from '~/shared/base-api-service';
+import { ApiRequestOptions } from '~/shared/api-errors';
 import { ServerStatusTracker } from '~/shared/server-status-tracker';
 import {
   Appointment,
@@ -62,8 +63,8 @@ export class HomeService extends BaseApiService {
   /**
    * Creates new appointment. The stylist must be already authenticated as a user.
    */
-  createAppointment(data: NewAppointmentRequest, forced = false): Promise<Appointment> {
-    return this.post<Appointment>(`stylist/appointments?force_start=${forced}`, data);
+  createAppointment(data: NewAppointmentRequest, forced: boolean, options: ApiRequestOptions): Promise<Appointment> {
+    return this.post<Appointment>(`stylist/appointments?force_start=${forced}`, data, options);
   }
 
   /**

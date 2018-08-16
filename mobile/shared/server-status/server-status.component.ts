@@ -1,16 +1,19 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ToastController } from 'ionic-angular';
-import { Subscription } from 'rxjs';
+import { Subscription } from 'rxjs/Subscription';
 
-import { ServerStatusError, ServerStatusErrorType, ServerStatusTracker } from '~/shared/server-status-tracker';
+import { ServerStatusTracker } from '~/shared/server-status-tracker';
 import { Logger } from '~/shared/logger';
-
-const serviceErrorMessages = new Map<ServerStatusErrorType, string>([
-  [ServerStatusErrorType.noConnection, 'Cannot reach the Made network.'],
-  [ServerStatusErrorType.clientRequestError, 'Processing error, try again later.'],
-  [ServerStatusErrorType.unknownServerError, 'Unknown error, try again later.'],
-  [ServerStatusErrorType.internalServerError, 'Service error, try again later.']
-]);
+import {
+  ApiClientError,
+  ApiError,
+  ApiFieldAndNonFieldErrors,
+  HttpStatus,
+  ServerInternalError,
+  ServerUnknownError,
+  ServerUnreachableError
+} from '~/shared/api-errors';
+import { showAlert } from '~/core/utils/alert';
 
 const toastDurationMs = 3000;
 
@@ -25,7 +28,7 @@ const toastDurationMs = 3000;
 export class ServerStatusComponent implements OnInit, OnDestroy {
 
   subscription: Subscription;
-  currentVisibleError: ServerStatusError;
+  currentVisibleError: string;
 
   constructor(
     private logger: Logger,
@@ -46,22 +49,44 @@ export class ServerStatusComponent implements OnInit, OnDestroy {
     this.subscription.unsubscribe();
   }
 
-  handleServiceError(error: ServerStatusError): void {
+  handleServiceError(error: ApiError): void {
     if (!error) {
       return;
     }
 
     this.logger.info('ServerStatusComponent.handleServiceError', error);
 
-    const message = serviceErrorMessages.get(error.type);
+    if (error instanceof ApiFieldAndNonFieldErrors) {
+      // Show alert for ApiFieldAndNonFieldErrors
+      let alertMsg = error.getMessage();
+      alertMsg = alertMsg.replace(/\n/gm, '<br/>');
+      showAlert('', alertMsg);
+      return;
+    }
+
+    // Check if toast must be shown for remaining error types and compose the message for it
+
+    let message;
+    if (error instanceof ServerUnreachableError) {
+      message = 'Cannot reach the Made network.';
+    } else if (error instanceof ServerInternalError) {
+      message = 'Service error, try again later.';
+    } else if (error instanceof ServerUnknownError) {
+      message = 'Unknown error, try again later.';
+    } else if (error instanceof ApiClientError) {
+      // HttpStatus.unauthorized is a normal case and is handled elsewhere, don't show toast for this status.
+      if (error.status !== HttpStatus.unauthorized) {
+        message = 'Processing error, try again later.';
+      }
+    }
 
     if (message) {
-      if (this.currentVisibleError && this.currentVisibleError.type === error.type) {
+      if (this.currentVisibleError && this.currentVisibleError === message) {
         // Do not show duplicates while previous toast is still active. This helps to avoid
         // annoying the user.
         return;
       }
-      this.currentVisibleError = error;
+      this.currentVisibleError = message;
 
       const toast = this.toastCtrl.create({
         message,

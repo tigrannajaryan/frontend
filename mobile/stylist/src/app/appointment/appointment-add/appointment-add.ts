@@ -115,7 +115,10 @@ export class AppointmentAddComponent {
   @loading
   private async createAppointment(data, forced): Promise<any> {
     try {
-      await this.appointmentService.createAppointment(data, forced);
+      // We will handle ApiFieldAndNonFieldErrors ourselves, so tell API to not show alerts
+      const options = { hideGenericAlertOnFieldAndNonFieldErrors: true };
+
+      await this.appointmentService.createAppointment(data, forced, options);
 
       // clear selected service data
       this.store.dispatch(new ClearSelectedServiceAction());

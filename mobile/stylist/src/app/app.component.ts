@@ -1,4 +1,4 @@
-import { Component, ErrorHandler, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { Nav, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -6,7 +6,6 @@ import { ScreenOrientation } from '@ionic-native/screen-orientation';
 
 import { async_all } from '~/shared/async-helpers';
 import { Logger } from '~/shared/logger';
-import { UnhandledErrorHandler } from '~/shared/unhandled-error-handler';
 import { getBuildNumber } from '~/shared/get-build-number';
 import { GAWrapper } from '~/shared/google-analytics';
 
@@ -14,6 +13,7 @@ import { PageNames } from '~/core/page-names';
 import { AuthApiService } from '~/core/auth-api-service/auth-api-service';
 import { arrayEqual, createNavHistoryList } from '~/core/functions';
 import { AppStorage } from '~/core/app-storage';
+import { ServerStatusTracker } from '~/shared/server-status-tracker';
 
 // Google Analytics Id
 const gaTrackingId = 'UA-120898935-1';
@@ -29,9 +29,9 @@ export class MyAppComponent {
     public statusBar: StatusBar,
     public splashScreen: SplashScreen,
     private authApiService: AuthApiService,
-    private errorHandler: ErrorHandler,
     private logger: Logger,
     private ga: GAWrapper,
+    private serverStatusTracker: ServerStatusTracker,
     private storage: AppStorage,
     private screenOrientation: ScreenOrientation
   ) {
@@ -44,10 +44,7 @@ export class MyAppComponent {
   async initializeApp(): Promise<void> {
     const startTime = Date.now();
 
-    // Init the errorHandler
-    if (this.errorHandler instanceof UnhandledErrorHandler) {
-      this.errorHandler.init(this.nav, PageNames.FirstScreen);
-    }
+    this.serverStatusTracker.init(PageNames.FirstScreen);
 
     // First initialize the platform. We cannot do anything else until the platform is
     // ready and the plugins are available.

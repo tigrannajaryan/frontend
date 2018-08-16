@@ -7,7 +7,7 @@ import 'rxjs/add/operator/map';
 
 import { ENV } from '../../environments/environment.default';
 import { Logger } from '~/shared/logger';
-import { processApiResponseError } from '~/shared/api-errors';
+import { ApiFieldAndNonFieldErrors, ApiRequestOptions, processApiResponseError } from '~/shared/api-errors';
 import { ServerStatusTracker } from '~/shared/server-status-tracker';
 import { AppModule } from '~/app.module';
 
@@ -31,7 +31,10 @@ export class BaseApiService {
     protected serverStatus: ServerStatusTracker) {
   }
 
-  protected request<ResponseType>(method: string, apiPath: string, data?: any, queryParams?: HttpParams): Promise<ResponseType> {
+  protected request<ResponseType>(
+    method: string, apiPath: string, data?: any, queryParams?: HttpParams,
+    options?: ApiRequestOptions): Promise<ResponseType> {
+
     // For help on how to use HttpClient see https://angular.io/guide/http
 
     // Prepare the header and the body
@@ -48,39 +51,44 @@ export class BaseApiService {
     return this.http.request<ResponseType>(method, url, httpOptions)
       .toPromise()
       .catch(e => {
-        this.processResponseError(e, method, url);
+        this.processResponseError(e, method, url, options);
         throw e;
       });
   }
 
-  protected processResponseError(error: any, method: string, url: string): void {
+  protected processResponseError(error: any, method: string, url: string, options?: ApiRequestOptions): void {
     this.logger.error(`Error in response to API request ${method.toUpperCase()} ${url} failed:`, JSON.stringify(error));
 
-    const { apiError, serverStatusError } = processApiResponseError(error);
-    if (serverStatusError) {
+    const apiError = processApiResponseError(error);
+
+    // Check if the caller requested to suppress ApiFieldAndNonFieldErrors generic handling, don't notify tracker
+    const notifyTracker = !(apiError instanceof ApiFieldAndNonFieldErrors &&
+      options && options.hideGenericAlertOnFieldAndNonFieldErrors);
+
+    if (!notifyTracker) {
       // there is a server status error, notify status tracker about it
       const serverStatus = AppModule.injector.get(ServerStatusTracker);
-      serverStatus.notify(serverStatusError);
+      serverStatus.notify(apiError);
     }
 
     // and throw an error for callers to catch and process
     throw apiError;
   }
 
-  protected get<ResponseType>(apiPath: string, queryParams?: HttpParams): Promise<ResponseType> {
-    return this.request<ResponseType>('get', apiPath, undefined, queryParams);
+  protected get<ResponseType>(apiPath: string, queryParams?: HttpParams, options?: ApiRequestOptions): Promise<ResponseType> {
+    return this.request<ResponseType>('get', apiPath, undefined, queryParams, options);
   }
 
-  protected post<ResponseType>(apiPath: string, data: any): Promise<ResponseType> {
-    return this.request<ResponseType>('post', apiPath, data);
+  protected post<ResponseType>(apiPath: string, data: any, options?: ApiRequestOptions): Promise<ResponseType> {
+    return this.request<ResponseType>('post', apiPath, data, undefined, options);
   }
 
-  protected patch<ResponseType>(apiPath: string, data: any): Promise<ResponseType> {
-    return this.request<ResponseType>('patch', apiPath, data);
+  protected patch<ResponseType>(apiPath: string, data: any, options?: ApiRequestOptions): Promise<ResponseType> {
+    return this.request<ResponseType>('patch', apiPath, data, undefined, options);
   }
 
-  protected delete<ResponseType>(apiPath: string): Promise<ResponseType> {
-    return this.request<ResponseType>('delete', apiPath);
+  protected delete<ResponseType>(apiPath: string, options?: ApiRequestOptions): Promise<ResponseType> {
+    return this.request<ResponseType>('delete', apiPath, undefined, undefined, options);
   }
 
   uploadFile<ResponseType>(formData: FormData): Promise<ResponseType> {

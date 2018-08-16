@@ -3,14 +3,11 @@ import {
   ApiClientError,
   ApiErrorResponse,
   ApiFieldAndNonFieldErrors,
-  ErrorProcessingResult,
   FieldErrorItem,
   HttpStatus,
   NonFieldErrorItem,
   process4xxErrorResponse
 } from '~/shared/api-errors';
-
-import { ServerStatusErrorType } from '~/shared/server-status-tracker';
 
 describe('errors', () => {
   it('process4xxErrorResponse should convert err_authentication_failed', () => {
@@ -18,12 +15,11 @@ describe('errors', () => {
       code: HighLevelErrorCode.err_authentication_failed
     };
 
-    const error: ErrorProcessingResult = process4xxErrorResponse(HttpStatus.unauthorized, errorResponse);
+    const error = process4xxErrorResponse(HttpStatus.unauthorized, errorResponse);
 
-    expect(error).toEqual({
-      apiError: new ApiClientError(HttpStatus.unauthorized, errorResponse),
-      serverStatusError: { type: ServerStatusErrorType.unauthorized }
-    });
+    expect(error).toEqual(
+      new ApiClientError(HttpStatus.unauthorized, errorResponse)
+    );
   });
 
   it('process4xxErrorResponse should convert empty err_api_exception', () => {
@@ -31,11 +27,10 @@ describe('errors', () => {
       code: HighLevelErrorCode.err_api_exception
     };
 
-    const error: ErrorProcessingResult = process4xxErrorResponse(HttpStatus.badRequest, errorResponse);
+    const error = process4xxErrorResponse(HttpStatus.badRequest, errorResponse);
 
-    expect(error).toEqual({
-      apiError: new ApiFieldAndNonFieldErrors([])
-    });
+    expect(error).toEqual(new ApiFieldAndNonFieldErrors([])
+    );
   });
 
   it('process4xxErrorResponse should convert field errors of err_api_exception', () => {
@@ -46,11 +41,10 @@ describe('errors', () => {
       }
     };
 
-    const error: ErrorProcessingResult = process4xxErrorResponse(HttpStatus.badRequest, errorResponse);
+    const error = process4xxErrorResponse(HttpStatus.badRequest, errorResponse);
 
-    expect(error).toEqual({
-      apiError: new ApiFieldAndNonFieldErrors([new FieldErrorItem('email', { code: 'err_email_already_taken' })])
-    });
+    expect(error).toEqual(new ApiFieldAndNonFieldErrors([new FieldErrorItem('email', { code: 'err_email_already_taken' })])
+    );
   });
 
   it('process4xxErrorResponse should convert field and non-field errors of err_api_exception', () => {
@@ -62,13 +56,12 @@ describe('errors', () => {
       }
     };
 
-    const error: ErrorProcessingResult = process4xxErrorResponse(HttpStatus.badRequest, errorResponse);
+    const error = process4xxErrorResponse(HttpStatus.badRequest, errorResponse);
 
-    expect(error).toEqual({
-      apiError: new ApiFieldAndNonFieldErrors([
+    expect(error).toEqual(new ApiFieldAndNonFieldErrors([
         new NonFieldErrorItem({ code: 'err_wait_to_rerequest_new_code' }),
         new FieldErrorItem('email', { code: 'err_email_already_taken' })
       ])
-    });
+    );
   });
 });

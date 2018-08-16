@@ -11,3 +11,11 @@ export function initSentry(): void {
     Sentry.setExtraContext({ buildNum: BUILD_NUMBER });
   }
 }
+
+export function reportToSentry(error: any): void {
+  try {
+    Sentry.captureException(error.originalError || error);
+  } catch (e) {
+    console.error(e);
+  }
+}

@@ -106,7 +106,8 @@ describe('Pages: Add Appointment', () => {
 
     fixture.nativeElement.querySelector('[id="submitBtn"]').click();
 
+    const options = { hideGenericAlertOnFieldAndNonFieldErrors: true };
     expect(appointmentsService.createAppointment)
-      .toHaveBeenCalledWith(data, forced);
+      .toHaveBeenCalledWith(data, forced, options);
   }));
 });

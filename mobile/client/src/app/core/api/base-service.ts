@@ -1,21 +1,22 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { HttpParams } from '@angular/common/http/src/params';
-import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
 import { ENV } from '~/../environments/environment.default';
 
-import { processApiResponseError } from '~/shared/api-errors';
+import { ApiFieldAndNonFieldErrors, ApiRequestOptions, processApiResponseError } from '~/shared/api-errors';
 import { ApiRequest, ApiResponse } from '~/core/api/base.models';
-import { ApiCommonErrorAction } from '~/core/effects/api-common-errors.effects';
 import { AppModule } from '~/app.module';
 import { ServerStatusTracker } from '~/shared/server-status-tracker';
 
 @Injectable()
 export class BaseService {
 
-  protected request<ResponseType>(method: string, apiPath: string, requestData: ApiRequest = {}): Observable<ApiResponse<ResponseType>> {
+  protected request<ResponseType>(
+    method: string, apiPath: string, requestData: ApiRequest = {},
+    options?: ApiRequestOptions): Observable<ApiResponse<ResponseType>> {
+
     const { data, queryParams, headers } = requestData;
 
     const additionalHeaders = {};
@@ -38,30 +39,31 @@ export class BaseService {
     const http = AppModule.injector.get(HttpClient);
 
     return this.prepareResponse(
-      http.request<ResponseType>(method, url, httpOptions)
+      http.request<ResponseType>(method, url, httpOptions), options
     );
   }
 
   /**
    * Always return { response, error } to suppress the catch of an outside subscription.
    */
-  protected prepareResponse<ResponseType>(httpResponse: Observable<ResponseType>): Observable<ApiResponse<ResponseType>> {
+  protected prepareResponse<ResponseType>(
+    httpResponse: Observable<ResponseType>,
+    options: ApiRequestOptions): Observable<ApiResponse<ResponseType>> {
+
     return (
       httpResponse
         .map(response => ({ response }))
         .catch(error => {
-          const { apiError, serverStatusError } = processApiResponseError(error);
+          const apiError = processApiResponseError(error);
 
-          if (serverStatusError) {
+          // Check if the caller requested to suppress ApiFieldAndNonFieldErrors generic handling, don't notify tracker
+          const notifyTracker = !(apiError instanceof ApiFieldAndNonFieldErrors &&
+            options && options.hideGenericAlertOnFieldAndNonFieldErrors);
+
+          if (!notifyTracker) {
             // there is a server status error, notify status tracker about it
             const serverStatus = AppModule.injector.get(ServerStatusTracker);
-            serverStatus.notify(serverStatusError);
-          }
-
-          if (apiError.handleGlobally()) {
-            const store = AppModule.injector.get(Store);
-            // Dispatch actions for errors handled by errors.effects.
-            store.dispatch(new ApiCommonErrorAction(apiError));
+            serverStatus.notify(apiError);
           }
 
           // and return the error for callers to process if they are interested
@@ -70,15 +72,23 @@ export class BaseService {
     );
   }
 
-  protected get<ResponseType>(apiPath: string, queryParams?: HttpParams): Observable<ApiResponse<ResponseType>> {
-    return this.request<ResponseType>('get', apiPath, { queryParams });
+  protected get<ResponseType>(
+    apiPath: string, queryParams?: HttpParams,
+    options?: ApiRequestOptions): Observable<ApiResponse<ResponseType>> {
+
+    return this.request<ResponseType>('get', apiPath, { queryParams }, options);
   }
 
-  protected post<ResponseType>(apiPath: string, data: any, queryParams?: HttpParams): Observable<ApiResponse<ResponseType>> {
-    return this.request<ResponseType>('post', apiPath, { data, queryParams });
+  protected post<ResponseType>(
+    apiPath: string, data: any, queryParams?: HttpParams,
+    options?: ApiRequestOptions): Observable<ApiResponse<ResponseType>> {
+
+    return this.request<ResponseType>('post', apiPath, { data, queryParams }, options);
   }
 
-  protected delete<ResponseType>(apiPath: string): Observable<ApiResponse<ResponseType>> {
-    return this.request<ResponseType>('delete', apiPath);
+  protected delete<ResponseType>(
+    apiPath: string, options?: ApiRequestOptions): Observable<ApiResponse<ResponseType>> {
+
+    return this.request<ResponseType>('delete', apiPath, undefined, options);
   }
 }

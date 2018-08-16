@@ -29,7 +29,6 @@ import { getMetaReducers, reducers } from '~/app.reducers';
 import { LogoutEffects } from '~/core/effects/logout.effects';
 
 import { AuthEffects } from '~/core/effects/auth.effects';
-import { ApiCommonErrorsEffects } from '~/core/effects/api-common-errors.effects';
 import { ServicesEffects } from '~/core/effects/services.effects';
 import { StylistsEffects } from '~/core/effects/stylists.effects';
 
@@ -79,7 +78,6 @@ import { BaseService } from '~/core/api/base-service';
       LogoutEffects,
 
       AuthEffects,
-      ApiCommonErrorsEffects,
       ServicesEffects,
       StylistsEffects
     ])
