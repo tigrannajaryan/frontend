@@ -4,13 +4,13 @@ import * as faker from 'faker';
 
 import { ApiResponse } from '~/core/api/base.models';
 import { BaseServiceMock } from '~/core/api/base-service.mock';
-import { SearchStylistsResponse } from '~/core/api/stylists.models';
+import { StylistsListResponse } from '~/core/api/stylists.models';
 
 @Injectable()
 export class StylistsServiceMock extends BaseServiceMock {
 
-  search(): Observable<ApiResponse<SearchStylistsResponse>> {
-    return this.mockRequest<SearchStylistsResponse>(
+  search(): Observable<ApiResponse<StylistsListResponse>> {
+    return this.mockRequest<StylistsListResponse>(
       Observable.create(observer => {
         observer.next({
           stylists: Array(5).fill(undefined).map(() => {

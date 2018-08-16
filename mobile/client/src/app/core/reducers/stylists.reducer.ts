@@ -34,6 +34,7 @@ type Actions =
 
 export interface StylistState {
   invitedBy?: StylistModel;
+  invitationAccepted?: boolean;
 
   stylists?: StylistModel[];
 

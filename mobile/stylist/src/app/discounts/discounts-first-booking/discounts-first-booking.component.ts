@@ -5,7 +5,6 @@ import { PageNames } from '~/core/page-names';
 import { loading } from '~/core/utils/loading';
 import { Discounts } from '../discounts.models';
 import { DiscountsApi } from '../discounts.api';
-import { ENV } from '../../../environments/environment.default';
 
 export interface FirstBooking {
   label: string;
@@ -39,17 +38,8 @@ export class DiscountsFirstBookingComponent {
     this.firstBooking.percentage = discounts.first_booking;
   }
 
-  /**
-   * Clean up the data before save,
-   * show alert if we have no discounts,
-   * save data on server
-   */
   protected onContinue(): void {
-    if (ENV.ffEnableIncomplete) {
-      this.navCtrl.push(PageNames.Invitations);
-    } else {
-      this.navCtrl.push(PageNames.Tabs);
-    }
+    this.navCtrl.push(PageNames.DiscountsDone);
   }
 
   protected onFirstVisitChange(): void {

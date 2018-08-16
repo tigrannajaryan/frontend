@@ -17,6 +17,8 @@ import {
   selectConfirmCodeState,
   selectRequestCodeState
 } from '~/core/reducers/auth.reducer';
+import { selectInvitedByStylist, StylistState } from '~/core/reducers/stylists.reducer';
+import { PreferredStylistsData } from '~/core/api/preferred-stylists.data';
 import { AuthEffects } from '~/core/effects/auth.effects';
 
 import { ApiError, FieldErrorItem } from '~/shared/api-errors';
@@ -54,7 +56,8 @@ export class AuthConfirmPageComponent {
     private authEffects: AuthEffects,
     private navCtrl: NavController,
     private navParams: NavParams,
-    private store: Store<AuthState>
+    private preferredStylistsData: PreferredStylistsData,
+    private store: Store<AuthState & StylistState>
   ) {
   }
 
@@ -76,8 +79,17 @@ export class AuthConfirmPageComponent {
     this.authEffects.saveToken
       .takeWhile(componentIsActive(this))
       .filter((isTokenSaved: boolean) => isTokenSaved)
-      .subscribe(() => {
-        this.navCtrl.setRoot(PageNames.StylistInvitation);
+      .withLatestFrom(this.store)
+      .subscribe(async ([isTokenSaved, state]) => {
+        const preferredStylists = await this.preferredStylistsData.get();
+        const invitation = selectInvitedByStylist(state);
+        if (preferredStylists.length > 0) {
+          this.navCtrl.setRoot(PageNames.MainTabs);
+        } else if (invitation) {
+          this.navCtrl.setRoot(PageNames.StylistInvitation);
+        } else {
+          this.navCtrl.setRoot(PageNames.HowMadeWorks);
+        }
       });
 
     // Handle code verification error

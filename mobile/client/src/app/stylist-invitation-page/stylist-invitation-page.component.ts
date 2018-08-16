@@ -3,9 +3,9 @@ import { IonicPage, NavController } from 'ionic-angular';
 import { Store } from '@ngrx/store';
 
 import { PageNames } from '~/core/page-names';
-
 import { StylistModel } from '~/core/api/stylists.models';
 import { selectInvitedByStylist, StylistState } from '~/core/reducers/stylists.reducer';
+import { PreferredStylistsData } from '~/core/api/preferred-stylists.data';
 
 @IonicPage()
 @Component({
@@ -17,30 +17,22 @@ export class StylistInvitationPageComponent {
 
   constructor(
     private navCtrl: NavController,
+    private preferredStylistsData: PreferredStylistsData,
     private store: Store<StylistState>
   ) {
   }
 
-  ionViewCanEnter(): Promise<boolean> {
-    return this.store.select(selectInvitedByStylist)
-      .first()
-      .map((invitation?: StylistModel) => {
-        this.stylist = invitation;
-        if (!this.stylist) { // should pick a stylist first
-          setTimeout(() => {
-            this.navCtrl.setRoot(PageNames.Stylists);
-          });
-        }
-        return Boolean(this.stylist);
-      })
-      .toPromise();
+  async ionViewWillEnter(): Promise<void> {
+    this.stylist = await this.store.select(selectInvitedByStylist).first().toPromise();
   }
 
-  onContinueWithStylist(): void {
-    this.navCtrl.push(PageNames.ServicesCategories, { stylistUuid: this.stylist.uuid });
+  async onContinueWithStylist(): Promise<void> {
+    await this.preferredStylistsData.set(this.stylist);
+
+    this.navCtrl.push(PageNames.HowMadeWorks);
   }
 
-  onSeeStylistsList(): void {
-    this.navCtrl.push(PageNames.Stylists);
+  async onSeeStylistsList(): Promise<void> {
+    this.navCtrl.push(PageNames.HowMadeWorks);
   }
 }

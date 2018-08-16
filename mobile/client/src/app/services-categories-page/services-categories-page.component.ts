@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController } from 'ionic-angular';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
@@ -30,14 +30,11 @@ export class ServicesCategoriesPageComponent {
 
   constructor(
     private navCtrl: NavController,
-    private navParams: NavParams,
     private store: Store<ServicesState>
   ) {
   }
 
   ionViewWillEnter(): void {
-    this.stylistUuid = this.navParams.get('stylistUuid');
-
     this.categories = this.store.select(selectStylistServiceCategories(this.stylistUuid));
     this.requestState = this.store.select(selectServicesRequestState);
 

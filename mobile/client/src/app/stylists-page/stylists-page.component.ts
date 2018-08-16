@@ -5,9 +5,9 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
 import { PageNames } from '~/core/page-names';
-
 import { RequestState } from '~/core/api/request.models';
 import { StylistModel } from '~/core/api/stylists.models';
+import { PreferredStylistsData } from '~/core/api/preferred-stylists.data';
 import {
   SearchStylistsAction,
   selectStylists,
@@ -35,6 +35,7 @@ export class StylistsPageComponent {
 
   constructor(
     private navCtrl: NavController,
+    private preferredStylistsData: PreferredStylistsData,
     private store: Store<StylistState>
   ) {
   }
@@ -58,7 +59,8 @@ export class StylistsPageComponent {
     event.stopPropagation();
   }
 
-  onContinueWithStylist(stylist: StylistModel): void {
-    this.navCtrl.push(PageNames.ServicesCategories, { stylistUuid: stylist.uuid });
+  async onContinueWithStylist(stylist: StylistModel): Promise<void> {
+    await this.preferredStylistsData.set(stylist);
+    this.navCtrl.setRoot(PageNames.MainTabs);
   }
 }

@@ -16,6 +16,6 @@ export class DiscountsInfoComponent {
   constructor(private navCtrl: NavController) {}
 
   protected onContinue(): void {
-    this.navCtrl.push(PageNames.DiscountsWeekday);
+    this.navCtrl.push(PageNames.DiscountsWelcome);
   }
 }
