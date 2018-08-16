@@ -39,7 +39,7 @@ export class AuthEffects {
     .ofType(authActionTypes.REQUEST_CODE)
     .map((action: RequestCodeAction) => ({ phone: action.phone }))
     .switchMap((params: GetCodeParams) =>
-      this.authService.getCode(params)
+      this.authService.getCode(params, { hideGenericAlertOnFieldAndNonFieldErrors: true })
         .map(({ response, error }) => {
           const timestamp = Number(new Date());
           if (error) {
@@ -72,7 +72,8 @@ export class AuthEffects {
     .ofType(authActionTypes.CONFIRM_CODE)
     .map((action: ConfirmCodeAction) => ({ phone: action.phone, code: action.code }))
     .switchMap((params: ConfirmCodeParams) =>
-      this.authService.confirmCode(params)
+
+      this.authService.confirmCode(params, { hideGenericAlertOnFieldAndNonFieldErrors: true })
         .map(({ response, error }) => {
           if (error) {
             return new ConfirmCodeErrorAction(error);

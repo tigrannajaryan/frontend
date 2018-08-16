@@ -7,6 +7,7 @@ import { ScreenOrientation } from '@ionic-native/screen-orientation';
 
 import { Logger } from '~/shared/logger';
 import { GAWrapper } from '~/shared/google-analytics';
+import { ServerStatusTracker } from '~/shared/server-status-tracker';
 
 import { getToken } from '~/core/utils/token-utils';
 import { LogoutAction } from '~/core/reducers/auth.reducer';
@@ -43,7 +44,8 @@ export class ClientAppComponent implements OnInit {
     private statusBar: StatusBar,
     private store: Store<{}>,
     private ga: GAWrapper,
-    private screenOrientation: ScreenOrientation
+    private screenOrientation: ScreenOrientation,
+    private serverStatusTracker: ServerStatusTracker
   ) {
   }
 
@@ -51,6 +53,8 @@ export class ClientAppComponent implements OnInit {
     const startTime = Date.now();
 
     this.logger.info('App initializing...');
+
+    this.serverStatusTracker.init(PageNames.Auth);
 
     // First initialize the platform. We cannot do anything else until the platform is
     // ready and the plugins are available.

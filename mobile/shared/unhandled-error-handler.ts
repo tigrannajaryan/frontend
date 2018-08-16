@@ -1,23 +1,10 @@
 import { ApplicationRef, Injectable, Injector } from '@angular/core';
-import { AlertController, NavControllerBase } from 'ionic-angular';
+import { AlertController } from 'ionic-angular';
 import { GoogleAnalytics } from '@ionic-native/google-analytics';
 
-import * as Sentry from 'sentry-cordova';
-
-import {
-  ApiClientError,
-  ApiFieldAndNonFieldErrors,
-  HttpStatus,
-  ServerUnreachableOrInternalError
-} from './api-errors';
-
+import { ApiError } from '~/shared/api-errors';
 import { Logger } from '~/shared/logger';
-import { ServerStatusTracker } from '~/shared/server-status-tracker';
-
-enum ErrorUIAction {
-  showAlert,
-  redirectToFirstPage
-}
+import { reportToSentry } from '~/shared/sentry';
 
 /**
  * Custom unhandled error handler.
@@ -26,29 +13,12 @@ enum ErrorUIAction {
 @Injectable()
 export class UnhandledErrorHandler {
 
-  private nav: NavControllerBase;
-  private firstPageName: string;
-
-  private static reportToSentry(error: any): void {
-    try {
-      Sentry.captureException(error.originalError || error);
-    } catch (e) {
-      console.error(e);
-    }
-  }
-
   constructor(
     private logger: Logger,
     private alertCtrl: AlertController,
-    protected serverStatus: ServerStatusTracker,
     private injector: Injector,
     private ga: GoogleAnalytics
   ) { }
-
-  init(nav: NavControllerBase, firstPageName: string): void {
-    this.nav = nav;
-    this.firstPageName = firstPageName;
-  }
 
   /**
    * Called by Angular when an exception is not handled in the views, components, etc.
@@ -59,6 +29,13 @@ export class UnhandledErrorHandler {
     if (error.rejection) {
       // This is most likely an exception thrown from async function.
       error = error.rejection;
+    }
+
+    if (error instanceof ApiError) {
+      // All API errors are handled by ServerStatusTracker, nothing else needs to be done
+      // we just supress this errors here since they are already processed. The only
+      // exception is ApiClientError with HttpStatus.unauthorized status.
+      return;
     }
 
     // Get string representation of the error
@@ -74,42 +51,20 @@ export class UnhandledErrorHandler {
         // Ignore errors during reporting, there is nothing else we can do.
       });
 
-    // Based on error type decide how to report it to Sentry and how to show it in the UI
-    let errorUIAction: ErrorUIAction;
-    let errorMsg = '';
+    //   // Other server error. This should never happen unless we have bugs or
+    //   // frontend calls an endpoint that doesn't exist, etc. Show detailed
+    //   // error message for diagnostics.
+    //   errorMsg = `Server error ${error.status}`;
+    //   if (error.errorBody) {
+    //     errorMsg = `${errorMsg}\n${JSON.stringify(error.errorBody)}`;
+    //   }
+    //
 
-    if (error instanceof ApiFieldAndNonFieldErrors) {
-      // Normally ServerFieldError should be handled by each specific screen and the incorrect
-      // fields should be highlighted in the UI but if we get here we will show an alert.
-      errorMsg = error.getMessage();
-      errorUIAction = ErrorUIAction.showAlert;
-    } else if (error instanceof ApiClientError) {
-      if (error.status === HttpStatus.unauthorized) {
-        // Erase all previous navigation history and make LoginPage the root
-        errorUIAction = ErrorUIAction.redirectToFirstPage;
-      } else {
-        // Other server error. This should never happen unless we have bugs or
-        // frontend calls an endpoint that doesn't exist, etc. Show detailed
-        // error message for diagnostics.
-        errorMsg = `Server error ${error.status}`;
-        if (error.errorBody) {
-          errorMsg = `${errorMsg}\n${JSON.stringify(error.errorBody)}`;
-        }
-        errorUIAction = ErrorUIAction.showAlert;
-        UnhandledErrorHandler.reportToSentry(error);
-      }
-    } else if (error instanceof ServerUnreachableOrInternalError) {
-      // Report the error to sentry, no UI action.
-      UnhandledErrorHandler.reportToSentry(error);
-      return;
-    } else {
-      errorMsg = 'Unknown error';
-      if (error.stack) {
-        errorMsg = `${errorMsg}\n${error.stack}`;
-      }
-      errorUIAction = ErrorUIAction.showAlert;
-      UnhandledErrorHandler.reportToSentry(error);
+    let errorMsg = 'Unknown error';
+    if (error.stack) {
+      errorMsg = `${errorMsg}\n${error.stack}`;
     }
+    reportToSentry(error);
 
     // Do UI updates via setTimeout to work around known Angular bug:
     // https://stackoverflow.com/questions/37836172/angular-2-doesnt-update-view-after-exception-is-thrown)
@@ -117,23 +72,12 @@ export class UnhandledErrorHandler {
     // This is the only way I found reliably results in UI showing the error.
     // Despite Angular team claims the bug is still not fixed in Angular 5.2.9.
 
-    setTimeout(() => this.performUIAction(errorUIAction, errorMsg));
+    setTimeout(() => this.showError(errorMsg));
   }
 
-  private performUIAction(action: ErrorUIAction, errorMsg: string): void {
-    switch (action) {
-      case ErrorUIAction.showAlert:
-        errorMsg = errorMsg.replace(/\n/gm, '<br/>');
-        this.popup(errorMsg);
-        break;
-
-      case ErrorUIAction.redirectToFirstPage:
-        // Erase all previous navigation history and make LoginPage the root
-        this.nav.setRoot(this.firstPageName);
-        break;
-
-      default:
-    }
+  private showError(errorMsg: string): void {
+    errorMsg = errorMsg.replace(/\n/gm, '<br/>');
+    this.popup(errorMsg);
 
     // Force UI update
     const appRef: ApplicationRef = this.injector.get(ApplicationRef);

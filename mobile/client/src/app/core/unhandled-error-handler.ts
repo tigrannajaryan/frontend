@@ -1,8 +1,8 @@
 import { ApplicationRef, Injectable, Injector } from '@angular/core';
 import { AlertController } from 'ionic-angular';
-import * as Sentry from 'sentry-cordova';
 
 import { Logger } from '~/shared/logger';
+import { reportToSentry } from '~/shared/sentry';
 
 /**
  * Custom unhandled error handler.
@@ -10,14 +10,6 @@ import { Logger } from '~/shared/logger';
  */
 @Injectable()
 export class ClientUnhandledErrorHandler {
-
-  private static reportToSentry(error: any): void {
-    try {
-      Sentry.captureException(error.originalError || error);
-    } catch (e) {
-      console.error(e);
-    }
-  }
 
   constructor(
     private alertCtrl: AlertController,
@@ -35,7 +27,7 @@ export class ClientUnhandledErrorHandler {
     this.logger.error('Unhandled exception:', error);
 
     // Report to sentry
-    ClientUnhandledErrorHandler.reportToSentry(error);
+    reportToSentry(error);
 
     // Prepare the error message to show to the user
     let errorMsg = 'Unknown error';

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
+import { ApiRequestOptions } from '~/shared/api-errors';
 import { ApiResponse } from '~/core/api/base.models';
 import { BaseService } from '~/core/api/base-service';
 import {
@@ -13,11 +14,11 @@ import {
 @Injectable()
 export class AuthService extends BaseService {
 
-  getCode(data: GetCodeParams): Observable<ApiResponse<GetCodeResponse>> {
-    return this.post<GetCodeResponse>('auth/get-code', data);
+  getCode(data: GetCodeParams, options: ApiRequestOptions): Observable<ApiResponse<GetCodeResponse>> {
+    return this.post<GetCodeResponse>('auth/get-code', data, undefined, options);
   }
 
-  confirmCode(data: ConfirmCodeParams): Observable<ApiResponse<ConfirmCodeResponse>> {
-    return this.post<ConfirmCodeResponse>('auth/code/confirm', data);
+  confirmCode(data: ConfirmCodeParams, options: ApiRequestOptions): Observable<ApiResponse<ConfirmCodeResponse>> {
+    return this.post<ConfirmCodeResponse>('auth/code/confirm', data, undefined, options);
   }
 }

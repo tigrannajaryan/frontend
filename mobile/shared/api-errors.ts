@@ -2,7 +2,6 @@ import { HttpErrorResponse } from '@angular/common/http';
 
 import { capitalizeFirstChar, formatStr } from '~/shared/utils/string-utils';
 import { FieldErrorModel, fieldErrorMsgs, HighLevelErrorCode, NonFieldErrorModel, nonFieldErrorMsgs } from '~/shared/api-error-codes';
-import { ServerStatusError, ServerStatusErrorType } from '~/shared/server-status-tracker';
 
 /*
 
@@ -109,6 +108,17 @@ export enum HttpStatus {
   unauthorized = 401,
   notFound = 404,
   methodNotSupported = 405
+}
+
+export interface ApiRequestOptions {
+  // If falsy will results in notifying ServerStatusTracker when
+  // ApiFieldAndNonFieldErrors happens, and ServerStatusTracker will show an alert.
+  // If set to true then this behavior is disabled. If this option is omitted
+  // the default value is false, which means if you don't pass this option
+  // alert will be shown automatically on error. If you don't want this behavior
+  // and want to handle the errors in a custom way then set this value to true
+  // and handle ApiFieldAndNonFieldErrors in your code that calls API functions.
+  hideGenericAlertOnFieldAndNonFieldErrors?: boolean;
 }
 
 /**
@@ -220,44 +230,30 @@ export class FieldErrorItem extends FieldOrNonFieldErrorItem {
   }
 }
 
-export interface ErrorProcessingResult {
-  apiError: ApiError;
-  serverStatusError?: ServerStatusError;
-}
-
 /**
  * Process HttpErrorResponse and convert it to an array of ApiError items.
  */
-export function processApiResponseError(error: any): ErrorProcessingResult {
+export function processApiResponseError(error: any): ApiError {
   if (error instanceof HttpErrorResponse) {
     if (error.error instanceof ErrorEvent || !error.status) {
       // Connection error, e.g. network is down.
-      return {
-        apiError: new ServerUnreachableError(),
-        serverStatusError: { type: ServerStatusErrorType.noConnection }
-      };
+      return new ServerUnreachableError();
     }
     const status = String(error.status);
     if (/^4\d\d/.test(status)) { // 4xx
       return process4xxErrorResponse(error.status, error.error);
     }
     if (/^5\d\d/.test(status)) { // 5xx
-      return {
-        apiError: new ServerInternalError(error.error),
-        serverStatusError: { type: ServerStatusErrorType.internalServerError }
-      };
+      return new ServerInternalError(error.error);
     }
   }
-  return {
-    apiError: new ServerUnknownError(error.error),
-    serverStatusError: { type: ServerStatusErrorType.unknownServerError }
-  };
+  return new ServerUnknownError(error.error);
 }
 
 /**
  * Processs 4xx error response data structure and converts into correct type of ApiError.
  */
-export function process4xxErrorResponse(httpStatus: number, error: ApiErrorResponse): ErrorProcessingResult {
+export function process4xxErrorResponse(httpStatus: number, error: ApiErrorResponse): ApiError {
   switch (error.code) {
 
     // An exception occured in the API, the 'non_field_errors' or(and) 'field_errors' should be returned
@@ -274,38 +270,24 @@ export function process4xxErrorResponse(httpStatus: number, error: ApiErrorRespo
             );
           }, []) : [];
 
-      return {
-        apiError: new ApiFieldAndNonFieldErrors([...nonFieldErrors, ...fieldErrors])
-      };
+      return new ApiFieldAndNonFieldErrors([...nonFieldErrors, ...fieldErrors]);
     }
 
     // Authentication with provided token is failed
     case HighLevelErrorCode.err_authentication_failed:
     case HighLevelErrorCode.err_unauthorized:
-      return {
-        apiError: new ApiClientError(HttpStatus.unauthorized, error),
-        serverStatusError: { type: ServerStatusErrorType.unauthorized }
-      };
+      return new ApiClientError(HttpStatus.unauthorized, error);
 
     // The endpoint is not found
     case HighLevelErrorCode.err_not_found:
-      return {
-        apiError: new ApiClientError(HttpStatus.notFound, error),
-        serverStatusError: { type: ServerStatusErrorType.clientRequestError }
-      };
+      return new ApiClientError(HttpStatus.notFound, error);
 
     // The method is not allowed for endpoint
     case HighLevelErrorCode.err_method_not_allowed:
-      return {
-        apiError: new ApiClientError(HttpStatus.methodNotSupported, error),
-        serverStatusError: { type: ServerStatusErrorType.clientRequestError }
-      };
+      return new ApiClientError(HttpStatus.methodNotSupported, error);
 
     // Nothing from above
     default:
-      return {
-        apiError: new ApiClientError(httpStatus, error),
-        serverStatusError: { type: ServerStatusErrorType.unknownServerError }
-      };
+      return new ApiClientError(httpStatus, error);
   }
 }
