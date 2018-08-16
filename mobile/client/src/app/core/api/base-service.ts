@@ -60,7 +60,7 @@ export class BaseService {
           const notifyTracker = !(apiError instanceof ApiFieldAndNonFieldErrors &&
             options && options.hideGenericAlertOnFieldAndNonFieldErrors);
 
-          if (!notifyTracker) {
+          if (notifyTracker) {
             // there is a server status error, notify status tracker about it
             const serverStatus = AppModule.injector.get(ServerStatusTracker);
             serverStatus.notify(apiError);
