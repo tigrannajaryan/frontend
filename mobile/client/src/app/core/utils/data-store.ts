@@ -14,7 +14,7 @@ type AsyncDataSource<T> = Promise<T> | Observable<T>;
  */
 function dataSourceToPromise<T>(dataSource: AsyncDataSource<T>): Promise<T> {
   if (dataSource instanceof Observable) {
-    dataSource = dataSource.toPromise();
+    dataSource = dataSource.first().toPromise();
   }
   return dataSource;
 }
@@ -148,11 +148,28 @@ export class DataStore<T> {
     private apiEndpoint: () => AsyncDataSource<ApiResponse<T>>,
     private options: DataStoreOptions = {}
   ) {
-    this.promise = Promise.resolve(undefined);
     this.storageKey = `DataStore.${storeName}`;
+    this.init();
+  }
+
+  /**
+   * Method to init/restore the store’s initial state.
+   */
+  init(): void {
+    this.promise = Promise.resolve(undefined);
 
     const initialValue: ApiResponse<T> = { response: undefined };
     this.subject = new BehaviorSubject<ApiResponse<T>>(initialValue);
+  }
+
+  /**
+   * Method to clear the store’s state (e.g. on logout).
+   */
+  clear(): Promise<void> {
+    const storage = AppModule.injector.get(Storage);
+    return storage.remove(this.storageKey).then(() => {
+      this.init();
+    });
   }
 
   /**
