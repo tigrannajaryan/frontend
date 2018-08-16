@@ -7,6 +7,7 @@ import { HasErrorPipe } from '~/shared/pipes/has-error.pipe';
 import { PricePipe } from '~/shared/pipes/price.pipe';
 
 import { ServerStatusComponent } from '~/shared/server-status/server-status.component';
+import { MbIconsComponent } from '~/shared/components/mb-icons/mb-icons.component';
 
 import { InputNumberDirective } from '~/core/directives/input-number.directive';
 import { PhoneInputDirective } from '~/core/directives/phone-input.directive';
@@ -29,7 +30,7 @@ const declarations = [
   ServerStatusComponent,
   MadeHeaderComponent,
   AppointmentItemComponent,
-  ServerStatusComponent
+  MbIconsComponent
 ];
 
 @NgModule({
