@@ -2,7 +2,8 @@ import {
   AlertController,
   IonicPage,
   NavController,
-  NavParams
+  NavParams,
+  Platform
 } from 'ionic-angular';
 
 import { Component } from '@angular/core';
@@ -245,6 +246,7 @@ export class InvitationsComponent {
     private navCtrl: NavController,
     private navParams: NavParams,
     private openNativeSettings: OpenNativeSettings,
+    private platform: Platform,
     private sms: SMS,
     private stylistApi: StylistServiceProvider
   ) {
@@ -568,7 +570,30 @@ export class InvitationsComponent {
       return;
     }
 
-    await this.sendInvitations(await this.composeInvitationText());
+    const invitationText = await this.composeInvitationText();
+
+    if (this.platform.is('android')) {
+      const alert = this.alertCtrl.create({
+        subTitle: `Text message will be sent to ${this.selectedContacts.length} number(s). Are you sure?`,
+        buttons:
+          [
+            {
+              text: 'Cancel',
+              role: 'cancel'
+            },
+            {
+              text: 'Send',
+              handler: () => {
+                this.sendInvitations(invitationText);
+              }
+            }
+          ]
+      });
+      alert.present();
+    } else {
+      // No need for warning on iOS since it opens Messages app and user can still cancel
+      this.sendInvitations(invitationText);
+    }
   }
 
   /**

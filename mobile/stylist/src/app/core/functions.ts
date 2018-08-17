@@ -1,6 +1,5 @@
 import { ProfileStatus } from './auth-api-service/auth-api-service';
 import { PageNames } from './page-names';
-import { ENV } from '../../environments/environment.default';
 
 export interface PageDescr {
   page: PageNames;
@@ -43,11 +42,9 @@ export function createNavHistoryList(profileStatus: ProfileStatus): PageDescr[] 
     return pages;
   }
 
-  if (ENV.ffEnableIncomplete) {
-    pages.push({ page: PageNames.Invitations });
-    if (!profileStatus.has_invited_clients) {
-      return pages;
-    }
+  pages.push({ page: PageNames.Invitations });
+  if (!profileStatus.has_invited_clients) {
+    return pages;
   }
 
   // Everything is complete, go to Home screen. We are return a single page here,
