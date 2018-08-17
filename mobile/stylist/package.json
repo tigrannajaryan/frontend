@@ -6,7 +6,7 @@
   "private": true,
   "scripts": {
     "clean": "ionic-app-scripts clean",
-    "build": "ionic-app-scripts build",
+    "build": "ionic-app-scripts build --prod",
     "lint": "ionic-app-scripts lint",
     "lint:styles": "stylelint \"**/*.scss\"",
     "ionic:build-prod": "cross-env MB_ENV=prod ionic-app-scripts build --prod",
@@ -18,6 +18,7 @@
     "test-coverage": "ng test --code-coverage --preserve-symlinks",
     "test": "ng test --preserve-symlinks",
     "test-headless": "ng test --preserve-symlinks --watch=false --single-run=true --reporters=junit,progress --browsers=ChromeHeadless",
+    "run-android": "ionic cordova run android --prod --device",
     "build-full": "npm run build && npm run test-headless"
   },
   "dependencies": {
