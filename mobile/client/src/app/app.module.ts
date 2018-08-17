@@ -35,10 +35,9 @@ import { StylistsEffects } from '~/core/effects/stylists.effects';
 import { CoreModule } from '~/core/core.module';
 import { DataModule } from '~/core/api/data.module';
 
-initSentry();
-
 import { ServerStatusTracker } from '~/shared/server-status-tracker';
-import { BaseService } from '~/core/api/base-service';
+
+initSentry();
 
 @NgModule({
   declarations: [
@@ -100,7 +99,6 @@ import { BaseService } from '~/core/api/base-service';
     ScreenOrientation,
 
     // Shared:
-    BaseService,
     ServerStatusTracker,
 
     { // Add auth token to all requests
