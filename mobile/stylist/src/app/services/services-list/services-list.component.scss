@@ -29,7 +29,7 @@ page-services-list {
   border-bottom: 0.55px solid color($colors, color28);
 
 
-  img {
+  i {
     display: inline-block;
     width: pxtovw(23px);
     height: pxtovw(23px);
@@ -66,8 +66,8 @@ page-services-list {
     justify-content: space-between;
     padding-right: pxtovw(7px);
 
-    ion-icon {
-      font-size: pxtovw(26px);
+    i {
+      font-size: pxtovw(18px);
       color: color($colors, color24);
     }
   }
@@ -97,6 +97,7 @@ page-services-list {
 }
 
 .ServicesGap-icon {
+  display: inline-block;
   margin-bottom: pxtovw(14px);
   font-size: pxtovw(51px);
 }

@@ -24,7 +24,7 @@
     <div *ngIf="categories" class="ServicesLis-offset">
       <div *ngFor="let category of categories" [hidden]="category.services.length === 0">
         <div class="ServicesLis-title">
-          <img [src]="'assets/svgicons/' + category.category_code + '.svg'"/>
+          <i class="mb-icon-{{category.category_code}}"></i>
           {{ category.name }}
         </div>
 
@@ -45,14 +45,16 @@
               <ion-item no-padding>
                 <ion-row no-padding class="ServicesLis-row">
                   <ion-col (click)="deleteConfirm(category, i)" no-padding col-2 class="ServicesLis-rowCol">
-                    <button ion-button color="dark" clear class="ServicesLis-rowColDel"><ion-icon name="ios-trash-outline"></ion-icon></button>
+                    <button ion-button color="dark" clear class="ServicesLis-rowColDel">
+                      <i class="mb-icon-trash"></i>
+                    </button>
                   </ion-col>
                   <ion-col (click)="openServiceModal(category, service)" no-padding col-7 class="ServicesLis-rowCol">
                     {{ service.name }}
                   </ion-col>
                   <ion-col (click)="openServiceModal(category, service)" no-padding col-3 class="ServicesLis-rowCol">
                     ${{ service.base_price }}
-                    <ion-icon name="ios-arrow-forward-outline"></ion-icon>
+                    <i class="mb-icon-right-arrow"></i>
                   </ion-col>
                 </ion-row>
               </ion-item>
@@ -67,7 +69,7 @@
 
 
       <div *ngIf="!isEmptyCategories" class="ServicesGap">
-        <i class="bb-icon bb-icon-time-gap ServicesGap-icon"></i>
+        <i class="mb-icon-timer ServicesGap-icon"></i>
 
         <div class="ServicesGap-title">How many minutes between client bookings?</div>
 
