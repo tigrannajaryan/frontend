@@ -49,11 +49,11 @@ const helpText = `Congratulations! Your registration is complete.<br/><br/>
   templateUrl: 'home.component.html'
 })
 export class HomeComponent {
-  protected appointmentTags: AppointmentTag[];
-  protected AppointmentTag = AppointmentTag;
-  protected PageNames = PageNames;
-  protected Tabs = Tabs;
-  protected tabs = [
+  appointmentTags: AppointmentTag[];
+  AppointmentTag = AppointmentTag;
+  PageNames = PageNames;
+  Tabs = Tabs;
+  tabs = [
     {
       name: TabNames.today,
       loaded: false,
@@ -70,13 +70,15 @@ export class HomeComponent {
       appointments: []
     }
   ];
-  protected activeTab: TabNames;
-  protected home: Home;
-  protected isLoading: boolean;
+  activeTab: TabNames;
+  home: Home;
+  isLoading: boolean;
   @ViewChild(Slides) slides: Slides;
   @ViewChild(Content) content: Content;
 
-  protected profile: Observable<StylistProfile>;
+  profile: Observable<StylistProfile>;
+
+  refresherEnabled = true;
 
   constructor(
     public navCtrl: NavController,
@@ -120,7 +122,7 @@ export class HomeComponent {
     this.loadAppointments(this.activeTab);
   }
 
-  protected onAppointmentClick(appointment: Appointment): void {
+  onAppointmentClick(appointment: Appointment): void {
     // if this is past tab => open checkout page immediately
     if (this.activeTab === this.tabs[Tabs.past].name) {
       this.checkOutAppointmentClick(appointment);
@@ -157,7 +159,7 @@ export class HomeComponent {
   /**
    * Handler for 'Checkout Client' action.
    */
-  protected checkOutAppointmentClick(appointment: Appointment): void {
+  checkOutAppointmentClick(appointment: Appointment): void {
     const data: AppointmentCheckoutParams = {
       appointmentUuid: appointment.uuid,
       isAlreadyCheckedOut: appointment.status !== AppointmentStatuses.new
@@ -168,12 +170,12 @@ export class HomeComponent {
   /**
    * Handler for 'Cancel' action.
    */
-  protected async cancelAppointment(appointment: Appointment): Promise<void> {
+  async cancelAppointment(appointment: Appointment): Promise<void> {
     await this.homeService.changeAppointment(appointment.uuid, { status: AppointmentStatuses.cancelled_by_stylist });
     this.loadAppointments(this.activeTab);
   }
 
-  protected async onRefresh(refresher): Promise<void> {
+  async onRefresh(refresher): Promise<void> {
     try {
       // Reload the profile information
       this.store.dispatch(new LoadProfileAction());
@@ -191,7 +193,7 @@ export class HomeComponent {
   }
 
   // swipe action for tabs
-  protected slideChanged(): void {
+  onSlideChange(): void {
     // if index more or equal to tabs length we got an error
     if (this.slides.getActiveIndex() >= this.tabs.length) {
       return;
@@ -199,6 +201,10 @@ export class HomeComponent {
     this.activeTab = this.tabs[this.slides.getActiveIndex()].name;
     this.loadAppointments(this.activeTab);
     this.ga.trackView(`Home${this.activeTab}`);
+  }
+
+  onEnableRefresher(isEnabled: boolean): void {
+    this.refresherEnabled = isEnabled;
   }
 
   private async loadAppointments(tabType: TabNames): Promise<void> {

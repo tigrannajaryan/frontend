@@ -3,9 +3,22 @@ page-home {
     overflow: initial;
   }
 
+  .Refresh {
+    z-index: 1;
+    margin-top: 48px;
+  }
+
+  .Home-main {
+    margin-top: 48px;
+  }
+
   .Home-wp {
     height: 100%;
     padding: 16px; // standard ionic content padding
+
+    ion-spinner {
+      transform: translateY(48px);
+    }
   }
 
   .Home-upText {
@@ -35,6 +48,7 @@ page-home {
 
   .Home-items {
     display: block;
+    min-height: pxtovw(400px);
   }
 
   .Home-itemsNull {
@@ -55,6 +69,7 @@ page-home {
 
 
 .Home-btns {
+  background: white;
   border-bottom: 1px solid color($colors, color19);
 }
 
