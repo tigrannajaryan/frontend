@@ -3,7 +3,7 @@ import { IonicPageModule } from 'ionic-angular';
 
 import { CoreModule } from '~/core/core.module';
 
-import { StylistInvitationPageComponent } from '~/stylist-invitation-page/stylist-invitation-page.component';
+import { StylistInvitationPageComponent } from '~/onboarding/stylist-invitation/stylist-invitation.component';
 
 @NgModule({
   declarations: [

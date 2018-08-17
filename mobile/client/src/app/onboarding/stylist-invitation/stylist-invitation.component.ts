@@ -10,7 +10,7 @@ import { PreferredStylistsData } from '~/core/api/preferred-stylists.data';
 @IonicPage()
 @Component({
   selector: 'page-stylist-invitation',
-  templateUrl: 'stylist-invitation-page.component.html'
+  templateUrl: 'stylist-invitation.component.html'
 })
 export class StylistInvitationPageComponent {
   stylist: StylistModel;

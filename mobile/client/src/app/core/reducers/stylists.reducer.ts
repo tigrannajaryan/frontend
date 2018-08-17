@@ -3,7 +3,7 @@ import { Action, createFeatureSelector, createSelector } from '@ngrx/store';
 import { ApiError } from '~/shared/api-errors';
 import { RequestState } from '~/core/api/request.models';
 import { StylistModel } from '~/core/api/stylists.models';
-import { authActionTypes, ConfirmCodeSuccessAction } from '~/core/reducers/auth.reducer';
+import { authActionTypes, ConfirmCodeSuccessAction } from '~/auth/auth.reducer';
 
 export enum stylistsActionTypes {
   SEARCH_STYLISTS = 'STYLISTS_SEARCH_STYLISTS',

@@ -2,7 +2,7 @@ import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/c
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { getToken } from '~/core/utils/token-utils';
-import { AuthTokenModel } from '~/core/api/auth.models';
+import { AuthTokenModel } from '~/auth/auth.models';
 
 /**
  * AuthInterceptor gets the token from getToken() (token utils)

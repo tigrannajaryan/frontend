@@ -3,7 +3,7 @@ import { IonicPageModule } from 'ionic-angular';
 
 import { CoreModule } from '~/core/core.module';
 
-import { AuthConfirmPageComponent } from '~/auth-confirm-page/auth-confirm-page.component';
+import { AuthConfirmPageComponent } from '~/auth/auth-confirm/auth-confirm.component';
 
 @NgModule({
   declarations: [

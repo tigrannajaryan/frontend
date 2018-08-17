@@ -1,7 +1,7 @@
 import { Storage } from '@ionic/storage';
 import { AppModule } from '~/app.module';
 import { Logger } from '~/shared/logger';
-import { AuthTokenModel } from '~/core/api/auth.models';
+import { AuthTokenModel } from '~/auth/auth.models';
 
 const TOKEN_KEY = 'token';
 const logger = new Logger();

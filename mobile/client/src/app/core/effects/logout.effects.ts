@@ -2,7 +2,7 @@ import { ErrorHandler, Injectable } from '@angular/core';
 import { App } from 'ionic-angular';
 import { Actions, Effect } from '@ngrx/effects';
 
-import { authActionTypes, LogoutAction } from '~/core/reducers/auth.reducer';
+import { authActionTypes, LogoutAction } from '~/auth/auth.reducer';
 import { deleteToken } from '~/core/utils/token-utils';
 import { UNAUTHORIZED_ROOT } from '~/core/page-names';
 import { DataStore } from '~/core/utils/data-store';

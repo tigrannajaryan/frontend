@@ -13,8 +13,8 @@ import {
   RequestCodeAction,
   RequestCodeSuccessAction,
   selectRequestCodeState
-} from '~/core/reducers/auth.reducer';
-import { AuthEffects } from '~/core/effects/auth.effects';
+} from '~/auth/auth.reducer';
+import { AuthEffects } from '~/auth/auth.effects';
 import { phoneValidator } from '~/core/validators/phone.validator';
 
 import { DEFAULT_COUNTRY_CODE, getCountryEmojiFlag, getUnifiedPhoneValue } from '~/core/directives/phone-input.directive';
@@ -22,8 +22,8 @@ import Countries from 'country-data/data/countries.json';
 
 @IonicPage()
 @Component({
-  selector: 'page-auth',
-  templateUrl: 'auth-page.component.html'
+  selector: 'page-auth-start',
+  templateUrl: 'auth-start.component.html'
 })
 export class AuthPageComponent {
   countries = Countries.filter(country => country.countryCallingCodes.length > 0);
