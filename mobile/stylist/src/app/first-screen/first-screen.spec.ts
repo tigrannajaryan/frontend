@@ -1,5 +1,4 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { Facebook } from '@ionic-native/facebook';
 
 import { FirstScreenComponent } from './first-screen';
 import { TestUtils } from '../../test';
@@ -17,10 +16,7 @@ describe('Pages: FirstScreenComponent', () => {
       });
 
     TestBed.configureTestingModule({
-      declarations: [FirstScreenComponent],
-      providers: [
-        Facebook
-      ]
+      declarations: [FirstScreenComponent]
     }).compileComponents();
   }));
 
