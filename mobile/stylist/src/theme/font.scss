@@ -1,4 +1,7 @@
-@font-face {
+@import 'icons';
+
+
+@font-face { // remove font-family: 'bb' in future
   font-family: 'bb';
   font-style: normal;
   font-weight: normal;
@@ -49,34 +52,6 @@
 .bb-icon-add-photo:before { content: '\0057'; }
 .bb-icon-salon-name:before { content: '\0058'; }
 .bb-icon-user:before { content: '\0059'; }
-
-//<div style="font-size: 50px; color: red;">
-//<i class="bb-icon bb-icon-mail"></i>
-//<i class="bb-icon bb-icon-add-appointment"></i>
-//<i class="bb-icon bb-icon-back"></i>
-//<i class="bb-icon bb-icon-plus"></i>
-//<i class="bb-icon bb-icon-home"></i>
-//<i class="bb-icon bb-icon-followers"></i>
-//<i class="bb-icon bb-icon-rating"></i>
-//<i class="bb-icon bb-icon-confirmation"></i>
-//<i class="bb-icon bb-icon-vote-up"></i>
-//<i class="bb-icon bb-icon-vote-down"></i>
-//<i class="bb-icon bb-icon-phone"></i>
-//<i class="bb-icon bb-icon-history"></i>
-//<i class="bb-icon bb-icon-pricing"></i>
-//<i class="bb-icon bb-icon-invite"></i>
-//<i class="bb-icon bb-icon-filter"></i>
-//<i class="bb-icon bb-icon-time-gap"></i>
-//<i class="bb-icon bb-icon-login"></i>
-//<i class="bb-icon bb-icon-show-password"></i>
-//<i class="bb-icon bb-icon-accept-button"></i>
-//<i class="bb-icon bb-icon-discounts"></i>
-//<i class="bb-icon bb-icon-add"></i>
-//<i class="bb-icon bb-icon-location"></i>
-//<i class="bb-icon bb-icon-add-photo"></i>
-//<i class="bb-icon bb-icon-salon-name"></i>
-//<i class="bb-icon bb-icon-user"></i>
-//</div>
 
 @font-face {
   font-family: 'SF Pro Text';
