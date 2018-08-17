@@ -10,8 +10,8 @@ import { AppointmentsApi } from '~/core/api/appointments.api';
 import { AppointmentsApiMock } from '~/core/api/appointments.api.mock';
 import { AppointmentsDataStore } from '~/core/api/appointments.datastore';
 
-import { AuthService } from '~/auth/auth.api';
-import { AuthServiceMock } from '~/auth/auth.api.mock';
+import { AuthService } from '~/core/api/auth-service';
+import { AuthServiceMock } from '~/core/api/auth-service.mock';
 
 import { BookingApi } from '~/core/api/booking.api';
 import { BookingApiMock } from '~/core/api/booking.api.mock';
