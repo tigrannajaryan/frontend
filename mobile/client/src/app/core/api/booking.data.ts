@@ -6,24 +6,6 @@ import { PricelistResponse, TimeslotsResponse } from '~/core/api/booking.api';
 import { BookingApiMock } from '~/core/api/booking.api.mock';
 import { ServiceModel } from '~/core/api/services.models';
 
-function sameServices(l1: ServiceModel[], l2: ServiceModel[]): boolean {
-  if (!l1 || !l2) {
-    return false;
-  }
-
-  if (l1.length !== l2.length) {
-    return false;
-  }
-
-  for (let i = 0; i < l1.length; i++) {
-    if (l1[i].uuid !== l2[i].uuid) {
-      return false;
-    }
-  }
-
-  return true;
-}
-
 /**
  * Singleton that stores current booking process data.
  */
@@ -34,6 +16,7 @@ export class BookingData {
   private _stylistUuid: string;
   private _selectedServices: ServiceModel[];
   private _date: Date;
+  private _totalRegularPrice: number;
   private _totalClientPrice: number;
   private _pricelist: DataStore<PricelistResponse>;
   private _timeslots: DataStore<TimeslotsResponse>;
@@ -48,25 +31,36 @@ export class BookingData {
     this._stylistUuid = stylistUuid;
     // clear previous booking information
     this._selectedServices = undefined;
+    this._totalRegularPrice = undefined;
+    this._totalClientPrice = undefined;
     this._date = undefined;
     this.selectedTime = undefined;
     this._pricelist = undefined;
     this._timeslots = undefined;
   }
 
+  deleteService(service: ServiceModel): void {
+    const index = this._selectedServices.findIndex(v => v === service);
+    if (index >= 0) {
+      this._selectedServices.splice(index, 1);
+      this.setSelectedServices(this._selectedServices);
+    }
+  }
+
   /**
    * Set the list of selected services for the new appointment. Called when the user chooses services.
    */
   setSelectedServices(services: ServiceModel[]): void {
-    if (!this._pricelist || !sameServices(this._selectedServices, services)) {
-      // remember the list of services
-      this._selectedServices = services;
+    // remember the list of services
+    this._selectedServices = services;
 
-      // create an API-backed cached pricelist
-      this._pricelist = new DataStore('booking_pricelist',
-        () => this.api.getPricelist(this._stylistUuid, this._selectedServices),
-        { cacheTtlMilliseconds: 1000 * 60 }); // TTL for pricelist cache is 1 min
-    }
+    // Calc total regular price
+    this._totalRegularPrice = services.reduce((sum, service) => sum + service.regular_price, 0);
+
+    // create an API-backed cached pricelist
+    this._pricelist = new DataStore('booking_pricelist',
+      () => this.api.getPricelist(this._stylistUuid, this._selectedServices),
+      { cacheTtlMilliseconds: 1000 * 60 }); // TTL for pricelist cache is 1 min
   }
 
   /**
@@ -89,6 +83,10 @@ export class BookingData {
 
   get totalClientPrice(): number {
     return this._totalClientPrice;
+  }
+
+  get totalRegularPrice(): number {
+    return this._totalRegularPrice;
   }
 
   get date(): Date {

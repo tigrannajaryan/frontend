@@ -1,0 +1,56 @@
+.ServiciesHeader {
+  padding: pxtovw(5px) 0 pxtovw(3px) 0;
+  border-top: 1px solid color($grayscale, 300);
+  border-bottom: 1px solid color($grayscale, 300);
+
+  .ServiciesHeader-title {
+    font-size: pxtovw(15px);
+    font-weight: bold;
+    color: color($grayscale, 500);
+  }
+
+  .ServiciesHeader-container {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    padding-right: pxtovw(26px);
+    margin: pxtovw(8px) 0 0;
+  }
+
+  .ServiciesHeader-seviceItem {
+    display: flex;
+    align-items: center;
+    width: fit-content;
+    padding: pxtovw(2px) pxtovw(8px);
+    margin: 0 pxtovw(4px) pxtovw(4px) 0;
+    line-height: pxtovw(28px);
+    color: color($grayscale, 800);
+    background: color($colors, primary);
+    border-radius: pxtovw(3px);
+
+    .ServiciesHeader-seviceName {
+      display: inline-block;
+      font-size: pxtovw(15px);
+    }
+
+    .ServiciesHeader-serviceItemClose {
+      margin-left: pxtovw(8px);
+      font-size: $t-h2;
+      line-height: pxtovw(28px);
+    }
+  }
+
+  .ServiciesHeader-seviceAdd {
+    position: absolute;
+    right: 0;
+    bottom: pxtovw(8px);
+    z-index: 1;
+  }
+
+  .ServiciesHeader-seviceAdd ion-icon {
+    font-size: pxtovw(26px);
+    color: color($grayscale, 800);
+  }
+}
