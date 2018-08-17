@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController } from 'ionic-angular';
 
 import { PageNames } from '~/core/page-names';
-import { ENV } from '../../../environments/environment.default';
 
 @IonicPage({
   segment: 'discounts-done'
@@ -20,10 +19,6 @@ export class DiscountsDoneComponent {
   }
 
   onContinue(): void {
-    if (ENV.ffEnableIncomplete) {
-      this.navCtrl.push(PageNames.Invitations);
-    } else {
-      this.navCtrl.push(PageNames.Tabs);
-    }
+    this.navCtrl.push(PageNames.Invitations);
   }
 }

@@ -3,7 +3,6 @@ import { IonicPage, Tab } from 'ionic-angular';
 
 import { GAWrapper } from '~/shared/google-analytics';
 import { PageNames } from '~/core/page-names';
-import { ENV } from '~/../environments/environment.default';
 
 interface TabsObject {
   name: string;
@@ -39,6 +38,11 @@ export class TabsComponent {
       name: 'Services',
       link: PageNames.ServicesList,
       params: { isProfile: true }
+    },
+    {
+      name: 'Invite',
+      link: PageNames.Invitations,
+      params: { isMainScreen: true }
     }
   ];
 
@@ -47,13 +51,6 @@ export class TabsComponent {
   constructor(
     private ga: GAWrapper
   ) {
-    if (ENV.ffEnableIncomplete) {
-      this.tabsData.push({
-        name: 'Invite',
-        link: PageNames.Invitations,
-        params: { isMainScreen: true }
-      });
-    }
   }
 
   onTabChange(tab: Tab): void {
