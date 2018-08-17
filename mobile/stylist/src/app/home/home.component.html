@@ -1,4 +1,34 @@
-<ion-header class="ion-bb-header" madeUserHeader [profile]="profile | async"></ion-header>
+<ion-header class="ion-bb-header" madeUserHeader [profile]="profile | async">
+  <ion-toolbar>
+    <div class="Made-wp Made-wpContent">
+      <div class="Made-h1">
+        My Appointments
+        <span *ngIf="home" class="Home-upTextInfo">
+          {{ home.today_visits_count + home.upcoming_visits_count }}
+        </span>
+      </div>
+    </div>
+
+    <div *ngIf="home" class="Home-btns">
+      <div class="bb-wp-a Home-btnsWp">
+        <button (click)="loadAppointments(tabs[Tabs.today].name)" [class.active]="tabs[Tabs.today].name === activeTab" ion-button
+          clear color="dark" class="Home-btnsBtn active">
+          {{ tabs[Tabs.today].name }} &nbsp;
+          <b>{{ home.today_visits_count }}</b>
+        </button>
+        <button (click)="loadAppointments(tabs[Tabs.upcoming].name)" [class.active]="tabs[Tabs.upcoming].name === activeTab" ion-button
+          clear color="dark" class="Home-btnsBtn">
+          {{ tabs[Tabs.upcoming].name }} &nbsp;
+          <b>{{ home.upcoming_visits_count }}</b>
+        </button>
+        <button (click)="loadAppointments(tabs[Tabs.past].name)" [class.active]="tabs[Tabs.past].name === activeTab" ion-button clear
+          color="dark" class="Home-btnsBtn">
+          {{ tabs[Tabs.past].name }}
+        </button>
+      </div>
+    </div>
+  </ion-toolbar>
+</ion-header>
 
 <ion-content no-padding>
 
@@ -8,44 +38,16 @@
     </button>
   </ion-fab>
 
-  <ion-refresher (ionRefresh)="onRefresh($event)" class="Refresh">
+  <ion-refresher [enabled]="refresherEnabled" (ionRefresh)="onRefresh($event)" class="Refresh">
     <ion-spinner></ion-spinner>
   </ion-refresher>
 
-  <div class="Made-wp Made-wpContent">
-    <div class="Made-h1">
-      My Appointments
-      <span *ngIf="home" class="Home-upTextInfo">
-        {{ home.today_visits_count + home.upcoming_visits_count }}
-      </span>
-    </div>
-  </div>
-
-  <div *ngIf="home" class="Home-btns">
-    <div class="bb-wp-a Home-btnsWp">
-      <button (click)="loadAppointments(tabs[Tabs.today].name)" [class.active]="tabs[Tabs.today].name === activeTab" ion-button
-        clear color="dark" class="Home-btnsBtn active">
-        {{ tabs[Tabs.today].name }} &nbsp;
-        <b>{{ home.today_visits_count }}</b>
-      </button>
-      <button (click)="loadAppointments(tabs[Tabs.upcoming].name)" [class.active]="tabs[Tabs.upcoming].name === activeTab" ion-button
-        clear color="dark" class="Home-btnsBtn">
-        {{ tabs[Tabs.upcoming].name }} &nbsp;
-        <b>{{ home.upcoming_visits_count }}</b>
-      </button>
-      <button (click)="loadAppointments(tabs[Tabs.past].name)" [class.active]="tabs[Tabs.past].name === activeTab" ion-button clear
-        color="dark" class="Home-btnsBtn">
-        {{ tabs[Tabs.past].name }}
-      </button>
-    </div>
-  </div>
-
-  <div class="Made-wp Made-wpContent">
-    <ion-slides (ionSlideDidChange)="slideChanged()" no-padding>
+  <div class="Made-wp Made-wpContent Home-main">
+    <ion-slides (ionSlideDrag)="onEnableRefresher(false)" (touchend)="onEnableRefresher(true)" (ionSlideDidChange)="onSlideChange()" no-padding>
       <ion-slide class="Home-items Home-wp">
-        <div *ngIf="!tabs[Tabs.today].loaded"><ion-spinner></ion-spinner></div>
+        <div *ngIf="!tabs[Tabs.today].loaded || tabs[Tabs.today].name !== activeTab"><ion-spinner></ion-spinner></div>
 
-      <div *ngIf="tabs[Tabs.today].loaded">
+      <div *ngIf="tabs[Tabs.today].loaded && tabs[Tabs.today].name === activeTab">
         <div *ngIf="tabs[Tabs.today]?.appointments?.length === 0" class="Home-itemsNull">Your scheduled visits will show up here.</div>
 
         <appointment-item *ngFor="let appointment of tabs[Tabs.today].appointments; let index = index" [appointment]="appointment"
@@ -56,11 +58,11 @@
 
 
       <ion-slide class="Home-items Home-wp">
-        <div *ngIf="!tabs[Tabs.upcoming].loaded">
+        <div *ngIf="!tabs[Tabs.upcoming].loaded || tabs[Tabs.upcoming].name !== activeTab">
           <ion-spinner></ion-spinner>
         </div>
 
-        <div *ngIf="tabs[Tabs.upcoming].loaded">
+        <div *ngIf="tabs[Tabs.upcoming].loaded && tabs[Tabs.upcoming].name === activeTab">
           <div *ngIf="tabs[Tabs.upcoming]?.appointments?.length === 0" class="Home-itemsNull">Your scheduled visits will show up here.</div>
 
           <appointment-item *ngFor="let appointment of tabs[Tabs.upcoming].appointments; let index = index" [appointment]="appointment"
@@ -71,11 +73,11 @@
 
 
       <ion-slide class="Home-items Home-wp">
-        <div *ngIf="!tabs[Tabs.past].loaded">
+        <div *ngIf="!tabs[Tabs.past].loaded || tabs[Tabs.past].name !== activeTab">
           <ion-spinner></ion-spinner>
         </div>
 
-        <div *ngIf="tabs[Tabs.past].loaded">
+        <div *ngIf="tabs[Tabs.past].loaded && tabs[Tabs.past].name === activeTab">
           <div *ngIf="tabs[Tabs.past]?.appointments?.length === 0" class="Home-itemsNull">Your past visits will show up here.</div>
 
           <appointment-item *ngFor="let appointment of tabs[Tabs.past].appointments; let index = index" [appointment]="appointment"
