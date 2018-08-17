@@ -17,6 +17,10 @@ export interface PageDescr {
 export function createNavHistoryList(profileStatus: ProfileStatus): PageDescr[] {
   const pages: PageDescr[] = [];
 
+  // If we are restoring a navigation then the list should start with FirstScreen
+  // so that you can navigate all way back to it.
+  pages.push({ page: PageNames.FirstScreen });
+
   pages.push({ page: PageNames.RegisterSalon });
   if (!profileStatus) {
     // No profile at all, start from beginning.
