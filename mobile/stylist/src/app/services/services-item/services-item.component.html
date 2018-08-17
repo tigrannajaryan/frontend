@@ -2,10 +2,10 @@
   <ion-navbar class="Made-wp BackHeader-backBtn">
     <ion-buttons end>
       <button *ngIf="this.data.service" (click)="onServiceDelete()" ion-button icon-only color="dark" class="RightButton">
-        <ion-icon name="ios-trash-outline"></ion-icon>
+        <i class="mb-icon-trash"></i>
       </button>
       <button [disabled]="form.invalid" (click)="save()" ion-button icon-only color="dark" class="RightButton">
-        <img [src]="'assets/svgicons/check.svg'"/>
+        <i class="mb-icon-check"></i>
       </button>
     </ion-buttons>
   </ion-navbar>
@@ -19,14 +19,14 @@
     </ion-item>
     <ion-item class="ServiceItem-input withPrefix">
       <span item-left class="ServiceItem-inputPrefix">
-        <ion-icon name="pricetag"></ion-icon>
+        <i class="mb-icon-discounts-b"></i>
         <span class="ServiceItem-inputPrice">$</span>
       </span>
       <ion-input formControlName="base_price" type="tel" ngxInputNumber placeholder="Add Price"></ion-input>
     </ion-item>
     <ion-item class="ServiceItem-input withPrefix">
       <span *ngIf="form.value.category?.category_code" item-left class="ServiceItem-inputPrefix">
-        <img [src]="'assets/svgicons/' + form.value.category.category_code + '.svg'"/>
+        <i class="mb-icon-{{form.value.category.category_code}}"></i>
       </span>
       <ion-select formGroupName="vars" formControlName="category" placeholder="Select category">
         <ion-option *ngFor="let item of form.get('vars.categories').value" [value]="item">{{ item.name }}</ion-option>
