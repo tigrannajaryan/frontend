@@ -8,7 +8,10 @@ describe('Shared functions: profileStatusToPage', () => {
   it('should correctly map undefined profile status to RegisterSalon', async(() => {
     // No profile
     expect(createNavHistoryList(undefined))
-      .toEqual([{ page: PageNames.RegisterSalon }]);
+      .toEqual([
+        { page: PageNames.FirstScreen },
+        { page: PageNames.RegisterSalon }
+      ]);
   }));
 
   it('should correctly map fully complete profile completeness to Tabs screen', async(() => {
@@ -41,6 +44,7 @@ describe('Shared functions: profileStatusToPage', () => {
 
     expect(createNavHistoryList(profileStatus))
       .toEqual([
+        { page: PageNames.FirstScreen },
         { page: PageNames.RegisterSalon },
         { page: PageNames.Services },
         { page: PageNames.Worktime },
