@@ -1,4 +1,4 @@
-<ion-header class="ion-bb-header">
+<ion-header madeBackHeader [hasBackButton]="!isMainScreen">
   <ion-navbar *ngIf="!isMainScreen">
     <ion-buttons end>
       <button ion-button icon-only (click)="onSkip()">
@@ -84,7 +84,7 @@
               <span *ngIf="contact.item.status === InvitationStatus.InvitationPending" class="invited">Pending</span>
               <span *ngIf="contact.item.status === InvitationStatus.InvitationFailed" class="invited">Failed</span>
               <span *ngIf="contact.item.status === InvitationStatus.Accepted" class="accepted">Accepted</span>
-              <ion-icon *ngIf="contact.item.selected" name="checkmark"></ion-icon>
+              <ion-icon *ngIf="contact.item.selected" name="checkmark" class="selected"></ion-icon>
             </ion-col>
           </ion-row>
         </div>
@@ -99,11 +99,10 @@
       </div>
 
     </ion-grid>
-
-    <div padding-top>
-      <button ion-button color="bb_skin" class="bb-btn-a wide-btn" full (click)="onInviteClients()">
-        Invite Clients
-      </button>
-    </div>
   </div>
 </ion-content>
+<ion-footer style="padding:4px 10px; background:#ffffff;">
+    <button ion-button color="bb_skin" class="bb-btn-a wide-btn" full (click)="onInviteClients()">
+      Invite Clients
+    </button>
+  </ion-footer>

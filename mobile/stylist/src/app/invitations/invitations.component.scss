@@ -1,26 +1,15 @@
 page-invitations {
-  .p-i {
-    &-title {
-      padding: pxtoem(20) 0 pxtoem(4);
-      font-size: pxtoem(40);
-      font-weight: bold;
-
-      @media ($phone) {
-        font-size: pxtoem(30);
-      }
-    }
-  }
-
   .skip-link {
-    margin-right: 24px;
-    font-size: $t-h3;
+    margin-right: pxtovw(24px);
+    font-size: pxtovw(18px);
+    color: color($grayscale, 800);
     text-transform: none;
   }
 
   .access-denied,
   .loading-message {
-    margin: 24px 0;
-    font-size: $t-h3;
+    margin: pxtovw(24px) 0;
+    font-size: pxtovw(15px);
   }
 
   .section-name {
@@ -29,25 +18,25 @@ page-invitations {
     h3 {
       padding-bottom: 0;
       margin: 0;
-      font-size: $t-h4;
+      font-size: pxtovw(13px);
       color: color($grayscale, 300);
     }
   }
 
   .search-box {
-    padding: 8px 5px;
+    padding: pxtovw(8px) pxtovw(5px);
     margin: inherit 15px;
     background: color($colors, white);
-    border-radius: 5px;
-    box-shadow: 0 0 50px 15px color($colors, color7);
+    border-radius: pxtovw(5px);
+    box-shadow: 0 0 pxtovw(50px) pxtovw(15px) color($colors, color7);
 
     input {
-      font-size: $t-h4;
+      font-size: pxtovw(15px);
     }
 
-    .icon {
-      margin-top: 3px;
-      font-size: $t-h4;
+    ion-icon {
+      margin-top: pxtovw(3px);
+      font-size: pxtovw(15px);
     }
   }
 
@@ -57,15 +46,15 @@ page-invitations {
     .contact-name {
       display: inline-block;
       width: fit-content;
-      padding: 4px 3px;
+      padding: pxtovw(4px) pxtovw(3px);
       margin: 0 3px 3px 0;
-      font-size: $t-h4;
+      font-size: pxtovw(18px);
       background: color($colors, bb_beige);
-      border-radius: 7px 0 0 7px;
+      border-radius: pxtovw(7px) 0 0 pxtovw(7px);
 
-      .icon {
+      ion-icon {
         margin-top: 0;
-        font-size: $t-h4;
+        font-size: pxtovw(16px);
       }
     }
 
@@ -76,48 +65,50 @@ page-invitations {
 
   .search-icon,
   .search-cancel {
-    max-width: 23px;
+    max-width: pxtovw(23px);
   }
 
   .contact-details {
-    padding: 0 5px;
-    font-size: $t-h4;
-    color: color($grayscale, 300);
+    padding: 0 pxtovw(5px);
+    font-size: pxtovw(13px);
+    color: color($colors, color24);
     border-bottom: 1px solid color($grayscale, 100);
 
     .name {
-      font-size: $t-h3;
+      font-size: pxtovw(18px);
       font-weight: 500;
       color: black;
     }
 
     .status {
-      padding-right: 10px;
+      padding-right: pxtovw(10px);
       text-align: right;
 
       .invited {
+        font-size: pxtovw(15px);
         color: color($colors, primary);
       }
 
       .accepted {
+        font-size: pxtovw(15px);
         color: color($colors, color27);
       }
 
-      .icon {
-        font-size: $t-h3;
+      .selected {
+        font-size: pxtovw(16px);
       }
     }
   }
 
   .no-contacts {
     padding-top: pxtorem10(14);
-    font-size: $t-h3;
+    font-size: pxtovw(15px);
     text-align: center;
   }
 
   .gray-button {
     padding: 25px;
-    font-size: $t-h3;
+    font-size: pxtovw(15px);
     text-transform: none;
     background-color: color($colors, white);
     border: 1px solid color($grayscale, 200);
@@ -127,6 +118,6 @@ page-invitations {
 
   .wide-btn {
     padding: 25px;
-    font-size: $t-h3;
+    font-size: pxtovw(15px);
   }
 }
