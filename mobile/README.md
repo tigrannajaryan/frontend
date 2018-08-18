@@ -15,6 +15,6 @@ The repository has the following structure:
 
 To build mobile apps using parallel build do this in `mobile` directory: `make -j8`.
 If running nder Windows install GnuWin32 and use this command `make -j8 "MAKE=make -j8"`
-or `mklink /D "...betterbeauty\mobile\client\src\app\shared" "...betterbeauty\mobile\shared"`
+or `mklink /D "...madebeauty\mobile\client\src\app\shared" "...madebeauty\mobile\shared"`
 
 To clean use `make clean`.
