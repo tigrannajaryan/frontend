@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
-import { Facebook } from '@ionic-native/facebook';
 import { FirstScreenComponent } from './first-screen';
 
 @NgModule({
@@ -9,9 +8,6 @@ import { FirstScreenComponent } from './first-screen';
   ],
   imports: [
     IonicPageModule.forChild(FirstScreenComponent)
-  ],
-  providers: [
-    Facebook
   ]
 })
 export class FirstScreenPageModule {}
