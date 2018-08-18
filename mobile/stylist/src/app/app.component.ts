@@ -11,7 +11,7 @@ import { GAWrapper } from '~/shared/google-analytics';
 
 import { PageNames } from '~/core/page-names';
 import { AuthApiService } from '~/core/auth-api-service/auth-api-service';
-import { arrayEqual, createNavHistoryList } from '~/core/functions';
+import { createNavHistoryList } from '~/core/functions';
 import { AppStorage } from '~/core/app-storage';
 import { ServerStatusTracker } from '~/shared/server-status-tracker';
 
@@ -101,12 +101,7 @@ export class MyAppComponent {
         this.logger.info('App: Authentication refreshed.');
 
         const requiredPages = createNavHistoryList(authResponse.profile_status);
-        const currentPages = this.nav.getViews().map(v => v.name);
-
-        // Check if we are not already displaying exactly what is needed
-        if (!arrayEqual(currentPages, requiredPages.map(p => p.page))) {
-          this.nav.setPages(requiredPages);
-        }
+        this.nav.setPages(requiredPages);
         return;
       }
     }
