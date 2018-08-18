@@ -3,7 +3,7 @@ import { App } from 'ionic-angular';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 import { Logger } from '~/shared/logger';
-import { ApiClientError, ApiError, HttpStatus } from '~/shared/api-errors';
+import { ApiClientError, ApiError, ApiFieldAndNonFieldErrors, HttpStatus } from '~/shared/api-errors';
 import { reportToSentry } from '~/shared/sentry';
 
 /*
@@ -87,7 +87,12 @@ export class ServerStatusTracker {
       return;
     }
 
-    reportToSentry(error);
+    if (!(error instanceof ApiFieldAndNonFieldErrors)) {
+      // report everything except ApiFieldAndNonFieldErrors to Sentry
+      reportToSentry(error);
+    }
+
+    // Notify observers about the error.
     this.subject.next(error);
   }
 
