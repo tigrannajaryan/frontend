@@ -62,7 +62,7 @@ export class AppointmentAddComponent {
   }
 
   selectService(): void {
-    this.navCtrl.push(PageNames.AppointmentService);
+    this.navCtrl.push(PageNames.AppointmentServices);
   }
 
   protected onSubmit(forced = false): void {

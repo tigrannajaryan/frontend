@@ -48,10 +48,10 @@ export class GAWrapper {
   }
 
   trackViewChange(view: ViewController): void {
-    const viewClassName: string = (view && view.instance) ? view.instance.constructor.name : 'unknown';
+    const viewComponentName: string = view ? view.id : 'unknown';
 
     // Remove 'Component' suffix for better readability of GA results.
-    const viewName = viewClassName.replace(/Component$/, '');
+    const viewName = viewComponentName.replace(/Component$/, '');
     this.trackView(viewName);
   }
 
