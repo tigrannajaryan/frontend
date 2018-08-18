@@ -39,7 +39,7 @@ export class DiscountsFirstBookingComponent {
   }
 
   protected onContinue(): void {
-    this.navCtrl.push(PageNames.DiscountsDone);
+    this.navCtrl.push(PageNames.Invitations);
   }
 
   protected onFirstVisitChange(): void {

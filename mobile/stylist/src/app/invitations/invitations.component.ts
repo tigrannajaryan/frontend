@@ -654,7 +654,7 @@ export class InvitationsComponent {
    * Event handler for 'Skip' click.
    */
   protected onSkip(): void {
-    this.navCtrl.push(PageNames.Tabs);
+    this.navCtrl.push(PageNames.DiscountsDone);
 
     // Send empty invitations list to backend to make sure the profile's
     // has_invited_clients is marked true and we do not bother the user
@@ -671,8 +671,8 @@ export class InvitationsComponent {
       return;
     }
 
-    // This is during registation. Show the Main screen next.
-    this.navCtrl.push(PageNames.Tabs);
+    // This is during registation.
+    this.navCtrl.push(PageNames.DiscountsDone);
   }
 
   private async composeInvitationText(): Promise<string> {

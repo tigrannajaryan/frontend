@@ -19,6 +19,6 @@ export class DiscountsWelcomeComponent {
   }
 
   onContinue(): void {
-    this.navCtrl.push(PageNames.DiscountsWeekday);
+    this.navCtrl.push(PageNames.Services);
   }
 }

@@ -189,7 +189,7 @@ export class RegisterSalonComponent {
       return;
     }
 
-    this.navCtrl.push(PageNames.Services, {}, { animate: false });
+    this.navCtrl.push(PageNames.DiscountsInfo);
   }
 
   @loading
