@@ -14,7 +14,7 @@
 
   <form [formGroup]="form" class="Made-wp Made-wpContent">
     <div class="Salon-circle">
-      <div [style.background-image]="form.get('vars.image').value ? 'url(' + form.get('vars.image').value + ')' : null"
+      <div [style.background-image]="form.get('vars.image').value ? form.get('vars.image').value : null"
            class="Salon-circle-photo"></div>
       <label (click)="processPhoto()" class="Salon-circle-add">
         <i class="bb-icon bb-icon-add-photo Salon-circle-add-icon"></i>
