@@ -43,8 +43,8 @@ $mb-icon-wash-and-style: "\e90a";
 $mb-icon-treatments: "\e90b";
 $mb-icon-color: "\e914";
 $mb-icon-cuts: "\e901";
+$mb-icon-extensions: "\e909";
 $mb-icon-check: "\e921";
-$mb-icon-hair-a: "\e909";
 $mb-icon-hairs: "\e91a";
 $mb-icon-search: "\e923";
 $mb-icon-cross: "\e924";
@@ -385,10 +385,10 @@ $mb-icon-users: "\e919";
   }
 }
 
-.mb-icon-hair-a {
+.mb-icon-extensions {
   @extend .mb-icon;
   &:before {
-    content: $mb-icon-hair-a;
+    content: $mb-icon-extensions;
   }
 }
 
