@@ -151,7 +151,7 @@ export class WorktimeComponent {
   onContinue(): void {
     if (!this.isProfile) {
       // Continue registration on the next page
-      this.navCtrl.push(PageNames.DiscountsInfo, {});
+      this.navCtrl.push(PageNames.DiscountsWeekday);
       this.autoSave();
     }
   }

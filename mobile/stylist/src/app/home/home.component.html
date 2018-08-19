@@ -42,7 +42,7 @@
     <ion-spinner></ion-spinner>
   </ion-refresher>
 
-  <div class="Made-wp Made-wpContent Home-main">
+  <div class="Made-wpContent Home-main">
     <ion-slides (ionSlideDrag)="onEnableRefresher(false)" (touchend)="onEnableRefresher(true)" (ionSlideDidChange)="onSlideChange()" no-padding>
       <ion-slide class="Home-items Home-wp">
         <div *ngIf="!tabs[Tabs.today].loaded || tabs[Tabs.today].name !== activeTab"><ion-spinner></ion-spinner></div>

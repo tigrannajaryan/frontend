@@ -81,7 +81,7 @@ export class RegisterSalonComponent {
       salon_address: ['', Validators.required],
       // tslint:disable-next-line:no-null-keyword
       profile_photo_id: null,
-      instagram_url: ['', Validators.pattern(/@([A-Za-z0-9_](?:(?:[A-Za-z0-9_]|(?:\\.(?!\\.))){0,28}(?:[A-Za-z0-9_]))?)/)],
+      instagram_url: ['', Validators.pattern(/([A-Za-z0-9_](?:(?:[A-Za-z0-9_]|(?:\\.(?!\\.))){0,28}(?:[A-Za-z0-9_]))?)/)],
       website_url: ['']
     });
 
@@ -189,7 +189,7 @@ export class RegisterSalonComponent {
       return;
     }
 
-    this.navCtrl.push(PageNames.Services, {}, { animate: false });
+    this.navCtrl.push(PageNames.DiscountsInfo);
   }
 
   @loading

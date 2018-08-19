@@ -19,6 +19,6 @@ export class DiscountsDoneComponent {
   }
 
   onContinue(): void {
-    this.navCtrl.push(PageNames.Invitations);
+    this.navCtrl.push(PageNames.Tabs);
   }
 }
