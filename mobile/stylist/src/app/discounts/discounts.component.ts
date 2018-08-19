@@ -38,8 +38,8 @@ export class DiscountsComponent {
     is_maximum_discount_enabled: false
   };
   discountTabs = [
-    {name: 'Weekday'},
-    {name: 'Revisit'},
+    {name: 'Daily'},
+    {name: 'Loyalty'},
     {name: 'First visit'},
     {name: 'Maximum'}
   ];
