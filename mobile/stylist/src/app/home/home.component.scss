@@ -14,7 +14,7 @@ page-home {
 
   .Home-wp {
     height: 100%;
-    padding: 16px; // standard ionic content padding
+    padding: 16px pxtovw(23.61px);
 
     ion-spinner {
       transform: translateY(48px);
