@@ -1,6 +1,6 @@
-<ion-header class="ion-bb-header">
-  <ion-navbar *ngIf="!isMainScreen">
-    <ion-buttons end>
+<ion-header class="madeBackHeader">
+  <ion-navbar [class.is-hiddenBackButton]="isMainScreen" class="Made-wp BackHeader-backBtn">
+    <ion-buttons [hidden]="isMainScreen" end>
       <button ion-button icon-only (click)="onSkip()">
         <span class="skip-link">Skip</span>
       </button>
@@ -84,7 +84,7 @@
               <span *ngIf="contact.item.status === InvitationStatus.InvitationPending" class="invited">Pending</span>
               <span *ngIf="contact.item.status === InvitationStatus.InvitationFailed" class="invited">Failed</span>
               <span *ngIf="contact.item.status === InvitationStatus.Accepted" class="accepted">Accepted</span>
-              <ion-icon *ngIf="contact.item.selected" name="checkmark"></ion-icon>
+              <ion-icon *ngIf="contact.item.selected" name="checkmark" class="selected"></ion-icon>
             </ion-col>
           </ion-row>
         </div>
@@ -99,11 +99,6 @@
       </div>
 
     </ion-grid>
-
-    <div padding-top>
-      <button ion-button color="bb_skin" class="bb-btn-a wide-btn" full (click)="onInviteClients()">
-        Invite Clients
-      </button>
-    </div>
   </div>
 </ion-content>
+<ion-footer (continue)="onInviteClients()" [title]="'Invite Clients'" madeDiscountsFooter></ion-footer>
