@@ -108,7 +108,8 @@ export class RegisterSalonComponent {
     } = await this.apiService.getProfile();
 
     this.form.patchValue({
-      vars: { image: `url(${profile_photo_url})` },
+      // tslint:disable-next-line:no-null-keyword
+      vars: { image: profile_photo_url ? `url(${profile_photo_url})` : null },
       first_name,
       last_name,
       phone,
