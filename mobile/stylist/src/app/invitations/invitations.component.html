@@ -1,6 +1,6 @@
-<ion-header madeBackHeader [hasBackButton]="!isMainScreen">
-  <ion-navbar *ngIf="!isMainScreen">
-    <ion-buttons end>
+<ion-header class="madeBackHeader">
+  <ion-navbar [class.is-hiddenBackButton]="isMainScreen" class="Made-wp BackHeader-backBtn">
+    <ion-buttons [hidden]="isMainScreen" end>
       <button ion-button icon-only (click)="onSkip()">
         <span class="skip-link">Skip</span>
       </button>
@@ -96,13 +96,9 @@
           </ion-col>
         </ion-row>
 
-      </div>
+      </div>Pdiscou
 
     </ion-grid>
   </div>
 </ion-content>
-<ion-footer style="padding:4px 10px; background:#ffffff;">
-    <button ion-button color="bb_skin" class="bb-btn-a wide-btn" full (click)="onInviteClients()">
-      Invite Clients
-    </button>
-  </ion-footer>
+<ion-footer (continue)="onInviteClients()" [title]="'Invite Clients'" madeDiscountsFooter></ion-footer>
