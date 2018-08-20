@@ -2,7 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { Observable } from 'rxjs/Observable';
 
 import { componentIsActive } from '~/core/utils/component-is-active';
 

@@ -1,7 +1,7 @@
 import { ErrorHandler, Injectable } from '@angular/core';
 import { Actions, Effect } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { Observable } from 'rxjs/Observable';
 
 import { NonFieldErrorItem } from '~/shared/api-errors';
 import { hasError } from '~/shared/pipes/has-error.pipe';

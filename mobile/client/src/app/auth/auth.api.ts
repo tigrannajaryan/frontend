@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable } from 'rxjs/Observable';
 
 import { ApiRequestOptions } from '~/shared/api-errors';
 import { ApiResponse } from '~/core/api/base.models';

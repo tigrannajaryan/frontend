@@ -1,5 +1,5 @@
 import { Refresher } from 'ionic-angular';
-import { Observable } from 'rxjs';
+import { Observable } from 'rxjs/Observable';
 
 import { ApiResponse } from '~/core/api/base.models';
 import { LOADING_DELAY } from '~/core/api/request.models';

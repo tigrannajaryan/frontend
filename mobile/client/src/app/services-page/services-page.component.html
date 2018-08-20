@@ -21,7 +21,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let service of services | async">
+        <tr *ngFor="let service of services | async" (click)="onServiceClick(service)">
           <td class="Table-col">{{ service.name }}</td>
           <td class="Table-col">{{ service.base_price | price }}</td>
           <td class="ServicesPage-servicesArrow Table-col">

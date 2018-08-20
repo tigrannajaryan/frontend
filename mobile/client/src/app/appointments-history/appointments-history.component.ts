@@ -1,6 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, Refresher } from 'ionic-angular';
-import { Observable } from 'rxjs';
+import { Observable } from 'rxjs/Observable';
 
 import { Logger } from '~/shared/logger';
 import { loading } from '~/core/utils/loading';

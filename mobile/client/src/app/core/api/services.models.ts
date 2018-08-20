@@ -5,7 +5,7 @@ export interface GetStylistServicesParams {
 export interface ServiceModel {
   uuid: string;
   name: string;
-  regular_price: number;
+  base_price: number;
 }
 
 export interface ServiceCategoryModel {

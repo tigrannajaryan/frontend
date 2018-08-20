@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable } from 'rxjs/Observable';
 import * as moment from 'moment';
 
 import { ApiResponse } from '~/core/api/base.models';
 import { BaseService } from '~/core/api/base-service';
-import { ServiceModel } from '~/core/api/services.models';
+import { GetPricelistResponse, ServiceModel } from '~/core/api/services.models';
+import { AppointmentModel } from '~/core/api/appointments.models';
 
 type ISODateTime = string;
 
@@ -18,27 +19,37 @@ export interface TimeslotsResponse {
   time_slots: TimeslotModel[];
 }
 
-// tslint:disable-next-line:no-empty-interface
-export interface PricelistResponse {
-  // Temporary interface just to compile this file
+interface AppointmentRequestService {
+  service_uuid: string;
+}
+
+export interface CreateAppointmentRequest {
+  stylist_uuid: string;
+  datetime_start_at: ISODateTime;
+  services: AppointmentRequestService[];
 }
 
 @Injectable()
 export class BookingApi extends BaseService {
 
-  getTimeslots(stylistUuid: string, date: Date): Observable<ApiResponse<TimeslotsResponse>> {
+  getTimeslots(stylistUuid: string, date: moment.Moment): Observable<ApiResponse<TimeslotsResponse>> {
     const params = {
-      date: moment(date).format('YYYY-MM-DD'),
+      date: date.format('YYYY-MM-DD'),
       stylist_uuid: stylistUuid
     };
     return this.post<TimeslotsResponse>('client/available-times', params);
   }
 
-  getPricelist(stylistUuid: string, selectedServices: ServiceModel[]): Observable<ApiResponse<PricelistResponse>> {
+  getPricelist(services: ServiceModel[]): Observable<ApiResponse<GetPricelistResponse>> {
     const params = {
-      service_uuid: selectedServices,
-      stylist_uuid: stylistUuid
+      // TODO: this is the correct code: service_uuid: services.map(service => service.uuid),
+      // But temporarily using the following until API is fixed.
+      service_uuid: services[0].uuid
     };
-    return this.post<PricelistResponse>('client/services/pricing', params);
+    return this.post<GetPricelistResponse>('client/services/pricing', params);
+  }
+
+  createAppointment(appointment: CreateAppointmentRequest): Observable<ApiResponse<AppointmentModel>> {
+    return this.post<AppointmentModel>('client/appointments', appointment);
   }
 }

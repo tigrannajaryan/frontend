@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable } from 'rxjs/Observable';
 import * as moment from 'moment';
 
 import { ApiResponse } from '~/core/api/base.models';
@@ -14,7 +14,7 @@ export class AppointmentsApi extends BaseService {
     const params: HttpParams = new HttpParams();
     const yesterdayYMD = moment(moment().subtract(1, 'days')).format('YYYY-MM-DD');
     params.set('date_from', yesterdayYMD);
-    return this.get<HomeResponse>('client/home', params);
+    return this.get<HomeResponse>('client/appointments', params);
   }
 
   getHistory(): Observable<ApiResponse<AppointmentsHistoryResponse>> {
