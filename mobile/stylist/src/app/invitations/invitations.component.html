@@ -1,12 +1,13 @@
-<ion-header class="ion-bb-header">
-  <ion-navbar *ngIf="!isMainScreen">
-    <ion-buttons end>
+<ion-header class="madeBackHeader">
+  <ion-navbar [class.is-hiddenBackButton]="isMainScreen" class="Made-wp BackHeader-backBtn">
+    <ion-buttons [hidden]="isMainScreen" end>
       <button ion-button icon-only (click)="onSkip()">
         <span class="skip-link">Skip</span>
       </button>
     </ion-buttons>
   </ion-navbar>
 </ion-header>
+
 
 <ion-content no-padding>
   <made-nav *ngIf="!isMainScreen" [activePage]="PageNames.Invitations"></made-nav>
@@ -26,7 +27,10 @@
     <div *ngIf="loadingContacts" class="loading-message">
       Loading your contacts, please wait...
       <br/>
-      <ion-spinner duration="500"></ion-spinner>
+      <br/>
+      <div text-center>
+        <ion-spinner duration="500"></ion-spinner>
+      </div>
     </div>
 
     <ion-grid *ngIf="displayedContacts && !loadingContacts">
