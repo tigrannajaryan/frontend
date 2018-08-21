@@ -93,14 +93,13 @@
 
       </div>
       <div class="AppointmentPage-actions">
-        <button ion-button class="Button" *ngIf="params.hasConfirmButton" (click)="onConfirmClick()">Confirm booking</button>
+        <button ion-button class="Button" *ngIf="params.onConfirmClick" (click)="onConfirmClick()">Confirm booking</button>
 
         <!-- rebooking link -->
-        <div class="AppointmentPage-reBook" *ngIf="params.appointment.status === AppointmentStatus.checked_out" (click)="onRebookClick()">Re-book appointment</div>
+        <div class="AppointmentPage-reBook" *ngIf="params.onRebookClick" (click)="onRebookClick()">Re-book appointment</div>
 
         <!-- cancelation link -->
-        <a class="AppointmentPage-cancelBooking" *ngIf="!params.hasConfirmButton && params.appointment.status === AppointmentStatus.new"
-          (click)="onCancelClick()">Cancel booking</a>
+        <a class="AppointmentPage-cancelBooking" *ngIf="params.onCancel" (click)="onCancelClick()">Cancel booking</a>
       </div>
     </ng-template>
   </div>

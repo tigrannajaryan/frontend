@@ -31,6 +31,13 @@ export class BookingData {
     this._stylist = stylist;
 
     // clear previous booking information
+    if (this._pricelist) {
+      this._pricelist.clear();
+    }
+    if (this._timeslots) {
+      this._timeslots.clear();
+    }
+
     this._selectedServices = undefined;
     this._totalRegularPrice = undefined;
     this._totalClientPrice = undefined;
@@ -58,7 +65,11 @@ export class BookingData {
     // Calc total regular price
     this._totalRegularPrice = services.reduce((sum, service) => sum + service.base_price, 0);
 
-    // create an API-backed cached pricelist
+    if (this._pricelist) {
+      this._pricelist.clear();
+    }
+
+  // create an API-backed cached pricelist
     this._pricelist = new DataStore('booking_pricelist',
       () => this.api.getPricelist(this._selectedServices),
       { cacheTtlMilliseconds: 1000 * 60 }); // TTL for pricelist cache is 1 min
@@ -73,6 +84,10 @@ export class BookingData {
   setDate(date: moment.Moment): void {
     if (!this._timeslots || !date.isSame(this._date)) {
       this._date = date;
+
+      if (this._timeslots) {
+        this._timeslots.clear();
+      }
 
       // create an API-backed cached timeslots
       this._timeslots = new DataStore('booking_timeslots',

@@ -4,12 +4,13 @@ import { AlertController, IonicPage, NavController, NavParams } from 'ionic-angu
 import { Logger } from '~/shared/logger';
 import { formatTimeInZone } from '~/shared/utils/string-utils';
 import { AppointmentModel, AppointmentStatus } from '~/core/api/appointments.models';
+import { AppointmentsApi } from '~/core/api/appointments.api';
 
 export interface AppointmentPageParams {
   appointment: AppointmentModel;
-  hasConfirmButton: boolean;
-  onCancelClick?: Function;
+  onCancel?: Function;
   onConfirmClick?: Function;
+  onRebookClick?: Function;
 }
 
 @IonicPage()
@@ -23,12 +24,11 @@ export class AppointmentPageComponent {
   formatTimeInZone = formatTimeInZone;
 
   params: AppointmentPageParams;
-  hasConfirmButton: boolean;
-  appointment: AppointmentModel;
 
   constructor(
-    private logger: Logger,
     private alertCtrl: AlertController,
+    private api: AppointmentsApi,
+    private logger: Logger,
     private navCtrl: NavController,
     private navParams: NavParams) {
   }
@@ -65,20 +65,23 @@ export class AppointmentPageComponent {
         },
         {
           text: 'Yes',
-          handler: data => {
-            // TODO: call appointment delete API when it is ready
-
-            // navigate back
-            this.navCtrl.pop();
-
-            // Let caller know
-            if (this.params.onCancelClick) {
-              this.params.onCancelClick();
-            }
-          }
+          handler: data => { this.onDoCancel(); }
         }
       ]
     });
     alert.present();
+  }
+
+  async onDoCancel(): Promise<void> {
+    const { error } = await this.api.cancelAppointment(this.params.appointment).toPromise();
+    if (!error) {
+      // Let caller know
+      if (this.params.onCancel) {
+        this.params.onCancel();
+      }
+
+      // navigate back
+      this.navCtrl.pop();
+    }
   }
 }

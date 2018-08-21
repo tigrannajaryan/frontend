@@ -10,12 +10,19 @@ import { AppointmentsDataStore } from '~/core/api/appointments.datastore';
 import { PageNames } from '~/core/page-names';
 import { AppointmentPageParams } from '~/appointment-page/appointment-page.component';
 
+enum AppointmentType {
+  upcoming,
+  past
+}
+
 @IonicPage()
 @Component({
   selector: 'page-home',
   templateUrl: 'home-page.component.html'
 })
 export class HomePageComponent {
+
+  AppointmentType = AppointmentType;
 
   // Declare refresher to make it accessible for loading() function
   @ViewChild(Refresher) refresher: Refresher;
@@ -45,19 +52,28 @@ export class HomePageComponent {
   }
 
   onRefresh(): void {
-    this.logger.info('HomePageComponent.onLoad');
+    this.logger.info('HomePageComponent.onRefresh');
 
     // Refresh and load the data. Indicate loading.
     loading(this, this.dataStore.home.get({ refresh: true }));
   }
 
-  onAppointmentClick(appointment: AppointmentModel): void {
+  onAppointmentClick(appointment: AppointmentModel, type: AppointmentType): void {
     const params: AppointmentPageParams = {
-      appointment,
-      hasConfirmButton: false,
-      onCancelClick: () => this.onRefresh()
+      appointment
     };
+
+    if (type === AppointmentType.past) {
+      params.onRebookClick = () => this.onRebookClick(appointment);
+    } else {
+      params.onCancel = () => this.onCancel();
+    }
+
     this.navCtrl.push(PageNames.Appointment, { params });
+  }
+
+  onCancel(): void {
+    this.dataStore.home.get({ refresh: true });
   }
 
   onRebookClick(appointment: AppointmentModel): void {

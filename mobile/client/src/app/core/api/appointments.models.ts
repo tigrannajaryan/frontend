@@ -35,5 +35,5 @@ export interface AppointmentsHistoryResponse {
 
 export interface HomeResponse {
   upcoming: AppointmentModel[];
-  previous: AppointmentModel[];
+  last_visited: AppointmentModel;
 }
