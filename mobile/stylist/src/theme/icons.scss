@@ -1,8 +1,8 @@
 $icomoon-font-family: "mb-icon" !default;
 $icomoon-font-path: "../assets/fonts/mb-icon" !default;
 
-$mb-icon-conditioners: "\e94f";
-$mb-icon-conditioners-a: "\e94e";
+$mb-icon-wash-and-style: "\e94f";
+$mb-icon-wash-and-style-a: "\e94e";
 $mb-icon-clock: "\e930";
 $mb-icon-clock-a: "\e94c";
 $mb-icon-invite: "\e92d";
@@ -39,13 +39,13 @@ $mb-icon-chain-a: "\e90f";
 $mb-icon-dollar: "\e928";
 $mb-icon-heart: "\e90d";
 $mb-icon-calendar-add: "\e900";
-$mb-icon-wash-and-style: "\e90a";
+$mb-icon-hair: "\e90a";
 $mb-icon-treatments: "\e90b";
 $mb-icon-color: "\e914";
 $mb-icon-cuts: "\e901";
 $mb-icon-extensions: "\e909";
 $mb-icon-check: "\e921";
-$mb-icon-hairs: "\e91a";
+$mb-icon-conditioners: "\e91a";
 $mb-icon-search: "\e923";
 $mb-icon-cross: "\e924";
 $mb-icon-arrow-left: "\e925";
@@ -84,17 +84,17 @@ $mb-icon-users: "\e919";
 }
 
 
-.mb-icon-conditioners {
+.mb-icon-wash-and-style {
   @extend .mb-icon;
   &:before {
-    content: $mb-icon-conditioners;
+    content: $mb-icon-wash-and-style;
   }
 }
 
-.mb-icon-conditioners-a {
+.mb-icon-wash-and-style-a {
   @extend .mb-icon;
   &:before {
-    content: $mb-icon-conditioners-a;
+    content: $mb-icon-wash-and-style-a;
   }
 }
 
@@ -350,10 +350,10 @@ $mb-icon-users: "\e919";
   }
 }
 
-.mb-icon-wash-and-style {
+.mb-icon-hair {
   @extend .mb-icon;
   &:before {
-    content: $mb-icon-wash-and-style;
+    content: $mb-icon-hair;
   }
 }
 
@@ -378,13 +378,6 @@ $mb-icon-users: "\e919";
   }
 }
 
-.mb-icon-check {
-  @extend .mb-icon;
-  &:before {
-    content: $mb-icon-check;
-  }
-}
-
 .mb-icon-extensions {
   @extend .mb-icon;
   &:before {
@@ -392,10 +385,17 @@ $mb-icon-users: "\e919";
   }
 }
 
-.mb-icon-hairs {
+.mb-icon-check {
   @extend .mb-icon;
   &:before {
-    content: $mb-icon-hairs;
+    content: $mb-icon-check;
+  }
+}
+
+.mb-icon-conditioners {
+  @extend .mb-icon;
+  &:before {
+    content: $mb-icon-conditioners;
   }
 }
 
