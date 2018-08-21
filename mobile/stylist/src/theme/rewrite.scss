@@ -36,6 +36,10 @@ button[color="bb_skin"] {
   color: #000;
 }
 
+[disabled], button[disabled], [ion-button][disabled] {
+  opacity: 0.3;
+}
+
 a { // all links
   color: color($colors, blush);
 }

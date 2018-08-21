@@ -1,26 +1,35 @@
-<ion-header class="bb-wp-a ion-bb-header"><ion-navbar></ion-navbar></ion-header>
+<ion-header madeBackHeader></ion-header>
 
-<ion-content padding>
-  <div *ngFor="let category of categories">
-    <div *ngIf="category.services.length > 0">
-      <p class="Appointment-servicesTitle">{{ category.name }} <sup>{{ category.services.length }}</sup></p>
-      <table class="Table">
-        <thead class="Table-header">
-          <tr class="Table-row">
-            <th class="Table-col">Service</th>
-            <th class="Table-col" colspan="2" >Price</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let service of category.services" (click)="selectService(service)">
-            <td class="Table-col">{{ service.name }}</td>
-            <td class="Table-col">{{ service.base_price }}</td>
-            <td class="Table-col">
-              <a>Choose</a>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+<ion-content no-padding>
+  <div class="Made-wp Made-wpContent">
+    <div *ngFor="let category of categories" class="DiscountsList">
+      <div *ngIf="category.services.length > 0">
+        <div class="ServicesLis-title">
+          {{ category.name }} <sup>{{ category.services.length }}</sup>
+        </div>
+        <ion-row class="DiscountsList-head">
+          <ion-col no-padding col-6>
+            Service
+          </ion-col>
+          <ion-col no-padding col-6>
+            Price
+          </ion-col>
+        </ion-row>
+
+        <ion-row *ngFor="let service of category.services" (click)="selectService(service)" class="DiscountsList-row">
+          <ion-col no-padding col-6 class="DiscountsList-col">
+            {{ service.name }}
+          </ion-col>
+
+          <ion-col col-3 no-padding class="DiscountsList-col">
+            {{ service.base_price }}
+          </ion-col>
+
+          <ion-col col-3 no-padding ion-text color="primary" class="DiscountsList-col">
+            Choose
+          </ion-col>
+        </ion-row>
+      </div>
     </div>
   </div>
 </ion-content>
