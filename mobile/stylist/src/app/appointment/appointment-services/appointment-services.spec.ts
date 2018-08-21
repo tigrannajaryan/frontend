@@ -78,8 +78,8 @@ describe('Pages: Choose date and time of the Appointment', () => {
 
     fixture.detectChanges();
 
-    const serviceRow = fixture.nativeElement.querySelector('tbody tr');
-    const serviceName = serviceRow.querySelector('td').textContent;
+    const serviceRow = fixture.nativeElement.querySelector('.DiscountsList-row');
+    const serviceName = serviceRow.querySelector('.DiscountsList-col').textContent;
 
     let selectedService;
 
@@ -89,7 +89,7 @@ describe('Pages: Choose date and time of the Appointment', () => {
         .subscribe(service => selectedService = service);
 
     // choose service
-    serviceRow.querySelector('a').click();
+    serviceRow.click();
     subscription.unsubscribe();
 
     expect(serviceName)

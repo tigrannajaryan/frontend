@@ -1,12 +1,13 @@
-<ion-header class="bb-wp-a ion-bb-header">
-  <ion-navbar>
-    <ion-buttons class="app-submit" end>
-      <button id="submitBtn" ion-button icon-only [disabled]="form.invalid" (click)="onSubmit()">
-        <ion-icon name="checkmark"></ion-icon>
+<ion-header class="madeBackHeader">
+  <ion-navbar class="Made-wp BackHeader-backBtn">
+    <ion-buttons end>
+      <button [disabled]="form.invalid" (click)="onSubmit()" id="submitBtn" ion-button icon-only color="dark" class="RightButton">
+        Done
       </button>
     </ion-buttons>
   </ion-navbar>
 </ion-header>
+
 
 <ion-content padding class="Appointment-content">
   <div class="title"> Create appointment or block time</div>
