@@ -110,43 +110,29 @@ ion-icon.tab-button-icon[aria-label^="Discount"],
 ion-icon.tab-button-icon[aria-label^="Services"],
 ion-icon.tab-button-icon[aria-label^="Invite"] {
   display: inline-block;
-  font-family: 'bb', sans-serif;
-  font-style: normal;
-  font-weight: normal;
-  line-height: 1;
   vertical-align: bottom;
-  content: '\0045';
+  font-size: pxtovw(20px);
+  @extend .mb-icon;
 }
 
 ion-icon.tab-button-icon[aria-label^="Home"]:after {
-  content: '\0045';
+  content: $mb-icon-home-a;
 }
 
 ion-icon.tab-button-icon[aria-label^="Hours"]:after {
-  content: '\004c';
+  content: $mb-icon-clock-a;
 }
 
 ion-icon.tab-button-icon[aria-label^="Discount"]:after {
-  content: '\004d';
+  content: $mb-icon-discounts;
 }
 
 ion-icon.tab-button-icon[aria-label^="Services"]:after {
-  display: inline-block;
-  font-family: 'Ionicons', sans-serif;
-  font-style: normal;
-  font-weight: normal;
-  font-variant: normal;
-  line-height: 1;
-  text-transform: none;
-  content: "\f169";
-  speak: none;
-  text-rendering: auto;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  content: $mb-icon-wash-and-style-a;
 }
 
 ion-icon.tab-button-icon[aria-label^="Invite"]:after {
-  content: '\004e';
+  content: $mb-icon-invite-a;
 }
 
 
