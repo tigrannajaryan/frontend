@@ -60,31 +60,28 @@ export class RegisterSalonComponent {
 
       first_name: ['', [
         Validators.maxLength(25),
-        Validators.minLength(2),
         Validators.required
       ]],
       last_name: ['', [
         Validators.maxLength(25),
-        Validators.minLength(2),
-        Validators.required
-      ]],
-      phone: ['', [
-        Validators.maxLength(15),
-        Validators.minLength(5),
         Validators.required
       ]],
       salon_name: ['', [
         Validators.maxLength(25),
         Validators.minLength(3),
-        Validators.nullValidator
+        Validators.required
       ]],
       salon_address: ['', Validators.required],
+      phone: ['', [
+        Validators.maxLength(17),
+        Validators.minLength(5),
+        Validators.required
+      ]],
       // tslint:disable-next-line:no-null-keyword
       profile_photo_id: null,
       instagram_url: ['', Validators.pattern(/([A-Za-z0-9_](?:(?:[A-Za-z0-9_]|(?:\\.(?!\\.))){0,28}(?:[A-Za-z0-9_]))?)/)],
       website_url: ['']
     });
-
   }
 
   async ionViewWillEnter(): Promise<void> {
