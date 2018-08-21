@@ -47,47 +47,10 @@ env:
     # $FASTLANE_PASSWORD; expands to FASTLANE_PASSWORD=password
     - secure: "Aop9V/yACO3GxHqay7rklodUPOsnFax4neC4btWkEXab+Dkliu0/goyDn1Wm5JldevVaSY+TUn0kITows5DvsD2Zpn+cwp1PNfGLw8eQnCf38UEK3vL7rIRxkgFhMd7N+KFhYkfag5d21i/8A7iT7RF8GBDAC3QjLIfkGBR+fFW/hsfsMph4/bNKdjnNmanVWxugYKvMtA2ZpwA0hR186glYC0oOmksGR5s0WG3RkgFB4TamnVT8PhIiwCJA4E5iGK15C/gwsQ+2Y6dNP1+MMueLAQeMqFFdNSzq+EvX6mighmPJhXNjKZqOXE8o7bsPY7jYkZvEBFlnTVpOLOCZfEf1HjQgU0weiCZYCfTYczGg9Vs4ksIFjO847d00cUJqc6WuZ6qy/zoOXLgkR4stmOj4A4twcT4uhXjqoTvdkueMYWOtlcLO0tViTbLiHFXaoVLeMfuArDZj73JxwaQuUnzHeIhHzyQeVrMKQpDiqp7U+/L3gjlSxFp7MEJqClWV53RWcG0b7K4E5WsynnCde0EdpKsegG/bgXTJxdFpHWBHOOy2aj2iM6LdZPB6k+bXyIC0EpMaE6WOm8PrPxuDYlw2jnKwlqL5ZVSPb6CAE4S060XVXU2vqxuqmj7u4R9aQJvIGRyRpyxhIeb05lCJqwPSYNNVWzVMvorXIs2dS9g="
 
-# define build stages order
-stages:
-  - Client Staging Build
-  - Stylist Staging Build
-  - Stylist Production Build
-  - Client Production Build
-
-# define which stages to include, and under which conditions
 jobs:
   fast_finish: true
   include:
-    - stage: Stylist Staging Build
-      env:
-        APP_TYPE=stylist
-        MB_ENV=staging
-        IOS_APP_BUNDLE_ID="com.madebeauty.stylist.beta"
-        IOS_APP_NAME="Made Pro Staging"
-        IOS_APP_DESCRIPTION="Fill up your days. Earn more."
-        IOS_PROVISIONING_PROFILE="made-final-appstore"
-        IOS_PROVISIONING_PROFILE_ID="b36b0583-9122-4176-becf-38d769edee4d"
-        FB_APP_ID=1332946860139961
-        FB_APP_NAME="Made Staging"
-        FASTLANE_SKIP_WAITING=true
-        FASTLANE_DISTRIBUTE_EXTERNAL=false
-
-    - stage: Stylist Production Build
-      if: branch = develop AND type = push  # run this stage only if it's not a PR
-      env:
-        APP_TYPE=stylist
-        MB_ENV=prod
-        IOS_APP_BUNDLE_ID="com.madebeauty.stylist.production"
-        IOS_APP_NAME="Made Pro"
-        IOS_APP_DESCRIPTION="Fill up your days. Earn more."
-        IOS_PROVISIONING_PROFILE="made-final-appstore"
-        IOS_PROVISIONING_PROFILE_ID="b36b0583-9122-4176-becf-38d769edee4d"
-        FB_APP_ID=877860949068191
-        FB_APP_NAME="Made"
-        FASTLANE_SKIP_WAITING=true
-        FASTLANE_DISTRIBUTE_EXTERNAL=false
-
-    - stage: Client Staging Build
+    - name: Client Staging Build
       env:
         APP_TYPE=client
         MB_ENV=staging
@@ -101,8 +64,20 @@ jobs:
         FB_APP_NAME="Made Staging"
         FASTLANE_SKIP_WAITING=true
         FASTLANE_DISTRIBUTE_EXTERNAL=false
-
-    - stage: Client Production Build
+    - name: Stylist Staging Build
+      env:
+        APP_TYPE=stylist
+        MB_ENV=staging
+        IOS_APP_BUNDLE_ID="com.madebeauty.stylist.beta"
+        IOS_APP_NAME="Made Pro Staging"
+        IOS_APP_DESCRIPTION="Fill up your days. Earn more."
+        IOS_PROVISIONING_PROFILE="made-final-appstore"
+        IOS_PROVISIONING_PROFILE_ID="b36b0583-9122-4176-becf-38d769edee4d"
+        FB_APP_ID=1332946860139961
+        FB_APP_NAME="Made Staging"
+        FASTLANE_SKIP_WAITING=true
+        FASTLANE_DISTRIBUTE_EXTERNAL=false
+    - name: Client Production Build
       if: branch = develop AND type = push  # run this stage only if it's not a PR
       env:
         APP_TYPE=client
@@ -117,7 +92,20 @@ jobs:
         FB_APP_NAME="Made"
         FASTLANE_SKIP_WAITING=true
         FASTLANE_DISTRIBUTE_EXTERNAL=false
-
+    - name: Stylist Production Build
+      if: branch = develop AND type = push  # run this stage only if it's not a PR
+      env:
+        APP_TYPE=stylist
+        MB_ENV=prod
+        IOS_APP_BUNDLE_ID="com.madebeauty.stylist.production"
+        IOS_APP_NAME="Made Pro"
+        IOS_APP_DESCRIPTION="Fill up your days. Earn more."
+        IOS_PROVISIONING_PROFILE="made-final-appstore"
+        IOS_PROVISIONING_PROFILE_ID="b36b0583-9122-4176-becf-38d769edee4d"
+        FB_APP_ID=877860949068191
+        FB_APP_NAME="Made"
+        FASTLANE_SKIP_WAITING=true
+        FASTLANE_DISTRIBUTE_EXTERNAL=false
 
 # run basic node / angular build and test
 install: mobile/scripts/should-skip-build.sh || mobile/scripts/travis_install.sh
