@@ -14,67 +14,12 @@ page-tabs ion-tabs.tabs {
       ion-icon {
         height: 20px;
         margin: 0;
-        font-size: pxtorem10(19);
-
-        @media ($phone-md) {
-          height: 24px;
-          font-size: pxtorem10(22);
-        }
-
-        @media ($phone-lg) {
-          height: 28px;
-          font-size: pxtorem10(24);
-        }
-
-        &[ng-reflect-name="Hours"] {
-          font-size: pxtorem10(17);
-
-          @media ($phone-md) {
-            font-size: pxtorem10(21);
-          }
-
-          @media ($phone-lg) {
-            font-size: pxtorem10(22);
-          }
-        }
-
-        &[ng-reflect-name="Discount"] {
-          font-size: pxtorem10(18);
-
-          @media ($phone-md) {
-            font-size: pxtorem10(21);
-          }
-
-          @media ($phone-lg) {
-            font-size: pxtorem10(23);
-          }
-        }
-
-        &[ng-reflect-name="Profile"] {
-          font-size: pxtorem10(18);
-
-          @media ($phone-md) {
-            font-size: pxtorem10(22);
-          }
-
-          @media ($phone-lg) {
-            font-size: pxtorem10(24);
-          }
-        }
       }
 
       .tab-button-text {
         margin-top: 3px;
-        font-size: pxtorem10(9);
+        font-size: pxtovw(10px);
         letter-spacing: 0.2px;
-
-        @media ($phone-md) {
-          font-size: pxtorem10(11);
-        }
-
-        @media ($phone-lg) {
-          font-size: pxtorem10(12);
-        }
       }
     }
   }
