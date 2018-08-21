@@ -45,9 +45,9 @@ export interface ServicesPricesResponse {
 export class StylistServiceProvider extends BaseApiService {
 
   constructor(
+    private events: Events,
     public http: HttpClient,
     public logger: Logger,
-    private events: Events,
     protected serverStatus: ServerStatusTracker) {
     super(http, logger, serverStatus);
   }
@@ -65,9 +65,8 @@ export class StylistServiceProvider extends BaseApiService {
   async getProfile(): Promise<StylistProfile> {
     return this.get<StylistProfile>('stylist/profile')
       .then(response => {
-        // TODO: remove key from the code when the service returns the api key.
         // Publish event to update gmap key.
-        this.events.publish(EventTypes.UPDATE_GMAP_KEY, 'AIzaSyCDZUwZCFNcMDt4N-BbQSEHwofHQttwouo');
+        this.events.publish(EventTypes.UPDATE_GMAP_KEY, response.google_api_key);
         return response;
       });
   }

@@ -87,9 +87,12 @@ export class RegisterSalonComponent {
 
   }
 
-  ionViewWillEnter(): void {
+  async ionViewWillEnter(): Promise<void> {
     this.isMainScreen = Boolean(this.navParams.get('isMainScreen'));
-    this.loadFormInitialData();
+
+    // loadFormInitialData must be called and finished before initAutocomplete because
+    // initAutocomplete uses the apiKey that we get in loadFormInitialData.
+    await this.loadFormInitialData();
     this.initAutocomplete();
   }
 
@@ -129,15 +132,17 @@ export class RegisterSalonComponent {
     const ionAutocompleteInputs = document.getElementsByClassName('ion_autocomplete');
     this.autocompleteInput = ionAutocompleteInputs[ionAutocompleteInputs.length - 1].getElementsByTagName('input')[0];
     this.autocompleteInput.id = 'autocomplete';
-    this.autocompleteInput.oninput = this.autocompleteInput.onfocus = this.fixAutocompletePosition;
+    this.autocompleteInput.oninput = this.autocompleteInput.onfocus = this.fixAutocompletePosition.bind(this);
     this.preventAddressInputBlocking();
 
     if (typeof google === 'undefined') {
+      this.logger.info('Start loading Google Maps...');
       this.mapsAPILoader.load().then(() => {
+        this.logger.info('Google Maps loaded.');
         this.bindAutocompleteToInput();
       })
         .catch(e => {
-          this.logger.warn('Cannot load maps API, address automplete will not work.', e);
+          this.logger.warn('Cannot load maps API, address automplete will not work.', JSON.stringify(e));
         });
     } else {
       this.bindAutocompleteToInput();
@@ -151,6 +156,7 @@ export class RegisterSalonComponent {
       bounds: newYorkBiasBounds,
       types: ['address'] // 'address' instructs the Places service to return only geocoding results with a precise address.
     });
+
     this.autocomplete.addListener('place_changed', () => {
       const place = this.autocomplete.getPlace();
       this.form.get('salon_address').patchValue(place.formatted_address);
@@ -161,6 +167,7 @@ export class RegisterSalonComponent {
   // Prevent Salon Address input field from blocking on error.
   preventAddressInputBlocking(): void {
     window.gm_authFailure = (): boolean => {
+      this.logger.warn('window.gm_authFailure(), disabling address autocomplete');
       this.autocompleteInput.disabled = false;
       this.autocompleteInput.placeholder = '';
       this.autocompleteInput.style.backgroundImage = '';

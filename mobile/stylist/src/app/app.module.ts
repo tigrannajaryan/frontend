@@ -102,6 +102,7 @@ if (!ENV.production) {
       deps: [Logger],
       useFactory: getMetaReducers
     },
+
     {
       // Override google maps config
       provide: LAZY_MAPS_API_CONFIG, useClass: GoogleMapsConfig

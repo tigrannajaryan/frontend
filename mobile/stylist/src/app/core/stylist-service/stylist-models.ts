@@ -11,7 +11,7 @@ export interface StylistProfile {
   website_url: string;
   profile_photo_id?: string;
   profile_photo_url?: string;
-  gmapsApiKey?: string;
+  google_api_key?: string;
 }
 
 export interface ServiceInSummary {
