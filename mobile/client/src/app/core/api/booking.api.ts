@@ -52,4 +52,8 @@ export class BookingApi extends BaseService {
   createAppointment(appointment: CreateAppointmentRequest): Observable<ApiResponse<AppointmentModel>> {
     return this.post<AppointmentModel>('client/appointments', appointment);
   }
+
+  previewAppointment(appointment: CreateAppointmentRequest): Observable<ApiResponse<AppointmentModel>> {
+    return this.post<AppointmentModel>('client/appointments/preview', appointment);
+  }
 }

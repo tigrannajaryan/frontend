@@ -10,7 +10,6 @@ import { BookingData } from '~/core/api/booking.data';
 import { ApiResponse } from '~/core/api/base.models';
 import { BookingApi, CreateAppointmentRequest, TimeslotsResponse } from '~/core/api/booking.api';
 import { AppointmentsDataStore } from '~/core/api/appointments.datastore';
-import { AppointmentModel, AppointmentStatus } from '~/core/api/appointments.models';
 import { AppointmentPageParams } from '~/appointment-page/appointment-page.component';
 import { ServiceModel } from '~/core/api/services.models';
 
@@ -129,45 +128,7 @@ export class SelectTimeComponent {
   }
 
   async performBooking(): Promise<void> {
-    // TODO: remove this code and call appointment preview API when
-    // we have the real data for it.
-    const appointment: AppointmentModel = {
-      uuid: '',
-      stylist_first_name: this.bookingData.stylist.first_name,
-      stylist_last_name: this.bookingData.stylist.last_name,
-      stylist_photo_url: this.bookingData.stylist.profile_photo_url,
-      salon_name: this.bookingData.stylist.salon_name,
-      total_price_before_tax: this.bookingData.totalClientPrice,
-      total_card_fee: 0,
-      total_tax: this.bookingData.totalClientPrice * 8.875 / 100,
-      datetime_start_at: this.bookingData.selectedTime.format(),
-      duration_minutes: 0,
-      status: AppointmentStatus.new,
-      services: this.bookingData.selectedServices.map(s => ({
-        uuid: s.uuid,
-        is_original: true,
-        regular_price: s.base_price,
-        client_price: this.bookingData.totalClientPrice,
-        service_name: s.name
-      }))
-    };
-    // End of debugging code. Remove code up to here.
-
-    const params: AppointmentPageParams = {
-      appointment,
-      onConfirmClick: () => this.createAppointment(appointment)
-    };
-    this.navCtrl.push(PageNames.Appointment, { params });
-  }
-
-  async createAppointment(appointment: AppointmentModel): Promise<void> {
-    // Debugging code: Add fake appointment for now to help debug Home screen
-    const homeData = await this.appointmentsData.home.get();
-    homeData.response.upcoming.push();
-    this.appointmentsData.home.set(homeData.response);
-    // End of debugging code. Remove code up to here.
-
-    // Create the appointment
+    // Prepare appointment creation request
     const appointmentRequest: CreateAppointmentRequest = {
       stylist_uuid: this.bookingData.stylist.uuid,
       datetime_start_at: this.bookingData.selectedTime.format(),
@@ -176,11 +137,24 @@ export class SelectTimeComponent {
       }))
     };
 
+    // Preview the appointment
+    const { response, error } = await this.bookingApi.previewAppointment(appointmentRequest).toPromise();
+    if (!error) {
+      const params: AppointmentPageParams = {
+        appointment: response,
+        onConfirmClick: () => this.createAppointment(appointmentRequest)
+      };
+      this.navCtrl.push(PageNames.Appointment, { params });
+    }
+  }
+
+  async createAppointment(appointmentRequest: CreateAppointmentRequest): Promise<void> {
     const { error } = await this.bookingApi.createAppointment(appointmentRequest).toPromise();
     if (!error) {
-      // Appointment created, refresh appointments for Home screen
+      // Appointment succesfully created. Refresh Home screen.
       this.appointmentsData.home.get({ refresh: true });
 
+      // Show "booking complete" message.
       this.navCtrl.push(PageNames.BookingComplete);
     }
   }
