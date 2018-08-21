@@ -36,6 +36,10 @@ page-invitations {
     ion-icon {
       margin-top: pxtovw(3px);
       font-size: pxtovw(15px);
+
+      &[name="close"] {
+        font-size: pxtovw(24px);
+      }
     }
   }
 
