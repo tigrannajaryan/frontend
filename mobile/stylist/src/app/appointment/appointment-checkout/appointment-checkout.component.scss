@@ -1,24 +1,25 @@
 page-checkout {
-  .p-c{
-    &-top{
+  .p-c {
+    &-top {
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      background: color($colors, white);
-      box-shadow: 0 0 10px 5px color($colors, color7);
-      border-radius: 25px;
+      justify-content: space-between;
       padding: pxtorem(55) pxtorem(65);
+      background: color($colors, white);
+      border-radius: 25px;
+      box-shadow: 0 0 10px 5px color($colors, color7);
 
       @media ($tablet) {
-        border-radius: 20px;
         padding: pxtorem(44) pxtorem(50);
-      }
-      @media ($phone) {
-        border-radius: 15px;
-        padding: pxtorem(32) pxtorem(40);
+        border-radius: 20px;
       }
 
-      &-time{
+      @media ($phone) {
+        padding: pxtorem(32) pxtorem(40);
+        border-radius: 15px;
+      }
+
+      &-time {
         font-size: pxtorem(66);
         font-weight: 700;
         color: color($colors, dark);
@@ -26,64 +27,68 @@ page-checkout {
         @media ($tablet) {
           font-size: pxtorem(46);
         }
+
         @media ($phone) {
           font-size: pxtorem(24);
         }
 
-        &-sup{
+        &-sup {
+          top: pxtorem(-22);
           display: inline-block;
-          font-weight: 400;
           margin-left: pxtorem(0);
           font-size: pxtorem(36);
-          top: pxtorem(-22);
+          font-weight: 400;
           color: color($colors, color12);
 
           @media ($tablet) {
-            font-size: pxtorem(26);
             top: pxtorem(-14);
+            font-size: pxtorem(26);
           }
+
           @media ($phone) {
+            top: pxtorem(-6);
             margin-left: pxtorem(5);
             font-size: pxtorem(18);
-            top: pxtorem(-6);
           }
         }
       }
 
-      &-user{
-        &-ava{
+      &-user {
+        &-ava {
+          display: inline-block;
           width: 33px;
           height: 33px;
-          border-radius: 50%;
-          background-size: cover !important;
+          margin-top: -5px;
+          margin-right: pxtorem(20);
           background-repeat: no-repeat;
           background-position: center;
-          display: inline-block;
           vertical-align: middle;
-          margin-right: pxtorem(20);
-          margin-top: -5px;
+          background-size: cover !important;
+          border-radius: 50%;
 
           @media ($tablet) {
-            margin-right: pxtorem(15);
             width: 25px;
             height: 25px;
+            margin-right: pxtorem(15);
           }
+
           @media ($phone) {
-            margin-right: pxtorem(7);
             width: 16px;
             height: 16px;
+            margin-right: pxtorem(7);
           }
         }
 
-        &-name{
+        &-name {
           display: inline-block;
-          vertical-align: middle;
-          color: color($colors, color12);
           font-size: pxtorem(40);
+          color: color($colors, color12);
+          vertical-align: middle;
 
           @media ($tablet) {
             font-size: pxtorem(30);
           }
+
           @media ($phone) {
             font-size: pxtorem(18);
           }
@@ -91,103 +96,108 @@ page-checkout {
       }
     }
 
-    &-box{
-      background: color($colors, white);
-      box-shadow: 0 10px 10px 5px color($colors, color7);
+    &-box {
       padding: 0 0 pxtorem(80);
-      border-radius: 25px;
       text-align: center;
+      background: color($colors, white);
+      border-radius: 25px;
+      box-shadow: 0 10px 10px 5px color($colors, color7);
 
       @media ($tablet) {
-        border-radius: 20px;
         padding: 0 0 pxtorem(50);
-      }
-      @media ($phone) {
-        border-radius: 15px;
-        padding: 0 0 pxtorem(30);
+        border-radius: 20px;
       }
 
-      &-title{
-        font-size: pxtorem(37);
+      @media ($phone) {
+        padding: 0 0 pxtorem(30);
+        border-radius: 15px;
+      }
+
+      &-title {
         padding: pxtorem(80) 0 pxtorem(60);
+        font-size: pxtorem(37);
         color: rgb(166, 163, 176);
 
         @media ($tablet) {
-          font-size: pxtorem(27);
           padding: pxtorem(50) 0 pxtorem(40);
+          font-size: pxtorem(27);
         }
+
         @media ($phone) {
-          font-size: pxtorem(17);
           padding: pxtorem(28) 0 pxtorem(25);
+          font-size: pxtorem(17);
         }
       }
 
-      &-price{
+      &-price {
+        // Set min height to make sure this block occuppies
+        // the same height regardless of its content and does
+        // not expand or shrink when the content changes (e.g. when loading)
+        min-height: pxtorem(80);
         margin-bottom: pxtorem(100);
 
         @media ($tablet) {
           margin-bottom: pxtorem(80);
         }
+
         @media ($phone) {
           margin-bottom: pxtorem(45);
         }
-
-        // Set min height to make sure this block occuppies
-        // the same height regardless of its content and does
-        // not expand or shrink when the content changes (e.g. when loading)
-        min-height: pxtorem(80);
 
         ion-spinner {
           width: pxtorem(60);
           height: pxtorem(60);
         }
 
-        &-sign{
+        &-sign {
           display: inline-block;
-          vertical-align: top;
           font-size: pxtorem(66);
           font-weight: 700;
           color: color($colors, dark);
+          vertical-align: top;
 
           @media ($tablet) {
             font-size: pxtorem(48);
           }
+
           @media ($phone) {
             font-size: pxtorem(32);
           }
         }
 
-        &-num{
+        &-num {
           display: inline-block;
           font-size: pxtorem(210);
+          font-weight: 700;
           line-height: pxtorem(210 - 50);
           color: color($colors, dark);
-          font-weight: 700;
 
           @media ($tablet) {
             font-size: pxtorem(150);
             line-height: pxtorem(150 - 40);
           }
+
           @media ($phone) {
             font-size: pxtorem(96);
             line-height: pxtorem(96 - 30);
           }
         }
 
-        &-last{
-          padding: pxtorem(12) pxtorem(20);
-          font-size: pxtorem(28);
+        &-last {
           display: inline-block;
+          padding: pxtorem(12) pxtorem(20);
+          color: color($colors, white);
+          text-transform: uppercase;
+          font-size: pxtorem(28);
           vertical-align: top;
           background: red;
           border-radius: 10px;
-          text-transform: uppercase;
-          color: color($colors, white);
 
           @media ($tablet) {
             padding: pxtorem(10) pxtorem(15);
             font-size: pxtorem(20);
           }
+
           @media ($phone) {
             padding: pxtorem(7) pxtorem(10);
             font-size: pxtorem(12);
@@ -195,7 +205,7 @@ page-checkout {
         }
       }
 
-      &-change{
+      &-change {
         padding: 0 pxtorem(80) pxtorem(40) !important;
         margin-bottom: pxtorem(86);
         text-align: left;
@@ -205,80 +215,77 @@ page-checkout {
           padding: 0 pxtorem(50) pxtorem(20) !important;
           margin-bottom: pxtorem(50);
         }
+
         @media ($phone) {
           padding: 0 pxtorem(30) pxtorem(10) !important;
           margin-bottom: pxtorem(35);
         }
 
 
-        &-title{
+        &-title {
           display: flex;
-          justify-content: space-between;
           align-items: center;
-          font-size: pxtorem(36);
+          justify-content: space-between;
+          font-size: pxtovw(14px);
           color: color($colors, color12);
-
-          @media ($tablet) {
-            font-size: pxtorem(26);
-          }
-          @media ($phone) {
-            font-size: pxtorem(17);
-          }
         }
 
-        &-num{
+        &-num {
+          display: flex;
+          align-items: center;
           font-size: pxtorem(60);
           font-weight: 700;
           color: color($colors, dark);
-          display: flex;
-          align-items: center;
 
           &-regular-price {
-            text-decoration: line-through;
+            font-size: 80%;
             font-weight: normal;
             color: color($colors, medium-dark);
-            font-size: 80%;
+            text-decoration: line-through;
           }
 
           @media ($tablet) {
             font-size: pxtorem(40);
           }
+
           @media ($phone) {
-            font-size: pxtorem(24);
             min-height: 36px;
+            font-size: pxtorem(24);
           }
         }
       }
 
-      &-service{
-        text-align: left;
+      &-service {
         padding: 0 pxtorem(80) !important;
+        text-align: left;
 
-        &.withmargin{
+        &.withmargin {
           margin: 0 0 pxtorem(90);
         }
 
         @media ($tablet) {
           padding: 0 pxtorem(50) !important;
 
-          &.withmargin{
+          &.withmargin {
             margin: 0 0 pxtorem(50);
           }
         }
+
         @media ($phone) {
           padding: 0 pxtorem(30) !important;
 
-          &.withmargin{
+          &.withmargin {
             margin: 0 0 pxtorem(20);
           }
         }
 
-        .row{
+        .row {
           border-bottom: 1px solid color($colors, color12);
 
           @media ($tablet) {
             padding: 0 0 pxtorem(3);
           }
+
           @media ($phone) {
             padding: 0 0 pxtorem(5);
           }
@@ -292,40 +299,32 @@ page-checkout {
           }
         }
 
-        &-title{
-          font-size: pxtorem(36);
+        &-title {
           display: flex;
-          justify-content: space-between;
           align-items: center;
+          justify-content: space-between;
+          font-size: pxtorem(36);
           color: color($colors, color12);
 
           @media ($tablet) {
             font-size: pxtorem(26);
           }
+
           @media ($phone) {
             font-size: pxtorem(17);
           }
         }
 
-        &-text{
-          font-size: pxtorem(36);
-          min-height: pxtorem(140);
+        &-text {
           display: flex;
-          justify-content: space-between;
           align-items: center;
+          justify-content: space-between;
+          min-height: pxtovw(40px);
+          font-size: pxtovw(14px);
           color: color($colors, dark);
 
-          @media ($tablet) {
-            font-size: pxtorem(26);
-            min-height: pxtorem(96);
-          }
-          @media ($phone) {
-            font-size: pxtorem(17);
-            min-height: pxtorem(66);
-          }
 
-
-          [ion-button]{
+          [ion-button] {
             height: pxtorem10(30);
 
             @media ($phone) {
@@ -333,7 +332,7 @@ page-checkout {
             }
           }
 
-          .button-inner ion-icon{
+          .button-inner ion-icon {
             font-size: pxtorem10(30);
 
             @media ($phone) {
@@ -342,21 +341,22 @@ page-checkout {
           }
         }
 
-        &-btn{
-          background: none;
+        &-btn {
           color: rgb(173, 169, 188);
+          background: none;
           box-shadow: none;
         }
       }
     }
 
-    &-fin{
-      text-align: center;
+    &-fin {
       padding: pxtorem(100) 0;
+      text-align: center;
 
       @media ($tablet) {
         padding: pxtorem(66) 0;
       }
+
       @media ($phone) {
         padding: pxtorem(44) 0;
       }
