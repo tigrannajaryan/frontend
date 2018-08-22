@@ -16,7 +16,7 @@
             <!-- Show calendar month name: -->
             <div class="Calendar-title">{{ moment(startOfMonth).format('MMMM YYYY') }}</div>
             <!-- Show calendar legend (weekdays names): -->
-            <div *ngIf="moment(startOfMonth).startOf('isoWeek').format('YYYY-MM-DD') as startOfWeek" class="Calendar-legend">
+            <div *ngIf="moment(startOfMonth).startOf('week').format('YYYY-MM-DD') as startOfWeek" class="Calendar-legend">
               <div *ngFor="let weekday of Array(7).fill(''); index as j" class="Calendar-day">
                 {{ moment(startOfWeek).add(j, 'days').format('dd').slice(0, 1) }}
               </div>
@@ -24,7 +24,7 @@
             <!-- Show month days: -->
             <div class="Calendar-month">
               <!-- Empty days before the month started: -->
-              <div *ngFor="let empty of Array(moment(startOfMonth).isoWeekday() - 1).fill('')" class="Calendar-day"></div>
+              <div *ngFor="let empty of Array(moment(startOfMonth).isoWeekday()).fill('')" class="Calendar-day"></div>
               <!-- All actual days of the month: -->
               <div *ngFor="let day of Array(moment(startOfMonth).daysInMonth()).fill(''); index as j" class="Calendar-day">
                 <!-- Show selectable day if there is an offer for this day: -->
@@ -40,8 +40,6 @@
                 <!-- Or show just a day number: -->
                 <ng-template #notSelectable>{{ j + 1 }}</ng-template>
               </div>
-              <!-- Empty days after the month ended: -->
-              <div *ngFor="let empty of Array(7 - moment(startOfMonth).endOf('month').isoWeekday()).fill('')" class="Calendar-day"></div>
             </div>
           </div>
         </div>
