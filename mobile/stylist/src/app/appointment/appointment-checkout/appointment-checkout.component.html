@@ -1,4 +1,5 @@
-<ion-header class="ion-bb-header" madeUserHeader></ion-header>
+<ion-header madeBackHeader></ion-header>
+
 
 <ion-content padding>
   <div class="bb-wp-a">
@@ -32,7 +33,9 @@
           <ion-col col-4>
             <div class="p-c-box-change-title">Price before tax</div>
             <div class="p-c-box-change-num">
-              <span class="p-c-box-change-num-regular-price">${{ subTotalRegularPrice.toFixed() }}</span>
+              <span *ngIf="subTotalRegularPrice.toFixed() != previewResponse.total_client_price_before_tax.toFixed() " class="p-c-box-change-num-regular-price">
+                ${{ subTotalRegularPrice.toFixed() }}
+              </span>
               &nbsp; ${{ previewResponse.total_client_price_before_tax.toFixed() }}
             </div>
           </ion-col>
