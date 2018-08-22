@@ -21,19 +21,19 @@
     </div>
 
     <div *ngIf="(homeObservable | async)?.response as homeData">
-      <div *ngIf="homeData.upcoming.length !== 0 || homeData.previous.length !== 0" class="HomePage-subtitleContainer">
+      <div *ngIf="homeData.upcoming?.length !== 0 || homeData.last_visited" class="HomePage-subtitleContainer">
         <span class="HomePage-subtitle">Upcoming Visits</span>
         <span class="HomePage-labelPurpul">{{ homeData.upcoming.length }}</span>
       </div>
-      <div *ngIf="homeData.upcoming.length > 0; else noUpcoming">
+      <div *ngIf="homeData.upcoming?.length > 0; else noUpcoming">
         <!-- show upcoming appointment cards -->
         <div *ngFor="let appointment of homeData.upcoming">
-          <appointment-item [appointment]="appointment" (cardClick)="onAppointmentClick(appointment)"></appointment-item>
+          <appointment-item [appointment]="appointment" (cardClick)="onAppointmentClick(appointment, AppointmentType.upcoming)"></appointment-item>
         </div>
       </div>
 
       <ng-template #noUpcoming>
-        <div class="HomePage-upcomingEmpty" *ngIf="homeData.previous.length !== 0">
+        <div class="HomePage-upcomingEmpty" *ngIf="homeData.last_visited">
           <!-- There are no upcoming visits but there is a past visit -->
           <!--To Do png change to svg-->
           Your future visits will show up here
@@ -41,17 +41,18 @@
         </div>
       </ng-template>
 
-      <div *ngIf="homeData.previous.length > 0">
-        <!-- show previous appointment cards -->
+      <div *ngIf="homeData.last_visited">
+        <!-- show last visit appointment card -->
         <div class="HomePage-subtitleContainer">
           <span class="HomePage-subtitle">Last Visit</span>
         </div>
-        <appointment-item [appointment]="homeData.previous[0]" (cardClick)="onAppointmentClick(homeData.previous[0])" (rebookClick)="onRebookClick(homeData.previous[0])"></appointment-item>
+        <appointment-item [appointment]="homeData.last_visited" (cardClick)="onAppointmentClick(homeData.last_visited, AppointmentType.past)"
+          hasRebook="true" (rebookClick)="onRebookClick(homeData.last_visited)"></appointment-item>
       </div>
 
 
       <!-- show this if there are no past or upcoming visits, i.e. this is a new client -->
-      <ion-grid no-padding class="HomePage-grid HomePage-homeEmpty" *ngIf="homeData.upcoming.length === 0 && homeData.previous.length === 0">
+      <ion-grid no-padding class="HomePage-grid HomePage-homeEmpty" *ngIf="(!homeData.upcoming || homeData.upcoming.length === 0) && !homeData.last_visited">
         <ion-row>
           <ion-col>
             <!--ToDo the image will be replaced once SVG is ready-->
@@ -59,7 +60,7 @@
           </ion-col>
         </ion-row>
         <ion-row class="HomePage-wText">
-          <ion-col align-self-center >
+          <ion-col align-self-center>
             Welcome!
             <br/> Time to get MADE
           </ion-col>

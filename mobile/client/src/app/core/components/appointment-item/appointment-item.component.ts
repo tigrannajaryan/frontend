@@ -24,6 +24,9 @@ export class AppointmentItemComponent {
   @Output()
   rebookClick = new EventEmitter<AppointmentModel>();
 
+  @Input()
+  hasRebook: boolean;
+
   getServices(): string {
     return this.appointment.services.map(s => s.service_name).join(', ');
   }

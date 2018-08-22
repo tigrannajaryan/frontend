@@ -3,7 +3,7 @@
   <div class="AppCard-HeaderVisitDate">{{ appointment.datetime_start_at | date: 'E, LLLL d' }}</div>
 
   <!-- rebooking link -->
-  <div *ngIf="appointment.status !== AppointmentStatus.new" (click)="onRebookClick()" class="AppCard-HeaderLink">Re-book appointment</div>
+  <div *ngIf="hasRebook" (click)="onRebookClick()" class="AppCard-HeaderLink">Re-book appointment</div>
 </div>
 <!-- the card -->
 <div (click)="onCardClick()" class="Card">

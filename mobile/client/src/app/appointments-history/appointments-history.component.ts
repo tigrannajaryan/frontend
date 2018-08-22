@@ -46,7 +46,7 @@ export class AppointmentsHistoryComponent {
   onAppointmentClick(appointment: AppointmentModel): void {
     const params: AppointmentPageParams = {
       appointment,
-      hasConfirmButton: false
+      onRebookClick: () => this.onRebookClick(appointment)
     };
     this.navCtrl.push(PageNames.Appointment, { params });
   }

@@ -155,7 +155,6 @@ export class SelectTimeComponent {
 
     const params: AppointmentPageParams = {
       appointment,
-      hasConfirmButton: true,
       onConfirmClick: () => this.createAppointment(appointment)
     };
     this.navCtrl.push(PageNames.Appointment, { params });
