@@ -9,7 +9,6 @@ for all our mobile applications.
 The repository has the following structure:
 ```
 /mobile  - mobile apps.
-/website - madebeauty.com public web site.
 ```
 
 
