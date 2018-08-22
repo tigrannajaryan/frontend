@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { Observable } from 'rxjs/Observable';
 
 import { LOADING_DELAY, RequestState } from '~/core/api/request.models';
 import { ServicesService } from '~/core/api/services-service';

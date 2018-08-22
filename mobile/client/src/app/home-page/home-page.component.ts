@@ -1,6 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, Refresher } from 'ionic-angular';
-import { Observable } from 'rxjs';
+import { Observable } from 'rxjs/Observable';
 
 import { Logger } from '~/shared/logger';
 import { loading } from '~/core/utils/loading';
@@ -66,8 +66,8 @@ export class HomePageComponent {
   }
 
   onBookClick(): void {
-    // TODO: add booking logic when appointment creation flow is implemented
     this.logger.info('onBookClick');
-    this.navCtrl.push(PageNames.SelectDate);
+    // Begin booking process by showing service categories selection screen
+    this.navCtrl.push(PageNames.ServicesCategories);
   }
 }

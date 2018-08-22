@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable } from 'rxjs/Observable';
 
 import { ApiResponse } from '~/core/api/base.models';
-import { PricelistResponse, TimeslotsResponse } from './booking.api';
-import { ServiceModel } from '~/core/api/services.models';
+import { TimeslotsResponse } from './booking.api';
+import { GetPricelistResponse, ServiceModel } from '~/core/api/services.models';
 
 @Injectable()
 export class BookingApiMock {
@@ -54,8 +54,12 @@ export class BookingApiMock {
     return Observable.of({ response });
   }
 
-  getPricelist(stylistUuid: string, selectedServices: ServiceModel[]): Observable<ApiResponse<PricelistResponse>> {
-    const response = {};
+  getPricelist(selectedServices: ServiceModel[]): Observable<ApiResponse<GetPricelistResponse>> {
+    const response = {
+      stylist_uuid: 'abc',
+      service_uuid: 'def',
+      prices: []
+    };
     return Observable.of({ response });
   }
 }

@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import * as moment from 'moment';
 
 import { DataStore } from '~/core/utils/data-store';
-import { PricelistResponse, TimeslotsResponse } from '~/core/api/booking.api';
-import { BookingApiMock } from '~/core/api/booking.api.mock';
-import { ServiceModel } from '~/core/api/services.models';
+import { BookingApi, TimeslotsResponse } from '~/core/api/booking.api';
+import { GetPricelistResponse, ServiceModel } from '~/core/api/services.models';
+import { StylistModel } from '~/core/api/stylists.models';
 
 /**
  * Singleton that stores current booking process data.
@@ -13,22 +13,23 @@ import { ServiceModel } from '~/core/api/services.models';
 export class BookingData {
   selectedTime: moment.Moment;
 
-  private _stylistUuid: string;
+  private _stylist: StylistModel;
   private _selectedServices: ServiceModel[];
-  private _date: Date;
+  private _date: moment.Moment;
   private _totalRegularPrice: number;
   private _totalClientPrice: number;
-  private _pricelist: DataStore<PricelistResponse>;
+  private _pricelist: DataStore<GetPricelistResponse>;
   private _timeslots: DataStore<TimeslotsResponse>;
 
-  constructor(private api: BookingApiMock) { }
+  constructor(private api: BookingApi) { }
 
   /**
    * Begin new appointment booking process. Called by "Book Appointment" button.
-   * @param stylistUuid the uuid of the stylist with whom to start booking.
+   * @param stylist the stylist with whom to start booking.
    */
-  start(stylistUuid: string): void {
-    this._stylistUuid = stylistUuid;
+  start(stylist: StylistModel): void {
+    this._stylist = stylist;
+
     // clear previous booking information
     this._selectedServices = undefined;
     this._totalRegularPrice = undefined;
@@ -55,30 +56,37 @@ export class BookingData {
     this._selectedServices = services;
 
     // Calc total regular price
-    this._totalRegularPrice = services.reduce((sum, service) => sum + service.regular_price, 0);
+    this._totalRegularPrice = services.reduce((sum, service) => sum + service.base_price, 0);
 
     // create an API-backed cached pricelist
     this._pricelist = new DataStore('booking_pricelist',
-      () => this.api.getPricelist(this._stylistUuid, this._selectedServices),
+      () => this.api.getPricelist(this._selectedServices),
       { cacheTtlMilliseconds: 1000 * 60 }); // TTL for pricelist cache is 1 min
+
+    // Load prices
+    this._pricelist.get({ refresh: true });
   }
 
   /**
    * Set the date of appointment. Called when user chooses date in the UI.
    */
-  setDate(date: Date): void {
-    if (!this._timeslots || this._date !== date) {
+  setDate(date: moment.Moment): void {
+    if (!this._timeslots || !date.isSame(this._date)) {
       this._date = date;
 
       // create an API-backed cached timeslots
       this._timeslots = new DataStore('booking_timeslots',
-        () => this.api.getTimeslots(this._stylistUuid, date),
+        () => this.api.getTimeslots(this._stylist.uuid, date),
         { cacheTtlMilliseconds: 1000 * 60 }); // TTL for timeslots cache is 1 min
     }
   }
 
   setTotalClientPrice(price: number): void {
     this._totalClientPrice = price;
+  }
+
+  get stylist(): StylistModel {
+    return this._stylist;
   }
 
   get totalClientPrice(): number {
@@ -89,7 +97,7 @@ export class BookingData {
     return this._totalRegularPrice;
   }
 
-  get date(): Date {
+  get date(): moment.Moment {
     return this._date;
   }
 
@@ -97,7 +105,7 @@ export class BookingData {
     return this._selectedServices;
   }
 
-  get pricelist(): DataStore<PricelistResponse> {
+  get pricelist(): DataStore<GetPricelistResponse> {
     return this._pricelist;
   }
 

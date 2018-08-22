@@ -3,15 +3,15 @@ import { IonicPage, NavController } from 'ionic-angular';
 import * as moment from 'moment';
 
 import { Logger } from '~/shared/logger';
-import { TimeslotsResponse } from '~/core/api/booking.api';
-import { BookingData } from '~/core/api/booking.data';
-import { ApiResponse } from '~/core/api/base.models';
+import { formatTimeInZone } from '~/shared/utils/string-utils';
 import { showAlert } from '~/core/utils/alert';
 import { PageNames } from '~/core/page-names';
+import { BookingData } from '~/core/api/booking.data';
+import { ApiResponse } from '~/core/api/base.models';
+import { BookingApi, CreateAppointmentRequest, TimeslotsResponse } from '~/core/api/booking.api';
 import { AppointmentsDataStore } from '~/core/api/appointments.datastore';
 import { AppointmentModel, AppointmentStatus } from '~/core/api/appointments.models';
 import { AppointmentPageParams } from '~/appointment-page/appointment-page.component';
-import { formatTimeInZone } from '~/shared/utils/string-utils';
 import { ServiceModel } from '~/core/api/services.models';
 
 interface DisplayTimeslot {
@@ -87,7 +87,8 @@ export class SelectTimeComponent {
 
   constructor(
     private appointmentsData: AppointmentsDataStore,
-    private bookingData: BookingData,
+    private bookingApi: BookingApi,
+    protected bookingData: BookingData,
     private logger: Logger,
     private navCtrl: NavController) {
   }
@@ -132,23 +133,23 @@ export class SelectTimeComponent {
     // we have the real data for it.
     const appointment: AppointmentModel = {
       uuid: '',
-      stylist_first_name: 'First',
-      stylist_last_name: 'Last',
-      stylist_photo_url: '',
-      salon_name: 'Salon',
+      stylist_first_name: this.bookingData.stylist.first_name,
+      stylist_last_name: this.bookingData.stylist.last_name,
+      stylist_photo_url: this.bookingData.stylist.profile_photo_url,
+      salon_name: this.bookingData.stylist.salon_name,
       total_price_before_tax: this.bookingData.totalClientPrice,
       total_card_fee: 0,
       total_tax: this.bookingData.totalClientPrice * 8.875 / 100,
       datetime_start_at: this.bookingData.selectedTime.format(),
       duration_minutes: 0,
       status: AppointmentStatus.new,
-      services: [{
-        client_price: this.bookingData.totalClientPrice,
-        uuid: '',
+      services: this.bookingData.selectedServices.map(s => ({
+        uuid: s.uuid,
         is_original: true,
-        regular_price: 123,
-        service_name: 'Some Service'
-      }]
+        regular_price: s.base_price,
+        client_price: this.bookingData.totalClientPrice,
+        service_name: s.name
+      }))
     };
     // End of debugging code. Remove code up to here.
 
@@ -163,11 +164,26 @@ export class SelectTimeComponent {
   async createAppointment(appointment: AppointmentModel): Promise<void> {
     // Debugging code: Add fake appointment for now to help debug Home screen
     const homeData = await this.appointmentsData.home.get();
-    homeData.response.upcoming.push(appointment);
+    homeData.response.upcoming.push();
     this.appointmentsData.home.set(homeData.response);
     // End of debugging code. Remove code up to here.
 
-    this.navCtrl.push(PageNames.BookingComplete);
+    // Create the appointment
+    const appointmentRequest: CreateAppointmentRequest = {
+      stylist_uuid: this.bookingData.stylist.uuid,
+      datetime_start_at: this.bookingData.selectedTime.format(),
+      services: this.bookingData.selectedServices.map(s => ({
+        service_uuid: s.uuid
+      }))
+    };
+
+    const { error } = await this.bookingApi.createAppointment(appointmentRequest).toPromise();
+    if (!error) {
+      // Appointment created, refresh appointments for Home screen
+      this.appointmentsData.home.get({ refresh: true });
+
+      this.navCtrl.push(PageNames.BookingComplete);
+    }
   }
 
   onDeleteService(service: ServiceModel): void {
