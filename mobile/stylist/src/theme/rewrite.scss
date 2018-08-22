@@ -106,8 +106,12 @@ ion-datetime {
   border-top: none;
 }
 
-// rewrite ionic tabs icons
+// Rewrite ionic’s rules
+ion-header ion-icon.back-button-icon.icon {
+  color: map-get($colors, dark);
+}
 
+// rewrite ionic tabs icons
 ion-icon.tab-button-icon[aria-label^="Home"],
 ion-icon.tab-button-icon[aria-label^="Hours"],
 ion-icon.tab-button-icon[aria-label^="Discount"],

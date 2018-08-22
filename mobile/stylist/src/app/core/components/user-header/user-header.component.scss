@@ -1,24 +1,9 @@
-// Rewrite ionic’s rules
-ion-header ion-icon.back-button-icon.icon {
-  color: map-get($colors, dark);
-}
-
 .UserHeader {
-  // Add padding to be aligned with context.
-  padding-right: 10px;
-  padding-left: 10px;
   background: white;
 
   &.toolbar {
-    height: 98px;
-
-    @media ($smartphone) {
-      height: 88px;
-    }
-
-    @media ($phone) {
-      height: 86px;
-    }
+    min-height: pxtovw(44px);
+    padding: pxtovw(10px) pxtovw(23.61px);
   }
 
   &.UserHeader--shadow {
@@ -26,50 +11,26 @@ ion-header ion-icon.back-button-icon.icon {
   }
 
   .UserHeader-title {
+    position: relative;
     padding: 0;
-
-    &.title-ios {
-      padding-top: 28px !important;
-      height: calc(44px + 28px) !important;
-    }
 
     .toolbar-title { // ionic’s navbar title
       padding: 0;
-      font-size: pxtorem(45);
+      font-size: pxtovw(16px);
       text-align: left;
-
-      @media ($smartphone) {
-        padding: 0 12px;
-        font-size: pxtorem(36);
-      }
-
-      @media ($phone) {
-        padding: 0 10px;
-        font-size: pxtorem(24);
-      }
     }
   }
 
   .UserHeader-subtitle {
     display: block;
-    font-size: $t-h2;
+    font-size: pxtovw(12px);
     color: rgba(0, 0, 0, 0.4);
-
-    @media ($smartphone) {
-      font-size: $t-h3;
-    }
-
-    @media ($phone) {
-      font-size: $t-base;
-    }
   }
 
   .UserHeader-btnUser {
-    $button-size: 90px;
-
     display: inline-block;
-    width: $button-size;
-    height: $button-size;
+    width: pxtovw(40px);
+    height: pxtovw(40px);
     font-size: pxtorem(40);
     vertical-align: middle;
     background: url('../assets/imgs/icons/avatar.png') no-repeat center;
@@ -79,43 +40,13 @@ ion-header ion-icon.back-button-icon.icon {
     &.is-withPic {
       box-shadow: 0 0 14px -4px rgba(0, 0, 0, 0.5);
     }
-
-    @media ($smartphone) {
-      $button-size: 80px;
-
-      width: $button-size;
-      height: $button-size;
-    }
-
-    @media ($phone) {
-      $button-size: 60px;
-
-      width: $button-size;
-      height: $button-size;
-    }
-
-    @media ($phone-sm) {
-      $button-size: 47px;
-
-      width: $button-size;
-      height: $button-size;
-    }
   }
 
   .UserHeader-btnMenu {
     display: inline-block;
-    font-size: pxtorem(40);
+    font-size: pxtovw(16px);
     color: color($grayscale, 600);
     vertical-align: middle;
-
-    @media ($smartphone) {
-      font-size: pxtorem(30);
-    }
-
-    @media ($phone) {
-      margin: 0;
-      font-size: pxtorem(22);
-    }
 
     &.UserHeader-btnMenu--dark {
       color: color($colors, dark);
@@ -125,20 +56,10 @@ ion-header ion-icon.back-button-icon.icon {
   .UserHeader-delimeter {
     display: inline-block;
     width: 1px;
-    height: 60px;
-    margin: 0 10px auto;
+    height: 25px;
+    margin: 0 pxtovw(10px) auto;
     vertical-align: middle;
     background: darken(color($grayscale, 200), 1%);
-
-    @media ($smartphone) {
-      height: 50px;
-      margin: 0 pxtoem(20) auto;
-    }
-
-    @media ($phone) {
-      height: 30px;
-      margin: 0 pxtoem(10) auto;
-    }
   }
 }
 
