@@ -27,7 +27,7 @@
           <ion-item class="Salon-input">
             <ion-label floating>First name*</ion-label>
             <ion-input formControlName="first_name" type="text"></ion-input>
-            <div [class.is-active]="form.get('first_name').errors" class="Salon-inputError" item-end>
+            <div [class.is-active]="form.get('first_name').dirty && form.get('first_name').errors" class="Salon-inputError" item-end>
               <span *ngIf="form.get('first_name').errors?.required">This field is required</span>
               <span *ngIf="form.get('first_name').errors?.maxlength">Maximal length {{ form.get('first_name').errors?.maxlength?.requiredLength }} symbols</span>
             </div>
@@ -37,7 +37,7 @@
           <ion-item class="Salon-input">
             <ion-label floating>Last name*</ion-label>
             <ion-input formControlName="last_name" type="text"></ion-input>
-            <div [class.is-active]="form.get('last_name').errors" class="Salon-inputError" item-end>
+            <div [class.is-active]="form.get('last_name').dirty && form.get('last_name').errors" class="Salon-inputError" item-end>
               <span *ngIf="form.get('last_name').errors?.required">This field is required</span>
               <span *ngIf="form.get('last_name').errors?.maxlength">Maximal length {{ form.get('last_name').errors?.maxlength?.requiredLength }} symbols</span>
             </div>
@@ -50,7 +50,7 @@
           <ion-item class="Salon-input">
             <ion-label floating>Salon name*</ion-label>
             <ion-input formControlName="salon_name" type="text"></ion-input>
-            <div [class.is-active]="form.get('salon_name').errors" class="Salon-inputError" item-end>
+            <div [class.is-active]="form.get('salon_name').dirty && form.get('salon_name').errors" class="Salon-inputError" item-end>
               <span *ngIf="form.get('salon_name').errors?.required">This field is required</span>
               <span *ngIf="form.get('salon_name').errors?.maxlength">Maximal length {{ form.get('salon_name').errors?.maxlength?.requiredLength }} symbols</span>
               <span *ngIf="form.get('salon_name').errors?.minlength">Minimal length 3 digits</span>
@@ -64,7 +64,7 @@
           <ion-item class="Salon-input">
             <ion-label floating>Address*</ion-label>
             <ion-input formControlName="salon_address" type="text" class="ion_autocomplete"></ion-input>
-            <div [class.is-active]="form.get('salon_address').errors" class="Salon-inputError" item-end>
+            <div [class.is-active]="form.get('salon_address').dirty && form.get('salon_address').errors" class="Salon-inputError" item-end>
               <span *ngIf="form.get('salon_address').errors?.required">This field is required</span>
             </div>
           </ion-item>
@@ -76,7 +76,7 @@
           <ion-item class="Salon-input">
             <ion-label floating>Phone number*</ion-label>
             <ion-input formControlName="phone" type="tel"></ion-input>
-            <div [class.is-active]="form.get('phone').errors" class="Salon-inputError" item-end>
+            <div [class.is-active]="form.get('phone').dirty && form.get('phone').errors" class="Salon-inputError" item-end>
               <span *ngIf="form.get('phone').errors?.required">This field is required</span>
               <span *ngIf="form.get('phone').errors?.maxlength">Maximal length {{ form.get('phone').errors?.maxlength?.requiredLength }} symbols</span>
               <span *ngIf="form.get('phone').errors?.minlength">Minimal length 5 digits</span>
@@ -90,7 +90,7 @@
           <ion-item class="Salon-input">
             <ion-label floating>Instagram user name</ion-label>
             <ion-input formControlName="instagram_url" type="text"></ion-input>
-            <div [class.is-active]="form.get('instagram_url').errors" class="Salon-inputError" item-end>
+            <div [class.is-active]="form.get('instagram_url').dirty && form.get('instagram_url').errors" class="Salon-inputError" item-end>
               <span *ngIf="form.get('instagram_url').errors?.pattern">Wrong name</span>
             </div>
           </ion-item>
