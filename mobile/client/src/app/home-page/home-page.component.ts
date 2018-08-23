@@ -9,6 +9,7 @@ import { ApiResponse } from '~/core/api/base.models';
 import { AppointmentsDataStore } from '~/core/api/appointments.datastore';
 import { PageNames } from '~/core/page-names';
 import { AppointmentPageParams } from '~/appointment-page/appointment-page.component';
+import { startRebooking } from '~/booking/booking-utils';
 
 enum AppointmentType {
   upcoming,
@@ -64,7 +65,7 @@ export class HomePageComponent {
     };
 
     if (type === AppointmentType.past) {
-      params.onRebookClick = () => this.onRebookClick(appointment);
+      params.hasRebook = true;
     } else {
       params.onCancel = () => this.onCancel();
     }
@@ -77,12 +78,13 @@ export class HomePageComponent {
   }
 
   onRebookClick(appointment: AppointmentModel): void {
-    // TODO: add rebooking logic when appointment creation flow is implemented
     this.logger.info('onRebookClick', appointment);
+    startRebooking(appointment, this.navCtrl);
   }
 
   onBookClick(): void {
     this.logger.info('onBookClick');
+
     // Begin booking process by showing service categories selection screen
     this.navCtrl.push(PageNames.ServicesCategories);
   }

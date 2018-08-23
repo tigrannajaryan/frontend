@@ -65,12 +65,24 @@ export class ApiError extends Error {
   getMessage(): string {
     return this.message;
   }
+
+  /**
+   * Return true if the other instance is 'like' this one. The definition
+   * of 'like' is left to each class that derives from this one. isLike operation
+   * is used when matching errors in e.g. `hideGenericAlertOnErrorsLike` flag.
+   */
+  isLike(other: ApiError): boolean {
+    return false;
+  }
 }
 
 /**
  * Server is unreachable or returned an internal or unknown error.
  */
 export class ServerUnreachableOrInternalError extends ApiError {
+  isLike(other: ApiError): boolean {
+    return other instanceof ServerUnreachableOrInternalError;
+  }
 }
 
 /**
@@ -79,6 +91,10 @@ export class ServerUnreachableOrInternalError extends ApiError {
 export class ServerUnreachableError extends ServerUnreachableOrInternalError {
   constructor() {
     super('ServerUnreachableError');
+  }
+
+  isLike(other: ApiError): boolean {
+    return other instanceof ServerUnreachableError;
   }
 }
 
@@ -89,6 +105,10 @@ export class ServerInternalError extends ServerUnreachableOrInternalError {
   constructor(error: string) {
     super(error);
   }
+
+  isLike(other: ApiError): boolean {
+    return other instanceof ServerInternalError;
+  }
 }
 
 /**
@@ -97,6 +117,10 @@ export class ServerInternalError extends ServerUnreachableOrInternalError {
 export class ServerUnknownError extends ServerUnreachableOrInternalError {
   constructor(error: string) {
     super(error);
+  }
+
+  isLike(other: ApiError): boolean {
+    return other instanceof ServerUnknownError;
   }
 }
 
@@ -119,6 +143,11 @@ export interface ApiRequestOptions {
   // and want to handle the errors in a custom way then set this value to true
   // and handle ApiFieldAndNonFieldErrors in your code that calls API functions.
   hideGenericAlertOnFieldAndNonFieldErrors?: boolean;
+
+  // Similar to above. If error happens which is like one of the elements of
+  // hideGenericAlertOnErrorsLike array then do not show the error.
+  // Uses ApiError.isLike() function to decide "likeness" of errors.
+  hideGenericAlertOnErrorsLike?: ApiError[];
 }
 
 /**
@@ -131,6 +160,10 @@ export class ApiClientError extends ApiError {
     readonly errorBody: any
   ) {
     super('ApiClientError');
+  }
+
+  isLike(other: ApiError): boolean {
+    return other instanceof ApiClientError && this.status === other.status;
   }
 }
 
@@ -165,6 +198,18 @@ export class ApiFieldAndNonFieldErrors extends ApiError {
    */
   getMessage(): string {
     return this.errors.map(item => item.getMessage()).join('\n');
+  }
+
+  isLike(other: ApiError): boolean {
+    if (other instanceof ApiFieldAndNonFieldErrors && this.errors.length === other.errors.length) {
+      for (let i = 0; i < this.errors.length; i++) {
+        if (!this.errors[i].isEqual(other.errors[i])) {
+          return false;
+        }
+      }
+      return true;
+    }
+    return false;
   }
 }
 
@@ -230,30 +275,51 @@ export class FieldErrorItem extends FieldOrNonFieldErrorItem {
   }
 }
 
+export interface ProcessApiResponseErrorResult {
+  error: ApiError;
+  notifyTracker: boolean;
+}
+
 /**
  * Process HttpErrorResponse and convert it to an array of ApiError items.
  */
-export function processApiResponseError(error: any): ApiError {
+export function processApiResponseError(error: any, options: ApiRequestOptions): ProcessApiResponseErrorResult {
+  let retApiVal: ProcessApiResponseErrorResult;
+
   if (error instanceof HttpErrorResponse) {
     if (error.error instanceof ErrorEvent || !error.status) {
       // Connection error, e.g. network is down.
-      return new ServerUnreachableError();
+      retApiVal = { error: new ServerUnreachableError(), notifyTracker: true };
+    } else {
+      const status = String(error.status);
+      if (/^4\d\d/.test(status)) { // 4xx
+        retApiVal = process4xxErrorResponse(error.status, error.error, options);
+      } else if (/^5\d\d/.test(status)) { // 5xx
+        retApiVal = { error: new ServerInternalError(error.error), notifyTracker: true };
+      } else {
+        retApiVal = { error: new ServerUnknownError(error.error), notifyTracker: true };
+      }
     }
-    const status = String(error.status);
-    if (/^4\d\d/.test(status)) { // 4xx
-      return process4xxErrorResponse(error.status, error.error);
-    }
-    if (/^5\d\d/.test(status)) { // 5xx
-      return new ServerInternalError(error.error);
-    }
+  } else {
+    retApiVal = { error: new ServerUnknownError(error.error), notifyTracker: true };
   }
-  return new ServerUnknownError(error.error);
+
+  if (options && options.hideGenericAlertOnErrorsLike) {
+    // if we have any error like options.hideGenericAlertOnErrorsLike then return false
+    // for the second value.
+    retApiVal.notifyTracker = !options.hideGenericAlertOnErrorsLike.some(e => e.isLike(retApiVal.error));
+  }
+
+  return retApiVal;
 }
 
 /**
  * Processs 4xx error response data structure and converts into correct type of ApiError.
  */
-export function process4xxErrorResponse(httpStatus: number, error: ApiErrorResponse): ApiError {
+export function process4xxErrorResponse(
+  httpStatus: number, error: ApiErrorResponse,
+  options: ApiRequestOptions): ProcessApiResponseErrorResult {
+
   switch (error.code) {
 
     // An exception occured in the API, the 'non_field_errors' or(and) 'field_errors' should be returned
@@ -270,24 +336,32 @@ export function process4xxErrorResponse(httpStatus: number, error: ApiErrorRespo
             );
           }, []) : [];
 
-      return new ApiFieldAndNonFieldErrors([...nonFieldErrors, ...fieldErrors]);
+      const notifyTracker = !(options && options.hideGenericAlertOnFieldAndNonFieldErrors);
+
+      return { error: new ApiFieldAndNonFieldErrors([...nonFieldErrors, ...fieldErrors]), notifyTracker };
     }
 
     // Authentication with provided token is failed
     case HighLevelErrorCode.err_authentication_failed:
     case HighLevelErrorCode.err_unauthorized:
-      return new ApiClientError(HttpStatus.unauthorized, error);
+      return { error: new ApiClientError(HttpStatus.unauthorized, error), notifyTracker: true };
 
     // The endpoint is not found
     case HighLevelErrorCode.err_not_found:
-      return new ApiClientError(HttpStatus.notFound, error);
+      return {
+        error: new ApiClientError(HttpStatus.notFound, error), notifyTracker: true
+      };
 
     // The method is not allowed for endpoint
     case HighLevelErrorCode.err_method_not_allowed:
-      return new ApiClientError(HttpStatus.methodNotSupported, error);
+      return {
+        error: new ApiClientError(HttpStatus.methodNotSupported, error), notifyTracker: true
+      };
 
     // Nothing from above
     default:
-      return new ApiClientError(httpStatus, error);
+      return {
+        error: new ApiClientError(httpStatus, error), notifyTracker: true
+      };
   }
 }

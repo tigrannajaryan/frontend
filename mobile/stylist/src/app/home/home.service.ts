@@ -3,9 +3,9 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import * as moment from 'moment';
 
 import { Logger } from '~/shared/logger';
-import { BaseApiService } from '~/shared/base-api-service';
 import { ApiRequestOptions } from '~/shared/api-errors';
 import { ServerStatusTracker } from '~/shared/server-status-tracker';
+import { BaseApiService } from '~/core/base-api-service';
 import {
   Appointment,
   AppointmentChangeRequest,

@@ -12,8 +12,7 @@ import {
   ServicesState
 } from '~/core/reducers/services.reducer';
 import { ServiceCategoryModel } from '~/core/api/services.models';
-import { PreferredStylistsData } from '~/core/api/preferred-stylists.data';
-import { BookingData } from '~/core/api/booking.data';
+import { startBooking } from '~/booking/booking-utils';
 
 @IonicPage()
 @Component({
@@ -31,21 +30,14 @@ export class ServicesCategoriesPageComponent {
   RequestState = RequestState; // expose to view
 
   constructor(
-    private bookingData: BookingData,
     private navCtrl: NavController,
-    private preferredStylistsData: PreferredStylistsData,
     private store: Store<ServicesState>
   ) {
   }
 
   async ionViewWillEnter(): Promise<void> {
-    // Find the stylist with whom to do booking.
-    const preferredStylists = await this.preferredStylistsData.get();
-    if (preferredStylists.length > 0) {
-      // Use the first preferred stylist (if we have any)
-      this.stylistUuid = preferredStylists[0].uuid;
-      this.bookingData.start(preferredStylists[0]);
-    }
+    const preferredStylist = await startBooking();
+    this.stylistUuid = preferredStylist.uuid;
 
     this.categories = this.store.select(selectStylistServiceCategories(this.stylistUuid));
     this.requestState = this.store.select(selectServicesRequestState);

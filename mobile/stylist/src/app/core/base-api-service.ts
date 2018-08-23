@@ -7,7 +7,7 @@ import 'rxjs/add/operator/map';
 
 import { ENV } from '../../environments/environment.default';
 import { Logger } from '~/shared/logger';
-import { ApiFieldAndNonFieldErrors, ApiRequestOptions, processApiResponseError } from '~/shared/api-errors';
+import { ApiRequestOptions, processApiResponseError } from '~/shared/api-errors';
 import { ServerStatusTracker } from '~/shared/server-status-tracker';
 import { AppModule } from '~/app.module';
 
@@ -56,23 +56,19 @@ export class BaseApiService {
       });
   }
 
-  protected processResponseError(error: any, method: string, url: string, options?: ApiRequestOptions): void {
-    this.logger.error(`Error in response to API request ${method.toUpperCase()} ${url} failed:`, JSON.stringify(error));
+  protected processResponseError(err: any, method: string, url: string, options?: ApiRequestOptions): void {
+    this.logger.error(`Error in response to API request ${method.toUpperCase()} ${url} failed:`, JSON.stringify(err));
 
-    const apiError = processApiResponseError(error);
-
-    // Check if the caller requested to suppress ApiFieldAndNonFieldErrors generic handling, don't notify tracker
-    const notifyTracker = !(apiError instanceof ApiFieldAndNonFieldErrors &&
-      options && options.hideGenericAlertOnFieldAndNonFieldErrors);
+    const { error, notifyTracker } = processApiResponseError(err, options);
 
     if (notifyTracker) {
       // there is a server status error, notify status tracker about it
       const serverStatus = AppModule.injector.get(ServerStatusTracker);
-      serverStatus.notify(apiError);
+      serverStatus.notify(error);
     }
 
     // and throw an error for callers to catch and process
-    throw apiError;
+    throw error;
   }
 
   protected get<ResponseType>(apiPath: string, queryParams?: HttpParams, options?: ApiRequestOptions): Promise<ResponseType> {

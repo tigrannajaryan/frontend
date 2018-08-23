@@ -9,6 +9,7 @@ import { ApiResponse } from '~/core/api/base.models';
 import { AppointmentsDataStore } from '~/core/api/appointments.datastore';
 import { PageNames } from '~/core/page-names';
 import { AppointmentPageParams } from '~/appointment-page/appointment-page.component';
+import { startRebooking } from '~/booking/booking-utils';
 
 @IonicPage()
 @Component({
@@ -24,11 +25,11 @@ export class AppointmentsHistoryComponent {
   isLoading: boolean;
 
   constructor(
-    private dataStore: AppointmentsDataStore,
+    private appointmentsData: AppointmentsDataStore,
     private logger: Logger,
     private navCtrl: NavController
   ) {
-    this.historyObservable = this.dataStore.history.asObservable();
+    this.historyObservable = this.appointmentsData.history.asObservable();
   }
 
   ionViewDidLoad(): void {
@@ -40,19 +41,19 @@ export class AppointmentsHistoryComponent {
     this.logger.info('HistoryPageComponent.onLoad');
 
     // Load the data. Indicate loading.
-    loading(this, this.dataStore.history.get({ refresh: true }));
+    loading(this, this.appointmentsData.history.get({ refresh: true }));
   }
 
   onAppointmentClick(appointment: AppointmentModel): void {
     const params: AppointmentPageParams = {
       appointment,
-      onRebookClick: () => this.onRebookClick(appointment)
+      hasRebook: true
     };
     this.navCtrl.push(PageNames.Appointment, { params });
   }
 
   onRebookClick(appointment: AppointmentModel): void {
-    // TODO: add rebooking logic when appointment creation flow is implemented
     this.logger.info('onRebookClick', appointment);
+    startRebooking(appointment, this.navCtrl);
   }
 }

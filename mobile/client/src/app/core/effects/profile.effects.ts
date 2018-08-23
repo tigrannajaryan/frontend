@@ -5,8 +5,6 @@ import { Actions, Effect } from '@ngrx/effects';
 import { Observable } from 'rxjs/Observable';
 import { catchError, map } from 'rxjs/operators';
 
-import { BaseApiService } from '~/shared/base-api-service';
-
 import { LOADING_DELAY, RequestState } from '~/core/api/request.models.ts';
 import { ApiResponse } from '~/core/api/base.models';
 import { ProfileModel } from '~/core/api/profile.models';
@@ -27,6 +25,7 @@ import {
   UpdateProfileErrorAction,
   UpdateProfileSuccessAction
 } from '~/core/reducers/profile.reducer';
+import { BaseService } from '~/core/api/base-service';
 
 @Injectable()
 export class ProfileEffects {
@@ -70,7 +69,7 @@ export class ProfileEffects {
     .ofType<UpdateImage>(profileActionTypes.UPDATE_IMAGE)
     .switchMap(action =>
       Observable
-        .from(this.baseApiService.uploadFile<{ uuid: string }>(action.formData))
+        .from(this.baseService.uploadFile<{ uuid: string }>(action.formData))
         .pipe(
           map(response => new UpdateImageSuccess(response.uuid)),
           catchError(error => Observable.of(new UpdateImageError(error)))
@@ -79,7 +78,7 @@ export class ProfileEffects {
 
   constructor(
     protected actions: Actions,
-    protected baseApiService: BaseApiService,
+    protected baseService: BaseService,
     protected profileService: ProfileService,
     protected store: Store<ProfileModel>
   ) {

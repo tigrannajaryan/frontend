@@ -1,4 +1,4 @@
-import { HighLevelErrorCode } from '~/shared/api-error-codes';
+import { HighLevelErrorCode } from './api-error-codes';
 import {
   ApiClientError,
   ApiErrorResponse,
@@ -7,7 +7,7 @@ import {
   HttpStatus,
   NonFieldErrorItem,
   process4xxErrorResponse
-} from '~/shared/api-errors';
+} from './api-errors';
 
 describe('errors', () => {
   it('process4xxErrorResponse should convert err_authentication_failed', () => {
@@ -15,10 +15,10 @@ describe('errors', () => {
       code: HighLevelErrorCode.err_authentication_failed
     };
 
-    const error = process4xxErrorResponse(HttpStatus.unauthorized, errorResponse);
+    const error = process4xxErrorResponse(HttpStatus.unauthorized, errorResponse, {});
 
     expect(error).toEqual(
-      new ApiClientError(HttpStatus.unauthorized, errorResponse)
+      { error: new ApiClientError(HttpStatus.unauthorized, errorResponse), notifyTracker: true }
     );
   });
 
@@ -27,9 +27,10 @@ describe('errors', () => {
       code: HighLevelErrorCode.err_api_exception
     };
 
-    const error = process4xxErrorResponse(HttpStatus.badRequest, errorResponse);
+    const error = process4xxErrorResponse(HttpStatus.badRequest, errorResponse, {});
 
-    expect(error).toEqual(new ApiFieldAndNonFieldErrors([])
+    expect(error).toEqual(
+      { error: new ApiFieldAndNonFieldErrors([]), notifyTracker: true }
     );
   });
 
@@ -41,9 +42,13 @@ describe('errors', () => {
       }
     };
 
-    const error = process4xxErrorResponse(HttpStatus.badRequest, errorResponse);
+    const error = process4xxErrorResponse(HttpStatus.badRequest, errorResponse, {});
 
-    expect(error).toEqual(new ApiFieldAndNonFieldErrors([new FieldErrorItem('email', { code: 'err_email_already_taken' })])
+    expect(error).toEqual(
+      {
+        error: new ApiFieldAndNonFieldErrors([new FieldErrorItem('email', { code: 'err_email_already_taken' })]),
+        notifyTracker: true
+      }
     );
   });
 
@@ -56,12 +61,16 @@ describe('errors', () => {
       }
     };
 
-    const error = process4xxErrorResponse(HttpStatus.badRequest, errorResponse);
+    const error = process4xxErrorResponse(HttpStatus.badRequest, errorResponse, {});
 
-    expect(error).toEqual(new ApiFieldAndNonFieldErrors([
-        new NonFieldErrorItem({ code: 'err_wait_to_rerequest_new_code' }),
-        new FieldErrorItem('email', { code: 'err_email_already_taken' })
-      ])
+    expect(error).toEqual(
+      {
+        error: new ApiFieldAndNonFieldErrors([
+          new NonFieldErrorItem({ code: 'err_wait_to_rerequest_new_code' }),
+          new FieldErrorItem('email', { code: 'err_email_already_taken' })
+        ]),
+        notifyTracker: true
+      }
     );
   });
 });
