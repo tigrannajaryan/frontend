@@ -6,6 +6,7 @@ import { ApiResponse } from '~/core/api/base.models';
 import { BaseService } from '~/core/api/base-service';
 import { GetPricelistResponse, ServiceModel } from '~/core/api/services.models';
 import { AppointmentModel } from '~/core/api/appointments.models';
+import { ApiRequestOptions } from '~/shared/api-errors';
 
 type ISODateTime = string;
 
@@ -40,13 +41,13 @@ export class BookingApi extends BaseService {
     return this.post<TimeslotsResponse>('client/available-times', params);
   }
 
-  getPricelist(services: ServiceModel[]): Observable<ApiResponse<GetPricelistResponse>> {
-    const params = {
+  getPricelist(services: ServiceModel[], options?: ApiRequestOptions): Observable<ApiResponse<GetPricelistResponse>> {
+    const data = {
       // TODO: this is the correct code: service_uuid: services.map(service => service.uuid),
       // But temporarily using the following until API is fixed.
       service_uuid: services[0].uuid
     };
-    return this.post<GetPricelistResponse>('client/services/pricing', params);
+    return this.post<GetPricelistResponse>('client/services/pricing', data, undefined, options);
   }
 
   createAppointment(appointment: CreateAppointmentRequest): Observable<ApiResponse<AppointmentModel>> {

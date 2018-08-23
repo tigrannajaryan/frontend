@@ -5,7 +5,6 @@ import { Camera, CameraOptions } from '@ionic-native/camera';
 
 import { PhotoSourceType } from '~/shared/constants';
 import { downscalePhoto, urlToFile } from '~/shared/image-utils';
-import { BaseApiService } from '~/shared/base-api-service';
 
 import { showAlert } from '~/core/utils/alert';
 import { composeRequest, loading } from '~/core/utils/request-utils';
@@ -14,6 +13,7 @@ import { DefaultImage } from '~/core/core.module';
 import { ProfileService } from '~/core/api/profile-service';
 import { ProfileDataStore } from '~/profile/profile.data';
 import { ProfileModel } from '~/core/api/profile.models';
+import { BaseService } from '~/core/api/base-service';
 
 @IonicPage()
 @Component({
@@ -35,7 +35,7 @@ export class ProfileEditComponent {
 
   constructor(
     private actionSheetCtrl: ActionSheetController,
-    private baseApiService: BaseApiService,
+    private baseService: BaseService,
     private camera: Camera,
     private formBuilder: FormBuilder,
     private navParams: NavParams,
@@ -153,7 +153,7 @@ export class ProfileEditComponent {
       const formData = new FormData();
       formData.append('file', file);
 
-      const response: any = await this.baseApiService.uploadFile<{ uuid: string }>(formData);
+      const response: any = await this.baseService.uploadFile<{ uuid: string }>(formData);
 
       // Update url and save id to the form:
       this.form.patchValue({

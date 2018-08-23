@@ -5,10 +5,11 @@ import { Observable } from 'rxjs/Observable';
 
 import { ENV } from '~/../environments/environment.default';
 
-import { ApiFieldAndNonFieldErrors, ApiRequestOptions, processApiResponseError } from '~/shared/api-errors';
+import { ApiRequestOptions, processApiResponseError } from '~/shared/api-errors';
 import { ApiRequest, ApiResponse } from '~/core/api/base.models';
 import { AppModule } from '~/app.module';
 import { ServerStatusTracker } from '~/shared/server-status-tracker';
+import { Logger } from '~/shared/logger';
 
 @Injectable()
 export class BaseService {
@@ -53,21 +54,17 @@ export class BaseService {
     return (
       httpResponse
         .map(response => ({ response }))
-        .catch(error => {
-          const apiError = processApiResponseError(error);
-
-          // Check if the caller requested to suppress ApiFieldAndNonFieldErrors generic handling, don't notify tracker
-          const notifyTracker = !(apiError instanceof ApiFieldAndNonFieldErrors &&
-            options && options.hideGenericAlertOnFieldAndNonFieldErrors);
+        .catch(err => {
+          const { error, notifyTracker } = processApiResponseError(err, options);
 
           if (notifyTracker) {
             // there is a server status error, notify status tracker about it
             const serverStatus = AppModule.injector.get(ServerStatusTracker);
-            serverStatus.notify(apiError);
+            serverStatus.notify(error);
           }
 
           // and return the error for callers to process if they are interested
-          return Observable.of({ response: undefined, error: apiError });
+          return Observable.of({ response: undefined, error });
         })
     );
   }
@@ -90,5 +87,18 @@ export class BaseService {
     apiPath: string, options?: ApiRequestOptions): Observable<ApiResponse<ResponseType>> {
 
     return this.request<ResponseType>('delete', apiPath, undefined, options);
+  }
+
+  uploadFile<ResponseType>(formData: FormData): Promise<ResponseType> {
+    const url = `${ENV.apiUrl}common/image/upload`;
+
+    const http = AppModule.injector.get(HttpClient);
+    return http.post<ResponseType>(url, formData)
+      .toPromise()
+      .catch(e => {
+        const logger = AppModule.injector.get(Logger);
+        logger.error('API request failed:', JSON.stringify(e));
+        throw e;
+      });
   }
 }

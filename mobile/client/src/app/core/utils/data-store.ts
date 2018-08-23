@@ -6,6 +6,7 @@ import 'rxjs/add/operator/first';
 
 import { AppModule } from '~/app.module';
 import { ApiResponse } from '~/core/api/base.models';
+import { ApiRequestOptions } from '~/shared/api-errors';
 
 /**
  * An async data source, either a Promise or Observable
@@ -29,6 +30,7 @@ interface DataStorePersistent<T> {
 
 interface GetOptions {
   refresh?: boolean;
+  requestOptions?: ApiRequestOptions;
 }
 
 interface DataStoreOptions {
@@ -135,7 +137,7 @@ export class DataStore<T> {
    * id that remains the same when App restarts.
    *
    * Link to an API endpoint and make it the source of the data for a specified
-   * prpeorty of data model T.
+   * property of data model T.
    *
    * The cached data is associated with storeName that must be unique across the app.
    * You can use a descriptive key name for easier debugging or use any uniquely
@@ -148,7 +150,7 @@ export class DataStore<T> {
    */
   constructor(
     storeName: string,
-    private apiEndpoint: () => AsyncDataSource<ApiResponse<T>>,
+    private apiEndpoint: (options?: ApiRequestOptions) => AsyncDataSource<ApiResponse<T>>,
     private options: DataStoreOptions = {}
   ) {
     this.storageKey = `DataStore.${storeName}`;
@@ -284,7 +286,7 @@ export class DataStore<T> {
     }
 
     // We don't have a cached value or we need to refresh it, so load it from the api endpoint
-    retVal = await dataSourceToPromise(this.apiEndpoint());
+    retVal = await dataSourceToPromise(this.apiEndpoint(options ? options.requestOptions : undefined));
     if (retVal.error) {
       // Data loading failed. Return previously cached successful response and current errors.
       retVal.response = cachedData ? cachedData.response : undefined;

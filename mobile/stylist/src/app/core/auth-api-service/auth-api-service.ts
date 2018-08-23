@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import 'rxjs/add/operator/toPromise';
 
-import { BaseApiService } from '~/shared/base-api-service';
+import { BaseApiService } from '~/core/base-api-service';
 import { StylistProfile } from '../stylist-service/stylist-models';
 import { Logger } from '~/shared/logger';
 import { ServerStatusTracker } from '~/shared/server-status-tracker';

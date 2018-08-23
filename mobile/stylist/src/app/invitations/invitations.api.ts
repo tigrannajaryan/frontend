@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-import { BaseApiService } from '~/shared/base-api-service';
 import { Logger } from '~/shared/logger';
 import { ServerStatusTracker } from '~/shared/server-status-tracker';
-
+import { BaseApiService } from '~/core/base-api-service';
 import { ClientInvitation } from './invitations.models';
 
 export interface InvitationsResponse {

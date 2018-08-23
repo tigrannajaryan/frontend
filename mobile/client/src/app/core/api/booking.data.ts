@@ -69,9 +69,9 @@ export class BookingData {
       this._pricelist.clear();
     }
 
-  // create an API-backed cached pricelist
+    // create an API-backed cached pricelist
     this._pricelist = new DataStore('booking_pricelist',
-      () => this.api.getPricelist(this._selectedServices),
+      options => this.api.getPricelist(this._selectedServices, options),
       { cacheTtlMilliseconds: 1000 * 60 }); // TTL for pricelist cache is 1 min
 
     // Load prices

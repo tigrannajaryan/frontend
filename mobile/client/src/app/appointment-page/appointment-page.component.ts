@@ -5,12 +5,13 @@ import { Logger } from '~/shared/logger';
 import { formatTimeInZone } from '~/shared/utils/string-utils';
 import { AppointmentModel, AppointmentStatus } from '~/core/api/appointments.models';
 import { AppointmentsApi } from '~/core/api/appointments.api';
+import { startRebooking } from '~/booking/booking-utils';
 
 export interface AppointmentPageParams {
   appointment: AppointmentModel;
   onCancel?: Function;
   onConfirmClick?: Function;
-  onRebookClick?: Function;
+  hasRebook?: boolean;
 }
 
 @IonicPage()
@@ -52,7 +53,7 @@ export class AppointmentPageComponent {
     // remove this view from navigation stack
     this.navCtrl.pop();
 
-    // TODO: begin appointment creation flow when the screens are ready
+    startRebooking(this.params.appointment, this.navCtrl);
   }
 
   onCancelClick(): void {
