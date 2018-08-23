@@ -107,7 +107,7 @@
       </ion-row>
     </ion-grid>
   </form>
+  <div *ngIf="!isMainScreen" class="Salon-submit Made-wp">
+    <button (click)="onContinue()" [disabled]="form.invalid" class="Discounts-btn" ion-button>{{ title || 'Continue' }}</button>
+  </div>
 </ion-content>
-
-
-<ion-footer *ngIf="!isMainScreen" [disabled]="form.invalid" (continue)="onContinue()" madeDiscountsFooter></ion-footer>
