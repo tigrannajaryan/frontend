@@ -679,12 +679,14 @@ export class InvitationsComponent {
     const stylistProfile = await this.stylistProfile;
     const discounts = await this.discounts;
 
-    let defaultInvitationText = `Hi, ${stylistProfile.first_name} here! I now take appointments via mobile app Made. ` +
+    let defaultInvitationText = `It's ${stylistProfile.first_name}, your stylist! I'm now using the Made mobile app to book. ` +
       'Get it from https://www.madebeauty.com/get';
 
     if (discounts.first_booking > 0) {
-      defaultInvitationText = `${defaultInvitationText} and your first visit will be up to ${discounts.first_booking}% off!`;
+      defaultInvitationText = `${defaultInvitationText} Your next visit is discounted!`;
     }
+
+    defaultInvitationText = `${defaultInvitationText} See you soon.`;
 
     return defaultInvitationText;
   }
