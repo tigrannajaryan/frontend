@@ -43,14 +43,14 @@
               <!-- Estimated price -->
               <div *ngIf="params.appointment.status === AppointmentStatus.new; else showFinalPrice" class="priceEstimated">
                 <label> Estimated price</label>
-                <div class="price">{{ (params.appointment.total_price_before_tax + params.appointment.total_tax) | price }}</div>
+                <div class="price">{{ (params.appointment.total_client_price_before_tax + params.appointment.total_tax) | price }}</div>
               </div>
 
               <!-- Final price -->
               <ng-template #showFinalPrice>
                 <div>
                   <label>Final price</label>
-                  <div class="price"> {{ (params.appointment.total_price_before_tax + params.appointment.total_tax) | price }}</div>
+                  <div class="price"> {{ (params.appointment.total_client_price_before_tax + params.appointment.total_tax) | price }}</div>
                 </div>
               </ng-template>
             </ion-col>
@@ -65,10 +65,10 @@
             </ion-col>
           </ion-row>
           <!-- show tax if it is present -->
-          <ion-row *ngIf="params.appointment.total_tax && params.appointment.total_price_before_tax" class="AppointmentPage-cardAppServiceFees">
+          <ion-row *ngIf="params.appointment.total_tax && params.appointment.total_client_price_before_tax" class="AppointmentPage-cardAppServiceFees">
             <ion-col col-8>
               {{ params.appointment.status === AppointmentStatus.new ? 'Est. tax' : 'Taxes' }} ({{ 100*(params.appointment.total_tax /
-              params.appointment.total_price_before_tax) | number:'1.0-3' }}%)
+              params.appointment.total_client_price_before_tax) | number:'1.0-3' }}%)
             </ion-col>
             <ion-col col-4>
               ${{ params.appointment.total_tax | number:'1.0-2' }}
@@ -76,10 +76,10 @@
           </ion-row>
 
           <!-- show card fee if it is present -->
-          <ion-row *ngIf="params.appointment.status === AppointmentStatus.checked_out && params.appointment.total_card_fee && params.appointment.total_price_before_tax"
+          <ion-row *ngIf="params.appointment.status === AppointmentStatus.checked_out && params.appointment.total_card_fee && params.appointment.total_client_price_before_tax"
             class="AppointmentPage-cardAppServiceFees">
             <ion-col col-8>
-              Card fee ({{ 100*(params.appointment.total_card_fee / (params.appointment.total_price_before_tax + params.appointment.total_tax))
+              Card fee ({{ 100*(params.appointment.total_card_fee / (params.appointment.total_client_price_before_tax + params.appointment.total_tax))
               | number:'1.0-3' }}%)
             </ion-col>
             <ion-col col-4>

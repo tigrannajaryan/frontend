@@ -1,13 +1,21 @@
-import { Component } from '@angular/core';
-import { IonicPage, Tab } from 'ionic-angular';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Events, IonicPage, Tab, Tabs } from 'ionic-angular';
 
 import { GAWrapper } from '~/shared/google-analytics';
 import { PageNames } from '~/core/page-names';
+import { EventTypes } from '~/core/event-types';
 
 interface TabsObject {
   name: string;
   link: PageNames; // should be PageNames when we will have all pages
   params: any;
+}
+
+enum TabIndex {
+  Home = 0,
+  Book,
+  History,
+  Stylists
 }
 
 @IonicPage({
@@ -17,7 +25,7 @@ interface TabsObject {
   selector: 'main-tabs',
   templateUrl: 'main-tabs.component.html'
 })
-export class MainTabsComponent {
+export class MainTabsComponent implements OnInit, OnDestroy {
   protected tabsData: TabsObject[] = [
     {
       name: 'Home',
@@ -41,11 +49,25 @@ export class MainTabsComponent {
     }
   ];
 
+  @ViewChild('tabs')
+  tabs: Tabs;
+
   private lastSubsrciption: any;
 
   constructor(
+    private events: Events,
     private ga: GAWrapper
   ) {
+
+  }
+
+  ngOnInit(): void {
+    // Select Home tab when booking is complete
+    this.events.subscribe(EventTypes.bookingComplete, () => this.tabs.select(TabIndex.Home));
+  }
+
+  ngOnDestroy(): void {
+    this.events.unsubscribe(EventTypes.bookingComplete);
   }
 
   onTabChange(tab: Tab): void {

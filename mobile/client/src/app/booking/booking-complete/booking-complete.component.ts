@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController } from 'ionic-angular';
+import { Events, IonicPage, NavController } from 'ionic-angular';
+
+import { EventTypes } from '~/core/event-types';
 
 @IonicPage()
 @Component({
@@ -8,10 +10,12 @@ import { IonicPage, NavController } from 'ionic-angular';
 })
 export class BookingCompleteComponent {
   constructor(
+    private events: Events,
     private navCtrl: NavController) {
   }
 
   onReturnHomeClick(): void {
     this.navCtrl.popToRoot();
+    this.events.publish(EventTypes.bookingComplete);
   }
 }
