@@ -71,7 +71,9 @@ export class MyAppComponent {
 
     // The initial page is ready to be seen, hide the splash screen
     this.splashScreen.hide();
-    this.statusBar.styleBlackTranslucent();
+    if (this.platform.is('android')) {
+      this.statusBar.styleLightContent();
+    }
 
     // All done, measure the loading time and report to GA
     const loadTime = Date.now() - startTime;
