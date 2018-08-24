@@ -66,8 +66,9 @@ preinstall-stylist:
 
 npm-build-dir:
 	$(L)echo Building $(BUILDDIR)...
-	$(L)cd $(BUILDDIR) && npm run build-full --silent
+	$(L)cd $(BUILDDIR) && npm run build --silent
 	$(L)echo Build $(BUILDDIR) finished.
+	$(SMAKE) npm-test-dir
 
 build-client: preinstall-client
 	$(SMAKE) npm-build-dir BUILDDIR=client
@@ -75,6 +76,18 @@ build-client: preinstall-client
 
 build-stylist: preinstall-stylist
 	$(SMAKE) npm-build-dir BUILDDIR=stylist
+
+npm-test-dir: npm-test-dir-unit npm-test-dir-e2e
+
+npm-test-dir-unit:
+	$(L)echo Unit testing $(BUILDDIR)...
+	$(L)cd $(BUILDDIR) && npm run test-headless --silent
+	$(L)echo Unit testing $(BUILDDIR) finished.
+
+npm-test-dir-e2e:
+	$(L)echo E2E testing $(BUILDDIR)...
+	$(L)cd $(BUILDDIR) && npm run e2e-test --silent
+	$(L)echo E2E testing $(BUILDDIR) finished.
 
 
 clean: clean-client clean-stylist

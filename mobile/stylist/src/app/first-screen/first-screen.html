@@ -13,13 +13,13 @@
       </div>
 
       <div class="p-fs-box-buttons">
-        <button (click)="goToPage(LoginOrRegisterType.login)" ion-button full color="bb_skin" class="bb-btn-a">
+        <button (click)="goToPage(LoginOrRegisterType.login)" ion-button full color="bb_skin" class="bb-btn-a" data-test-id="loginBtn">
           &nbsp; Log in
         </button>
       </div>
 
       <div class="bb-text">
-        If you don't have account <a (click)="goToPage(LoginOrRegisterType.register)" class="bb-link">click here</a>
+        If you don't have account <a (click)="goToPage(LoginOrRegisterType.register)" class="bb-link" data-test-id="registerLink">click here</a>
       </div>
     </div>
   </div>

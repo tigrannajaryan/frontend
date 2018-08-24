@@ -17,6 +17,7 @@
     "test-coverage": "ng test --preserve-symlinks --code-coverage",
     "test": "ng test --preserve-symlinks",
     "test-headless": "ng test --preserve-symlinks --watch=false --single-run=true --reporters=junit,progress --browsers=ChromeHeadless",
+    "e2e-test": "echo TODO: add E2E tests",
     "run-android": "ionic cordova run android --prod --device",
     "build-full": "npm run build && npm run test-headless"
   },
