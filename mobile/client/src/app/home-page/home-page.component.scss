@@ -1,4 +1,9 @@
 .HomePage {
+  ion-navbar,
+  ion-toolbar {
+    background: white;
+  }
+
   .HomePage-spinner {
     margin: pxtovw(10px) auto 0;
   }
