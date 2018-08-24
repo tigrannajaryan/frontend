@@ -17,7 +17,7 @@ export enum LoginOrRegisterType {
   segment: 'logreg'
 })
 @Component({
-  selector: 'page-login',
+  selector: 'page-logreg',
   templateUrl: 'login-register.component.html'
 })
 export class LoginRegisterComponent {

@@ -56,6 +56,11 @@ trigger the breakpoints.
 To run the tests in headless mode (e.g. for CI) use `npm run test-headless`.
 Note: to run successfully on VSTS this requires Hosted VS2017 agent.
 
+# Running E2E tests
+
+- run `npm run build-and-e2e` to build and run Protractor end to end tests.
+
+To debug the tests use "Debug e2e tests" debugging configuration in VS Code.
 
 # Android App
 

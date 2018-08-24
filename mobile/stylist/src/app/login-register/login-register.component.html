@@ -24,8 +24,8 @@
 
       <div class="p-l-buttons">
         <button (click)="onLoginOrRegister()" ion-button full color="bb_skin" class="bb-btn-a">
-          <span *ngIf="pageType === LoginOrRegisterType.login">Log in</span>
-          <span *ngIf="pageType === LoginOrRegisterType.register">Register</span>
+          <span *ngIf="pageType === LoginOrRegisterType.login" data-test-id="loginBtn">Log in</span>
+          <span *ngIf="pageType === LoginOrRegisterType.register" data-test-id="registerBtn">Register</span>
         </button>
       </div>
 

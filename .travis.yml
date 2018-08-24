@@ -16,6 +16,10 @@ branches:
   only:
     - develop
 
+# Chrome is needed for E2E Protractor tests
+addons:
+  chrome: beta
+
 # cache packages after each build, and restore on next builds
 # if a change is detected after build finishes - update cache
 
