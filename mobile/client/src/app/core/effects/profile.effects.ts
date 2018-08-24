@@ -8,7 +8,7 @@ import { catchError, map } from 'rxjs/operators';
 import { LOADING_DELAY, RequestState } from '~/core/api/request.models.ts';
 import { ApiResponse } from '~/core/api/base.models';
 import { ProfileModel } from '~/core/api/profile.models';
-import { ProfileService } from '~/core/api/profile-service';
+import { ProfileApi } from '~/core/api/profile-api';
 
 import {
   GetProfileAction,
@@ -79,7 +79,7 @@ export class ProfileEffects {
   constructor(
     protected actions: Actions,
     protected baseService: BaseService,
-    protected profileService: ProfileService,
+    protected profileService: ProfileApi,
     protected store: Store<ProfileModel>
   ) {
   }

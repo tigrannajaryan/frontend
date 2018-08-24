@@ -218,6 +218,13 @@ export class DataStore<T> {
   }
 
   /**
+   * Shorthand for get({ refresh: true })
+   */
+  refresh(): Promise<ApiResponse<T>> {
+    return this.get({ refresh: true });
+  }
+
+  /**
    * Exposes this data store as an Observable. Useful if you want to observe
    * changes to the data.
    */

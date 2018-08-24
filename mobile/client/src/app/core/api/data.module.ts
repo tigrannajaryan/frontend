@@ -12,7 +12,7 @@ import { BookingApiMock } from '~/core/api/booking.api.mock';
 import { ServicesService } from '~/core/api/services-service';
 import { StylistsService } from '~/core/api/stylists-service';
 import { PreferredStylistsData } from '~/core/api/preferred-stylists.data';
-import { ProfileService } from '~/core/api/profile-service';
+import { ProfileApi } from '~/core/api/profile-api';
 import { ProfileDataStore } from '~/profile/profile.data';
 
 /**
@@ -31,7 +31,7 @@ import { ProfileDataStore } from '~/profile/profile.data';
     AuthService,
     BookingApi,
     BookingApiMock,
-    ProfileService,
+    ProfileApi,
     StylistsService,
     ServicesService
   ]

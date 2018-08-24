@@ -10,6 +10,7 @@ import { AppointmentsDataStore } from '~/core/api/appointments.datastore';
 import { PageNames } from '~/core/page-names';
 import { AppointmentPageParams } from '~/appointment-page/appointment-page.component';
 import { startRebooking } from '~/booking/booking-utils';
+import { ProfileDataStore } from '~/profile/profile.data';
 
 enum AppointmentType {
   upcoming,
@@ -32,31 +33,25 @@ export class HomePageComponent {
   isLoading: boolean;
 
   constructor(
-    private dataStore: AppointmentsDataStore,
+    private appointmentsDataStore: AppointmentsDataStore,
     private logger: Logger,
-    private navCtrl: NavController
+    private navCtrl: NavController,
+    private profileDataStore: ProfileDataStore
   ) {
-    this.homeObservable = this.dataStore.home.asObservable();
+    this.homeObservable = this.appointmentsDataStore.home.asObservable();
   }
 
   ionViewDidLoad(): void {
     this.logger.info('HomePageComponent.ionViewDidLoad');
-
-    // When loading the first time perform full refresh
-    this.onRefresh();
+    this.onRefresh(false);
   }
 
-  ionViewWillEnter(): void {
-    this.logger.info('HomePageComponent.ionViewWillEnter');
-    // Trigger loading of data via this.homeObservable
-    this.dataStore.home.get({ refresh: false });
-  }
-
-  onRefresh(): void {
+  onRefresh(invalidateCache = true): void {
     this.logger.info('HomePageComponent.onRefresh');
 
     // Refresh and load the data. Indicate loading.
-    loading(this, this.dataStore.home.get({ refresh: true }));
+    loading(this, this.appointmentsDataStore.home.get({ refresh: invalidateCache }));
+    this.profileDataStore.get({ refresh: invalidateCache });
   }
 
   onAppointmentClick(appointment: AppointmentModel, type: AppointmentType): void {
@@ -74,7 +69,7 @@ export class HomePageComponent {
   }
 
   onCancel(): void {
-    this.dataStore.home.get({ refresh: true });
+    this.appointmentsDataStore.home.refresh();
   }
 
   onRebookClick(appointment: AppointmentModel): void {

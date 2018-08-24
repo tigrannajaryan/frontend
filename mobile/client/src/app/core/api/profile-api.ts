@@ -5,7 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import { Injectable } from '@angular/core';
 
 @Injectable()
-export class ProfileService extends BaseService {
+export class ProfileApi extends BaseService {
 
   getProfile(): Observable<ApiResponse<ProfileModel>> {
     return this.get<ProfileModel>('client/profile');

@@ -1,0 +1,14 @@
+profile-header {
+  .imageArea {
+    align-self: flex-end;
+    text-align: center;
+    vertical-align: top;
+  }
+
+  .profileImage {
+    width: pxtovw(40px);
+    height: pxtovw(40px);
+    background-size: cover;
+    border-radius: 50%; // circle
+  }
+}

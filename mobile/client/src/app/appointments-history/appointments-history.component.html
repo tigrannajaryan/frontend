@@ -2,7 +2,7 @@
 
 <ion-content class="AppHistoryPage">
   <!-- Use refresher to initiate loading -->
-  <ion-refresher (ionRefresh)="onLoad()">
+  <ion-refresher (ionRefresh)="onRefresh()">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 
@@ -13,11 +13,7 @@
 
     <div class="titleBox">
       <h1 class="AppHistoryPage-h1 pageTitle">History</h1>
-      <div class="AppHistoryPage-avatar">
-        <!-- TODO: add profile image. Need a separate component for it. -->
-        <!--img should be removed-->
-        <img width="40" height="40" src="assets/icons/stylist-avatar.svg" />
-      </div>
+      <profile-header></profile-header>
     </div>
 
     <div *ngIf="(historyObservable | async)?.response?.appointments as appointments">
