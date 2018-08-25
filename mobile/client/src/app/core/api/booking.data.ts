@@ -74,8 +74,15 @@ export class BookingData {
       options => this.api.getPricelist(this._selectedServices, options),
       { cacheTtlMilliseconds: 1000 * 60 }); // TTL for pricelist cache is 1 min
 
-    // Load prices
-    this._pricelist.get({ refresh: true });
+    // Preload prices (don't show alerts on errors since this is just preloading)
+    // We don't want to show alert during preloading if there is an API error.
+    // It results in duplicate alerts: one during preloading and another when
+    // the view that needs the data tries to access it and another API call
+    // is issued (because of error the preloading call fails and no response
+    // is cached and thus we issue a second API call correctly which again
+    // results in error and in alert). Setting hideGenericAlertOnFieldAndNonFieldErrors=true
+    // prevents this double alerts on errors and is the best practice for preloading.
+    this._pricelist.get({ refresh: true, requestOptions: { hideGenericAlertOnFieldAndNonFieldErrors: true } });
   }
 
   /**
