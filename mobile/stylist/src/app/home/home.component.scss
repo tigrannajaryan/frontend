@@ -5,16 +5,25 @@ page-home {
 
   .Refresh {
     z-index: 1;
-    margin-top: 48px;
+  }
+
+  .ion-bb-header .toolbar-background {
+    background: #fff; // can't use variabel on ionic classes
   }
 
   .Home-main {
-    margin-top: 48px;
+    padding-top: pxtovw(30px);
+    padding-bottom: 0;
+  }
+
+  .Made-wpContent {
+    padding-bottom: 0;
+    background: color($colors, white);
   }
 
   .Home-wp {
     height: 100%;
-    padding: 16px pxtovw(23.61px);
+    padding: pxtovw(58px) pxtovw(23.61px);
 
     ion-spinner {
       transform: translateY(48px);
