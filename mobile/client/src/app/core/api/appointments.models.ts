@@ -7,7 +7,7 @@ export enum AppointmentStatus {
 }
 
 export interface AppointmentServiceModel {
-  uuid: string;
+  service_uuid: string;
   service_name: string;
   client_price: number;
   regular_price: number;

@@ -61,7 +61,7 @@ export async function startRebooking(appointment: AppointmentModel, navCtrl: Nav
   const foundAll = appointment.services.every(
     service => currentServices.categories.some(c => {
       return c.services.some(s => {
-        if (s.uuid === service.uuid) {
+        if (s.uuid === service.service_uuid) {
           // Service found, update price and name in case it was changes since last booking
           service.regular_price = s.base_price;
           service.service_name = s.name;
@@ -82,7 +82,7 @@ export async function startRebooking(appointment: AppointmentModel, navCtrl: Nav
     // Preselect services
     const bookingData = AppModule.injector.get(BookingData);
     bookingData.setSelectedServices(appointment.services.map(s => ({
-      uuid: s.uuid,
+      uuid: s.service_uuid,
       name: s.service_name,
       base_price: s.regular_price
     })));
