@@ -25,7 +25,7 @@ export class AppointmentsApiMock {
           duration_minutes: 0,
           status,
           services: Array(Math.round(Math.random()) + 1).fill(undefined).map(() => ({
-            uuid: faker.random.uuid(),
+            service_uuid: faker.random.uuid(),
             service_name: faker.commerce.product(),
             client_price: Math.random() * 50,
             regular_price: Math.random() * 50,
