@@ -64,8 +64,9 @@
   }
 
   .AppointmentPage-redLabel {
-    display: inline-block;
+    width: fit-content;
     padding: pxtovw(2px) pxtovw(3px) pxtovw(1px);
+    margin-top: pxtovw(1px);
     font-size: pxtovw(10px);
     font-weight: normal;
     color: white;
@@ -82,7 +83,6 @@
   .AppointmentPage-cardAppTip {
     margin-top: pxtovw(8px);
     color: color($grayscale, 500);
-    text-align: right;
   }
 
   .AppointmentPage-actions {

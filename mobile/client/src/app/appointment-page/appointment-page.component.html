@@ -57,20 +57,20 @@
           </ion-row>
           <!-- services, one row per service -->
           <ion-row *ngFor="let service of params.appointment.services" class="AppointmentPage-cardAppService">
-            <ion-col col-8>{{ service.service_name }}</ion-col>
+            <ion-col col-7>{{ service.service_name }}</ion-col>
             <ion-col col-2>{{ service.client_price | price }}</ion-col>
-            <ion-col col-2>
+            <ion-col col-3>
               <div class="AppointmentPage-redLabel">
                 <span>WAS</span> {{ service.regular_price | price }}</div>
             </ion-col>
           </ion-row>
           <!-- show tax if it is present -->
           <ion-row *ngIf="params.appointment.total_tax && params.appointment.total_client_price_before_tax" class="AppointmentPage-cardAppServiceFees">
-            <ion-col col-8>
+            <ion-col col-7>
               {{ params.appointment.status === AppointmentStatus.new ? 'Est. tax' : 'Taxes' }} ({{ 100*(params.appointment.total_tax /
               params.appointment.total_client_price_before_tax) | number:'1.0-3' }}%)
             </ion-col>
-            <ion-col col-4>
+            <ion-col col-5>
               ${{ params.appointment.total_tax | number:'1.0-2' }}
             </ion-col>
           </ion-row>
@@ -78,16 +78,17 @@
           <!-- show card fee if it is present -->
           <ion-row *ngIf="params.appointment.status === AppointmentStatus.checked_out && params.appointment.total_card_fee && params.appointment.total_client_price_before_tax"
             class="AppointmentPage-cardAppServiceFees">
-            <ion-col col-8>
+            <ion-col col-7>
               Card fee ({{ 100*(params.appointment.total_card_fee / (params.appointment.total_client_price_before_tax + params.appointment.total_tax))
               | number:'1.0-3' }}%)
             </ion-col>
-            <ion-col col-4>
+            <ion-col col-5>
               ${{ params.appointment.total_card_fee | number:'1.0-2' }}
             </ion-col>
           </ion-row>
           <ion-row>
-            <ion-col col-12 class="AppointmentPage-cardAppTip">Tip not included</ion-col>
+              <ion-col col-7></ion-col>
+            <ion-col col-5 class="AppointmentPage-cardAppTip">Tip not included</ion-col>
           </ion-row>
         </ion-grid>
 
