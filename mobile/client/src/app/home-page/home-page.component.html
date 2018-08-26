@@ -11,7 +11,7 @@
     <!-- Show spinner if loading is in progress and refresher is not active (to avoid double loading indicators) -->
     <ion-spinner *ngIf="isLoading && refresher.state === 'inactive'" class="HomePage-spinner"></ion-spinner>
 
-    <div class="titleBox">
+    <div class="titleBox ">
       <h1 class="HomePage-h1 pageTitle">Home</h1>
       <div class="HomePage-avatar">
         <!-- TODO: add profile image. Need a separate component for it. -->
@@ -53,16 +53,15 @@
 
       <!-- show this if there are no past or upcoming visits, i.e. this is a new client -->
       <ion-grid no-padding class="HomePage-grid HomePage-homeEmpty" *ngIf="(!homeData.upcoming || homeData.upcoming.length === 0) && !homeData.last_visited">
+          <ion-row class="HomePage-wText">
+              <ion-col align-self-center>
+                Welcome!
+              </ion-col>
+            </ion-row>
         <ion-row>
-          <ion-col>
+          <ion-col class="HomePage-wImage">
             <!--ToDo the image will be replaced once SVG is ready-->
-            <img src="assets/icons/tmp_remove.png">
-          </ion-col>
-        </ion-row>
-        <ion-row class="HomePage-wText">
-          <ion-col align-self-center>
-            Welcome!
-            <br/> Time to get MADE
+            <img src="assets/icons/welcome-home.svg">
           </ion-col>
         </ion-row>
         <ion-row>
