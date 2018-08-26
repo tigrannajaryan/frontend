@@ -23,7 +23,7 @@ page-home {
 
   .Home-wp {
     height: 100%;
-    padding: pxtovw(58px) pxtovw(23.61px);
+    padding: pxtovw(10px) pxtovw(23.61px);
 
     ion-spinner {
       transform: translateY(48px);
@@ -75,7 +75,6 @@ page-home {
     }
   }
 }
-
 
 .Home-btns {
   background: white;
