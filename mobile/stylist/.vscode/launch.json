@@ -5,17 +5,14 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "type": "node",
+      "type": "chrome",
       "request": "launch",
-      "name": "Debug e2e tests",
-      "program": "${workspaceRoot}/node_modules/protractor/bin/protractor",
-      "stopOnEntry": false,
-      "args": [
-        "${workspaceRoot}/protractor.conf.js"
-      ]
+      "name": "Stylist: Run in Chrome against localhost:8100",
+      "url": "http://localhost:8100",
+      "webRoot": "${workspaceFolder}/www",
     },
     {
-      "name": "Run android on device",
+      "name": "Stylist: Run Android",
       "type": "cordova",
       "request": "launch",
       "platform": "android",
@@ -24,7 +21,7 @@
       "cwd": "${workspaceRoot}"
     },
     {
-      "name": "Run production android on device",
+      "name": "Stylist: Run Android production",
       "type": "cordova",
       "request": "launch",
       "platform": "android",
@@ -40,7 +37,7 @@
       // for instructions on how to debug Karma tests.
       "type": "chrome",
       "request": "attach",
-      "name": "Attach to Karma Chrome",
+      "name": "Stylist: Attach to Karma Chrome",
       "port": 9333,
       "webRoot": "${workspaceFolder}",
       "pathMapping": {
@@ -49,11 +46,14 @@
       }
     },
     {
-      "type": "chrome",
+      "type": "node",
       "request": "launch",
-      "name": "Launch mobile app in Chrome against localhost:8100",
-      "url": "http://localhost:8100",
-      "webRoot": "${workspaceFolder}/www",
+      "name": "Stylist: Run e2e tests",
+      "program": "${workspaceRoot}/node_modules/protractor/bin/protractor",
+      "stopOnEntry": false,
+      "args": [
+        "${workspaceRoot}/protractor.conf.js"
+      ]
     }
   ]
 }
