@@ -1,0 +1,16 @@
+$colors-shared: (
+  lightPeach: #FEE0D0,
+  darkMint: #5DCA91
+);
+
+$grayscale-shared: (
+  300: #D4D4D4,
+  500: #999999
+);
+
+$shared-colors: (
+  secondary: color($colors-shared, lightPeach),
+  color1: color($grayscale-shared, 500),
+  color2: color($colors-shared, darkMint),
+  color3: color($grayscale-shared, 300),
+);

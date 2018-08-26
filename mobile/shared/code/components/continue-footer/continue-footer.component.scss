@@ -1,4 +1,4 @@
-[madediscountsfooter] {
+[madecontinuefooter] {
   .toolbar {
     height: pxtovw(92px);
     padding: pxtovw(4px) 0;
@@ -39,12 +39,12 @@
   font-size: pxtovw(15px);
   color: color($grayscale, 800);
   text-transform: capitalize;
-  background: color($colors, secondary);
+  background: color($shared-colors, secondary);
   border-radius: pxtovw(10px);
   box-shadow: none;
 
   &.is-invert {
-    color: color($colors, secondary);
+    color: color($shared-colors, secondary);
     background: none;
   }
 }

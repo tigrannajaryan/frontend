@@ -1,10 +1,10 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
-  selector: '[madeDiscountsFooter]',
-  templateUrl: 'discounts-footer.component.html'
+  selector: '[madeContinueFooter]',
+  templateUrl: 'continue-footer.component.html'
 })
-export class DiscountsFooterComponent {
+export class ContinueFooterComponent {
   @Input() disabled: boolean;
   @Output() continue = new EventEmitter();
   @Input() title: string;

@@ -74,7 +74,7 @@ page-invitations {
   .contact-details {
     padding: 0 pxtovw(5px);
     font-size: pxtovw(13px);
-    color: color($colors, color24);
+    color: color($shared-colors, color1);
     border-bottom: 1px solid color($grayscale, 100);
 
     .name {

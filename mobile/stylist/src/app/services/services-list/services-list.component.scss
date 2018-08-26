@@ -53,7 +53,7 @@ page-services-list {
 
 .ServicesLis-head {
   font-size: pxtovw(13px);
-  color: color($colors, color24);
+  color: color($shared-colors, color1);
 }
 
 .ServicesLis-rowCol {
@@ -68,7 +68,7 @@ page-services-list {
 
     i {
       font-size: pxtovw(18px);
-      color: color($colors, color24);
+      color: color($shared-colors, color1);
     }
   }
 }
@@ -78,7 +78,7 @@ page-services-list {
   padding: pxtovw(13px) pxtovw(16px);
   margin: 0;
   font-size: pxtovw(18px);
-  color: color($colors, color24);
+  color: color($shared-colors, color1);
   border-radius: 4px;
 }
 
