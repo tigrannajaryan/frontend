@@ -152,7 +152,7 @@ export class SelectTimeComponent {
     const { error } = await this.bookingApi.createAppointment(appointmentRequest).toPromise();
     if (!error) {
       // Appointment succesfully created. Refresh Home screen.
-      this.appointmentsData.home.get({ refresh: true });
+      this.appointmentsData.home.refresh();
 
       // Show "booking complete" message.
       this.navCtrl.push(PageNames.BookingComplete);

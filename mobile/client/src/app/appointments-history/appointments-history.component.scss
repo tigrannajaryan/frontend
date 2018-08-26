@@ -3,21 +3,14 @@
     margin: pxtovw(10px) auto 0;
   }
 
-     .AppHistoryPage-h1 {
-      display: inline-block;
-      align-self: flex-start;
-      width: 80%;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-
-    .AppHistoryPage-avatar {
-      align-self: flex-end;
-      width: 20%;
-      text-align: center;
-      vertical-align: top;
-    }
+  .AppHistoryPage-h1 {
+    display: inline-block;
+    align-self: flex-start;
+    width: pxtovw(311px);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 
   .AppHistoryPage-subtitleContainer {
     display: flex;

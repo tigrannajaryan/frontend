@@ -27,22 +27,10 @@
   .HomePage-h1 {
     display: inline-block;
     align-self: flex-start;
-    width: 80%;
+    width: pxtovw(311px);
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-  }
-
-  .HomePage-avatar {
-    align-self: flex-end;
-    width: 20%;
-    text-align: center;
-    vertical-align: top;
-  }
-
-  .HomePage-avatar img {
-    width: pxtovw(40px);
-    height: pxtovw(40px);
   }
 
   .HomePage-subtitleContainer {

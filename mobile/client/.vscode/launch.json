@@ -5,7 +5,14 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Run android on device",
+      "type": "chrome",
+      "request": "launch",
+      "name": "Client: Run in Chrome against localhost:8100",
+      "url": "http://localhost:8100",
+      "webRoot": "${workspaceFolder}/www",
+    },
+    {
+      "name": "Client: Run Android",
       "type": "cordova",
       "request": "launch",
       "platform": "android",
@@ -14,7 +21,7 @@
       "cwd": "${workspaceRoot}"
     },
     {
-      "name": "Run production android on device",
+      "name": "Client: Run Android production",
       "type": "cordova",
       "request": "launch",
       "platform": "android",
@@ -28,20 +35,13 @@
       // for instructions on how to debug Karma tests.
       "type": "chrome",
       "request": "attach",
-      "name": "Attach to Karma Chrome",
+      "name": "Client: Attach to Karma Chrome",
       "port": 9333,
       "webRoot": "${workspaceFolder}",
       "pathMapping": {
         "/": "${workspaceRoot}",
         "/base/": "${workspaceRoot}/"
       }
-    },
-    {
-      "type": "chrome",
-      "request": "launch",
-      "name": "Launch mobile app in Chrome against localhost:8100",
-      "url": "http://localhost:8100",
-      "webRoot": "${workspaceFolder}/www",
     }
   ]
 }

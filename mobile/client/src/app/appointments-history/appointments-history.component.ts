@@ -10,6 +10,7 @@ import { AppointmentsDataStore } from '~/core/api/appointments.datastore';
 import { PageNames } from '~/core/page-names';
 import { AppointmentPageParams } from '~/appointment-page/appointment-page.component';
 import { startRebooking } from '~/booking/booking-utils';
+import { ProfileDataStore } from '~/profile/profile.data';
 
 @IonicPage()
 @Component({
@@ -25,23 +26,25 @@ export class AppointmentsHistoryComponent {
   isLoading: boolean;
 
   constructor(
-    private appointmentsData: AppointmentsDataStore,
+    private appointmentsDataStore: AppointmentsDataStore,
     private logger: Logger,
-    private navCtrl: NavController
+    private navCtrl: NavController,
+    private profileDataStore: ProfileDataStore
   ) {
-    this.historyObservable = this.appointmentsData.history.asObservable();
+    this.historyObservable = this.appointmentsDataStore.history.asObservable();
   }
 
   ionViewDidLoad(): void {
     this.logger.info('HistoryPageComponent.ionViewDidLoad');
-    this.onLoad();
+    this.onRefresh(false);
   }
 
-  onLoad(): void {
+  onRefresh(invalidateCache = true): void {
     this.logger.info('HistoryPageComponent.onLoad');
 
     // Load the data. Indicate loading.
-    loading(this, this.appointmentsData.history.get({ refresh: true }));
+    loading(this, this.appointmentsDataStore.history.get({ refresh: invalidateCache }));
+    this.profileDataStore.get({ refresh: invalidateCache });
   }
 
   onAppointmentClick(appointment: AppointmentModel): void {

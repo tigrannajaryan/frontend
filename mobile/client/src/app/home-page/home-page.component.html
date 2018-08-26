@@ -13,11 +13,7 @@
 
     <div class="titleBox ">
       <h1 class="HomePage-h1 pageTitle">Home</h1>
-      <div class="HomePage-avatar">
-        <!-- TODO: add profile image. Need a separate component for it. -->
-        <!--img should be removed-->
-        <img src="assets/icons/stylist-avatar.svg" />
-      </div>
+      <profile-header></profile-header>
     </div>
 
     <div *ngIf="(homeObservable | async)?.response as homeData">

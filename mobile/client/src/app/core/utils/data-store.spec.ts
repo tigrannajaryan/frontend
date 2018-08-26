@@ -93,6 +93,6 @@ describe('DataStore', () => {
     expect(await (store.get({ refresh: false }))).toEqual({ response: 'mydata' });
 
     // Now refresh and read again
-    expect(await (store.get({ refresh: true }))).toEqual({ response: 'hello20' });
+    expect(await (store.refresh())).toEqual({ response: 'hello20' });
   });
 });
