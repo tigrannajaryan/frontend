@@ -4,7 +4,7 @@ import * as moment from 'moment';
 
 import { Logger } from '~/shared/logger';
 import { PageNames } from '~/core/page-names';
-import { DayOffer, ISODate, ServiceModel } from '~/core/api/services.models';
+import { DayOffer, ISODate } from '~/core/api/services.models';
 import { BookingData } from '~/core/api/booking.data';
 import { loading } from '~/core/utils/loading';
 
@@ -64,14 +64,6 @@ export class SelectDateComponent {
     this.bookingData.setTotalClientPrice(offer.price);
 
     this.navCtrl.push(PageNames.SelectTime);
-  }
-
-  onDeleteService(service: ServiceModel): void {
-    this.bookingData.deleteService(service);
-  }
-
-  onAddService(): void {
-    // TODO: navigate to Add Service screen
   }
 }
 

@@ -92,6 +92,10 @@ export class BookingData {
     this._pricelist.get({ refresh: true, requestOptions: { hideGenericAlertOnFieldAndNonFieldErrors: true } });
   }
 
+  hasSelectedService(service: ServiceModel): boolean {
+    return Boolean(this._selectedServices) && this._selectedServices.some(selectedService => selectedService.uuid === service.uuid);
+  }
+
   /**
    * Set the date of appointment. Called when user chooses date in the UI.
    */

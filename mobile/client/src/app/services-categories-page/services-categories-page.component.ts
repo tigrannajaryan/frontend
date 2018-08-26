@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 
@@ -12,7 +12,7 @@ import {
   ServicesState
 } from '~/core/reducers/services.reducer';
 import { ServiceCategoryModel } from '~/core/api/services.models';
-import { startBooking } from '~/booking/booking-utils';
+import { getPreferredStylist, startBooking } from '~/booking/booking-utils';
 import { Logger } from '~/shared/logger';
 
 @IonicPage()
@@ -30,9 +30,12 @@ export class ServicesCategoriesPageComponent {
 
   RequestState = RequestState; // expose to view
 
+  isAdditionalService = false;
+
   constructor(
     private logger: Logger,
     private navCtrl: NavController,
+    private navParams: NavParams,
     private store: Store<ServicesState>
   ) {
   }
@@ -40,7 +43,9 @@ export class ServicesCategoriesPageComponent {
   async ionViewWillEnter(): Promise<void> {
     this.logger.info('ServicesCategoriesPageComponent.ionViewWillEnter');
 
-    const preferredStylist = await startBooking();
+    this.isAdditionalService = Boolean(this.navParams.get('isAdditionalService'));
+
+    const preferredStylist = await (this.isAdditionalService ? getPreferredStylist() : startBooking());
     this.stylistUuid = preferredStylist.uuid;
 
     this.categories = this.store.select(selectStylistServiceCategories(this.stylistUuid));
@@ -50,6 +55,10 @@ export class ServicesCategoriesPageComponent {
   }
 
   onProceedToServices(categoryUuid: string): void {
-    this.navCtrl.push(PageNames.Services, { stylistUuid: this.stylistUuid, categoryUuid });
+    this.navCtrl.push(PageNames.Services, {
+      stylistUuid: this.stylistUuid,
+      categoryUuid,
+      isAdditionalService: this.isAdditionalService
+    });
   }
 }

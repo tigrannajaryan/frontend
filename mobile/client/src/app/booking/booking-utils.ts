@@ -12,7 +12,7 @@ import { EventTypes } from '~/core/event-types';
  * Get the preferred stylist of the user. Throws Error if there are no
  * preferred stylists.
  */
-async function getPreferredStylist(): Promise<PreferredStylistModel> {
+export async function getPreferredStylist(): Promise<PreferredStylistModel> {
   const preferredStylistsData = AppModule.injector.get(PreferredStylistsData);
 
   const preferredStylists = await preferredStylistsData.get();
