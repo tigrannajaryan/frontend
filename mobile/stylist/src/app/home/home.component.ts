@@ -215,6 +215,10 @@ export class HomeComponent {
     try {
       const home = await this.homeService.getHome(query);
       this.processHomeData(home);
+      // Tell the content to recalculate its dimensions. According to Ionic docs this
+      // should be called after dynamically adding/removing headers, footers, or tabs.
+      // See https://ionicframework.com/docs/api/components/content/Content/#resize
+      this.content.resize();
     } finally {
       this.isLoading = false;
     }
