@@ -71,6 +71,7 @@ export class MyAppComponent {
 
     // The initial page is ready to be seen, hide the splash screen
     this.splashScreen.hide();
+    this.statusBar.styleDefault();
     if (this.platform.is('android')) {
       this.statusBar.styleLightContent();
     }
