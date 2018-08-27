@@ -1,6 +1,6 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { MenuController, Nav, Platform } from 'ionic-angular';
+import { Events, MenuController, Nav, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { ScreenOrientation } from '@ionic-native/screen-orientation';
@@ -13,6 +13,7 @@ import { getToken } from '~/core/utils/token-utils';
 import { LogoutAction } from '~/auth/auth.reducer';
 
 import { AUTHORIZED_ROOT, PageNames, UNAUTHORIZED_ROOT } from '~/core/page-names';
+import { EventTypes } from '~/core/event-types';
 
 interface MenuPage {
   title: string;
@@ -25,7 +26,7 @@ const gaTrackingId = 'UA-122004541-1';
 @Component({
   templateUrl: 'app.component.html'
 })
-export class ClientAppComponent implements OnInit {
+export class ClientAppComponent implements OnInit, OnDestroy {
   @ViewChild(Nav) nav: Nav;
 
   rootPage: any;
@@ -37,15 +38,16 @@ export class ClientAppComponent implements OnInit {
   ];
 
   constructor(
+    private events: Events,
+    private ga: GAWrapper,
     private logger: Logger,
     private menuCtrl: MenuController,
     private platform: Platform,
+    private screenOrientation: ScreenOrientation,
+    private serverStatusTracker: ServerStatusTracker,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
-    private store: Store<{}>,
-    private ga: GAWrapper,
-    private screenOrientation: ScreenOrientation,
-    private serverStatusTracker: ServerStatusTracker
+    private store: Store<{}>
   ) {
   }
 
@@ -89,11 +91,36 @@ export class ClientAppComponent implements OnInit {
       // load app –> show screen –> do request –> react if unauthorized
     }
 
+    // Subscribe to some interesting global events
+    this.events.subscribe(EventTypes.logout, () => this.onLogout());
+    this.events.subscribe(EventTypes.startBooking, () => this.onStartBooking());
+    this.events.subscribe(EventTypes.startRebooking, () => this.onStartRebooking());
+
     // All done, measure the loading time and report to GA
     const loadTime = Date.now() - startTime;
     this.logger.info('App: loaded in', loadTime, 'ms');
 
     this.ga.trackTiming('Loading', loadTime, 'AppInitialization', 'FirstLoad');
+  }
+
+  ngOnDestroy(): void {
+    this.events.unsubscribe(EventTypes.logout);
+    this.events.unsubscribe(EventTypes.startBooking);
+    this.events.unsubscribe(EventTypes.startRebooking);
+  }
+
+  onLogout(): void {
+    this.nav.setRoot(UNAUTHORIZED_ROOT);
+  }
+
+  onStartBooking(): void {
+    // Begin booking process by showing service categories selection screen
+    this.nav.push(PageNames.ServicesCategories);
+  }
+
+  onStartRebooking(): void {
+    // Begin booking process by showing date selection (since services are already known)
+    this.nav.push(PageNames.SelectDate);
   }
 
   openPage(page: MenuPage): void {
@@ -102,7 +129,7 @@ export class ClientAppComponent implements OnInit {
     }
   }
 
-  async logout(): Promise<void> {
+  onLogoutClick(): void {
     this.store.dispatch(new LogoutAction(() => this.menuCtrl.close()));
   }
 }

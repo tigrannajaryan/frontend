@@ -45,10 +45,13 @@ export async function loading<T>(
   comp: LoadingComponent, dataSource: AsyncDataSource<T>): Promise<T> {
 
   const isRefresherActive = comp.refresher && comp.refresher.state === RefresherState.refreshing;
+
+  // Start indicating loading if the data does not come in 500ms
+  const timer = setTimeout(() => { comp.isLoading = true; }, 500);
   try {
-    comp.isLoading = true;
     return await dataSourceToPromise(dataSource);
   } finally {
+    clearTimeout(timer);
     comp.isLoading = false;
     if (comp.refresher && isRefresherActive) {
       comp.refresher.complete();

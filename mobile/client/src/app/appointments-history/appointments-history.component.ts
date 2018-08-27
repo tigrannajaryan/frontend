@@ -57,6 +57,6 @@ export class AppointmentsHistoryComponent {
 
   onRebookClick(appointment: AppointmentModel): void {
     this.logger.info('onRebookClick', appointment);
-    startRebooking(appointment, this.navCtrl);
+    startRebooking(appointment);
   }
 }

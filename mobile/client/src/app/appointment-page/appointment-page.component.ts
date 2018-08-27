@@ -49,11 +49,10 @@ export class AppointmentPageComponent {
     }
   }
 
-  onRebookClick(): void {
+  async onRebookClick(): Promise<void> {
+    await startRebooking(this.params.appointment);
     // remove this view from navigation stack
     this.navCtrl.pop();
-
-    startRebooking(this.params.appointment, this.navCtrl);
   }
 
   onCancelClick(): void {

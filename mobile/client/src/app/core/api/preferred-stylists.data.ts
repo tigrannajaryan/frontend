@@ -12,11 +12,18 @@ import {
 
 @Injectable()
 export class PreferredStylistsData {
+  private static guardInitilization = false;
+
   data: DataStore<PreferredStylistsListResponse>;
 
   constructor(
     private api: StylistsService
   ) {
+    if (PreferredStylistsData.guardInitilization) {
+      console.error('PreferredStylistsData initialized twice. Only include it in providers array of DataModule.');
+    }
+    PreferredStylistsData.guardInitilization = true;
+
     this.data = new DataStore('preferred-stylists', () => api.getPreferredStylists());
   }
 

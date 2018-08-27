@@ -6,6 +6,10 @@
     text-align: left;
     border-bottom: pxtovw(1px) solid color($grayscale, 100);
   }
+
+  .SelectDate-spinner {
+    width: 100%;
+  }
 }
 
 // TODO: move to a sep file

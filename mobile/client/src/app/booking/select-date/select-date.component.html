@@ -6,6 +6,8 @@
 
     <book-services-header [services]="this.bookingData.selectedServices" (deleteClick)="onDeleteService($event)" (addClick)="onAddService()"></book-services-header>
 
+    <ion-spinner *ngIf="isLoading" class="SelectDate-spinner"></ion-spinner>
+
     <div *ngIf="offers">
       <!-- Calculate count of months to be displayed: -->
       <div *ngIf="(moment(end).diff(start, 'months') + 1) as monthsCount" class="Calendar">

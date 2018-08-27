@@ -1,12 +1,12 @@
-import { NavController } from 'ionic-angular';
+import { Events } from 'ionic-angular';
 
 import { AppModule } from '~/app.module';
 import { BookingData } from '~/core/api/booking.data';
 import { PreferredStylistsData } from '~/core/api/preferred-stylists.data';
 import { AppointmentModel } from '~/core/api/appointments.models';
 import { PreferredStylistModel } from '~/core/api/stylists.models';
-import { PageNames } from '~/core/page-names';
 import { ServicesService } from '~/core/api/services-service';
+import { EventTypes } from '~/core/event-types';
 
 /**
  * Get the preferred stylist of the user. Throws Error if there are no
@@ -16,7 +16,7 @@ async function getPreferredStylist(): Promise<PreferredStylistModel> {
   const preferredStylistsData = AppModule.injector.get(PreferredStylistsData);
 
   const preferredStylists = await preferredStylistsData.get();
-  if (preferredStylists.length === 0) {
+  if (!preferredStylists || preferredStylists.length === 0 || !preferredStylists[0]) {
     throw Error('No preferred stylists. Please find a stylist.');
   }
 
@@ -45,7 +45,9 @@ export async function startBooking(): Promise<PreferredStylistModel> {
  * PageNames.ServicesCategories (which can happen if services no longer exist)
  * @param appointment the original appointment to use as a model for rebooking
  */
-export async function startRebooking(appointment: AppointmentModel, navCtrl: NavController): Promise<void> {
+export async function startRebooking(appointment: AppointmentModel): Promise<void> {
+
+  const events = AppModule.injector.get(Events);
 
   const preferredStylist = await getPreferredStylist();
 
@@ -74,7 +76,7 @@ export async function startRebooking(appointment: AppointmentModel, navCtrl: Nav
 
   if (!foundAll) {
     // Some of the selected services are no longer found. Just start the booking process from fresh.
-    navCtrl.push(PageNames.ServicesCategories);
+    events.publish(EventTypes.startBooking);
   } else {
     // All services still exist. Start booking process.
     await startBooking();
@@ -87,7 +89,7 @@ export async function startRebooking(appointment: AppointmentModel, navCtrl: Nav
       base_price: s.regular_price
     })));
 
-    // Services are now selected, skip forward to date selection
-    navCtrl.push(PageNames.SelectDate);
+    // Services are now selected, we can now start rebooking.
+    events.publish(EventTypes.startRebooking);
   }
 }

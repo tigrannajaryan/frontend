@@ -11,6 +11,8 @@ import { StylistModel } from '~/core/api/stylists.models';
  */
 @Injectable()
 export class BookingData {
+  private static guardInitilization = false;
+
   selectedTime: moment.Moment;
 
   private _stylist: StylistModel;
@@ -21,7 +23,12 @@ export class BookingData {
   private _pricelist: DataStore<GetPricelistResponse>;
   private _timeslots: DataStore<TimeslotsResponse>;
 
-  constructor(private api: BookingApi) { }
+  constructor(private api: BookingApi) {
+    if (BookingData.guardInitilization) {
+      console.error('BookingData initialized twice. Only include it in providers array of DataModule.');
+    }
+    BookingData.guardInitilization = true;
+  }
 
   /**
    * Begin new appointment booking process. Called by "Book Appointment" button.

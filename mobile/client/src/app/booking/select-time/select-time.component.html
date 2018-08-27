@@ -14,6 +14,11 @@
         <div>{{ this.bookingData.totalClientPrice | price }}</div>
       </div>
     </div>
+
+    <ion-spinner *ngIf="isLoading" class="SelectTimeslot-spinner"></ion-spinner>
+
+    <div *ngIf="slotSections && slotSections.length===0">Could not get available times. Please try again.</div>
+
     <ng-container *ngFor="let slotSection of slotSections">
       <!-- section of timeslots -->
       <div class="SelectTimeslot-sectionTitle">{{ slotSection.sectionName }}</div>
