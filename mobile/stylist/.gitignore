@@ -29,6 +29,8 @@ plugins/ios.json
 www/
 typings/
 $RECYCLE.BIN/
+/src/assets/
+
 
 .DS_Store
 Thumbs.db

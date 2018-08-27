@@ -28,6 +28,19 @@ ln -s $1 $2
 endef
 endif
 
+
+# Define COPYDIR command
+ifeq ($(OS),Windows_NT)
+define COPYDIR
+robocopy "$1" "$2" /MIR
+endef
+else
+define COPYDIR
+cp -Rf $1 $2
+endef
+endif
+
+
 # Define RM command
 ifeq ($(OS),Windows_NT)
 RMDIR=rmdir /Q /S
@@ -46,21 +59,30 @@ endif
 
 
 $(INSTALLDIR)/src/app/shared:
-	$(call SYMLINK,..$(PATHSEP)..$(PATHSEP)..$(PATHSEP)shared,$@)
+	$(call SYMLINK,..$(PATHSEP)..$(PATHSEP)..$(PATHSEP)shared/code,$@)
+
 
 preinstall-dir: $(INSTALLDIR)/src/app/shared
 	$(L)echo Installing $(INSTALLDIR) prerequisites...
 	$(L)cd $(INSTALLDIR) && npm i --silent --no-save
 	$(L)echo Installed $(INSTALLDIR) prerequisites.
 
+preinstall-assets:
+	$(L)echo Installing $(INSTALLDIR) assets prerequisites...
+	$(L) $(RMDIR) $(INSTALLDIR)/src/assets
+	$(call COPYDIR,shared/assets,$(INSTALLDIR)/src/assets)
+	$(L)echo Installed $(INSTALLDIR) assets prerequisites.
+
 
 build-apps: build-client build-stylist
 
 
 preinstall-client:
+	$(SMAKE) preinstall-assets INSTALLDIR=client
 	$(SMAKE) preinstall-dir INSTALLDIR=client
 
 preinstall-stylist:
+	$(SMAKE) preinstall-assets INSTALLDIR=stylist
 	$(SMAKE) preinstall-dir INSTALLDIR=stylist
 
 
