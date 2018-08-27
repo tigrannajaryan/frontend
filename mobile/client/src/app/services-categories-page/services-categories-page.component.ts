@@ -13,6 +13,7 @@ import {
 } from '~/core/reducers/services.reducer';
 import { ServiceCategoryModel } from '~/core/api/services.models';
 import { startBooking } from '~/booking/booking-utils';
+import { Logger } from '~/shared/logger';
 
 @IonicPage()
 @Component({
@@ -30,12 +31,15 @@ export class ServicesCategoriesPageComponent {
   RequestState = RequestState; // expose to view
 
   constructor(
+    private logger: Logger,
     private navCtrl: NavController,
     private store: Store<ServicesState>
   ) {
   }
 
   async ionViewWillEnter(): Promise<void> {
+    this.logger.info('ServicesCategoriesPageComponent.ionViewWillEnter');
+
     const preferredStylist = await startBooking();
     this.stylistUuid = preferredStylist.uuid;
 

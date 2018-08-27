@@ -1,13 +1,13 @@
 import { ErrorHandler, Injectable } from '@angular/core';
-import { App } from 'ionic-angular';
+import { Events } from 'ionic-angular';
 import { Actions, Effect } from '@ngrx/effects';
 
 import { authActionTypes, LogoutAction } from '~/auth/auth.reducer';
 import { deleteToken } from '~/core/utils/token-utils';
-import { UNAUTHORIZED_ROOT } from '~/core/page-names';
 import { DataStore } from '~/core/utils/data-store';
 import { DataModule } from '~/core/api/data.module';
 import { AppModule } from '~/app.module';
+import { EventTypes } from '~/core/event-types';
 
 @Injectable()
 export class LogoutEffects {
@@ -24,8 +24,8 @@ export class LogoutEffects {
         if (action.onSuccess) {
           action.onSuccess();
         }
-        // Navigate back to Auth main screen:
-        this.app.getRootNav().setRoot(UNAUTHORIZED_ROOT);
+        // Let others know and handle logout event
+        this.events.publish(EventTypes.logout);
       } catch (error) {
         this.errorHandler.handleError(error);
       }
@@ -33,8 +33,8 @@ export class LogoutEffects {
 
   constructor(
     private actions: Actions,
-    private app: App,
-    private errorHandler: ErrorHandler
+    private errorHandler: ErrorHandler,
+    private events: Events
   ) {
   }
 

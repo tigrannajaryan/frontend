@@ -33,11 +33,6 @@ export class MainTabsComponent implements OnInit, OnDestroy {
       params: { isMain: true }
     },
     {
-      name: 'Book',
-      link: PageNames.ServicesCategories,
-      params: { isMain: true }
-    },
-    {
       name: 'History',
       link: PageNames.AppointmentsHistory,
       params: { isMain: true }
@@ -63,7 +58,11 @@ export class MainTabsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     // Select Home tab when booking is complete
-    this.events.subscribe(EventTypes.bookingComplete, () => this.tabs.select(TabIndex.Home));
+    this.events.subscribe(EventTypes.bookingComplete, () => this.onBookingComplete());
+  }
+
+  onBookingComplete(): void {
+    this.tabs.select(TabIndex.Home);
   }
 
   ngOnDestroy(): void {

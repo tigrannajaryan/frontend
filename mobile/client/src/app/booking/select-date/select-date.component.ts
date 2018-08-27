@@ -6,6 +6,7 @@ import { Logger } from '~/shared/logger';
 import { PageNames } from '~/core/page-names';
 import { DayOffer, ISODate, ServiceModel } from '~/core/api/services.models';
 import { BookingData } from '~/core/api/booking.data';
+import { loading } from '~/core/utils/loading';
 
 interface ExtendedDayOffer extends DayOffer {
   opacity: number;
@@ -22,6 +23,8 @@ export class SelectDateComponent {
   start: ISODate;
   end: ISODate;
 
+  isLoading: boolean;
+
   // Expose to the view:
   Array = Array;
   moment = moment;
@@ -34,7 +37,7 @@ export class SelectDateComponent {
   }
 
   async ionViewWillLoad(): Promise<void> {
-    const { response } = await this.bookingData.pricelist.get();
+    const { response } = await loading(this, this.bookingData.pricelist.get());
     if (response && response.prices.length > 0) {
 
       // Create offers Map {[ISODate]: DayOffer} to easily get an offer by date:

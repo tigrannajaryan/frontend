@@ -22,7 +22,6 @@ export async function getToken(): Promise<AuthTokenModel> {
   const storage = await getStorage();
   const token = await storage.get(TOKEN_KEY);
   const tokenData = JSON.parse(token);
-  logger.warn('TOKEN RETRIEVED', tokenData);
   return tokenData;
 }
 

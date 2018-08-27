@@ -16,7 +16,7 @@
       <profile-header></profile-header>
     </div>
 
-    <div *ngIf="(homeObservable | async)?.response as homeData">
+    <div *ngIf="homeData">
       <div *ngIf="homeData.upcoming?.length !== 0 || homeData.last_visited" class="HomePage-subtitleContainer">
         <span class="HomePage-subtitle">Upcoming Visits</span>
         <span class="HomePage-labelPurpul">{{ homeData.upcoming.length }}</span>
@@ -60,15 +60,11 @@
             <img src="assets/icons/welcome-home.svg">
           </ion-col>
         </ion-row>
-        <ion-row>
-          <ion-col align-self-end>
-            <button ion-button class="Button" (click)="onBookClick()">Book appointment</button>
-          </ion-col>
-        </ion-row>
       </ion-grid>
-
-
     </div>
-
   </div>
 </ion-content>
+
+<ion-footer>
+  <button *ngIf="homeData" ion-button class="Button HomePageBookButton" (click)="onBookClick()">Book</button>
+</ion-footer>

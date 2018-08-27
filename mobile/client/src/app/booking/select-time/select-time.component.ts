@@ -10,8 +10,9 @@ import { BookingData } from '~/core/api/booking.data';
 import { ApiResponse } from '~/core/api/base.models';
 import { BookingApi, CreateAppointmentRequest, TimeslotsResponse } from '~/core/api/booking.api';
 import { AppointmentsDataStore } from '~/core/api/appointments.datastore';
-import { AppointmentPageParams } from '~/appointment-page/appointment-page.component';
 import { ServiceModel } from '~/core/api/services.models';
+import { AppointmentPageParams } from '~/appointment-page/appointment-page.component';
+import { loading } from '~/core/utils/loading';
 
 interface DisplayTimeslot {
   displayTime: string;
@@ -38,6 +39,7 @@ interface TimeslotSection {
 export class SelectTimeComponent {
 
   slotSections: TimeslotSection[];
+  isLoading: boolean;
 
   static groupTimeslotsBySections(timeslots: TimeslotsResponse): TimeslotSection[] {
 
@@ -99,7 +101,7 @@ export class SelectTimeComponent {
   async ionViewWillEnter(): Promise<void> {
     this.logger.info('SelectTimeComponent.ionViewWillEnter');
     if (this.bookingData.timeslots) {
-      this.displayTimeslots(await this.bookingData.timeslots.get());
+      this.displayTimeslots(await loading(this, this.bookingData.timeslots.get()));
     } else {
       this.logger.error('Must call bookingData.setDate() before accessing timeslots');
     }

@@ -10,10 +10,18 @@ import { AppointmentsApi } from '~/core/api/appointments.api';
  */
 @Injectable()
 export class AppointmentsDataStore {
+  private static guardInitilization = false;
+
   readonly history: DataStore<AppointmentsHistoryResponse>;
   readonly home: DataStore<HomeResponse>;
 
   constructor(api: AppointmentsApi) {
+
+    if (AppointmentsDataStore.guardInitilization) {
+      console.error('AppointmentsDataStore initialized twice. Only include it in providers array of DataModule.');
+    }
+    AppointmentsDataStore.guardInitilization = true;
+
     const ttl1hour = moment.duration(1, 'hour').asMilliseconds();
 
     this.history = new DataStore('history', () => api.getHistory(),
