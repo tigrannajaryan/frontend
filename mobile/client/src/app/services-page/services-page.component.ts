@@ -24,7 +24,7 @@ export class ServicesPageComponent {
   isAdditionalService = false;
 
   constructor(
-    public bookingData: BookingData,
+    protected bookingData: BookingData,
     private navCtrl: NavController,
     private navParams: NavParams,
     private store: Store<ServicesState>

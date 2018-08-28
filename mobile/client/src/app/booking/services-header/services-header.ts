@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { NavController } from 'ionic-angular';
+import { Observable } from 'rxjs/Observable';
 
 import { PageNames } from '~/core/page-names';
 import { ServiceModel } from '~/core/api/services.models';
@@ -12,13 +13,13 @@ import { BookingData } from '~/core/api/booking.data';
 export class BookServicesHeaderComponent {
   @Input() readonly: boolean;
 
-  services: ServiceModel[];
+  services: Observable<ServiceModel[]>;
 
   constructor(
     private bookingData: BookingData,
     private navCtrl: NavController
   ) {
-    this.services = bookingData.selectedServices;
+    this.services = bookingData.selectedServicesObservable;
   }
 
   onDelete(service: ServiceModel): void {

@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import * as moment from 'moment';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Observable } from 'rxjs/Observable';
 
 import { DataStore } from '~/core/utils/data-store';
 import { BookingApi, TimeslotsResponse } from '~/core/api/booking.api';
@@ -23,11 +25,15 @@ export class BookingData {
   private _pricelist: DataStore<GetPricelistResponse>;
   private _timeslots: DataStore<TimeslotsResponse>;
 
+  private servicesSubject: BehaviorSubject<ServiceModel[]>;
+
   constructor(private api: BookingApi) {
     if (BookingData.guardInitilization) {
       console.error('BookingData initialized twice. Only include it in providers array of DataModule.');
     }
     BookingData.guardInitilization = true;
+
+    this.servicesSubject = new BehaviorSubject<ServiceModel[]>([]);
   }
 
   /**
@@ -59,6 +65,7 @@ export class BookingData {
     if (index >= 0) {
       this._selectedServices.splice(index, 1);
       this.setSelectedServices(this._selectedServices);
+      this.onServicesChange();
     }
   }
 
@@ -68,6 +75,7 @@ export class BookingData {
   setSelectedServices(services: ServiceModel[]): void {
     // remember the list of services
     this._selectedServices = services;
+    this.onServicesChange();
 
     // Calc total regular price
     this._totalRegularPrice = services.reduce((sum, service) => sum + service.base_price, 0);
@@ -144,5 +152,14 @@ export class BookingData {
 
   get timeslots(): DataStore<TimeslotsResponse> {
     return this._timeslots;
+  }
+
+  get selectedServicesObservable(): Observable<ServiceModel[]> {
+    return this.servicesSubject.asObservable();
+  }
+
+  private onServicesChange(): void {
+    // Tell subscribers to update services:
+    this.servicesSubject.next(this._selectedServices);
   }
 }

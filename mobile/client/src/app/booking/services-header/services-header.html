@@ -3,9 +3,9 @@
   <span class="ServiciesHeader-title">Services:</span>
   
   <div class="ServiciesHeader-container">
-    <div *ngFor="let service of services" class="ServiciesHeader-seviceItem">
+    <div *ngFor="let service of services | async" class="ServiciesHeader-seviceItem">
       <div class="ServiciesHeader-seviceName"> {{ service.name }}</div>
-      <ion-icon *ngIf="!readonly && services.length > 1" class="ServiciesHeader-serviceItemClose" name="ios-close" (click)="onDelete(service)"></ion-icon>
+      <ion-icon *ngIf="!readonly && (services | async)?.length > 1" class="ServiciesHeader-serviceItemClose" name="ios-close" (click)="onDelete(service)"></ion-icon>
     </div>
   
     <div *ngIf="!readonly" class="ServiciesHeader-seviceAdd">
