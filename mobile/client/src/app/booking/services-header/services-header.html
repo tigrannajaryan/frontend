@@ -3,13 +3,13 @@
   <span class="ServiciesHeader-title">Services:</span>
   
   <div class="ServiciesHeader-container">
-    <div *ngFor="let service of services" class="ServiciesHeader-seviceItem">
+    <div *ngFor="let service of services | async" class="ServiciesHeader-seviceItem">
       <div class="ServiciesHeader-seviceName"> {{ service.name }}</div>
-      <ion-icon *ngIf="services.length > 1" class="ServiciesHeader-serviceItemClose" name="ios-close" (click)="deleteClick.emit(service)"></ion-icon>
+      <ion-icon *ngIf="!readonly && (services | async)?.length > 1" class="ServiciesHeader-serviceItemClose" name="ios-close" (click)="onDelete(service)"></ion-icon>
     </div>
   
-    <div class="ServiciesHeader-seviceAdd">
-      <ion-icon name="ios-add-circle-outline" (click)="addClick.emit()"></ion-icon>
+    <div *ngIf="!readonly" class="ServiciesHeader-seviceAdd">
+      <ion-icon name="ios-add-circle-outline" (click)="onAdd()"></ion-icon>
     </div>
   
   </div>

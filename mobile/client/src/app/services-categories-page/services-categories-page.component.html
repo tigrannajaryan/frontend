@@ -2,7 +2,10 @@
 
 <ion-content class="ServicesCategoriesPage">
   <ion-grid fixed>
-    <div class="H2">Choose a&nbsp;service category</div>
+    <div class="H1" *ngIf="!isAdditionalService">Choose a&nbsp;service category</div>
+    <div class="H1" *ngIf="isAdditionalService">Add additional service:</div>
+
+    <book-services-header *ngIf="isAdditionalService" readonly="true"></book-services-header>
 
     <!-- Showing loading cards -->
     <div *ngIf="(requestState | async) === RequestState.Loading" class="ServicesCategoriesPage-categories">

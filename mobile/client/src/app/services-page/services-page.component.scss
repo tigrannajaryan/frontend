@@ -13,4 +13,8 @@
   .ServicesPage-servicesArrow {
     text-align: right;
   }
+
+  .ServicesPage-disabledRow {
+    color: color($grayscale, 500);
+  }
 }

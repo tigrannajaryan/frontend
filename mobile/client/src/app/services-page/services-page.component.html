@@ -2,6 +2,8 @@
 
 <ion-content class="ServicesPage">
   <ion-grid fixed>
+    <div class="H1" *ngIf="isAdditionalService">Add additional service:</div>
+    <book-services-header *ngIf="isAdditionalService" readonly="true"></book-services-header>
     <ion-row justify-content-center>
       <img *ngIf="category | async" src="assets/icons/services-categories/{{ (category | async)?.category_code }}.svg" class="ServicesPage-img" />
     </ion-row>
@@ -21,7 +23,10 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let service of services | async" (click)="onServiceClick(service)">
+        <tr
+          *ngFor="let service of services | async"
+          (click)="!(bookingData.hasSelectedService(service) && isAdditionalService) && onServiceClick(service)"
+          [class.ServicesPage-disabledRow]="bookingData.hasSelectedService(service) && isAdditionalService">
           <td class="Table-col">{{ service.name }}</td>
           <td class="Table-col">{{ service.base_price | price }}</td>
           <td class="ServicesPage-servicesArrow Table-col">
