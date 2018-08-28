@@ -118,5 +118,9 @@
   {
     "url": "https://raw.githubusercontent.com/apache/cordova-plugin-screen-orientation/master/LICENSE",
     "title": "cordova-plugin-screen-orientation (Apache License)"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/substack/node-deep-equal/master/LICENSE",
+    "title": "deep-equal (MIT License)"
   }
 ]
