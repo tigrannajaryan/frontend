@@ -45,7 +45,7 @@ export class BookingApi extends BaseService {
     const data = {
       // TODO: this is the correct code: service_uuid: services.map(service => service.uuid),
       // But temporarily using the following until API is fixed.
-      service_uuid: services[0].uuid
+      service_uuids: services.map(service => service.uuid)
     };
     return this.post<GetPricelistResponse>('client/services/pricing', data, undefined, options);
   }
