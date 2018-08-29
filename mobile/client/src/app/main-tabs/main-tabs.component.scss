@@ -6,6 +6,24 @@
   }
 }
 
+
+
+.back-button-icon {
+  //adjust beck arrow size
+  font-size: pxtovw(15px);
+
+  &:before {
+    @extend .mb-icon;
+
+    content: $mb-icon-arrow-left;
+  }
+}
+
+// Rewrite ionic’s rules
+ion-header ion-icon.back-button-icon.icon {
+  color: map-get($grayscale, 800);
+}
+
 // rewrite ionic main-tabs icons
 ion-icon.tab-button-icon[aria-label^="Home"],
 ion-icon.tab-button-icon[aria-label^="History"],
