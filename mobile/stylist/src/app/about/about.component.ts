@@ -4,7 +4,7 @@ import { AppVersion } from '@ionic-native/app-version';
 
 import { getBuildNumber } from '~/shared/get-build-number';
 import { ENV } from '../../environments/environment.default';
-import Licenses from '~/../assets/data/licenses.json';
+import Licenses from '~/core/data/licenses.json';
 
 declare const __COMMIT_HASH__: string;
 
