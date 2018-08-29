@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { Events, IonicPage, Tab, Tabs } from 'ionic-angular';
 
 import { GAWrapper } from '~/shared/google-analytics';
@@ -13,9 +13,9 @@ interface TabsObject {
 
 enum TabIndex {
   Home = 0,
-  Book,
   History,
-  Stylists
+  Stylists,
+  Profile
 }
 
 @IonicPage({
@@ -25,7 +25,7 @@ enum TabIndex {
   selector: 'main-tabs',
   templateUrl: 'main-tabs.component.html'
 })
-export class MainTabsComponent implements OnInit, OnDestroy {
+export class MainTabsComponent {
   protected tabsData: TabsObject[] = [
     {
       name: 'Home',
@@ -41,6 +41,11 @@ export class MainTabsComponent implements OnInit, OnDestroy {
       name: 'Stylists',
       link: PageNames.Stylists,
       params: { isMain: true }
+    },
+    {
+      name: 'Profile',
+      link: PageNames.ProfileSummary,
+      params: { isMain: true }
     }
   ];
 
@@ -53,20 +58,27 @@ export class MainTabsComponent implements OnInit, OnDestroy {
     private events: Events,
     private ga: GAWrapper
   ) {
-
   }
 
-  ngOnInit(): void {
+  ionViewWillEnter(): void {
     // Select Home tab when booking is complete
     this.events.subscribe(EventTypes.bookingComplete, () => this.onBookingComplete());
+
+    // Select Profile tab when navigated to the Profile
+    this.events.subscribe(EventTypes.profileSelected, () => this.onProfileSelected());
+  }
+
+  ionViewWillLeave(): void {
+    this.events.unsubscribe(EventTypes.bookingComplete);
+    this.events.unsubscribe(EventTypes.profileSelected);
   }
 
   onBookingComplete(): void {
     this.tabs.select(TabIndex.Home);
   }
 
-  ngOnDestroy(): void {
-    this.events.unsubscribe(EventTypes.bookingComplete);
+  onProfileSelected(): void {
+    this.tabs.select(TabIndex.Profile);
   }
 
   onTabChange(tab: Tab): void {

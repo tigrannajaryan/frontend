@@ -59,6 +59,8 @@ $mb-icon-money: "\e908";
 $mb-icon-globe: "\e90c";
 $mb-icon-lock: "\e912";
 $mb-icon-users: "\e919";
+$mb-icon-profile: "\e91c";
+$mb-icon-profile-a: "\e91f";
 
 @font-face {
   font-family: '#{$icomoon-font-family}';
@@ -487,5 +489,19 @@ $mb-icon-users: "\e919";
   @extend .mb-icon;
   &:before {
     content: $mb-icon-users;
+  }
+}
+
+.mb-icon-profile {
+  @extend .mb-icon;
+  &:before {
+    content: $mb-icon-profile;
+  }
+}
+
+.mb-icon-profile-a {
+  @extend .mb-icon;
+  &:before {
+    content: $mb-icon-profile-a;
   }
 }

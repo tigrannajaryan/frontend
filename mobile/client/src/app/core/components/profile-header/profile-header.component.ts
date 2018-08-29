@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
-import { App } from 'ionic-angular';
+import { Events } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
 
-import { PageNames } from '~/core/page-names';
 import { ProfileDataStore } from '~/profile/profile.data';
 import { ProfileModel } from '~/core/api/profile.models';
 import { ApiResponse } from '~/core/api/base.models';
+
+import { EventTypes } from '~/core/event-types';
 
 @Component({
   selector: 'profile-header',
@@ -16,7 +17,7 @@ export class ProfileHeaderComponent {
   profileObservable: Observable<ApiResponse<ProfileModel>>;
 
   constructor(
-    private app: App,
+    private events: Events,
     private profileDataStore: ProfileDataStore
   ) {
     this.profileObservable = this.profileDataStore.asObservable();
@@ -24,6 +25,6 @@ export class ProfileHeaderComponent {
   }
 
   onClick(): void {
-    this.app.getRootNav().push(PageNames.ProfileSummary);
+    this.events.publish(EventTypes.profileSelected);
   }
 }

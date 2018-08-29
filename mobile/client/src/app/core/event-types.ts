@@ -6,5 +6,6 @@ export enum EventTypes {
   bookingComplete = 'bookingComplete',
   logout = 'logout',
   startBooking = 'startBooking',
-  startRebooking = 'startRebooking'
+  startRebooking = 'startRebooking',
+  profileSelected = 'profileSelected'
 }
