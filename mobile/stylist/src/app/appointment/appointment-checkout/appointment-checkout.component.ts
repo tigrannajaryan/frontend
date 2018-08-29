@@ -34,21 +34,22 @@ export class AppointmentCheckoutComponent {
   // The following field is returned by the server as a result
   // of us asking for a preview of what the appointment will look
   // like if we checkout using provided list of services.
-  protected previewResponse: AppointmentPreviewResponse;
+  previewResponse: AppointmentPreviewResponse;
 
   // The details of the appointment
-  protected appointment: Appointment;
+  appointment: Appointment;
 
   // The state of 2 toggles for tax and card fee
-  protected hasTaxIncluded: boolean;
-  protected hasCardFeeIncluded: boolean;
+  hasTaxIncluded: boolean;
+  hasCardFeeIncluded: boolean;
 
-  protected subTotalRegularPrice: number;
+  subTotalRegularPrice: number;
 
-  protected isLoading = false;
+  isLoading = false;
+  AppointmentStatuses = AppointmentStatuses;
 
   // The initial state of this screen that we need to show
-  protected params: AppointmentCheckoutParams;
+  params: AppointmentCheckoutParams;
 
   // Services that are currently selected for this checkout
   // and are visible on screen.
@@ -102,7 +103,7 @@ export class AppointmentCheckoutComponent {
     }
   }
 
-  protected removeServiceClick(service: AppointmentService): void {
+  removeServiceClick(service: AppointmentService): void {
     const i = this.selectedServices.findIndex(el => el.service_uuid === service.service_uuid);
     if (i >= 0) {
       this.selectedServices.splice(i, 1);
@@ -111,7 +112,7 @@ export class AppointmentCheckoutComponent {
     this.updatePreview();
   }
 
-  protected addServicesClick(): void {
+  addServicesClick(): void {
     const data: AddServicesComponentParams = {
       appointmentUuid: this.params.appointmentUuid,
       selectedServices: this.selectedServices,
@@ -124,7 +125,7 @@ export class AppointmentCheckoutComponent {
   /**
    * This callback is called by AddServicesComponent when it is about to close.
    */
-  protected onAddServices(addedServices: ServiceItem[]): void {
+  onAddServices(addedServices: ServiceItem[]): void {
     // Update list of selected services
     this.selectedServices = addedServices.map(serviceItem => ({ service_uuid: serviceItem.service_uuid }));
 
@@ -132,7 +133,7 @@ export class AppointmentCheckoutComponent {
     this.navCtrl.pop();
   }
 
-  protected async finalizeCheckoutClick(): Promise<void> {
+  async finalizeCheckoutClick(): Promise<void> {
     const request: AppointmentChangeRequest = {
       status: AppointmentStatuses.checked_out,
       services: this.selectedServices,

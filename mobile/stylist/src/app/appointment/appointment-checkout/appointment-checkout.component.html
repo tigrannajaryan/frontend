@@ -80,7 +80,7 @@
             </ion-col>
             <ion-col col-1>
               <div class="p-c-box-service-text">
-                <ion-icon *ngIf="previewResponse.services.length > 1" (click)="removeServiceClick(service)" name="trash"></ion-icon>
+                <ion-icon *ngIf="previewResponse.services.length > 1 && appointment.status != AppointmentStatuses.checked_out" (click)="removeServiceClick(service)" name="trash"></ion-icon>
               </div>
             </ion-col>
           </ion-row>
