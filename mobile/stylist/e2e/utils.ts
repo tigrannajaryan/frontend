@@ -27,6 +27,15 @@ export function getRandomString(length: number): string {
   return str;
 }
 
+export function getRandomNumber(length: number): string {
+  let str = '';
+  const nums = '0123456789';
+  for (let i = 0; i < length; i++) {
+    str += nums.charAt(Math.floor(Math.random() * nums.length));
+  }
+  return str;
+}
+
 class Globals {
   get alertSubtitle() { return $('ion-alert .alert-sub-title'); }
 }
