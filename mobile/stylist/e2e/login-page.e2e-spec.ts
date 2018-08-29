@@ -1,6 +1,6 @@
 import { browser } from 'protractor';
 
-import { globals, waitFor } from './utils';
+import { globals, waitFor } from './shared/utils';
 import { firstPage } from './first-page';
 import { logregPage } from './logreg-page';
 

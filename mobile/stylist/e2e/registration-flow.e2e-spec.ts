@@ -1,6 +1,6 @@
 import { browser } from 'protractor';
 
-import { getRandomString, getRandomNumber, waitFor } from './utils';
+import { getRandomNumber, getRandomString, waitFor } from './shared/utils';
 import { firstPage } from './first-page';
 import { logregPage } from './logreg-page';
 import { profilePage } from './profile-page';
@@ -16,7 +16,7 @@ describe('Registration Flow', () => {
   const phoneNumber = getRandomNumber(10);
   const instagramName = getRandomString(8);
   const websiteName = getRandomString(8);
- 
+
   it('should be able to start registration', async () => {
     browser.get('');
     await waitFor(firstPage.registerLink);

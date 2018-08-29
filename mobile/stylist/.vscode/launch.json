@@ -53,7 +53,11 @@
       "stopOnEntry": false,
       "args": [
         "${workspaceRoot}/protractor.conf.js"
-      ]
+      ],
+      "env": {
+        // This is needed to make files in "shared/e2e" symlinked directory work
+        "NODE_PRESERVE_SYMLINKS": "1"
+      }
     }
   ]
 }

@@ -18,7 +18,7 @@
     "test-coverage": "ng test --code-coverage --preserve-symlinks",
     "test": "ng test --preserve-symlinks",
     "test-headless": "ng test --preserve-symlinks --watch=false --single-run=true --reporters=junit,progress --browsers=ChromeHeadless",
-    "e2e-test": "cross-env TEST_HEADLESS=1 protractor",
+    "e2e-test": "cross-env TEST_HEADLESS=1 NODE_PRESERVE_SYMLINKS=1 protractor",
     "postinstall": "webdriver-manager update --gecko=false",
     "run-android": "ionic cordova run android --prod --device",
     "build-full": "npm run build && npm run test-headless && npm run e2e-test"
