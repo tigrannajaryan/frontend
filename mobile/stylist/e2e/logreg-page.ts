@@ -23,6 +23,10 @@ class LogregPage {
     this.passwordInput.sendKeys(password);
     return this.registerBtn.click();
   }
+
+  reRegister() {
+    return this.registerBtn.click();
+  }
 }
 
 export const logregPage = new LogregPage();
