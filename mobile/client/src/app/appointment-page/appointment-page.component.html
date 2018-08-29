@@ -67,8 +67,8 @@
           <!-- show tax if it is present -->
           <ion-row *ngIf="params.appointment.total_tax && params.appointment.total_client_price_before_tax" class="AppointmentPage-cardAppServiceFees">
             <ion-col col-7>
-              {{ params.appointment.status === AppointmentStatus.new ? 'Est. tax' : 'Taxes' }} ({{ 100*(params.appointment.total_tax /
-              params.appointment.total_client_price_before_tax) | number:'1.0-3' }}%)
+              {{ params.appointment.status === AppointmentStatus.new ? 'Est. tax' : 'Taxes' }}
+              ({{ params.appointment.tax_percentage | number:'1.0-3' }}%)
             </ion-col>
             <ion-col col-5>
               ${{ params.appointment.total_tax | number:'1.0-2' }}

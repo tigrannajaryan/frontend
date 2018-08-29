@@ -23,6 +23,7 @@ export interface AppointmentModel {
   total_client_price_before_tax: number;
   total_card_fee: number;
   total_tax: number;
+  tax_percentage: number;
   datetime_start_at: string;
   duration_minutes: number;
   status: AppointmentStatus;

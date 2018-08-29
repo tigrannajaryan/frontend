@@ -21,6 +21,7 @@ export class AppointmentsApiMock {
           total_client_price_before_tax: Math.random() * 200,
           total_card_fee: Math.random() * 5,
           total_tax: Math.random() * 15,
+          tax_percentage: 8.875,
           datetime_start_at: faker.date.past(),
           duration_minutes: 0,
           status,
