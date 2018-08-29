@@ -1,6 +1,5 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { Events, MenuController, Nav, Platform } from 'ionic-angular';
+import { Events, Nav, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { ScreenOrientation } from '@ionic-native/screen-orientation';
@@ -10,15 +9,9 @@ import { GAWrapper } from '~/shared/google-analytics';
 import { ServerStatusTracker } from '~/shared/server-status-tracker';
 
 import { getToken } from '~/core/utils/token-utils';
-import { LogoutAction } from '~/auth/auth.reducer';
 
 import { AUTHORIZED_ROOT, PageNames, UNAUTHORIZED_ROOT } from '~/core/page-names';
 import { EventTypes } from '~/core/event-types';
-
-interface MenuPage {
-  title: string;
-  component: PageNames;
-}
 
 // Google Analytics Id
 const gaTrackingId = 'UA-122004541-1';
@@ -30,24 +23,16 @@ export class ClientAppComponent implements OnInit, OnDestroy {
   @ViewChild(Nav) nav: Nav;
 
   rootPage: any;
-  menuPages: MenuPage[] = [
-    { title: 'Home', component: PageNames.Home },
-    { title: 'History', component: PageNames.AppointmentsHistory },
-    { title: 'Profile', component: PageNames.ProfileSummary },
-    { title: 'Date', component: PageNames.SelectDate }
-  ];
 
   constructor(
     private events: Events,
     private ga: GAWrapper,
     private logger: Logger,
-    private menuCtrl: MenuController,
     private platform: Platform,
     private screenOrientation: ScreenOrientation,
     private serverStatusTracker: ServerStatusTracker,
     private splashScreen: SplashScreen,
-    private statusBar: StatusBar,
-    private store: Store<{}>
+    private statusBar: StatusBar
   ) {
   }
 
@@ -121,15 +106,5 @@ export class ClientAppComponent implements OnInit, OnDestroy {
   onStartRebooking(): void {
     // Begin booking process by showing date selection (since services are already known)
     this.nav.push(PageNames.SelectDate);
-  }
-
-  openPage(page: MenuPage): void {
-    if (page.component !== this.nav.getActive().component) {
-      this.nav.setRoot(page.component, {}, { animate: false });
-    }
-  }
-
-  onLogoutClick(): void {
-    this.store.dispatch(new LogoutAction(() => this.menuCtrl.close()));
   }
 }
