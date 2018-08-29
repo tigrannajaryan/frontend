@@ -45,7 +45,8 @@ export type FieldErrorCode =
   'err_appointment_does_not_exist' |
   'err_stylist_is_already_in_preference' |
   'err_invalid_stylist_uuid' |
-  'err_invalid_sms_code';
+  'err_invalid_sms_code' |
+  'err_unique_client_email';
 
 // Mapping of all field error codes to human readable messages
 export const fieldErrorMsgs = new Map<FieldErrorCode, string>([

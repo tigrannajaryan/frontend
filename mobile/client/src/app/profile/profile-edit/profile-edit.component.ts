@@ -6,6 +6,9 @@ import { Camera, CameraOptions } from '@ionic-native/camera';
 import { PhotoSourceType } from '~/shared/constants';
 import { downscalePhoto, urlToFile } from '~/shared/image-utils';
 
+import { FieldErrorItem } from '~/shared/api-errors';
+import { hasError } from '~/shared/pipes/has-error.pipe';
+
 import { showAlert } from '~/core/utils/alert';
 import { composeRequest, loading } from '~/core/utils/request-utils';
 import { animateFailed, animateSucceeded } from '~/core/utils/animation-utils';
@@ -121,8 +124,10 @@ export class ProfileEditComponent {
       this.profileDataStore.set(response);
       this.form.patchValue(response);
       this.navCtrl.pop();
-    } else if (error) {
-      // TODO: handle ”email is already taken by another user”
+    } else if (hasError(error, new FieldErrorItem('email', { code: 'err_unique_client_email' }))) {
+      showAlert('Oops!', 'The email is registered to another client. Contact us if you have any questions.');
+    } else {
+      showAlert('Oops!', 'An error occurred. We are working on fixing it.');
     }
   }
 

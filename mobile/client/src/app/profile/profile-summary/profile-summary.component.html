@@ -8,6 +8,10 @@
         <span *ngIf="isProfileCompleted()">{{ profile.first_name }} {{ profile.last_name }}</span>
         <span *ngIf="!isProfileCompleted()">{{ profile.phone | formatPhone }}</span>
       </ion-row>
+      <div *ngIf="isProfileCompleted()" class="ProfilePage-subtitle">
+        <p>{{ profile.phone | formatPhone }}</p>
+        {{ profile.email }}
+      </div>
       <div *ngIf="!isProfileCompleted()" class="ProfilePage-completion">
         <ion-row justify-content-center>Completed 20%</ion-row>
         <ion-row justify-content-center>

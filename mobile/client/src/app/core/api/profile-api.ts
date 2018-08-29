@@ -12,6 +12,6 @@ export class ProfileApi extends BaseService {
   }
 
   updateProfile(profile: ProfileModel): Observable<ApiResponse<ProfileModel>> {
-    return this.post<ProfileModel>('client/profile', profile);
+    return this.post<ProfileModel>('client/profile', profile, undefined, { hideGenericAlertOnFieldAndNonFieldErrors: true });
   }
 }
