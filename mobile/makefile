@@ -32,7 +32,7 @@ endif
 # Define COPYDIR command
 ifeq ($(OS),Windows_NT)
 define COPYDIR
-robocopy "$1" "$2" /MIR
+robocopy "$1" "$2" /MIR /NJH /NJS /NDL /NFL >nul || rem
 endef
 else
 define COPYDIR
@@ -41,11 +41,16 @@ endef
 endif
 
 
-# Define RM command
+# Define RMDIR command
 ifeq ($(OS),Windows_NT)
-RMDIR=rmdir /Q /S
+define RMDIR
+rmdir /Q /S "$1" > nul 2>&1 || rem
+endef
 else
-RMDIR=rm -rf
+define RMDIR
+rm -rf $1 || echo
+# || echo
+endef
 endif
 
 # See if logging is enabled. To enable logging call make with LOG=yes parameter
@@ -59,10 +64,10 @@ endif
 
 
 $(INSTALLDIR)/src/app/shared:
-	$(call SYMLINK,..$(PATHSEP)..$(PATHSEP)..$(PATHSEP)shared/code,$@)
+	$(call SYMLINK,..$(PATHSEP)..$(PATHSEP)..$(PATHSEP)shared$(PATHSEP)code,$@)
 
 $(INSTALLDIR)/e2e/shared:
-	$(call SYMLINK,..$(PATHSEP)..$(PATHSEP)shared/e2e,$@)
+	$(call SYMLINK,..$(PATHSEP)..$(PATHSEP)shared$(PATHSEP)e2e,$@)
 
 
 preinstall-dir: $(INSTALLDIR)/src/app/shared $(INSTALLDIR)/e2e/shared
@@ -71,10 +76,10 @@ preinstall-dir: $(INSTALLDIR)/src/app/shared $(INSTALLDIR)/e2e/shared
 	$(L)echo Installed $(INSTALLDIR) prerequisites.
 
 preinstall-assets:
-	$(L)echo Installing $(INSTALLDIR) assets prerequisites...
-	$(L) $(RMDIR) $(INSTALLDIR)/src/assets
+	$(L)echo Copying $(INSTALLDIR) assets...
+	$(call RMDIR $(INSTALLDIR)/src/assets)
 	$(call COPYDIR,shared/assets,$(INSTALLDIR)/src/assets)
-	$(L)echo Installed $(INSTALLDIR) assets prerequisites.
+	$(L)echo Copied $(INSTALLDIR) assets.
 
 
 build-apps: build-client build-stylist
@@ -117,11 +122,20 @@ npm-test-dir-e2e:
 
 clean: clean-client clean-stylist
 
-
 clean-client:
-	cd client		&& \
-	$(RMDIR) node_modules www platforms plugins .sourcemaps TESTS.xml || echo
+	$(SMAKE) clean-dir BUILDDIR=client
 
 clean-stylist:
-	cd stylist		&& \
-	$(RMDIR) node_modules www platforms plugins .sourcemaps TESTS.xml || echo
+	$(SMAKE) clean-dir BUILDDIR=stylist
+
+clean-dir:
+	$(call RMDIR,$(BUILDDIR)/node_modules)
+	$(call RMDIR,$(BUILDDIR)/src/assets)
+	$(call RMDIR,$(BUILDDIR)/www)
+	$(call RMDIR,$(BUILDDIR)/platforms)
+	$(call RMDIR,$(BUILDDIR)/plugins)
+	$(call RMDIR,$(BUILDDIR)/.sourcemaps)
+	$(call RMDIR,$(BUILDDIR)/TESTS.xml)
+	@echo Cleaning $(BUILDDIR) done.
+
+	
