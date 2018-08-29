@@ -1,10 +1,17 @@
 import { browser } from 'protractor';
 
-import { globals, waitFor } from './utils';
+//import { globals, waitFor } from './utils';
+import { getRandomString, globals, waitFor } from './utils';
 import { firstPage } from './first-page';
 import { logregPage } from './logreg-page';
+import { profilePage } from './profile-page';
 
 describe('Register Page', () => {
+
+  const email = `${getRandomString(15)}-test@madebeauty.com`;
+  const password = getRandomString(10);
+  const firstName = getRandomString(6);
+  const lastName = getRandomString(6);
 
   beforeEach(async () => {
     browser.get('');
@@ -33,4 +40,13 @@ describe('Register Page', () => {
     await logregPage.registerBtn.click();
     expect(globals.alertSubtitle.getText()).toContain('Email is invalid');
   });
+
+  it('registration with already existing user gives alert', async () => {
+    await logregPage.register(email,password);
+    profilePage.fillForm(firstName, lastName, '', '','', '','');
+    await browser.navigate().back();
+    await logregPage.reRegister();
+    expect(globals.alertSubtitle.getText()).toContain('Email is already registered, try logging in.');
+  });
+  
 });
