@@ -1,0 +1,9 @@
+{
+  "rulesDirectory": [
+    "../node_modules/codelyzer"
+  ],
+  "extends": ["../tslint.json"],
+  "rules": {
+    "typedef": [true, "property-declaration", "member-variable-declaration", "object-destructuring", "array-destructuring"]
+  }
+}

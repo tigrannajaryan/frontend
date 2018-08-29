@@ -1,5 +1,4 @@
-import { $, by } from 'protractor';
-import { firstVisible } from './utils';
+import { $ } from 'protractor';
 
 /**
  * LoginRegister page definition
