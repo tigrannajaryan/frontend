@@ -61,8 +61,11 @@ endif
 $(INSTALLDIR)/src/app/shared:
 	$(call SYMLINK,..$(PATHSEP)..$(PATHSEP)..$(PATHSEP)shared/code,$@)
 
+$(INSTALLDIR)/e2e/shared:
+	$(call SYMLINK,..$(PATHSEP)..$(PATHSEP)shared/e2e,$@)
 
-preinstall-dir: $(INSTALLDIR)/src/app/shared
+
+preinstall-dir: $(INSTALLDIR)/src/app/shared $(INSTALLDIR)/e2e/shared
 	$(L)echo Installing $(INSTALLDIR) prerequisites...
 	$(L)cd $(INSTALLDIR) && npm i --silent --no-save
 	$(L)echo Installed $(INSTALLDIR) prerequisites.

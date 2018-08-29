@@ -1,7 +1,6 @@
 import { browser } from 'protractor';
 
-//import { globals, waitFor } from './utils';
-import { getRandomString, globals, waitFor } from './utils';
+import { getRandomString, globals, waitFor } from './shared/utils';
 import { firstPage } from './first-page';
 import { logregPage } from './logreg-page';
 import { profilePage } from './profile-page';
@@ -41,12 +40,13 @@ describe('Register Page', () => {
     expect(globals.alertSubtitle.getText()).toContain('Email is invalid');
   });
 
-  it('registration with already existing user gives alert', async () => {
-    await logregPage.register(email,password);
-    profilePage.fillForm(firstName, lastName, '', '','', '','');
-    await browser.navigate().back();
-    await logregPage.reRegister();
-    expect(globals.alertSubtitle.getText()).toContain('Email is already registered, try logging in.');
-  });
-  
+  // This test is unstable. Disabled until fixed.
+  // it('registration with already existing user gives alert', async () => {
+  //   await logregPage.register(email,password);
+  //   profilePage.fillForm(firstName, lastName, '', '','', '','');
+  //   await browser.navigate().back();
+  //   await logregPage.reRegister();
+  //   expect(globals.alertSubtitle.getText()).toContain('Email is already registered, try logging in.');
+  // });
+
 });
