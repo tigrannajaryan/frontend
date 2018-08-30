@@ -39,7 +39,7 @@
         <div class="StylistsPage-cardSubtitle"><img src="assets/icons/location.svg" />&nbsp;{{ stylist.salon_address }}</div>
         <div class="StylistsPage-cardFooter">
           <div class="StylistsPage-cardSubtitle"><img src="assets/icons/phone.svg" />&nbsp;{{ stylist.phone }}</div>
-          <div class="StylistsPage-cardSubtitle"><img src="assets/icons/instagram.svg" />&nbsp;{{ stylist.instagram_profile_name }}</div>
+          <div *ngIf="stylist.instagram_profile_name" class="StylistsPage-cardSubtitle"><img src="assets/icons/instagram.svg" />&nbsp;{{ stylist.instagram_profile_name }}</div>
           <button (click)="onContinueWithStylist(stylist)" ion-button class="Button StylistsPage-submit">Continue with {{ stylist.first_name }}</button>
           <div (click)="onSetActiveStylist($event, undefined)" class="StylistsPage-cardSubtitle">This is&nbsp;not&nbsp;my stylist</div>
         </div>

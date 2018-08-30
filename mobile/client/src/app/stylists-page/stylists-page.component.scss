@@ -2,14 +2,13 @@
   $pic-size: 64px;
   $card-padding: 16px;
 
-  background: color($grayscale, 100);
-
   .StylistsPage-loader {
     font-size: $t-base;
     font-weight: normal;
   }
 
   .StylistsPage-search {
+    margin-top: 12px;
     font-size: $t-base;
     border-radius: 10px;
     box-shadow: 0 7px 43px color($grayscale, 200);
@@ -55,20 +54,22 @@
   }
 
   .StylistsPage-cardTitle {
-    width: 0;
+    width: 100%;
     margin: 3px 0 6px;
     font-size: $t-h3;
     font-weight: 500;
-    text-align: center;
     white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .StylistsPage-cardSubtitle {
-    width: 0;
+    width: 100%;
     font-size: $t-base;
     color: color($grayscale, 500);
-    text-align: center;
     white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .StylistsPage-submit {
@@ -119,6 +120,12 @@
 
       .StylistsPage-cardTitle {
         margin: 8px 0;
+      }
+
+      .StylistsPage-cardTitle,
+      .StylistsPage-cardSubtitle {
+        white-space: initial;
+        text-align: center;
       }
 
       .StylistsPage-cardHeader {
