@@ -111,7 +111,7 @@ export class ProfileEditComponent {
   }
 
   async onSubmit(): Promise<void> {
-    const { response, error } = await composeRequest<ProfileModel>(
+    const { response } = await composeRequest<ProfileModel>(
       loading(isLoading => this.isUpdating = isLoading),
       animateFailed(isFailed => this.isFailed = isFailed),
       animateSucceeded(isSucceeded => this.isSucceeded = isSucceeded),
@@ -121,8 +121,6 @@ export class ProfileEditComponent {
       this.profileDataStore.set(response);
       this.form.patchValue(response);
       this.navCtrl.pop();
-    } else if (error) {
-      // TODO: handle ”email is already taken by another user”
     }
   }
 

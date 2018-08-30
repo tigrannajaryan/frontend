@@ -4,6 +4,18 @@
     font-weight: 500;
   }
 
+  .ProfilePage-subtitle {
+    margin: pxtovw(12px) 0 pxtovw(4px);
+    color: color($grayscale, 500);
+    text-align: center;
+
+    > p {
+      margin-bottom: pxtovw(4px);
+      font-weight: 500;
+      color: color($grayscale, 800);
+    }
+  }
+
   .ProfilePage-completion {
     margin-top: pxtovw(16px);
   }

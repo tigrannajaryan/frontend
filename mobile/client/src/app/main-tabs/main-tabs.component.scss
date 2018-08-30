@@ -1,3 +1,56 @@
+.tab-button[aria-selected=true][role="tab"] {
+  color: black;
+
+  .tab-button-icon {
+    color: black;
+  }
+}
+
+// rewrite ionic main-tabs icons
+ion-icon.tab-button-icon[aria-label^="Home"],
+ion-icon.tab-button-icon[aria-label^="History"],
+ion-icon.tab-button-icon[aria-label^="Stylists"],
+ion-icon.tab-button-icon[aria-label^="Profile"] {
+  display: inline-block;
+  vertical-align: bottom;
+  @extend .mb-icon;
+}
+
+ion-icon.tab-button-icon[aria-label^="Home"]:after {
+  content: $mb-icon-home-a;
+}
+
+ion-icon.tab-button-icon[aria-label^="History"]:after {
+  content: $mb-icon-clock-a;
+}
+
+ion-icon.tab-button-icon[aria-label^="Stylists"]:after {
+  content: $mb-icon-stylists-a;
+}
+
+ion-icon.tab-button-icon[aria-label^="Profile"]:after {
+  content: $mb-icon-profile;
+}
+
+
+[aria-selected=true] {
+  ion-icon.tab-button-icon[aria-label^="Home"]:after {
+    content: $mb-icon-home;
+  }
+
+  ion-icon.tab-button-icon[aria-label^="History"]:after {
+    content: $mb-icon-clock;
+  }
+
+  ion-icon.tab-button-icon[aria-label^="Stylists"]:after {
+    content: $mb-icon-stylists;
+  }
+
+  ion-icon.tab-button-icon[aria-label^="Profile"]:after {
+    content: $mb-icon-profile-a;
+  }
+}
+
 main-tabs ion-tabs.tabs {
   .tabbar {
     background: white;
