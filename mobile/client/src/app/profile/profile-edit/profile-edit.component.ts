@@ -124,10 +124,6 @@ export class ProfileEditComponent {
       this.profileDataStore.set(response);
       this.form.patchValue(response);
       this.navCtrl.pop();
-    } else if (hasError(error, new FieldErrorItem('email', { code: 'err_unique_client_email' }))) {
-      showAlert('Oops!', 'The email is registered to another client. Contact us if you have any questions.');
-    } else {
-      showAlert('Oops!', 'An error occurred. We are working on fixing it.');
     }
   }
 

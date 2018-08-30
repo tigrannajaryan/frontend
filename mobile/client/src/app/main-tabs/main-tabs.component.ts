@@ -45,7 +45,7 @@ export class MainTabsComponent {
     {
       name: 'Profile',
       link: PageNames.ProfileSummary,
-      params: { isMain: true }
+      params: {}
     }
   ];
 

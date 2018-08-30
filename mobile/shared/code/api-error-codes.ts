@@ -82,7 +82,8 @@ export const fieldErrorMsgs = new Map<FieldErrorCode, string>([
   ['err_appointment_does_not_exist', 'The appointment either does not exists or does not belong to current stylist.'],
   ['err_stylist_is_already_in_preference', 'The stylist is already a preference.'],
   ['err_invalid_stylist_uuid', 'Invalid Stylist UUID'],
-  ['err_invalid_sms_code', 'The code is incorrect.']
+  ['err_invalid_sms_code', 'The code is incorrect.'],
+  ['err_unique_client_email', 'The email is registered to another client. Contact us if you have any questions.']
 ]);
 
 /**
