@@ -10,10 +10,18 @@
     margin-top: pxtovw(15px);
   }
 
+  .AppointmentPage-stylistPic,
   .AppointmentPage-cardAppStylist img,
   .AppointmentPage-cardAppDate img {
     width: pxtovw(32px);
     height: pxtovw(32px);
+  }
+
+  .AppointmentPage-stylistPic {
+    display: inline-block;
+    border-radius: 50%;
+    background-repeat: no-repeat;
+    background-size: cover;
   }
 
   .AppointmentPage-appDate {

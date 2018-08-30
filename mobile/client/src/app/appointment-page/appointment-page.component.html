@@ -31,10 +31,7 @@
                 <br/> {{ params.appointment.stylist_last_name }}</span>
 
               <!-- show photo or avatar if photo is missing -->
-              <img *ngIf="params.appointment.stylist_photo_url; else showAvatar" src="{{ params.appointment.stylist_photo_url }}" />
-              <ng-template #showAvatar>
-                <img src="assets/icons/stylist-avatar.svg" />
-              </ng-template>
+              <div class="AppointmentPage-stylistPic" [style.backgroundImage]="'url(' + (params.appointment.profile_photo_url || 'assets/icons/stylist-avatar.svg') + ')'"></div>
             </ion-col>
           </ion-row>
 

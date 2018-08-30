@@ -38,11 +38,9 @@
     vertical-align: middle;
     border: 1px solid color($grayscale, 300);
     border-radius: 50%;
-  }
-
-  .AppCard-GridStylistDetailsImage img {
-    width: pxtovw(16px);
-    height: pxtovw(16px);
+    overflow: hidden;
+    background-repeat: no-repeat;
+    background-size: cover;
   }
 
   .AppCard-GridPrice {
