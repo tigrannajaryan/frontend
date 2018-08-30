@@ -3,7 +3,7 @@
   font-size: pxtovw(18px);
   font-weight: 300;
   line-height: pxtovw(24px);
-  color: color($colors, color24);
+  color: color($shared-colors, color1);
 }
 
 .MadeCheckList-title {
@@ -19,7 +19,7 @@
     padding: pxtovw(1px) 0 0;
     margin: 0 pxtovw(12px) 0 pxtovw(5px);
     font-size: pxtovw(21px);
-    color: color($colors, color29);
+    color: color($shared-colors, color2);
     vertical-align: middle;
   }
 }
