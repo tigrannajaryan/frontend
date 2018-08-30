@@ -28,7 +28,7 @@
     <ion-row>
       <ion-col>
         <!-- TODO: replace avatar with real photo when it is added to API  -->
-       <div class="AppCard-GridStylistDetailsImage"> <img src="assets/icons/stylist-avatar.svg" /></div>
+       <div class="AppCard-GridStylistDetailsImage" [style.backgroundImage]="'url(' + (appointment.profile_photo_url || 'assets/icons/stylist-avatar.svg') + ')'"></div>
         <!-- stylists's full name -->
         <span  class="AppCard-GridStylistDetails">{{ appointment.stylist_first_name }}&nbsp;{{ appointment.stylist_last_name }}, {{ appointment.salon_name }}</span>
       </ion-col>
