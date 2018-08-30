@@ -94,18 +94,44 @@ preinstall-stylist:
 	$(SMAKE) preinstall-dir INSTALLDIR=stylist
 
 
+# Build the app in the $(BUILDDIR)
 npm-build-dir:
 	$(L)echo Building $(BUILDDIR)...
 	$(L)cd $(BUILDDIR) && npm run build --silent
 	$(L)echo Build $(BUILDDIR) finished.
+
+# Build the app in the $(BUILDDIR) using fast build
+npm-build-fast-dir:
+	$(L)echo Fast building $(BUILDDIR)...
+	$(L)cd $(BUILDDIR) && npm run build-fast --silent
+	$(L)echo Fast build $(BUILDDIR) finished.
+
+# Build the app in the $(BUILDDIR) and run all tests on it
+npm-build-and-test-dir: npm-build-dir
 	$(SMAKE) npm-test-dir
 
+# Full build and all tests of client
 build-client: preinstall-client
-	$(SMAKE) npm-build-dir BUILDDIR=client
+	$(SMAKE) npm-build-and-test-dir BUILDDIR=client
 
-
+# Full build and all tests of stylist
 build-stylist: preinstall-stylist
-	$(SMAKE) npm-build-dir BUILDDIR=stylist
+	$(SMAKE) npm-build-and-test-dir BUILDDIR=stylist
+
+# Build without running tests of client
+build-fast-client: preinstall-client
+	$(SMAKE) npm-build-fast-dir BUILDDIR=client
+
+# Build without running tests of stylist
+build-fast-stylist: preinstall-stylist
+	$(SMAKE) npm-build-fast-dir BUILDDIR=stylist
+
+build-and-e2etest-client: build-fast-client
+	$(SMAKE) npm-test-dir-e2e BUILDDIR=client
+
+build-and-e2etest-stylist: build-fast-stylist
+	$(SMAKE) npm-test-dir-e2e BUILDDIR=stylist
+
 
 npm-test-dir: npm-test-dir-unit npm-test-dir-e2e
 
@@ -138,4 +164,3 @@ clean-dir:
 	$(call RMDIR,$(BUILDDIR)/TESTS.xml)
 	@echo Cleaning $(BUILDDIR) done.
 
-	
