@@ -6,9 +6,6 @@ import { Camera, CameraOptions } from '@ionic-native/camera';
 import { PhotoSourceType } from '~/shared/constants';
 import { downscalePhoto, urlToFile } from '~/shared/image-utils';
 
-import { FieldErrorItem } from '~/shared/api-errors';
-import { hasError } from '~/shared/pipes/has-error.pipe';
-
 import { showAlert } from '~/core/utils/alert';
 import { composeRequest, loading } from '~/core/utils/request-utils';
 import { animateFailed, animateSucceeded } from '~/core/utils/animation-utils';
@@ -114,7 +111,7 @@ export class ProfileEditComponent {
   }
 
   async onSubmit(): Promise<void> {
-    const { response, error } = await composeRequest<ProfileModel>(
+    const { response } = await composeRequest<ProfileModel>(
       loading(isLoading => this.isUpdating = isLoading),
       animateFailed(isFailed => this.isFailed = isFailed),
       animateSucceeded(isSucceeded => this.isSucceeded = isSucceeded),
