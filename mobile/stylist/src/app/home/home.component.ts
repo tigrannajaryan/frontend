@@ -21,6 +21,9 @@ import { HomeService } from '~/home/home.service';
 import { AppointmentCheckoutParams } from '~/appointment/appointment-checkout/appointment-checkout.component';
 import { LoadProfileAction, ProfileState, selectProfile } from '~/core/components/user-header/profile.reducer';
 
+// tslint:disable-next-line:no-require-imports
+const deepEqual = require('deep-equal');
+
 export enum AppointmentTag {
   NotCheckedOut = 'Not checked out',
   Now = 'Now',
@@ -80,6 +83,8 @@ export class HomeComponent {
 
   refresherEnabled = true;
 
+  autoRefreshTimer: any;
+
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
@@ -120,6 +125,22 @@ export class HomeComponent {
     this.store.dispatch(new LoadProfileAction());
 
     this.loadAppointments(this.activeTab);
+
+    // Autorefresh the view once per hour. This is a temporary solution until
+    // we implement push notifications.
+    this.autoRefreshTimer = setInterval(() => this.autoRefresh(), 1000 * 3600);
+  }
+
+  ionViewWillLeave(): void {
+    clearInterval(this.autoRefreshTimer);
+  }
+
+  autoRefresh(): void {
+    // don't auto refresh Past tab, since it may be a lot of info and
+    // we don't really care about refreshing it automatically.
+    if (this.activeTab !== TabNames.past) {
+      this.loadAppointments(this.activeTab);
+    }
   }
 
   onAppointmentClick(appointment: Appointment): void {
@@ -234,18 +255,18 @@ export class HomeComponent {
     }
     const index = this.tabs.findIndex(item => item.name === this.activeTab);
 
-    this.home = home;
-
     this.tabs[index].appointments = home.appointments;
     this.tabs[index].loaded = true;
 
-    this.appointmentTags = [];
+    let viewChanged = false;
 
     // appointmentTags for today tab
     if (this.activeTab === this.tabs[Tabs.today].name) {
       // Create tags for each appointment based on their start/end times
+      const appointmentTags: AppointmentTag[] = [];
+
       let metNext = false;
-      for (const appointment of this.home.appointments) {
+      for (const appointment of home.appointments) {
         const startTime = moment(new Date(appointment.datetime_start_at));
 
         const endTime = startTime.clone();
@@ -266,15 +287,28 @@ export class HomeComponent {
             metNext = true;
           }
         }
-        this.appointmentTags.push(tag);
+        appointmentTags.push(tag);
+      }
+
+      if (!deepEqual(this.appointmentTags, appointmentTags)) {
+        viewChanged = true;
+        this.appointmentTags = appointmentTags;
       }
     }
 
-    // slide to needed tab
+    if (!deepEqual(this.home, home)) {
+      viewChanged = true;
+      this.home = home;
+    }
+
+    // slide to needed tab if data is changed
     if (this.slides) {
       const animationSpeed = 500;
       this.slides.slideTo(index, animationSpeed);
-      this.content.scrollToTop(animationSpeed);
+
+      if (viewChanged) {
+        this.content.scrollToTop(animationSpeed);
+      }
     }
   }
 }
