@@ -8,6 +8,7 @@ import {
 } from 'ionic-angular';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
+import * as deepEqual from 'fast-deep-equal';
 
 import { Logger } from '~/shared/logger';
 import { GAWrapper } from '~/shared/google-analytics';
@@ -20,9 +21,6 @@ import { Appointment } from '~/home/home.models';
 import { HomeService } from '~/home/home.service';
 import { AppointmentCheckoutParams } from '~/appointment/appointment-checkout/appointment-checkout.component';
 import { LoadProfileAction, ProfileState, selectProfile } from '~/core/components/user-header/profile.reducer';
-
-// tslint:disable-next-line:no-require-imports
-const deepEqual = require('deep-equal');
 
 export enum AppointmentTag {
   NotCheckedOut = 'Not checked out',
