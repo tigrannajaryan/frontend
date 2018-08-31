@@ -54,7 +54,7 @@
       <!-- If there is any search input that looks like a phone number show the Add Contact button -->
       <ion-row *ngIf="seachInputIsLikePhoneNumber">
         <ion-col>
-          <button ion-button full (click)="onAddManualContact()" class="gray-button">Add Contact</button>
+          <button ion-button full (click)="onAddManualContact()" class="gray-button">Add contact</button>
         </ion-col>
       </ion-row>
 
@@ -101,4 +101,4 @@
     </ion-grid>
   </div>
 </ion-content>
-<ion-footer (continue)="onInviteClients()" [title]="'Invite Clients'" madeContinueFooter></ion-footer>
+<ion-footer (continue)="onInviteClients()" [title]="'Invite clients'" madeContinueFooter></ion-footer>
