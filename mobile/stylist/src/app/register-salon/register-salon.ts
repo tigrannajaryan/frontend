@@ -194,7 +194,7 @@ export class RegisterSalonComponent {
       return;
     }
 
-    this.navCtrl.push(PageNames.DiscountsInfo);
+    this.navCtrl.push(PageNames.WelcomeToMade);
   }
 
   @loading

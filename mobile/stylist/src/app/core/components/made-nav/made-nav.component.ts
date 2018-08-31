@@ -27,15 +27,15 @@ export class MadeNavComponent {
   }
   private pages = [
     { name: 'Personal Info', page: PageNames.RegisterSalon },
-    { name: 'Welcome', page: PageNames.DiscountsInfo },
+    { name: 'Welcome', page: PageNames.WelcomeToMade },
     { name: 'Services', page: PageNames.Services },
     { name: 'Worktime', page: PageNames.Worktime },
-    { name: 'Welcome', page: PageNames.DiscountsWelcome },
+    { name: 'Welcome', page: PageNames.HowPricingWorks },
     { name: 'Daily', page: PageNames.DiscountsWeekday },
     { name: 'Revisit', page: PageNames.DiscountsRevisit },
     { name: 'First Visit', page: PageNames.DiscountsFirstBooking },
     { name: 'Invite Clients', page: PageNames.Invitations },
-    { name: 'Welcome', page: PageNames.DiscountsDone }
+    { name: 'Welcome', page: PageNames.AlmostDone }
   ];
 
   constructor(public navCtrl: NavController) {
