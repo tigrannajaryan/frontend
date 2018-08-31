@@ -1,7 +1,8 @@
-<ion-header madeHeader></ion-header>
+<ion-header madeHeader [hideBackButton]="true"></ion-header>
+
 
 <ion-content class="ProfilePage">
-  <ion-grid fixed>
+  <div class="contentSidePadding">
     <div *ngIf="profile">
       <div [style.backgroundImage]="'url(' + (profile.profile_photo_url || DEFAULT_IMAGE) + ')'" class="ProfilePage-pic"></div>
       <ion-row justify-content-center class="ProfilePage-title">
@@ -51,5 +52,5 @@
         </tr>
       </tbody>
     </table>
-  </ion-grid>
+  </div>
 </ion-content>
