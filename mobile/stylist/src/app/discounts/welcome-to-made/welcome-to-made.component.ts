@@ -4,18 +4,18 @@ import { IonicPage, NavController } from 'ionic-angular';
 import { PageNames } from '~/core/page-names';
 
 @IonicPage({
-  segment: 'discounts-info'
+  segment: 'welcome-to-made'
 })
 @Component({
-  selector: 'page-discounts-info',
-  templateUrl: 'discounts-info.component.html'
+  selector: 'page-welcome-to-made',
+  templateUrl: 'welcome-to-made.component.html'
 })
-export class DiscountsInfoComponent {
+export class WelcomeToMadeComponent {
   protected PageNames = PageNames;
 
   constructor(private navCtrl: NavController) {}
 
   protected onContinue(): void {
-    this.navCtrl.push(PageNames.DiscountsWelcome);
+    this.navCtrl.push(PageNames.HowPricingWorks);
   }
 }
