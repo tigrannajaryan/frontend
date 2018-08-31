@@ -1,25 +1,37 @@
 .StylistsPage {
-  $pic-size: 64px;
-  $card-padding: 16px;
+  $pic-size: pxtovw(64px);
+  $card-padding: pxtovw(16px);
 
   .StylistsPage-loader {
     font-size: $t-base;
     font-weight: normal;
   }
 
-  .StylistsPage-search {
-    margin-top: 12px;
-    font-size: $t-base;
-    border-radius: 10px;
-    box-shadow: 0 7px 43px color($grayscale, 200);
+  .StylistsPage-searchWrap {
+    position: relative;
 
-    &.item-block .item-inner { // override ionic styles
-      padding: 7.5px 16px;
+    .StylistsPage-search {
+      margin-top: pxtovw(12px);
+      font-size: $t-base;
+      border-radius: pxtovw(10px);
+      box-shadow: 0 pxtovw(7px) pxtovw(43px) color($grayscale, 200);
+  
+      &.item-block .item-inner { // override ionic styles
+        padding: pxtovw(7.5px) $card-padding;
+      }
+    }
+  
+    .StylistsPage-searchIcon {
+      position: absolute;
+      top: 50%;
+      right: $card-padding;
+      margin-top: pxtovw(-3px);
+      font-size: $t-base;
     }
   }
 
   .StylistsPage-stylists {
-    margin-top: 18px;
+    margin-top: pxtovw(18px);
   }
 
   .StylistsPage-cardImg {
@@ -29,13 +41,10 @@
     width: $pic-size;
     height: $pic-size;
     margin-top: -1 * $pic-size / 2;
-    background: color($grayscale, 100);
+    background-color: color($grayscale, 100);
+    background-repeat: no-repeat;
+    background-size: cover;
     border-radius: 50%; // circle
-
-    > img {
-      width: 100%;
-      height: 100%;
-    }
   }
 
   .StylistsPage-cardHeader {
@@ -49,13 +58,16 @@
 
   .StylistsPage-cardClose {
     position: absolute;
+    display: none;
     right: $card-padding;
     background: transparent;
+    font-size: 87%;
+    color: white;
   }
 
   .StylistsPage-cardTitle {
     width: 100%;
-    margin: 3px 0 6px;
+    margin: pxtovw(3px) 0 pxtovw(6px);
     font-size: $t-h3;
     font-weight: 500;
     white-space: nowrap;
@@ -73,8 +85,8 @@
   }
 
   .StylistsPage-submit {
-    margin: 24px 0 18px;
-    border: 2px solid white;
+    margin: pxtovw(24px) 0 pxtovw(18px);
+    border: pxtovw(2px) solid white;
   }
 
   .StylistsPage-cardFooter {
@@ -84,7 +96,7 @@
 
     .StylistsPage-cardSubtitle {
       width: 100%;
-      margin-top: 8px;
+      margin-top: pxtovw(8px);
     }
   }
 
@@ -103,8 +115,8 @@
     }
 
     &.is-active {
-      $new-pic-size: 120px;
-      $pic-top-offset: 56px;
+      $new-pic-size: pxtovw(120px);
+      $pic-top-offset: pxtovw(56px);
 
       padding-left: $card-padding;
       background: color($colors, primary);
@@ -115,11 +127,15 @@
         width: $new-pic-size;
         height: $new-pic-size;
         margin-left: -1 * $new-pic-size / 2;
-        background: white;
+        background-color: white;
+      }
+
+      .StylistsPage-cardClose {
+        display: inline-block;
       }
 
       .StylistsPage-cardTitle {
-        margin: 8px 0;
+        margin: pxtovw(8px) 0;
       }
 
       .StylistsPage-cardTitle,
@@ -129,13 +145,13 @@
       }
 
       .StylistsPage-cardHeader {
-        $header-height: 26px;
+        $header-height: pxtovw(26px);
 
         height: $header-height + $card-padding * 2 + $new-pic-size;
       }
 
       .StylistsPage-cardFooter {
-        $footer-height: 182px;
+        $footer-height: pxtovw(182px);
 
         height: $footer-height;
       }
