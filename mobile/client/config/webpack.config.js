@@ -7,7 +7,10 @@ const webpackConfig = require('../node_modules/@ionic/app-scripts/config/webpack
 const config = {
   plugins: [
     new webpack.EnvironmentPlugin({
-      MB_ENV: undefined
+      MB_ENV: undefined,
+      TRAVIS_BUILD_NUMBER: undefined,
+      APP_VERSION_NUMBER: undefined,
+      IOS_APP_BUNDLE_ID: undefined
     }),
     new webpack.NormalModuleReplacementPlugin(/\.\/environments\/environment\.default/, function (resource) {
       if (process.env.MB_ENV !== undefined) {

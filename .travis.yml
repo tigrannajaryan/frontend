@@ -44,12 +44,15 @@ env:
     - JAVA_HOME="/Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home"
     - >-
         IOS_CODE_SIGN_IDENTITY="iPhone Distribution: BetterBeauty, Inc"
+    - SENTRY_ORGANIZATION="madebeauty"
     # expands to IOS_DISTRIBUTION_CERT_PASSWORD=password
     - secure: "VUCYLUkexxWrobNg6Gt8PNiU4FXkcyPlO2xn/WfBelFr4TQszihUwfs54NHu10QS2Km5mq3o2g5MX1J6W7GJOs4AgqFTOKzCDOEoKS56meOXA17aFDkg3+O2nwUJPwYJjH8yaNBa7K0pTYIwFmUqa53Kd6TAWPT1iySxvRReZGbWVVyAEAw3jzin0xWKdarxE/dUvoSaAoWwo6MOGYUdE1fbJ5/v1ZD0yynckx3405va9uGeukgoMw+IZ/anqdeodUMJwFCxXhQkwr/8umudKHz4VNnpsfawrH7xBEKJCqZw+H825wZBoYa2rpMRnRbTd6tAxX2t2tDE5qHg/7kzYmvvOw6N1Z+NbxFA4Z3LefFXCeI6YHpawuNv+EYd7bdZea3PTJG53nAjBEdExJN/rIZMekQQ2Hb4SGaL9Nhs+vyxZwXJbdQjgpbNEGBBJZZPCLl9GrqebV3Q9Yfhmes9L7UY2ePpAwzYcF1v9yzfni1nB1MssKDa2vcR1+jIJt2wnI5uPheGdz+jDgokvdqNdusLHqDIFC5zjouI/x+h3Jyhnqic8kenRHNHeW0MQOUZmf+l0SXeeGFSn8TEr5FqBU4k4bQJqxFgYDflASHtlZ5U0HOt9oZtP57dAZ5/k36U5V0aO3EzmZ7lZudzQLdP+WVMVGBRi2TKumaMoMSa058="
     # $FASTLANE_USER; expands to FASTLANE_USER=itunes_email
     - secure: "UQ9MhRlgyPGq+7pujSwMgOJNnQcTtAZl/uGuRZTpXxap6bjz5SeCa0UzXtTvPqjXcWsIbjpSRuSl0gX2Ozk+SH+coPVu6HdVhIT3qmzBFZ/5kL7VWBikyPPAmPFxewgZbb7k+sY5wRLiSc3Y6lZtfQTpkew2ij9rLP8qQh2QF1uY+8yxpLyEiJzFZtHI+mvRngIJD1owG1XGNlOEjbUQoVrId/rNIYwU0laPXrTw36FCYnglx8BQPRo/9y7GrouuK9z7SCJJ1n1AqD2Ezap7I9m72RvbkuA42Oi6rFj1XdMO8eBODrNbgdxdzzlPhUaRIagbHPwqnvBoL2kWcIOur6UFM9foR8QcxhsxmThvPCbd1XyHtT0j8PCF9kr79oloPppXwnyiL3umN96Mg5ZFnZ1kATInd8ZsnYdDDTJvsHdWfrSrZfgo2OnLh7tnsm46LOuwTNbc5STN2CyApL5RPs/oGKXe1VT+pflfwQON217kB14U33Q9uQ+gkjVrySc/LieEt1cxNHQPxj/kBzzIaKx2KFoEcxfecICmJFN1mDhuCYLL5mPpv7uakf5B5nrWVbnNWZLdcd8Q3oZ1axNWSPsozMd8Bbqd5V66GAu0tcRqji0SIQexJMSsS671OK4+ojOv6NYTfh19+sNlS6QweaeAYAU5FEaf14bqb1bJbr4="
     # $FASTLANE_PASSWORD; expands to FASTLANE_PASSWORD=password
     - secure: "Aop9V/yACO3GxHqay7rklodUPOsnFax4neC4btWkEXab+Dkliu0/goyDn1Wm5JldevVaSY+TUn0kITows5DvsD2Zpn+cwp1PNfGLw8eQnCf38UEK3vL7rIRxkgFhMd7N+KFhYkfag5d21i/8A7iT7RF8GBDAC3QjLIfkGBR+fFW/hsfsMph4/bNKdjnNmanVWxugYKvMtA2ZpwA0hR186glYC0oOmksGR5s0WG3RkgFB4TamnVT8PhIiwCJA4E5iGK15C/gwsQ+2Y6dNP1+MMueLAQeMqFFdNSzq+EvX6mighmPJhXNjKZqOXE8o7bsPY7jYkZvEBFlnTVpOLOCZfEf1HjQgU0weiCZYCfTYczGg9Vs4ksIFjO847d00cUJqc6WuZ6qy/zoOXLgkR4stmOj4A4twcT4uhXjqoTvdkueMYWOtlcLO0tViTbLiHFXaoVLeMfuArDZj73JxwaQuUnzHeIhHzyQeVrMKQpDiqp7U+/L3gjlSxFp7MEJqClWV53RWcG0b7K4E5WsynnCde0EdpKsegG/bgXTJxdFpHWBHOOy2aj2iM6LdZPB6k+bXyIC0EpMaE6WOm8PrPxuDYlw2jnKwlqL5ZVSPb6CAE4S060XVXU2vqxuqmj7u4R9aQJvIGRyRpyxhIeb05lCJqwPSYNNVWzVMvorXIs2dS9g="
+    # $SENTRY_AUTH_TOKEN; expands to SENTRY_AUTH_TOKEN=token
+    - secure: "M58uRd5J8WXlKyupoNTJUovF2cZxV6CRKl15V9i8oobBiqkd5dgh8bfreuLtKh+lOlxJ6vHUzaWJpgHfgdd1LxIBgbyAK+5FJFC1KeuyRwIJCSAD4MMi0BsJeWXPCpPnDT6lUypoFE3VNE9HPYkqouJCorTAlSL6P/6w2Iv9YZOAkJMeqwmM8EvayNYx0rr/0/1DrHIbn+klRzDSf6lCXpqlnN88vNSnu9RsI8oDmr7RsDr/kK2+I8B9uKPR//O+HzbIo7Jhx0j2kiXmHcNmUFXGHirOAn6dRhqpR0J4w1dZENYojlBGk5KICyJ9+nFl75vDy0po/Q3llVuEjkURQv3zuHKB+Hhe5R13qsCoK0bxAS+42CA1HxYPckodcViUMnBDwMf4irhw12CQScr91no+YCrO0yNgUMoKLV/WC7AaIq8pqfW/eow6ZmSuCBla1ZzyRzIYJqbGTOwKMgGYcfB4l2SNWHFssJOu2BZbyaqK4FBTeLM5Ux4dS85tCpV5crvz79nRsPUshxRGTGrHy/Hlb1tMGQOTA5JXL7sO9N3FwsjJfvLNxa5W99zTLAGwPrtC4v+Q9hpie6P78nYB5PIjWTV8BJ2MYk9q0CJDctGYh3A+kWAhFwGoWdLsCs9Qjnp0HIzct/lInujIxeKTKkmEWrAUf/IBj0eS5gZPfSg="
 
 jobs:
   fast_finish: true
@@ -57,6 +60,7 @@ jobs:
     - name: Client Staging Build
       env:
         APP_TYPE=client
+        APP_VERSION_NUMBER=0.0.1
         MB_ENV=staging
         IOS_APP_BUNDLE_ID="com.madebeauty.client.staging"
         ANDROID_APP_BUNDLE_ID="com.madebeauty.client.staging.android"
@@ -68,9 +72,11 @@ jobs:
         FB_APP_NAME="Made Staging"
         FASTLANE_SKIP_WAITING=true
         FASTLANE_DISTRIBUTE_EXTERNAL=false
+        SENTRY_PROJECT=mobile-client-staging
     - name: Stylist Staging Build
       env:
         APP_TYPE=stylist
+        APP_VERSION_NUMBER=1.1.1
         MB_ENV=staging
         IOS_APP_BUNDLE_ID="com.madebeauty.stylist.beta"
         IOS_APP_NAME="Made Pro Staging"
@@ -81,10 +87,12 @@ jobs:
         FB_APP_NAME="Made Staging"
         FASTLANE_SKIP_WAITING=true
         FASTLANE_DISTRIBUTE_EXTERNAL=false
+        SENTRY_PROJECT=mobile-stylist-staging
     - name: Client Production Build
       if: branch = develop AND type = push  # run this stage only if it's not a PR
       env:
         APP_TYPE=client
+        APP_VERSION_NUMBER=0.0.1
         MB_ENV=prod
         IOS_APP_BUNDLE_ID="com.madebeauty.client.production"
         ANDROID_APP_BUNDLE_ID="com.madebeauty.client.production.android"
@@ -96,10 +104,12 @@ jobs:
         FB_APP_NAME="Made"
         FASTLANE_SKIP_WAITING=true
         FASTLANE_DISTRIBUTE_EXTERNAL=false
+        SENTRY_PROJECT=mobile-client-production
     - name: Stylist Production Build
       if: branch = develop AND type = push  # run this stage only if it's not a PR
       env:
         APP_TYPE=stylist
+        APP_VERSION_NUMBER=1.1.1
         MB_ENV=prod
         IOS_APP_BUNDLE_ID="com.madebeauty.stylist.production"
         IOS_APP_NAME="Made Pro"
@@ -110,6 +120,7 @@ jobs:
         FB_APP_NAME="Made"
         FASTLANE_SKIP_WAITING=true
         FASTLANE_DISTRIBUTE_EXTERNAL=false
+        SENTRY_PROJECT=mobile-stylist-production
 
 # run basic node / angular build and test
 install: mobile/scripts/should-skip-build.sh || mobile/scripts/travis_install.sh
