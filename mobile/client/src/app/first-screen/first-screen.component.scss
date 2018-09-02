@@ -1,0 +1,72 @@
+first-screen {
+  .FirstScreen-content {
+    .scroll-content {
+      overflow: initial;
+    }
+  }
+
+  .FirstScreen-logo {
+    position: relative;
+    display: flex;
+    align-content: center;
+    align-items: center;
+    justify-content: center;
+    height: pxtovw(451px);
+    margin: pxtovw(-65px) 0 pxtovw(22px);
+
+    img {
+      width: pxtovw(187px);
+    }
+  }
+
+  .FirstScreen-logoCircle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    border-radius: 50%;
+    box-shadow: 0 0 1px 1px color($colors, primary);
+    transform: translate(-50%, -50%);
+
+    &:nth-child(1) {
+      $logo-circle-1: pxtovw(192px);
+
+      width: $logo-circle-1;
+      height: $logo-circle-1;
+    }
+
+    &:nth-child(2) {
+      $logo-circle-2: pxtovw(287.5px);
+
+      width: $logo-circle-2;
+      height: $logo-circle-2;
+    }
+
+    &:nth-child(3) {
+      $logo-circle-3: pxtovw(375px);
+
+      width: $logo-circle-3;
+      height: $logo-circle-3;
+    }
+
+    &:nth-child(4) {
+      $logo-circle-4: pxtovw(480px);
+
+      width: $logo-circle-4;
+      height: $logo-circle-4;
+    }
+  }
+
+  .FirstScreen-title {
+    margin-bottom: pxtovw(15px);
+    font-size: pxtovw(27px);
+    font-weight: 700;
+    color: black;
+    letter-spacing: pxtovw(-0.6px);
+  }
+
+  .FirstScreen-text {
+    margin-bottom: pxtovw(36px);
+    color: black;
+    letter-spacing: pxtovw(-0.1px);
+  }
+}
