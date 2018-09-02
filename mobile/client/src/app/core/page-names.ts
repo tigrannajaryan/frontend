@@ -12,6 +12,7 @@ export enum PageNames {
   Auth = 'AuthPageComponent',
   AuthConfirm = 'AuthConfirmPageComponent',
   BookingComplete = 'BookingCompleteComponent',
+  FirstScreen = 'FirstScreenComponent',
   Home = 'HomePageComponent',
   HowMadeWorks = 'HowMadeWorksComponent',
   HowPricingWorks = 'HowPricingWorksComponent',
@@ -26,5 +27,5 @@ export enum PageNames {
   MainTabs = 'MainTabsComponent'
 }
 
-export const UNAUTHORIZED_ROOT = PageNames.Auth;
+export const UNAUTHORIZED_ROOT = PageNames.FirstScreen;
 export const AUTHORIZED_ROOT = PageNames.MainTabs;
