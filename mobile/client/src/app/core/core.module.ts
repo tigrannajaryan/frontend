@@ -10,9 +10,10 @@ import { PricePipe } from '~/shared/pipes/price.pipe';
 
 import { ServerStatusComponent } from '~/shared/server-status/server-status.component';
 import { MbIconsComponent } from '~/shared/components/mb-icons/mb-icons.component';
-import { WelcomeInfoComponent } from '~/shared/components/welcome-info/welcome-info.component';
 import { ContinueFooterComponent } from '~/shared/components/continue-footer/continue-footer.component';
-import { HowPricingInfoComponent } from '~/shared/components/how-pricing-info/how-pricing-info.component';
+import { MadeLinkDirective } from '~/shared/directives/made-link.directive';
+import { NumListComponent } from '~/shared/components/num-list/num-list.component';
+import { CheckListComponent } from '~/shared/components/check-list/check-list.component';
 
 import { InputNumberDirective } from '~/core/directives/input-number.directive';
 import { PhoneInputDirective } from '~/core/directives/phone-input.directive';
@@ -23,27 +24,27 @@ import { MadeHeaderComponent } from '~/core/components/made-header/made-header.c
 import { ProfileHeaderComponent } from '~/core/components/profile-header/profile-header.component';
 
 export enum DefaultImage {
-  User = '/assets/imgs/user/default_user.png'
+  User = '../assets/imgs/icons/avatar.png'
 }
 
 const declarations = [
-  InputNumberDirective,
-  PhoneInputDirective,
-
-  FormatPhonePipe,
-  HasErrorPipe,
-  PricePipe,
-
   AppointmentItemComponent,
   BookServicesHeaderComponent,
-  MadeHeaderComponent,
-  MbIconsComponent,
-  ProfileHeaderComponent,
-  ServerStatusComponent,
   BookServicesHeaderComponent,
-  WelcomeInfoComponent,
-  HowPricingInfoComponent,
-  ContinueFooterComponent
+  CheckListComponent,
+  ContinueFooterComponent,
+  FormatPhonePipe,
+  HasErrorPipe,
+  InputNumberDirective,
+  MadeHeaderComponent,
+  MadeLinkDirective,
+  MbIconsComponent,
+  NumListComponent,
+  NumListComponent,
+  PhoneInputDirective,
+  PricePipe,
+  ProfileHeaderComponent,
+  ServerStatusComponent
 ];
 
 @NgModule({

@@ -4,7 +4,15 @@
 <ion-content no-padding>
   <made-nav [activePage]="PageNames.WelcomeToMade"></made-nav>
 
-  <welcome-info></welcome-info>
+  <div class="Made-wp Made-wpContent">
+    <div class="WelcomeTitle">Welcome to MADE!</div>
+
+    <div class="WelcomeTitle-icon">
+      <img src="assets/imgs/icons/discount.png" alt="">
+    </div>
+
+    <num-list [list]="list"></num-list>
+  </div>
 </ion-content>
 
 

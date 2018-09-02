@@ -4,7 +4,16 @@
 <ion-content no-padding>
   <made-nav [activePage]="PageNames.HowPricingWorks"></made-nav>
 
-  <how-pricing-info></how-pricing-info>
+  <div class="Made-wp Made-wpContent">
+    <div class="Made-h1">How pricing works</div>
+
+    <div class="MadeCheckList-title">Prices automatically update and encourage clients to:</div>
+
+    <check-list [list]="list"></check-list>
+
+    <div class="Made-h3">What clients see at booking:</div>
+    <img src="assets/imgs/discounts/welcome.png" alt="">
+  </div>
 </ion-content>
 
 

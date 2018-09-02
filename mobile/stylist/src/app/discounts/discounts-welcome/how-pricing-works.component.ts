@@ -13,6 +13,12 @@ import { PageNames } from '~/core/page-names';
 export class HowPricingWorksComponent {
   PageNames = PageNames;
 
+  list = [
+    'Visit more often',
+    'Book earlier',
+    'Book at off-peak times'
+  ];
+
   constructor(
     private navCtrl: NavController
   ) {

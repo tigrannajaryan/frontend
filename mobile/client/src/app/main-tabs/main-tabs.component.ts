@@ -19,7 +19,8 @@ export enum TabIndex {
 }
 
 @IonicPage({
-  segment: 'main-tabs'
+  segment: 'main-tabs',
+  priority: 'high'
 })
 @Component({
   selector: 'main-tabs',

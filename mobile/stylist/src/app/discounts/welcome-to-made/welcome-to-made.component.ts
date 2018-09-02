@@ -11,11 +11,18 @@ import { PageNames } from '~/core/page-names';
   templateUrl: 'welcome-to-made.component.html'
 })
 export class WelcomeToMadeComponent {
-  protected PageNames = PageNames;
+  PageNames = PageNames;
+
+  list = [
+    'You set your services and full prices.',
+    'You select your discounts.',
+    'Your clients book.',
+    'We help track your prices and reduce discounts automatically as your calendar fills up!'
+  ];
 
   constructor(private navCtrl: NavController) {}
 
-  protected onContinue(): void {
+  onContinue(): void {
     this.navCtrl.push(PageNames.HowPricingWorks);
   }
 }

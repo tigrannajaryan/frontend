@@ -29,3 +29,27 @@
   vertical-align: middle;
 }
 
+.MadeNumList {
+  display: flex;
+  align-items: start;
+  justify-content: start;
+  margin-bottom: pxtovw(16px);
+  font-size: pxtovw(18px);
+  line-height: pxtovw(24px);
+  color: color($shared-colors, color1);
+  letter-spacing: pxtovw(-0.2px);
+}
+
+.MadeNumList-num {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: pxtovw(25px);
+  height: pxtovw(25px);
+  margin-right: pxtovw(8px);
+  font-size: pxtovw(16px);
+  color: color($shared-colors, color1);
+  border: 1px solid rgb(212, 212, 212);
+  border-radius: 50%;
+}
