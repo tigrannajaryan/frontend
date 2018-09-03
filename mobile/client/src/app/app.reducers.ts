@@ -1,12 +1,9 @@
-import { ActionReducer, ActionReducerMap, MetaReducer } from '@ngrx/store';
+import { ActionReducer, MetaReducer } from '@ngrx/store';
 import { storeLogger } from 'ngrx-store-logger';
 
 import { ENV } from '~/../environments/environment.default';
 
-import { authPath, authReducer, resetOnLogoutReducer } from '~/auth/auth.reducer';
-import { profilePath, profileReducer } from '~/core/reducers/profile.reducer';
-import { stylistsPath, stylistsReducer } from '~/core/reducers/stylists.reducer';
-import { servicesPath, servicesReducer } from '~/core/reducers/services.reducer';
+import { resetOnLogoutReducer } from '~/auth/auth.reducer';
 
 /**
  * storeFreeze prevents state from being mutated. When mutation occurs, an
@@ -35,17 +32,12 @@ export interface State {
  * These reducer functions are called with each dispatched action
  * and the current or initial state and return a new immutable state.
  */
-export const reducers: ActionReducerMap<State> = {};
-reducers[authPath] = authReducer;
-reducers[profilePath] = profileReducer;
-reducers[stylistsPath] = stylistsReducer;
-reducers[servicesPath] = servicesReducer;
 
 /**
  * Use meta reducer to log all actions.
  */
-export function logger(reducer: ActionReducer<State>): ActionReducer<State> {
-  return storeLogger()(reducer);
+export function logger(actionReducer: ActionReducer<State>): ActionReducer<State> {
+  return storeLogger()(actionReducer);
 }
 
 /**
