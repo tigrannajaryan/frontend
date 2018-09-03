@@ -30,7 +30,7 @@ export class ClientUnhandledErrorHandler {
     reportToSentry(error);
 
     // Prepare the error message to show to the user
-    let errorMsg = 'Unknown error';
+    let errorMsg = `${error.name}: ${error.message}`;
     if (error.stack) {
       errorMsg = `${errorMsg}\n${error.stack}`;
     }
