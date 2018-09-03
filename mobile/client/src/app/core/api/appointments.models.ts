@@ -24,6 +24,7 @@ export interface AppointmentModel {
   total_card_fee: number;
   total_tax: number;
   tax_percentage: number;
+  card_fee_percentage: number;
   datetime_start_at: string;
   duration_minutes: number;
   status: AppointmentStatus;
