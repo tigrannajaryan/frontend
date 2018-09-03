@@ -36,7 +36,7 @@ fi
 # it multiple times
 curl --request POST \
      --url https://sentry.io/api/0/projects/$SENTRY_ORGANIZATION/$SENTRY_PROJECT/releases/ \
-     --header "Authorization: $SENTRY_AUTH_TOKEN" \
+     --header "Authorization: Bearer $SENTRY_AUTH_TOKEN" \
      --form "version=$SENTRY_RELEASE"
 
 find "$FILE_PATH" \( -name "*.js" -o -name "*.js.map" \) -print0 |
@@ -44,7 +44,7 @@ find "$FILE_PATH" \( -name "*.js" -o -name "*.js.map" \) -print0 |
         file_label=$(basename "$file_name")
         file_upload_label="$SENTRY_FILE_PREFIX/$file_label"
         # if this is .js file and .js.map exists - add link comment (if not yet added)
-        if [[ $file_label == *js && -f "$file_label.map" ]]; then
+        if [[ $file_label == *js && -f "$file_name.map" ]]; then
             source_map_link="//# sourceMappingURL=$SENTRY_FILE_PREFIX/$file_label.map"
             echo "Manually adding source map info link  $source_map_link to the end of $file_label"
             grep "$source_map_link" "$file_name" || echo -e "\n$source_map_link" >> "$file_name"
