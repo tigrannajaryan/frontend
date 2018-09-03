@@ -24,7 +24,7 @@ import { AuthInterceptor } from '~/core/http-interceptors/auth-interceptor';
 import { ClientUnhandledErrorHandler } from '~/core/unhandled-error-handler';
 
 import { ClientAppComponent } from '~/app.component';
-import { getMetaReducers, reducers } from '~/app.reducers';
+import { getMetaReducers } from '~/app.reducers';
 
 import { LogoutEffects } from '~/core/effects/logout.effects';
 
@@ -39,6 +39,11 @@ initSentry();
 
 import { ServerStatusTracker } from '~/shared/server-status-tracker';
 import { BaseService } from '~/core/api/base-service';
+
+import { authPath, authReducer } from '~/auth/auth.reducer';
+import { profilePath, profileReducer } from '~/core/reducers/profile.reducer';
+import { stylistsPath, stylistsReducer } from '~/core/reducers/stylists.reducer';
+import { servicesPath, servicesReducer } from '~/core/reducers/services.reducer';
 
 @NgModule({
   declarations: [
@@ -64,8 +69,16 @@ import { BaseService } from '~/core/api/base-service';
      * reducers, combineReducers will be run creating your application
      * meta-reducer. This returns all providers for an @ngrx/store
      * based application.
+     *
+     * Using forFeature in order to fix empty initial state error, for more info see
+     * - https://github.com/ngrx/store/issues/401
+     * - https://forum.ionicframework.com/t/ngrx-state-does-not-work-in-production-build/107226/3
      */
-    StoreModule.forRoot(reducers),
+    StoreModule.forRoot({}),
+    StoreModule.forFeature(authPath, authReducer),
+    StoreModule.forFeature(profilePath, profileReducer),
+    StoreModule.forFeature(stylistsPath, stylistsReducer),
+    StoreModule.forFeature(servicesPath, servicesReducer),
 
     /**
      * EffectsModule.forRoot() is imported once in the root module and
