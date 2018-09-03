@@ -1,15 +1,15 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
-import { DiscountsInfoComponent } from './discounts-info.component';
+import { WelcomeToMadeComponent } from './welcome-to-made.component';
 import { CoreModule } from '~/core/core.module';
 
 @NgModule({
   declarations: [
-    DiscountsInfoComponent
+    WelcomeToMadeComponent
   ],
   imports: [
-    IonicPageModule.forChild(DiscountsInfoComponent),
+    IonicPageModule.forChild(WelcomeToMadeComponent),
     CoreModule
   ]
 })
-export class DiscountsInfoPageModule {}
+export class WelcomeToMadePageModule {}

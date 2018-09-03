@@ -654,7 +654,7 @@ export class InvitationsComponent {
    * Event handler for 'Skip' click.
    */
   protected onSkip(): void {
-    this.navCtrl.push(PageNames.DiscountsDone);
+    this.navCtrl.push(PageNames.AlmostDone);
 
     // Send empty invitations list to backend to make sure the profile's
     // has_invited_clients is marked true and we do not bother the user
@@ -672,21 +672,17 @@ export class InvitationsComponent {
     }
 
     // This is during registation.
-    this.navCtrl.push(PageNames.DiscountsDone);
+    this.navCtrl.push(PageNames.AlmostDone);
   }
 
   private async composeInvitationText(): Promise<string> {
     const stylistProfile = await this.stylistProfile;
     const discounts = await this.discounts;
 
-    let defaultInvitationText = `It's ${stylistProfile.first_name}, your stylist! I'm now using the Made mobile app to book. ` +
-      'Get it from https://www.madebeauty.com/get';
+    let defaultInvitationText = `Hi, it's ${stylistProfile.first_name}. I'm now using the Made app to book`;
+    defaultInvitationText = defaultInvitationText + (discounts.first_booking > 0 ? ' and I discounted your next visit on the app.' : '.');
 
-    if (discounts.first_booking > 0) {
-      defaultInvitationText = `${defaultInvitationText} Your next visit is discounted!`;
-    }
-
-    defaultInvitationText = `${defaultInvitationText} See you soon.`;
+    defaultInvitationText = `${defaultInvitationText} You can get it at https://www.madebeauty.com/get.`;
 
     return defaultInvitationText;
   }

@@ -11,16 +11,15 @@
     position: relative;
 
     .StylistsPage-search {
-      margin-top: pxtovw(12px);
       font-size: $t-base;
       border-radius: pxtovw(10px);
       box-shadow: 0 pxtovw(7px) pxtovw(43px) color($grayscale, 200);
-  
+
       &.item-block .item-inner { // override ionic styles
         padding: pxtovw(7.5px) $card-padding;
       }
     }
-  
+
     .StylistsPage-searchIcon {
       position: absolute;
       top: 50%;

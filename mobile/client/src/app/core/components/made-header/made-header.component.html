@@ -1,5 +1,11 @@
-<ion-navbar>
+<ion-navbar [class.is-hiddenBackButton]="hideBackButton" [class.is-backgroundTransparent]="isBackgroundTransparent" class="Made-wp BackHeader-backBtn">
   <ion-title>
-    <img width="22" height="24" src="assets/icons/logo.svg" />
+    <i class="mb-icon-logo"></i>
   </ion-title>
+
+  <ion-buttons end>
+    <button *ngIf="showHome" (click)="goHome()" ion-button icon-only class="UserHeader-btnMenu">
+      <i class="mb-icon-home-a"></i>
+    </button>
+  </ion-buttons>
 </ion-navbar>

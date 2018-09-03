@@ -4,13 +4,13 @@ import { IonicPage, NavController } from 'ionic-angular';
 import { PageNames } from '~/core/page-names';
 
 @IonicPage({
-  segment: 'discounts-welcome'
+  segment: 'almost-done'
 })
 @Component({
-  selector: 'page-discounts-welcome',
-  templateUrl: 'discounts-welcome.component.html'
+  selector: 'page-almost-done',
+  templateUrl: 'almost-done.component.html'
 })
-export class DiscountsWelcomeComponent {
+export class AlmostDoneComponent {
   PageNames = PageNames;
 
   constructor(
@@ -19,6 +19,6 @@ export class DiscountsWelcomeComponent {
   }
 
   onContinue(): void {
-    this.navCtrl.push(PageNames.Services);
+    this.navCtrl.push(PageNames.Tabs);
   }
 }

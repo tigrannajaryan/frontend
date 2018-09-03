@@ -1,7 +1,8 @@
-<ion-header madeHeader></ion-header>
+<ion-header madeHeader [hideBackButton]="true"></ion-header>
+
 
 <ion-content class="StylistsPage">
-  <ion-grid>
+  <div class="contentSidePadding">
     <div class="StylistsPage-searchWrap">
       <ion-item class="FormControl StylistsPage-search">
         <ion-input type="text" placeholder="Search stylists for…" [formControl]="query" (input)="onSearchStylists()"></ion-input>
@@ -49,5 +50,5 @@
       </div>
       <div *ngIf="(stylists | async)?.length === 0">No stylists found</div>
     </div>
-  </ion-grid>
+  </div>
 </ion-content>

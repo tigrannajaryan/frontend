@@ -1,15 +1,15 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
-import { DiscountsWelcomeComponent } from './discounts-welcome.component';
+import { AlmostDoneComponent } from './almost-done.component';
 import { CoreModule } from '~/core/core.module';
 
 @NgModule({
   declarations: [
-    DiscountsWelcomeComponent
+    AlmostDoneComponent
   ],
   imports: [
-    IonicPageModule.forChild(DiscountsWelcomeComponent),
+    IonicPageModule.forChild(AlmostDoneComponent),
     CoreModule
   ]
 })
-export class DiscountsWelcomeComponentModule {}
+export class AlmostDoneComponentModule {}
