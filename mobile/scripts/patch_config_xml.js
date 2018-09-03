@@ -14,6 +14,7 @@ if (!appName) {
 }
 
 var buildNumber = (process.env.TRAVIS_BUILD_NUMBER || '0').trim();
+var appVersion = (process.env.APP_VERSION || '').trim();
 var appDescription = (process.env.IOS_APP_DESCRIPTION || '').trim();
 var iosAppBundleId = (process.env.IOS_APP_BUNDLE_ID || '').trim();
 var androidAppBundleId = (process.env.ANDROID_APP_BUNDLE_ID || '').trim();
@@ -22,6 +23,7 @@ var androidAppBundleId = (process.env.ANDROID_APP_BUNDLE_ID || '').trim();
 // Read config.xml
 fs.readFile('config.xml', 'utf8', function(err, data) {
   console.log('Going to patch config.xml\n--------------------------\n');
+  console.log('App Version: ', appVersion);
   console.log('iOS / Android Build Number: ', buildNumber);
   console.log('iOS / Android App Name: ', appName);
   console.log('iOS / Android App Description: ', appDescription);
@@ -43,6 +45,14 @@ fs.readFile('config.xml', 'utf8', function(err, data) {
     }
     // Get JS Obj
     var obj = result;
+
+    // if app version is set externally - patch config, skip overwise
+
+    if (appVersion) {
+      obj['widget']['$']['version'] = appVersion;
+    } else {
+      console.log('App version is not set, not touching it...');
+    }
 
     // set iOS and Android build versions
     obj['widget']['$']['ios-CFBundleVersion'] = buildNumber;

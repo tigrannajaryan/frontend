@@ -45,3 +45,7 @@ EOL
 cd $APP_TYPE/platforms/android
 fastlane supply init
 fastlane deploy
+
+# deploy build artifacts to Sentry
+echo "Deploying source maps to Sentry"
+APP_DEVICE_TYPE=android $TRAVIS_BUILD_DIR/mobile/scripts/upload-sentry-artifacts.sh

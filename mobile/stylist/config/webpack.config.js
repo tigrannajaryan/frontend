@@ -13,7 +13,9 @@ const config = {
   plugins: [
     new webpack.EnvironmentPlugin({
       MB_ENV: undefined,
-      IOS_BUILD_NUMBER: undefined
+      TRAVIS_BUILD_NUMBER: undefined,
+      APP_VERSION_NUMBER: undefined,
+      IOS_APP_BUNDLE_ID: undefined
     }),
 
     new webpack.NormalModuleReplacementPlugin(/\.\/environments\/environment\.default/, function (resource) {

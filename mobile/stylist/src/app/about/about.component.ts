@@ -46,8 +46,12 @@ export class AboutComponent {
     const easterEggMax = 5;
     if (++this.easterEggCounter >= easterEggMax) {
       this.easterEggCounter = 0;
-      throw new Error(' Not a real error, just for debugging');
+      this.testMethodForNestedException();
     }
+  }
+
+  protected testMethodForNestedException(): void {
+    throw new Error(' Not a real error, just for debugging');
   }
 
 }
