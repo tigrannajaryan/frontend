@@ -45,6 +45,7 @@ env:
     - >-
         IOS_CODE_SIGN_IDENTITY="iPhone Distribution: BetterBeauty, Inc"
     - SENTRY_ORGANIZATION="madebeauty"
+    - SENTRY_SKIP_AUTO_RELEASE=true
     # expands to IOS_DISTRIBUTION_CERT_PASSWORD=password
     - secure: "VUCYLUkexxWrobNg6Gt8PNiU4FXkcyPlO2xn/WfBelFr4TQszihUwfs54NHu10QS2Km5mq3o2g5MX1J6W7GJOs4AgqFTOKzCDOEoKS56meOXA17aFDkg3+O2nwUJPwYJjH8yaNBa7K0pTYIwFmUqa53Kd6TAWPT1iySxvRReZGbWVVyAEAw3jzin0xWKdarxE/dUvoSaAoWwo6MOGYUdE1fbJ5/v1ZD0yynckx3405va9uGeukgoMw+IZ/anqdeodUMJwFCxXhQkwr/8umudKHz4VNnpsfawrH7xBEKJCqZw+H825wZBoYa2rpMRnRbTd6tAxX2t2tDE5qHg/7kzYmvvOw6N1Z+NbxFA4Z3LefFXCeI6YHpawuNv+EYd7bdZea3PTJG53nAjBEdExJN/rIZMekQQ2Hb4SGaL9Nhs+vyxZwXJbdQjgpbNEGBBJZZPCLl9GrqebV3Q9Yfhmes9L7UY2ePpAwzYcF1v9yzfni1nB1MssKDa2vcR1+jIJt2wnI5uPheGdz+jDgokvdqNdusLHqDIFC5zjouI/x+h3Jyhnqic8kenRHNHeW0MQOUZmf+l0SXeeGFSn8TEr5FqBU4k4bQJqxFgYDflASHtlZ5U0HOt9oZtP57dAZ5/k36U5V0aO3EzmZ7lZudzQLdP+WVMVGBRi2TKumaMoMSa058="
     # $FASTLANE_USER; expands to FASTLANE_USER=itunes_email
