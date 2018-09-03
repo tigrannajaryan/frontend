@@ -76,8 +76,7 @@
           <ion-row *ngIf="params.appointment.status === AppointmentStatus.checked_out && params.appointment.total_card_fee && params.appointment.total_client_price_before_tax"
             class="AppointmentPage-cardAppServiceFees">
             <ion-col col-7>
-              Card fee ({{ 100*(params.appointment.total_card_fee / (params.appointment.total_client_price_before_tax + params.appointment.total_tax))
-              | number:'1.0-3' }}%)
+              Card fee ({{ params.appointment.card_fee_percentage | number:'1.0-3' }}%)
             </ion-col>
             <ion-col col-5>
               ${{ params.appointment.total_card_fee | number:'1.0-2' }}
