@@ -14,7 +14,7 @@ if (!appName) {
 }
 
 var buildNumber = (process.env.TRAVIS_BUILD_NUMBER || '0').trim();
-var appVersion = (process.env.APP_VERSION || '').trim();
+var appVersion = (process.env.APP_VERSION_NUMBER || '').trim();
 var appDescription = (process.env.IOS_APP_DESCRIPTION || '').trim();
 var iosAppBundleId = (process.env.IOS_APP_BUNDLE_ID || '').trim();
 var androidAppBundleId = (process.env.ANDROID_APP_BUNDLE_ID || '').trim();
