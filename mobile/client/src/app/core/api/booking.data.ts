@@ -5,9 +5,8 @@ import { Observable } from 'rxjs/Observable';
 
 import { DataStore } from '~/core/utils/data-store';
 import { BookingApi, TimeslotsResponse } from '~/core/api/booking.api';
-import { GetPricelistResponse, ServiceModel } from '~/core/api/services.models';
+import { DayOffer, GetPricelistResponse, ServiceModel } from '~/core/api/services.models';
 import { StylistModel } from '~/core/api/stylists.models';
-import { DayOffer } from '~/core/api/services.models';
 
 /**
  * Singleton that stores current booking process data.
