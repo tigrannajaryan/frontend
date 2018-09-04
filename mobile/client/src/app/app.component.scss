@@ -33,3 +33,9 @@
 .grid {
   padding: 0 25px;
 }
+
+.alert-md .alert-message,
+.alert-ios .alert-message,
+.alert-wp .alert-message {
+  text-align: left;
+}

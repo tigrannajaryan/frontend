@@ -29,16 +29,11 @@ export class ClientUnhandledErrorHandler {
     // Report to sentry
     reportToSentry(error);
 
-    // Prepare the error message to show to the user
-    let errorMsg = `${error.name}: ${error.message}`;
-    if (error.stack) {
-      errorMsg = `${errorMsg}\n${error.stack}`;
-    }
 
-    this.showErrorMsg(errorMsg);
+    this.showErrorMsg(error.name, error.stack);
   }
 
-  private showErrorMsg(errorMsg: string): void {
+  private showErrorMsg(errorName: string, errorStack?: string): void {
     // Do UI updates via setTimeout to work around known Angular bug:
     // https://stackoverflow.com/questions/37836172/angular-2-doesnt-update-view-after-exception-is-thrown)
     // Also force Application update via Application.tick().
@@ -46,8 +41,8 @@ export class ClientUnhandledErrorHandler {
     // Despite Angular team claims the bug is still not fixed in Angular 5.2.9.
 
     setTimeout(() => {
-      errorMsg = errorMsg.replace(/\n/gm, '<br/>');
-      this.popup(errorMsg);
+      errorName = errorName.replace(/\n/gm, '<br/>');
+      this.popup(errorName, errorStack);
 
       // Force UI update
       const appRef: ApplicationRef = this.injector.get(ApplicationRef);
@@ -55,10 +50,11 @@ export class ClientUnhandledErrorHandler {
     });
   }
 
-  private popup(msg: string): void {
+  private popup(title: string, msg = ''): void {
     // Show an error message
     const alert = this.alertCtrl.create({
-      subTitle: msg,
+      subTitle: title,
+      message: msg.replace(/\n/, '<br><br>').replace(/\n\s\s\s\s/img, '<br>-&nbsp;'),
       buttons: ['Dismiss']
     });
     alert.present();
