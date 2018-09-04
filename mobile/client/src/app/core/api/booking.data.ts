@@ -7,6 +7,7 @@ import { DataStore } from '~/core/utils/data-store';
 import { BookingApi, TimeslotsResponse } from '~/core/api/booking.api';
 import { GetPricelistResponse, ServiceModel } from '~/core/api/services.models';
 import { StylistModel } from '~/core/api/stylists.models';
+import { DayOffer } from '~/core/api/services.models';
 
 /**
  * Singleton that stores current booking process data.
@@ -21,7 +22,7 @@ export class BookingData {
   private _selectedServices: ServiceModel[];
   private _date: moment.Moment;
   private _totalRegularPrice: number;
-  private _totalClientPrice: number;
+  private _offer: DayOffer;
   private _pricelist: DataStore<GetPricelistResponse>;
   private _timeslots: DataStore<TimeslotsResponse>;
 
@@ -53,7 +54,7 @@ export class BookingData {
 
     this._selectedServices = undefined;
     this._totalRegularPrice = undefined;
-    this._totalClientPrice = undefined;
+    this._offer = undefined;
     this._date = undefined;
     this.selectedTime = undefined;
     this._pricelist = undefined;
@@ -122,16 +123,16 @@ export class BookingData {
     }
   }
 
-  setTotalClientPrice(price: number): void {
-    this._totalClientPrice = price;
+  selectOffer(offer: DayOffer): void {
+    this._offer = offer;
   }
 
   get stylist(): StylistModel {
     return this._stylist;
   }
 
-  get totalClientPrice(): number {
-    return this._totalClientPrice;
+  get offer(): DayOffer {
+    return this._offer;
   }
 
   get totalRegularPrice(): number {

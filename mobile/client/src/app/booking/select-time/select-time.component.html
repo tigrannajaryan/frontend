@@ -8,10 +8,10 @@
 
     <div class="SelectTimeslot-pricing">
       <div class="SelectTimeslot-pricingRegular">Regular price
-        <div>{{ this.bookingData.totalRegularPrice | price }}</div>
+        <div>{{ bookingData.totalRegularPrice | price }}</div>
       </div>
       <div class="SelectTimeslot-pricingYour">Your price
-        <div>{{ this.bookingData.totalClientPrice | price }}</div>
+        <div>{{ bookingData.offer.price | price }}</div>
       </div>
     </div>
 

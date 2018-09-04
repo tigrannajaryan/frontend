@@ -59,7 +59,7 @@ export class SelectDateComponent {
 
     const date = moment(offer.date);
     this.bookingData.setDate(date);
-    this.bookingData.setTotalClientPrice(offer.price);
+    this.bookingData.selectOffer(offer);
 
     this.navCtrl.push(PageNames.SelectTime);
   }
