@@ -29,7 +29,7 @@ export class ClientUnhandledErrorHandler {
     // Report to sentry
     reportToSentry(error);
 
-
+    // Show error popup (async)
     this.showErrorMsg(error.name, error.stack);
   }
 
