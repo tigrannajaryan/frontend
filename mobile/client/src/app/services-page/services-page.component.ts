@@ -51,26 +51,8 @@ export class ServicesPageComponent {
     if (!this.isAdditionalService) {
       this.navCtrl.push(PageNames.SelectDate);
     } else {
-      // Iterate over all screens used to add an additional one:
-      let view = this.navCtrl.getPrevious();
-      while (view && view.data.isAdditionalService) {
-        view = this.navCtrl.getPrevious(view);
-      }
-      if ([PageNames.SelectDate.toString(), PageNames.SelectTime.toString()].indexOf(view.name) !== -1) {
-        // Allow to navigate only to SelectDate or SelectTime:
-        this.navCtrl.push(view.name);
-        setTimeout(() => {
-          // Clear all views used to select an additional service:
-          for (const v of this.navCtrl.getViews()) {
-            if (v.data.isAdditionalService) {
-              this.navCtrl.removeView(v);
-            }
-          }
-          this.navCtrl.removeView(view);
-        });
-      } else {
-        throw new Error('Unable to add an additional service');
-      }
+      const startIndex = this.navCtrl.getActive().index - 1;
+      this.navCtrl.remove(startIndex, 2);
     }
   }
 }
