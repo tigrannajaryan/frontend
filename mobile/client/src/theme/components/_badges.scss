@@ -1,9 +1,9 @@
 .Badge {
-  $badge-size: 24px;
+  $badge-size: pxtovw(24px);
 
   height: $badge-size;
-  padding: 0 12px;
-  margin-left: 12px;
+  padding: pxtovw(3px) pxtovw(12px);
+  margin-left: pxtovw(10px);
   font-size: $t-base;
   font-weight: 500;
   line-height: $badge-size;

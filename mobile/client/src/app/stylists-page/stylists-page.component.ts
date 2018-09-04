@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { IonicPage, NavController } from 'ionic-angular';
+import { Events, IonicPage, NavController, NavParams, Tab } from 'ionic-angular';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 
@@ -15,6 +15,9 @@ import {
   StylistState
 } from '~/core/reducers/stylists.reducer';
 
+import { EventTypes } from '~/core/event-types';
+import { TabIndex } from '~/main-tabs/main-tabs.component';
+
 export const MIN_QUERY_LENGTH = 2;
 
 @IonicPage()
@@ -23,6 +26,8 @@ export const MIN_QUERY_LENGTH = 2;
   templateUrl: 'stylists-page.component.html'
 })
 export class StylistsPageComponent {
+  continueText?: string; // nav param
+
   query: FormControl = new FormControl('');
 
   loadingStylists = Array(2).fill(undefined);
@@ -34,13 +39,17 @@ export class StylistsPageComponent {
   requestState?: Observable<RequestState>;
 
   constructor(
+    private events: Events,
     private navCtrl: NavController,
+    private navParams: NavParams,
     private preferredStylistsData: PreferredStylistsData,
     private store: Store<StylistState>
   ) {
   }
 
   ionViewWillEnter(): void {
+    this.continueText = this.navParams.get('continueText');
+
     this.stylists = this.store.select(selectStylists);
     this.requestState = this.store.select(selectStylistsRequestState);
 
@@ -61,6 +70,12 @@ export class StylistsPageComponent {
 
   async onContinueWithStylist(stylist: StylistModel): Promise<void> {
     await this.preferredStylistsData.set(stylist);
-    this.navCtrl.setRoot(PageNames.MainTabs);
+
+    // Select a home tab if it‘s a MainTab nav:
+    if (this.navCtrl.parent && this.navCtrl instanceof Tab) {
+      this.events.publish(EventTypes.selectMainTab, TabIndex.Home);
+    } else {
+      this.navCtrl.setRoot(PageNames.MainTabs);
+    }
   }
 }

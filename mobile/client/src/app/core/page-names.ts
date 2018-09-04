@@ -16,6 +16,7 @@ export enum PageNames {
   Home = 'HomePageComponent',
   HowMadeWorks = 'HowMadeWorksComponent',
   HowPricingWorks = 'HowPricingWorksComponent',
+  MainTabs = 'MainTabsComponent',
   ProfileEdit = 'ProfileEditComponent',
   ProfileSummary = 'ProfileSummaryComponent',
   SelectDate = 'SelectDateComponent',
@@ -23,8 +24,7 @@ export enum PageNames {
   Services = 'ServicesPageComponent',
   ServicesCategories = 'ServicesCategoriesPageComponent',
   StylistInvitation = 'StylistInvitationPageComponent',
-  Stylists = 'StylistsPageComponent',
-  MainTabs = 'MainTabsComponent'
+  Stylists = 'StylistsPageComponent'
 }
 
 export const UNAUTHORIZED_ROOT = PageNames.FirstScreen;

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Events, IonicPage, NavController } from 'ionic-angular';
 
 import { EventTypes } from '~/core/event-types';
+import { TabIndex } from '~/main-tabs/main-tabs.component';
 
 @IonicPage()
 @Component({
@@ -16,6 +17,6 @@ export class BookingCompleteComponent {
 
   onReturnHomeClick(): void {
     this.navCtrl.popToRoot();
-    this.events.publish(EventTypes.bookingComplete);
+    this.events.publish(EventTypes.selectMainTab, TabIndex.Home);
   }
 }

@@ -3,9 +3,8 @@
  * part of the code.
  */
 export enum EventTypes {
-  bookingComplete = 'bookingComplete',
   logout = 'logout',
+  selectMainTab = 'selectMainTab',
   startBooking = 'startBooking',
-  startRebooking = 'startRebooking',
-  profileSelected = 'profileSelected'
+  startRebooking = 'startRebooking'
 }

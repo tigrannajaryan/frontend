@@ -35,17 +35,16 @@
         (click)="onSetActiveStylist($event, stylist)">
         <div class="StylistsPage-cardImg" [style.backgroundImage]="'url(' + (stylist.profile_photo_url  || 'assets/icons/stylist-avatar.svg') + ')'"></div>
         <div class="StylistsPage-cardHeader">
-          Your stylist
+          Your selected stylist
           <i (click)="onSetActiveStylist($event, undefined)" class="StylistsPage-cardClose mb-icon-cross"></i>
         </div>
         <div class="StylistsPage-cardSubtitle">{{ stylist.salon_name }}</div>
         <div class="StylistsPage-cardTitle">{{ stylist.first_name }} {{ stylist.last_name }}</div>
         <div class="StylistsPage-cardSubtitle"><img src="assets/icons/location.svg" />&nbsp;{{ stylist.salon_address }}</div>
         <div class="StylistsPage-cardFooter">
-          <div class="StylistsPage-cardSubtitle"><img src="assets/icons/phone.svg" />&nbsp;{{ stylist.phone }}</div>
+          <div *ngIf="stylist.phone" class="StylistsPage-cardSubtitle"><img src="assets/icons/phone.svg" />&nbsp;{{ stylist.phone | formatPhone }}</div>
           <div *ngIf="stylist.instagram_profile_name" class="StylistsPage-cardSubtitle"><img src="assets/icons/instagram.svg" />&nbsp;{{ stylist.instagram_profile_name }}</div>
-          <button (click)="onContinueWithStylist(stylist)" ion-button class="Button StylistsPage-submit">Continue with {{ stylist.first_name }}</button>
-          <div (click)="onSetActiveStylist($event, undefined)" class="StylistsPage-cardSubtitle">This is&nbsp;not&nbsp;my stylist</div>
+          <button (click)="onContinueWithStylist(stylist)" ion-button class="Button StylistsPage-submit">{{ continueText || ("Add " + stylist.first_name +"!") }}</button>
         </div>
       </div>
       <div *ngIf="(stylists | async)?.length === 0">No stylists found</div>

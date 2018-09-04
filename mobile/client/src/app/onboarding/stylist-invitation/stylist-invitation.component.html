@@ -12,9 +12,9 @@
     </ion-row>
     <ion-row justify-content-center class="StylistInvitationPage-salonName">{{ stylist.salon_name }}</ion-row>
     <ion-row justify-content-center class="StylistInvitationPage-name">{{ stylist.first_name }} {{ stylist.last_name }}</ion-row>
-    <ion-row justify-content-center class="StylistInvitationPage-address"><img src="assets/icons/location.svg" />&nbsp;{{ stylist.salon_address }}</ion-row>
-    <ion-row justify-content-center class="StylistInvitationPage-phone"><img src="assets/icons/phone.svg" />&nbsp;{{ stylist.phone | formatPhone }}</ion-row>
-    <ion-row justify-content-center class="StylistInvitationPage-phone"><img src="assets/icons/instagram.svg" />&nbsp;{{ stylist.instagram_profile_name }}</ion-row>
+    <ion-row *ngIf="stylist.salon_address" justify-content-center class="StylistInvitationPage-address"><img src="assets/icons/location.svg" />&nbsp;{{ stylist.salon_address }}</ion-row>
+    <ion-row *ngIf="stylist.phone" justify-content-center class="StylistInvitationPage-phone"><img src="assets/icons/phone.svg" />&nbsp;{{ stylist.phone | formatPhone }}</ion-row>
+    <ion-row *ngIf="stylist.instagram_profile_name" justify-content-center class="StylistInvitationPage-phone"><img src="assets/icons/instagram.svg" />&nbsp;{{ stylist.instagram_profile_name }}</ion-row>
     <ion-row justify-content-center>
       <button (click)="onContinueWithStylist()" ion-button class="StylistInvitationPage-submit Button">Continue</button>
     </ion-row>

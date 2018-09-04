@@ -11,7 +11,7 @@ interface TabsObject {
   params: any;
 }
 
-enum TabIndex {
+export enum TabIndex {
   Home = 0,
   History,
   Stylists,
@@ -61,24 +61,15 @@ export class MainTabsComponent {
   }
 
   ionViewWillEnter(): void {
-    // Select Home tab when booking is complete
-    this.events.subscribe(EventTypes.bookingComplete, () => this.onBookingComplete());
-
-    // Select Profile tab when navigated to the Profile
-    this.events.subscribe(EventTypes.profileSelected, () => this.onProfileSelected());
+    this.events.subscribe(EventTypes.selectMainTab, (idx: TabIndex) => this.onTabSelectedFromOutside(idx));
   }
 
   ionViewWillLeave(): void {
-    this.events.unsubscribe(EventTypes.bookingComplete);
-    this.events.unsubscribe(EventTypes.profileSelected);
+    this.events.unsubscribe(EventTypes.selectMainTab);
   }
 
-  onBookingComplete(): void {
-    this.tabs.select(TabIndex.Home);
-  }
-
-  onProfileSelected(): void {
-    this.tabs.select(TabIndex.Profile);
+  onTabSelectedFromOutside(idx: TabIndex): void {
+    this.tabs.select(idx);
   }
 
   onTabChange(tab: Tab): void {

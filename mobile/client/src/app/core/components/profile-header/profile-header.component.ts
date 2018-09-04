@@ -7,6 +7,7 @@ import { ProfileModel } from '~/core/api/profile.models';
 import { ApiResponse } from '~/core/api/base.models';
 
 import { EventTypes } from '~/core/event-types';
+import { TabIndex } from '~/main-tabs/main-tabs.component';
 
 @Component({
   selector: 'profile-header',
@@ -25,6 +26,6 @@ export class ProfileHeaderComponent {
   }
 
   onClick(): void {
-    this.events.publish(EventTypes.profileSelected);
+    this.events.publish(EventTypes.selectMainTab, TabIndex.Profile);
   }
 }

@@ -20,7 +20,7 @@ export class HowPricingWorksComponent {
   async onContinue(): Promise<void> {
     const preferredStylists = await this.preferredStylistsData.get();
     if (preferredStylists.length === 0) {
-      this.navCtrl.push(PageNames.Stylists);
+      this.navCtrl.push(PageNames.Stylists, { continueText: 'Let‘s get started!' });
     } else {
       this.navCtrl.setRoot(PageNames.MainTabs);
     }
