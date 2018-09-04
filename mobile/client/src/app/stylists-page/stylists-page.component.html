@@ -5,7 +5,7 @@
   <div class="contentSidePadding">
     <div class="StylistsPage-searchWrap">
       <ion-item class="FormControl StylistsPage-search">
-        <ion-input type="text" placeholder="Search stylists for…" [formControl]="query" (input)="onSearchStylists()"></ion-input>
+        <ion-input type="text" placeholder="Search stylists for…" [formControl]="query" (input)="onSearchStylists()" data-test-id="searchInput"></ion-input>
       </ion-item>
       <i class="StylistsPage-searchIcon mb-icon-search"></i>
     </div>

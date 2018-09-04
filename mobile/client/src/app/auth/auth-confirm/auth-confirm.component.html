@@ -35,10 +35,10 @@
         Verifying the code…
       </span>
       <span *ngIf="(confirmCodeState | async) !== RequestState.Loading">
-        <span *ngIf="(requestCodeState | async) === RequestState.Succeeded">
+        <span *ngIf="(resendCodeCountdown | async) > 0">
           You can send a&nbsp;new code in&nbsp;{{ resendCodeCountdown | async }}
         </span>
-        <span *ngIf="(requestCodeState | async) === RequestState.NotStarted">
+        <span *ngIf="(resendCodeCountdown | async) === 0">
           Didn’t get a&nbsp;code? <span class="Link" (click)="onResendCode()">Send a&nbsp;new one</span>
         </span>
         <span *ngIf="(requestCodeState | async) === RequestState.Loading">

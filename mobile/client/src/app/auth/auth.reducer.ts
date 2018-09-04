@@ -68,10 +68,6 @@ export class ConfirmCodeSuccessAction implements Action {
   ) {}
 }
 
-export class ClearSendCodeTimeout implements Action {
-  readonly type = authActionTypes.CLEAR_SEND_CODE_TIMEOUT;
-}
-
 export class ResetConfirmCodeErrorAction implements Action {
   readonly type = authActionTypes.RESET_CONFIRM_CODE_ERROR;
 }
@@ -85,7 +81,6 @@ type Actions =
   | ConfirmCodeLoadingAction
   | ConfirmCodeSuccessAction
   | ConfirmCodeErrorAction
-  | ClearSendCodeTimeout
   | ResetConfirmCodeErrorAction;
 
 export interface AuthState {
@@ -157,13 +152,6 @@ export function authReducer(state: AuthState = initialState, action: Actions): A
         confirmCodeRequestState: RequestState.Succeeded
       };
 
-    case authActionTypes.CLEAR_SEND_CODE_TIMEOUT:
-      return {
-        ...state,
-        getCodeRequestState: RequestState.NotStarted,
-        getCodeRequestTimestamp: undefined
-      };
-
     case authActionTypes.RESET_CONFIRM_CODE_ERROR:
       return {
         ...state,
@@ -192,24 +180,6 @@ export const selectConfirmCodeState = createSelector(
 export const selectConfirmCodeError = createSelector(
   selectAuthFromState,
   (state: AuthState): any => state.confirmCodeRequestError
-);
-
-export const RESEND_CODE_TIMEOUT_SECONDS = 120; // 2min
-
-export const selectCanRequestCodeInSeconds = (timestamp = Number(new Date())) => createSelector(
-  selectAuthFromState,
-  (state: AuthState): number => {
-    if (state.getCodeRequestTimestamp !== undefined) {
-      const seconds = Math.ceil(RESEND_CODE_TIMEOUT_SECONDS - (timestamp - state.getCodeRequestTimestamp) / 1000);
-      return seconds > 0 ? seconds : 0;
-    }
-    return 0; // can request now
-  }
-);
-
-export const selectCanRequestCode = (timestamp?: number) => createSelector(
-  selectCanRequestCodeInSeconds(timestamp),
-  (seconds: number): boolean => seconds === 0
 );
 
 // Next action and reducer used in app.reducer.ts

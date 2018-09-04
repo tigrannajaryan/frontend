@@ -18,11 +18,10 @@
     "test-coverage": "ng test --preserve-symlinks --code-coverage",
     "test": "ng test --preserve-symlinks",
     "test-headless": "ng test --preserve-symlinks --watch=false --single-run=true --reporters=junit,progress --browsers=ChromeHeadless",
-    "e2e-test-temporary": "cross-env TEST_HEADLESS=1 NODE_PRESERVE_SYMLINKS=1 protractor",
-    "e2e-test": "echo e2e-test is disable until --prod build is fixed. Use e2e-test-temporary.",
+    "e2e-test": "cross-env TEST_HEADLESS=1 NODE_PRESERVE_SYMLINKS=1 protractor",
     "postinstall": "webdriver-manager update --gecko=false",
     "run-android": "ionic cordova run android --prod --device",
-    "build-full": "npm run build && npm run test-headless"
+    "build-full": "npm run build && npm run test-headless && npm run e2e-test"
   },
   "dependencies": {
     "@angular/common": "5.2.9",
@@ -100,6 +99,7 @@
     "karma-jasmine": "1.1.1",
     "karma-jasmine-html-reporter": "0.2.2",
     "karma-junit-reporter": "1.2.0",
+    "node-fetch": "2.2.0",
     "protractor": "5.4.0",
     "puppeteer": "1.3.0",
     "serve-static": "1.13.2",
