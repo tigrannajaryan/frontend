@@ -1,5 +1,7 @@
 import { $ } from 'protractor';
 
+import { waitForNot } from './shared/utils';
+
 /**
  * LoginRegister page definition
  */
@@ -9,9 +11,10 @@ class PhoneLoginPage {
   get continueBtn() { return $('page-auth-start button[type=submit]'); }
 
   // Operations
-  login(phone) {
-    this.phoneInput.sendKeys(phone);
-    return this.continueBtn.click();
+  async login(phone) {
+    await this.phoneInput.sendKeys(phone);
+    await this.continueBtn.click();
+    await waitForNot(this.phoneInput);
   }
 }
 

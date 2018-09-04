@@ -1,10 +1,10 @@
 import { $, browser, element, ElementFinder, ExpectedConditions, Locator } from 'protractor';
 
 /**
- * Wait for the specified element to becomes visible. Waits up to 5 seconds.
+ * Wait for the specified element to becomes visible. Waits up to 10 seconds.
  */
 export async function waitFor(finder: ElementFinder): Promise<any> {
-  return browser.wait(ExpectedConditions.visibilityOf(finder), 5000, `waitFor ${finder.locator().toString()} failed.`);
+  return browser.wait(ExpectedConditions.visibilityOf(finder), 10000, `waitFor ${finder.locator().toString()} failed.`);
 }
 
 /**
@@ -42,6 +42,22 @@ export function getRandomNumber(length: number): string {
     str += nums.charAt(Math.floor(Math.random() * nums.length));
   }
   return str;
+}
+
+/**
+ * Clear Ionic storage, forcing the session information and everything stored locally to be forgotten.
+ * Can be used to start a fresh login session.
+ */
+export async function clearIonicStorage(): Promise<{}> {
+  const deleteDBScript = `
+  try {
+    var db = openDatabase('_ionicstorage', '1', 'my database', 2 * 1024 * 1024);
+    db.transaction(function (tx) {
+      tx.executeSql('DROP TABLE _ionickv');
+    });
+  } catch (e) {}`;
+
+  return browser.executeScript(deleteDBScript);
 }
 
 class Globals {

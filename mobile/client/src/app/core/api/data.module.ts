@@ -5,6 +5,7 @@ import { AppointmentsApi } from '~/core/api/appointments.api';
 import { AppointmentsApiMock } from '~/core/api/appointments.api.mock';
 import { AppointmentsDataStore } from '~/core/api/appointments.datastore';
 
+import { AuthProcessState } from '~/auth/auth-process-state';
 import { AuthService } from '~/auth/auth.api';
 import { BookingData } from '~/core/api/booking.data';
 import { BookingApi } from '~/core/api/booking.api';
@@ -45,6 +46,7 @@ export class DataModule {
       // of singletons.
       providers: [
         AppointmentsDataStore,
+        AuthProcessState,
         PreferredStylistsData,
         ProfileDataStore,
         BookingData

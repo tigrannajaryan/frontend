@@ -16,7 +16,6 @@ import {
 import {
   authActionTypes,
   AuthState,
-  ClearSendCodeTimeout,
   ConfirmCodeAction,
   ConfirmCodeErrorAction,
   ConfirmCodeLoadingAction,
@@ -25,8 +24,6 @@ import {
   RequestCodeErrorAction,
   RequestCodeLoadingAction,
   RequestCodeSuccessAction,
-  selectCanRequestCode,
-  selectCanRequestCodeInSeconds,
   selectConfirmCodeState,
   selectRequestCodeState
 } from '~/auth/auth.reducer';
@@ -107,35 +104,6 @@ export class AuthEffects {
           })
       )
     )
-    .share();
-
-  @Effect({ dispatch: false }) codeResendCountdown = this.actions
-    .ofType(authActionTypes.REQUEST_CODE_SUCCESS)
-    .map((action: RequestCodeSuccessAction) => action)
-    .withLatestFrom(this.store)
-    .map(([action, state]) => selectCanRequestCodeInSeconds()(state))
-    .switchMap((seconds: number) => {
-      if (seconds === 0) {
-        this.store.dispatch(new ClearSendCodeTimeout());
-        return Observable.of(0);
-      }
-      return (
-        Observable
-          .timer(0, 1000)
-          .withLatestFrom(this.store)
-          .takeWhile(([i, updatedState]) => {
-            const canRequestCode = selectCanRequestCode()(updatedState);
-            if (canRequestCode) {
-              this.store.dispatch(new ClearSendCodeTimeout());
-            }
-            return !canRequestCode;
-          })
-          .map(([i, updatedState]) => {
-            const remaining = seconds - i;
-            return remaining > 0 ? remaining : 0;
-          })
-      );
-    })
     .share();
 
   @Effect() setProfilePhone = this.actions

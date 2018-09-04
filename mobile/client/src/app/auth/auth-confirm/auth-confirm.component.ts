@@ -22,6 +22,7 @@ import { PreferredStylistsData } from '~/core/api/preferred-stylists.data';
 import { AuthEffects } from '~/auth/auth.effects';
 
 import { ApiError, FieldErrorItem } from '~/shared/api-errors';
+import { AuthProcessState } from '~/auth/auth-process-state';
 
 export const CODE_LENGTH = 6;
 
@@ -54,6 +55,7 @@ export class AuthConfirmPageComponent {
 
   constructor(
     private authEffects: AuthEffects,
+    private authDataState: AuthProcessState,
     private navCtrl: NavController,
     private navParams: NavParams,
     private preferredStylistsData: PreferredStylistsData,
@@ -97,7 +99,9 @@ export class AuthConfirmPageComponent {
 
     // Re-request code
     this.requestCodeState = this.store.select(selectRequestCodeState);
-    this.resendCodeCountdown = this.authEffects.codeResendCountdown;
+
+    this.authDataState.beginRerequestCountdown();
+    this.resendCodeCountdown = this.authDataState.rerequestCodeTimeoutAsObservable();
   }
 
   ionViewDidEnter(): void {
@@ -108,6 +112,7 @@ export class AuthConfirmPageComponent {
 
   onResendCode(): void {
     this.store.dispatch(new RequestCodeAction(this.phone));
+    this.authDataState.beginRerequestCountdown();
   }
 
   onFocusCode(): void {

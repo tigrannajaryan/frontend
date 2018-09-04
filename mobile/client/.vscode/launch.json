@@ -50,7 +50,8 @@
       "program": "${workspaceRoot}/node_modules/protractor/bin/protractor",
       "stopOnEntry": false,
       "args": [
-        "${workspaceRoot}/protractor.conf.js"
+        "${workspaceRoot}/protractor.conf.js",
+        // "--specs=e2e/first-use-not-invited-flow.e2e-spec.ts"
       ],
       "env": {
         // This is needed to make files in "shared/e2e" symlinked directory work

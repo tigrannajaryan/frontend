@@ -1,12 +1,13 @@
-import { browser } from 'protractor';
-
+import { waitFor } from './shared/utils';
 import { phoneLoginPage } from './phone-login-page';
-import { waitFor, waitForNot } from './shared/utils';
-import { phoneCodePage } from './phone-code-page';
+import { firstPage } from './first-page';
+import { clientApp } from './client-app';
 
-describe('Login Flow', () => {
+describe('Login Pages', () => {
   it('Has expected initial state', async () => {
-    await browser.get('');
+
+    await clientApp.loadNew();
+    await firstPage.getStarted();
 
     await waitFor(phoneLoginPage.phoneInput);
 
@@ -17,7 +18,7 @@ describe('Login Flow', () => {
     expect(phoneLoginPage.continueBtn.isEnabled()).toBeFalsy();
   });
 
-  it('Continue button is enabled after entering a valid phone number', async () => {
+  it('Continue button is disabled for invalid phone number', async () => {
 
     // Check that it is disabled initially
     await phoneLoginPage.phoneInput.clear();
@@ -26,7 +27,9 @@ describe('Login Flow', () => {
     // Enter partial phone number and check it is still disabled
     await phoneLoginPage.phoneInput.sendKeys('555');
     expect(phoneLoginPage.continueBtn.isEnabled()).toBeFalsy();
+  });
 
+  it('Continue button is enabled after entering a valid phone number', async () => {
     // Enter full phone number and that it is now enabled
     await phoneLoginPage.phoneInput.sendKeys('666-0000');
     expect(phoneLoginPage.continueBtn.isEnabled()).toBeTruthy();
@@ -39,32 +42,5 @@ describe('Login Flow', () => {
     phoneLoginPage.phoneInput.sendKeys('1');
 
     expect(phoneLoginPage.continueBtn.isEnabled()).toBeFalsy();
-  });
-
-  it('Can continue to Code screen', async () => {
-    // Enter a valid phone number
-    await phoneLoginPage.phoneInput.clear();
-    await phoneLoginPage.phoneInput.sendKeys('555-555-0001');
-
-    // And continue to code page
-    await phoneLoginPage.continueBtn.click();
-
-    // For some unknown reason Protractor decides to wait infinitely on subsequent
-    // actions if we don't disable the synchronization here. Looks like a bug
-    // in Protractor or Webdriver.
-    browser.ignoreSynchronization = true;
-
-    // Make sure phone number input is no longer visible
-    await waitForNot(phoneLoginPage.phoneInput);
-
-    // and code input is visible
-    await waitFor(phoneCodePage.codeInput);
-
-    // Enter invalid code
-    await phoneCodePage.codeInput.sendKeys('000000');
-
-    // Make sure error message is displayed
-    waitFor(phoneCodePage.codeErrorMsg);
-    expect(phoneCodePage.codeErrorMsg.getText()).toBe('Please enter a valid code');
   });
 });
