@@ -26,6 +26,8 @@ export const MIN_QUERY_LENGTH = 2;
   templateUrl: 'stylists-page.component.html'
 })
 export class StylistsPageComponent {
+  continueText?: string; // nav param
+
   query: FormControl = new FormControl('');
 
   loadingStylists = Array(2).fill(undefined);
@@ -39,12 +41,15 @@ export class StylistsPageComponent {
   constructor(
     private events: Events,
     private navCtrl: NavController,
+    private navParams: NavParams,
     private preferredStylistsData: PreferredStylistsData,
     private store: Store<StylistState>
   ) {
   }
 
   ionViewWillEnter(): void {
+    this.continueText = this.navParams.get('continueText');
+
     this.stylists = this.store.select(selectStylists);
     this.requestState = this.store.select(selectStylistsRequestState);
 
