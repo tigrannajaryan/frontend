@@ -13,7 +13,6 @@ import { AppointmentsDataStore } from '~/core/api/appointments.datastore';
 import { ServiceModel } from '~/core/api/services.models';
 import { AppointmentPageParams } from '~/appointment-page/appointment-page.component';
 import { loading } from '~/core/utils/loading';
-import { componentIsActive } from '~/core/utils/component-is-active';
 
 interface DisplayTimeslot {
   displayTime: string;
@@ -107,17 +106,6 @@ export class SelectTimeComponent {
     } else {
       this.logger.error('Must call bookingData.setDate() before accessing timeslots');
     }
-
-    this.bookingData.selectedServicesObservable
-      .takeWhile(componentIsActive(this))
-      .subscribe(async () => {
-        // Recalculate offer's price on services change:
-        const { response } = await this.bookingData.pricelist.get();
-        const newOffer = response.prices.find(offer => offer.date === this.bookingData.offer.date);
-        if (newOffer) {
-          this.bookingData.selectOffer(newOffer);
-        }
-      });
   }
 
   ionViewWillLeave(): void {

@@ -1,18 +1,23 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import * as moment from 'moment';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
 
 import { DataStore } from '~/core/utils/data-store';
 import { BookingApi, TimeslotsResponse } from '~/core/api/booking.api';
 import { DayOffer, GetPricelistResponse, ServiceModel } from '~/core/api/services.models';
 import { StylistModel } from '~/core/api/stylists.models';
 
+interface DayOfferWithTotalRegularPrice extends DayOffer {
+  totalRegularPrice: number;
+}
+
 /**
  * Singleton that stores current booking process data.
  */
 @Injectable()
-export class BookingData {
+export class BookingData implements OnDestroy {
   private static guardInitilization = false;
 
   selectedTime: moment.Moment;
@@ -20,20 +25,38 @@ export class BookingData {
   private _stylist: StylistModel;
   private _selectedServices: ServiceModel[];
   private _date: moment.Moment;
-  private _totalRegularPrice: number;
-  private _offer: DayOffer;
+  private _offer: DayOfferWithTotalRegularPrice;
   private _pricelist: DataStore<GetPricelistResponse>;
   private _timeslots: DataStore<TimeslotsResponse>;
 
   private servicesSubject: BehaviorSubject<ServiceModel[]>;
+  private servicesSubscription: Subscription;
 
   constructor(private api: BookingApi) {
+    console.log('-- constructor call');
+
     if (BookingData.guardInitilization) {
       console.error('BookingData initialized twice. Only include it in providers array of DataModule.');
     }
     BookingData.guardInitilization = true;
 
     this.servicesSubject = new BehaviorSubject<ServiceModel[]>([]);
+
+    // Recalculate offer's price on services change:
+    this.servicesSubscription = this.selectedServicesObservable.subscribe(async () => {
+      if (this.pricelist && this.offer) {
+        const { response } = await this.pricelist.get();
+        const newOffer = response.prices.find(offer => offer.date === this.offer.date);
+        if (newOffer) {
+          this.setOffer(newOffer);
+        }
+      }
+    });
+  }
+
+  ngOnDestroy(): void {
+    console.log('-- destroy');
+    this.servicesSubscription.unsubscribe();
   }
 
   /**
@@ -52,7 +75,6 @@ export class BookingData {
     }
 
     this._selectedServices = undefined;
-    this._totalRegularPrice = undefined;
     this._offer = undefined;
     this._date = undefined;
     this.selectedTime = undefined;
@@ -76,9 +98,6 @@ export class BookingData {
     // remember the list of services
     this._selectedServices = services;
     this.onServicesChange();
-
-    // Calc total regular price
-    this._totalRegularPrice = services.reduce((sum, service) => sum + service.base_price, 0);
 
     if (this._pricelist) {
       this._pricelist.clear();
@@ -104,10 +123,10 @@ export class BookingData {
     return Boolean(this._selectedServices) && this._selectedServices.some(selectedService => selectedService.uuid === service.uuid);
   }
 
-  /**
-   * Set the date of appointment. Called when user chooses date in the UI.
-   */
-  setDate(date: moment.Moment): void {
+  setOffer(offer: DayOffer): void {
+    const date = moment(offer.date);
+
+
     if (!this._timeslots || !date.isSame(this._date)) {
       this._date = date;
 
@@ -120,22 +139,19 @@ export class BookingData {
         () => this.api.getTimeslots(this._stylist.uuid, date),
         { cacheTtlMilliseconds: 1000 * 60 }); // TTL for timeslots cache is 1 min
     }
-  }
 
-  selectOffer(offer: DayOffer): void {
-    this._offer = offer;
+    this._offer = {
+      ...offer,
+      totalRegularPrice: this._selectedServices.reduce((sum, service) => sum + service.base_price, 0)
+    };
   }
 
   get stylist(): StylistModel {
     return this._stylist;
   }
 
-  get offer(): DayOffer {
+  get offer(): DayOfferWithTotalRegularPrice {
     return this._offer;
-  }
-
-  get totalRegularPrice(): number {
-    return this._totalRegularPrice;
   }
 
   get date(): moment.Moment {

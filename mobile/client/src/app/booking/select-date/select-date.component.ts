@@ -56,11 +56,7 @@ export class SelectDateComponent {
 
   onSelectOffer(offer: DayOffer): void {
     this.logger.info('onSelectOffer', offer);
-
-    const date = moment(offer.date);
-    this.bookingData.setDate(date);
-    this.bookingData.selectOffer(offer);
-
+    this.bookingData.setOffer(offer);
     this.navCtrl.push(PageNames.SelectTime);
   }
 }
