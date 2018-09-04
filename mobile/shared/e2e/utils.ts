@@ -8,11 +8,11 @@ export async function waitFor(finder: ElementFinder): Promise<any> {
 }
 
 /**
- * Wait for the specified element to becomes visible. Waits up to 5 seconds.
+ * Wait for the specified element to becomes visible. Waits up to 10 seconds.
  */
 export async function waitForNot(finder: ElementFinder): Promise<any> {
   return browser.wait(ExpectedConditions.invisibilityOf(finder),
-    5000, `waitForNot ${finder.locator().toString()} failed.`);
+    10000, `waitForNot ${finder.locator().toString()} failed.`);
 }
 
 /**
