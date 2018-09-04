@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { Events, IonicPage, NavController, NavParams } from 'ionic-angular';
+import { Events, IonicPage, NavController, NavParams, Tab } from 'ionic-angular';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 
@@ -71,7 +71,8 @@ export class StylistsPageComponent {
   async onContinueWithStylist(stylist: StylistModel): Promise<void> {
     await this.preferredStylistsData.set(stylist);
 
-    if (this.navCtrl.parent) {
+    // Select a home tab if it‘s a MainTab nav:
+    if (this.navCtrl.parent && this.navCtrl instanceof Tab) {
       this.events.publish(EventTypes.selectMainTab, TabIndex.Home);
     } else {
       this.navCtrl.setRoot(PageNames.MainTabs);
