@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { IonicPage, NavController } from 'ionic-angular';
+import { Events, IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 
@@ -14,6 +14,9 @@ import {
   selectStylistsRequestState,
   StylistState
 } from '~/core/reducers/stylists.reducer';
+
+import { EventTypes } from '~/core/event-types';
+import { TabIndex } from '~/main-tabs/main-tabs.component';
 
 export const MIN_QUERY_LENGTH = 2;
 
@@ -34,6 +37,7 @@ export class StylistsPageComponent {
   requestState?: Observable<RequestState>;
 
   constructor(
+    private events: Events,
     private navCtrl: NavController,
     private preferredStylistsData: PreferredStylistsData,
     private store: Store<StylistState>
@@ -61,6 +65,11 @@ export class StylistsPageComponent {
 
   async onContinueWithStylist(stylist: StylistModel): Promise<void> {
     await this.preferredStylistsData.set(stylist);
-    this.navCtrl.setRoot(PageNames.MainTabs);
+
+    if (this.navCtrl.parent) {
+      this.events.publish(EventTypes.selectMainTab, TabIndex.Home);
+    } else {
+      this.navCtrl.setRoot(PageNames.MainTabs);
+    }
   }
 }
