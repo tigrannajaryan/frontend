@@ -1,4 +1,6 @@
 import * as Sentry from 'sentry-cordova';
+import { Severity } from '@sentry/shim';
+
 import { ENV } from '../../environments/environment.default';
 
 declare const process: any; // make process variable visible to TypeScript
@@ -19,8 +21,11 @@ export function initSentry(): void {
   }
 }
 
-export function reportToSentry(error: any): void {
+export function reportToSentry(error: any, level: Severity = Severity.Error): void {
   try {
+    // Sentry Cordova does not provide a way to set error severity level. The workaround
+    // is to set a custom tag for severity and use it on Sentry side.
+    Sentry.setTagsContext({ 'made.severity': level });
     Sentry.captureException(error.originalError || error);
   } catch (e) {
     console.error(e);
