@@ -35,7 +35,7 @@
         (click)="onSetActiveStylist($event, stylist)">
         <div class="StylistsPage-cardImg" [style.backgroundImage]="'url(' + (stylist.profile_photo_url  || 'assets/icons/stylist-avatar.svg') + ')'"></div>
         <div class="StylistsPage-cardHeader">
-          Your stylist
+          Your selected stylist
           <i (click)="onSetActiveStylist($event, undefined)" class="StylistsPage-cardClose mb-icon-cross"></i>
         </div>
         <div class="StylistsPage-cardSubtitle">{{ stylist.salon_name }}</div>
