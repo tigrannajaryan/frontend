@@ -1,0 +1,14 @@
+#!/bin/bash
+
+# This script runs E2E tests if this is not a production build
+
+# Go to project's root dir
+THISDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
+cd $THISDIR/../..
+
+if [[ $MB_ENV == 'prod' ]]
+then
+  echo 'Skipping all E2E tests in production build.'
+else
+  TEST_HEADLESS=1 NODE_PRESERVE_SYMLINKS=1 ./node_modules/.bin/protractor
+fi

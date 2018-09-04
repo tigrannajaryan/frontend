@@ -142,7 +142,7 @@ npm-test-dir-unit:
 
 npm-test-dir-e2e:
 	$(L)echo E2E testing $(BUILDDIR)...
-	$(L)cd $(BUILDDIR) && npm run e2e-test --silent
+	$(L)$(BUILDDIR)$(PATHSEP)e2e$(PATHSEP)shared$(PATHSEP)rune2e
 	$(L)echo E2E testing $(BUILDDIR) finished.
 
 

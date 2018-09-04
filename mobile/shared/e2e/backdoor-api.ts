@@ -28,11 +28,14 @@ class BackdoorApi {
       const response = await fetch(`${backdoorURL}/get-auth-code?phone=${encodeURIComponent(phoneNumber)}`,
         { headers: { 'Authorization': `Secret ${backdoorApiKey}` } });
 
+      if (response.status !== 200) {
+        throw Error(`Backdoor API failed with HTTP Status: ${response.statusText}`);
+      }
+
       const json = await response.json();
       return json.code;
     } catch (e) {
-      console.error("Cannot get login code for phone ${phoneNumber}");
-      throw e;
+      throw Error(`Cannot get login code for phone ${phoneNumber}, ${e.toString()}`);
     }
   }
 }
