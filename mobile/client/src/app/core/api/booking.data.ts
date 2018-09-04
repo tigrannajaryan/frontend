@@ -33,8 +33,6 @@ export class BookingData implements OnDestroy {
   private servicesSubscription: Subscription;
 
   constructor(private api: BookingApi) {
-    console.log('-- constructor call');
-
     if (BookingData.guardInitilization) {
       console.error('BookingData initialized twice. Only include it in providers array of DataModule.');
     }
@@ -55,7 +53,6 @@ export class BookingData implements OnDestroy {
   }
 
   ngOnDestroy(): void {
-    console.log('-- destroy');
     this.servicesSubscription.unsubscribe();
   }
 
@@ -125,7 +122,6 @@ export class BookingData implements OnDestroy {
 
   setOffer(offer: DayOffer): void {
     const date = moment(offer.date);
-
 
     if (!this._timeslots || !date.isSame(this._date)) {
       this._date = date;
