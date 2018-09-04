@@ -36,7 +36,9 @@ export class SelectDateComponent {
   ) {
   }
 
-  async ionViewWillLoad(): Promise<void> {
+  async ionViewWillEnter(): Promise<void> {
+    this.logger.info('SelectDateComponent.ionViewWillEnter');
+
     const { response } = await loading(this, this.bookingData.pricelist.get());
     if (response && response.prices.length > 0) {
 
@@ -50,10 +52,6 @@ export class SelectDateComponent {
       this.start = moment(response.prices[0].date).startOf('month').format('YYYY-MM-DD');
       this.end = moment(response.prices[response.prices.length - 1].date).endOf('month').format('YYYY-MM-DD');
     }
-  }
-
-  ionViewWillEnter(): void {
-    this.logger.info('SelectDateComponent.ionViewWillEnter');
   }
 
   onSelectOffer(offer: DayOffer): void {
