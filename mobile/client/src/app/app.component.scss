@@ -30,6 +30,12 @@
 @import '../theme/components/base';
 
 // App basic styles
+ion-app.md,
+ion-app.ios,
+ion-app.wp {
+  font-family: 'SF Pro Display', Helvetica, sans-serif;
+}
+
 .grid {
   padding: 0 25px;
 }
