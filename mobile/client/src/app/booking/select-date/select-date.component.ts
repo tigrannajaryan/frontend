@@ -7,6 +7,7 @@ import { PageNames } from '~/core/page-names';
 import { DayOffer, ISODate } from '~/core/api/services.models';
 import { BookingData } from '~/core/api/booking.data';
 import { loading } from '~/core/utils/loading';
+import { componentIsActive } from '~/core/utils/component-is-active';
 
 interface ExtendedDayOffer extends DayOffer {
   opacity: number;
@@ -39,19 +40,23 @@ export class SelectDateComponent {
   async ionViewWillEnter(): Promise<void> {
     this.logger.info('SelectDateComponent.ionViewWillEnter');
 
-    const { response } = await loading(this, this.bookingData.pricelist.get());
-    if (response && response.prices.length > 0) {
+    this.bookingData.selectedServicesObservable
+      .takeWhile(componentIsActive(this))
+      .subscribe(async () => {
+        const { response } = await loading(this, this.bookingData.pricelist.get());
+        if (response && response.prices.length > 0) {
 
-      // Create offers Map {[ISODate]: DayOffer} to easily get an offer by date:
-      this.offers = new Map();
-      for (const offer of getPricesWithOpacity(response.prices)) {
-        this.offers.set(offer.date, offer);
-      }
+          // Create offers Map {[ISODate]: DayOffer} to easily get an offer by date:
+          this.offers = new Map();
+          for (const offer of getPricesWithOpacity(response.prices)) {
+            this.offers.set(offer.date, offer);
+          }
 
-      // Set period boundaries to understand what months of calendar to create:
-      this.start = moment(response.prices[0].date).startOf('month').format('YYYY-MM-DD');
-      this.end = moment(response.prices[response.prices.length - 1].date).endOf('month').format('YYYY-MM-DD');
-    }
+          // Set period boundaries to understand what months of calendar to create:
+          this.start = moment(response.prices[0].date).startOf('month').format('YYYY-MM-DD');
+          this.end = moment(response.prices[response.prices.length - 1].date).endOf('month').format('YYYY-MM-DD');
+        }
+      });
   }
 
   onSelectOffer(offer: DayOffer): void {
