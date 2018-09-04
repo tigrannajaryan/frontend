@@ -24,7 +24,7 @@
       position: absolute;
       top: 50%;
       right: $card-padding;
-      margin-top: pxtovw(-3px);
+      margin-top: -1 * $t-base / 2;
       font-size: $t-base;
     }
   }
@@ -86,6 +86,16 @@
   .StylistsPage-submit {
     margin: pxtovw(24px) 0 pxtovw(18px);
     border: pxtovw(2px) solid white;
+    text-align: center;
+
+    > span {
+      display: inline-block;
+      width: auto;
+      max-width: 100%;
+      text-align: left;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
   }
 
   .StylistsPage-cardFooter {
@@ -101,7 +111,7 @@
 
   .StylistsPage-card {
     position: relative;
-    padding-left: $card-padding * 2 + $pic-size;
+    padding-left: $card-padding + pxtovw(24px) + $pic-size;
     background: white;
 
     &,
@@ -150,7 +160,7 @@
       }
 
       .StylistsPage-cardFooter {
-        $footer-height: pxtovw(182px);
+        $footer-height: pxtovw(112px);
 
         height: $footer-height;
       }
