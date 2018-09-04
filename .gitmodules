@@ -1,3 +1,0 @@
-[submodule "website/themes/universal"]
-	path = website/themes/universal
-	url = https://github.com/devcows/hugo-universal-theme.git
