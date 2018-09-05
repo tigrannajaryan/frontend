@@ -37,12 +37,19 @@
   }
 
   .AppHistoryPage-nohistory {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     margin-top: 180px;
     font-size: $t-base;
-    text-align: center;
+  }
 
-    .AppHistoryPage-nohistoryP {
-      font-weight: bold;
-    }
+  .AppHistoryPage-icon {
+    width: pxtovw(20px);
+  }
+
+  .AppHistoryPage-nohistoryP {
+    text-align: center;
+    font-weight: bold;
   }
 }
