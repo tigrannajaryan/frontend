@@ -39,7 +39,7 @@ export class BaseService {
 
     const http = AppModule.injector.get(HttpClient);
 
-    return this.prepareResponse(
+    return this.prepareResponse(method, url,
       http.request<ResponseType>(method, url, httpOptions), options
     );
   }
@@ -48,6 +48,7 @@ export class BaseService {
    * Always return { response, error } to suppress the catch of an outside subscription.
    */
   protected prepareResponse<ResponseType>(
+    method: string, url: string,
     httpResponse: Observable<ResponseType>,
     options: ApiRequestOptions): Observable<ApiResponse<ResponseType>> {
 
@@ -55,6 +56,10 @@ export class BaseService {
       httpResponse
         .map(response => ({ response }))
         .catch(err => {
+
+          const logger = AppModule.injector.get(Logger);
+          logger.error(`Error in response to API request ${method.toUpperCase()} ${url} failed:`, JSON.stringify(err));
+
           const { error, notifyTracker } = processApiResponseError(err, options);
 
           if (notifyTracker) {
