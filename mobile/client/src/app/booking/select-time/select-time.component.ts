@@ -91,7 +91,7 @@ export class SelectTimeComponent {
     private bookingApi: BookingApi,
     protected bookingData: BookingData,
     private logger: Logger,
-    private navCtrl: NavController) {
+    protected navCtrl: NavController) {
   }
 
   ionViewDidLoad(): void {

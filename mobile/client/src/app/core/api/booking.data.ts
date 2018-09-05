@@ -42,11 +42,16 @@ export class BookingData implements OnDestroy {
 
     // Recalculate offer's price on services change:
     this.servicesSubscription = this.selectedServicesObservable.subscribe(async () => {
-      if (this.pricelist && this.offer) {
+      if (this._pricelist && this._offer) {
         const { response } = await this.pricelist.get();
-        const newOffer = response.prices.find(offer => offer.date === this.offer.date);
+        const newOffer = response.prices.find(offer => this._offer && offer.date === this._offer.date);
         if (newOffer) {
           this.setOffer(newOffer);
+        } else {
+          // This can happen in an edge case when the date becomes no longer available for booking if e.g.
+          // - ist‘s too late for this date
+          // - or when there is no free timeslot.
+          this.setOffer(undefined);
         }
       }
     });
@@ -121,6 +126,12 @@ export class BookingData implements OnDestroy {
   }
 
   setOffer(offer: DayOffer): void {
+    if (offer === undefined) {
+      this._offer = undefined;
+      this._timeslots = undefined;
+      return;
+    }
+
     const date = moment(offer.date);
 
     if (!this._timeslots || !date.isSame(this._date)) {
