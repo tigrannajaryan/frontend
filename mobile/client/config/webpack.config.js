@@ -3,6 +3,11 @@ const path = require('path');
 const webpack = require('webpack');
 const merge = require('webpack-merge');
 
+// get git info from command line
+const commitHash = require('child_process')
+  .execSync('git rev-parse --short HEAD')
+  .toString();
+
 const webpackConfig = require('../node_modules/@ionic/app-scripts/config/webpack.config');
 const config = {
   plugins: [
@@ -12,6 +17,7 @@ const config = {
       APP_VERSION_NUMBER: undefined,
       IOS_APP_BUNDLE_ID: undefined
     }),
+
     new webpack.NormalModuleReplacementPlugin(/\.\/environments\/environment\.default/, function (resource) {
       if (process.env.MB_ENV !== undefined) {
         let env = process.env.MB_ENV.trim();
@@ -28,6 +34,10 @@ const config = {
       } else {
         console.log('No environment specified. Using `default`');
       }
+    }),
+
+    new webpack.DefinePlugin({
+      __COMMIT_HASH__: JSON.stringify(commitHash),
     })
   ],
   resolve: {

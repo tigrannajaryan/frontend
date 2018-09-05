@@ -6,8 +6,19 @@
 
     &-title {
       height: 100%;
-      padding: pxtovw(4px) 0 0;
       color: color($grayscale, 800);
+
+      .mb-icon-logo {
+        display: inline-block;
+        margin: pxtovw(4px) 0 0;
+      }
+
+      .madeHeaderTitle {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+      }
     }
 
     &-background {
