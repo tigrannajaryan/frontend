@@ -32,24 +32,25 @@ $app-direction: ltr;
 // The "primary" color is the only required color in the map.
 
 $grayscale: (
-  100:        #F2F2F2,
-  200:        #ECECEC,
-  300:        #D4D4D4,
-  500:        #999999,
-  800:        black,
+  100: #F2F2F2,
+  200: #ECECEC,
+  300: #D4D4D4,
+  500: #999999,
+  800: black,
 );
-
+// color name can be generated via http://chir.ag/projects/name-that-color/#6195ED
 $colors: (
-  white:      white,
-  primary:    #FEE0D0,
-  danger:     #FF6161,
-  success:    #7ED321,
-  warning:    #FB3333,
+  white:  white,
+  primary: #FEE0D0,
+  danger: #FF6161,
+  success: #7ED321,
+  warning: #FB3333,
 
-  honey:      #F4C5AD,
-  orange:     #FBB597,
-  violet:     #D5B1FE,
-  mint:       #5DCA91
+  honey: #F4C5AD,
+  orange: #FBB597,
+  violet: #D5B1FE,
+  mint: #5DCA91,
+  azureRadiance: #007AFF,
 );
 
 

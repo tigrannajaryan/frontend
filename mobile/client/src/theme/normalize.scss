@@ -41,3 +41,13 @@ button {
 .has-refresher > .scroll-content { //to remove top-border for refresher
   border-top: 0;
 }
+
+[ion-button="alert-button"].alert-button { // change color of popup button text
+  color: color($colors, azureRadiance);
+}
+
+.alert-md div.alert-message,
+.alert-ios div.alert-message { // change size of popup text
+  font-size: pxtovw(17px);
+  text-align: center;
+}
