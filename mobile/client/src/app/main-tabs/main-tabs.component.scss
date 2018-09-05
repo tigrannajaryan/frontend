@@ -73,7 +73,7 @@ main-tabs ion-tabs.tabs {
   .tabbar {
     background: white;
     border-top: none;
-    box-shadow: 0 -4px 27px 0 rgba(0, 0, 0, 0.08);
+    box-shadow: 0 pxtovw(-4px) pxtovw(27px) 0 rgba(0, 0, 0, 0.08);
 
     &:before {
       display: none;
@@ -81,19 +81,19 @@ main-tabs ion-tabs.tabs {
 
     .tab-button {
       min-height: auto;
-      padding: 7px 0 0;
+      padding: pxtovw(7px) 0 0;
 
       ion-icon {
         height: auto;
-        padding: 1px;
+        padding: pxtovw(1px);
         margin: 0;
-        font-size: 19px;
+        font-size: pxtovw(19px);
       }
 
       .tab-button-text {
-        margin-top: 3px;
-        font-size: 9px;
-        letter-spacing: 0.2px;
+        margin-top: pxtovw(3px);
+        font-size: pxtovw(9px);
+        letter-spacing: pxtovw(0.2px);
       }
     }
   }
