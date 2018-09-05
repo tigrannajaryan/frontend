@@ -1,18 +1,23 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import * as moment from 'moment';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
 
 import { DataStore } from '~/core/utils/data-store';
 import { BookingApi, TimeslotsResponse } from '~/core/api/booking.api';
-import { GetPricelistResponse, ServiceModel } from '~/core/api/services.models';
+import { DayOffer, GetPricelistResponse, ServiceModel } from '~/core/api/services.models';
 import { StylistModel } from '~/core/api/stylists.models';
+
+interface DayOfferWithTotalRegularPrice extends DayOffer {
+  totalRegularPrice: number;
+}
 
 /**
  * Singleton that stores current booking process data.
  */
 @Injectable()
-export class BookingData {
+export class BookingData implements OnDestroy {
   private static guardInitilization = false;
 
   selectedTime: moment.Moment;
@@ -20,12 +25,12 @@ export class BookingData {
   private _stylist: StylistModel;
   private _selectedServices: ServiceModel[];
   private _date: moment.Moment;
-  private _totalRegularPrice: number;
-  private _totalClientPrice: number;
+  private _offer: DayOfferWithTotalRegularPrice;
   private _pricelist: DataStore<GetPricelistResponse>;
   private _timeslots: DataStore<TimeslotsResponse>;
 
   private servicesSubject: BehaviorSubject<ServiceModel[]>;
+  private servicesSubscription: Subscription;
 
   constructor(private api: BookingApi) {
     if (BookingData.guardInitilization) {
@@ -34,6 +39,26 @@ export class BookingData {
     BookingData.guardInitilization = true;
 
     this.servicesSubject = new BehaviorSubject<ServiceModel[]>([]);
+
+    // Recalculate offer's price on services change:
+    this.servicesSubscription = this.selectedServicesObservable.subscribe(async () => {
+      if (this._pricelist && this._offer) {
+        const { response } = await this.pricelist.get();
+        const newOffer = response.prices.find(offer => this._offer && offer.date === this._offer.date);
+        if (newOffer) {
+          this.setOffer(newOffer);
+        } else {
+          // This can happen in an edge case when the date becomes no longer available for booking if e.g.
+          // - ist‘s too late for this date
+          // - or when there is no free timeslot.
+          this.setOffer(undefined);
+        }
+      }
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.servicesSubscription.unsubscribe();
   }
 
   /**
@@ -52,8 +77,7 @@ export class BookingData {
     }
 
     this._selectedServices = undefined;
-    this._totalRegularPrice = undefined;
-    this._totalClientPrice = undefined;
+    this._offer = undefined;
     this._date = undefined;
     this.selectedTime = undefined;
     this._pricelist = undefined;
@@ -76,9 +100,6 @@ export class BookingData {
     // remember the list of services
     this._selectedServices = services;
     this.onServicesChange();
-
-    // Calc total regular price
-    this._totalRegularPrice = services.reduce((sum, service) => sum + service.base_price, 0);
 
     if (this._pricelist) {
       this._pricelist.clear();
@@ -104,10 +125,15 @@ export class BookingData {
     return Boolean(this._selectedServices) && this._selectedServices.some(selectedService => selectedService.uuid === service.uuid);
   }
 
-  /**
-   * Set the date of appointment. Called when user chooses date in the UI.
-   */
-  setDate(date: moment.Moment): void {
+  setOffer(offer: DayOffer): void {
+    if (offer === undefined) {
+      this._offer = undefined;
+      this._timeslots = undefined;
+      return;
+    }
+
+    const date = moment(offer.date);
+
     if (!this._timeslots || !date.isSame(this._date)) {
       this._date = date;
 
@@ -120,22 +146,19 @@ export class BookingData {
         () => this.api.getTimeslots(this._stylist.uuid, date),
         { cacheTtlMilliseconds: 1000 * 60 }); // TTL for timeslots cache is 1 min
     }
-  }
 
-  setTotalClientPrice(price: number): void {
-    this._totalClientPrice = price;
+    this._offer = {
+      ...offer,
+      totalRegularPrice: this._selectedServices.reduce((sum, service) => sum + service.base_price, 0)
+    };
   }
 
   get stylist(): StylistModel {
     return this._stylist;
   }
 
-  get totalClientPrice(): number {
-    return this._totalClientPrice;
-  }
-
-  get totalRegularPrice(): number {
-    return this._totalRegularPrice;
+  get offer(): DayOfferWithTotalRegularPrice {
+    return this._offer;
   }
 
   get date(): moment.Moment {

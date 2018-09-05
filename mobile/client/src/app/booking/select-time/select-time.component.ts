@@ -91,7 +91,7 @@ export class SelectTimeComponent {
     private bookingApi: BookingApi,
     protected bookingData: BookingData,
     private logger: Logger,
-    private navCtrl: NavController) {
+    protected navCtrl: NavController) {
   }
 
   ionViewDidLoad(): void {
@@ -100,6 +100,7 @@ export class SelectTimeComponent {
 
   async ionViewWillEnter(): Promise<void> {
     this.logger.info('SelectTimeComponent.ionViewWillEnter');
+
     if (this.bookingData.timeslots) {
       this.displayTimeslots(await loading(this, this.bookingData.timeslots.get()));
     } else {

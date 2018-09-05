@@ -80,4 +80,12 @@
     color: color($grayscale, 800);
     background: color($colors, primary);
   }
+
+  .SelectTimeslot-notice {
+    margin-top: pxtovw(24px);
+
+    .Button {
+      margin-top: 16px;
+    }
+  }
 }
