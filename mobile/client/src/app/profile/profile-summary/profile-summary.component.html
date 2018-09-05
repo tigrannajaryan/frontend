@@ -28,14 +28,14 @@
     </ion-row>
     <table class="ProfilePage-table Table Table--bordered">
       <tbody>
-        <tr>
+        <tr (click)="goTo(PageNames.HowPricingWorks, { hideContinueButton: true })">
           <td class="Table-col">How pricing works</td>
           <td class="ProfilePage-arrow Table-col">
             <img src="assets/icons/arrow-right.svg" />
           </td>
         </tr>
         <tr>
-          <td class="Table-col">How MADE works</td>
+          <td (click)="goTo(PageNames.HowMadeWorks, { hideContinueButton: true })" class="Table-col">How MADE works</td>
           <td class="ProfilePage-arrow Table-col">
             <img src="assets/icons/arrow-right.svg" />
           </td>

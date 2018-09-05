@@ -2,9 +2,9 @@ import { NgModule } from '@angular/core';
 
 import { ServerStatusComponent } from '~/shared/server-status/server-status.component';
 import { MbIconsComponent } from '~/shared/components/mb-icons/mb-icons.component';
-import { HowPricingInfoComponent } from '~/shared/components/how-pricing-info/how-pricing-info.component';
 import { ContinueFooterComponent } from '~/shared/components/continue-footer/continue-footer.component';
-import { WelcomeInfoComponent } from '~/shared/components/welcome-info/welcome-info.component';
+import { CheckListComponent } from '~/shared/components/check-list/check-list.component';
+import { NumListComponent } from '~/shared/components/num-list/num-list.component';
 
 import { MadeNavComponent } from './made-nav/made-nav.component';
 import { MadeTableComponent } from './made-table/made-table';
@@ -42,8 +42,8 @@ const components = [
   DiscountsMaximumShortComponent,
   BackHeaderComponent,
   MbIconsComponent,
-  WelcomeInfoComponent,
-  HowPricingInfoComponent
+  CheckListComponent,
+  NumListComponent
 ];
 
 @NgModule({

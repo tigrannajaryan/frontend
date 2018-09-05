@@ -1,29 +1,4 @@
-welcome-info {
-  .WelcomeInfo-title {
-    padding-top: pxtovw(2px);
-    font-size: pxtovw(29px);
-    font-weight: 600;
-    line-height: pxtovw(33px);
-    text-align: center;
-    letter-spacing: pxtovw(-0.4px);
-  }
-
-  .WelcomeInfo-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: pxtovw(96px);
-    height: pxtovw(96px);
-    padding: pxtovw(10px);
-    margin: pxtovw(21px) auto pxtovw(24px);
-    border: 1px solid color($shared-colors, color3);
-    border-radius: 50%;
-
-    img {
-      height: pxtovw(58px);
-    }
-  }
-
+check-list {
   .WelcomeInfo-list {
     display: flex;
     align-items: start;
@@ -49,6 +24,7 @@ welcome-info {
     border-radius: 50%;
   }
 }
+
 
 .Discounts-textOffset {
   min-height: pxtovw(145px);

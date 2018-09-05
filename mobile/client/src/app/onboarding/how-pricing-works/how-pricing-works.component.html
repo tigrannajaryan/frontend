@@ -1,8 +1,18 @@
 <ion-header madeHeader></ion-header>
 
-<ion-content>
-  <ion-grid fixed>
-    <ion-row justify-content-center class="H1">How pricing works</ion-row>
-    <button ion-button class="Button" (click)="onContinue()" data-test-id="continueBtn">Continue</button>
-  </ion-grid>
+
+<ion-content no-padding>
+  <div class="contentVerticalPadding">
+    <div class="Made-wp Made-wpContent">
+      <div class="Made-h1">How pricing works</div>
+
+      <check-list [list]="list"></check-list>
+
+      <div class="Made-h3">What you see at booking:</div>
+      <img src="assets/imgs/discounts/welcome.png" alt="">
+    </div>
+  </div>
 </ion-content>
+
+
+<ion-footer *ngIf="!hideContinueButton" madeContinueFooter (continue)="onContinue()"></ion-footer>

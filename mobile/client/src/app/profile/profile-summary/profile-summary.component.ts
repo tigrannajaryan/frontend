@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AlertController, IonicPage, NavController } from 'ionic-angular';
+import { AlertController, App, IonicPage, NavController } from 'ionic-angular';
 import { Clipboard } from '@ionic-native/clipboard';
 import { EmailComposer } from '@ionic-native/email-composer';
 import { Store } from '@ngrx/store';
@@ -22,11 +22,14 @@ import { LogoutAction } from '~/auth/auth.reducer';
 export class ProfileSummaryComponent {
   profile: ProfileModel;
 
+  PageNames = PageNames;
+
   isLoading = false;
 
-  readonly DEFAULT_IMAGE = `url(${DefaultImage.User})`;
+  readonly DEFAULT_IMAGE = DefaultImage.User;
 
   constructor(
+    private app: App,
     private alertCtrl: AlertController,
     private clipboard: Clipboard,
     private emailComposer: EmailComposer,
@@ -52,6 +55,10 @@ export class ProfileSummaryComponent {
 
   onEdit(): void {
     this.navCtrl.push(PageNames.ProfileEdit, { profile: this.profile });
+  }
+
+  goTo(page: PageNames, params: any): void {
+    this.app.getRootNav().push(page, params);
   }
 
   async onContactByEmail(mailTo: string): Promise<void> {
