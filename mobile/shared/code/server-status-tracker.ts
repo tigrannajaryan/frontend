@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { App } from 'ionic-angular';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { Severity } from '@sentry/shim';
 
 import { Logger } from '~/shared/logger';
-import { ApiClientError, ApiError, ApiFieldAndNonFieldErrors, HttpStatus } from '~/shared/api-errors';
+import { ApiClientError, ApiError, ApiFieldAndNonFieldErrors, HttpStatus, ServerUnreachableOrInternalError } from '~/shared/api-errors';
 import { reportToSentry } from '~/shared/sentry';
 
 /*
@@ -88,8 +89,10 @@ export class ServerStatusTracker {
     }
 
     if (!(error instanceof ApiFieldAndNonFieldErrors)) {
-      // report everything except ApiFieldAndNonFieldErrors to Sentry
-      reportToSentry(error);
+      // Report everything except ApiFieldAndNonFieldErrors to Sentry.
+      // ServerUnreachableOrInternalError is reported as "Fatal" severity level.
+      const level = (error instanceof ServerUnreachableOrInternalError) ? Severity.Fatal : Severity.Error;
+      reportToSentry(error, level);
     }
 
     // Notify observers about the error.
