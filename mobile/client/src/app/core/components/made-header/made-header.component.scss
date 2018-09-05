@@ -1,10 +1,12 @@
 [madeHeader],
 .madeHeader {
   .toolbar {
-    min-height: pxtovw(35px);
+    min-height: pxtovw(41px);
+    padding-right: pxtovw(17px);
 
     &-title {
-      padding: 0;
+      height: 100%;
+      padding: pxtovw(4px) 0 0;
       color: color($grayscale, 800);
     }
 
