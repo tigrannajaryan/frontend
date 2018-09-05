@@ -20,7 +20,7 @@
     <div *ngIf="slotSections && slotSections.length===0" class="SelectTimeslot-notice">Could not get available times. Please try again.</div>
 
     <div *ngIf="!bookingData.offer; else timeslots" class="SelectTimeslot-notice">
-      <span>Sorry, this date is no longer available. Please choose a different date.</span><br/>
+      <span>Sorry, this date is no longer available. Please choose a&nbsp;different date.</span><br/>
       <button (click)="navCtrl.pop()" ion-button small class="Button">Select date</button>
     </div>
     <ng-template #timeslots>
