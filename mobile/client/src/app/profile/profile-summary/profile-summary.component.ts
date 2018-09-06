@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AlertController, App, IonicPage, NavController } from 'ionic-angular';
+import { AlertController, App, IonicPage, LoadingController, NavController } from 'ionic-angular';
 import { Clipboard } from '@ionic-native/clipboard';
 import { EmailComposer } from '@ionic-native/email-composer';
 import { Store } from '@ngrx/store';
@@ -33,6 +33,7 @@ export class ProfileSummaryComponent {
     private alertCtrl: AlertController,
     private clipboard: Clipboard,
     private emailComposer: EmailComposer,
+    private loadingCntrl: LoadingController,
     private navCtrl: NavController,
     private profileDataStore: ProfileDataStore,
     private store: Store<{}>
@@ -62,13 +63,20 @@ export class ProfileSummaryComponent {
   }
 
   async onContactByEmail(mailTo: string): Promise<void> {
-    const isAvailable = await this.emailComposer.isAvailable();
-    if (!isAvailable) { // if sending emails is not supported on the device
+    const loader = this.loadingCntrl.create();
+    loader.present();
+    try {
+      const hasPermission = await this.emailComposer.hasPermission();
+      if (!hasPermission) {
+        await this.emailComposer.requestPermission();
+      }
+      await this.emailComposer.open({ to: mailTo });
+    } catch {
       this.clipboard.copy(mailTo);
       showAlert('Email copied', 'Email successfully copied to the clipboard.');
-      return;
+    } finally {
+      loader.dismiss();
     }
-    this.emailComposer.open({ to: mailTo });
   }
 
   async onLogout(): Promise<void> {
