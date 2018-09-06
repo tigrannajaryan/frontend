@@ -21,17 +21,15 @@
 
 
 
-  <div class="AppointmentItem-bottom">
-    <div class="AppointmentItem-bottomDesc">
+  <div class="AppointmentItem-desc">
       <span *ngFor="let service of appointment.services" [hidden]="!service.is_original">
         {{ service.service_name }}
       </span>
-    </div>
+  </div>
 
-    <div class="AppointmentItem-bottomName">
-      <div [style.background-image]="" class="AppointmentItem-bottomNameAva"></div>
-      {{ appointment.client_first_name }}
-      {{ appointment.client_last_name }}
-    </div>
+  <div class="AppointmentItem-name">
+    <div [style.background-image]="" class="AppointmentItem-nameAva"></div>
+    {{ appointment.client_first_name }}
+    {{ appointment.client_last_name }}
   </div>
 </div>
