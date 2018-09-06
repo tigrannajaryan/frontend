@@ -68,7 +68,7 @@ export class ServerStatusTracker {
     private app: App,
     private logger: Logger) { }
 
-  init(firstPageName: string, onUnauthorized?: () => any): void {
+  init(firstPageName: string, onUnauthorized?: () => (Promise<void> | void)): void {
     this.firstPageName = firstPageName;
     this.onUnauthorized = onUnauthorized;
   }

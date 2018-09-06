@@ -42,7 +42,7 @@ export class ClientAppComponent implements OnInit, OnDestroy {
     this.logger.info('App initializing...');
 
     // The call of `deleteToken` prevents weird error of allways navigating to the Auth page.
-    this.serverStatusTracker.init(PageNames.Auth, deleteToken);
+    this.serverStatusTracker.init(UNAUTHORIZED_ROOT, deleteToken);
 
     // First initialize the platform. We cannot do anything else until the platform is
     // ready and the plugins are available.
@@ -69,7 +69,7 @@ export class ClientAppComponent implements OnInit, OnDestroy {
     if (token) {
       this.rootPage = AUTHORIZED_ROOT;
     } else {
-      this.rootPage = UNAUTHORIZED_ROOT;
+      this.rootPage = PageNames.FirstScreen;
       // no expiration, the only case: deactivation of the account
       // discover by making a request
       // discover on next request after the app is started
@@ -96,7 +96,7 @@ export class ClientAppComponent implements OnInit, OnDestroy {
   }
 
   onLogout(): void {
-    this.nav.setRoot(PageNames.Auth);
+    this.nav.setRoot(UNAUTHORIZED_ROOT);
   }
 
   onStartBooking(): void {
