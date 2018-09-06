@@ -8,7 +8,7 @@ import { Logger } from '~/shared/logger';
 import { GAWrapper } from '~/shared/google-analytics';
 import { ServerStatusTracker } from '~/shared/server-status-tracker';
 
-import { getToken } from '~/core/utils/token-utils';
+import { deleteToken, getToken } from '~/core/utils/token-utils';
 
 import { AUTHORIZED_ROOT, PageNames, UNAUTHORIZED_ROOT } from '~/core/page-names';
 import { EventTypes } from '~/core/event-types';
@@ -41,7 +41,8 @@ export class ClientAppComponent implements OnInit, OnDestroy {
 
     this.logger.info('App initializing...');
 
-    this.serverStatusTracker.init(PageNames.Auth);
+    // The call of `deleteToken` prevents weird error of allways navigating to the Auth page.
+    this.serverStatusTracker.init(UNAUTHORIZED_ROOT, deleteToken);
 
     // First initialize the platform. We cannot do anything else until the platform is
     // ready and the plugins are available.
@@ -68,7 +69,7 @@ export class ClientAppComponent implements OnInit, OnDestroy {
     if (token) {
       this.rootPage = AUTHORIZED_ROOT;
     } else {
-      this.rootPage = UNAUTHORIZED_ROOT;
+      this.rootPage = PageNames.FirstScreen;
       // no expiration, the only case: deactivation of the account
       // discover by making a request
       // discover on next request after the app is started

@@ -28,5 +28,5 @@ export enum PageNames {
   Stylists = 'StylistsPageComponent'
 }
 
-export const UNAUTHORIZED_ROOT = PageNames.FirstScreen;
+export const UNAUTHORIZED_ROOT = PageNames.Auth;
 export const AUTHORIZED_ROOT = PageNames.MainTabs;

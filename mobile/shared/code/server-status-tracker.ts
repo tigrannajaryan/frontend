@@ -62,13 +62,15 @@ export class ServerStatusTracker {
   private subject = new BehaviorSubject<ApiError>(undefined);
 
   private firstPageName: string;
+  private onUnauthorized: () => any;
 
   constructor(
     private app: App,
     private logger: Logger) { }
 
-  init(firstPageName: string): void {
+  init(firstPageName: string, onUnauthorized?: () => (Promise<void> | void)): void {
     this.firstPageName = firstPageName;
+    this.onUnauthorized = onUnauthorized;
   }
 
   /**
@@ -81,8 +83,13 @@ export class ServerStatusTracker {
       this.logger.info('ServerStatusTracker: got HttpStatus.unauthorized, redirecting to first page.');
 
       // Erase all previous navigation history and make LoginPage the root
-      const [nav] = this.app.getActiveNavs();
+      const [nav] = this.app.getRootNavs();
       nav.setRoot(this.firstPageName);
+
+      // Callback for some additional work:
+      if (this.onUnauthorized) {
+        this.onUnauthorized();
+      }
 
       // Don't notify the observers or Sentry since we fully handled this case.
       return;

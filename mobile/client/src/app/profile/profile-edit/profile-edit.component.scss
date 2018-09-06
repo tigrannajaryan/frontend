@@ -1,3 +1,9 @@
+profile-edit {
+  .header .toolbar:last-child .toolbar-background {
+    border: none;
+  }
+}
+
 .ProfilePage {
   .ProfilePage-pic {
     $image-size: pxtovw(120px);

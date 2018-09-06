@@ -5,7 +5,7 @@
     <div class="H1" *ngIf="isAdditionalService">Add additional service:</div>
     <book-services-header *ngIf="isAdditionalService" readonly="true"></book-services-header>
     <ion-row justify-content-center>
-      <img *ngIf="category | async" src="assets/icons/services-categories/{{ (category | async)?.category_code }}.svg" class="ServicesPage-img" />
+      <div *ngIf="category | async" [style.backgroundImage]="'url(' + 'assets/icons/services-categories/' + (category | async)?.category_code + '.svg)'" class="ServicesPage-img"></div>
     </ion-row>
     <ion-row justify-content-center>
       <div class="H1">
@@ -30,7 +30,7 @@
           <td class="Table-col">{{ service.name }}</td>
           <td class="Table-col">{{ service.base_price | price }}</td>
           <td class="ServicesPage-servicesArrow Table-col">
-            <img src="assets/icons/arrow-right.svg" />
+            <i class="mb-icon-right-arrow"></i>
           </td>
         </tr>
       </tbody>

@@ -3,7 +3,8 @@
     <ion-buttons end>
       <ion-spinner *ngIf="isUpdating"></ion-spinner>
       <button *ngIf="!isUpdating" (click)="onSubmit()" [disabled]="!form.valid" class="ProfilePage-submit" ion-button clear>
-        <ion-icon *ngIf="!isFailed" [ngClass]="{ 'ProfilePage-animatedSuccess': isSucceeded }" name="md-checkmark"></ion-icon>
+        <span *ngIf="!isFailed && !isSucceeded">Done</span>
+        <ion-icon *ngIf="isSucceeded && !isFailed" [ngClass]="{ 'ProfilePage-animatedSuccess': isSucceeded }" name="md-checkmark"></ion-icon>
         <ion-icon *ngIf="isFailed" name="md-close" class="ProfilePage-animatedFail"></ion-icon>
       </button>
     </ion-buttons>

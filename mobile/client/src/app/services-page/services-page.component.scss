@@ -1,13 +1,16 @@
 .ServicesPage {
   .ServicesPage-img {
-    $pic-size: 80px;
+    $pic-size: pxtovw(80px);
 
     width: $pic-size;
     height: $pic-size;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
   }
 
   .ServicesPage-services {
-    margin-top: 32px;
+    margin-top: pxtovw(32px);
   }
 
   .ServicesPage-servicesArrow {
