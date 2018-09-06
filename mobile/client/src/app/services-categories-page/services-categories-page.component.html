@@ -1,7 +1,7 @@
 <ion-header madeHeader [showHome]="true"></ion-header>
 
-<ion-content class="ServicesCategoriesPage">
-  <ion-grid fixed>
+<ion-content scroll="false">
+  <div class="ServicesCategoriesPage contentSidePadding">
     <div class="H1" *ngIf="!isAdditionalService">Choose a&nbsp;service category</div>
     <div class="H1" *ngIf="isAdditionalService">Add additional service:</div>
 
@@ -21,7 +21,7 @@
     <div *ngIf="(requestState | async) === RequestState.Succeeded">
       <div *ngIf="(categories | async)?.length > 0" class="ServicesCategoriesPage-categories">
         <div *ngFor="let category of categories | async" class="ServicesCategoriesPage-card Card" (click)="onProceedToServices(category.uuid)">
-          <img class="ServicesCategoriesPage-cardImg" src="assets/icons/services-categories/{{ category.category_code }}.svg" />
+          <div class="ServicesCategoriesPage-cardImg" [style.backgroundImage]="'url(' + 'assets/icons/services-categories/' + category.category_code +'.svg)'"></div>
           <div>
             <div class="ServicesCategoriesPage-cardTitle">{{ category.name }}</div>
             <div class="ServicesCategoriesPage-cardSubtitle">{{ category.services.length }} services</div>
@@ -32,6 +32,5 @@
       <!-- This could happen only if we show incomplete stylists porfiles when a client is searching for stylists. -->
       <p *ngIf="(categories | async)?.length === 0">This client has no services yet.</p>
     </div>
-
-  </ion-grid>
-<ion-content>
+  </div>
+</ion-content>

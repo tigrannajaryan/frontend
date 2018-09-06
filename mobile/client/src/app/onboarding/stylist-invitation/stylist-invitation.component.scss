@@ -1,19 +1,43 @@
+// Fix unnecessary ion-conten inside ion-content bug:
+// 1. <ion-content scroll="false"></ion-content>
+//    <ion-scroll scrollY="true"></ion-scroll>
+// 2. @include scrollFixer in the page scss.
+@mixin scrollFixer {
+  min-height: 100%;
+
+  .scroll-zoom-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+    padding-top: pxtovw(30px);
+
+    .flex-1 {
+      flex: 1;
+    }
+  }
+}
+
 .StylistInvitationPage {
+  @include scrollFixer;
+
   .StylistInvitationPage-title {
-    margin: 16px 0 24px;
+    margin: pxtovw(16px) 0 pxtovw(24px);
   }
 
   .StylistInvitationPage-pic {
-    $pic-size: 152px;
-    $pic-border-size: 232px;
+    $pic-size: pxtovw(152px);
+    $pic-border-size: pxtovw(232px);
 
     width: $pic-size;
     height: $pic-size;
     margin: ($pic-border-size - $pic-size) / 2 0;
-    background: color($grayscale, 100);
+    background-color: color($grayscale, 100);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
     border-radius: $pic-size / 2; // circle
     box-shadow:
-      0 0 0 (($pic-border-size - $pic-size) / 2 - 0.5px) white,
+      0 0 0 (($pic-border-size - $pic-size) / 2 - pxtovw(0.5px)) white,
       0 0 0 ($pic-border-size - $pic-size) / 2 color($grayscale, 300);
 
     > img {
@@ -23,24 +47,24 @@
   }
 
   .StylistInvitationPage-salonName {
-    margin: 26px 0 8px;
+    margin: pxtovw(26px) 0 pxtovw(8px);
     font-size: $t-small;
     color: color($grayscale, 500);
   }
 
   .StylistInvitationPage-name {
-    margin-bottom: 16px;
+    margin-bottom: pxtovw(16px);
     font-size: $t-h2;
     font-weight: bold;
   }
 
   .StylistInvitationPage-address,
   .StylistInvitationPage-phone {
-    margin-bottom: 8px;
+    margin-bottom: pxtovw(8px);
     color: color($grayscale, 500);
   }
 
   .StylistInvitationPage-submit {
-    margin: 32px 0 20px;
+    margin: pxtovw(32px) 0 pxtovw(20px);
   }
 }
