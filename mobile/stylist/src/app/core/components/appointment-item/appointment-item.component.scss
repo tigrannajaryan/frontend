@@ -11,15 +11,7 @@ appointment-item {
     flex-direction: column;
     align-items: stretch;
     justify-content: space-between;
-    padding: pxtoem(33) pxtorem(60);
-
-    @media ($smartphone) {
-      padding: pxtoem(20) pxtorem(50);
-    }
-
-    @media ($phone) {
-      padding: pxtoem(12) pxtorem(40);
-    }
+    padding: pxtovw(17px) pxtovw(24px);
 
     &.isChecked {
       visibility: hidden;
@@ -52,117 +44,59 @@ appointment-item {
   .AppointmentItem-top {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 2px;
   }
 
   .AppointmentItem-topTime {
-    font-size: pxtorem10(60);
+    font-size: pxtovw(18px);
     font-weight: 700;
     white-space: nowrap;
-
-    @media ($smartphone) {
-      font-size: pxtorem(50);
-    }
-
-    @media ($phone) {
-      font-size: pxtorem(40);
-    }
   }
 
   .AppointmentItem-topTimeDay {
-    top: pxtorem(-30);
+    top: pxtovw(-10px);
     display: inline-block;
     margin-left: pxtorem(5);
-    font-size: $t-h2;
+    font-size: pxtorem10(11px);
     font-weight: 400;
     color: color($colors, color9);
-
-    @media ($smartphone) {
-      top: pxtorem(-20);
-      margin-left: 0;
-      font-size: $t-h3;
-    }
-
-    @media ($phone) {
-      top: pxtorem(-10);
-      font-size: pxtorem10(11);
-    }
   }
 
   .AppointmentItem-topPrice {
     display: flex;
     align-items: start;
     justify-content: flex-end;
-    font-size: pxtorem10(44);
+    font-size: pxtovw(18px);
     font-weight: 700;
     text-align: right;
-
-    @media ($smartphone) {
-      font-size: $t-h1;
-    }
-
-    @media ($phone) {
-      font-size: $t-h3;
-    }
   }
 
   .AppointmentItem-topPriceCur {
     position: relative;
-    top: 2px;
-    font-size: $t-h3;
-
-    @media ($smartphone) {
-      font-size: $t-h4;
-    }
-
-    @media ($phone) {
-      font-size: $t-base;
-    }
+    top: 1px;
+    font-size: pxtovw(12px);
   }
 
-  .AppointmentItem-bottom {
+  .AppointmentItem-desc {
+    margin: pxtovw(2px) 0 pxtovw(7px);
+    font-size: pxtovw(21px);
+    font-weight: 700;
+    text-align: left;
+    letter-spacing: pxtovw(-0.2px);
+  }
+
+  .AppointmentItem-name {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-  }
-
-  .AppointmentItem-bottomDesc {
-    margin-top: pxtorem(10);
-    font-size: $t-h2;
-    color: color($colors, color9);
-
-    @media ($smartphone) {
-      font-size: $t-h3;
-    }
-
-    @media ($phone) {
-      margin-top: 0;
-      font-size: pxtorem10(11);
-    }
-  }
-
-  .AppointmentItem-bottomName {
-    display: flex;
-    align-items: center;
-    font-size: $t-h2;
+    font-size: pxtovw(15px);
     color: color($colors, color9);
     text-align: right;
-
-    @media ($smartphone) {
-      font-size: $t-h3;
-    }
-
-    @media ($phone) {
-      font-size: pxtorem10(11);
-    }
   }
 
-  .AppointmentItem-bottomNameAva {
+  .AppointmentItem-nameAva {
     display: inline-block;
-    width: 33px;
-    height: 33px;
-    margin-right: pxtorem(20);
-    font-size: pxtorem(44);
+    width: pxtovw(16px);
+    height: pxtovw(16px);
+    margin-right: pxtovw(5px);
     vertical-align: middle;
     background-image: url('../assets/imgs/icons/avatar.png');
     background-repeat: no-repeat;
@@ -170,19 +104,5 @@ appointment-item {
     background-size: cover !important;
     border: 1px solid color($colors, bb_skin);
     border-radius: 50%;
-
-    @media ($smartphone) {
-      width: 25px;
-      height: 25px;
-      margin-right: pxtorem(15);
-      font-size: $t-h3;
-    }
-
-    @media ($phone) {
-      width: 20px;
-      height: 20px;
-      margin-right: pxtorem(7);
-      font-size: $t-h4;
-    }
   }
 }
