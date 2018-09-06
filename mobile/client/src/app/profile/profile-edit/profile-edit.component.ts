@@ -29,7 +29,7 @@ export class ProfileEditComponent {
   isFailed = false;
   isSucceeded = false;
 
-  readonly DEFAULT_IMAGE = `url(${DefaultImage.User})`;
+  readonly DEFAULT_IMAGE = DefaultImage.User;
 
   private photoUploadOptions: ActionSheetOptions;
   private cameraOptions: CameraOptions;
