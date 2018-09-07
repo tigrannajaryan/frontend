@@ -6,6 +6,7 @@ profile-header {
   }
 
   .profileImage {
+    position: relative;
     width: pxtovw(40px);
     height: pxtovw(40px);
     background-size: cover;

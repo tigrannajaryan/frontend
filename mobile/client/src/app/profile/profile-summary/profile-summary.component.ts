@@ -7,11 +7,11 @@ import { Store } from '@ngrx/store';
 import { PageNames } from '~/core/page-names';
 import { composeRequest, loading } from '~/core/utils/request-utils';
 import { showAlert } from '~/core/utils/alert';
-
 import { DefaultImage } from '~/core/core.module';
+import { ProfileCompleteness, ProfileModel } from '~/core/api/profile.models';
+import { checkProfileCompleteness } from '~/core/utils/user-utils';
 
 import { ProfileDataStore } from '~/profile/profile.data';
-import { ProfileModel } from '~/core/api/profile.models';
 import { LogoutAction } from '~/auth/auth.reducer';
 
 @IonicPage()
@@ -27,6 +27,8 @@ export class ProfileSummaryComponent {
   isLoading = false;
 
   readonly DEFAULT_IMAGE = DefaultImage.User;
+
+  profileCompleteness: ProfileCompleteness;
 
   constructor(
     private app: App,
@@ -47,6 +49,7 @@ export class ProfileSummaryComponent {
     );
     if (response) {
       this.profile = response;
+      this.profileCompleteness = checkProfileCompleteness(this.profile);
     }
   }
 
