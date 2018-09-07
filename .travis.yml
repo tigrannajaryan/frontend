@@ -96,7 +96,7 @@ jobs:
         APP_VERSION_NUMBER=0.0.1
         MB_ENV=prod
         IOS_APP_BUNDLE_ID="com.madebeauty.client.production"
-        ANDROID_APP_BUNDLE_ID="com.madebeauty.client.production.android"
+        ANDROID_APP_BUNDLE_ID="com.madebeauty.client.prod"
         IOS_APP_NAME="MadeBeauty"
         IOS_APP_DESCRIPTION="MadeBeauty"
         IOS_PROVISIONING_PROFILE="client-production"
