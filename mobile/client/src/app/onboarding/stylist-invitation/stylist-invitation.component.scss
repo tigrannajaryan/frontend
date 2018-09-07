@@ -2,14 +2,17 @@
 // 1. <ion-content scroll="false"></ion-content>
 //    <ion-scroll scrollY="true"></ion-scroll>
 // 2. @include scrollFixer in the page scss.
-@mixin scrollFixer {
+@mixin scroll-fixer {
   min-height: 100%;
+
+  // The next lines are important because without them the header will overlap the title:
+  .scroll-content { padding-top: pxtovw(42px); }
+  .ios & .scroll-content { padding-top: pxtovw(66px); }
 
   .scroll-zoom-wrapper {
     display: flex;
     flex-direction: column;
     min-height: 100%;
-    padding-top: pxtovw(30px);
 
     .flex-1 {
       flex: 1;
@@ -18,10 +21,12 @@
 }
 
 .StylistInvitationPage {
-  @include scrollFixer;
+  @include scroll-fixer;
+
+  padding-top: pxtovw(30px);
 
   .StylistInvitationPage-title {
-    margin: pxtovw(16px) 0 pxtovw(24px);
+    margin: pxtovw(15px) 0 pxtovw(24px);
   }
 
   .StylistInvitationPage-pic {

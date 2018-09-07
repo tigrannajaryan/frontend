@@ -41,18 +41,6 @@ export class PreferredStylistsData {
    * - update corresponding DataStore.
    */
   async set(newStylist: StylistModel): Promise<ApiResponse<SetPreferredStylistResponse>> {
-    const stylists = await this.get();
-    const preferredStylist = stylists.find(stylist => stylist.uuid === newStylist.uuid);
-
-    // Already preferred stylist, return:
-    if (preferredStylist) {
-      return {
-        response: {
-          preference_uuid: preferredStylist.preference_uuid
-        }
-      };
-    }
-
     // TODO: remove next when work with multiple preferred stylists
     await this.clearAll();
 
@@ -60,7 +48,6 @@ export class PreferredStylistsData {
       .map(({ response }) => {
         this.data.set({
           stylists: [
-            ...stylists,
             {
               ...newStylist,
               preference_uuid: response.preference_uuid
@@ -77,7 +64,7 @@ export class PreferredStylistsData {
    * In V1 implementation we should have only one preferred stylist and would like to clear all before adding a new one.
    */
   private async clearAll(): Promise<void> {
-    const preferredStylists = await this.get();
+    const preferredStylists = await this.get({ refresh: true });
     await Promise.all(
       preferredStylists.map(stylist => this.api.deletePreferredStylist(stylist.preference_uuid).first().toPromise())
     );
