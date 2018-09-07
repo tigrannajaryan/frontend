@@ -29,9 +29,14 @@ If running under Windows install GnuWin32 and use this command `make -j8 "MAKE=m
 Note that we use several symlinks which are automatically created by `make` command. Here is the
 list of symlinks if you want to set them up manually:
 
-mobile\client\src\app\shared -> mobile\shared
+mobile/client/src/app/shared -> mobile/shared/code
+mobile/client/e2e -> mobile/shared/e2e
+mobile/stylist/src/app/shared -> mobile/shared/code
+mobile/stylist/e2e -> mobile/shared/e2e
 
-To clean use `make clean`.
+Also mobile/shared/assets directory is copied to mobile/client/src/assets and mobile/shared/src/assets by `make`.
+
+To clean the build use `make clean`.
 
 ## Building and running one app
 
