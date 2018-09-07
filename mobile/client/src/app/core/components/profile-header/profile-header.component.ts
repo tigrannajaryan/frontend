@@ -1,10 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { Events } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
 
 import { ProfileDataStore } from '~/profile/profile.data';
-import { ProfileModel } from '~/core/api/profile.models';
+import { ProfileCompleteness, ProfileModel } from '~/core/api/profile.models';
 import { ApiResponse } from '~/core/api/base.models';
+import { checkProfileCompleteness } from '~/core/utils/user-utils';
 
 import { EventTypes } from '~/core/event-types';
 import { TabIndex } from '~/main-tabs/main-tabs.component';
@@ -13,16 +15,28 @@ import { TabIndex } from '~/main-tabs/main-tabs.component';
   selector: 'profile-header',
   templateUrl: 'profile-header.component.html'
 })
-export class ProfileHeaderComponent {
-
+export class ProfileHeaderComponent implements OnDestroy {
   profileObservable: Observable<ApiResponse<ProfileModel>>;
+  profileCompleteness: ProfileCompleteness;
+  private profileObservableSubscription: Subscription;
 
   constructor(
     private events: Events,
     private profileDataStore: ProfileDataStore
   ) {
     this.profileObservable = this.profileDataStore.asObservable();
+
     this.profileDataStore.get();
+
+    this.profileObservableSubscription = this.profileObservable.subscribe(user => {
+      if (user.response) {
+        this.profileCompleteness = checkProfileCompleteness(user.response);
+      }
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.profileObservableSubscription.unsubscribe();
   }
 
   onClick(): void {

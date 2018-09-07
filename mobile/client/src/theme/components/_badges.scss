@@ -11,3 +11,22 @@
   background: color($colors, violet);
   border-radius: 12px;
 }
+
+.Indicator {
+  &:after {
+    position: absolute;
+    right: pxtovw(2px);
+    bottom: pxtovw(2px);
+    width: pxtovw(7px);
+    height: pxtovw(7px);
+    content: '';
+    background: color($colors, warning);
+    border-radius: 50%;
+  }
+
+  &.is-profileComplete {
+    &:after {
+      display: none;
+    }
+  }
+}

@@ -31,7 +31,7 @@
     background: color($grayscale, 300);
     border-radius: $bar-border-radius;
 
-    &:after {
+    span {
       position: absolute;
       top: 0;
       left: 0;
