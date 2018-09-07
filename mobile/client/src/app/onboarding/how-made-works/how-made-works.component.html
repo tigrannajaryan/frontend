@@ -4,7 +4,10 @@
 <ion-content no-padding>
   <div class="contentVerticalPadding">
     <div class="Made-wp Made-wpContent">
-      <div class="WelcomeTitle">Welcome to MADE!</div>
+      <div class="WelcomeTitle">
+        <span *ngIf="!hideContinueButton; else ifProfilePage">Welcome to MADE!</span>
+        <ng-template #ifProfilePage>How made works</ng-template>
+      </div>
 
       <div class="WelcomeTitle-icon">
         <img src="assets/imgs/icons/discount.png" alt="">
