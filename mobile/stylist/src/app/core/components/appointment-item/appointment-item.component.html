@@ -11,7 +11,7 @@
     <div class="AppointmentItem-topTime">
       {{ appointment.datetime_start_at | date: 'h:mmaaaaa' }}
 
-      <sup *ngIf="hasDate" class="AppointmentItem-topTimeDay">{{ appointment.datetime_start_at | date: 'E, LLL dd' }}</sup>
+      <span *ngIf="hasDate" class="AppointmentItem-topTimeDay">{{ appointment.datetime_start_at | date: 'E, LLL dd' }}</span>
     </div>
 
     <div class="AppointmentItem-topPrice">

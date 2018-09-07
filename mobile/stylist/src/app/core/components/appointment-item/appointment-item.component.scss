@@ -1,7 +1,7 @@
 appointment-item {
   position: relative;
   display: block;
-  margin-bottom: pxtorem10(15);
+  margin-bottom: pxtovw(15px);
   background: color($colors, white);
   border-radius: 20px;
   box-shadow: 0 0 50px 15px color($colors, color7);
@@ -53,12 +53,11 @@ appointment-item {
   }
 
   .AppointmentItem-topTimeDay {
-    top: pxtovw(-10px);
     display: inline-block;
-    margin-left: pxtorem(5);
-    font-size: pxtorem10(11px);
+    margin-left: pxtovw(5px);
+    font-size: pxtovw(12px);
     font-weight: 400;
-    color: color($colors, color9);
+    color: #A6A3B0;
   }
 
   .AppointmentItem-topPrice {
