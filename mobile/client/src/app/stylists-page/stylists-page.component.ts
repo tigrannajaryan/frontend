@@ -77,5 +77,7 @@ export class StylistsPageComponent {
     } else {
       this.navCtrl.setRoot(PageNames.MainTabs);
     }
+
+    this.activeStylist = undefined;
   }
 }
