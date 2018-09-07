@@ -70,6 +70,9 @@ you can create your own local copy and modify it as you need.
 
 To build and run on connected iOS device use command `ionic cordova run ios --device`
 
+To see the logs while running on the device use `adb logcat chromium:V *:S` where adb
+is normally located in `/platform-tools` directory of Android SDK.
+
 # Tests
 
 ## Unit tests
