@@ -53,7 +53,7 @@ export class AboutComponent {
   }
 
   protected testMethodForNestedException(): void {
-    getStylistAPI({ s: 'hello!' });
+    getStylistAPI('hello!');
     // throw new Error(' Not a real error, just for debugging');
   }
 
