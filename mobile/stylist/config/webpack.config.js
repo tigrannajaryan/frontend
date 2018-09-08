@@ -67,10 +67,22 @@ const config = {
       "~": path.resolve('./src/app')
     },
     symlinks: false
+  },
+
+  module: {
+    // Make webpack aware of source maps of our local dependencies (libs)
+    // See https://survivejs.com/webpack/building/source-maps/#using-dependency-source-maps
+    loaders: [
+      {
+        test: /stylist-api.*\.js$/,
+        use: ["source-map-loader"],
+        enforce: "pre"
+      }
+    ]
   }
 };
 
 module.exports = {
   prod: merge(webpackConfig.prod, config),
-  dev: merge(webpackConfig.dev, config)
+  dev: merge(webpackConfig.dev, config),
 };

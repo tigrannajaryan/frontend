@@ -15,6 +15,8 @@ import { createNavHistoryList } from '~/core/functions';
 import { AppStorage } from '~/core/app-storage';
 import { ServerStatusTracker } from '~/shared/server-status-tracker';
 
+import { getStylistAPI } from 'stylist-api';
+
 // Google Analytics Id
 const gaTrackingId = 'UA-120898935-1';
 
@@ -35,7 +37,7 @@ export class MyAppComponent {
     private storage: AppStorage,
     private screenOrientation: ScreenOrientation
   ) {
-    this.logger.info('App: initializing...');
+    this.logger.info('App: initializing...', getStylistAPI({ s: 'hello!' }));
     this.logger.info(`App: Build number ${getBuildNumber()}`);
 
     this.initializeApp();

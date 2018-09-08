@@ -28,6 +28,14 @@
         "kind": "build",
         "isDefault": true
       }
+    },
+    {
+      "type": "npm",
+      "script": "ionic:serve-b",
+      "group": "build",
+      "problemMatcher": [
+        "$tslint5"
+      ]
     }
   ]
 }

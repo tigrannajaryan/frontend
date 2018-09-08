@@ -1,0 +1,32 @@
+{
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "declaration": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "lib": [
+      "dom",
+      "es2015"
+    ],
+    "module": "es2015",
+    "moduleResolution": "node",
+    //"sourceMap": true,
+    "inlineSourceMap": true,
+    // "sourceRoot": "/home/tigran/made/frontend/mobile/stylist/node_modules/stylist-api/lib/",
+    "target": "es2015",
+    "outDir": "./dist",
+    "strict": true
+  },
+  "include": [
+    "lib/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "lib/**/*.spec.ts",
+    "lib/**/__tests__/*.ts"
+  ],
+  "compileOnSave": false,
+  "atom": {
+    "rewriteTsconfig": false
+  }
+}
