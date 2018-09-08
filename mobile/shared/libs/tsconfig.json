@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "suppressImplicitAnyIndexErrors": true,
+    "declaration": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "lib": [
+      "dom",
+      "es2015"
+    ],
+    "module": "es2015",
+    "moduleResolution": "node",
+    "sourceMap": true,
+    // inlineSourceMap is required for webpack to correctly consume our source maps. See also
+    // how "source-map-loader" is used in webpack.config.js
+    // "inlineSourceMap": true,
+    "target": "es2015",
+    "strict": true
+  },
+  "compileOnSave": false,
+  "atom": {
+    "rewriteTsconfig": false
+  }
+}

@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import * as Sentry from 'sentry-cordova';
 
-import { Logger } from '~/shared/logger';
+import { Logger } from '@madebeauty/utils';
+
 import { GAWrapper } from '~/shared/google-analytics';
 
 /**

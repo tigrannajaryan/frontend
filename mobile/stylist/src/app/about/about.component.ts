@@ -2,11 +2,11 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { AppVersion } from '@ionic-native/app-version';
 
+import { throwErrorFunc } from '@madebeauty/utils';
+
 import { getBuildNumber } from '~/shared/get-build-number';
 import { ENV } from '../../environments/environment.default';
 import Licenses from '~/core/data/licenses.json';
-
-import { getStylistAPI } from '@madebeauty/stylist-api';
 
 declare const __COMMIT_HASH__: string;
 
@@ -53,8 +53,7 @@ export class AboutComponent {
   }
 
   protected testMethodForNestedException(): void {
-    getStylistAPI('hello!');
-    // throw new Error(' Not a real error, just for debugging');
+    throwErrorFunc(' Not a real error, just for debugging');
   }
 
 }

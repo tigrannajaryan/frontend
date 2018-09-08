@@ -6,6 +6,8 @@ import { } from 'googlemaps';
 import Autocomplete = google.maps.places.Autocomplete;
 import { MapsAPILoader } from '@agm/core';
 
+import { Logger } from '@madebeauty/utils';
+
 import {
   ActionSheetController,
   ActionSheetOptions,
@@ -16,7 +18,6 @@ import {
 
 import 'rxjs/add/operator/pluck';
 
-import { Logger } from '~/shared/logger';
 import { downscalePhoto, urlToFile } from '~/shared/image-utils';
 import { PhotoSourceType } from '~/shared/constants';
 import { loading } from '~/core/utils/loading';

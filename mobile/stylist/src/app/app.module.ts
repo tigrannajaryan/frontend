@@ -11,9 +11,11 @@ import { AppVersion } from '@ionic-native/app-version';
 import { AgmCoreModule, LAZY_MAPS_API_CONFIG } from '@agm/core';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
+import { Logger } from '@madebeauty/utils';
+
 import { UnhandledErrorHandler } from '~/shared/unhandled-error-handler';
 import { initSentry } from '~/shared/sentry';
-import { Logger } from '~/shared/logger';
+// import { Logger } from '~/shared/logger';
 import { SharedSingletonsModule } from '~/shared/shared-singletons.module';
 import { MyAppComponent } from './app.component';
 import { AuthApiService } from '~/core/auth-api-service/auth-api-service';

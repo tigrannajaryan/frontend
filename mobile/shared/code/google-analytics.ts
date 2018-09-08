@@ -3,8 +3,9 @@ import { GoogleAnalytics } from '@ionic-native/google-analytics';
 import { AppVersion } from '@ionic-native/app-version';
 import { ViewController } from 'ionic-angular';
 
+import { Logger } from '@madebeauty/utils';
+
 import { getBuildNumber } from '~/shared/get-build-number';
-import { Logger } from '~/shared/logger';
 
 /**
  * Wrapper class for Google Analytics which initializes it

@@ -10,7 +10,8 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import * as deepEqual from 'fast-deep-equal';
 
-import { Logger } from '~/shared/logger';
+import { Logger } from '@madebeauty/utils';
+
 import { GAWrapper } from '~/shared/google-analytics';
 import { PageNames } from '~/core/page-names';
 import { showAlert } from '~/core/utils/alert';

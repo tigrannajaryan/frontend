@@ -4,7 +4,8 @@ import { GoogleAnalytics } from '@ionic-native/google-analytics';
 import { IonicStorageModule } from '@ionic/storage';
 import { InlineSVGModule } from 'ng-inline-svg';
 
-import { Logger } from '~/shared/logger';
+import { Logger } from '@madebeauty/utils';
+
 import { UserContext } from '~/shared/user-context';
 import { GAWrapper } from '~/shared/google-analytics';
 import { HasErrorPipe } from '~/shared/pipes/has-error.pipe';

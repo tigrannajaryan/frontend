@@ -2,8 +2,9 @@ import { ApplicationRef, Injectable, Injector } from '@angular/core';
 import { AlertController } from 'ionic-angular';
 import { GoogleAnalytics } from '@ionic-native/google-analytics';
 
+import { Logger } from '@madebeauty/utils';
+
 import { ApiError } from '~/shared/api-errors';
-import { Logger } from '~/shared/logger';
 import { reportToSentry } from '~/shared/sentry';
 
 /**

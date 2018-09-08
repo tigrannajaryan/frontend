@@ -74,7 +74,7 @@ const config = {
     // See https://survivejs.com/webpack/building/source-maps/#using-dependency-source-maps
     loaders: [
       {
-        test: /stylist-api.*\.js$/,
+        test: /@madebeauty\/.*\/dist\/.*\.js$/,
         use: ["source-map-loader"],
         enforce: "pre"
       }

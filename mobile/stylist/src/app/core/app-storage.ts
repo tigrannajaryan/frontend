@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
-import { Logger } from '~/shared/logger';
+
+import { Logger } from '@madebeauty/utils';
 
 /**
  * The list of persistently stored app data. Add any property below that you

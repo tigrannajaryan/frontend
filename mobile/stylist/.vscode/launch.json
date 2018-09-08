@@ -10,16 +10,16 @@
       "name": "Stylist: Run in Chrome against localhost:8100",
       "url": "http://localhost:8100",
       "webRoot": "${workspaceFolder}/www",
-      "sourceMapPathOverrides": {
-        "http://localhost:8100/node_modules/stylist-api/dist/index.js": "/home/tigran/made/frontend/mobile/stylist/node_modules/stylist-api/lib/index.ts"
+      // "sourceMapPathOverrides": {
+      //   "http://localhost:8100/node_modules/stylist-api/dist/index.js": "/home/tigran/made/frontend/mobile/stylist/node_modules/stylist-api/lib/index.ts"
         // "webpack:///./*": "${webRoot}/*",
         // "webpack:///src/*": "${webRoot}/*",
         // "webpack:///*": "*",
         // "webpack:///./~/*": "${webRoot}/node_modules/*",
         // "meteor://💻app/*": "${webRoot}/*",
         // "/home/tigran/made/frontend/mobile/stylist/node_modules/stylist-api/dist/*": "/home/tigran/made/frontend/mobile/shared/lib/stylist-api/lib/*"
-      },
-      "trace": true
+      // },
+      // "trace": true
     },
     {
       "name": "Stylist: Run Android",

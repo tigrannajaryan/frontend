@@ -2,8 +2,9 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ToastController } from 'ionic-angular';
 import { Subscription } from 'rxjs/Subscription';
 
+import { Logger } from '@madebeauty/utils';
+
 import { ServerStatusTracker } from '~/shared/server-status-tracker';
-import { Logger } from '~/shared/logger';
 import {
   ApiClientError,
   ApiError,

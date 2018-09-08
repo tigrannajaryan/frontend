@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { Events } from 'ionic-angular';
 import { LazyMapsAPILoaderConfigLiteral } from '@agm/core';
 
-import { Logger } from '~/shared/logger';
+import { Logger } from '@madebeauty/utils';
+
 import { EventTypes } from '~/core/events/event-types';
 
 enum GoogleMapsLibraries {

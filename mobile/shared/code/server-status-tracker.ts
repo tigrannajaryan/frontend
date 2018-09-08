@@ -3,7 +3,8 @@ import { App } from 'ionic-angular';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Severity } from '@sentry/shim';
 
-import { Logger } from '~/shared/logger';
+import { Logger } from '@madebeauty/utils';
+
 import { ApiClientError, ApiError, ApiFieldAndNonFieldErrors, HttpStatus, ServerUnreachableOrInternalError } from '~/shared/api-errors';
 import { reportToSentry } from '~/shared/sentry';
 

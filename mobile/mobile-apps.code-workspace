@@ -7,7 +7,10 @@
 			"path": "stylist"
 		},
 		{
-			"path": "shared/lib/stylist-api"
+			"path": "shared/libs/stylist-api"
+		},
+		{
+			"path": "shared/libs/utils"
 		}
 	],
   "settings": {}

@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-import { Logger } from '~/shared/logger';
+import { Logger } from '@madebeauty/utils';
+
 import { ServerStatusTracker } from '~/shared/server-status-tracker';
 import { Worktime } from './worktime.models';
 import { BaseApiService } from '~/core/base-api-service';

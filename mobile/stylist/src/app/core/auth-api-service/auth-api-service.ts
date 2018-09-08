@@ -2,9 +2,10 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import 'rxjs/add/operator/toPromise';
 
+import { Logger } from '@madebeauty/utils';
+
 import { BaseApiService } from '~/core/base-api-service';
 import { StylistProfile } from '../stylist-service/stylist-models';
-import { Logger } from '~/shared/logger';
 import { ServerStatusTracker } from '~/shared/server-status-tracker';
 import { UserContext } from '~/shared/user-context';
 import { AppStorage } from '~/core/app-storage';

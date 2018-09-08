@@ -1,0 +1,42 @@
+{
+  "extends": "../tsconfig.json",
+  "include": [
+    "lib/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "lib/**/*.spec.ts",
+    "lib/**/__tests__/*.ts"
+  ],
+  "compilerOptions": {
+  //   "allowSyntheticDefaultImports": true,
+  //   "declaration": true,
+  //   "emitDecoratorMetadata": true,
+  //   "experimentalDecorators": true,
+  //   "lib": [
+  //     "dom",
+  //     "es2015"
+  //   ],
+  //   "module": "es2015",
+  //   "moduleResolution": "node",
+  //   "sourceMap": true,
+  //   // inlineSourceMap is required for webpack to correctly consume our source maps. See also
+  //   // how "source-map-loader" is used in webpack.config.js
+  //   // "inlineSourceMap": true,
+  //   "target": "es2015",
+    "outDir": "./dist",
+  //   "strict": true
+  // },
+  // "include": [
+  //   "lib/**/*.ts"
+  // ],
+  // "exclude": [
+  //   "node_modules",
+  //   "lib/**/*.spec.ts",
+  //   "lib/**/__tests__/*.ts"
+  // ],
+  // "compileOnSave": false,
+  // "atom": {
+  //   "rewriteTsconfig": false
+  }
+}

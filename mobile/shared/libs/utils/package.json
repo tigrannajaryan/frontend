@@ -1,0 +1,21 @@
+{
+  "name": "@madebeauty/utils",
+  "version": "1.0.0",
+  "description": "MadeBeauty common utilities",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "author": "",
+  "license": "ISC",
+  "peerDependencies": {
+    "@angular/core": "~5.x",
+    "rxjs": "~5.x"
+  },
+  "devDependencies": {
+    "@angular/core": "5.2.9",
+    "typescript": "2.6.2",
+    "rxjs": "5.5.8"
+  }
+}

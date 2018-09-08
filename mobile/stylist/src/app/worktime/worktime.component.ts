@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
+import { Logger } from '@madebeauty/utils';
+
 import { Workday, Worktime } from './worktime.models';
 import { WorktimeApi } from './worktime.api';
 import { convertMinsToHrsMins, Time, TimeRange } from '~/shared/time';
 import { WeekdayIso } from '~/shared/weekday';
-import { Logger } from '~/shared/logger';
 import { PageNames } from '~/core/page-names';
 import { loading } from '~/core/utils/loading';
 
