@@ -1,5 +1,5 @@
 {
-  "name": "stylist-api",
+  "name": "@madebeauty/stylist-api",
   "version": "1.0.0",
   "description": "Stylist API",
   "main": "dist/index.js",

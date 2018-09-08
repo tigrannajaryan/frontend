@@ -6,6 +6,8 @@ import { getBuildNumber } from '~/shared/get-build-number';
 import { ENV } from '../../environments/environment.default';
 import Licenses from '~/core/data/licenses.json';
 
+import { getStylistAPI } from '@madebeauty/stylist-api';
+
 declare const __COMMIT_HASH__: string;
 
 @IonicPage()
@@ -51,7 +53,8 @@ export class AboutComponent {
   }
 
   protected testMethodForNestedException(): void {
-    throw new Error(' Not a real error, just for debugging');
+    getStylistAPI({ s: 'hello!' });
+    // throw new Error(' Not a real error, just for debugging');
   }
 
 }
