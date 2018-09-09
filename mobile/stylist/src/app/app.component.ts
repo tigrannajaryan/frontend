@@ -4,8 +4,9 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { ScreenOrientation } from '@ionic-native/screen-orientation';
 
-import { async_all } from '~/shared/async-helpers';
 import { Logger } from '@madebeauty/utils';
+
+import { async_all } from '~/shared/async-helpers';
 import { getBuildNumber } from '~/shared/get-build-number';
 import { GAWrapper } from '~/shared/google-analytics';
 

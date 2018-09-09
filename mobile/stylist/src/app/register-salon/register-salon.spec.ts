@@ -1,7 +1,8 @@
 import { async, ComponentFixture } from '@angular/core/testing';
 import { RegisterSalonComponent } from './register-salon';
 import { HttpClient, HttpHandler } from '@angular/common/http';
-import { Logger } from '~/shared/logger';
+import { Logger } from '@madebeauty/utils';
+
 import { ServerStatusTracker } from '~/shared/server-status-tracker';
 import { Camera } from '@ionic-native/camera';
 import { ActionSheetController } from 'ionic-angular';
