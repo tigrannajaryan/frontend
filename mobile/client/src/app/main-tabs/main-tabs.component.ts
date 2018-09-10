@@ -62,15 +62,23 @@ export class MainTabsComponent {
   }
 
   ionViewWillEnter(): void {
-    this.events.subscribe(EventTypes.selectMainTab, (idx: TabIndex) => this.onTabSelectedFromOutside(idx));
+    this.events.subscribe(EventTypes.selectMainTab, (idx: TabIndex, callback?: (tab: Tab) => void) => {
+      this.onTabSelectedFromOutside(idx, callback);
+    });
   }
 
   ionViewWillLeave(): void {
     this.events.unsubscribe(EventTypes.selectMainTab);
   }
 
-  onTabSelectedFromOutside(idx: TabIndex): void {
-    this.tabs.select(idx);
+  onTabSelectedFromOutside(idx: TabIndex, callback?: (tab: Tab) => void): void {
+    const tab = this.tabs.getByIndex(idx);
+    if (tab) {
+      this.tabs.select(tab);
+      if (callback) {
+        callback(tab);
+      }
+    }
   }
 
   onTabChange(tab: Tab): void {
