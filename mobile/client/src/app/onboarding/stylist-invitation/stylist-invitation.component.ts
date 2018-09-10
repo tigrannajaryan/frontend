@@ -50,13 +50,16 @@ export class StylistInvitationPageComponent {
     this.navCtrl.push(PageNames.HowMadeWorks);
   }
 
-  onSeeStylistsList(): void {
+  onProceedToStylists(): void {
     switch (this.pageType) {
       case StylistPageType.Invitation:
+        // In case of onboarding and stylist invitation we proceed to PageNames.HowMadeWorks first.
+        // After viewing 2 informational screens we should end up on selecting a stylist on PageNames.Stylists.
         this.navCtrl.push(PageNames.HowMadeWorks);
         break;
       case StylistPageType.MyStylist:
       default:
+        // When this screen is a tab of MainTabs’ tabs proceed to Stylists directly (and as a default too):
         this.navCtrl.push(PageNames.Stylists);
     }
   }
