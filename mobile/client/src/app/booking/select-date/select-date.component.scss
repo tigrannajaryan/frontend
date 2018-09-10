@@ -14,7 +14,7 @@
 
 .SelectDate-notAvailablePopup {
   .alert-wrapper {
-    max-width: 327 / 375 * 100%;
+    max-width: pxtovw(327px);
   }
 
   .alert-head {
