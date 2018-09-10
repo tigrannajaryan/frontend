@@ -15,10 +15,14 @@ const config = {
       MB_ENV: undefined,
       TRAVIS_BUILD_NUMBER: undefined,
       APP_VERSION_NUMBER: undefined,
-      IOS_APP_BUNDLE_ID: undefined
+      APP_BUNDLE_ID: undefined
     }),
 
     new webpack.NormalModuleReplacementPlugin(/\.\/environments\/environment\.default/, function (resource) {
+      if (process.env.APP_BUNDLE_ID !== undefined) {
+        console.log('APP_BUNDLE_ID=', process.env.APP_BUNDLE_ID);
+      }
+
       if (process.env.MB_ENV !== undefined) {
         let env = process.env.MB_ENV.trim();
 
