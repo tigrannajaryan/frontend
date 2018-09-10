@@ -24,6 +24,8 @@ import { AuthEffects } from '~/auth/auth.effects';
 import { ApiError, FieldErrorItem } from '~/shared/api-errors';
 import { AuthProcessState } from '~/auth/auth-process-state';
 
+import { StylistPageType } from '~/onboarding/stylist-invitation/stylist-invitation.component';
+
 export const CODE_LENGTH = 6;
 
 @IonicPage()
@@ -88,7 +90,7 @@ export class AuthConfirmPageComponent {
         if (preferredStylists.length > 0) {
           this.navCtrl.setRoot(PageNames.MainTabs);
         } else if (invitation) {
-          this.navCtrl.setRoot(PageNames.StylistInvitation);
+          this.navCtrl.setRoot(PageNames.StylistInvitation, { stylist: invitation, pageType: StylistPageType.Invitation });
         } else {
           this.navCtrl.setRoot(PageNames.HowMadeWorks);
         }

@@ -1,11 +1,14 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController } from 'ionic-angular';
-import { Store } from '@ngrx/store';
+import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 import { PageNames } from '~/core/page-names';
 import { StylistModel } from '~/core/api/stylists.models';
-import { selectInvitedByStylist, StylistState } from '~/core/reducers/stylists.reducer';
 import { PreferredStylistsData } from '~/core/api/preferred-stylists.data';
+
+export enum StylistPageType {
+  MyStylist,
+  Invitation
+}
 
 @IonicPage()
 @Component({
@@ -13,17 +16,32 @@ import { PreferredStylistsData } from '~/core/api/preferred-stylists.data';
   templateUrl: 'stylist-invitation.component.html'
 })
 export class StylistInvitationPageComponent {
+  pageType: StylistPageType;
   stylist: StylistModel;
+
+  StylistPageType = StylistPageType;
 
   constructor(
     private navCtrl: NavController,
-    private preferredStylistsData: PreferredStylistsData,
-    private store: Store<StylistState>
+    private navParams: NavParams,
+    private preferredStylistsData: PreferredStylistsData
   ) {
   }
 
   async ionViewWillEnter(): Promise<void> {
-    this.stylist = await this.store.select(selectInvitedByStylist).first().toPromise();
+    this.pageType = this.navParams.get('pageType') || StylistPageType.MyStylist;
+    this.stylist = this.navParams.get('stylist');
+
+    // Select from preferred stylists:
+    if (!this.stylist) {
+      const preferredStylists = await this.preferredStylistsData.get();
+      this.stylist = preferredStylists && preferredStylists[0]; // using first preferred
+    }
+
+    // Navigate to all stylists if no preferred ones:
+    if (!this.stylist) {
+      this.navCtrl.push(PageNames.Stylists);
+    }
   }
 
   async onContinueWithStylist(): Promise<void> {
@@ -32,7 +50,14 @@ export class StylistInvitationPageComponent {
     this.navCtrl.push(PageNames.HowMadeWorks);
   }
 
-  async onSeeStylistsList(): Promise<void> {
-    this.navCtrl.push(PageNames.HowMadeWorks);
+  onSeeStylistsList(): void {
+    switch (this.pageType) {
+      case StylistPageType.Invitation:
+        this.navCtrl.push(PageNames.HowMadeWorks);
+        break;
+      case StylistPageType.MyStylist:
+      default:
+        this.navCtrl.push(PageNames.Stylists);
+    }
   }
 }

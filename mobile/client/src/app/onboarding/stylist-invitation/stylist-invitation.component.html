@@ -3,23 +3,35 @@
 <ion-content scroll="false"></ion-content>
 <ion-scroll *ngIf="stylist" scrollY="true" class="StylistInvitationPage contentSidePadding">
   <ion-row justify-content-center>
-    <div class="StylistInvitationPage-title H1">We found your stylist</div>
+    <div class="StylistInvitationPage-title H1">
+      <span *ngIf="pageType === StylistPageType.Invitation">We found your stylist</span>
+      <span *ngIf="pageType === StylistPageType.MyStylist">My stylist</span>
+    </div>
   </ion-row>
   <ion-row justify-content-center>
     <div class="StylistInvitationPage-pic" [style.backgroundImage]="'url(' + (stylist.profile_photo_url || 'assets/icons/stylist-avatar.svg') + ')'"></div>
   </ion-row>
   <ion-row justify-content-center class="StylistInvitationPage-salonName">{{ stylist.salon_name }}</ion-row>
   <ion-row justify-content-center class="StylistInvitationPage-name">{{ stylist.first_name }} {{ stylist.last_name }}</ion-row>
-  <ion-row *ngIf="stylist.salon_address" justify-content-center class="StylistInvitationPage-address"><img src="assets/icons/location.svg" />&nbsp;{{ stylist.salon_address }}</ion-row>
-  <ion-row *ngIf="stylist.phone" justify-content-center class="StylistInvitationPage-phone"><img src="assets/icons/phone.svg" />&nbsp;{{ stylist.phone | formatPhone }}</ion-row>
-  <ion-row *ngIf="stylist.instagram_profile_name" justify-content-center class="StylistInvitationPage-phone"><img src="assets/icons/instagram.svg" />&nbsp;{{ stylist.instagram_profile_name }}</ion-row>
-  <div class="flex-1"></div>
-  <div class="Footer">
+  <ion-row *ngIf="stylist.salon_address" justify-content-center class="StylistInvitationPage-address"><i class="mb-icon-marker"></i>&nbsp;{{ stylist.salon_address }}</ion-row>
+  <ion-row *ngIf="stylist.phone" justify-content-center class="StylistInvitationPage-phone"><i class="mb-icon-phone-a"></i>&nbsp;{{ stylist.phone | formatPhone }}</ion-row>
+  <ion-row *ngIf="stylist.instagram_profile_name" justify-content-center class="StylistInvitationPage-phone"><i class="mb-icon-instagram"></i>&nbsp;{{ stylist.instagram_profile_name }}</ion-row>
+  <ion-row *ngIf="pageType === StylistPageType.MyStylist" justify-content-center class="StylistInvitationPage-phone"><i class="mb-icon-discounts-c"></i>&nbsp;Discounts available</ion-row>
+
+  <div *ngIf="pageType === StylistPageType.Invitation" class="flex-1"></div>
+
+  <div *ngIf="pageType === StylistPageType.Invitation" class="Footer">
     <ion-row justify-content-center>
       <button (click)="onContinueWithStylist()" ion-button class="StylistInvitationPage-submit Button">Let‘s get started!</button>
     </ion-row>
     <ion-row justify-content-center>
       <span (click)="onSeeStylistsList()" class="Link">It’s not my stylist</span>
+    </ion-row>
+  </div>
+
+  <div *ngIf="pageType === StylistPageType.MyStylist" class="Footer">
+    <ion-row justify-content-center>
+      <span (click)="onSeeStylistsList()" class="Link">Looking for a&nbsp;new stylist?</span>
     </ion-row>
   </div>
 <ion-scroll>
