@@ -29,8 +29,8 @@ export class StylistsEffects {
           if (error) {
             return new SearchStylistsErrorAction(error);
           }
-          // TODO: remove `.slice(0, 10)` when implementing portions
-          return new SearchStylistSuccessAction(response.stylists.slice(0, 10));
+          // TODO: remove `.slice(0, 100)` when implementing portions
+          return new SearchStylistSuccessAction(response.stylists.slice(0, 100));
         })
     );
 
