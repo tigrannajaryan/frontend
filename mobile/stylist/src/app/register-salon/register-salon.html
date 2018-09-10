@@ -52,8 +52,8 @@
             <ion-input formControlName="salon_name" type="text"></ion-input>
             <div [class.is-active]="form.get('salon_name').dirty && form.get('salon_name').errors" class="Salon-inputError" item-end>
               <span *ngIf="form.get('salon_name').errors?.required">This field is required</span>
+              <span *ngIf="form.get('salon_name').errors?.minlength">Minimal length {{ form.get('salon_name').errors?.minlength?.requiredLength }} digits</span>
               <span *ngIf="form.get('salon_name').errors?.maxlength">Maximal length {{ form.get('salon_name').errors?.maxlength?.requiredLength }} symbols</span>
-              <span *ngIf="form.get('salon_name').errors?.minlength">Minimal length 3 digits</span>
             </div>
           </ion-item>
         </ion-col>
@@ -65,6 +65,7 @@
             <ion-label floating>Address*</ion-label>
             <ion-input formControlName="salon_address" type="text" class="ion_autocomplete"></ion-input>
             <div [class.is-active]="form.get('salon_address').dirty && form.get('salon_address').errors" class="Salon-inputError" item-end>
+              <span *ngIf="form.get('salon_address').errors?.minlength">Minimal length {{ form.get('salon_address').errors?.minlength?.requiredLength }} digits</span>
               <span *ngIf="form.get('salon_address').errors?.required">This field is required</span>
             </div>
           </ion-item>
@@ -77,9 +78,9 @@
             <ion-label floating>Phone number*</ion-label>
             <ion-input formControlName="phone" type="tel"></ion-input>
             <div [class.is-active]="form.get('phone').dirty && form.get('phone').errors" class="Salon-inputError" item-end>
-              <span *ngIf="form.get('phone').errors?.required">This field is required</span>
+              <span *ngIf="form.get('phone').errors?.minlength">Minimal length {{ form.get('phone').errors?.minlength?.requiredLength }} digits</span>
               <span *ngIf="form.get('phone').errors?.maxlength">Maximal length {{ form.get('phone').errors?.maxlength?.requiredLength }} symbols</span>
-              <span *ngIf="form.get('phone').errors?.minlength">Minimal length 5 digits</span>
+              <span *ngIf="form.get('phone').errors?.required">This field is required</span>
             </div>
           </ion-item>
         </ion-col>
