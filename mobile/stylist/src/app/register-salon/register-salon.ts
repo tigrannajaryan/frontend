@@ -59,23 +59,26 @@ export class RegisterSalonComponent {
       }),
 
       first_name: ['', [
-        Validators.maxLength(25),
-        Validators.required
+        Validators.required,
+        Validators.maxLength(25)
       ]],
       last_name: ['', [
-        Validators.maxLength(25),
-        Validators.required
+        Validators.required,
+        Validators.maxLength(25)
       ]],
       salon_name: ['', [
-        Validators.maxLength(25),
+        Validators.required,
         Validators.minLength(3),
-        Validators.required
+        Validators.maxLength(25)
       ]],
-      salon_address: ['', Validators.required],
+      salon_address: ['', [
+        Validators.required,
+        Validators.minLength(10)
+      ]],
       phone: ['', [
-        Validators.maxLength(17),
+        Validators.required,
         Validators.minLength(5),
-        Validators.required
+        Validators.maxLength(17)
       ]],
       // tslint:disable-next-line:no-null-keyword
       profile_photo_id: null,
