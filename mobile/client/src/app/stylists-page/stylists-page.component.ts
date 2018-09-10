@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { Events, IonicPage, NavController, NavParams, Tab } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Tab } from 'ionic-angular';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 
@@ -14,9 +14,6 @@ import {
   selectStylistsRequestState,
   StylistState
 } from '~/core/reducers/stylists.reducer';
-
-import { EventTypes } from '~/core/event-types';
-import { TabIndex } from '~/main-tabs/main-tabs.component';
 
 export const MIN_QUERY_LENGTH = 2;
 
@@ -39,7 +36,6 @@ export class StylistsPageComponent {
   requestState?: Observable<RequestState>;
 
   constructor(
-    private events: Events,
     private navCtrl: NavController,
     private navParams: NavParams,
     private preferredStylistsData: PreferredStylistsData,
@@ -71,9 +67,9 @@ export class StylistsPageComponent {
   async onContinueWithStylist(stylist: StylistModel): Promise<void> {
     await this.preferredStylistsData.set(stylist);
 
-    // Select a home tab if it‘s a MainTab nav:
+    // Pop back if it‘s a MainTab nav (when not in onboarding flow):
     if (this.navCtrl.parent && this.navCtrl instanceof Tab) {
-      this.events.publish(EventTypes.selectMainTab, TabIndex.Home);
+      this.navCtrl.pop();
     } else {
       this.navCtrl.setRoot(PageNames.MainTabs);
     }
