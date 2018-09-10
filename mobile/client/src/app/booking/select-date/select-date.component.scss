@@ -12,6 +12,40 @@
   }
 }
 
+.SelectDate-notAvailablePopup {
+  .alert-wrapper {
+    max-width: 327 / 375 * 100%;
+  }
+
+  .alert-head {
+    padding: 0;
+  }
+
+  .alert-title {
+    padding: pxtovw(16px) pxtovw(24px) 0;
+    font-size: $t-h2;
+  }
+
+  .alert-sub-title {
+    padding: pxtovw(24px);
+    margin: 0;
+    font-size: $t-h1;
+  }
+
+  .alert-message {
+    padding: 0 pxtovw(24px);
+    font-size: $t-h4;
+    color: color($grayscale, 500);
+  }
+
+  .alert-button {
+    margin: pxtovw(24px) pxtovw(24px) pxtovw(16px);
+    font-weight: normal;
+    color: color($colors, honey);
+    border: 0;
+  }
+}
+
 // TODO: move to a sep file
 .Calendar {
   .Calendar-title {

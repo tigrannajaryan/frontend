@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController } from 'ionic-angular';
+import { AlertController, Events, IonicPage, NavController } from 'ionic-angular';
 import * as moment from 'moment';
 
 import { Logger } from '~/shared/logger';
@@ -8,6 +8,9 @@ import { DayOffer, ISODate } from '~/core/api/services.models';
 import { BookingData } from '~/core/api/booking.data';
 import { loading } from '~/core/utils/loading';
 import { componentIsActive } from '~/core/utils/component-is-active';
+
+import { EventTypes } from '~/core/event-types';
+import { TabIndex } from '~/main-tabs/main-tabs.component';
 
 interface ExtendedDayOffer extends DayOffer {
   opacity: number;
@@ -31,7 +34,9 @@ export class SelectDateComponent {
   moment = moment;
 
   constructor(
+    private alertCtrl: AlertController,
     protected bookingData: BookingData,
+    private events: Events,
     private logger: Logger,
     private navCtrl: NavController
   ) {
@@ -44,8 +49,12 @@ export class SelectDateComponent {
       .takeWhile(componentIsActive(this))
       .subscribe(async () => {
         const { response } = await loading(this, this.bookingData.pricelist.get());
-        if (response && response.prices.length > 0) {
 
+        if (response && response.prices.length === 0) {
+          // When all timeslots of preferred stylist are booked:
+          this.showNoTimeSlotsPopup();
+
+        } else if (response) {
           // Create offers Map {[ISODate]: DayOffer} to easily get an offer by date:
           this.offers = new Map();
           for (const offer of getPricesWithOpacity(response.prices)) {
@@ -63,6 +72,26 @@ export class SelectDateComponent {
     this.logger.info('onSelectOffer', offer);
     this.bookingData.setOffer(offer);
     this.navCtrl.push(PageNames.SelectTime);
+  }
+
+  private showNoTimeSlotsPopup(): void {
+    const popup = this.alertCtrl.create({
+      cssClass: 'SelectDate-notAvailablePopup',
+      title: 'No time slots',
+      subTitle: '🤦‍♀️',
+      message: 'Unfortunately, your stylist does not have any open slots right now.',
+      buttons: [{
+        text: 'Show available stylists',
+        role: 'cancel',
+        handler: () => {
+          setTimeout(async () => {
+            await this.navCtrl.setRoot(PageNames.MainTabs);
+            this.events.publish(EventTypes.selectMainTab, TabIndex.Stylists, tab => tab.push(PageNames.Stylists));
+          });
+        }
+      }]
+    });
+    popup.present();
   }
 }
 
