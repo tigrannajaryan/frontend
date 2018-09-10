@@ -10,6 +10,11 @@ export enum StylistPageType {
   Invitation
 }
 
+export interface StylistPageParams {
+  pageType?: StylistPageType;
+  stylist?: StylistModel;
+}
+
 @IonicPage()
 @Component({
   selector: 'page-stylist-invitation',
@@ -29,16 +34,18 @@ export class StylistInvitationPageComponent {
   }
 
   async ionViewWillEnter(): Promise<void> {
-    this.pageType = this.navParams.get('pageType') || StylistPageType.MyStylist;
-    this.stylist = this.navParams.get('stylist');
+    const params = (this.navParams.get('data') || {}) as StylistPageParams;
 
-    // Select from preferred stylists:
+    this.pageType = params.pageType || StylistPageType.MyStylist;
+    this.stylist = params.stylist;
+
+    // Select from preferred stylists if no stylist:
     if (!this.stylist) {
       const preferredStylists = await this.preferredStylistsData.get();
       this.stylist = preferredStylists && preferredStylists[0]; // using first preferred
     }
 
-    // Navigate to all stylists if no preferred ones:
+    // Navigate to all stylists if even no preferred one:
     if (!this.stylist) {
       this.navCtrl.push(PageNames.Stylists);
     }

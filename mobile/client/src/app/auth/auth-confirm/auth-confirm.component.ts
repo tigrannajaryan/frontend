@@ -90,7 +90,10 @@ export class AuthConfirmPageComponent {
         if (preferredStylists.length > 0) {
           this.navCtrl.setRoot(PageNames.MainTabs);
         } else if (invitation) {
-          this.navCtrl.setRoot(PageNames.StylistInvitation, { stylist: invitation, pageType: StylistPageType.Invitation });
+          this.navCtrl.setRoot(PageNames.StylistInvitation, { data: {
+            stylist: invitation,
+            pageType: StylistPageType.Invitation
+          } });
         } else {
           this.navCtrl.setRoot(PageNames.HowMadeWorks);
         }
