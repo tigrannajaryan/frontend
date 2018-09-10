@@ -40,8 +40,8 @@ export class MainTabsComponent {
     },
     {
       name: 'Stylists',
-      link: PageNames.Stylists,
-      params: { isMain: true }
+      link: PageNames.StylistInvitation,
+      params: {}
     },
     {
       name: 'Profile',

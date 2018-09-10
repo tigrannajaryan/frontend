@@ -67,6 +67,10 @@
   .StylistInvitationPage-phone {
     margin-bottom: pxtovw(8px);
     color: color($grayscale, 500);
+
+    [class^="mb-icon"] {
+      color: color($colors, honey);
+    }
   }
 
   .StylistInvitationPage-submit {
