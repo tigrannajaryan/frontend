@@ -1,7 +1,7 @@
 <ion-header madeHeader [showHome]="true"></ion-header>
 
 <ion-content class="AppointmentPage">
-  <div class="contentSidePadding">
+  <div class="contentSidePadding AppointmentPage-padding">
     <ng-template [ngIf]="params && params.appointment">
 
       <h1 class="pageTitle" *ngIf="params.appointment.status === AppointmentStatus.checked_out">Thanks for your visit!</h1>
@@ -39,16 +39,14 @@
             <ion-col col-12 class="AppointmentPage-cardAppPrice">
               <!-- Estimated price -->
               <div *ngIf="params.appointment.status === AppointmentStatus.new; else showFinalPrice" class="priceEstimated">
-                <label> Estimated price</label>
-                <div class="price">{{ (params.appointment.total_client_price_before_tax + params.appointment.total_tax) | price }}</div>
+                <div class="label"> Estimated price</div>
+                <div class="price">{{ (params.appointment.total_client_price_before_tax + params.appointment.total_tax) }}</div>
               </div>
 
               <!-- Final price -->
               <ng-template #showFinalPrice>
-                <div>
-                  <label>Final price</label>
-                  <div class="price"> {{ (params.appointment.total_client_price_before_tax + params.appointment.total_tax) | price }}</div>
-                </div>
+                <div class="label">Final price</div>
+                <div class="price"> {{ (params.appointment.total_client_price_before_tax + params.appointment.total_tax) }}</div>
               </ng-template>
             </ion-col>
           </ion-row>

@@ -2,7 +2,7 @@
   display: flex;
   justify-content: space-between;
   width: 100%;
-  margin: pxtovw(20px) 0 pxtovw(5px);
+  margin: pxtovw(20px) 0 pxtovw(6px);
 
   .AppCard-HeaderVisitDate {
     align-self: flex-start;
@@ -30,17 +30,17 @@
 
   .AppCard-GridStylistDetailsImage {
     display: inline-block;
-    width: pxtovw(21px);
-    height: pxtovw(21px);
+    width: pxtovw(15px);
+    height: pxtovw(15px);
     padding: pxtovw(2px);
     margin-right: pxtovw(3px);
+    overflow: hidden;
     text-align: center;
     vertical-align: middle;
-    border: 1px solid color($grayscale, 300);
-    border-radius: 50%;
-    overflow: hidden;
     background-repeat: no-repeat;
     background-size: cover;
+    border: 1px solid color($grayscale, 300);
+    border-radius: 50%;
   }
 
   .AppCard-GridPrice {
@@ -54,6 +54,7 @@
   }
 
   .AppCard-GridServiceName {
+    margin: pxtovw(2px) 0 pxtovw(4px) 0;
     overflow: hidden;
     font-size: $t-h3;
     text-overflow: ellipsis;
@@ -63,5 +64,4 @@
 
 .AppCard-Grid span {
   display: inline-block;
-  margin: pxtovw(4px) 0;
 }

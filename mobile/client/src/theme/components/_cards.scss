@@ -1,8 +1,8 @@
 .Card {
-  padding: 16px;
-  margin-bottom: 16px;
+  padding: pxtovw(18px) pxtovw(23px) pxtovw(15px);
+  margin-bottom: pxtovw(16px);
   background: white;
-  border-radius: 15px;
+  border-radius: pxtovw(15px);
   box-shadow: 0 7px 43px color($grayscale, 200);
 
   &.is-loading {

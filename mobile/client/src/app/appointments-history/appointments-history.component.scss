@@ -15,7 +15,7 @@
   .AppHistoryPage-subtitleContainer {
     display: flex;
     align-items: flex-start;
-    margin: pxtovw(10px) 0;
+    margin: pxtovw(24px) 0 pxtovw(24px);
 
     .AppHistoryPage-subtitle {
       display: inline-block;
@@ -26,13 +26,13 @@
 
     .AppHistoryPage-labelPurpul {
       display: inline-block;
-      padding: pxtovw(1px) pxtovw(12px);
+      padding: pxtovw(3px) pxtovw(14px);
       margin-left: pxtovw(7px);
       font-size: $t-base;
       color: color($colors, white);
       vertical-align: text-top;
       background: color($colors, violet);
-      border-radius: pxtovw(20px);
+      border-radius: pxtovw(13px);
     }
   }
 
