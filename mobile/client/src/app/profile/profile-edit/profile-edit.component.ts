@@ -31,6 +31,9 @@ export class ProfileEditComponent {
 
   readonly DEFAULT_IMAGE = DefaultImage.User;
 
+  // Indicates whether user pic has been changed or not:
+  private picChanged = false;
+
   private photoUploadOptions: ActionSheetOptions;
   private cameraOptions: CameraOptions;
 
@@ -101,8 +104,10 @@ export class ProfileEditComponent {
             handler: () => {
               this.form.patchValue({
                 profile_photo_url: '',
-                profile_photo_id: undefined
+                // tslint:disable-next-line:no-null-keyword
+                profile_photo_id: null
               });
+              this.picChanged = true;
             }
           }] : []
       ]
@@ -111,11 +116,16 @@ export class ProfileEditComponent {
   }
 
   async onSubmit(): Promise<void> {
+    const value = {
+      ...this.form.value,
+      // Add pic id only if it has been changed in order to not reset it by passing null:
+      profile_photo_id: this.picChanged ? this.form.value.profile_photo_id : undefined
+    };
     const { response } = await composeRequest<ProfileModel>(
       loading(isLoading => this.isUpdating = isLoading),
       animateFailed(isFailed => this.isFailed = isFailed),
       animateSucceeded(isSucceeded => this.isSucceeded = isSucceeded),
-      this.profileApi.updateProfile(this.form.value)
+      this.profileApi.updateProfile(value)
     );
     if (response) {
       this.profileDataStore.set(response);
@@ -155,6 +165,8 @@ export class ProfileEditComponent {
         profile_photo_url: downscaledBase64Image,
         profile_photo_id: response.uuid
       });
+
+      this.picChanged = true;
 
     } catch (e) {
       showAlert('Saving photo failed', 'We are working on fixing it, please, retry later.');
