@@ -31,6 +31,7 @@ export class SelectDateComponent {
 
   // Expose to the view:
   Array = Array;
+  Math = Math;
   moment = moment;
 
   constructor(
