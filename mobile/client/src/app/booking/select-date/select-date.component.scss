@@ -89,7 +89,7 @@
       width: 100%;
       height: $day-height;
       padding-top: pxtovw(3px);
-      margin-top: -1 * pxtovw(3px);
+      margin-top: pxtovw(-3px); // compensates padding-top
       font-weight: bold;
       color: black;
       background: color($grayscale, 200);
