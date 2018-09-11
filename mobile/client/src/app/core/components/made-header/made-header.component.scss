@@ -60,8 +60,13 @@
     }
   }
 
-  ion-buttons[end] button {
-    font-size: pxtovw(24px);
-    color: black;
+  ion-buttons[end] {
+    position: absolute;
+    right: pxtovw(25px);
+
+    button {
+      font-size: pxtovw(24px);
+      color: black;
+    }
   }
 }
