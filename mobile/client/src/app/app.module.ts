@@ -61,12 +61,7 @@ import { servicesPath, servicesReducer } from '~/core/reducers/services.reducer'
       backButtonText: '',
       backButtonIcon: 'ios-arrow-round-back'
     }),
-
-    // According to https://stackoverflow.com/questions/50297655/quotaexceedederror-on-android-appionic-when-im-trying-to-store-a-value-in:
-    IonicStorageModule.forRoot({
-      name: '__mydb',
-      driverOrder: ['sqlite', 'websql', 'indexeddb']
-    }),
+    IonicStorageModule.forRoot(),
 
     /**
      * StoreModule.forRoot is imported once in the root module, accepting a reducer
