@@ -25,10 +25,13 @@ npm install -g cordova@8.0.0
 # build Android app only for the Client app
 
 if [[ $APP_TYPE = "client" ]]; then
+    export APP_BUNDLE_ID=$ANDROID_APP_BUNDLE_ID
     $TRAVIS_BUILD_DIR/mobile/scripts/build-android-app.sh
 fi
 
 # prepare and build iOS app
+
+export APP_BUNDLE_ID=$IOS_APP_BUNDLE_ID
 
 cd $TRAVIS_BUILD_DIR
 # restore encrypted distribution certificate file
