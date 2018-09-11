@@ -4,12 +4,17 @@
     margin-top: 0;
     font-weight: 500;
     text-align: left;
-    border-bottom: pxtovw(1px) solid color($grayscale, 100);
   }
 
   .SelectDate-spinner {
     width: 100%;
   }
+}
+
+.SelectDate-header {
+  @include content-padding;
+
+  padding-bottom: 0;
 }
 
 .SelectDate-notAvailablePopup {
@@ -66,11 +71,9 @@
     $day-height: pxtovw(40px);
     $day-offset: pxtovw(3px);
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
     width: calc(#{$day-width} - #{$day-offset * 2});
     height: $day-height;
+    padding-top: pxtovw(3px);
     margin: $day-offset;
     font-size: $t-base;
     color: color($grayscale, 500);
@@ -79,20 +82,21 @@
     .Calendar-price {
       padding-top: pxtovw(2px);
       font-size: $t-small;
+      font-weight: normal;
     }
 
     .Calendar-selectable {
       width: 100%;
       height: $day-height;
       padding-top: pxtovw(3px);
+      margin-top: pxtovw(-3px); // compensates padding-top
+      font-weight: bold;
       color: black;
       background: color($grayscale, 200);
       border-radius: pxtovw(4px);
 
       &.is-fullyBooked,
       &.is-nonWorking {
-        padding-top: 0;
-        line-height: $day-height;
         color: color($grayscale, 500);
         background: white !important; // do not allow to override background color from js
 
@@ -104,6 +108,7 @@
   }
 
   .Calendar-legend {
+    margin-bottom: pxtovw(8px);
     border-bottom: pxtovw(1px) solid color($grayscale, 100);
 
     .Calendar-day {

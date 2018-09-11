@@ -1,16 +1,17 @@
-<ion-header madeHeader [showHome]="true"></ion-header>
+<ion-header madeHeader [showHome]="true">
+  <ion-toolbar class="SelectDate SelectDate-header">
+    <div class="SelectDate-title H1">Select date</div>
+    <book-services-header></book-services-header>
+  </ion-toolbar>
+</ion-header>
 
 <ion-content class="SelectDate">
   <ion-grid fixed>
-    <div class="SelectDate-title H1">Select date</div>
-
-    <book-services-header></book-services-header>
-
     <ion-spinner *ngIf="isLoading" class="SelectDate-spinner"></ion-spinner>
 
     <div *ngIf="offers">
       <!-- Calculate count of months to be displayed: -->
-      <div *ngIf="(moment(end).diff(start, 'months') + 1) as monthsCount" class="Calendar">
+      <div *ngIf="Math.max(moment(end).diff(start, 'months'), 2) as monthsCount" class="Calendar">
         <!-- Iterate over the months count: -->
         <div *ngFor="let month of Array(monthsCount).fill(''); index as i">
           <!-- Get start of the month (ISO date string): -->
