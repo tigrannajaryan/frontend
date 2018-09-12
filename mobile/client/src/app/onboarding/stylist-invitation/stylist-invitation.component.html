@@ -20,27 +20,20 @@
   </ion-row>
 
   <!-- Data: -->
-  <ion-row justify-content-center class="StylistInvitationPage-salonName">{{ stylist.salon_name }}</ion-row>
-  <ion-row justify-content-center class="StylistInvitationPage-name">{{ stylist.first_name }} {{ stylist.last_name }}</ion-row>
-  <ion-row *ngIf="stylist.salon_address" justify-content-center class="StylistInvitationPage-address">
+  <ion-row justify-content-center align-items-center class="StylistInvitationPage-salonName">{{ stylist.salon_name }}</ion-row>
+  <ion-row justify-content-center align-items-center class="StylistInvitationPage-name">{{ stylist.first_name }} {{ stylist.last_name }}</ion-row>
+  <ion-row align-items-center *ngIf="stylist.salon_address" justify-content-center class="StylistInvitationPage-address">
     <i class="mb-icon-marker"></i>&nbsp;{{ stylist.salon_address }}
   </ion-row>
-  <ion-row *ngIf="stylist.phone" justify-content-center class="StylistInvitationPage-phone">
+  <ion-row align-items-center *ngIf="stylist.phone" justify-content-center class="StylistInvitationPage-phone">
     <i class="mb-icon-phone-a"></i>&nbsp;{{ stylist.phone | formatPhone }}
   </ion-row>
-  <ion-row *ngIf="stylist.instagram_profile_name" justify-content-center class="StylistInvitationPage-phone">
-    <i class="mb-icon-instagram"></i>&nbsp;{{ stylist.instagram_profile_name }}
+  <ion-row align-items-center *ngIf="stylist.instagram_url" justify-content-center class="StylistInvitationPage-phone">
+    <i class="mb-icon-instagram"></i>&nbsp;{{ stylist.instagram_url }}
   </ion-row>
 
-  <ng-container [ngSwitch]="pageType">
-    <!-- Fix unnecessary space issue on invitation screen: -->
-    <div *ngSwitchCase="StylistPageType.Invitation" class="flex-1"></div>
-
-    <!-- Show discounts available on MyStylist page: -->
-    <ion-row *ngSwitchCase="StylistPageType.MyStylist" justify-content-center class="StylistInvitationPage-phone">
-      <i class="mb-icon-discounts-c"></i>&nbsp;Discounts available
-    </ion-row>
-  </ng-container>
+  <!-- Fix unnecessary space issue on invitation screen: -->
+  <div *ngIf="pageType === StylistPageType.Invitation" class="flex-1"></div>
 
   <!-- Footer: -->
   <div [ngSwitch]="pageType" class="Footer">
