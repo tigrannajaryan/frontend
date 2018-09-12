@@ -46,7 +46,10 @@
           <button (click)="onContinueWithStylist(stylist)" ion-button class="Button StylistsPage-submit">{{ continueText || ("Add " + stylist.first_name +"!") }}</button>
         </div>
       </div>
-      <div *ngIf="(stylists | async)?.length === 0">No stylists found</div>
+      <div *ngIf="(stylists | async)?.length === 0">
+        <ng-container *ngIf="!query.value; else notFound">I'm sorry there are no stylists in your area yet. But check back often we're adding new stylists every day!</ng-container>
+        <ng-template #notFound>No stylists found</ng-template>
+      </div>
     </div>
   </div>
 </ion-content>
