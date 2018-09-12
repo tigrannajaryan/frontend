@@ -5,7 +5,7 @@
     <div class="H1" *ngIf="isAdditionalService">Add additional service:</div>
     <book-services-header *ngIf="isAdditionalService" readonly="true"></book-services-header>
     <ion-row justify-content-center>
-      <div *ngIf="category | async" [style.backgroundImage]="'url(' + 'assets/icons/services-categories/' + (category | async)?.category_code + '.svg)'" class="ServicesPage-img"></div>
+      <div *ngIf="category | async" [style.backgroundImage]="'url(' + 'assets/icons/services-categories/' + (category | async)?.category_code + '.png)'" class="ServicesPage-img"></div>
     </ion-row>
     <ion-row justify-content-center>
       <div class="H1">

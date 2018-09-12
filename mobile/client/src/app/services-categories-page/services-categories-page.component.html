@@ -21,7 +21,7 @@
     <div *ngIf="(requestState | async) === RequestState.Succeeded">
       <div *ngIf="(categories | async)?.length > 0" class="ServicesCategoriesPage-categories">
         <div *ngFor="let category of categories | async" class="ServicesCategoriesPage-card Card" (click)="onProceedToServices(category.uuid)">
-          <div class="ServicesCategoriesPage-cardImg" [style.backgroundImage]="'url(' + 'assets/icons/services-categories/' + category.category_code +'.svg)'"></div>
+          <div class="ServicesCategoriesPage-cardImg" [style.backgroundImage]="'url(' + 'assets/icons/services-categories/' + category.category_code +'.png)'"></div>
           <div>
             <div class="ServicesCategoriesPage-cardTitle">{{ category.name }}</div>
             <div class="ServicesCategoriesPage-cardSubtitle">{{ category.services.length }} services</div>
