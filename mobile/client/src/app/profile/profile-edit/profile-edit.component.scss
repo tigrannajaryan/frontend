@@ -1,6 +1,12 @@
 profile-edit {
-  .header .toolbar:last-child .toolbar-background {
-    border: none;
+  .header {
+    .toolbar:last-child .toolbar-background {
+      border: none;
+    }
+
+    .mb-icon-logo {
+      font-size: pxtovw(24px);
+    }
   }
 }
 
@@ -52,7 +58,9 @@ profile-edit {
   $icon-width: pxtovw(28px);
 
   min-width: $icon-width;
+  color: black;
   text-align: center;
+  text-transform: capitalize;
 }
 
 @keyframes zoomIn {

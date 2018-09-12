@@ -51,20 +51,26 @@ export class SelectDateComponent {
       .subscribe(async () => {
         const { response } = await loading(this, this.bookingData.pricelist.get());
 
-        if (response && response.prices.length === 0) {
-          // When all timeslots of preferred stylist are booked:
-          this.showNoTimeSlotsPopup();
+        if (response) {
+          // When empty offers or all days of preferred stylist either booked or set to non-working:
+          const notTimeslots =
+            response.prices.length === 0 ||
+            response.prices.every(offer => offer.is_fully_booked || !offer.is_working_day);
 
-        } else if (response) {
-          // Create offers Map {[ISODate]: DayOffer} to easily get an offer by date:
-          this.offers = new Map();
-          for (const offer of getPricesWithOpacity(response.prices)) {
-            this.offers.set(offer.date, offer);
+          if (notTimeslots) {
+            this.showNoTimeSlotsPopup();
+
+          } else {
+            // Create offers Map {[ISODate]: DayOffer} to easily get an offer by date:
+            this.offers = new Map();
+            for (const offer of getPricesWithOpacity(response.prices)) {
+              this.offers.set(offer.date, offer);
+            }
+
+            // Set period boundaries to understand what months of calendar to create:
+            this.start = moment(response.prices[0].date).startOf('month').format('YYYY-MM-DD');
+            this.end = moment(response.prices[response.prices.length - 1].date).endOf('month').format('YYYY-MM-DD');
           }
-
-          // Set period boundaries to understand what months of calendar to create:
-          this.start = moment(response.prices[0].date).startOf('month').format('YYYY-MM-DD');
-          this.end = moment(response.prices[response.prices.length - 1].date).endOf('month').format('YYYY-MM-DD');
         }
       });
   }
