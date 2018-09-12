@@ -58,7 +58,9 @@ profile-edit {
   $icon-width: pxtovw(28px);
 
   min-width: $icon-width;
+  color: black;
   text-align: center;
+  text-transform: capitalize;
 }
 
 @keyframes zoomIn {
