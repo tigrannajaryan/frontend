@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+
+# Run unit tests and retry up to 3 times if the output contains known
+# issues which are not our test failures.
+
+known_failures=(
+  "Assertion failed: (0), function uv_close, file ../deps/uv/src/unix/core.c"
+  "ChromeHeadless have not captured in"
+)
+
+i=1
+while true
+do
+  rm test_output.log
+  echo "============ Starting tests (attempt $i)..."
+  if npm run test-headless --silent > >(tee -a test_output.log) 2> >(tee -a test_output.log >&2); then
+    echo "============ Tests finished successfully."
+    rm test_output.log
+    exit 0
+  else
+    echo "============ Tests failed. Checking output for known non-failure causes."
+    found=0
+    for search_item in "${known_failures[@]}"
+    do
+      if grep --silent "$search_item" test_output.log; then
+        found=1
+        break
+      fi
+    done
+
+    if (($found)); then
+      printf "============ Tests failed with known non-failure cause."
+      if ((i<3)); then
+        echo " Retrying..."
+      else
+        echo " No more attempts remaining. Failing the tests."
+        rm test_output.log
+        exit 1
+      fi
+    else
+      echo "============ Tests failed with unknown cause."
+      rm test_output.log
+      exit 1
+    fi
+  fi
+
+  i=$((i+1))
+done
