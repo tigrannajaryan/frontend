@@ -21,8 +21,9 @@
       <div *ngIf="appointments.length > 0; else noAppointments">
         <!-- show appointment cards -->
         <div class="AppHistoryPage-subtitleContainer">
-          <span class="AppHistoryPage-subtitle">Past visits</span>
-          <span class="AppHistoryPage-labelPurpul">{{ appointments.length }}</span>
+          <ion-row class="AppHistoryPage-subtitle" align-items-center>
+            <span>Past visits</span><span class="Badge">{{ appointments.length }}</span>
+          </ion-row>
         </div>
         <div *ngFor="let appointment of appointments">
           <appointment-item [appointment]="appointment" (cardClick)="onAppointmentClick(appointment)" hasRebook="true"

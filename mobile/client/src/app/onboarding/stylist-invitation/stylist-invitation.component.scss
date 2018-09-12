@@ -58,14 +58,15 @@
   }
 
   .StylistInvitationPage-name {
-    margin-bottom: pxtovw(16px);
+    margin-bottom: pxtovw(8px);
     font-size: $t-h2;
     font-weight: bold;
   }
 
   .StylistInvitationPage-address,
   .StylistInvitationPage-phone {
-    margin-bottom: pxtovw(8px);
+    margin-bottom: pxtovw(4px);
+    font-size: $t-base;
     color: color($grayscale, 500);
 
     [class^="mb-icon"] {

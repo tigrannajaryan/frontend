@@ -1,11 +1,12 @@
-<ion-header madeHeader [showHome]="true"></ion-header>
+<ion-header madeHeader [showHome]="true">
+  <ion-toolbar class="SelectDate SelectDate-header">
+    <div class="SelectDate-title H1">Select time</div>
+    <book-services-header></book-services-header>
+  </ion-toolbar>
+</ion-header>
 
 <ion-content class="SelectTimeslot">
   <div class="contentSidePadding">
-    <h1 class="pageTitle">Select time</h1>
-
-    <book-services-header></book-services-header>
-
     <div *ngIf="bookingData.offer" class="SelectTimeslot-pricing">
       <div class="SelectTimeslot-pricingRegular">Regular price
         <div>{{ bookingData.offer?.totalRegularPrice | price }}</div>

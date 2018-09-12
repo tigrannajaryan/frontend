@@ -1,17 +1,20 @@
-<ion-header madeHeader [showHome]="true"></ion-header>
+<ion-header madeHeader [showHome]="true">
+  <ion-toolbar *ngIf="isAdditionalService" class="SelectDate SelectDate-header">
+    <div class="SelectDate-title H1">Add additional service:</div>
+    <book-services-header></book-services-header>
+  </ion-toolbar>
+</ion-header>
 
 <ion-content class="ServicesPage">
   <ion-grid fixed>
-    <div class="H1" *ngIf="isAdditionalService">Add additional service:</div>
-    <book-services-header *ngIf="isAdditionalService" readonly="true"></book-services-header>
     <ion-row justify-content-center>
-      <div *ngIf="category | async" [style.backgroundImage]="'url(' + 'assets/icons/services-categories/' + (category | async)?.category_code + '.svg)'" class="ServicesPage-img"></div>
+      <div *ngIf="category | async" [style.backgroundImage]="'url(' + 'assets/icons/services-categories/' + (category | async)?.category_code + '.png)'" class="ServicesPage-img"></div>
     </ion-row>
     <ion-row justify-content-center>
-      <div class="H1">
+      <ion-row class="H1" align-items-center>
         {{ (category | async)?.name }}
         <span *ngIf="services | async" class="Badge">{{ (services | async)?.length }}</span>
-      </div>
+      </ion-row>
     </ion-row>
   </ion-grid>
   <ion-grid *ngIf="services | async" fixed>

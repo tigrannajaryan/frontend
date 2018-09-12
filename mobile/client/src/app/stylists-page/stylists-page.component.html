@@ -32,7 +32,7 @@
         class="StylistsPage-card Card"
         [ngClass]="{'is-active': stylist.uuid === activeStylist?.uuid}"
         (click)="onSetActiveStylist($event, stylist)">
-        <div class="StylistsPage-cardImg" [style.backgroundImage]="'url(' + (stylist.profile_photo_url  || 'assets/icons/stylist-avatar.svg') + ')'"></div>
+        <div class="StylistsPage-cardImg" [style.backgroundImage]="'url(' + (stylist.profile_photo_url  || 'assets/icons/stylist-avatar.png') + ')'"></div>
         <div class="StylistsPage-cardHeader">
           Your selected stylist
           <i (click)="onSetActiveStylist($event, undefined)" class="StylistsPage-cardClose mb-icon-cross"></i>

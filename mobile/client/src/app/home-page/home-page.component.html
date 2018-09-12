@@ -19,8 +19,9 @@
 
     <div *ngIf="homeData">
       <div *ngIf="homeData.upcoming?.length !== 0 || homeData.last_visited" class="HomePage-subtitleContainer">
-        <span class="HomePage-subtitle">Upcoming visits</span>
-        <span class="HomePage-labelPurpul">{{ homeData.upcoming.length }}</span>
+        <ion-row class="HomePage-subtitle" align-items-center>
+          <span>Upcoming visits</span><span class="Badge">{{ homeData.upcoming.length }}</span>
+        </ion-row>
       </div>
       <div *ngIf="homeData.upcoming?.length > 0; else noUpcoming">
         <!-- show upcoming appointment cards -->
