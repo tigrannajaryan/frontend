@@ -2,7 +2,7 @@
   <ion-navbar class="Made-wp BackHeader-backBtn">
     <ion-buttons *ngIf="isMainScreen" end>
       <button [disabled]="form.invalid" (click)="onContinue()" ion-button icon-only color="dark" class="RightButton">
-        <img src="assets/svgicons/check.svg"/>
+        Done
       </button>
     </ion-buttons>
   </ion-navbar>
@@ -25,7 +25,7 @@
       <ion-row>
         <ion-col col-6>
           <ion-item class="Salon-input">
-            <ion-label floating>First name*</ion-label>
+            <ion-label floating>First name</ion-label>
             <ion-input formControlName="first_name" type="text"></ion-input>
             <div [class.is-active]="form.get('first_name').dirty && form.get('first_name').errors" class="Salon-inputError" item-end>
               <span *ngIf="form.get('first_name').errors?.required">This field is required</span>
@@ -35,7 +35,7 @@
         </ion-col>
         <ion-col col-6>
           <ion-item class="Salon-input">
-            <ion-label floating>Last name*</ion-label>
+            <ion-label floating>Last name</ion-label>
             <ion-input formControlName="last_name" type="text"></ion-input>
             <div [class.is-active]="form.get('last_name').dirty && form.get('last_name').errors" class="Salon-inputError" item-end>
               <span *ngIf="form.get('last_name').errors?.required">This field is required</span>
@@ -48,7 +48,7 @@
       <ion-row>
         <ion-col>
           <ion-item class="Salon-input">
-            <ion-label floating>Salon name*</ion-label>
+            <ion-label floating>Salon name</ion-label>
             <ion-input formControlName="salon_name" type="text"></ion-input>
             <div [class.is-active]="form.get('salon_name').dirty && form.get('salon_name').errors" class="Salon-inputError" item-end>
               <span *ngIf="form.get('salon_name').errors?.required">This field is required</span>
@@ -62,7 +62,7 @@
       <ion-row>
         <ion-col>
           <ion-item class="Salon-input">
-            <ion-label floating>Address*</ion-label>
+            <ion-label floating>Address</ion-label>
             <ion-input formControlName="salon_address" type="text" class="ion_autocomplete"></ion-input>
             <div [class.is-active]="form.get('salon_address').dirty && form.get('salon_address').errors" class="Salon-inputError" item-end>
               <span *ngIf="form.get('salon_address').errors?.minlength">Minimal length {{ form.get('salon_address').errors?.minlength?.requiredLength }} digits</span>
@@ -75,7 +75,7 @@
       <ion-row>
         <ion-col>
           <ion-item class="Salon-input">
-            <ion-label floating>Phone number*</ion-label>
+            <ion-label floating>Phone number</ion-label>
             <ion-input formControlName="phone" type="tel"></ion-input>
             <div [class.is-active]="form.get('phone').dirty && form.get('phone').errors" class="Salon-inputError" item-end>
               <span *ngIf="form.get('phone').errors?.minlength">Minimal length {{ form.get('phone').errors?.minlength?.requiredLength }} digits</span>
@@ -89,7 +89,7 @@
       <ion-row>
         <ion-col>
           <ion-item class="Salon-input">
-            <ion-label floating>Instagram user name</ion-label>
+            <ion-label floating>Instagram user name (optional)</ion-label>
             <ion-input formControlName="instagram_url" type="text"></ion-input>
             <div [class.is-active]="form.get('instagram_url').dirty && form.get('instagram_url').errors" class="Salon-inputError" item-end>
               <span *ngIf="form.get('instagram_url').errors?.pattern">Wrong name</span>
@@ -101,7 +101,7 @@
       <ion-row>
         <ion-col>
           <ion-item class="Salon-input">
-            <ion-label floating>Website</ion-label>
+            <ion-label floating>Website (optional)</ion-label>
             <ion-input formControlName="website_url" type="text"></ion-input>
           </ion-item>
         </ion-col>

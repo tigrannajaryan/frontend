@@ -1,7 +1,7 @@
 page-tabs ion-tabs.tabs {
   .tabbar {
     background: white;
-    border-top: 1px solid color($colors, color26);
+    border-top: pxtovw(1px) solid color($colors, color26);
 
     &:before {
       display: none;
@@ -9,18 +9,18 @@ page-tabs ion-tabs.tabs {
 
     .tab-button {
       min-height: auto;
-      padding: 7px 0 0;
+      padding: pxtovw(7px) 0 0;
 
       ion-icon {
         height: auto;
-        padding: 1px;
+        padding: pxtovw(1px);
         margin: 0;
       }
 
       .tab-button-text {
-        margin-top: 3px;
+        margin-top: pxtovw(3px);
         font-size: pxtovw(10px);
-        letter-spacing: 0.2px;
+        letter-spacing: pxtovw(0.2px);
       }
     }
   }
