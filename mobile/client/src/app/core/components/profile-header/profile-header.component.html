@@ -1,6 +1,6 @@
 <div class="imageArea" (click)="onClick()">
   <div *ngIf="(profileObservable | async)?.response as profile">
-    <div [style.backgroundImage]="'url(' + (profile.profile_photo_url ? profile.profile_photo_url : 'assets/icons/stylist-avatar.svg') + ')'"
+    <div [style.backgroundImage]="'url(' + (profile.profile_photo_url ? profile.profile_photo_url : 'assets/icons/stylist-avatar.png') + ')'"
       [class.is-profileComplete]="profileCompleteness.isProfileComplete" class="profileImage Indicator"></div>
   </div>
 </div>

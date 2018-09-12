@@ -24,7 +24,7 @@ import { MadeHeaderComponent } from '~/core/components/made-header/made-header.c
 import { ProfileHeaderComponent } from '~/core/components/profile-header/profile-header.component';
 
 export enum DefaultImage {
-  User = '../assets/imgs/icons/avatar.png'
+  User = 'assets/icons/stylist-avatar.png'
 }
 
 const declarations = [

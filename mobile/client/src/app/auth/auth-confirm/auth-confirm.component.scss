@@ -1,26 +1,26 @@
 .AuthConfirmPage {
   $max-code-length: 6;
-  $digit-width: 38px;
-  $digit-height: 48px;
-  $digit-offset: 8px;
+  $digit-width: pxtovw(38px);
+  $digit-height: pxtovw(48px);
+  $digit-offset: pxtovw(8px);
   $width: $digit-width * $max-code-length + $digit-offset * ($max-code-length - 1);
 
   .AuthConfirmPage-codeControl {
     width: $width;
-    margin-top: 64px;
+    margin-top: pxtovw(64px);
 
     .text-input { // override ionic styles
       width: 100%;
       font-family: monospace;
       font-size: $t-h3;
-      letter-spacing: 33.4px;
+      letter-spacing: pxtovw(33.4px);
 
       &.text-input-md {
-        padding-left: 4.2px;
+        padding-left: pxtovw(4.2px);
       }
 
       &.text-input-ios {
-        padding-left: 13.2px;
+        padding-left: pxtovw(13.2px);
       }
     }
 
@@ -49,7 +49,7 @@
   .AuthConfirmPage-digits {
     position: relative;
     width: $width;
-    margin-bottom: 122px;
+    margin-bottom: pxtovw(122px);
     pointer-events: none;
 
     &.is-withError .AuthConfirmPage-digit {
@@ -59,12 +59,12 @@
 
   .AuthConfirmPage-error {
     width: 100%;
-    margin-top: 4px;
+    margin-top: pxtovw(4px);
     color: color($colors, danger);
     text-align: center;
   }
 
   .AuthConfirmPage-phoneNumber {
-    margin-top: 12px;
+    margin-top: pxtovw(12px);
   }
 }
