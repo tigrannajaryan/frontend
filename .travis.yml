@@ -61,7 +61,7 @@ jobs:
     - name: Client Staging Build
       env:
         APP_TYPE=client
-        APP_VERSION_NUMBER=0.0.1
+        APP_VERSION_NUMBER=1.0.0
         MB_ENV=staging
         IOS_APP_BUNDLE_ID="com.madebeauty.client.staging"
         ANDROID_APP_BUNDLE_ID="com.madebeauty.client.staging.android"
@@ -93,7 +93,7 @@ jobs:
       if: branch = develop AND type = push  # run this stage only if it's not a PR
       env:
         APP_TYPE=client
-        APP_VERSION_NUMBER=0.0.1
+        APP_VERSION_NUMBER=1.0.0
         MB_ENV=prod
         IOS_APP_BUNDLE_ID="com.madebeauty.client.production"
         ANDROID_APP_BUNDLE_ID="com.madebeauty.client.prod"
