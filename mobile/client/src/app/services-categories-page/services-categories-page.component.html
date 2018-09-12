@@ -1,11 +1,13 @@
-<ion-header madeHeader [showHome]="true"></ion-header>
+<ion-header madeHeader [showHome]="true">
+  <ion-toolbar *ngIf="isAdditionalService" class="SelectDate SelectDate-header">
+    <div class="SelectDate-title H1">Add additional service:</div>
+    <book-services-header></book-services-header>
+  </ion-toolbar>
+</ion-header>
 
 <ion-content scroll="false">
   <div class="ServicesCategoriesPage contentSidePadding">
     <div class="H1" *ngIf="!isAdditionalService">Choose a&nbsp;service category</div>
-    <div class="H1" *ngIf="isAdditionalService">Add additional service:</div>
-
-    <book-services-header *ngIf="isAdditionalService" readonly="true"></book-services-header>
 
     <!-- Showing loading cards -->
     <div *ngIf="(requestState | async) === RequestState.Loading" class="ServicesCategoriesPage-categories">
