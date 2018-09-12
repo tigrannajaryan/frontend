@@ -97,6 +97,7 @@
 
       &.is-fullyBooked,
       &.is-nonWorking {
+        font-weight: normal;
         color: color($grayscale, 500);
         background: white !important; // do not allow to override background color from js
 
