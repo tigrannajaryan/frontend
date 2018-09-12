@@ -4,6 +4,10 @@
   margin-bottom: pxtovw(6px);
   font-size: pxtovw(28px);
   font-weight: 600;
+
+  &.text-center {
+    justify-content: center;
+  }
 }
 
 .Made-h3 {

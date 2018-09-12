@@ -12,14 +12,14 @@
     <!-- Show spinner if loading is in progress and refresher is not active (to avoid double loading indicators) -->
     <ion-spinner *ngIf="isLoading && refresher.state === 'inactive'" class="HomePage-spinner"></ion-spinner>
 
-    <div class="titleBox ">
+    <div class="titleBox">
       <h1 class="HomePage-h1 pageTitle">Home</h1>
       <profile-header></profile-header>
     </div>
 
     <div *ngIf="homeData">
       <div *ngIf="homeData.upcoming?.length !== 0 || homeData.last_visited" class="HomePage-subtitleContainer">
-        <span class="HomePage-subtitle">Upcoming Visits</span>
+        <span class="HomePage-subtitle">Upcoming visits</span>
         <span class="HomePage-labelPurpul">{{ homeData.upcoming.length }}</span>
       </div>
       <div *ngIf="homeData.upcoming?.length > 0; else noUpcoming">
@@ -41,7 +41,7 @@
       <div *ngIf="homeData.last_visited">
         <!-- show last visit appointment card -->
         <div class="HomePage-subtitleContainer">
-          <span class="HomePage-subtitle">Last Visit</span>
+          <span class="HomePage-subtitle">Last visits</span>
         </div>
         <appointment-item [appointment]="homeData.last_visited" (cardClick)="onAppointmentClick(homeData.last_visited, AppointmentType.past)"
           hasRebook="true" (rebookClick)="onRebookClick(homeData.last_visited)"></appointment-item>

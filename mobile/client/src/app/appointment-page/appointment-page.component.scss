@@ -1,13 +1,16 @@
 .AppointmentPage {
+  .AppointmentPage-padding {
+    padding-top: pxtovw(11px);
+  }
+
   .AppointmentPage-cardGrid {
     width: 100%;
     font-size: pxtovw(15px);
     font-weight: 600;
-    font-weight: normal;
   }
 
   .AppointmentPage-card {
-    margin-top: pxtovw(15px);
+    margin-top: pxtovw(23px);
   }
 
   .AppointmentPage-stylistPic,
@@ -15,17 +18,19 @@
   .AppointmentPage-cardAppDate img {
     width: pxtovw(32px);
     height: pxtovw(32px);
+    margin-right: pxtovw(5px);
   }
 
   .AppointmentPage-stylistPic {
     display: inline-block;
-    border-radius: 50%;
     background-repeat: no-repeat;
     background-size: cover;
+    border-radius: 50%;
   }
 
   .AppointmentPage-appDate {
     display: inline-block;
+    line-height: pxtovw(20px);
   }
 
   .AppointmentPage-cardAppDateTime {
@@ -43,38 +48,50 @@
   }
 
   .AppointmentPage-cardAppStylist span {
+    position: relative;
+    top: pxtovw(-3px);
     display: inline-block;
+    line-height: pxtovw(16px);
   }
 
   .AppointmentPage-cardAppPrice {
+    margin: pxtovw(43px) 0 pxtovw(31px);
     font-size: pxtovw(64px);
     font-weight: bold;
+    line-height: 1;
     text-align: center;
-
-    .priceEstimated {
-      color: color($grayscale, 500);
-    }
   }
 
-  .AppointmentPage-cardAppPrice .price {
-    margin-top: pxtovw(- 10px);
+  .AppointmentPage-cardAppPrice .priceEstimated {
+    color: color($grayscale, 500);
   }
 
-  .AppointmentPage-cardAppPrice .price:first-letter {
-    font-size: pxtovw(18px);
-    vertical-align: super;
-  }
-
-  .AppointmentPage-cardAppPrice label {
+  .AppointmentPage-cardAppPrice .label {
     font-size: pxtovw(15px);
     font-weight: normal;
     color: color($grayscale, 500);
   }
 
+  .AppointmentPage-cardAppPrice .price {
+    position: relative;
+    display: inline-block;
+    margin-top: pxtovw(-9px);
+    line-height: pxtovw(64px);
+
+    &:before {
+      position: absolute;
+      top: pxtovw(-10px);
+      left: pxtovw(-10px);
+      font-size: pxtovw(18px);
+      content: '$';
+    }
+  }
+
   .AppointmentPage-redLabel {
     width: fit-content;
-    padding: pxtovw(2px) pxtovw(3px) pxtovw(1px);
+    padding: pxtovw(3px) pxtovw(4px);
     margin-top: pxtovw(1px);
+    margin-left: auto;
     font-size: pxtovw(10px);
     font-weight: normal;
     color: white;
@@ -84,17 +101,20 @@
 
   .AppointmentPage-cardAppService,
   .AppointmentPage-cardAppServiceFees {
-    padding: pxtovw(15px) 0;
+    padding: pxtovw(15px) pxtovw(3px) pxtovw(15px) pxtovw(8px);
+    font-weight: 400;
     border-bottom: 1px solid color($grayscale, 300);
   }
 
   .AppointmentPage-cardAppTip {
-    margin-top: pxtovw(8px);
+    margin-top: pxtovw(7px);
+    font-weight: 400;
     color: color($grayscale, 500);
+    text-align: right;
   }
 
   .AppointmentPage-actions {
-    margin: pxtovw(42px) auto pxtovw(10px);
+    margin: pxtovw(39px) auto pxtovw(10px);
     text-align: center;
   }
 
@@ -106,5 +126,6 @@
   .AppointmentPage-reBook {
     font-size: pxtovw(16px);
     color: color($colors, orange);
+    letter-spacing: pxtovw(0.4px);
   }
 }
