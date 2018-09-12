@@ -8,10 +8,10 @@
       <div *ngIf="category | async" [style.backgroundImage]="'url(' + 'assets/icons/services-categories/' + (category | async)?.category_code + '.png)'" class="ServicesPage-img"></div>
     </ion-row>
     <ion-row justify-content-center>
-      <div class="H1">
+      <ion-row class="H1" align-items-center>
         {{ (category | async)?.name }}
         <span *ngIf="services | async" class="Badge">{{ (services | async)?.length }}</span>
-      </div>
+      </ion-row>
     </ion-row>
   </ion-grid>
   <ion-grid *ngIf="services | async" fixed>
