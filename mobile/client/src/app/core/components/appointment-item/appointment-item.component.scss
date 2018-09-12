@@ -53,12 +53,31 @@
     vertical-align: text-top;
   }
 
-  .AppCard-GridServiceName {
+  .AppCard-GridServiceName span {  // inspired by https://codepen.io/natonischuk/pen/KpNKQZ?editors=1100
+    position: relative;
+    max-height: 2.4em;
     margin: pxtovw(2px) 0 pxtovw(4px) 0;
+    padding-right: 1em;
     overflow: hidden;
     font-size: $t-h3;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    line-height: 1.2em;
+
+    &:before {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      content: '...';
+    }
+
+    &:after {
+      position: absolute;
+      right: 0;
+      width: 1em;
+      height: 1em;
+      margin-top: 0.2em;
+      content: '';
+      background: white;
+    }
   }
 }
 
