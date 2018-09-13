@@ -1,12 +1,11 @@
 import { Component } from '@angular/core';
-import { AlertController, IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 import { Logger } from '~/shared/logger';
 import { formatTimeInZone } from '~/shared/utils/string-utils';
 import { AppointmentModel, AppointmentStatus } from '~/core/api/appointments.models';
 import { AppointmentsApi } from '~/core/api/appointments.api';
-import { startRebooking } from '~/booking/booking-utils';
-import { showNotPreferredPopup } from '~/booking/booking-utils';
+import { showNotPreferredPopup, startRebooking } from '~/booking/booking-utils';
 
 export interface AppointmentPageParams {
   appointment: AppointmentModel;
@@ -28,7 +27,6 @@ export class AppointmentPageComponent {
   params: AppointmentPageParams;
 
   constructor(
-    private alertCtrl: AlertController,
     private api: AppointmentsApi,
     private logger: Logger,
     private navCtrl: NavController,

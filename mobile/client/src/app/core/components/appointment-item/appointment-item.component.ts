@@ -1,5 +1,4 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { AlertController } from 'ionic-angular';
 import { AppointmentModel, AppointmentStatus } from '~/core/api/appointments.models';
 import { formatTimeInZone } from '~/shared/utils/string-utils';
 import { showNotPreferredPopup } from '~/booking/booking-utils';
@@ -21,11 +20,6 @@ export class AppointmentItemComponent {
 
   @Output() cardClick = new EventEmitter<AppointmentModel>();
   @Output() rebookClick = new EventEmitter<AppointmentModel>();
-
-  constructor(
-    private alertCtrl: AlertController
-  ) {
-  }
 
   getServices(): string {
     return this.appointment.services.map(s => s.service_name).join(', ');
