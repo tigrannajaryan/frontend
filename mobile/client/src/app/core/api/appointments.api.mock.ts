@@ -14,6 +14,7 @@ export class AppointmentsApiMock {
         const [name, lastName] = [faker.name.firstName(), faker.name.lastName()];
         return {
           uuid: faker.random.uuid(),
+          stylist_uuid: faker.random.uuid(),
           stylist_first_name: name,
           stylist_last_name: lastName,
           stylist_photo_url: undefined,
