@@ -6,5 +6,8 @@ export const ENV = {
   ffEnableIncomplete: false,
 
   // Disable Sentry reporting by default.
-  sentryDsn: undefined
+  sentryDsn: undefined,
+
+  // Disable GA reporting by default
+  gaTrackingId: undefined
 };

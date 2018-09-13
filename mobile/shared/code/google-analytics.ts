@@ -25,6 +25,12 @@ export class GAWrapper {
   }
 
   async init(id: string): Promise<void> {
+    if (id === undefined) {
+      this.logger.info('GA: No tracking ID defined. Disabling Google Analytics.');
+      this.failed = true;
+      return;
+    }
+
     this.logger.info(`GA: Initializing Google Analytics with id=${id}...`);
 
     try {
