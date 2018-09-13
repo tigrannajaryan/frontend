@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Events, IonicPage, NavController } from 'ionic-angular';
+import { AlertController, Events, IonicPage, NavController } from 'ionic-angular';
 import * as moment from 'moment';
 
 import { Logger } from '~/shared/logger';
@@ -35,6 +35,7 @@ export class SelectDateComponent {
   moment = moment;
 
   constructor(
+    private alertCtrl: AlertController,
     protected bookingData: BookingData,
     private events: Events,
     private logger: Logger,

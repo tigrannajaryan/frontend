@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { AlertController, IonicPage, NavController, NavParams } from 'ionic-angular';
+import { Observable } from 'rxjs/Observable';
 
 import { Logger } from '~/shared/logger';
 import { formatTimeInZone } from '~/shared/utils/string-utils';
@@ -27,6 +28,7 @@ export class AppointmentPageComponent {
   params: AppointmentPageParams;
 
   constructor(
+    private alertCtrl: AlertController,
     private api: AppointmentsApi,
     private logger: Logger,
     private navCtrl: NavController,
@@ -49,16 +51,21 @@ export class AppointmentPageComponent {
   }
 
   async onRebookClick(): Promise<void> {
-    try {
-      await showNotPreferredPopup(this.params.appointment);
+    showNotPreferredPopup(this.params.appointment)
+      .catch(() => {
+        // Re-booking was canceled, return terminated=true:
+        return true;
+      })
+      .then(terminated => {
+        if (terminated) {
+          return;
+        }
 
-      // remove this view from navigation stack
-      this.navCtrl.pop();
+        // remove this view from navigation stack
+        this.navCtrl.pop();
 
-      startRebooking(this.params.appointment);
-    } catch {
-      // Re-booking was canceled
-    }
+        startRebooking(this.params.appointment);
+      });
   }
 
   onCancelClick(): void {

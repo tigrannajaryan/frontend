@@ -30,11 +30,17 @@ export class AppointmentItemComponent {
   }
 
   async onRebookClick(): Promise<void> {
-    try {
-      await showNotPreferredPopup(this.appointment);
-      this.rebookClick.emit(this.appointment);
-    } catch {
-      // Re-booking was canceled
-    }
+    showNotPreferredPopup(this.appointment)
+      .catch(() => {
+        // Re-booking was canceled, return terminated=true:
+        return true;
+      })
+      .then(terminated => {
+        if (terminated) {
+          return;
+        }
+
+        this.rebookClick.emit(this.appointment);
+      });
   }
 }
