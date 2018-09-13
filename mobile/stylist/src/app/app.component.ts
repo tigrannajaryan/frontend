@@ -14,9 +14,7 @@ import { AuthApiService } from '~/core/auth-api-service/auth-api-service';
 import { createNavHistoryList } from '~/core/functions';
 import { AppStorage } from '~/core/app-storage';
 import { ServerStatusTracker } from '~/shared/server-status-tracker';
-
-// Google Analytics Id
-const gaTrackingId = 'UA-120898935-1';
+import { ENV } from '../environments/environment.default';
 
 @Component({
   templateUrl: 'app.component.html'
@@ -54,7 +52,7 @@ export class MyAppComponent {
     // that our app needs and wait until all initializations finish. Add here any other
     // initialization operation that must be done before the initial page is shown.
     await async_all([
-      this.ga.init(gaTrackingId),
+      this.ga.init(ENV.gaTrackingId),
       this.storage.init()
     ]);
 
