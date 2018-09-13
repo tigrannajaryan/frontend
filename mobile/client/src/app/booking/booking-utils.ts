@@ -114,10 +114,10 @@ export function showNotPreferredPopup(appointment: AppointmentModel): Promise<vo
     }
     // Not preferred, show warning popup:
     const alert = alertCtrl.create({
-      title: 'Hold on',
+      title: 'Hold on a sec',
       message: `
-        <b>${appointment.stylist_first_name}</b> is required to be your preferred stylist to proceed with re-booking.
-        Would you like to set <b>${appointment.stylist_first_name}</b> as a preferred one?
+        <b>${appointment.stylist_first_name}</b> is required to be listed as your saved stylist to proceed with rebooking.
+        Would you like to add <b>${appointment.stylist_first_name}</b> to your saved list of stylists?
       `.trim(),
       buttons: [
         {
