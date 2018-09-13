@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { AlertController, IonicPage, NavController, NavParams } from 'ionic-angular';
-import { Observable } from 'rxjs/Observable';
 
 import { Logger } from '~/shared/logger';
 import { formatTimeInZone } from '~/shared/utils/string-utils';
