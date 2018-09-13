@@ -1,9 +1,8 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-
+import { AlertController } from 'ionic-angular';
 import { AppointmentModel, AppointmentStatus } from '~/core/api/appointments.models';
 import { formatTimeInZone } from '~/shared/utils/string-utils';
-
-import { PreferredStylistsData } from '~/core/api/preferred-stylists.data';
+import { showNotPreferredPopup } from '~/booking/booking-utils';
 
 /**
  * A component that shows a single appointment item (card). Used by Home and History screens.
@@ -17,8 +16,6 @@ export class AppointmentItemComponent {
   AppointmentStatus = AppointmentStatus;
   formatTimeInZone = formatTimeInZone;
 
-  preferredStylistsUuids: Promise<string[]>;
-
   @Input() appointment: AppointmentModel;
   @Input() hasRebook: boolean;
 
@@ -26,10 +23,8 @@ export class AppointmentItemComponent {
   @Output() rebookClick = new EventEmitter<AppointmentModel>();
 
   constructor(
-    private preferredStylistsData: PreferredStylistsData
+    private alertCtrl: AlertController
   ) {
-    this.preferredStylistsUuids = this.preferredStylistsData.get()
-      .then(stylists => stylists.map(stylist => stylist.uuid));
   }
 
   getServices(): string {
@@ -40,7 +35,12 @@ export class AppointmentItemComponent {
     this.cardClick.emit(this.appointment);
   }
 
-  onRebookClick(): void {
-    this.rebookClick.emit(this.appointment);
+  async onRebookClick(): Promise<void> {
+    try {
+      await showNotPreferredPopup(this.appointment);
+      this.rebookClick.emit(this.appointment);
+    } catch {
+      // Re-booking was canceled
+    }
   }
 }
