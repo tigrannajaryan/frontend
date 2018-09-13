@@ -97,12 +97,10 @@ export async function startRebooking(appointment: AppointmentModel): Promise<voi
 /**
  * When a stylist is not a preferred one of a client show a popup.
  * The Promise returned from the method indicates 2 situations:
- * - resolved means either stylist is a preferred one or confirmed to become,
- * - rejected means stylist is not a preferred one and not confirmed to become.
- *
- * Note: rejected state means re-booking should be terminated!
+ * - true means either stylist is a preferred one or confirmed to become,
+ * - false means stylist is not a preferred one and not confirmed to become.
  */
-export function showNotPreferredPopup(appointment: AppointmentModel): Promise<void> {
+export function confirmRebook(appointment: AppointmentModel): Promise<boolean> {
   const alertCtrl = AppModule.injector.get(AlertController);
   const preferredStylistsData = AppModule.injector.get(PreferredStylistsData);
 
@@ -110,7 +108,7 @@ export function showNotPreferredPopup(appointment: AppointmentModel): Promise<vo
     const preferedStylists = await preferredStylistsData.get();
     if (preferedStylists.some(stylist => stylist.uuid === appointment.stylist_uuid)) {
       // Allready preferred one, skip showing the popup:
-      return resolve();
+      return resolve(true);
     }
     // Not preferred, show warning popup:
     const alert = alertCtrl.create({
@@ -124,14 +122,14 @@ export function showNotPreferredPopup(appointment: AppointmentModel): Promise<vo
           text: 'No, cancel',
           role: 'cancel',
           handler: () => {
-            reject();
+            resolve(false);
           }
         },
         {
           text: 'Yes, continue',
           handler: () => {
             preferredStylistsData.set({ uuid: appointment.stylist_uuid }).then(() => {
-              resolve();
+              resolve(true);
             });
           }
         }

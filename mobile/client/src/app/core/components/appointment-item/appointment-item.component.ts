@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { AppointmentModel, AppointmentStatus } from '~/core/api/appointments.models';
 import { formatTimeInZone } from '~/shared/utils/string-utils';
-import { showNotPreferredPopup } from '~/booking/booking-utils';
+import { confirmRebook } from '~/booking/booking-utils';
 
 /**
  * A component that shows a single appointment item (card). Used by Home and History screens.
@@ -30,17 +30,9 @@ export class AppointmentItemComponent {
   }
 
   async onRebookClick(): Promise<void> {
-    showNotPreferredPopup(this.appointment)
-      .catch(() => {
-        // Re-booking was canceled, return terminated=true:
-        return true;
-      })
-      .then(terminated => {
-        if (terminated) {
-          return;
-        }
-
-        this.rebookClick.emit(this.appointment);
-      });
+    const isConfirmed = await confirmRebook(this.appointment);
+    if (isConfirmed) {
+      this.rebookClick.emit(this.appointment);
+    }
   }
 }

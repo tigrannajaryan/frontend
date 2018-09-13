@@ -6,7 +6,7 @@ import { Logger } from '~/shared/logger';
 import { formatTimeInZone } from '~/shared/utils/string-utils';
 import { AppointmentModel, AppointmentStatus } from '~/core/api/appointments.models';
 import { AppointmentsApi } from '~/core/api/appointments.api';
-import { showNotPreferredPopup, startRebooking } from '~/booking/booking-utils';
+import { confirmRebook, startRebooking } from '~/booking/booking-utils';
 
 export interface AppointmentPageParams {
   appointment: AppointmentModel;
@@ -51,21 +51,13 @@ export class AppointmentPageComponent {
   }
 
   async onRebookClick(): Promise<void> {
-    showNotPreferredPopup(this.params.appointment)
-      .catch(() => {
-        // Re-booking was canceled, return terminated=true:
-        return true;
-      })
-      .then(terminated => {
-        if (terminated) {
-          return;
-        }
+    const isConfirmed = await confirmRebook(this.params.appointment);
+    if (isConfirmed) {
+      // remove this view from navigation stack
+      this.navCtrl.pop();
 
-        // remove this view from navigation stack
-        this.navCtrl.pop();
-
-        startRebooking(this.params.appointment);
-      });
+      startRebooking(this.params.appointment);
+    }
   }
 
   onCancelClick(): void {
