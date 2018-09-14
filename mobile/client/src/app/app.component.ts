@@ -12,9 +12,7 @@ import { deleteToken, getToken } from '~/core/utils/token-utils';
 
 import { AUTHORIZED_ROOT, PageNames, UNAUTHORIZED_ROOT } from '~/core/page-names';
 import { EventTypes } from '~/core/event-types';
-
-// Google Analytics Id
-const gaTrackingId = 'UA-122004541-1';
+import { ENV } from '../environments/environment.default';
 
 @Component({
   templateUrl: 'app.component.html'
@@ -56,7 +54,7 @@ export class ClientAppComponent implements OnInit, OnDestroy {
     // Now that the platform is ready asynchronously initialize in parallel everything
     // that our app needs and wait until all initializations finish. Add here any other
     // initialization operation that must be done before the initial page is shown.
-    await this.ga.init(gaTrackingId);
+    await this.ga.init(ENV.gaTrackingId);
 
     // Track all top-level screen changes
     this.nav.viewDidEnter.subscribe(view => this.ga.trackViewChange(view));

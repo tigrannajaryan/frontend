@@ -6,5 +6,7 @@ export const ENV = {
   ffEnableIncomplete: false,
 
   // Enable Sentry reporting on production
-  sentryDsn: 'https://0fd9c05acd1d4e8e8688e811f60cf8fc@sentry.io/1239453'
+  sentryDsn: 'https://0fd9c05acd1d4e8e8688e811f60cf8fc@sentry.io/1239453',
+
+  gaTrackingId: 'UA-122004541-1'
 };
