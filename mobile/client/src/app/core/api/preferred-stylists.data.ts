@@ -7,7 +7,7 @@ import {
   PreferredStylistModel,
   PreferredStylistsListResponse,
   SetPreferredStylistResponse,
-  StylistModel
+  StylistUuidModel
 } from '~/core/api/stylists.models';
 
 @Injectable()
@@ -40,24 +40,29 @@ export class PreferredStylistsData {
    * - perform request only when a stylist is not in the list,
    * - update corresponding DataStore.
    */
-  async set(newStylist: StylistModel): Promise<ApiResponse<SetPreferredStylistResponse>> {
-    // TODO: remove next when work with multiple preferred stylists
+  async set(newStylist: StylistUuidModel): Promise<ApiResponse<SetPreferredStylistResponse>> {
+    // TODO: remove next line when work with multiple preferred stylists
     await this.clearAll();
 
-    return this.api.setPreferredStylist(newStylist.uuid)
-      .map(({ response }) => {
+    const { response: setResponse } = await this.api.setPreferredStylist(newStylist.uuid).first().toPromise();
+    const { response: getResponse } = await this.api.getPreferredStylists().first().toPromise();
+
+    if (setResponse && getResponse) {
+      const stylist = getResponse.stylists.find(s => s.uuid === newStylist.uuid);
+      if (stylist) {
         this.data.set({
           stylists: [
+            // TODO: use concat here instead when work with multiple preferred stylists
             {
-              ...newStylist,
-              preference_uuid: response.preference_uuid
+              ...stylist,
+              preference_uuid: setResponse.preference_uuid
             }
           ]
         });
-        return { response };
-      })
-      .first()
-      .toPromise();
+      }
+    }
+
+    return { response: setResponse };
   }
 
   /**

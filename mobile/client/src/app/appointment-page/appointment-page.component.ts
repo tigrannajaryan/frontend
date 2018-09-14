@@ -5,7 +5,7 @@ import { Logger } from '~/shared/logger';
 import { formatTimeInZone } from '~/shared/utils/string-utils';
 import { AppointmentModel, AppointmentStatus } from '~/core/api/appointments.models';
 import { AppointmentsApi } from '~/core/api/appointments.api';
-import { startRebooking } from '~/booking/booking-utils';
+import { confirmRebook, startRebooking } from '~/booking/booking-utils';
 
 export interface AppointmentPageParams {
   appointment: AppointmentModel;
@@ -50,9 +50,13 @@ export class AppointmentPageComponent {
   }
 
   async onRebookClick(): Promise<void> {
-    await startRebooking(this.params.appointment);
-    // remove this view from navigation stack
-    this.navCtrl.pop();
+    const isConfirmed = await confirmRebook(this.params.appointment);
+    if (isConfirmed) {
+      // remove this view from navigation stack
+      this.navCtrl.pop();
+
+      startRebooking(this.params.appointment);
+    }
   }
 
   onCancelClick(): void {

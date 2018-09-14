@@ -1,4 +1,4 @@
-import { Events } from 'ionic-angular';
+import { AlertController, Events } from 'ionic-angular';
 
 import { AppModule } from '~/app.module';
 import { BookingData } from '~/core/api/booking.data';
@@ -92,4 +92,49 @@ export async function startRebooking(appointment: AppointmentModel): Promise<voi
     // Services are now selected, we can now start rebooking.
     events.publish(EventTypes.startRebooking);
   }
+}
+
+/**
+ * When a stylist is not a preferred one of a client show a popup.
+ * The Promise returned from the method indicates 2 situations:
+ * - true means either stylist is a preferred one or confirmed to become,
+ * - false means stylist is not a preferred one and not confirmed to become.
+ */
+export function confirmRebook(appointment: AppointmentModel): Promise<boolean> {
+  const alertCtrl = AppModule.injector.get(AlertController);
+  const preferredStylistsData = AppModule.injector.get(PreferredStylistsData);
+
+  return new Promise(async (resolve, reject): Promise<void> => {
+    const preferedStylists = await preferredStylistsData.get();
+    if (preferedStylists.some(stylist => stylist.uuid === appointment.stylist_uuid)) {
+      // Allready preferred one, skip showing the popup:
+      return resolve(true);
+    }
+    // Not preferred, show warning popup:
+    const alert = alertCtrl.create({
+      title: 'Hold on a sec',
+      message: `
+        <b>${appointment.stylist_first_name}</b> is required to be listed as your saved stylist to proceed with rebooking.
+        Would you like to add <b>${appointment.stylist_first_name}</b> to your saved list of stylists?
+      `.trim(),
+      buttons: [
+        {
+          text: 'No, cancel',
+          role: 'cancel',
+          handler: () => {
+            resolve(false);
+          }
+        },
+        {
+          text: 'Yes, continue',
+          handler: () => {
+            preferredStylistsData.set({ uuid: appointment.stylist_uuid }).then(() => {
+              resolve(true);
+            });
+          }
+        }
+      ]
+    });
+    alert.present();
+  });
 }

@@ -4,7 +4,7 @@
 
   <!-- rebooking link -->
   <!-- TODO: replace preferred check with a popup: Would you like to add this stylist to the preferred ones? -->
-  <div *ngIf="hasRebook && (preferredStylistsUuids | async)?.indexOf(appointment.stylist_uuid) !== -1" (click)="onRebookClick()" class="AppCard-HeaderLink">Re-book appointment</div>
+  <div *ngIf="hasRebook" (click)="onRebookClick()" class="AppCard-HeaderLink">Re-book appointment</div>
 </div>
 <!-- the card -->
 <div (click)="onCardClick()" class="Card">

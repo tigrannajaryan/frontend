@@ -1,5 +1,8 @@
-export interface StylistModel {
+export interface StylistUuidModel {
   uuid: string;
+}
+
+export interface StylistModel extends StylistUuidModel {
   first_name: string;
   last_name: string;
   salon_name: string;

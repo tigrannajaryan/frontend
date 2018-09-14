@@ -16,6 +16,7 @@ export interface AppointmentServiceModel {
 
 export interface AppointmentModel {
   uuid: string;
+  stylist_uuid: string;
   stylist_first_name: string;
   stylist_last_name: string;
   stylist_photo_url: string;
