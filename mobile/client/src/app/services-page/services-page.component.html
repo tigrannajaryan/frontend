@@ -1,6 +1,6 @@
 <ion-header madeHeader [showHome]="true">
   <ion-toolbar *ngIf="isAdditionalService" class="SelectDate SelectDate-header">
-    <div class="SelectDate-title H1">Add additional service:</div>
+    <div class="SelectDate-title SharedH1">Add additional service:</div>
     <book-services-header></book-services-header>
   </ion-toolbar>
 </ion-header>
@@ -11,7 +11,7 @@
       <div *ngIf="category | async" [style.backgroundImage]="'url(' + 'assets/icons/services-categories/' + (category | async)?.category_code + '.png)'" class="ServicesPage-img"></div>
     </ion-row>
     <ion-row justify-content-center>
-      <ion-row class="H1" align-items-center>
+      <ion-row class="SharedH1" align-items-center>
         {{ (category | async)?.name }}
         <span *ngIf="services | async" class="Badge">{{ (services | async)?.length }}</span>
       </ion-row>

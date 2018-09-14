@@ -24,13 +24,14 @@
       </span>
       <ion-input formControlName="base_price" type="tel" ngxInputNumber placeholder="Add Price"></ion-input>
     </ion-item>
-    <ion-item class="ServiceItem-input withPrefix">
-      <span *ngIf="form.value.category?.category_code" item-left class="ServiceItem-inputPrefix">
+    <ion-item (click)="openCategoryModal()" class="ServiceItem-input withPrefix">
+      <span item-left class="ServiceItem-inputPrefix">
         <i class="mb-icon-{{form.value.category.category_code}}"></i>
       </span>
-      <ion-select formGroupName="vars" formControlName="category" placeholder="Select category">
-        <ion-option *ngFor="let item of form.get('vars.categories').value" [value]="item">{{ item.name }}</ion-option>
-      </ion-select>
+      <!--this input we need for reactive form - for save/update category object-->
+      <ion-input formControlName="category" hidden type="text"></ion-input>
+      <!--this input we need to display category name-->
+      <ion-input [value]="form.value.category.name" placeholder="Select category" type="text"></ion-input>
     </ion-item>
   </form>
 </ion-content>
