@@ -18,7 +18,7 @@
 
     <!-- Showing loading cards -->
     <div *ngIf="(requestState | async) === RequestState.Loading && (stylists | async) === undefined" class="StylistsPage-stylists">
-      <div *ngFor="let stylist of loadingStylists" class="Card is-loading">
+      <div *ngFor="let stylist of loadingStylists" class="SharedCard is-loading">
         <div class="StylistsPage-cardSubtitle">&nbsp;</div>
         <div class="StylistsPage-cardTitle">&nbsp;</div>
         <div class="StylistsPage-cardSubtitle">&nbsp;</div>
@@ -29,7 +29,7 @@
     <div *ngIf="stylists | async" class="StylistsPage-stylists">
       <div
         *ngFor="let stylist of stylists | async"
-        class="StylistsPage-card Card"
+        class="StylistsPage-card SharedCard"
         [ngClass]="{'is-active': stylist.uuid === activeStylist?.uuid}"
         (click)="onSetActiveStylist($event, stylist)">
         <div class="StylistsPage-cardImg" [style.backgroundImage]="'url(' + (stylist.profile_photo_url  || 'assets/icons/stylist-avatar.png') + ')'"></div>

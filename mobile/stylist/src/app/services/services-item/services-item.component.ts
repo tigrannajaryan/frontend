@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
+import { IonicPage, ModalController, NavController, NavParams, ViewController } from 'ionic-angular';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
 import {
@@ -10,6 +10,7 @@ import {
 import { loading } from '~/core/utils/loading';
 import { StylistServiceProvider } from '~/core/stylist-service/stylist-service';
 import { PageNames } from '~/core/page-names';
+import { ServicesCategoriesListData } from '~/services/services-categories/services-categories.component';
 
 /**
  * Represents the data that is passed in and out of
@@ -39,6 +40,7 @@ export class ServiceItemComponent {
     public formBuilder: FormBuilder,
     public navParams: NavParams,
     public viewCtrl: ViewController,
+    public modalCtrl: ModalController,
     private stylistService: StylistServiceProvider
   ) {
   }
@@ -48,6 +50,19 @@ export class ServiceItemComponent {
     this.data = this.navParams.get('data') as ServiceItemComponentData;
     this.createForm();
     this.setFormData(this.data);
+  }
+
+  openCategoryModal(): void {
+    const data: ServicesCategoriesListData = {
+      categories: this.data.categories
+    };
+    const profileModal = this.modalCtrl.create(PageNames.ServicesCategories, { data });
+    profileModal.onDidDismiss((category: ServiceCategory) => {
+      if (category) {
+        this.setFormControl('category', category);
+      }
+    });
+    profileModal.present();
   }
 
   async onServiceDelete(): Promise<void> {

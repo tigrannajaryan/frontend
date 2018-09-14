@@ -14,3 +14,10 @@ $shared-colors: (
   color2: color($colors-shared, darkMint),
   color3: color($grayscale-shared, 300),
 );
+
+$shared-h1:    pxtovw(38px) !default;
+$shared-h2:    pxtovw(28px) !default;
+$shared-h3:    pxtovw(21px) !default;
+$shared-h4:    pxtovw(18px) !default;
+$shared-base:  pxtovw(15px) !default;
+$shared-small: pxtovw(13px) !default;
