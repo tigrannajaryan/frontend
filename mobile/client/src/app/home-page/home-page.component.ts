@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { Events, IonicPage, NavController, Refresher } from 'ionic-angular';
+import { App, Events, IonicPage, Refresher } from 'ionic-angular';
 
 import { Logger } from '~/shared/logger';
 import { componentUnloaded } from '~/shared/component-unloaded';
@@ -34,11 +34,11 @@ export class HomePageComponent {
   isLoading: boolean;
 
   constructor(
+    private app: App,
     private appointmentsDataStore: AppointmentsDataStore,
     private dataStore: AppointmentsDataStore,
     private events: Events,
     private logger: Logger,
-    private navCtrl: NavController,
     private profileDataStore: ProfileDataStore
   ) {
     this.dataStore.home.asObservable()
@@ -74,7 +74,7 @@ export class HomePageComponent {
       params.onCancel = () => this.onCancel();
     }
 
-    this.navCtrl.push(PageNames.Appointment, { params });
+    this.app.getRootNav().push(PageNames.Appointment, { params });
   }
 
   onCancel(): void {
