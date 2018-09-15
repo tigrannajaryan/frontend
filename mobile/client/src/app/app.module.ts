@@ -1,4 +1,4 @@
-import { ErrorHandler, Injector, NgModule } from '@angular/core';
+import { enableProdMode, ErrorHandler, Injector, NgModule } from '@angular/core';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
@@ -35,8 +35,6 @@ import { StylistsEffects } from '~/core/effects/stylists.effects';
 import { CoreModule } from '~/core/core.module';
 import { DataModule } from '~/core/api/data.module';
 
-initSentry();
-
 import { ServerStatusTracker } from '~/shared/server-status-tracker';
 import { BaseService } from '~/core/api/base-service';
 
@@ -44,6 +42,16 @@ import { authPath, authReducer } from '~/auth/auth.reducer';
 import { profilePath, profileReducer } from '~/core/reducers/profile.reducer';
 import { stylistsPath, stylistsReducer } from '~/core/reducers/stylists.reducer';
 import { servicesPath, servicesReducer } from '~/core/reducers/services.reducer';
+
+import { ENV } from '~/../environments/environment.default';
+
+// Init sentry reporting (inits only if ENV.sentryDsn):
+initSentry();
+
+if (ENV.production) {
+  // Enable Angular’s production mode:
+  enableProdMode();
+}
 
 @NgModule({
   declarations: [
