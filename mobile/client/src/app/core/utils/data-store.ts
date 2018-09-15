@@ -280,9 +280,11 @@ export class DataStore<T> {
     let cachedData: DataStorePersistent<T> = await storage.get(this.storageKey);
     if (cachedData && (!options || !options.refresh)) {
       // Check if cache is expired
-      if (this.options.cacheTtlMilliseconds === undefined ||
-        cachedData.lastUpdated.valueOf() + this.options.cacheTtlMilliseconds > new Date().valueOf()) {
+      const notExpired =
+        this.options.cacheTtlMilliseconds === undefined ||
+        new Date(cachedData.lastUpdated).valueOf() + this.options.cacheTtlMilliseconds > new Date().valueOf();
 
+      if (notExpired) {
         // We have a cached value and no refreshing is required, so just return it
         retVal = { response: cachedData.response };
         if (!this.subject.value || cachedData.response !== this.subject.value.response) {

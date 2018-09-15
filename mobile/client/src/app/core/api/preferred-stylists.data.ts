@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import * as moment from 'moment';
 
 import { ApiResponse } from '~/core/api/base.models';
 import { DataStore } from '~/core/utils/data-store';
@@ -24,7 +25,11 @@ export class PreferredStylistsData {
     }
     PreferredStylistsData.guardInitilization = true;
 
-    this.data = new DataStore('preferred-stylists', () => api.getPreferredStylists());
+    // Amazon requires to update an image URL after one hour.
+    const ttl1hour = moment.duration(1, 'hour').asMilliseconds();
+
+    this.data = new DataStore('preferred-stylists', () => api.getPreferredStylists(),
+    { cacheTtlMilliseconds: ttl1hour });
   }
 
   /**
@@ -68,7 +73,8 @@ export class PreferredStylistsData {
   /**
    * In V1 implementation we should have only one preferred stylist and would like to clear all before adding a new one.
    */
-  private async clearAll(): Promise<void> {
+  // private async clearAll(): Promise<void> {
+  async clearAll(): Promise<void> {
     const preferredStylists = await this.get({ refresh: true });
     await Promise.all(
       preferredStylists.map(stylist => this.api.deletePreferredStylist(stylist.preference_uuid).first().toPromise())
