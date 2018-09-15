@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, Refresher } from 'ionic-angular';
+import { App, IonicPage, Refresher } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
 
 import { Logger } from '~/shared/logger';
@@ -26,9 +26,9 @@ export class AppointmentsHistoryComponent {
   isLoading: boolean;
 
   constructor(
+    private app: App,
     private appointmentsDataStore: AppointmentsDataStore,
     private logger: Logger,
-    private navCtrl: NavController,
     private profileDataStore: ProfileDataStore
   ) {
     this.historyObservable = this.appointmentsDataStore.history.asObservable();
@@ -52,7 +52,7 @@ export class AppointmentsHistoryComponent {
       appointment,
       hasRebook: true
     };
-    this.navCtrl.push(PageNames.Appointment, { params });
+    this.app.getRootNav().push(PageNames.Appointment, { params });
   }
 
   onRebookClick(appointment: AppointmentModel): void {

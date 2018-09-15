@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AlertController, App, IonicPage, LoadingController, NavController } from 'ionic-angular';
+import { AlertController, App, IonicPage, LoadingController } from 'ionic-angular';
 import { Clipboard } from '@ionic-native/clipboard';
 import { EmailComposer } from '@ionic-native/email-composer';
 import { Store } from '@ngrx/store';
@@ -36,7 +36,6 @@ export class ProfileSummaryComponent {
     private clipboard: Clipboard,
     private emailComposer: EmailComposer,
     private loadingCntrl: LoadingController,
-    private navCtrl: NavController,
     private profileDataStore: ProfileDataStore,
     private store: Store<{}>
   ) {
@@ -58,7 +57,7 @@ export class ProfileSummaryComponent {
   }
 
   onEdit(): void {
-    this.navCtrl.push(PageNames.ProfileEdit, { profile: this.profile });
+    this.app.getRootNav().push(PageNames.ProfileEdit, { profile: this.profile });
   }
 
   goTo(page: PageNames, params: any): void {

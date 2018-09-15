@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { App, IonicPage, NavController, NavParams } from 'ionic-angular';
 
 import { PageNames } from '~/core/page-names';
 import { StylistModel } from '~/core/api/stylists.models';
@@ -27,6 +27,7 @@ export class StylistInvitationPageComponent {
   StylistPageType = StylistPageType;
 
   constructor(
+    private app: App,
     private navCtrl: NavController,
     private navParams: NavParams,
     private preferredStylistsData: PreferredStylistsData
@@ -67,7 +68,7 @@ export class StylistInvitationPageComponent {
       case StylistPageType.MyStylist:
       default:
         // When this screen is a tab of MainTabs’ tabs proceed to Stylists directly (and as a default too):
-        this.navCtrl.push(PageNames.Stylists);
+        this.app.getRootNav().push(PageNames.Stylists);
     }
   }
 }
