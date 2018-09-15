@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { Events, Nav, Platform } from 'ionic-angular';
+import { AlertController, Events, Nav, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { ScreenOrientation } from '@ionic-native/screen-orientation';
@@ -7,6 +7,8 @@ import { ScreenOrientation } from '@ionic-native/screen-orientation';
 import { Logger } from '~/shared/logger';
 import { GAWrapper } from '~/shared/google-analytics';
 import { ServerStatusTracker } from '~/shared/server-status-tracker';
+import { PreferredStylistsData } from '~/core/api/preferred-stylists.data';
+import { TabIndex } from '~/main-tabs/main-tabs.component';
 
 import { deleteToken, getToken } from '~/core/utils/token-utils';
 
@@ -23,10 +25,12 @@ export class ClientAppComponent implements OnInit, OnDestroy {
   rootPage: any;
 
   constructor(
+    private alertCtrl: AlertController,
     private events: Events,
     private ga: GAWrapper,
     private logger: Logger,
     private platform: Platform,
+    private preferredStylistsData: PreferredStylistsData,
     private screenOrientation: ScreenOrientation,
     private serverStatusTracker: ServerStatusTracker,
     private splashScreen: SplashScreen,
@@ -97,9 +101,22 @@ export class ClientAppComponent implements OnInit, OnDestroy {
     this.nav.setRoot(UNAUTHORIZED_ROOT);
   }
 
-  onStartBooking(): void {
-    // Begin booking process by showing service categories selection screen
-    this.nav.push(PageNames.ServicesCategories);
+  async onStartBooking(): Promise<void> {
+    const preferredStylists = await this.preferredStylistsData.get();
+
+    // Begin booking process
+    if (preferredStylists.length === 0) {
+      await this.nav.setRoot(PageNames.MainTabs);
+      this.events.publish(EventTypes.selectMainTab, TabIndex.Stylists, () => {
+        const alert = this.alertCtrl.create({
+          message: 'Choose your saved stylist to proceed with booking.',
+          buttons: [{ text: 'OK', role: 'cancel' }]
+        });
+        alert.present();
+      });
+    } else {
+      this.nav.push(PageNames.ServicesCategories);
+    }
   }
 
   onStartRebooking(): void {
