@@ -1,4 +1,4 @@
-<ion-header madeHeader></ion-header>
+<ion-header madeHeader [hideBackButton]="!hideContinueButton"></ion-header>
 
 
 <ion-content no-padding>
@@ -6,7 +6,7 @@
     <div class="Made-wp Made-wpContent">
       <div class="WelcomeTitle">
         <span *ngIf="!hideContinueButton; else ifProfilePage">Welcome to MADE!</span>
-        <ng-template #ifProfilePage>How made works</ng-template>
+        <ng-template #ifProfilePage>How MADE works</ng-template>
       </div>
 
       <div class="WelcomeTitle-icon">
