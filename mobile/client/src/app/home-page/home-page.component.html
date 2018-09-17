@@ -10,7 +10,9 @@
   <div class="contentSidePadding">
 
     <!-- Show spinner if loading is in progress and refresher is not active (to avoid double loading indicators) -->
-    <ion-spinner *ngIf="isLoading && refresher.state === 'inactive'" class="HomePage-spinner"></ion-spinner>
+    <div class="Spinner">
+      <ion-spinner *ngIf="isLoading && refresher.state === 'inactive'"></ion-spinner>
+    </div>
 
     <div class="titleBox">
       <h1 class="HomePage-h1 pageTitle">Home</h1>

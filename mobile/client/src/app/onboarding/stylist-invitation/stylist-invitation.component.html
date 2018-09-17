@@ -23,7 +23,7 @@
   <ion-row justify-content-center align-items-center class="StylistInvitationPage-salonName">{{ stylist.salon_name }}</ion-row>
   <ion-row justify-content-center align-items-center class="StylistInvitationPage-name">{{ stylist.first_name }} {{ stylist.last_name }}</ion-row>
   <ion-row align-items-center *ngIf="stylist.salon_address" justify-content-center class="StylistInvitationPage-address">
-    <i class="mb-icon-marker"></i>&nbsp;{{ stylist.salon_address }}
+    <i class="mb-icon-marker"></i>&nbsp;<p>{{ stylist.salon_address }}</p>
   </ion-row>
   <ion-row align-items-center *ngIf="stylist.phone" justify-content-center class="StylistInvitationPage-phone">
     <i class="mb-icon-phone-a"></i>&nbsp;{{ stylist.phone | formatPhone }}
@@ -36,7 +36,7 @@
   <div *ngIf="pageType === StylistPageType.Invitation" class="flex-1"></div>
 
   <!-- Footer: -->
-  <div [ngSwitch]="pageType" class="Footer">
+  <div [ngSwitch]="pageType" class="Footer StylistInvitationPage-footer">
     <!-- Invitation: -->
     <ng-container *ngSwitchCase="StylistPageType.Invitation">
       <ion-row justify-content-center>
@@ -50,7 +50,7 @@
     <!-- My stylist: -->
     <ng-container *ngSwitchCase="StylistPageType.MyStylist">
       <ion-row justify-content-center>
-        <span (click)="onProceedToStylists()" class="Link">Looking for a&nbsp;new stylist?</span>
+        <span (click)="onProceedToStylists()" class="Link StylistInvitationPage-Link">Looking for a&nbsp;new stylist?</span>
       </ion-row>
     </ng-container>
   </div>

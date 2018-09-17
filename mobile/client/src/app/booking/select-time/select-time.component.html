@@ -16,7 +16,9 @@
       </div>
     </div>
 
-    <ion-spinner *ngIf="isLoading" class="SelectTimeslot-spinner"></ion-spinner>
+    <div class="Spinner">
+      <ion-spinner *ngIf="isLoading"></ion-spinner>
+    </div>
 
     <div *ngIf="slotSections && slotSections.length===0" class="SelectTimeslot-notice">Could not get available times. Please try again.</div>
 
