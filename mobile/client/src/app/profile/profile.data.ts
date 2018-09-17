@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import * as moment from 'moment';
 
 import { DataStore } from '~/core/utils/data-store';
 
@@ -15,6 +16,10 @@ export class ProfileDataStore extends DataStore<ProfileModel> {
     }
     ProfileDataStore.guardInitilization = true;
 
-    super('profile', () => profileApi.getProfile());
+    // Amazon requires to update an image URL after one hour.
+    const ttl1hour = moment.duration(1, 'hour').asMilliseconds();
+
+    super('profile', () => profileApi.getProfile(),
+      { cacheTtlMilliseconds: ttl1hour });
   }
 }
