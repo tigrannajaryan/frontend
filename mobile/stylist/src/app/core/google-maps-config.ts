@@ -3,7 +3,7 @@ import { Events } from 'ionic-angular';
 import { LazyMapsAPILoaderConfigLiteral } from '@agm/core';
 
 import { Logger } from '~/shared/logger';
-import { EventTypes } from '~/core/events/event-types';
+import { SharedEventTypes } from '~/shared/events/event-types';
 
 enum GoogleMapsLibraries {
   PLACES = 'places'
@@ -19,10 +19,10 @@ export class GoogleMapsConfig implements LazyMapsAPILoaderConfigLiteral {
     private events: Events,
     private logger: Logger
   ) {
-    this.events.subscribe(EventTypes.UPDATE_GMAP_KEY, apiKey => {
+    this.events.subscribe(SharedEventTypes.UPDATE_GMAP_KEY, apiKey => {
       this.logger.info('GoogleMapsConfig received api key=', apiKey);
       this.apiKey = apiKey;
-      this.events.unsubscribe(EventTypes.UPDATE_GMAP_KEY);
+      this.events.unsubscribe(SharedEventTypes.UPDATE_GMAP_KEY);
     });
   }
 }

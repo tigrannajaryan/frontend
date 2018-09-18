@@ -5,7 +5,7 @@ import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 
-import { ENV } from '../../environments/environment.default';
+import { ENV } from '~/environments/environment.default';
 import { Logger } from '~/shared/logger';
 import { ApiRequestOptions, processApiResponseError } from '~/shared/api-errors';
 import { ServerStatusTracker } from '~/shared/server-status-tracker';

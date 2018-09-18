@@ -7,7 +7,7 @@ import { StoreModule } from '@ngrx/store';
 import { TestUtils } from '../../test';
 import { prepareSharedObjectsForTests } from '~/core/test-utils.spec';
 import { HomeComponent } from '~/home/home.component';
-import { HomeService } from '~/home/home.service';
+import { HomeService } from '~/shared/stylist-api/home.service';
 import { profileReducer, profileStatePath } from '~/core/components/user-header/profile.reducer';
 import { GAWrapper } from '~/shared/google-analytics';
 

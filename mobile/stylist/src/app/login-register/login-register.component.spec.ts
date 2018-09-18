@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TestUtils } from '../../test';
 import { LoginRegisterComponent } from './login-register.component';
-import { AuthApiService } from '~/core/auth-api-service/auth-api-service';
+import { AuthApiService } from '~/shared/stylist-api/auth-api-service';
 import { prepareSharedObjectsForTests } from '~/core/test-utils.spec';
 
 let fixture: ComponentFixture<LoginRegisterComponent>;

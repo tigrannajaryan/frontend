@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { HttpParams } from '@angular/common/http/src/params';
 import { Observable } from 'rxjs/Observable';
 
-import { ENV } from '~/../environments/environment.default';
+import { ENV } from '~/environments/environment.default';
 
 import { ApiRequestOptions, processApiResponseError } from '~/shared/api-errors';
 import { ApiRequest, ApiResponse } from '~/core/api/base.models';

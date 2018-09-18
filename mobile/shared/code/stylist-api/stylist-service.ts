@@ -1,17 +1,17 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-import { BaseApiService } from '~/core/base-api-service';
 import { Logger } from '~/shared/logger';
 import { ServerStatusTracker } from '~/shared/server-status-tracker';
+import { BaseApiService } from './base-api-service';
 
 import {
   ServiceItem, ServiceTemplateSet, ServiceTemplateSetBase, StylistProfile,
   StylistServicesList, StylistSummary
 } from './stylist-models';
-import { AppointmentDateOffer } from '~/home/home.models';
+import { AppointmentDateOffer } from './home.models';
 import { Events } from 'ionic-angular';
-import { EventTypes } from '~/core/events/event-types';
+import { SharedEventTypes } from '~/shared/events/event-types';
 
 export interface ServiceTemplateSetListResponse {
   service_template_sets: ServiceTemplateSetBase[];
@@ -66,7 +66,7 @@ export class StylistServiceProvider extends BaseApiService {
     return this.get<StylistProfile>('stylist/profile')
       .then(response => {
         // Publish event to update gmap key.
-        this.events.publish(EventTypes.UPDATE_GMAP_KEY, response.google_api_key);
+        this.events.publish(SharedEventTypes.UPDATE_GMAP_KEY, response.google_api_key);
         return response;
       });
   }

@@ -14,7 +14,7 @@ import { deleteToken, getToken } from '~/core/utils/token-utils';
 
 import { AUTHORIZED_ROOT, PageNames, UNAUTHORIZED_ROOT } from '~/core/page-names';
 import { EventTypes } from '~/core/event-types';
-import { ENV } from '../environments/environment.default';
+import { ENV } from '~/environments/environment.default';
 
 @Component({
   templateUrl: 'app.component.html'

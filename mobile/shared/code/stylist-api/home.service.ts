@@ -5,7 +5,7 @@ import * as moment from 'moment';
 import { Logger } from '~/shared/logger';
 import { ApiRequestOptions } from '~/shared/api-errors';
 import { ServerStatusTracker } from '~/shared/server-status-tracker';
-import { BaseApiService } from '~/core/base-api-service';
+import { BaseApiService } from '~/shared/stylist-api/base-api-service';
 import {
   Appointment,
   AppointmentChangeRequest,
@@ -14,7 +14,7 @@ import {
   AppointmentPreviewResponse,
   Home,
   NewAppointmentRequest
-} from '~/home/home.models';
+} from './home.models';
 
 @Injectable()
 export class HomeService extends BaseApiService {

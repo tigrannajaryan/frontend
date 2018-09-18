@@ -8,13 +8,25 @@ import { async_all } from '~/shared/async-helpers';
 import { Logger } from '~/shared/logger';
 import { getBuildNumber } from '~/shared/get-build-number';
 import { GAWrapper } from '~/shared/google-analytics';
+import { AuthApiService, TokenStorage } from '~/shared/stylist-api/auth-api-service';
 
 import { PageNames } from '~/core/page-names';
-import { AuthApiService } from '~/core/auth-api-service/auth-api-service';
 import { createNavHistoryList } from '~/core/functions';
 import { AppStorage } from '~/core/app-storage';
 import { ServerStatusTracker } from '~/shared/server-status-tracker';
-import { ENV } from '../environments/environment.default';
+import { ENV } from '~/environments/environment.default';
+
+class TokenStorageImpl implements TokenStorage {
+  constructor(private appStorage: AppStorage) {}
+
+  get(): string {
+    return this.appStorage.get('authToken');
+  }
+
+  set(token: string): void {
+    return this.appStorage.set('authToken', token);
+  }
+}
 
 @Component({
   templateUrl: 'app.component.html'
@@ -82,7 +94,7 @@ export class MyAppComponent {
   }
 
   async showInitialPage(): Promise<void> {
-    this.authApiService.init();
+    this.authApiService.init(new TokenStorageImpl(this.storage));
 
     if (this.authApiService.getAuthToken()) {
       this.logger.info('App: We have a stored authentication information. Attempting to restore.');

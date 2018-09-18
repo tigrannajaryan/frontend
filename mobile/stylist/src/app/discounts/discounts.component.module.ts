@@ -1,7 +1,8 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
+
+import { DiscountsApi } from '~/shared/stylist-api/discounts.api';
 import { DiscountsComponent } from './discounts.component';
-import { DiscountsApi } from '~/discounts/discounts.api';
 import { CoreModule } from '~/core/core.module';
 
 @NgModule({

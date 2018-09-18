@@ -15,10 +15,9 @@ import { GAWrapper } from '~/shared/google-analytics';
 import { PageNames } from '~/core/page-names';
 import { showAlert } from '~/core/utils/alert';
 import { AppStorage } from '~/core/app-storage';
-import { StylistProfile } from '~/core/stylist-service/stylist-models';
-import { AppointmentStatuses, Home } from './home.models';
-import { Appointment } from '~/home/home.models';
-import { HomeService } from '~/home/home.service';
+import { StylistProfile } from '~/shared/stylist-api/stylist-models';
+import { Appointment, AppointmentStatuses, Home } from '~/shared/stylist-api/home.models';
+import { HomeService } from '~/shared/stylist-api/home.service';
 import { AppointmentCheckoutParams } from '~/appointment/appointment-checkout/appointment-checkout.component';
 import { LoadProfileAction, ProfileState, selectProfile } from '~/core/components/user-header/profile.reducer';
 

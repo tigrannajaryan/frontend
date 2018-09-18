@@ -7,8 +7,8 @@ import { Store, StoreModule } from '@ngrx/store';
 
 import { TestUtils } from '~/../test';
 import { prepareSharedObjectsForTests } from '~/core/test-utils.spec';
-import { HomeService as AppointmentService } from '~/home/home.service';
-import { ServiceItem } from '~/core/stylist-service/stylist-models';
+import { HomeService as AppointmentService } from '~/shared/stylist-api/home.service';
+import { ServiceItem } from '~/shared/stylist-api/stylist-models';
 import { SelectServiceAction, servicesReducer, ServicesState } from '~/appointment/appointment-services/services.reducer';
 import { AppointmentAddComponent } from './appointment-add';
 

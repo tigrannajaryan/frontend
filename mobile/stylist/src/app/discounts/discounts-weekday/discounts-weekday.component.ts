@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController } from 'ionic-angular';
 
+import { Discounts, WeekdayDiscount } from '~/shared/stylist-api/discounts.models';
+import { DiscountsApi } from '~/shared/stylist-api/discounts.api';
 import { loading } from '~/core/utils/loading';
 import { PageNames } from '~/core/page-names';
-import { Discounts, WeekdayDiscount } from '~/discounts/discounts.models';
-import { DiscountsApi } from '~/discounts/discounts.api';
 
 @IonicPage({
   segment: 'discounts-weekday'

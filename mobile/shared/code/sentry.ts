@@ -1,7 +1,7 @@
 import * as Sentry from 'sentry-cordova';
 import { Severity } from '@sentry/shim';
 
-import { ENV } from '../../environments/environment.default';
+import { ENV } from '~/environments/environment.default';
 
 declare const process: any; // make process variable visible to TypeScript
 

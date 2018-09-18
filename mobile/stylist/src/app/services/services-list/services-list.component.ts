@@ -10,8 +10,8 @@ import {
 import { loading } from '~/core/utils/loading';
 import { showAlert } from '~/core/utils/alert';
 import { PageNames } from '~/core/page-names';
-import { StylistServiceProvider } from '~/core/stylist-service/stylist-service';
-import { ServiceCategory, ServiceTemplateItem } from '~/core/stylist-service/stylist-models';
+import { StylistServiceProvider } from '~/shared/stylist-api/stylist-service';
+import { ServiceCategory, ServiceTemplateItem } from '~/shared/stylist-api/stylist-models';
 import { ServiceListType } from '~/services/services.component';
 import { ServiceItemComponentData } from '~/services/services-item/services-item.component';
 

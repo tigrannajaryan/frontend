@@ -19,10 +19,10 @@ import 'rxjs/add/operator/pluck';
 import { Logger } from '~/shared/logger';
 import { downscalePhoto, urlToFile } from '~/shared/image-utils';
 import { PhotoSourceType } from '~/shared/constants';
+import { StylistServiceProvider } from '~/shared/stylist-api/stylist-service';
+import { BaseApiService } from '~/shared/stylist-api/base-api-service';
 import { loading } from '~/core/utils/loading';
 import { PageNames } from '~/core/page-names';
-import { StylistServiceProvider } from '~/core/stylist-service/stylist-service';
-import { BaseApiService } from '~/core/base-api-service';
 import { showAlert } from '~/core/utils/alert';
 
 declare var window: any;

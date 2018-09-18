@@ -7,7 +7,7 @@ import { CoreModule } from '~/core/core.module';
 import { profileReducer, profileStatePath } from '~/core/components/user-header/profile.reducer';
 import { ProfileEffects } from '~/core/components/user-header/profile.effects';
 import { HomeComponent } from './home.component';
-import { HomeService } from './home.service';
+import { HomeService } from '~/shared/stylist-api/home.service';
 
 @NgModule({
   declarations: [

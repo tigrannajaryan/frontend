@@ -1,10 +1,10 @@
 import { Component, ViewChild } from '@angular/core';
 import { Content, IonicPage, NavParams, Slides } from 'ionic-angular';
 
+import { DiscountsApi } from '~/shared/stylist-api/discounts.api';
+import { Discounts, MaximumDiscounts, MaximumDiscountsWithVars, WeekdayDiscount } from '~/shared/stylist-api/discounts.models';
 import { PageNames } from '~/core/page-names';
 import { loading } from '~/core/utils/loading';
-import { Discounts, MaximumDiscounts, MaximumDiscountsWithVars, WeekdayDiscount } from '~/discounts/discounts.models';
-import { DiscountsApi } from '~/discounts/discounts.api';
 import { FirstBooking } from '~/discounts/discounts-first-booking/discounts-first-booking.component';
 import { DiscountsRevisitComponent } from '~/discounts/discounts-revisit/discounts-revisit.component';
 

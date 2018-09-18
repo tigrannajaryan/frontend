@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
-import { Appointment } from '~/home/home.models';
+
+import { Appointment } from '~/shared/stylist-api/home.models';
 
 @Component({
   selector: 'appointment-item',

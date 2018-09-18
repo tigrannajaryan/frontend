@@ -1,7 +1,7 @@
 import { ActionReducer, MetaReducer } from '@ngrx/store';
 import { storeLogger } from 'ngrx-store-logger';
 
-import { ENV } from '~/../environments/environment.default';
+import { ENV } from '~/environments/environment.default';
 
 import { resetOnLogoutReducer } from '~/auth/auth.reducer';
 

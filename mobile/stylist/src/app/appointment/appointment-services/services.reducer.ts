@@ -1,6 +1,6 @@
 import { Action, createFeatureSelector, createSelector } from '@ngrx/store';
 
-import { ServiceCategory, ServiceItem } from '~/core/stylist-service/stylist-models';
+import { ServiceCategory, ServiceItem } from '~/shared/stylist-api/stylist-models';
 
 export enum servicesActionTypes {
   LOAD = 'SERVICES_LOAD',

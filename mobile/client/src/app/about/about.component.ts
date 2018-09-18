@@ -3,7 +3,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { AppVersion } from '@ionic-native/app-version';
 
 import { getBuildNumber } from '~/shared/get-build-number';
-import { ENV } from '../../environments/environment.default';
+import { ENV } from '~/environments/environment.default';
 import Licenses from '~/core/data/licenses.json';
 
 declare const __COMMIT_HASH__: string;

@@ -5,12 +5,12 @@ import { Component } from '@angular/core';
 import { AlertController, IonicPage, NavController } from 'ionic-angular';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import { loading } from '~/core/utils/loading';
 import { componentUnloaded } from '~/shared/component-unloaded';
-import { PageNames } from '~/core/page-names';
-import { ServiceItem } from '~/core/stylist-service/stylist-models';
+import { ServiceItem } from '~/shared/stylist-api/stylist-models';
+import { HomeService as AppointmentService } from '~/shared/stylist-api/home.service';
 
-import { HomeService as AppointmentService } from '~/home/home.service';
+import { loading } from '~/core/utils/loading';
+import { PageNames } from '~/core/page-names';
 
 import {
   ClearSelectedServiceAction,

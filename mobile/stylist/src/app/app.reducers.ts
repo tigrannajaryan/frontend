@@ -6,7 +6,7 @@ import {
 } from '@ngrx/store';
 import { storeLogger } from 'ngrx-store-logger';
 
-import { ENV } from '../environments/environment.default';
+import { ENV } from '~/environments/environment.default';
 
 /**
  * storeFreeze prevents state from being mutated. When mutation occurs, an

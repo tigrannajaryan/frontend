@@ -2,9 +2,9 @@ import { Component, Input } from '@angular/core';
 import { App, NavController, PopoverController } from 'ionic-angular';
 import { Store } from '@ngrx/store';
 
+import { StylistProfile } from '~/shared/stylist-api/stylist-models';
+import { AuthApiService } from '~/shared/stylist-api/auth-api-service';
 import { PageNames } from '~/core/page-names';
-import { StylistProfile } from '~/core/stylist-service/stylist-models';
-import { AuthApiService } from '~/core/auth-api-service/auth-api-service';
 import { UserHeaderMenuActions, UserHeaderMenuComponent } from './user-header-menu/user-header-menu.component';
 import { LogoutAction } from '~/app.reducers';
 

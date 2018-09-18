@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AuthCredentials, AuthResponse, UserRole } from './auth-api-service';
-import { StylistProfile } from '../stylist-service/stylist-models';
+import { StylistProfile } from './stylist-models';
 
 /**
  * AuthServiceProviderMock provides authentication mocked with one

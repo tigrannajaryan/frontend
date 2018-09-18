@@ -4,7 +4,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 import { TestUtils } from '../../../test';
 import { ActionSheetController, Haptic, PopoverController, ViewController } from 'ionic-angular';
-import { HomeService } from 'app/home/home.service';
+import { HomeService } from '~/shared/stylist-api/home.service';
 import { AppointmentCheckoutComponent } from './appointment-checkout.component';
 import { prepareSharedObjectsForTests } from 'app/core/test-utils.spec';
 import { CoreModule } from 'app/core/core.module';

@@ -13,16 +13,16 @@ import { SMS } from '@ionic-native/sms';
 import * as Fuse from 'fuse.js/dist/fuse';
 
 import { normalizePhoneNumber } from '~/shared/utils/phone-numbers';
+import { Discounts } from '~/shared/stylist-api/discounts.models';
+import { DiscountsApi } from '~/shared/stylist-api/discounts.api';
+import { StylistServiceProvider } from '~/shared/stylist-api/stylist-service';
+import { StylistProfile } from '~/shared/stylist-api/stylist-models';
+import { ClientInvitation, InvitationStatus } from '~/shared/stylist-api/invitations.models';
+import { InvitationsApi, InvitationsResponse } from '~/shared/stylist-api/invitations.api';
 
 import { PageNames } from '~/core/page-names';
-import { ClientInvitation, InvitationStatus } from './invitations.models';
-import { InvitationsApi, InvitationsResponse } from './invitations.api';
 import { trimStr } from '~/core/functions';
 import { showAlert } from '~/core/utils/alert';
-import { StylistServiceProvider } from '~/core/stylist-service/stylist-service';
-import { StylistProfile } from '~/core/stylist-service/stylist-models';
-import { Discounts } from '~/discounts/discounts.models';
-import { DiscountsApi } from '~/discounts/discounts.api';
 
 class ErrorWrapper {
   constructor(readonly error) { }

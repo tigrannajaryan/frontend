@@ -1,9 +1,10 @@
 import { async, TestBed } from '@angular/core/testing';
 import { IonicModule, ModalController, NavController, NavParams } from 'ionic-angular';
 import { HttpClient } from '@angular/common/http';
+
 import { ServicesListComponent } from './services-list.component';
 import { CoreModule } from '~/core/core.module';
-import { StylistServiceProvider } from '~/core/stylist-service/stylist-service';
+import { StylistServiceProvider } from '~/shared/stylist-api/stylist-service';
 import { prepareSharedObjectsForTests } from '~/core/test-utils.spec';
 
 describe('Pages: ServicesListComponent', () => {
