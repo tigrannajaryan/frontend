@@ -40,13 +40,13 @@
               <!-- Estimated price -->
               <div *ngIf="params.appointment.status === AppointmentStatus.new; else showFinalPrice" class="priceEstimated">
                 <div class="label"> Estimated price</div>
-                <div class="price">{{ (params.appointment.total_client_price_before_tax + params.appointment.total_tax) }}</div>
+                <div class="price">{{ Math.ceil(params.appointment.total_client_price_before_tax + params.appointment.total_tax) }}</div>
               </div>
 
               <!-- Final price -->
               <ng-template #showFinalPrice>
                 <div class="label">Final price</div>
-                <div class="price"> {{ (params.appointment.total_client_price_before_tax + params.appointment.total_tax) }}</div>
+                <div class="price"> {{ Math.ceil(params.appointment.total_client_price_before_tax + params.appointment.total_tax) }}</div>
               </ng-template>
             </ion-col>
           </ion-row>

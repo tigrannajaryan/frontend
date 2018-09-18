@@ -66,17 +66,18 @@ export class ClientAppComponent implements OnInit, OnDestroy {
     this.statusBar.styleDefault();
     this.splashScreen.hide();
 
-    // TODO: use try/catch
-    const token = await getToken();
-    if (token) {
-      this.rootPage = AUTHORIZED_ROOT;
-    } else {
+    const token = await getToken(); // no expiration
+    if (!token) {
       this.rootPage = PageNames.FirstScreen;
-      // no expiration, the only case: deactivation of the account
-      // discover by making a request
-      // discover on next request after the app is started
-      // the first request returns 401 unauthorized, and app reacts to it
-      // load app –> show screen –> do request –> react if unauthorized
+    } else {
+      // TODO: save and restore stylist invitation
+      const preferredStylists = await this.preferredStylistsData.get();
+      if (preferredStylists.length === 0) {
+        // Haven’t completed onboarding, should restart:
+        this.rootPage = PageNames.HowMadeWorks;
+      } else {
+        this.rootPage = AUTHORIZED_ROOT;
+      }
     }
 
     // Subscribe to some interesting global events

@@ -4,8 +4,10 @@ import { Clipboard } from '@ionic-native/clipboard';
 import { EmailComposer } from '@ionic-native/email-composer';
 import { Store } from '@ngrx/store';
 
+import { componentUnloaded } from '~/shared/component-unloaded';
+
 import { PageNames } from '~/core/page-names';
-import { composeRequest, loading } from '~/core/utils/request-utils';
+import { loading } from '~/core/utils/request-utils';
 import { showAlert } from '~/core/utils/alert';
 import { DefaultImage } from '~/core/core.module';
 import { ProfileCompleteness, ProfileModel } from '~/core/api/profile.models';
@@ -42,14 +44,16 @@ export class ProfileSummaryComponent {
   }
 
   async ionViewWillEnter(): Promise<void> {
-    const { response } = await composeRequest<ProfileModel>(
-      loading(isLoading => this.isLoading = isLoading),
-      this.profileDataStore.get()
-    );
-    if (response) {
-      this.profile = response;
-      this.profileCompleteness = checkProfileCompleteness(this.profile);
-    }
+    const attachLoader = loading(isLoading => this.isLoading = isLoading);
+
+    attachLoader(this.profileDataStore.asObservable())
+      .takeUntil(componentUnloaded(this))
+      .subscribe(({ response }: { response?: ProfileModel }) => { // ApiResponse<ProfileModel>
+        if (response) {
+          this.profile = response;
+          this.profileCompleteness = checkProfileCompleteness(this.profile);
+        }
+      });
   }
 
   isProfileCompleted(): boolean {
