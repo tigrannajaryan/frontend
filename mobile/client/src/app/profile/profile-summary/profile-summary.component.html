@@ -15,7 +15,7 @@
         {{ profile.email }}
         <span *ngIf="profile.city || profile.state">
           <br/>
-          {{ profile.city + (profile.city && profile.state ? ', ' : '') + profile.state }}
+          {{ profile.city !== null ? profile.city : '' }} {{ profile.city && profile.state ? ', ' : '' }} {{ profile.state !== null ? profile.state : '' }}
         </span>
       </div>
       <div *ngIf="!profileCompleteness.isProfileComplete" class="ProfilePage-completion">
