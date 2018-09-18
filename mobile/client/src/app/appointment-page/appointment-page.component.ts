@@ -26,9 +26,6 @@ export class AppointmentPageComponent {
 
   params: AppointmentPageParams;
 
-  // export to the view
-  Math = Math;
-
   constructor(
     private alertCtrl: AlertController,
     private api: AppointmentsApi,

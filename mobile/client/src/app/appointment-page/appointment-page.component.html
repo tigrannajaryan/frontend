@@ -37,17 +37,11 @@
 
           <ion-row>
             <ion-col col-12 class="AppointmentPage-cardAppPrice">
-              <!-- Estimated price -->
-              <div *ngIf="params.appointment.status === AppointmentStatus.new; else showFinalPrice" class="priceEstimated">
-                <div class="label"> Estimated price</div>
-                <div class="price">{{ Math.ceil(params.appointment.total_client_price_before_tax + params.appointment.total_tax) }}</div>
+              <!-- price -->
+              <div [class.priceEstimated]="params.appointment.status === AppointmentStatus.new">
+                <div class="label">{{ params.appointment.status === AppointmentStatus.new ? 'Estimated price' : 'Final price' }}</div>
+                <div class="price">{{ params.appointment.grand_total }}</div>
               </div>
-
-              <!-- Final price -->
-              <ng-template #showFinalPrice>
-                <div class="label">Final price</div>
-                <div class="price"> {{ Math.ceil(params.appointment.total_client_price_before_tax + params.appointment.total_tax) }}</div>
-              </ng-template>
             </ion-col>
           </ion-row>
           <!-- services, one row per service -->
