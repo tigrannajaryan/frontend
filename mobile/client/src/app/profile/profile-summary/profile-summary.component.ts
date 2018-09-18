@@ -48,7 +48,7 @@ export class ProfileSummaryComponent {
 
     attachLoader(this.profileDataStore.asObservable())
       .takeUntil(componentUnloaded(this))
-      .subscribe(({ response }) => {
+      .subscribe(({ response }: { response?: ProfileModel }) => { // ApiResponse<ProfileModel>
         if (response) {
           this.profile = response;
           this.profileCompleteness = checkProfileCompleteness(this.profile);
