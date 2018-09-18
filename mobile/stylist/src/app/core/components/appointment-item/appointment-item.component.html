@@ -28,7 +28,7 @@
   </div>
 
   <div class="AppointmentItem-name">
-    <div [style.background-image]="" class="AppointmentItem-nameAva"></div>
+    <div [style.background-image]="appointment.client_profile_photo_url ? 'url(' + appointment.client_profile_photo_url + ')' : null" class="AppointmentItem-nameAva"></div>
     {{ appointment.client_first_name }}
     {{ appointment.client_last_name }}
   </div>

@@ -40,6 +40,11 @@ page-services {
     font-weight: 600;
     line-height: pxtovw(24px);
     letter-spacing: pxtovw(-0.2px);
+
+    p {
+      margin: 0;
+      color: #E96D5C;
+    }
   }
 
   .Services-itemTextNum {
