@@ -13,6 +13,10 @@
       <div *ngIf="isProfileCompleted()" class="ProfilePage-subtitle">
         <p>{{ profile.phone | formatPhone }}</p>
         {{ profile.email }}
+        <span *ngIf="profile.city || profile.state">
+          <br/>
+          {{ profile.city + (profile.city && profile.state ? ', ' : '') + profile.state }}
+        </span>
       </div>
       <div *ngIf="!profileCompleteness.isProfileComplete" class="ProfilePage-completion">
         <ion-row justify-content-center>Completed {{ profileCompleteness.completenessPercent }}%</ion-row>
