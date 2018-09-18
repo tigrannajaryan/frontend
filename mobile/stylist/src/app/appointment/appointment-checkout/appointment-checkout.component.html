@@ -9,7 +9,7 @@
       </div>
 
       <div class="p-c-top-user">
-        <div [style.backgroundImage]="'url()'" class="p-c-top-user-ava"></div>
+        <div [style.background-image]="appointment.client_profile_photo_url ? 'url(' + appointment.client_profile_photo_url + ')' : null" class="p-c-top-user-ava"></div>
         <div class="p-c-top-user-name">
           {{ appointment.client_first_name }} {{ appointment.client_last_name }}
         </div>

@@ -71,6 +71,7 @@ export interface Appointment {
   status: AppointmentStatuses;
   services: AppointmentService[];
   client_uuid: string;
+  client_profile_photo_url: string;
   grand_total: number;
 }
 
