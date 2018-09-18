@@ -1,5 +1,6 @@
-import { waitFor, waitForNot } from './shared/utils';
-import { backdoorApi } from './shared/backdoor-api';
+import { waitFor, waitForNot } from './shared-e2e/utils';
+import { backdoorApi } from './shared-e2e/backdoor-api';
+
 import { phoneLoginPage } from './phone-login-page';
 import { phoneCodePage } from './phone-code-page';
 import { firstPage } from './first-page';
@@ -8,7 +9,7 @@ import { howPricingWorksPage } from './how-pricing-works-page';
 import { stylistsSearchPage } from './stylists-search-page';
 import { clientApp } from './client-app';
 
-describe('First Use Flow for not invited clients', () => {
+describe('First use flow for not invited clients', () => {
 
   let phoneNumber;
 

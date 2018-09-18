@@ -4,6 +4,7 @@
   ],
   "extends": ["../tslint.json"],
   "rules": {
-    "typedef": [true, "property-declaration", "member-variable-declaration", "object-destructuring", "array-destructuring"]
+    "typedef": [true, "property-declaration", "member-variable-declaration", "object-destructuring", "array-destructuring"],
+    "prefer-function-over-method": false
   }
 }

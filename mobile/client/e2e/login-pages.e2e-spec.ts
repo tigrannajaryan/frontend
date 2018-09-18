@@ -1,4 +1,4 @@
-import { waitFor } from './shared/utils';
+import { waitFor } from './shared-e2e/utils';
 import { phoneLoginPage } from './phone-login-page';
 import { firstPage } from './first-page';
 import { clientApp } from './client-app';

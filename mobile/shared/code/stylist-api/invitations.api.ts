@@ -4,11 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { Logger } from '~/shared/logger';
 import { ServerStatusTracker } from '~/shared/server-status-tracker';
 import { BaseApiService } from '~/shared/stylist-api/base-api-service';
-import { ClientInvitation } from './invitations.models';
-
-export interface InvitationsResponse {
-  invitations: ClientInvitation[];
-}
+import { ClientInvitation, InvitationsResponse } from './invitations.models';
 
 /**
  * InvitationsApi Send invitation(s) to the client(s).
@@ -28,7 +24,7 @@ export class InvitationsApi extends BaseApiService {
   /**
    * Sends invitation(s) to the provided client(s). The stylist must be already authenticated as a user.
    */
-  async sendInvitations(data: ClientInvitation[]): Promise<InvitationsResponse> {
+  async createInvitations(data: ClientInvitation[]): Promise<InvitationsResponse> {
     return this.post<InvitationsResponse>('stylist/invitations', data);
   }
 
