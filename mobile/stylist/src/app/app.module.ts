@@ -15,13 +15,14 @@ import { UnhandledErrorHandler } from '~/shared/unhandled-error-handler';
 import { initSentry } from '~/shared/sentry';
 import { Logger } from '~/shared/logger';
 import { SharedSingletonsModule } from '~/shared/shared-singletons.module';
+import { AuthApiService } from '~/shared/stylist-api/auth-api-service';
+import { StylistServiceProvider } from '~/shared/stylist-api/stylist-service';
+
 import { MyAppComponent } from './app.component';
-import { AuthApiService } from '~/core/auth-api-service/auth-api-service';
-import { StylistServiceProvider } from '~/core/stylist-service/stylist-service';
-import { httpInterceptorProviders } from '~/core/http-interceptors';
+import { httpInterceptorProviders } from '~/shared/stylist-api/http-interceptors';
 import { CoreModule } from '~/core/core.module';
 import { getMetaReducers, reducers } from './app.reducers';
-import { ENV } from '../environments/environment.default';
+import { ENV } from '~/environments/environment.default';
 import { GoogleMapsConfig } from '~/core/google-maps-config';
 import { AppStorage } from '~/core/app-storage';
 

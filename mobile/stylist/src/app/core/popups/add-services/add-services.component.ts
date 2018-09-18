@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 import { AlertController, IonicPage, NavController, NavParams } from 'ionic-angular';
-import { StylistServiceProvider } from '~/core/stylist-service/stylist-service';
+
+import { StylistServiceProvider } from '~/shared/stylist-api/stylist-service';
+import { ServiceCategory, ServiceItem, StylistServicesList } from '~/shared/stylist-api/stylist-models';
+import { CheckOutService } from '~/shared/stylist-api/home.models';
 import { loading } from '~/core/utils/loading';
-import { ServiceCategory, ServiceItem, StylistServicesList } from '~/core/stylist-service/stylist-models';
-import { CheckOutService } from '~/home/home.models';
 
 export class AddServicesComponentParams {
   appointmentUuid: string;

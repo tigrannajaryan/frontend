@@ -2,12 +2,11 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import 'rxjs/add/operator/toPromise';
 
-import { BaseApiService } from '~/core/base-api-service';
-import { StylistProfile } from '../stylist-service/stylist-models';
+import { BaseApiService } from './base-api-service';
+import { StylistProfile } from './stylist-models';
 import { Logger } from '~/shared/logger';
 import { ServerStatusTracker } from '~/shared/server-status-tracker';
 import { UserContext } from '~/shared/user-context';
-import { AppStorage } from '~/core/app-storage';
 
 export enum UserRole { stylist = 'stylist', client = 'client' }
 
@@ -40,6 +39,11 @@ export interface AuthError {
   password?: string[];
 }
 
+export interface TokenStorage {
+  get(): string;
+  set(token: string): void;
+}
+
 /**
  * AuthServiceProvider provides authentication against server API.
  */
@@ -47,20 +51,21 @@ export interface AuthError {
 export class AuthApiService extends BaseApiService {
 
   private authToken: string;
+  private tokenStorage: TokenStorage;
 
   constructor(
     protected http: HttpClient,
     protected logger: Logger,
     protected serverStatus: ServerStatusTracker,
-    protected appContext: UserContext,
-    protected storage: AppStorage
+    protected appContext: UserContext
   ) {
     super(http, logger, serverStatus);
   }
 
-  init(): void {
+  init(tokenStorage: TokenStorage): void {
     // Read previously saved authToken (if any).
-    this.authToken = this.storage.get('authToken');
+    this.tokenStorage = tokenStorage;
+    this.authToken = this.tokenStorage.get();
   }
 
   /**
@@ -133,6 +138,6 @@ export class AuthApiService extends BaseApiService {
     }
 
     // Save the authToken for later use. This allows to use the App without re-login.
-    this.storage.set('authToken', this.authToken);
+    this.tokenStorage.set(this.authToken);
   }
 }

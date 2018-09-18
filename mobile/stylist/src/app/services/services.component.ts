@@ -3,10 +3,10 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { DomSanitizer } from '@angular/platform-browser';
 import { SafeStyle } from '@angular/platform-browser/src/security/dom_sanitization_service';
 
+import { StylistServiceProvider } from '~/shared/stylist-api/stylist-service';
+import { ServiceTemplateSetBase } from '~/shared/stylist-api/stylist-models';
 import { loading } from '~/core/utils/loading';
-import { StylistServiceProvider } from '~/core/stylist-service/stylist-service';
 import { PageNames } from '~/core/page-names';
-import { ServiceTemplateSetBase } from '~/core/stylist-service/stylist-models';
 
 export enum ServiceListType {
   blank = 'blank'

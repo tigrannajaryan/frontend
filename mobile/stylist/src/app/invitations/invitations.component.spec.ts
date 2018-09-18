@@ -1,7 +1,5 @@
 import {
   async,
-  ComponentFixture,
-  getTestBed,
   TestBed
 } from '@angular/core/testing';
 
@@ -17,13 +15,14 @@ import { OpenNativeSettings } from '@ionic-native/open-native-settings';
 import { SMS } from '@ionic-native/sms';
 import { HttpClient } from '@angular/common/http';
 
+import { StylistServiceProvider } from '~/shared/stylist-api/stylist-service';
+import { DiscountsApi } from '~/shared/stylist-api/discounts.api';
+import { InvitationsApi } from '~/shared/stylist-api/invitations.api';
+import { InvitationStatus } from '~/shared/stylist-api/invitations.models';
+
 import { CoreModule } from '~/core/core.module';
 import { prepareSharedObjectsForTests } from '~/core/test-utils.spec';
 import { DisplayContact, InvitationsComponent } from './invitations.component';
-import { InvitationsApi } from './invitations.api';
-import { InvitationStatus } from './invitations.models';
-import { StylistServiceProvider } from '~/core/stylist-service/stylist-service';
-import { DiscountsApi } from '~/discounts/discounts.api';
 
 describe('Pages: InvitationsComponent', () => {
   let fixture;

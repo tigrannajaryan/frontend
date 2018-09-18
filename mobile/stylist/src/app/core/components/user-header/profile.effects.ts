@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions, Effect } from '@ngrx/effects';
 import { Observable } from 'rxjs';
 
-import { StylistServiceProvider } from '~/core/stylist-service/stylist-service';
+import { StylistServiceProvider } from '~/shared/stylist-api/stylist-service';
 import { Logger } from '~/shared/logger';
 
 import {

@@ -5,6 +5,7 @@ import { MbIconsComponent } from '~/shared/components/mb-icons/mb-icons.componen
 import { ContinueFooterComponent } from '~/shared/components/continue-footer/continue-footer.component';
 import { CheckListComponent } from '~/shared/components/check-list/check-list.component';
 import { NumListComponent } from '~/shared/components/num-list/num-list.component';
+import { DiscountsApi } from '~/shared/stylist-api/discounts.api';
 
 import { MadeNavComponent } from './made-nav/made-nav.component';
 import { MadeTableComponent } from './made-table/made-table';
@@ -14,7 +15,6 @@ import { UserHeaderMenuComponent } from '~/core/components/user-header/user-head
 import { ServicesPickComponent } from '~/core/components/services-pick/services-pick.component';
 import { AppointmentItemComponent } from '~/core/components/appointment-item/appointment-item.component';
 import { DiscountsListComponent } from '~/core/components/discounts/discounts-list/discounts-list.component';
-import { DiscountsApi } from '~/discounts/discounts.api';
 import { DiscountsWeekdayShortComponent } from '~/core/components/discounts/discounts-weekday-short/discounts-weekday-short.component';
 import { DiscountsRevisitShortComponent } from '~/core/components/discounts/discounts-revisit-short/discounts-revisit-short.component';
 import {

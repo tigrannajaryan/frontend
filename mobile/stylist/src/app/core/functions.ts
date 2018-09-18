@@ -1,4 +1,4 @@
-import { ProfileStatus } from './auth-api-service/auth-api-service';
+import { ProfileStatus } from '~/shared/stylist-api/auth-api-service';
 import { PageNames } from './page-names';
 
 export interface PageDescr {

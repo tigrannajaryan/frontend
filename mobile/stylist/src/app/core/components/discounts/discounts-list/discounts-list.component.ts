@@ -3,7 +3,7 @@ import { ModalController } from 'ionic-angular';
 
 import { PercentageSliderSettings } from '~/core/popups/change-percent/change-percent.component';
 import { PageNames } from '~/core/page-names';
-import { WeekdayDiscount } from '~/discounts/discounts.models';
+import { WeekdayDiscount } from '~/shared/stylist-api/discounts.models';
 
 export enum DiscountSymbol {
   percent = '%',

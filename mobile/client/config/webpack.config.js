@@ -18,7 +18,7 @@ const config = {
       APP_BUNDLE_ID: undefined
     }),
 
-    new webpack.NormalModuleReplacementPlugin(/\.\/environments\/environment\.default/, function (resource) {
+    new webpack.NormalModuleReplacementPlugin(/\/environments\/environment\.default/, function (resource) {
       if (process.env.APP_BUNDLE_ID !== undefined) {
         console.log('APP_BUNDLE_ID=', process.env.APP_BUNDLE_ID);
       }
@@ -26,14 +26,14 @@ const config = {
       if (process.env.MB_ENV !== undefined) {
         let env = process.env.MB_ENV.trim();
 
-        if (process.env.MB_ENV === 'dev' && fs.existsSync(path.resolve('./src/environments/environment.local.ts'))) {
+        if (process.env.MB_ENV === 'dev' && fs.existsSync(path.resolve('./src/app/environments/environment.local.ts'))) {
           console.warn('\033[1;33mReplacing .dev env config with .local\033[0m');
           env = 'local';
         }
 
         console.log('Rewriting ', resource.request);
         // @TODO try to generalise the regex using negative lookaheads https://stackoverflow.com/questions/977251/regular-expressions-and-negating-a-whole-character-group
-        resource.request = resource.request.replace(/\.\/environments\/environment\.default/, '\.\/environments/environment.' + env);
+        resource.request = resource.request.replace(/\/environments\/environment\.default/, '\/environments/environment.' + env);
         console.log('to        ', resource.request);
       } else {
         console.log('No environment specified. Using `default`');

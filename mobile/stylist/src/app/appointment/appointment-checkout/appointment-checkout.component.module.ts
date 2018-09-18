@@ -3,7 +3,7 @@ import { IonicPageModule } from 'ionic-angular';
 
 import { CoreModule } from '~/core/core.module';
 import { AppointmentCheckoutComponent } from './appointment-checkout.component';
-import { HomeService } from '~/home/home.service';
+import { HomeService } from '~/shared/stylist-api/home.service';
 
 @NgModule({
   declarations: [

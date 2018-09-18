@@ -5,10 +5,10 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import {
   ServiceCategory,
   ServiceTemplateItem
-} from '~/core/stylist-service/stylist-models';
+} from '~/shared/stylist-api/stylist-models';
 
 import { loading } from '~/core/utils/loading';
-import { StylistServiceProvider } from '~/core/stylist-service/stylist-service';
+import { StylistServiceProvider } from '~/shared/stylist-api/stylist-service';
 import { PageNames } from '~/core/page-names';
 import { ServicesCategoriesListData } from '~/services/services-categories/services-categories.component';
 

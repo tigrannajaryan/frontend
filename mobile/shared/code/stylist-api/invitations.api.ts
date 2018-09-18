@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 
 import { Logger } from '~/shared/logger';
 import { ServerStatusTracker } from '~/shared/server-status-tracker';
-import { BaseApiService } from '~/core/base-api-service';
+import { BaseApiService } from '~/shared/stylist-api/base-api-service';
 import { ClientInvitation } from './invitations.models';
 
 export interface InvitationsResponse {

@@ -43,7 +43,7 @@ import { profilePath, profileReducer } from '~/core/reducers/profile.reducer';
 import { stylistsPath, stylistsReducer } from '~/core/reducers/stylists.reducer';
 import { servicesPath, servicesReducer } from '~/core/reducers/services.reducer';
 
-import { ENV } from '~/../environments/environment.default';
+import { ENV } from '~/environments/environment.default';
 
 // Init sentry reporting (inits only if ENV.sentryDsn):
 initSentry();

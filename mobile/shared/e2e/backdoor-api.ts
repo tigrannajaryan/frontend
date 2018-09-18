@@ -3,7 +3,7 @@ import { getRandomNumber } from './utils';
 
 // Get the right environment
 const envName = process.env.MB_ENV ? process.env.MB_ENV : 'default';
-const ENV = require(`../../src/environments/environment.${envName}`).ENV;
+const ENV = require(`../../src/app/environments/environment.${envName}`).ENV;
 
 // Get the backdoor API url baseedon the backend url specified in the environment
 const backdoorURL = `${ENV.apiUrl}backdoor`;

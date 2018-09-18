@@ -1,4 +1,4 @@
-export enum EventTypes {
+export enum SharedEventTypes {
   /**
    * Event fired when StylistServiceProvider.getProfile() gets resolved.
    * This event is needed because the Google Maps api loads the api key dynamically.

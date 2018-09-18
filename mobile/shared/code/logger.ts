@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { ENV } from '../../environments/environment.default';
+import { ENV } from '~/environments/environment.default';
 
 const noop = (): any => undefined;
 
