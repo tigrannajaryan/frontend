@@ -29,7 +29,7 @@
     <div *ngIf="stylists | async" class="StylistsPage-stylists">
       <div
         *ngFor="let stylist of stylists | async"
-        class="StylistsPage-card SharedCard"
+        class="StylistsPage-card"
         [ngClass]="{'is-active': stylist.uuid === activeStylist?.uuid}"
         (click)="onSetActiveStylist($event, stylist)">
         <div class="StylistsPage-cardImg" [style.backgroundImage]="'url(' + (stylist.profile_photo_url  || 'assets/icons/stylist-avatar.png') + ')'"></div>
@@ -39,10 +39,10 @@
         </div>
         <div class="StylistsPage-cardSubtitle">{{ stylist.salon_name }}</div>
         <div class="StylistsPage-cardTitle">{{ stylist.first_name }} {{ stylist.last_name }}</div>
-        <div class="StylistsPage-cardSubtitle"><img src="assets/icons/location.svg" />&nbsp;{{ stylist.salon_address }}</div>
+        <div class="StylistsPage-cardInfo"><img src="assets/icons/location.svg" />&nbsp; <p>{{ stylist.salon_address }}</p></div>
         <div class="StylistsPage-cardFooter">
-          <div *ngIf="stylist.phone" class="StylistsPage-cardSubtitle"><img src="assets/icons/phone.svg" />&nbsp;{{ stylist.phone | formatPhone }}</div>
-          <div *ngIf="stylist.instagram_profile_name" class="StylistsPage-cardSubtitle"><img src="assets/icons/instagram.svg" />&nbsp;{{ stylist.instagram_profile_name }}</div>
+          <div *ngIf="stylist.phone" class="StylistsPage-cardInfo"><img src="assets/icons/phone.svg" />&nbsp;<p>{{ stylist.phone | formatPhone }}</p></div>
+          <div *ngIf="stylist.instagram_profile_name" class="StylistsPage-cardInfo"><img src="assets/icons/instagram.svg" />&nbsp;<p>{{ stylist.instagram_profile_name }}</p></div>
           <button (click)="onContinueWithStylist(stylist)" ion-button class="Button StylistsPage-submit">{{ continueText || ("Add " + stylist.first_name +"!") }}</button>
         </div>
       </div>

@@ -37,7 +37,7 @@
   .StylistsPage-cardImg {
     position: absolute;
     top: 50%;
-    left: $card-padding;
+    left: pxtovw(23px);
     width: $pic-size;
     height: $pic-size;
     margin-top: -1 * $pic-size / 2;
@@ -58,43 +58,67 @@
 
   .StylistsPage-cardClose {
     position: absolute;
+    top: pxtovw(17px);
+    right: pxtovw(16px);
     display: none;
-    right: $card-padding;
-    background: transparent;
-    font-size: 87%;
+    font-size: pxtovw(21px);
     color: white;
+    background: transparent;
   }
 
   .StylistsPage-cardTitle {
     width: 100%;
-    margin: pxtovw(3px) 0 pxtovw(6px);
+    margin: pxtovw(1px) 0 pxtovw(4px);
+    overflow: hidden;
     font-size: $t-h3;
     font-weight: 500;
-    white-space: nowrap;
-    overflow: hidden;
     text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   .StylistsPage-cardSubtitle {
     width: 100%;
+    overflow: hidden;
     font-size: $t-base;
     color: color($grayscale, 500);
-    white-space: nowrap;
-    overflow: hidden;
     text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .StylistsPage-cardInfo {
+    @extend .StylistsPage-cardSubtitle;
+
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    font-size: pxtovw(15px);
+    line-height: pxtovw(24px);
+
+    img {
+      margin: pxtovw(4px) 0 0;
+    }
+
+    p {
+      margin: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
   }
 
   .StylistsPage-submit {
-    margin: pxtovw(24px) 0 pxtovw(18px);
-    border: pxtovw(2px) solid white;
+    display: block;
+    width: 73%;
+    margin: pxtovw(16px) auto pxtovw(18px);
     text-align: center;
+    border: pxtovw(2px) solid white;
 
     > span {
       display: inline-block;
       width: auto;
       max-width: 100%;
-      text-align: left;
       overflow: hidden;
+      text-align: left;
       text-overflow: ellipsis;
     }
   }
@@ -103,15 +127,13 @@
     width: 0;
     height: 0;
     overflow: hidden;
-
-    .StylistsPage-cardSubtitle {
-      width: 100%;
-      margin-top: pxtovw(8px);
-    }
   }
 
   .StylistsPage-card {
+    @extend .SharedCard;
+
     position: relative;
+    padding-bottom: pxtovw(10px);
     padding-left: $card-padding + pxtovw(24px) + $pic-size;
     background: white;
 
@@ -121,14 +143,14 @@
     .StylistsPage-cardTitle,
     .StylistsPage-cardSubtitle,
     .StylistsPage-cardFooter {
-      transition: all 0.13s ease-in;
+      transition: all 0.05s ease-in;
     }
 
     &.is-active {
       $new-pic-size: pxtovw(120px);
       $pic-top-offset: pxtovw(56px);
 
-      padding-left: $card-padding;
+      padding: pxtovw(15px) pxtovw(25px);
       background: color($colors, primary);
 
       .StylistsPage-cardImg {
@@ -145,19 +167,38 @@
       }
 
       .StylistsPage-cardTitle {
-        margin: pxtovw(8px) 0;
+        margin: pxtovw(7px) 0 pxtovw(2px);
+        font-size: pxtovw(29px);
+        font-weight: 500;
       }
 
       .StylistsPage-cardTitle,
       .StylistsPage-cardSubtitle {
-        white-space: initial;
         text-align: center;
+        white-space: initial;
+      }
+
+      .StylistsPage-cardSubtitle {
+        font-size: pxtovw(13px);
+      }
+
+      .StylistsPage-cardInfo {
+        justify-content: center;
+
+        p {
+          margin: 0;
+          overflow: initial;
+          font-size: pxtovw(15px);
+          text-overflow: initial;
+          white-space: initial;
+        }
       }
 
       .StylistsPage-cardHeader {
         $header-height: pxtovw(26px);
 
         height: $header-height + $card-padding * 2 + $new-pic-size;
+        font-size: pxtovw(22px);
       }
 
       .StylistsPage-cardFooter {

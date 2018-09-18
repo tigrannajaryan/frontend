@@ -5,10 +5,6 @@
     font-weight: 500;
     text-align: left;
   }
-
-  .SelectDate-spinner {
-    width: 100%;
-  }
 }
 
 .SelectDate-header {
@@ -80,7 +76,6 @@
     text-align: center;
 
     .Calendar-price {
-      padding-top: pxtovw(2px);
       font-size: $t-small;
       font-weight: normal;
     }
@@ -88,9 +83,10 @@
     .Calendar-selectable {
       width: 100%;
       height: $day-height;
-      padding-top: pxtovw(3px);
+      padding-top: pxtovw(6px);
       margin-top: pxtovw(-3px); // compensates padding-top
       font-weight: bold;
+      line-height: pxtovw(15px);
       color: black;
       background: color($grayscale, 200);
       border-radius: pxtovw(4px);

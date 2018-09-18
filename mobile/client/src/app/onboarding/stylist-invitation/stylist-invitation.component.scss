@@ -30,20 +30,19 @@
   }
 
   .StylistInvitationPage-pic {
-    $pic-size: pxtovw(152px);
-    $pic-border-size: pxtovw(232px);
+    $pic-size: pxtovw(163px);
 
     width: $pic-size;
     height: $pic-size;
-    margin: ($pic-border-size - $pic-size) / 2 0;
+    margin: pxtovw(25px) 0;
     background-color: color($grayscale, 100);
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
-    border-radius: $pic-size / 2; // circle
+    border-radius: 50%; // circle
     box-shadow:
-      0 0 0 (($pic-border-size - $pic-size) / 2 - pxtovw(0.5px)) white,
-      0 0 0 ($pic-border-size - $pic-size) / 2 color($grayscale, 300);
+      0 0 0 pxtovw(27px) white,
+      0 0 0 pxtovw(27.5px) color($grayscale, 300);
 
     > img {
       width: 100%;
@@ -74,7 +73,31 @@
     }
   }
 
+  .StylistInvitationPage-address {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    max-width: 80%;
+    margin: 0 auto pxtovw(4px);
+  }
+
+  .StylistInvitationPage-address p {
+    flex: 1;
+    margin: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .StylistInvitationPage-footer {
+    margin: 30px 0;
+  }
+
   .StylistInvitationPage-submit {
     margin: pxtovw(32px) 0 pxtovw(20px);
+  }
+
+  .StylistInvitationPage-Link {
+    font-size: pxtovw(16px);
   }
 }
