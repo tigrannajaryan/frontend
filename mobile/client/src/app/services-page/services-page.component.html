@@ -1,7 +1,7 @@
 <ion-header madeHeader [showHome]="true">
   <ion-toolbar *ngIf="isAdditionalService" class="SelectDate SelectDate-header">
     <div class="SelectDate-title SharedH1">Add additional service:</div>
-    <book-services-header></book-services-header>
+    <book-services-header [readonly]="isAdditionalService"></book-services-header>
   </ion-toolbar>
 </ion-header>
 
