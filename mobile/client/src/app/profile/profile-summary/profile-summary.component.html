@@ -19,7 +19,7 @@
         </span>
       </div>
       <div *ngIf="!profileCompleteness.isProfileComplete" class="ProfilePage-completion">
-        <ion-row justify-content-center>Profile completed {{ profileCompleteness.completenessPercent }}%</ion-row>
+        <ion-row justify-content-center>Profile completion {{ profileCompleteness.completenessPercent }}%</ion-row>
         <ion-row justify-content-center>
           <div class="ProfilePage-completionBar"><span [style.width]="profileCompleteness.completenessPercent + '%'"></span></div>
         </ion-row>
