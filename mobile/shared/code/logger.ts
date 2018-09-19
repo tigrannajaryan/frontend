@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
 
-import { ENV } from '~/environments/environment.default';
-
 const noop = (): any => undefined;
 
 /**
@@ -12,12 +10,9 @@ const noop = (): any => undefined;
 export class Logger {
 
   private static invokeConsoleMethod(type: string, ...args: any[]): void {
-    // Don't log in production
-    if (!ENV.production) {
-      // tslint:disable-next-line:no-console
-      const logFn: Function = (console)[type] || console.log || noop;
-      logFn.apply(console, ...args);
-    }
+    // tslint:disable-next-line:no-console
+    const logFn: Function = (console)[type] || console.log || noop;
+    logFn.apply(console, ...args);
   }
 
   info(...args: any[]): void {
