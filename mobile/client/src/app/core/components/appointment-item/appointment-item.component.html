@@ -1,21 +1,18 @@
-<div class="AppCard-Header">
-  <!-- date of the appointment -->
-  <div class="AppCard-HeaderVisitDate">{{ appointment.datetime_start_at | date: 'E, LLLL d' }}</div>
+<!-- TODO: replace preferred check with a popup: Would you like to add this stylist to the preferred ones? -->
+<div *ngIf="hasRebook" (click)="onRebookClick()" class="AppCard-Header">Re-book appointment</div>
 
-  <!-- rebooking link -->
-  <!-- TODO: replace preferred check with a popup: Would you like to add this stylist to the preferred ones? -->
-  <div *ngIf="hasRebook" (click)="onRebookClick()" class="AppCard-HeaderLink">Re-book appointment</div>
-</div>
 <!-- the card -->
-<div (click)="onCardClick()" class="SharedCard">
+<div (click)="onCardClick()" class="SharedCard AppCard">
   <ion-grid no-padding class='AppCard-Grid'>
     <ion-row>
-      <ion-col>
+      <ion-col col-9>
         <!-- time of the appointment -->
-        <span>{{ formatTimeInZone(appointment.datetime_start_at) }}</span>
+        {{ formatTimeInZone(appointment.datetime_start_at) }}
 
+        <!-- date of the appointment -->
+        <span class="AppCard-VisitDate">{{ appointment.datetime_start_at | date: 'E, LLLL d' }}</span>
       </ion-col>
-      <ion-col class="AppCard-GridPrice" >
+      <ion-col col-3 class="AppCard-GridPrice">
         <!-- show price -->
         {{ appointment.total_client_price_before_tax | price }}
       </ion-col>

@@ -22,9 +22,7 @@
 
 
   <div class="AppointmentItem-desc">
-      <span *ngFor="let service of appointment.services" [hidden]="!service.is_original">
-        {{ service.service_name }}
-      </span>
+      <span>{{ getServices() }}</span>
   </div>
 
   <div class="AppointmentItem-name">

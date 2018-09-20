@@ -76,11 +76,36 @@ appointment-item {
   }
 
   .AppointmentItem-desc {
-    margin: pxtovw(2px) 0 pxtovw(7px);
-    font-size: pxtovw(21px);
-    font-weight: 700;
+    margin: pxtovw(2px) 0 pxtovw(9px);
     text-align: left;
-    letter-spacing: pxtovw(-0.2px);
+  }
+
+  .AppointmentItem-desc span {
+    position: relative;
+    display: block;
+    max-height: pxtovw(44px);
+    padding-right: 1em;
+    overflow: hidden;
+    font-size: pxtovw(21px);
+    line-height: pxtovw(22px);
+    letter-spacing: pxtovw(0.35px);
+
+    &:before {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      content: '...';
+    }
+
+    &:after {
+      position: absolute;
+      right: 0;
+      width: 1em;
+      height: 1em;
+      margin-top: 0.2em;
+      content: '';
+      background: white;
+    }
   }
 
   .AppointmentItem-name {

@@ -10,4 +10,8 @@ export class AppointmentItemComponent {
   @Input() appointment: Appointment;
   @Input() appointmentTag?: string;
   @Input() hasDate?: boolean;
+
+  getServices(): string {
+    return this.appointment.services.map(s => s.is_original ? s.service_name : '').join(', ');
+  }
 }
