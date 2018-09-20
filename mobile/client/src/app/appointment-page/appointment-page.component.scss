@@ -1,6 +1,11 @@
 .AppointmentPage {
   .AppointmentPage-padding {
     padding-top: pxtovw(11px);
+
+    // Fix bottom offset:
+    .ios & {
+      margin-bottom: pxtovw(48px);
+    }
   }
 
   .AppointmentPage-cardGrid {
