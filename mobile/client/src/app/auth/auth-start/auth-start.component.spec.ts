@@ -27,7 +27,7 @@ const components = [AuthPageComponent];
 const providers = [];
 const imports = [SharedSingletonsModule, CoreModule];
 
-fdescribe('Pages: Auth Phone', () => {
+describe('Pages: Auth Phone', () => {
   beforeEach(
     async(() =>
       TestUtils.beforeEachCompiler(components, providers, imports)
