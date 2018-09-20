@@ -8,7 +8,7 @@ export interface StylistModel extends StylistUuidModel {
   salon_name: string;
   salon_address: string;
   phone: string;
-  instagram_profile_name: string;
+  instagram_url?: string;
   profile_photo_url?: string;
 }
 

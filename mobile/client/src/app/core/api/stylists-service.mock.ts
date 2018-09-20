@@ -22,7 +22,7 @@ export class StylistsServiceMock extends BaseServiceMock {
               salon_name: faker.commerce.productName(),
               salon_address: faker.address.streetAddress(),
               phone: `+1347${(Math.random() * Math.pow(10, 7)).toFixed()}`,
-              instagram_profile_name: faker.helpers.slugify(`${name}${lastName}`)
+              instagram_url: faker.helpers.slugify(`${name}${lastName}`)
             };
           })
         });
