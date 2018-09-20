@@ -14,14 +14,14 @@
       <form (ngSubmit)="submit()">
         <ion-row class="AuthPage-phoneInputGroup" justify-content-center>
           <ion-item class="FormControl AuthPage-countryCodeControl">
-            <ion-select [formControl]="countryCode" (ionChange)="countrySelected()" [selectedText]="getPhoneCode()">
+            <ion-select [formControl]="countryCode" (ionChange)="countrySelected()" [selectedText]="getPhoneCode()" data-test-id="countrySelect">
               <ion-option *ngFor="let country of countries" [value]="country.alpha2">
                 {{ country.name }} {{ country.countryCallingCodes[0] }}
               </ion-option>
             </ion-select>
           </ion-item>
           <ion-item class="FormControl AuthPage-phoneControl">
-            <ion-input madePhoneInput type="tel" [countryCode]="countryCode.value" [formControl]="phone"></ion-input>
+            <ion-input madePhoneInput type="tel" [countryCode]="countryCode.value" [formControl]="phone" data-test-id="phoneInput"></ion-input>
           </ion-item>
         </ion-row>
       </form>
