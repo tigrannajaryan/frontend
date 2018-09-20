@@ -10,6 +10,15 @@ import 'zone.js/dist/jasmine-patch';
 import 'zone.js/dist/async-test';
 import 'zone.js/dist/fake-async-test';
 
+import 'rxjs/add/operator/catch';
+import 'rxjs/add/operator/delay';
+import 'rxjs/add/operator/filter';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/share';
+import 'rxjs/add/operator/switchMap';
+import 'rxjs/add/operator/toPromise';
+import 'rxjs/add/operator/withLatestFrom';
+
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { getTestBed, TestBed } from '@angular/core/testing';
 
@@ -18,12 +27,15 @@ import {
   platformBrowserDynamicTesting
 } from '@angular/platform-browser-dynamic/testing';
 
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+
 import {
   AlertController,
   App,
   Config,
   DeepLinker,
   DomController,
+  Events,
   Form,
   GestureController,
   IonicModule,
@@ -35,7 +47,38 @@ import {
   Platform
 } from 'ionic-angular';
 
-import { AlertControllerMock, ConfigMock, LoadingControllerMock, PlatformMock } from 'ionic-mocks';
+import { StatusBar } from '@ionic-native/status-bar';
+
+import {
+  AlertControllerMock,
+  ConfigMock,
+  EventsMock,
+  LoadingControllerMock,
+  NavControllerMock,
+  PlatformMock,
+  StatusBarMock
+} from 'ionic-mocks';
+
+// ngrx
+import { META_REDUCERS, StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import { Logger } from '~/shared/logger';
+import { getMetaReducers } from '~/app.reducers';
+
+import { AppModule } from '~/app.module';
+
+import { AuthService } from '~/auth/auth.api';
+import { AuthServiceMock } from '~/auth/auth.api.mock';
+
+import { authPath, authReducer } from '~/auth/auth.reducer';
+import { profilePath, profileReducer } from '~/core/reducers/profile.reducer';
+import { stylistsPath, stylistsReducer } from '~/core/reducers/stylists.reducer';
+import { servicesPath, servicesReducer } from '~/core/reducers/services.reducer';
+
+import { LogoutEffects } from '~/core/effects/logout.effects';
+import { AuthEffects } from '~/auth/auth.effects';
+import { ServicesEffects } from '~/core/effects/services.effects';
+import { StylistsEffects } from '~/core/effects/stylists.effects';
 
 declare const require: any;
 
@@ -53,11 +96,14 @@ context.keys()
 
 export class TestUtils {
 
-  static beforeEachCompiler(components: any[]): Promise<{ fixture: any, instance: any }> {
-    return TestUtils.configureIonicTestingModule(components)
+  static beforeEachCompiler(components: any[], providers: any[] = [], imports: any = []): Promise<{ fixture: any, instance: any }> {
+    return TestUtils.configureIonicTestingModule(components, providers, imports)
       .compileComponents()
       .then(() => {
         const fixture: any = TestBed.createComponent(components[0]);
+
+        // Needed to use AppModule.injector.get(…):
+        AppModule.injector = fixture.debugElement.injector;
 
         return {
           fixture,
@@ -66,24 +112,50 @@ export class TestUtils {
       });
   }
 
-  static configureIonicTestingModule(components: any[]): typeof TestBed {
+  static configureIonicTestingModule(components: any[], providers: any[] = [], imports: any = []): typeof TestBed {
     return TestBed.configureTestingModule({
       declarations: [
         ...components
       ],
       providers: [
-        App, Form, Keyboard, DomController, MenuController, NavController,
+        App, Form, Keyboard, DomController, Logger, MenuController, NavController,
         NavParams, GestureController, AlertControllerMock, LoadingControllerMock,
-        { provide: Platform, useFactory: () => PlatformMock.instance() },
+        { provide: AlertController, useFactory: () => AlertControllerMock.instance() },
         { provide: Config, useFactory: () => ConfigMock.instance() },
         { provide: DeepLinker, useFactory: () => ConfigMock.instance() },
-        { provide: AlertController, useFactory: () => AlertControllerMock.instance() },
-        { provide: LoadingController, useFactory: () => LoadingControllerMock.instance() }
+        { provide: Events, useFactory: () => EventsMock.instance() },
+        { provide: LoadingController, useFactory: () => LoadingControllerMock.instance() },
+        { provide: NavController, useFactory: () => NavControllerMock.instance() },
+        { provide: Platform, useFactory: () => PlatformMock.instance() },
+        { provide: StatusBar, useFactory: () => StatusBarMock.instance() },
+        {
+          // This allows us to inject Logger into getMetaReducers()
+          provide: META_REDUCERS,
+          deps: [ Logger ],
+          useFactory: getMetaReducers
+        },
+        // API
+        { provide: AuthService, useClass: AuthServiceMock },
+        ...providers
       ],
       imports: [
         FormsModule,
         IonicModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        HttpClientTestingModule,
+        StoreModule.forRoot({}),
+        StoreModule.forFeature(authPath, authReducer),
+        StoreModule.forFeature(profilePath, profileReducer),
+        StoreModule.forFeature(stylistsPath, stylistsReducer),
+        StoreModule.forFeature(servicesPath, servicesReducer),
+        EffectsModule.forRoot([]),
+        EffectsModule.forFeature([
+          LogoutEffects,
+          AuthEffects
+          // ServicesEffects,
+          // StylistsEffects
+        ]),
+        ...imports
       ]
     });
   }
