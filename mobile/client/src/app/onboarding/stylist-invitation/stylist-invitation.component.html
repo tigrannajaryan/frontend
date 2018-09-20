@@ -28,8 +28,9 @@
   <ion-row align-items-center *ngIf="stylist.phone" justify-content-center class="StylistInvitationPage-phone">
     <i class="mb-icon-phone-a"></i>&nbsp;{{ stylist.phone | formatPhone }}
   </ion-row>
-  <ion-row align-items-center *ngIf="stylist.instagram_profile_name" justify-content-center class="StylistInvitationPage-phone">
-    <i class="mb-icon-instagram"></i>&nbsp;{{ stylist.instagram_profile_name }}
+
+  <ion-row align-items-center *ngIf="stylist.instagram_url" justify-content-center class="StylistInvitationPage-phone">
+    <i class="mb-icon-instagram"></i>&nbsp;{{ stylist.instagram_url }}
   </ion-row>
 
   <!-- Fix unnecessary space issue on invitation screen: -->
