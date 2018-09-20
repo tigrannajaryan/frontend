@@ -30,7 +30,7 @@ function getMobileOperatingSystem() {
 window.onload = function() {
     var mobileOs = getMobileOperatingSystem();
     if (mobileOs=="Android") {
-        window.location.replace("https://play.google.com/store/apps/details?id=com.madebeauty.client.production.android");
+        window.location.replace("https://play.google.com/store/apps/details?id=com.madebeauty.client.prod");
     } else if (mobileOs=="iOS") {
         window.location.replace("https://itunes.apple.com/us/app/madebeauty/id1410170290");
     }
