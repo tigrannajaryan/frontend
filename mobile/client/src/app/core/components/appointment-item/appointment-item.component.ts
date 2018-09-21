@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { AppointmentModel, AppointmentStatus } from '~/core/api/appointments.models';
+import { AppointmentModel } from '~/core/api/appointments.models';
 import { formatTimeInZone } from '~/shared/utils/string-utils';
 import { confirmRebook } from '~/booking/booking-utils';
 
@@ -11,8 +11,6 @@ import { confirmRebook } from '~/booking/booking-utils';
   templateUrl: 'appointment-item.component.html'
 })
 export class AppointmentItemComponent {
-
-  AppointmentStatus = AppointmentStatus;
   formatTimeInZone = formatTimeInZone;
 
   @Input() appointment: AppointmentModel;

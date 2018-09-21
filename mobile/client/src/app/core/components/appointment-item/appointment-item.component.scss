@@ -1,25 +1,24 @@
+.AppCard {
+  margin: 0 0 pxtovw(22px);
+}
+
 .AppCard-Header {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  margin: pxtovw(20px) 0 pxtovw(6px);
-
-  .AppCard-HeaderVisitDate {
-    align-self: flex-start;
-    font-size: $t-small;
-    color: color($grayscale, 500);
-  }
-
-  .AppCard-HeaderLink {
-    font-size: pxtovw(15px);
-    color: color($colors, orange);
-  }
+  margin: 0 pxtovw(3px) pxtovw(4px);
+  font-size: pxtovw(17px);
+  color: color($colors, orange);
+  text-align: right;
 }
 
 .AppCard-Grid {
   width: 100%;
   font-size: $t-h4;
   font-weight: 600;
+
+  .AppCard-VisitDate {
+    margin: 0 0 0 6px;
+    font-size: $t-small;
+    color: color($grayscale, 500);
+  }
 
   .AppCard-GridStylistDetails {
     margin: 0;
@@ -56,11 +55,12 @@
   .AppCard-GridServiceName span {  // inspired by https://codepen.io/natonischuk/pen/KpNKQZ?editors=1100
     position: relative;
     max-height: 2.4em;
-    margin: pxtovw(2px) 0 pxtovw(4px) 0;
     padding-right: 1em;
+    margin: pxtovw(2px) 0 0 0;
     overflow: hidden;
     font-size: $t-h3;
     line-height: 1.2em;
+    letter-spacing: pxtovw(0.35px);
 
     &:before {
       position: absolute;
