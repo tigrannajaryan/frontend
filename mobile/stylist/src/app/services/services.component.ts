@@ -5,7 +5,7 @@ import { SafeStyle } from '@angular/platform-browser/src/security/dom_sanitizati
 
 import { StylistServiceProvider } from '~/shared/stylist-api/stylist-service';
 import { ServiceTemplateSetBase } from '~/shared/stylist-api/stylist-models';
-import { loading } from '~/core/utils/loading';
+import { loading } from '~/shared/utils/loading';
 import { PageNames } from '~/core/page-names';
 
 export enum ServiceListType {
@@ -25,6 +25,7 @@ export class ServicesComponent {
   protected serviceTemplateSets: ServiceTemplateSetBase[];
   protected whiteImage: SafeStyle;
   protected blackImage: SafeStyle;
+  isLoading = false;
 
   constructor(
     public navCtrl: NavController,
@@ -36,9 +37,8 @@ export class ServicesComponent {
     this.blackImage = this.sanitizer.bypassSecurityTrustStyle('url(assets/imgs/services/black.png)');
   }
 
-  @loading
   async ionViewWillLoad(): Promise<void> {
-    this.serviceTemplateSets = (await this.stylistService.getServiceTemplateSetsList()).service_template_sets;
+    this.serviceTemplateSets = (await loading(this, this.stylistService.getServiceTemplateSetsList())).service_template_sets;
   }
 
   openService(serviceItem?: ServiceTemplateSetBase): void {

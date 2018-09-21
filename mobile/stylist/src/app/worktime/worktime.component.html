@@ -7,6 +7,12 @@
 
   <div class="Made-wp Made-wpContent">
     <div class="Made-h1">Worktime</div>
+
+    <!-- Show spinner if loading is in progress -->
+    <div class="Spinner">
+      <ion-spinner *ngIf="isLoading"></ion-spinner>
+    </div>
+
     <div class="Made-text">
       <div class="Made-textItem">
         Tap to block days you don't work and adjust your work hours.
@@ -16,7 +22,7 @@
 
 
     <!--shifts block start -->
-    <div *ngFor="let card of cards; let index = index" class="Workingtime">
+    <div *ngFor="let card of cards; let index = index" class="Workingtime" [attr.data-test-id]="index">
       <button *ngIf="cards.length > 1" (click)="deleteCard(index)" ion-button clear class="Workingtime-delete">
         <ion-icon name="ios-trash-outline"></ion-icon>
       </button>
@@ -38,8 +44,11 @@
 
 
       <div class="Workingtime-days">
-        <div *ngFor="let day of card.weekdays" [class.is-available]="day.enabled" class="Workingtime-daysItem">
-          <span (click)="toggleWeekday(day)">{{ day.label }}</span>
+        <div
+          *ngFor="let day of card.weekdays; let index = index"
+          [class.is-available]="day.enabled" class="Workingtime-daysItem"
+          [attr.data-test-id]="'weekDayBox'+index">
+          <span (click)="toggleWeekday(day)" [attr.data-test-id]="'weekDayLabel'+index">{{ day.label }}</span>
         </div>
       </div>
     </div>

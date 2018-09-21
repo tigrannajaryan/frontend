@@ -1,8 +1,8 @@
 import { browser } from 'protractor';
 
 import { globals, waitFor } from './shared-e2e/utils';
-import { firstPage } from './first-page';
-import { logregPage } from './logreg-page';
+import { firstPage } from './pages/first-page';
+import { logregPage } from './pages/logreg-page';
 
 describe('Login Page', () => {
 

@@ -1,5 +1,5 @@
 import * as moment from 'moment';
-import { Component, ViewChild } from '@angular/core';
+import { Component, NgZone, ViewChild } from '@angular/core';
 import {
   ActionSheetController,
   AlertController, Content,
@@ -87,6 +87,7 @@ export class HomeComponent {
     public navParams: NavParams,
     public homeService: HomeService,
     public alertCtrl: AlertController,
+    private ngZone: NgZone,
     private store: Store<ProfileState>,
     private actionSheetCtrl: ActionSheetController,
     private appStorage: AppStorage,
@@ -125,7 +126,17 @@ export class HomeComponent {
 
     // Autorefresh the view once per hour. This is a temporary solution until
     // we implement push notifications.
-    this.autoRefreshTimer = setInterval(() => this.autoRefresh(), 1000 * 3600);
+    // We must run this repetitive action outside Angular Zone otherwise
+    // Protractor thinks that Angular is always busy, which results in Protractor
+    // waiting infinitely for Angular and tests timing out.
+    this.ngZone.runOutsideAngular(() => {
+      this.autoRefreshTimer = setInterval(() => {
+        this.ngZone.run(() => {
+          this.autoRefresh();
+        });
+      },
+      1000 * 3600);
+    });
   }
 
   ionViewWillLeave(): void {

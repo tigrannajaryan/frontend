@@ -3,10 +3,11 @@ import { AlertController, Events, IonicPage, NavController } from 'ionic-angular
 import * as moment from 'moment';
 
 import { Logger } from '~/shared/logger';
+import { loading } from '~/shared/utils/loading';
+
 import { PageNames } from '~/core/page-names';
 import { DayOffer, ISODate } from '~/core/api/services.models';
 import { BookingData } from '~/core/api/booking.data';
-import { loading } from '~/core/utils/loading';
 import { componentIsActive } from '~/core/utils/component-is-active';
 
 import { EventTypes } from '~/core/event-types';

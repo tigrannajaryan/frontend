@@ -3,7 +3,8 @@ import { App, IonicPage, Refresher } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
 
 import { Logger } from '~/shared/logger';
-import { loading } from '~/core/utils/loading';
+import { loading } from '~/shared/utils/loading';
+
 import { AppointmentModel, AppointmentsHistoryResponse } from '~/core/api/appointments.models';
 import { ApiResponse } from '~/core/api/base.models';
 import { AppointmentsDataStore } from '~/core/api/appointments.datastore';

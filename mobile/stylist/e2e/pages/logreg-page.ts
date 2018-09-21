@@ -1,4 +1,5 @@
 import { $ } from 'protractor';
+import { click } from '../shared-e2e/utils';
 
 /**
  * LoginRegister page definition
@@ -11,20 +12,20 @@ class LogregPage {
   get registerBtn() { return $('page-logreg [data-test-id=registerBtn]'); }
 
   // Operations
-  login(email, password) {
-    this.emailInput.sendKeys(email);
-    this.passwordInput.sendKeys(password);
-    return this.loginBtn.click();
+  async login(email, password) {
+    await this.emailInput.sendKeys(email);
+    await this.passwordInput.sendKeys(password);
+    await click(this.loginBtn);
   }
 
-  register(email, password) {
-    this.emailInput.sendKeys(email);
-    this.passwordInput.sendKeys(password);
-    return this.registerBtn.click();
+  async register(email, password) {
+    await this.emailInput.sendKeys(email);
+    await this.passwordInput.sendKeys(password);
+    await click(this.registerBtn);
   }
 
   reRegister() {
-    return this.registerBtn.click();
+    return click(this.registerBtn);
   }
 }
 

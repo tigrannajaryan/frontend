@@ -11,10 +11,16 @@
       <div class="Made-textItem">We’ve created two pre-populated lists of services for you to help speed things up! You’ll be able to customize it next.</div>
     </div>
 
+    <!-- Show spinner if loading is in progress -->
+    <div class="Spinner">
+      <ion-spinner *ngIf="isLoading"></ion-spinner>
+    </div>
+
     <div class="Services-itemBox">
-      <div *ngFor="let item of serviceTemplateSets; let odd = odd"
+      <div *ngFor="let item of serviceTemplateSets; let odd = odd; let index = index"
            (click)="openService(item)"
-           class="Services-item">
+           class="Services-item"
+           [attr.data-test-id]="'serviceList'+index">
         <div class="Services-itemImg">
           <img *ngIf="!odd" src="assets/imgs/icons/serviceA.png" alt="">
           <img *ngIf="odd" src="assets/imgs/icons/serviceB.png" alt="">
@@ -24,9 +30,9 @@
           <div class="Services-itemTextLeft">
             <div class="Services-itemTextTitle">
               List of services:
-              <p>{{ item.name }}</p>
+              <p data-test-id="listName">{{ item.name }}</p>
             </div>
-            <div class="Services-itemTextNum">{{ item.services_count }} Services</div>
+            <div class="Services-itemTextNum" data-test-id="serviceCount">{{ item.services_count }} Services</div>
           </div>
 
           <button ion-button class="Services-itemTextBtn">select</button>

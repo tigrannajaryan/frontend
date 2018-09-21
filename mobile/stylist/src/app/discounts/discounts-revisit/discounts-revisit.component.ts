@@ -3,8 +3,8 @@ import { IonicPage, NavController } from 'ionic-angular';
 
 import { Discounts, WeekdayDiscount } from '~/shared/stylist-api/discounts.models';
 import { DiscountsApi } from '~/shared/stylist-api/discounts.api';
+import { loading } from '~/shared/utils/loading';
 import { PageNames } from '~/core/page-names';
-import { loading } from '~/core/utils/loading';
 
 enum RebookWeek {
   num = 2,
@@ -21,6 +21,7 @@ enum RebookWeek {
 export class DiscountsRevisitComponent {
   protected PageNames = PageNames;
   protected discounts: WeekdayDiscount[];
+  isLoading = false;
 
   static transformRebookToDiscounts(discounts: Discounts): WeekdayDiscount[] {
     return Object.keys(discounts)
@@ -51,9 +52,8 @@ export class DiscountsRevisitComponent {
     this.loadInitialData();
   }
 
-  @loading
   async loadInitialData(): Promise<void> {
-    const discounts = await this.discountsApi.getDiscounts() as Discounts;
+    const discounts: Discounts = await loading(this, this.discountsApi.getDiscounts());
     this.discounts = DiscountsRevisitComponent.transformRebookToDiscounts(discounts);
   }
 

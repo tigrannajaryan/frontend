@@ -1,7 +1,7 @@
 <ion-header class="madeBackHeader">
   <ion-navbar [class.is-hiddenBackButton]="isMainScreen" class="Made-wp BackHeader-backBtn">
     <ion-buttons [hidden]="isMainScreen" end>
-      <button ion-button icon-only (click)="onSkip()">
+      <button ion-button icon-only (click)="onSkip()" data-test-id="skipBtn">
         <span class="skip-link">Skip</span>
       </button>
     </ion-buttons>
