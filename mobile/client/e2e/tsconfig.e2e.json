@@ -2,13 +2,17 @@
   "extends": "../tsconfig.ng-cli.json",
   "compilerOptions": {
     "outDir": "../out-tsc/e2e",
-    "baseUrl": "./",
+    "baseUrl": ".",
     "module": "commonjs",
     "target": "es5",
     "types": [
       "jasmine",
       "jasminewd2",
       "node"
-    ]
+    ],
+    "paths": {
+      "~/environments/*": ["environments/*"],
+      "~/shared/*": ["shared-app/*"]
+    }
   }
 }

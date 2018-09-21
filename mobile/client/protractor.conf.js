@@ -1,3 +1,5 @@
+const tsConfig = require("./e2e/tsconfig.e2e.json");
+
 exports.config = {
   allScriptsTimeout: 11000,
   specs: [
@@ -24,6 +26,13 @@ exports.config = {
   beforeLaunch: function () {
     require('ts-node').register({
       project: 'e2e/tsconfig.e2e.json'
+    });
+    // Use tsconfig-paths to ensure "paths" property is applied.
+    // We need it to make aliasing for ~/ paths.
+    require("tsconfig-paths").register({
+      project: 'e2e/tsconfig.e2e.json',
+      baseUrl: 'e2e/',
+      paths: tsConfig.compilerOptions.paths
     });
 
     require('connect')().use(require('serve-static')('www')).listen(4201);

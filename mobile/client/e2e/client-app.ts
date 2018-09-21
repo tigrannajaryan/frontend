@@ -1,6 +1,6 @@
 import { browser } from 'protractor';
 
-import { clearIonicStorage } from './shared/utils';
+import { clearIonicStorage } from './shared-e2e/utils';
 
 /**
  * ClientApp definition

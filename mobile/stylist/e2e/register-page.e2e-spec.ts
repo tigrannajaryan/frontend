@@ -1,6 +1,6 @@
 import { browser } from 'protractor';
 
-import { getRandomString, globals, waitFor } from './shared/utils';
+import { getRandomString, globals, waitFor } from './shared-e2e/utils';
 import { firstPage } from './first-page';
 import { logregPage } from './logreg-page';
 import { profilePage } from './profile-page';
