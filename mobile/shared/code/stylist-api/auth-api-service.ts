@@ -3,35 +3,10 @@ import { HttpClient } from '@angular/common/http';
 import 'rxjs/add/operator/toPromise';
 
 import { BaseApiService } from './base-api-service';
-import { StylistProfile } from './stylist-models';
 import { Logger } from '~/shared/logger';
 import { ServerStatusTracker } from '~/shared/server-status-tracker';
 import { UserContext } from '~/shared/user-context';
-
-export enum UserRole { stylist = 'stylist', client = 'client' }
-
-export interface AuthCredentials {
-  email: string;
-  password: string;
-  role: UserRole;
-}
-
-export interface ProfileStatus {
-  has_personal_data: boolean;
-  has_picture_set: boolean;
-  has_services_set: boolean;
-  has_business_hours_set: boolean;
-  has_weekday_discounts_set: boolean;
-  has_other_discounts_set: boolean;
-  has_invited_clients: boolean;
-}
-
-export interface AuthResponse {
-  token: string;
-  role: UserRole;
-  profile?: StylistProfile;
-  profile_status?: ProfileStatus;
-}
+import { AuthCredentials, AuthResponse } from './auth-api-models';
 
 export interface AuthError {
   non_field_errors?: string[];
@@ -131,8 +106,8 @@ export class AuthApiService extends BaseApiService {
   private setAuthResponse(response: AuthResponse): void {
     this.authToken = response ? response.token : undefined;
 
-    if (response && response.profile && response.profile.id) {
-      this.appContext.setUserId(response.profile.id.toString());
+    if (response && response.profile && response.profile.uuid) {
+      this.appContext.setUserId(response.profile.uuid.toString());
     } else {
       this.appContext.setUserId(undefined);
     }

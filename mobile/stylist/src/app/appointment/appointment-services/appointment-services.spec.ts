@@ -25,9 +25,11 @@ const fakeCategory = {
   name: faker.commerce.productMaterial(),
   services: Array(5).fill(undefined).map(() => ({
     uuid: faker.random.uuid(),
+    category_uuid: faker.random.uuid(),
+    category_name: faker.lorem.word(),
     name: faker.commerce.productName(),
     description: faker.lorem.sentence(),
-    base_price: faker.commerce.price(),
+    base_price: parseInt(faker.commerce.price(), 10),
     duration_minutes: faker.random.number(),
     is_enabled: true,
     photo_samples: []

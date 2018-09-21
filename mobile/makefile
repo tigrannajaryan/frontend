@@ -66,11 +66,14 @@ endif
 $(INSTALLDIR)/src/app/shared:
 	$(call SYMLINK,..$(PATHSEP)..$(PATHSEP)..$(PATHSEP)shared$(PATHSEP)code,$@)
 
-$(INSTALLDIR)/e2e/shared:
+$(INSTALLDIR)/e2e/shared-e2e:
 	$(call SYMLINK,..$(PATHSEP)..$(PATHSEP)shared$(PATHSEP)e2e,$@)
 
+$(INSTALLDIR)/e2e/shared-app:
+	$(call SYMLINK,..$(PATHSEP)..$(PATHSEP)shared$(PATHSEP)code,$@)
 
-preinstall-dir: $(INSTALLDIR)/src/app/shared $(INSTALLDIR)/e2e/shared
+
+preinstall-dir: $(INSTALLDIR)/src/app/shared $(INSTALLDIR)/e2e/shared-e2e $(INSTALLDIR)/e2e/shared-app
 	$(L)echo Installing $(INSTALLDIR) prerequisites...
 	$(L)cd $(INSTALLDIR) && npm i --silent --no-save
 	$(L)echo Installed $(INSTALLDIR) prerequisites.
@@ -83,6 +86,7 @@ preinstall-assets:
 
 
 build-apps: build-client build-stylist
+	$(L)echo All builds and tests completed successfully!
 
 
 preinstall-client:
@@ -142,7 +146,7 @@ npm-test-dir-unit:
 
 npm-test-dir-e2e:
 	$(L)echo E2E testing $(BUILDDIR)...
-	$(L)$(BUILDDIR)$(PATHSEP)e2e$(PATHSEP)shared$(PATHSEP)rune2e
+	$(L)$(BUILDDIR)$(PATHSEP)e2e$(PATHSEP)shared-e2e$(PATHSEP)rune2e
 	$(L)echo E2E testing $(BUILDDIR) finished.
 
 

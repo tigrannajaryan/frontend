@@ -44,6 +44,10 @@ export function getRandomNumber(length: number): string {
   return str;
 }
 
+export function getRandomEmail(): string {
+  return `test-${getRandomString(20)}@madebeauty.com`;
+}
+
 /**
  * Clear Ionic storage, forcing the session information and everything stored locally to be forgotten.
  * Can be used to start a fresh login session.

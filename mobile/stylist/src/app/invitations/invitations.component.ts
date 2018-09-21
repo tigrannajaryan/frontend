@@ -17,8 +17,8 @@ import { Discounts } from '~/shared/stylist-api/discounts.models';
 import { DiscountsApi } from '~/shared/stylist-api/discounts.api';
 import { StylistServiceProvider } from '~/shared/stylist-api/stylist-service';
 import { StylistProfile } from '~/shared/stylist-api/stylist-models';
-import { ClientInvitation, InvitationStatus } from '~/shared/stylist-api/invitations.models';
-import { InvitationsApi, InvitationsResponse } from '~/shared/stylist-api/invitations.api';
+import { ClientInvitation, InvitationsResponse, InvitationStatus } from '~/shared/stylist-api/invitations.models';
+import { InvitationsApi } from '~/shared/stylist-api/invitations.api';
 
 import { PageNames } from '~/core/page-names';
 import { trimStr } from '~/core/functions';
@@ -637,7 +637,7 @@ export class InvitationsComponent {
       this.updateSelectedContacts();
 
       // Let our backend know that the message was sent
-      await this.invitationsApi.sendInvitations([invitation]);
+      await this.invitationsApi.createInvitations([invitation]);
     }
 
     const alert = this.alertCtrl.create({
@@ -659,7 +659,7 @@ export class InvitationsComponent {
     // Send empty invitations list to backend to make sure the profile's
     // has_invited_clients is marked true and we do not bother the user
     // again during next login.
-    this.invitationsApi.sendInvitations([]);
+    this.invitationsApi.createInvitations([]);
   }
 
   /**
