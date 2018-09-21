@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
-import { AuthApiService, AuthCredentials, UserRole } from '~/shared/stylist-api/auth-api-service';
+import { AuthApiService } from '~/shared/stylist-api/auth-api-service';
+import { AuthCredentials, UserRole } from '~/shared/stylist-api/auth-api-models';
 import { loading } from '~/core/utils/loading';
 import { createNavHistoryList } from '~/core/functions';
 import { PageNames } from '~/core/page-names';

@@ -13,3 +13,7 @@ export interface ClientInvitation {
   phone: string;
   status?: InvitationStatus;
 }
+
+export interface InvitationsResponse {
+  invitations: ClientInvitation[];
+}
