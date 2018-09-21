@@ -77,8 +77,6 @@ import { servicesPath, servicesReducer } from '~/core/reducers/services.reducer'
 
 import { LogoutEffects } from '~/core/effects/logout.effects';
 import { AuthEffects } from '~/auth/auth.effects';
-import { ServicesEffects } from '~/core/effects/services.effects';
-import { StylistsEffects } from '~/core/effects/stylists.effects';
 
 declare const require: any;
 
@@ -152,8 +150,6 @@ export class TestUtils {
         EffectsModule.forFeature([
           LogoutEffects,
           AuthEffects
-          // ServicesEffects,
-          // StylistsEffects
         ]),
         ...imports
       ]
