@@ -3,9 +3,6 @@ import { NavController } from 'ionic-angular';
 
 import { TestUtils } from '~/../test';
 
-import { SharedSingletonsModule } from '~/shared/shared-singletons.module';
-import { CoreModule } from '~/core/core.module';
-
 import { PageNames } from '~/core/page-names';
 
 import { AuthEffects } from '~/auth/auth.effects';
@@ -23,14 +20,12 @@ const testPhone = `347${Math.random().toString().slice(2, 9)}`;
 let fixture: ComponentFixture<AuthPageComponent>;
 let instance: AuthPageComponent;
 
-const components = [AuthPageComponent];
-const providers = [];
-const imports = [SharedSingletonsModule, CoreModule];
+let textContent: string;
 
 describe('Pages: Auth Phone', () => {
   beforeEach(
     async(() =>
-      TestUtils.beforeEachCompiler(components, providers, imports)
+      TestUtils.beforeEachCompiler([AuthPageComponent])
         .then(compiled => {
           // Common setup:
           fixture = compiled.fixture;
@@ -40,6 +35,8 @@ describe('Pages: Auth Phone', () => {
           // Current spec setup:
           instance.countries = countriesMock;
           fixture.detectChanges();
+
+          textContent = fixture.nativeElement.textContent.replace(/\u00a0/g, ' '); // without &nbsp;
         })
     )
   );
@@ -50,13 +47,13 @@ describe('Pages: Auth Phone', () => {
   });
 
   it('should contain proper texts', () => {
-    expect(fixture.nativeElement.textContent)
+    expect(textContent)
       .toContain('Phone number');
 
-    expect(fixture.nativeElement.textContent)
-      .toContain('Enter your phone number to get a code');
+    expect(textContent)
+      .toContain('Enter your phone number to get a code');
 
-    expect(fixture.nativeElement.textContent)
+    expect(textContent)
       .toContain('Continue');
   });
 
