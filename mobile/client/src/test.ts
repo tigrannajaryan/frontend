@@ -16,6 +16,7 @@ import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/switchMap';
+import 'rxjs/add/operator/takeWhile';
 import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/operator/withLatestFrom';
 
@@ -48,6 +49,7 @@ import {
 } from 'ionic-angular';
 
 import { StatusBar } from '@ionic-native/status-bar';
+import { Storage } from '@ionic/storage';
 
 import {
   AlertControllerMock,
@@ -56,8 +58,12 @@ import {
   LoadingControllerMock,
   NavControllerMock,
   PlatformMock,
-  StatusBarMock
+  StatusBarMock,
+  StorageMock
 } from 'ionic-mocks';
+
+import { SharedSingletonsModule } from '~/shared/shared-singletons.module';
+import { CoreModule } from '~/core/core.module';
 
 // ngrx
 import { META_REDUCERS, StoreModule } from '@ngrx/store';
@@ -67,8 +73,18 @@ import { getMetaReducers } from '~/app.reducers';
 
 import { AppModule } from '~/app.module';
 
+import { AppointmentsApi } from '~/core/api/appointments.api';
+import { AppointmentsApiMock } from '~/core/api/appointments.api.mock';
 import { AuthService } from '~/auth/auth.api';
 import { AuthServiceMock } from '~/auth/auth.api.mock';
+import { BookingApi } from '~/core/api/booking.api';
+import { BookingApiMock } from '~/core/api/booking.api.mock';
+import { ServicesService } from '~/core/api/services-service';
+import { ServicesServiceMock } from '~/core/api/services-service.mock';
+import { StylistsService } from '~/core/api/stylists-service';
+import { StylistsServiceMock } from '~/core/api/stylists-service.mock';
+import { ProfileApi } from '~/core/api/profile-api';
+import { ProfileApiMock } from '~/core/api/profile-api.mock';
 
 import { authPath, authReducer } from '~/auth/auth.reducer';
 import { profilePath, profileReducer } from '~/core/reducers/profile.reducer';
@@ -77,6 +93,11 @@ import { servicesPath, servicesReducer } from '~/core/reducers/services.reducer'
 
 import { LogoutEffects } from '~/core/effects/logout.effects';
 import { AuthEffects } from '~/auth/auth.effects';
+
+import { AuthProcessState } from '~/auth/auth-process-state';
+import { AuthProcessStateMock } from '~/auth/auth-process-state.mock';
+
+import { DataModule } from '~/core/api/data.module';
 
 declare const require: any;
 
@@ -126,14 +147,21 @@ export class TestUtils {
         { provide: NavController, useFactory: () => NavControllerMock.instance() },
         { provide: Platform, useFactory: () => PlatformMock.instance() },
         { provide: StatusBar, useFactory: () => StatusBarMock.instance() },
+        { provide: Storage, useFactory: () => StorageMock.instance() },
         {
           // This allows us to inject Logger into getMetaReducers()
           provide: META_REDUCERS,
           deps: [ Logger ],
           useFactory: getMetaReducers
         },
+        { provide: AuthProcessState, useClass: AuthProcessStateMock },
         // API
         { provide: AuthService, useClass: AuthServiceMock },
+        { provide: AppointmentsApi, useClass: AppointmentsApiMock },
+        { provide: BookingApi, useClass: BookingApiMock },
+        { provide: ServicesService, useClass: ServicesServiceMock },
+        { provide: StylistsService, useClass: StylistsServiceMock },
+        { provide: ProfileApi, useClass: ProfileApiMock },
         ...providers
       ],
       imports: [
@@ -141,6 +169,11 @@ export class TestUtils {
         IonicModule,
         ReactiveFormsModule,
         HttpClientTestingModule,
+        // Common for app
+        SharedSingletonsModule,
+        CoreModule,
+        DataModule.forRoot(),
+        // Store
         StoreModule.forRoot({}),
         StoreModule.forFeature(authPath, authReducer),
         StoreModule.forFeature(profilePath, profileReducer),
