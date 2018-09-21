@@ -14,6 +14,10 @@
   font-size: $t-h4;
   font-weight: 600;
 
+  span {
+    display: inline-block;
+  }
+
   .AppCard-VisitDate {
     margin: 0 0 0 6px;
     font-size: $t-small;
@@ -89,8 +93,4 @@
       background: white;
     }
   }
-}
-
-.AppCard-Grid span {
-  display: inline-block;
 }

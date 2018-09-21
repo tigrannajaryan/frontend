@@ -21,23 +21,6 @@ button {
   text-align: center;
 }
 
-.has-refresher > .scroll-content {
-  border-top: 0;
-}
-
-.header-md:after { //to remove header shadow
-  background-image: none;
-}
-
-.toolbar, //to remove header underline
-.toolbar-background {
-  background: color($colors, white);
-}
-
-.toolbar-title-md { //align center logo on android
-  text-align: center;
-}
-
 .has-refresher > .scroll-content { //to remove top-border for refresher
   border-top: 0;
 }

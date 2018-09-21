@@ -7,13 +7,12 @@
 }
 
 
-
 .back-button-icon {
   //adjust beck arrow size
   font-size: pxtovw(15px);
 
   &:before {
-    @extend .mb-icon;
+    @extend %mb-icon;
 
     content: $mb-icon-arrow-left;
   }
@@ -29,9 +28,10 @@ ion-icon.tab-button-icon[aria-label^="Home"],
 ion-icon.tab-button-icon[aria-label^="History"],
 ion-icon.tab-button-icon[aria-label^="Stylists"],
 ion-icon.tab-button-icon[aria-label^="Profile"] {
+  @extend %mb-icon;
+
   display: inline-block;
   vertical-align: bottom;
-  @extend .mb-icon;
 }
 
 ion-icon.tab-button-icon[aria-label^="Home"]:after {

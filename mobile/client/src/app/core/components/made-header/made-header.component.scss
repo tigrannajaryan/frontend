@@ -1,5 +1,9 @@
 [madeHeader],
 .madeHeader {
+  .mb-icon-logo {
+    font-size: pxtovw(24px);
+  }
+
   .toolbar {
     min-height: pxtovw(41px);
     padding-right: pxtovw(17px);
@@ -33,10 +37,6 @@
 
   &:after {
     display: none;
-  }
-
-  .mb-icon-logo {
-    font-size: pxtovw(24px);
   }
 
   .BackHeader-backBtn {
