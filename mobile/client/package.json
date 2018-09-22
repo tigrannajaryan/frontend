@@ -38,7 +38,6 @@
     "@ionic-native/clipboard": "4.11.0",
     "@ionic-native/core": "4.6.0",
     "@ionic-native/email-composer": "4.11.0",
-    "@ionic-native/facebook": "4.7.0",
     "@ionic-native/google-analytics": "4.7.0",
     "@ionic-native/screen-orientation": "4.11.0",
     "@ionic-native/splash-screen": "4.6.0",
@@ -56,7 +55,6 @@
     "cordova-plugin-camera": "4.0.3",
     "cordova-plugin-device": "2.0.2",
     "cordova-plugin-email-composer": "0.8.15",
-    "cordova-plugin-facebook4": "2.1.0",
     "cordova-plugin-google-analytics": "1.8.6",
     "cordova-plugin-ionic-keyboard": "2.0.5",
     "cordova-plugin-ionic-webview": "1.2.1",
@@ -123,13 +121,6 @@
       "cordova-plugin-ionic-webview": {},
       "cordova-ios-plugin-no-export-compliance": {},
       "cordova-plugin-ionic-keyboard": {},
-      "cordova-plugin-facebook4": {
-        "APP_ID": "199496197324986",
-        "APP_NAME": "bb",
-        "fb_app_id": "199496197324986",
-        "fb_app_name": "bb",
-        "ANDROID_SDK_VERSION": "4.+"
-      },
       "cordova-plugin-google-analytics": {
         "GMS_VERSION": "11.0.1"
       },
