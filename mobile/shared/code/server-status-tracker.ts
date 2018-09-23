@@ -4,7 +4,14 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { Severity } from '@sentry/shim';
 
 import { Logger } from '~/shared/logger';
-import { ApiClientError, ApiError, ApiFieldAndNonFieldErrors, HttpStatus, ServerUnreachableOrInternalError } from '~/shared/api-errors';
+import {
+  ApiClientError,
+  ApiError,
+  ApiFieldAndNonFieldErrors,
+  HttpStatus,
+  ServerInternalError,
+  ServerUnreachableError
+} from '~/shared/api-errors';
 import { reportToSentry } from '~/shared/sentry';
 
 /*
@@ -64,6 +71,16 @@ export class ServerStatusTracker {
   private firstPageName: string;
   private onUnauthorized: () => any;
 
+  private static error2SeverityLevel(error: ApiError): Severity {
+    if (error instanceof ServerInternalError) {
+      return Severity.Fatal;
+    } else if (error instanceof ServerUnreachableError) {
+      return Severity.Warning;
+    } else {
+      return Severity.Error;
+    }
+  }
+
   constructor(
     private app: App,
     private logger: Logger) { }
@@ -97,9 +114,7 @@ export class ServerStatusTracker {
 
     if (!(error instanceof ApiFieldAndNonFieldErrors)) {
       // Report everything except ApiFieldAndNonFieldErrors to Sentry.
-      // ServerUnreachableOrInternalError is reported as "Fatal" severity level.
-      const level = (error instanceof ServerUnreachableOrInternalError) ? Severity.Fatal : Severity.Error;
-      reportToSentry(error, level);
+      reportToSentry(error, ServerStatusTracker.error2SeverityLevel(error));
     }
 
     // Notify observers about the error.

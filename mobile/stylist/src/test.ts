@@ -38,6 +38,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 
 import {
   AlertControllerMock,
+  AppMock,
   ConfigMock,
   GoogleAnalyticsMock,
   LoadingControllerMock,
@@ -100,6 +101,7 @@ export class TestUtils {
       providers: [
         App, Form, Keyboard, DomController, MenuController, NavController,
         NavParams, GestureController, AlertControllerMock, LoadingControllerMock,
+        { provide: App, useClass: AppMock },
         { provide: Platform, useFactory: () => PlatformMock.instance() },
         { provide: StatusBar, useFactory: () => StatusBarMock.instance() },
         { provide: Config, useFactory: () => ConfigMock.instance() },
