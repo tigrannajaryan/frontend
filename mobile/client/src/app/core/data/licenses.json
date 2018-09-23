@@ -120,10 +120,6 @@
     "title": "cordova-plugin-email-composer (Apache License)"
   },
   {
-    "url": "https://raw.githubusercontent.com/jeduan/cordova-plugin-facebook4/master/LICENSE",
-    "title": "cordova-plugin-facebook4 (Apache License)"
-  },
-  {
     "url": "https://raw.githubusercontent.com/danwilson/google-analytics-plugin/master/LICENSE",
     "title": "google-analytics-plugin (MIT License)"
   },
