@@ -46,7 +46,7 @@ class StylistApi {
       headers['Authorization'] = `Token ${this.authToken}`;
     }
 
-    const response = await fetch(`${apiURL}/${url}`,
+    const response = await fetch(`${apiURL}${url}`,
       {
         method: 'POST',
         headers,
