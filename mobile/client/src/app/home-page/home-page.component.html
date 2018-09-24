@@ -44,7 +44,7 @@
       <div *ngIf="homeData.last_visited">
         <!-- show last visit appointment card -->
         <div class="HomePage-subtitleContainer">
-          <span class="HomePage-subtitle">Last visits</span>
+          <span class="HomePage-subtitle">Last visit</span>
         </div>
         <appointment-item [appointment]="homeData.last_visited" (cardClick)="onAppointmentClick(homeData.last_visited, AppointmentType.past)"
           hasRebook="true" (rebookClick)="onRebookClick(homeData.last_visited)"></appointment-item>
