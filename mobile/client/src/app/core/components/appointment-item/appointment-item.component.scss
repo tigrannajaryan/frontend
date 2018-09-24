@@ -21,14 +21,14 @@
   }
 
   .AppCard-GridStylistDetails {
-    margin: 0;
-    font-size: pxtovw(15px);
-    font-weight: normal;
-    color: color($grayscale, 500);
+    display: flex;
+    align-items: center;
+    justify-content: start;
   }
 
   .AppCard-GridStylistDetailsImage {
     display: inline-block;
+    flex: 0 0 auto;
     width: pxtovw(15px);
     height: pxtovw(15px);
     padding: pxtovw(2px);
@@ -40,6 +40,16 @@
     background-size: cover;
     border: 1px solid color($grayscale, 300);
     border-radius: 50%;
+  }
+
+  .AppCard-GridStylistDetailsName {
+    margin: 0;
+    overflow: hidden;
+    font-size: pxtovw(15px);
+    font-weight: normal;
+    color: color($grayscale, 500);
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   .AppCard-GridPrice {
