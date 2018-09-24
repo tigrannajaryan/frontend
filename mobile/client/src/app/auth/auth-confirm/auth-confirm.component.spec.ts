@@ -2,12 +2,13 @@ import { async, ComponentFixture } from '@angular/core/testing';
 import { NavController, NavParams } from 'ionic-angular';
 
 import { TestUtils } from '~/../test';
+import { randomPhone, replaceNbspWithSpaces } from '~/core/utils/test-utils';
 
 import { AuthService } from '~/auth/auth.api';
 
 import { AuthConfirmPageComponent } from './auth-confirm.component';
 
-const testPhone = `+1347${Math.random().toString().slice(2, 9)}`;
+const testPhone = randomPhone();
 
 let fixture: ComponentFixture<AuthConfirmPageComponent>;
 let instance: AuthConfirmPageComponent;
@@ -31,7 +32,7 @@ describe('Pages: Auth Confirm', () => {
           instance.ionViewWillEnter();
           fixture.detectChanges();
 
-          textContent = fixture.nativeElement.textContent.replace(/\u00a0/g, ' '); // without &nbsp;
+          textContent = replaceNbspWithSpaces(fixture.nativeElement.textContent);
         })
     )
   );

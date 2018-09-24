@@ -2,6 +2,7 @@ import { async, ComponentFixture } from '@angular/core/testing';
 import { NavController } from 'ionic-angular';
 
 import { TestUtils } from '~/../test';
+import { randomPhone, replaceNbspWithSpaces } from '~/core/utils/test-utils';
 
 import { PageNames } from '~/core/page-names';
 
@@ -15,7 +16,7 @@ const countriesMock = [
   { alpha2: 'RU', name: 'Russian Federation', countryCallingCodes: ['+7'] }
 ];
 
-const testPhone = `347${Math.random().toString().slice(2, 9)}`;
+const testPhone = randomPhone().slice(2); // without +1
 
 let fixture: ComponentFixture<AuthPageComponent>;
 let instance: AuthPageComponent;
@@ -36,7 +37,7 @@ describe('Pages: Auth Phone', () => {
           instance.countries = countriesMock;
           fixture.detectChanges();
 
-          textContent = fixture.nativeElement.textContent.replace(/\u00a0/g, ' '); // without &nbsp;
+          textContent = replaceNbspWithSpaces(fixture.nativeElement.textContent);
         })
     )
   );
@@ -67,9 +68,6 @@ describe('Pages: Auth Phone', () => {
 
   it('should type and format phone code', () => {
     instance.phone.patchValue(testPhone);
-
-    expect(instance.phone.value)
-      .toEqual(testPhone);
 
     // Perform formatting:
     const blurEvent = new Event('ionBlur');

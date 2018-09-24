@@ -6,6 +6,8 @@ import { BaseServiceMock } from '~/core/api/base-service.mock';
 import { ProfileModel } from '~/core/api/profile.models';
 import { ApiResponse } from '~/core/api/base.models';
 
+import { randomPhone } from '~/core/utils/test-utils';
+
 @Injectable()
 export class ProfileApiMock extends BaseServiceMock {
 
@@ -15,14 +17,14 @@ export class ProfileApiMock extends BaseServiceMock {
         const [name, lastName] = [faker.name.firstName(), faker.name.lastName()];
         const slug = faker.helpers.slugify(`${name}${lastName}`);
         observer.next({
-          phone: `+1347${(Math.random() * Math.pow(10, 7)).toFixed()}`,
+          phone: randomPhone(),
           first_name: name,
           last_name: lastName,
           zip_code: Number(Math.random() * Math.pow(10, 6)),
-          email: `${slug}@gmail.com`,
+          email: `test_profile+${slug}@madebeauty.com`,
           city: 'Brooklyn',
           state: 'NY',
-          instagram_url: 'shulyugin'
+          instagram_url: slug
         });
       })
     );
