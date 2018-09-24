@@ -26,7 +26,7 @@ import Countries from 'country-data/data/countries.json';
   templateUrl: 'auth-start.component.html'
 })
 export class AuthPageComponent {
-  countries = Countries.filter(country => country.countryCallingCodes.length > 0);
+  countries = Countries && Countries.filter(country => country.countryCallingCodes.length > 0);
 
   countryCode: FormControl = new FormControl(DEFAULT_COUNTRY_CODE, [Validators.required]);
   phone: FormControl = new FormControl('', [Validators.required, phoneValidator(DEFAULT_COUNTRY_CODE)]);
