@@ -43,6 +43,7 @@
     margin-top: -1 * $pic-size / 2;
     background-color: color($grayscale, 100);
     background-repeat: no-repeat;
+    background-position: center;
     background-size: cover;
     border-radius: 50%; // circle
   }
@@ -71,7 +72,7 @@
     margin: pxtovw(1px) 0 pxtovw(4px);
     overflow: hidden;
     font-size: $t-h3;
-    font-weight: 500;
+    font-weight: 600;
     text-overflow: ellipsis;
     white-space: nowrap;
   }
