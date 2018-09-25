@@ -75,8 +75,8 @@ describe('Registration Flow', () => {
 
   it('should show service list selection', async () => {
 
-    expect(selectServiceListPage.getServiceSetName(0).getText()).toEqual('Naturally straight hair');
-    expect(selectServiceListPage.getServiceSetName(1).getText()).toEqual('Naturally curly hair');
+    expect(selectServiceListPage.getServiceSetName(0).getText()).toEqual('Naturally Straight Hair');
+    expect(selectServiceListPage.getServiceSetName(1).getText()).toEqual('Naturally Curly Hair');
 
     expect(selectServiceListPage.getServiceCountText(0).getText()).toMatch(/\d Services/);
     expect(selectServiceListPage.getServiceCountText(1).getText()).toMatch(/\d Services/);
