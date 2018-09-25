@@ -5,11 +5,14 @@ import { async, ComponentFixture } from '@angular/core/testing';
 
 import { TestUtils } from '~/../test';
 
-import { SEARCHING_DELAY } from '~/core/effects/stylists.effects';
+import { StylistsEffects } from '~/core/effects/stylists.effects';
 import { preferenceMock, stylistsMock } from '~/core/api/stylists-service.mock';
 import { StylistsService } from '~/core/api/stylists-service';
 import { PreferredStylistsData } from '~/core/api/preferred-stylists.data';
 import { StylistsPageComponent } from './stylists-page.component';
+
+// Monkey patch SEARCHING_DELAY to 0 to avoid slowing down the tests:
+StylistsEffects.SEARCHING_DELAY = 0;
 
 const emptyStylistsResponseMock = {
   response: {
@@ -20,7 +23,7 @@ const emptyStylistsResponseMock = {
 let fixture: ComponentFixture<StylistsPageComponent>;
 let instance: StylistsPageComponent;
 
-fdescribe('Pages: Stylists Search', () => {
+describe('Pages: Stylists Search', () => {
   beforeEach(
     async(() =>
       TestUtils.beforeEachCompiler([StylistsPageComponent])
@@ -67,7 +70,7 @@ fdescribe('Pages: Stylists Search', () => {
       });
 
       done();
-    }, SEARCHING_DELAY);
+    });
   });
 
   it('should show ”no stylists in your area yet”', done => {
@@ -87,7 +90,7 @@ fdescribe('Pages: Stylists Search', () => {
         .toContain("I'm sorry there are no stylists in your area yet. But check back often we're adding new stylists every day!");
 
       done();
-    }, SEARCHING_DELAY);
+    });
   });
 
   it('should show ”No stylists found”', done => {
@@ -108,7 +111,7 @@ fdescribe('Pages: Stylists Search', () => {
         .toContain('No stylists found');
 
       done();
-    }, SEARCHING_DELAY);
+    });
   });
 
   it('should set preferred stylist', done => {
@@ -133,6 +136,6 @@ fdescribe('Pages: Stylists Search', () => {
         .toHaveBeenCalledWith(stylistsMock[0].uuid);
 
       done();
-    }, SEARCHING_DELAY);
+    });
   });
 });
