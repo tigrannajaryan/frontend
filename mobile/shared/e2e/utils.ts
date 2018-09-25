@@ -1,18 +1,53 @@
-import { $, browser, element, ElementFinder, ExpectedConditions, Locator } from 'protractor';
+import { $, browser, element, ElementFinder, ExpectedConditions, Locator, by } from 'protractor';
+
+const waitTimeout = 10000; // ms
 
 /**
- * Wait for the specified element to becomes visible. Waits up to 10 seconds.
+ * Wait for element to become clickable (visible and enabled)
+ * and then click on it.
+ * @param finder of the element
  */
-export async function waitFor(finder: ElementFinder): Promise<any> {
-  return browser.wait(ExpectedConditions.visibilityOf(finder), 10000, `waitFor ${finder.locator().toString()} failed.`);
+export async function click(finder: ElementFinder): Promise<any> {
+  await waitForClickable(finder);
+  return finder.click();
 }
 
 /**
- * Wait for the specified element to becomes visible. Waits up to 10 seconds.
+ * Wait for the specified element to become visible. Waits up to 10 seconds.
+ */
+export async function waitFor(finder: ElementFinder): Promise<any> {
+  return browser.wait(ExpectedConditions.visibilityOf(finder), waitTimeout,
+    `waitFor ${finder.locator().toString()} failed.`);
+}
+
+/**
+ * Wait for the specified element to become clickable. Waits up to 10 seconds.
+ */
+export async function waitForClickable(finder: ElementFinder): Promise<any> {
+  return browser.wait(ExpectedConditions.elementToBeClickable(finder), waitTimeout,
+    `waitForClickable ${finder.locator().toString()} failed.`);
+}
+
+/**
+ * Wait for a specified condition to become truthy
+ * @param cond async functor that must return Promise<boolean like>
+ */
+export async function waitForCond(cond: () => Promise<boolean>): Promise<any> {
+  const startTime = new Date().valueOf();
+  while (!(await cond())) {
+    if (new Date().valueOf() - startTime > waitTimeout) {
+      throw new Error('Timeout waiting for condition.');
+    }
+    await browser.sleep(100);
+  }
+}
+
+/**
+ * Wait for the specified element to become invisible. Waits up to 10 seconds.
  */
 export async function waitForNot(finder: ElementFinder): Promise<any> {
   return browser.wait(ExpectedConditions.invisibilityOf(finder),
-    10000, `waitForNot ${finder.locator().toString()} failed.`);
+    waitTimeout, `waitForNot ${finder.locator().toString()} failed.`);
 }
 
 /**
@@ -66,6 +101,9 @@ export async function clearIonicStorage(): Promise<{}> {
 
 class Globals {
   get alertSubtitle() { return $('ion-alert .alert-sub-title'); }
+  alertButton(buttonText: string) { return element(by.cssContainingText('ion-alert button span', buttonText)); }
+
+  get ionLoading() { return $('ion-loading'); }
 }
 
 export const globals = new Globals();

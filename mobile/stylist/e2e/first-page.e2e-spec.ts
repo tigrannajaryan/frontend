@@ -1,6 +1,6 @@
 import { browser } from 'protractor';
 
-import { firstPage } from './first-page';
+import { firstPage } from './pages/first-page';
 
 describe('First Page', () => {
 

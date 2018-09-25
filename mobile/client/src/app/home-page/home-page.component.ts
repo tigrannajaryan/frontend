@@ -3,7 +3,7 @@ import { App, Events, IonicPage, Refresher } from 'ionic-angular';
 
 import { Logger } from '~/shared/logger';
 import { componentUnloaded } from '~/shared/component-unloaded';
-import { loading } from '~/core/utils/loading';
+import { loading } from '~/shared/utils/loading';
 import { AppointmentModel, HomeResponse } from '~/core/api/appointments.models';
 import { AppointmentsDataStore } from '~/core/api/appointments.datastore';
 import { PageNames } from '~/core/page-names';

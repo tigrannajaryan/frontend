@@ -7,11 +7,12 @@ import {
   NavParams
 } from 'ionic-angular';
 
-import { loading } from '~/core/utils/loading';
-import { showAlert } from '~/core/utils/alert';
-import { PageNames } from '~/core/page-names';
+import { loading } from '~/shared/utils/loading';
 import { StylistServiceProvider } from '~/shared/stylist-api/stylist-service';
 import { ServiceCategory, ServiceTemplateItem } from '~/shared/stylist-api/stylist-models';
+
+import { showAlert } from '~/core/utils/alert';
+import { PageNames } from '~/core/page-names';
 import { ServiceListType } from '~/services/services.component';
 import { ServiceItemComponentData } from '~/services/services-item/services-item.component';
 
@@ -27,6 +28,7 @@ export class ServicesListComponent {
   protected isEmptyCategories = false;
   protected isProfile?: Boolean;
   protected timeGap = 30;
+  isLoading = false;
 
   static checkIfEmptyCategories(categories: ServiceCategory[]): boolean {
     return categories.every((cat: ServiceCategory) => {
@@ -55,18 +57,17 @@ export class ServicesListComponent {
     this.loadInitialData();
   }
 
-  @loading
   async loadInitialData(): Promise<void> {
     const uuid = this.navParams.get('uuid');
     let response;
 
     if (uuid && uuid !== ServiceListType.blank) {
-      response = await this.stylistService.getServiceTemplateSetByUuid(uuid);
+      response = await loading(this, this.stylistService.getServiceTemplateSetByUuid(uuid));
     } else if (uuid === ServiceListType.blank) {
-      response = await this.stylistService.getStylistServices();
+      response = await loading(this, this.stylistService.getStylistServices());
       response.categories = ServicesListComponent.buildBlankCategoriesList(response.categories);
     } else {
-      response = await this.stylistService.getStylistServices();
+      response = await loading(this, this.stylistService.getStylistServices());
     }
     this.categories = response.categories;
     this.timeGap = response.service_time_gap_minutes;
@@ -95,7 +96,6 @@ export class ServicesListComponent {
     profileModal.present();
   }
 
-  @loading
   async onContinue(): Promise<void> {
     const categoriesServices = this.checkCategoriesServices();
 

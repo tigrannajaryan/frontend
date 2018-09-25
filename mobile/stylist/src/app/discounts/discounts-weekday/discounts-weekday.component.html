@@ -7,6 +7,11 @@
   <div class="Made-wp Made-wpContent">
     <div class="Made-h1">Daily Discounts</div>
 
+    <!-- Show spinner if loading is in progress -->
+    <div class="Spinner">
+      <ion-spinner *ngIf="isLoading"></ion-spinner>
+    </div>
+
     <discounts-weekday-short [discounts]="discounts" (weekdayChange)="onWeekdayChange()"></discounts-weekday-short>
   </div>
 </ion-content>

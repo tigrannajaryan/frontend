@@ -4,7 +4,7 @@ import { IonicPage, NavController } from 'ionic-angular';
 import { Discounts } from '~/shared/stylist-api/discounts.models';
 import { DiscountsApi } from '~/shared/stylist-api/discounts.api';
 import { PageNames } from '~/core/page-names';
-import { loading } from '~/core/utils/loading';
+import { loading } from '~/shared/utils/loading';
 
 export interface FirstBooking {
   label: string;
@@ -24,6 +24,7 @@ export class DiscountsFirstBookingComponent {
     label: 'First booking',
     percentage: 0
   };
+  isLoading = false;
 
   constructor(
     private navCtrl: NavController,
@@ -32,9 +33,8 @@ export class DiscountsFirstBookingComponent {
     this.loadInitialData();
   }
 
-  @loading
   async loadInitialData(): Promise<void> {
-    const discounts = await this.discountsApi.getDiscounts() as Discounts;
+    const discounts: Discounts = await loading(this, this.discountsApi.getDiscounts());
     this.firstBooking.percentage = discounts.first_booking;
   }
 

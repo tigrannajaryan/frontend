@@ -8,7 +8,7 @@ import { WeekdayIso } from '~/shared/weekday';
 import { Logger } from '~/shared/logger';
 
 import { PageNames } from '~/core/page-names';
-import { loading } from '~/core/utils/loading';
+import { loading } from '~/shared/utils/loading';
 
 const firstWeekday = WeekdayIso.Mon;
 const lastWeekday = WeekdayIso.Sun;
@@ -72,6 +72,7 @@ export class WorktimeComponent {
   isProfile?: Boolean;
 
   cards: VisualWeekCard[] = [];
+  isLoading = false;
 
   /**
    * Create an array of 7 weekday elements.
@@ -102,18 +103,16 @@ export class WorktimeComponent {
     private api: WorktimeApi,
     private navCtrl: NavController,
     private navParams: NavParams,
-    private logger: Logger) {}
+    private logger: Logger) { }
 
   async ionViewWillLoad(): Promise<void> {
     this.isProfile = Boolean(this.navParams.get('isProfile'));
-
-    this.loadInitialData();
+    await this.loadInitialData();
   }
 
-  @loading
   async loadInitialData(): Promise<void> {
     // Load data from backend and show it
-    const worktime = await this.api.getWorktime();
+    const worktime = await loading(this, this.api.getWorktime());
     this.cards = this.api2presentation(worktime);
   }
 
@@ -159,7 +158,7 @@ export class WorktimeComponent {
 
   async autoSave(): Promise<void> {
     // Save to backend
-   this.api.setWorktime(this.presentation2api(this.cards));
+    this.api.setWorktime(this.presentation2api(this.cards));
   }
 
   /**

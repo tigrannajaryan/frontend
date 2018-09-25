@@ -3,7 +3,7 @@ import { IonicPage, NavController } from 'ionic-angular';
 
 import { Discounts, WeekdayDiscount } from '~/shared/stylist-api/discounts.models';
 import { DiscountsApi } from '~/shared/stylist-api/discounts.api';
-import { loading } from '~/core/utils/loading';
+import { loading } from '~/shared/utils/loading';
 import { PageNames } from '~/core/page-names';
 
 @IonicPage({
@@ -16,6 +16,7 @@ import { PageNames } from '~/core/page-names';
 export class DiscountsWeekdayComponent {
   protected PageNames = PageNames;
   protected discounts: WeekdayDiscount[];
+  isLoading = false;
 
   constructor(
     private navCtrl: NavController,
@@ -24,9 +25,8 @@ export class DiscountsWeekdayComponent {
     this.loadInitialData();
   }
 
-  @loading
   async loadInitialData(): Promise<void> {
-    const discounts = await this.discountsApi.getDiscounts() as Discounts;
+    const discounts: Discounts = await loading(this, this.discountsApi.getDiscounts());
     this.discounts = discounts.weekdays.sort((a, b) => a.weekday - b.weekday); // from 1 (Monday) to 7 (Sunday)
   }
 

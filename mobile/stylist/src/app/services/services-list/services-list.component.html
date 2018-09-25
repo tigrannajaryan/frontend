@@ -22,8 +22,10 @@
 
 
     <div *ngIf="categories" class="ServicesLis-offset">
-      <div *ngFor="let category of categories" [hidden]="category.services.length === 0">
-        <div class="ServicesLis-title">
+      <div *ngFor="let category of categories; let index = index"
+           [hidden]="category.services.length === 0"
+           [attr.data-test-id]="'categorySection'+index">
+        <div class="ServicesLis-title" data-test-id="categoryName">
           <i class="mb-icon-{{category.category_code}}"></i>
           {{ category.name }}
         </div>
@@ -41,7 +43,7 @@
 
 
           <div class="ServicesLis-item">
-            <ion-item-sliding *ngFor="let service of category.services; let i = index">
+            <ion-item-sliding *ngFor="let service of category.services; let i = index" data-test-id="serviceList">
               <ion-item no-padding>
                 <ion-row no-padding class="ServicesLis-row">
                   <ion-col (click)="deleteConfirm(category, i)" no-padding col-2 class="ServicesLis-rowCol">
