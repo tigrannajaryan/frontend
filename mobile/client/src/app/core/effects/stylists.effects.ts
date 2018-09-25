@@ -13,15 +13,14 @@ import {
   StylistState
 } from '~/core/reducers/stylists.reducer';
 
-export const SEARCHING_DELAY = 250;
-
 @Injectable()
 export class StylistsEffects {
+  static SEARCHING_DELAY = 250;
 
   @Effect() searchStylists = this.actions
     .ofType(stylistsActionTypes.SEARCH_STYLISTS)
     .map((action: SearchStylistsAction) => action)
-    .pipe(debounce(() => timer(SEARCHING_DELAY)))
+    .pipe(debounce(() => timer(StylistsEffects.SEARCHING_DELAY)))
     .withLatestFrom(this.store)
     .switchMap(([action, state]) =>
       this.stylistsService.search(action.query)
