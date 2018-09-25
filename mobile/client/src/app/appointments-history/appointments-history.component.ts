@@ -28,7 +28,7 @@ export class AppointmentsHistoryComponent {
 
   constructor(
     private app: App,
-    private appointmentsDataStore: AppointmentsDataStore,
+    public appointmentsDataStore: AppointmentsDataStore,
     private logger: Logger,
     private profileDataStore: ProfileDataStore
   ) {

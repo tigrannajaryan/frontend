@@ -28,7 +28,10 @@
       <div *ngIf="homeData.upcoming?.length > 0; else noUpcoming">
         <!-- show upcoming appointment cards -->
         <div *ngFor="let appointment of homeData.upcoming">
-          <appointment-item [appointment]="appointment" (cardClick)="onAppointmentClick(appointment, AppointmentType.upcoming)"></appointment-item>
+          <appointment-item
+            [appointment]="appointment"
+            (cardClick)="onAppointmentClick(appointment, AppointmentType.upcoming)"
+            data-test-id="upcomingAppointment"></appointment-item>
         </div>
       </div>
 
@@ -46,8 +49,12 @@
         <div class="HomePage-subtitleContainer">
           <span class="HomePage-subtitle">Last visit</span>
         </div>
-        <appointment-item [appointment]="homeData.last_visited" (cardClick)="onAppointmentClick(homeData.last_visited, AppointmentType.past)"
-          hasRebook="true" (rebookClick)="onRebookClick(homeData.last_visited)"></appointment-item>
+        <appointment-item
+          [appointment]="homeData.last_visited"
+          (cardClick)="onAppointmentClick(homeData.last_visited, AppointmentType.past)"
+          (rebookClick)="onRebookClick(homeData.last_visited)"
+          hasRebook="true"
+          data-test-id="lastVisitAppointment"></appointment-item>
       </div>
 
 
@@ -70,5 +77,5 @@
 </ion-content>
 
 <ion-footer>
-  <button *ngIf="homeData" ion-button class="Button HomePageBookButton" (click)="onBookClick()">Book</button>
+  <button *ngIf="homeData" (click)="onBookClick()" ion-button class="Button HomePageBookButton" data-test-id="bookLink">Book</button>
 </ion-footer>
