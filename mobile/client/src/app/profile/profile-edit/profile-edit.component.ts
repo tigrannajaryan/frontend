@@ -13,7 +13,7 @@ import { DefaultImage } from '~/core/core.module';
 import { ProfileApi } from '~/core/api/profile-api';
 import { ProfileDataStore } from '~/profile/profile.data';
 import { ProfileModel } from '~/core/api/profile.models';
-import { BaseService } from '~/core/api/base-service';
+import { BaseService } from '~/shared/api/base-service';
 import { emptyOr } from '~/shared/validators';
 
 @IonicPage()

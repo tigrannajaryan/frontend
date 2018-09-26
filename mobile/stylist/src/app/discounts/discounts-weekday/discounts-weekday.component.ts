@@ -26,18 +26,22 @@ export class DiscountsWeekdayComponent {
   }
 
   async loadInitialData(): Promise<void> {
-    const discounts: Discounts = await loading(this, this.discountsApi.getDiscounts());
-    this.discounts = discounts.weekdays.sort((a, b) => a.weekday - b.weekday); // from 1 (Monday) to 7 (Sunday)
+    const discounts: Discounts = (await loading(this, this.discountsApi.getDiscounts())).response;
+    if (discounts) {
+      this.discounts = discounts.weekdays.sort((a, b) => a.weekday - b.weekday); // from 1 (Monday) to 7 (Sunday)
+    }
   }
 
-  protected onContinue(): void {
+  protected async onContinue(): Promise<void> {
     // we need this call to set `has_weekday_discounts_set` to true
     // otherwise we will go to the discounts registration flow each time after log in
-    this.discountsApi.setDiscounts({ weekdays: this.discounts });
-    this.navCtrl.push(PageNames.DiscountsRevisit);
+    const { response } = await this.discountsApi.setDiscounts({ weekdays: this.discounts }).toPromise();
+    if (response) {
+      this.navCtrl.push(PageNames.DiscountsRevisit);
+    }
   }
 
-  protected onWeekdayChange(): void {
-    this.discountsApi.setDiscounts({ weekdays: this.discounts });
+  protected async onWeekdayChange(): Promise<void> {
+    await this.discountsApi.setDiscounts({ weekdays: this.discounts }).toPromise();
   }
 }

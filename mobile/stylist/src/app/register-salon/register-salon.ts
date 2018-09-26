@@ -20,7 +20,7 @@ import { Logger } from '~/shared/logger';
 import { downscalePhoto, urlToFile } from '~/shared/image-utils';
 import { PhotoSourceType } from '~/shared/constants';
 import { StylistServiceProvider } from '~/shared/stylist-api/stylist-service';
-import { BaseApiService } from '~/shared/stylist-api/base-api-service';
+import { BaseService } from '~/shared/api/base-service';
 import { loading } from '~/core/utils/loading';
 import { PageNames } from '~/core/page-names';
 import { showAlert } from '~/core/utils/alert';
@@ -46,7 +46,7 @@ export class RegisterSalonComponent {
     public navParams: NavParams,
     public formBuilder: FormBuilder,
     private apiService: StylistServiceProvider,
-    private baseService: BaseApiService,
+    private baseService: BaseService,
     private domSanitizer: DomSanitizer,
     private camera: Camera,
     private actionSheetCtrl: ActionSheetController,
@@ -98,6 +98,12 @@ export class RegisterSalonComponent {
 
   @loading
   async loadFormInitialData(): Promise<void> {
+
+    const { response } = await this.apiService.getProfile().toPromise();
+    if (!response) {
+      return;
+    }
+
     const {
       profile_photo_url,
       first_name,
@@ -108,7 +114,7 @@ export class RegisterSalonComponent {
       profile_photo_id,
       instagram_url,
       website_url
-    } = await this.apiService.getProfile();
+    } = response;
 
     this.form.patchValue({
       // tslint:disable-next-line:no-null-keyword
@@ -209,8 +215,10 @@ export class RegisterSalonComponent {
       // tslint:disable-next-line:no-null-keyword
       salon_name: profile.salon_name || null
     };
-    await this.apiService.setProfile(data);
-    this.nextRoute();
+    const { response } = await this.apiService.setProfile(data).toPromise();
+    if (response) {
+      this.nextRoute();
+    }
   }
 
   processPhoto(): void {
@@ -285,7 +293,6 @@ export class RegisterSalonComponent {
     formData.append('file', file);
 
     const response: any = await this.baseService.uploadFile(formData);
-    this.form.get('profile_photo_id')
-      .setValue(response.uuid);
+    this.form.get('profile_photo_id').setValue(response.uuid);
   }
 }

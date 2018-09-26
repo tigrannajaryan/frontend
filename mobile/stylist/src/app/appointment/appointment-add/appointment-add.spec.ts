@@ -1,6 +1,7 @@
 import * as faker from 'faker';
 import * as moment from 'moment';
-
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/observable/of';
 import { async, ComponentFixture } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Store, StoreModule } from '@ngrx/store';
@@ -34,7 +35,7 @@ describe('Pages: Add Appointment', () => {
   beforeEach(async () => TestUtils.beforeEachCompiler([
     AppointmentAddComponent
   ], [
-    AppointmentService
+    // no providers
   ], [
     HttpClientTestingModule,
     StoreModule.forFeature('service', servicesReducer)
@@ -99,7 +100,7 @@ describe('Pages: Add Appointment', () => {
     const forced = false;
 
     const appointmentsService = fixture.debugElement.injector.get(AppointmentService);
-    spyOn(appointmentsService, 'createAppointment');
+    spyOn(appointmentsService, 'createAppointment').and.returnValue(Observable.of(true));
 
     // enables submit
     fixture.detectChanges();

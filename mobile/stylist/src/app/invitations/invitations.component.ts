@@ -19,6 +19,7 @@ import { StylistServiceProvider } from '~/shared/stylist-api/stylist-service';
 import { StylistProfile } from '~/shared/stylist-api/stylist-models';
 import { ClientInvitation, InvitationsResponse, InvitationStatus } from '~/shared/stylist-api/invitations.models';
 import { InvitationsApi } from '~/shared/stylist-api/invitations.api';
+import { ApiResponse } from '~/shared/api/base.models';
 
 import { PageNames } from '~/core/page-names';
 import { trimStr } from '~/core/functions';
@@ -115,8 +116,8 @@ export class InvitationsComponent {
   seachInputIsLikePhoneNumber: boolean;
 
   // Preloaded stylist profile and discounts promises
-  private stylistProfile: Promise<StylistProfile>;
-  private discounts: Promise<Discounts>;
+  private stylistProfile: Promise<ApiResponse<StylistProfile>>;
+  private discounts: Promise<ApiResponse<Discounts>>;
 
   /**
    * PhoneContact comparison function for sorting
@@ -257,8 +258,8 @@ export class InvitationsComponent {
     this.loadContacts();
 
     // Preload stylist profile and discounts that we will need later
-    this.stylistProfile = this.stylistApi.getProfile();
-    this.discounts = this.discountsApi.getDiscounts();
+    this.stylistProfile = this.stylistApi.getProfile().toPromise();
+    this.discounts = this.discountsApi.getDiscounts().toPromise();
   }
 
   /**
@@ -280,7 +281,7 @@ export class InvitationsComponent {
 
     // Initiate asynchronously in parallel reading local contacts and reading invitations from backend
     const localContactsPromise = this.getLocalContacts();
-    const invitationsPromise = this.invitationsApi.getInvitations();
+    const invitationsPromise = this.invitationsApi.getInvitations().toPromise();
 
     // Set both promises to resolve or error. We catch the errors and wrap them in a proxy ErrorWrapper class
     // to be able to differentiate from success case later. Note: if we don't catch here then by default
@@ -303,11 +304,11 @@ export class InvitationsComponent {
           this.loadLocalContacts(localContacts);
         }
 
-        if (invitations instanceof ErrorWrapper) {
+        if (invitations instanceof ErrorWrapper || !invitations.response) {
           this.loadingContacts = false;
           throw invitations.error;
         } else {
-          this.loadInvitations(invitations);
+          this.loadInvitations(invitations.response);
         }
 
         // Build the displayedContacts array. Use empty search term to display all contacts.
@@ -637,7 +638,10 @@ export class InvitationsComponent {
       this.updateSelectedContacts();
 
       // Let our backend know that the message was sent
-      await this.invitationsApi.createInvitations([invitation]);
+      const { response } = await this.invitationsApi.createInvitations([invitation]).toPromise();
+      if (!response) {
+        return;
+      }
     }
 
     const alert = this.alertCtrl.create({
@@ -659,7 +663,7 @@ export class InvitationsComponent {
     // Send empty invitations list to backend to make sure the profile's
     // has_invited_clients is marked true and we do not bother the user
     // again during next login.
-    this.invitationsApi.createInvitations([]);
+    this.invitationsApi.createInvitations([]).toPromise();
   }
 
   /**
@@ -676,8 +680,8 @@ export class InvitationsComponent {
   }
 
   private async composeInvitationText(): Promise<string> {
-    const stylistProfile = await this.stylistProfile;
-    const discounts = await this.discounts;
+    const stylistProfile = (await this.stylistProfile).response;
+    const discounts = (await this.discounts).response;
 
     let defaultInvitationText = `Hi, it's ${stylistProfile.first_name}. I'm now using the Made app to book`;
     defaultInvitationText = defaultInvitationText + (discounts.first_booking > 0 ? ' and I discounted your next visit on the app.' : '.');

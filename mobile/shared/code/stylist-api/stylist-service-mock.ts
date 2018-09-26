@@ -1,7 +1,10 @@
 import { Injectable } from '@angular/core';
-import { StylistSummary } from './stylist-models';
-
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/observable/of';
 import * as faker from 'faker';
+
+import { ApiResponse } from '~/shared/api/base.models';
+import { StylistSummary } from './stylist-models';
 
 export const profileSummaryMock = {
   profile: {
@@ -15,9 +18,9 @@ export const profileSummaryMock = {
     website_url: faker.internet.url()
   },
   services: [
-    {name: faker.commerce.productName(), base_price: Number(faker.commerce.price()), duration_minutes: 40},
-    {name: faker.commerce.productName(), base_price: Number(faker.commerce.price()), duration_minutes: 30},
-    {name: faker.commerce.productName(), base_price: Number(faker.commerce.price()), duration_minutes: 90}
+    { name: faker.commerce.productName(), base_price: Number(faker.commerce.price()), duration_minutes: 40 },
+    { name: faker.commerce.productName(), base_price: Number(faker.commerce.price()), duration_minutes: 30 },
+    { name: faker.commerce.productName(), base_price: Number(faker.commerce.price()), duration_minutes: 90 }
   ],
   services_count: faker.random.number(),
   worktime: [
@@ -56,7 +59,7 @@ export const profileSummaryMock = {
 @Injectable()
 export class StylistServiceMock {
 
-  async getStylistSummary(): Promise<StylistSummary> {
-    return Promise.resolve(profileSummaryMock);
+  getStylistSummary(): Observable<ApiResponse<StylistSummary>> {
+    return Observable.of({ response: profileSummaryMock });
   }
 }

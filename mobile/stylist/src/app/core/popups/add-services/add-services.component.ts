@@ -42,8 +42,10 @@ export class AddServicesComponent {
 
   @loading
   async loadInitialData(): Promise<void> {
-    const response = await this.stylistService.getStylistServices() as StylistServicesList;
-    this.serviceCategories = this.filterSelectedServices(response.categories);
+    const response: StylistServicesList = (await this.stylistService.getStylistServices().toPromise()).response;
+    if (response) {
+      this.serviceCategories = this.filterSelectedServices(response.categories);
+    }
   }
 
   protected onServiceAdd(services): void {

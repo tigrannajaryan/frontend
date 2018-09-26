@@ -36,7 +36,7 @@ import { CoreModule } from '~/core/core.module';
 import { DataModule } from '~/core/api/data.module';
 
 import { ServerStatusTracker } from '~/shared/server-status-tracker';
-import { BaseService } from '~/core/api/base-service';
+import { BaseService } from '~/shared/api/base-service';
 
 import { authPath, authReducer } from '~/auth/auth.reducer';
 import { profilePath, profileReducer } from '~/core/reducers/profile.reducer';

@@ -1,9 +1,12 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 
 import { ApiRequestOptions } from '~/shared/api-errors';
-import { ApiResponse } from '~/core/api/base.models';
-import { BaseService } from '~/core/api/base-service';
+import { ApiResponse } from '~/shared/api/base.models';
+import { Logger } from '~/shared/logger';
+import { ServerStatusTracker } from '~/shared/server-status-tracker';
+import { BaseService } from '~/shared/api/base-service';
 import {
   ConfirmCodeParams,
   ConfirmCodeResponse,
@@ -13,6 +16,14 @@ import {
 
 @Injectable()
 export class AuthService extends BaseService {
+
+  constructor(
+    http: HttpClient,
+    logger: Logger,
+    serverStatus: ServerStatusTracker
+  ) {
+    super(http, logger, serverStatus);
+  }
 
   getCode(data: GetCodeParams, options: ApiRequestOptions): Observable<ApiResponse<GetCodeResponse>> {
     return this.post<GetCodeResponse>('auth/get-code', data, undefined, options);

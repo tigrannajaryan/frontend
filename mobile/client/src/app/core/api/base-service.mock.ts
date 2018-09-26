@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
-import { ApiResponse } from '~/core/api/base.models';
-import { BaseService } from '~/core/api/base-service';
+import { ApiResponse } from '~/shared/api/base.models';
+import { BaseService } from '~/shared/api/base-service';
 
 @Injectable()
 export class BaseServiceMock extends BaseService {

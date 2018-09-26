@@ -1,12 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
-import * as moment from 'moment';
+import 'rxjs/add/observable/of';
 
-import { Logger } from '~/shared/logger';
 import { ApiRequestOptions } from '~/shared/api-errors';
-import { ServerStatusTracker } from '~/shared/server-status-tracker';
-import { BaseService } from '~/shared/api/base-service';
 import { ApiResponse } from '~/shared/api/base.models';
 
 import {
@@ -15,72 +11,87 @@ import {
   AppointmentParams,
   AppointmentPreviewRequest,
   AppointmentPreviewResponse,
+  AppointmentStatuses,
   Home,
   NewAppointmentRequest
 } from './home.models';
 
 @Injectable()
-export class HomeService extends BaseService {
-
-  constructor(
-    http: HttpClient,
-    logger: Logger,
-    serverStatus: ServerStatusTracker
-  ) {
-    super(http, logger, serverStatus);
-  }
+export class HomeServiceMock {
 
   /**
    * Get home page data. The stylist must be already authenticated as a user.
    */
   getHome(query: string): Observable<ApiResponse<Home>> {
-    return this.get<Home>(`stylist/home?query=${encodeURIComponent(query)}`);
+    return Observable.of({
+      response: {
+        appointments: [],
+        today_visits_count: 0,
+        upcoming_visits_count: 0
+      }
+    });
   }
 
   /**
    * Get all appointments. The stylist must be already authenticated as a user.
    */
   getAppointments(appointmentParams?: AppointmentParams): Observable<ApiResponse<Appointment[]>> {
-    let params = new HttpParams();
-    if (appointmentParams) {
-      Object.keys(appointmentParams).forEach(key => {
-        const param = appointmentParams[key];
-
-        if (param instanceof Date) {
-          params = params.append(key, moment(param).format('YYYY-MM-DD'));
-        } else {
-          params = params.append(key, param);
-        }
-      });
-    }
-    return this.get<Appointment[]>('stylist/appointments', params);
+    return Observable.of({ response: [] });
   }
 
   /**
    * Get appointment preview. The stylist must be already authenticated as a user.
    */
   getAppointmentPreview(data: AppointmentPreviewRequest): Observable<ApiResponse<AppointmentPreviewResponse>> {
-    return this.post<AppointmentPreviewResponse>('stylist/appointments/preview', data);
+    return Observable.of({
+      response: {
+        duration_minutes: 0,
+        grand_total: 0,
+        total_client_price_before_tax: 0,
+        total_tax: 0,
+        total_card_fee: 0,
+        services: []
+      }
+    });
   }
 
   /**
    * Creates new appointment. The stylist must be already authenticated as a user.
    */
   createAppointment(data: NewAppointmentRequest, forced: boolean, options: ApiRequestOptions): Observable<ApiResponse<Appointment>> {
-    return this.post<Appointment>(`stylist/appointments?force_start=${forced}`, data, undefined, options);
+    return this.getAppointmentById('');
   }
 
   /**
    * Get appointment by id. The stylist must be already authenticated as a user.
    */
   getAppointmentById(appointmentUuid: string): Observable<ApiResponse<Appointment>> {
-    return this.get<Appointment>(`stylist/appointments/${appointmentUuid}`);
+    return Observable.of({
+      response: {
+        uuid: 'string',
+        client_first_name: 'string',
+        client_last_name: 'string',
+        client_phone: 'string',
+        total_client_price_before_tax: 0,
+        total_tax: 0,
+        total_card_fee: 0,
+        has_tax_included: false,
+        has_card_fee_included: false,
+        datetime_start_at: 'string',
+        duration_minutes: 0,
+        status: AppointmentStatuses.new,
+        services: [],
+        client_uuid: 'string',
+        client_profile_photo_url: 'string',
+        grand_total: 0
+      }
+    });
   }
 
   /**
    * Change appointment by uuid.
    */
   changeAppointment(appointmentUuid: string, data: AppointmentChangeRequest): Observable<ApiResponse<Appointment>> {
-    return this.post<Appointment>(`stylist/appointments/${appointmentUuid}`, data);
+    return this.getAppointmentById('');
   }
 }

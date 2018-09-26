@@ -1,8 +1,11 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 
-import { ApiResponse } from '~/core/api/base.models';
-import { BaseService } from '~/core/api/base-service';
+import { ApiResponse } from '~/shared/api/base.models';
+import { Logger } from '~/shared/logger';
+import { ServerStatusTracker } from '~/shared/server-status-tracker';
+import { BaseService } from '~/shared/api/base-service';
 import {
   PreferredStylistsListResponse,
   SetPreferredStylistResponse,
@@ -11,6 +14,14 @@ import {
 
 @Injectable()
 export class StylistsService extends BaseService {
+
+  constructor(
+    http: HttpClient,
+    logger: Logger,
+    serverStatus: ServerStatusTracker
+  ) {
+    super(http, logger, serverStatus);
+  }
 
   search(query = ''): Observable<ApiResponse<StylistsListResponse>> {
     return this.post<StylistsListResponse>('client/search-stylists', { search_like: query });

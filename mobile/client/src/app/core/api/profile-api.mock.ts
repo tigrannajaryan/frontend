@@ -4,7 +4,7 @@ import * as faker from 'faker';
 
 import { BaseServiceMock } from '~/core/api/base-service.mock';
 import { ProfileModel } from '~/core/api/profile.models';
-import { ApiResponse } from '~/core/api/base.models';
+import { ApiResponse } from '~/shared/api/base.models';
 
 import { randomPhone } from '~/core/utils/test-utils';
 

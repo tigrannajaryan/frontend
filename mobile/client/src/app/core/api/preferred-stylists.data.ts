@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import * as moment from 'moment';
 
-import { ApiResponse } from '~/core/api/base.models';
+import { ApiResponse } from '~/shared/api/base.models';
 import { DataStore } from '~/core/utils/data-store';
 import { StylistsService } from '~/core/api/stylists-service';
 import {

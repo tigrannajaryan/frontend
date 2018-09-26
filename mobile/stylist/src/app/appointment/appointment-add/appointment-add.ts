@@ -114,27 +114,25 @@ export class AppointmentAddComponent {
 
   @loading
   private async createAppointment(data, forced): Promise<any> {
-    try {
-      // We will handle ApiFieldAndNonFieldErrors ourselves, so tell API to not show alerts
-      const options = { hideGenericAlertOnFieldAndNonFieldErrors: true };
+    // We will handle ApiFieldAndNonFieldErrors ourselves, so tell API to not show alerts
+    const options = { hideGenericAlertOnFieldAndNonFieldErrors: true };
 
-      await this.appointmentService.createAppointment(data, forced, options);
-
-      // clear selected service data
-      this.store.dispatch(new ClearSelectedServiceAction());
-
-      // and close this view
-      this.navCtrl.pop();
-
-    } catch (e) {
-      if (e instanceof ApiFieldAndNonFieldErrors) {
+    const { error } = await this.appointmentService.createAppointment(data, forced, options).toPromise();
+    if (error) {
+      if (error instanceof ApiFieldAndNonFieldErrors) {
         // Process our specific errors here
-        this.showErrorMsg(e);
+        this.showErrorMsg(error);
       } else {
         // Let generic error handler to take care of the rest
-        throw e;
       }
+      return;
     }
+
+    // clear selected service data
+    this.store.dispatch(new ClearSelectedServiceAction());
+
+    // and close this view
+    this.navCtrl.pop();
   }
 
   private createForm(): void {

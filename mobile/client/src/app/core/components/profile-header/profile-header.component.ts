@@ -3,9 +3,9 @@ import { Events } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 
+import { ApiResponse } from '~/shared/api/base.models';
 import { ProfileDataStore } from '~/profile/profile.data';
 import { ProfileCompleteness, ProfileModel } from '~/core/api/profile.models';
-import { ApiResponse } from '~/core/api/base.models';
 import { checkProfileCompleteness } from '~/core/utils/user-utils';
 
 import { EventTypes } from '~/core/event-types';

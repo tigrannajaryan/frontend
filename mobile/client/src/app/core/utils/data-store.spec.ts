@@ -4,7 +4,7 @@ import { Storage } from '@ionic/storage';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 
-import { ApiResponse } from '~/core/api/base.models';
+import { ApiResponse } from '~/shared/api/base.models';
 import { AppModule } from '~/app.module';
 import { DataStore } from './data-store';
 import { StorageMock } from './storage-mock';

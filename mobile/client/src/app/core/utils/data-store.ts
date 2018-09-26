@@ -4,9 +4,9 @@ import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/first';
 
-import { AppModule } from '~/app.module';
-import { ApiResponse } from '~/core/api/base.models';
+import { ApiResponse } from '~/shared/api/base.models';
 import { ApiRequestOptions } from '~/shared/api-errors';
+import { AppModule } from '~/app.module';
 
 /**
  * An async data source, either a Promise or Observable
