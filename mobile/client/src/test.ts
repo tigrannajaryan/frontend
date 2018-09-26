@@ -66,10 +66,9 @@ import { SharedSingletonsModule } from '~/shared/shared-singletons.module';
 import { CoreModule } from '~/core/core.module';
 
 // ngrx
-import { META_REDUCERS, StoreModule } from '@ngrx/store';
+import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { Logger } from '~/shared/logger';
-import { getMetaReducers } from '~/app.reducers';
 
 import { AppModule } from '~/app.module';
 
@@ -150,12 +149,6 @@ export class TestUtils {
         { provide: Platform, useFactory: () => PlatformMock.instance() },
         { provide: StatusBar, useFactory: () => StatusBarMock.instance() },
         { provide: Storage, useFactory: () => StorageMock.instance() },
-        {
-          // This allows us to inject Logger into getMetaReducers()
-          provide: META_REDUCERS,
-          deps: [ Logger ],
-          useFactory: getMetaReducers
-        },
         { provide: AuthProcessState, useClass: AuthProcessStateMock },
         // API
         { provide: AuthService, useClass: AuthServiceMock },
