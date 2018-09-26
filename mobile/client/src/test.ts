@@ -117,6 +117,9 @@ context.keys()
 export class TestUtils {
 
   static beforeEachCompiler(components: any[], providers: any[] = [], imports: any = []): Promise<{ fixture: any, instance: any }> {
+    // Hide warnings in console:
+    spyOn(window.console, 'warn');
+
     return TestUtils.configureIonicTestingModule(components, providers, imports)
       .compileComponents()
       .then(() => {
