@@ -1,3 +1,5 @@
+import { DayOffer } from '~/shared/api/price.models';
+
 export interface GetStylistServicesParams {
   stylist_uuid: string;
 }
@@ -22,22 +24,6 @@ export interface GetStylistServicesResponse {
 
 export interface GetPricelistParams {
   service_uuid: string;
-}
-
-export enum DiscountType {
-  FirstVisit = 'first-visit',
-  FrequentVisit = 'frequent-visit',
-  Weekday = 'weekday'
-}
-
-export type ISODate = string; // ISO 8601: YYYY-MM-DD
-
-export interface DayOffer {
-  date: ISODate;
-  price: number;
-  is_fully_booked: boolean;
-  is_working_day: boolean;
-  discount_type?: DiscountType;
 }
 
 export interface GetPricelistResponse {

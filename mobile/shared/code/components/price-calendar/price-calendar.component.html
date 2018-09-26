@@ -1,0 +1,36 @@
+<div *ngIf="calendarDays">
+  <!-- Calculate count of months to be displayed: -->
+  <div *ngIf="monthsCount" class="Calendar">
+    <!-- Iterate over the months count: -->
+    <div *ngFor="let month of monthsArray; index as i">
+      <!-- Get start of the month (ISO date string): -->
+      <div *ngIf="moment(start).add(i, 'months').startOf('month').format('YYYY-MM-DD') as startOfMonth">
+        <!-- Show calendar month name: -->
+        <div class="Calendar-title">{{ moment(startOfMonth).format('MMMM YYYY') }}</div>
+        <!-- Show calendar legend (weekdays names): -->
+        <div *ngIf="moment(startOfMonth).startOf('week').format('YYYY-MM-DD') as startOfWeek" class="Calendar-legend">
+          <div *ngFor="let weekday of weekArray; index as j" class="Calendar-day">
+            {{ moment(startOfWeek).add(j, 'days').format('dd').slice(0, 1) }}
+          </div>
+        </div>
+        <!-- Show month days: -->
+        <div class="Calendar-month">
+          <!-- Empty days before the month started: -->
+          <div *ngFor="let empty of emptyMonthDays(startOfMonth)" class="Calendar-day"></div>
+          <!-- All actual days of the month: -->
+          <div *ngFor="let day of allMonthDays(startOfMonth); index as j" class="Calendar-day">
+            <!-- Show selectable day if there is an offer for this day: -->
+            <div *ngIf="calendarDays.get(moment(startOfMonth).add(j, 'days').format('YYYY-MM-DD')) as offer; else notSelectable"
+              [ngClass]="{ 'is-fullyBooked': offer.is_fully_booked, 'is-nonWorking': !offer.is_working_day }" [ngStyle]="{ 'background-color': offer.opacity && 'rgba(93, 202, 145, ' + offer.opacity + ')' }"
+              (click)="!offer.is_fully_booked && offer.is_working_day && onSelectOffer(offer)" class="Calendar-selectable">
+              {{ j + 1 }}
+              <div class="Calendar-price">${{ offer.price }}</div>
+            </div>
+            <!-- Or show just a day number: -->
+            <ng-template #notSelectable>{{ j + 1 }}</ng-template>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

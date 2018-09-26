@@ -1,21 +1,15 @@
 import { Component } from '@angular/core';
 import { AlertController, Events, IonicPage, NavController } from 'ionic-angular';
-import * as moment from 'moment';
 
 import { Logger } from '~/shared/logger';
 import { loading } from '~/shared/utils/loading';
-
-import { PageNames } from '~/core/page-names';
-import { DayOffer, ISODate } from '~/core/api/services.models';
-import { BookingData } from '~/core/api/booking.data';
+import { DayOffer } from '~/shared/api/price.models';
 import { componentIsActive } from '~/shared/utils/component-is-active';
 
+import { PageNames } from '~/core/page-names';
+import { BookingData } from '~/core/api/booking.data';
 import { EventTypes } from '~/core/event-types';
 import { TabIndex } from '~/main-tabs/main-tabs.component';
-
-interface ExtendedDayOffer extends DayOffer {
-  opacity: number;
-}
 
 @IonicPage()
 @Component({
@@ -23,17 +17,8 @@ interface ExtendedDayOffer extends DayOffer {
   templateUrl: 'select-date.component.html'
 })
 export class SelectDateComponent {
-  offers: Map<ISODate, ExtendedDayOffer>;
-
-  start: ISODate;
-  end: ISODate;
-
   isLoading: boolean;
-
-  // Expose to the view:
-  Array = Array;
-  Math = Math;
-  moment = moment;
+  prices: DayOffer[];
 
   constructor(
     private alertCtrl: AlertController,
@@ -53,6 +38,8 @@ export class SelectDateComponent {
         const { response } = await loading(this, this.bookingData.pricelist.get());
 
         if (response) {
+          this.prices = response.prices;
+
           // When empty offers or all days of preferred stylist either booked or set to non-working:
           const notTimeslots =
             response.prices.length === 0 ||
@@ -60,17 +47,6 @@ export class SelectDateComponent {
 
           if (notTimeslots) {
             this.showNoTimeSlotsPopup();
-
-          } else {
-            // Create offers Map {[ISODate]: DayOffer} to easily get an offer by date:
-            this.offers = new Map();
-            for (const offer of getPricesWithOpacity(response.prices)) {
-              this.offers.set(offer.date, offer);
-            }
-
-            // Set period boundaries to understand what months of calendar to create:
-            this.start = moment(response.prices[0].date).startOf('month').format('YYYY-MM-DD');
-            this.end = moment(response.prices[response.prices.length - 1].date).endOf('month').format('YYYY-MM-DD');
           }
         }
       });
@@ -101,32 +77,4 @@ export class SelectDateComponent {
     });
     popup.present();
   }
-}
-
-function getPricesWithOpacity(offers: DayOffer[], threshold = 0.2): ExtendedDayOffer[] {
-  if (offers.length === 0) {
-    return;
-  }
-  if (offers.length <= 2) {
-    return offers.map((offer: DayOffer) => ({
-      ...offer,
-      opacity: undefined
-    }));
-  }
-  let min = offers[0].price;
-  const max = offers.slice(1).reduce((a: DayOffer, b: DayOffer) => {
-    if (b.price < min) {
-      min = b.price;
-    }
-    if (a.price > b.price) {
-      return a;
-    } else {
-      return b;
-    }
-  }).price;
-  const middle = (min + max) / 2;
-  return offers.map((offer: DayOffer) => ({
-    ...offer,
-    opacity: offer.price <= middle ? 1 - (offer.price - min) / (middle - min) + threshold : undefined
-  }));
 }

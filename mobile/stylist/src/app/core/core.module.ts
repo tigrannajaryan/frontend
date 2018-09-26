@@ -11,12 +11,16 @@ import { FormatPhonePipe } from '~/shared/pipes/format-phone.pipe';
 import { HasErrorPipe } from '~/shared/pipes/has-error.pipe';
 import { PricePipe } from '~/shared/pipes/price.pipe';
 import { BaseService } from '~/shared/api/base-service';
+import { PriceCalendarComponent } from '~/shared/components/price-calendar/price-calendar.component';
 import { DirectivesModule } from '~/core/directives/directive.module';
 import { ComponentsModule } from './components/components.module';
 
 const declarations = [
   FormatPhonePipe,
   HasErrorPipe,
+  PriceCalendarComponent, // Added temporarily to avoid AOT compiler error.
+                          // Should be moved to the module of page where it is
+                          // really used in the future.
   PricePipe
 ];
 

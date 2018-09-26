@@ -4,10 +4,11 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 
+import { DayOffer } from '~/shared/api/price.models';
+import { StylistModel } from '~/shared/api/stylists.models';
 import { DataStore } from '~/core/utils/data-store';
 import { BookingApi, TimeslotsResponse } from '~/core/api/booking.api';
-import { DayOffer, GetPricelistResponse, ServiceModel } from '~/core/api/services.models';
-import { StylistModel } from '~/shared/api/stylists.models';
+import { GetPricelistResponse, ServiceModel } from '~/core/api/services.models';
 
 interface DayOfferWithTotalRegularPrice extends DayOffer {
   totalRegularPrice: number;
