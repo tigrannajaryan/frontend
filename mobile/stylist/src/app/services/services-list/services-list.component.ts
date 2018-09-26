@@ -103,7 +103,7 @@ export class ServicesListComponent {
       const { response } = await this.stylistService.setStylistServices({
         services: categoriesServices,
         service_time_gap_minutes: this.timeGap
-      }).toPromise();
+      }).get();
 
       if (response) {
         this.navCtrl.push(PageNames.Worktime);
@@ -159,7 +159,7 @@ export class ServicesListComponent {
     const [service] = category.services.splice(idx, 1);
 
     if (service.uuid !== undefined) {
-      const { error } = await this.stylistService.deleteStylistService(service.uuid).toPromise();
+      const { error } = await this.stylistService.deleteStylistService(service.uuid).get();
       if (error) {
         // put service back if error occurred
         category.services.splice(idx, 0, service);
@@ -223,7 +223,7 @@ export class ServicesListComponent {
       this.stylistService.setStylistServices({
         services: categoriesServices,
         service_time_gap_minutes: this.timeGap
-      }).toPromise();
+      }).get();
     }
   }
 }

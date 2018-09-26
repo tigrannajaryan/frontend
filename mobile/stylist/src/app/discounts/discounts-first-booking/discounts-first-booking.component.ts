@@ -45,6 +45,6 @@ export class DiscountsFirstBookingComponent {
   }
 
   protected onFirstVisitChange(): void {
-    this.discountsApi.setDiscounts({ first_booking: this.firstBooking.percentage }).toPromise();
+    this.discountsApi.setDiscounts({ first_booking: this.firstBooking.percentage }).get();
   }
 }

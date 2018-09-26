@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { HttpParams } from '@angular/common/http/src/params';
 import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/first';
 
 import { ENV } from '~/environments/environment.default';
 
@@ -111,5 +112,23 @@ export class BaseService {
         this.logger.error('API request failed:', JSON.stringify(e));
         throw e;
       });
+  }
+}
+
+/**
+ * Shortcut for getting the response of API call if you do not want
+ * to subscribe to Observable, e.g.:
+ * const { response, error } = await apiService.getProfile().get();
+ */
+function get<T>(this: Observable<T>): Promise<T> {
+  return this.first().toPromise();
+}
+
+// Add get() function to Observable prototype.
+Observable.prototype.get = get;
+
+declare module 'rxjs/Observable' {
+  interface Observable<T> {
+    get: typeof get;
   }
 }

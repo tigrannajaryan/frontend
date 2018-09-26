@@ -35,13 +35,13 @@ export class DiscountsWeekdayComponent {
   protected async onContinue(): Promise<void> {
     // we need this call to set `has_weekday_discounts_set` to true
     // otherwise we will go to the discounts registration flow each time after log in
-    const { response } = await this.discountsApi.setDiscounts({ weekdays: this.discounts }).toPromise();
+    const { response } = await this.discountsApi.setDiscounts({ weekdays: this.discounts }).get();
     if (response) {
       this.navCtrl.push(PageNames.DiscountsRevisit);
     }
   }
 
   protected async onWeekdayChange(): Promise<void> {
-    await this.discountsApi.setDiscounts({ weekdays: this.discounts }).toPromise();
+    await this.discountsApi.setDiscounts({ weekdays: this.discounts }).get();
   }
 }

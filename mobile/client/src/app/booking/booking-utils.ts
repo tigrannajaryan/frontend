@@ -53,15 +53,15 @@ export async function startRebooking(appointment: AppointmentModel): Promise<voi
 
   // Get current services of our preferred stylist
   const servicesApi = AppModule.injector.get(ServicesService);
-  const currentServices = (await servicesApi.getStylistServices({ stylist_uuid: preferredStylist.uuid }).toPromise()).response;
-  if (!currentServices) {
+  const { response } = await servicesApi.getStylistServices({ stylist_uuid: preferredStylist.uuid }).get();
+  if (!response) {
     // Couldn't get the services. Error should be already reported, just return.
     return;
   }
 
   // Ensure all services of previous appointment still exist
   const foundAll = appointment.services.every(
-    service => currentServices.categories.some(c => {
+    service => response.categories.some(c => {
       return c.services.some(s => {
         if (s.uuid === service.service_uuid) {
           // Service found, update price and name in case it was changes since last booking

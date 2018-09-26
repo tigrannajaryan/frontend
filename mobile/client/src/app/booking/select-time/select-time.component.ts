@@ -142,7 +142,7 @@ export class SelectTimeComponent {
     };
 
     // Preview the appointment
-    const { response, error } = await this.bookingApi.previewAppointment(appointmentRequest).toPromise();
+    const { response, error } = await this.bookingApi.previewAppointment(appointmentRequest).get();
     if (!error) {
       const params: AppointmentPageParams = {
         appointment: response,
@@ -153,7 +153,7 @@ export class SelectTimeComponent {
   }
 
   async createAppointment(appointmentRequest: CreateAppointmentRequest): Promise<void> {
-    const { error } = await this.bookingApi.createAppointment(appointmentRequest).toPromise();
+    const { error } = await this.bookingApi.createAppointment(appointmentRequest).get();
     if (!error) {
       // Appointment succesfully created. Refresh Home screen.
       this.appointmentsData.home.refresh();

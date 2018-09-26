@@ -201,7 +201,7 @@ export class HomeComponent {
    */
   async cancelAppointment(appointment: Appointment): Promise<void> {
     const { response } = await this.homeService.changeAppointment(appointment.uuid,
-      { status: AppointmentStatuses.cancelled_by_stylist }).toPromise();
+      { status: AppointmentStatuses.cancelled_by_stylist }).get();
     if (response) {
       this.loadAppointments(this.activeTab);
     }
@@ -245,7 +245,7 @@ export class HomeComponent {
 
     this.isLoading = true;
     try {
-      const { response } = await this.homeService.getHome(query).toPromise();
+      const { response } = await this.homeService.getHome(query).get();
       if (!response) {
         return;
       }
