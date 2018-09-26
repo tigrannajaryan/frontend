@@ -141,7 +141,7 @@ npm-test-dir: npm-test-dir-unit npm-test-dir-e2e
 
 npm-test-dir-unit:
 	$(L)echo Unit testing $(BUILDDIR)...
-	$(L)cd $(BUILDDIR) && ../scripts/run_test.sh
+	$(L)cd $(BUILDDIR) && ..$(PATHSEP)scripts$(PATHSEP)run_test
 	$(L)echo Unit testing $(BUILDDIR) finished.
 
 npm-test-dir-e2e:
