@@ -15,6 +15,7 @@ import { createNavHistoryList } from '~/core/functions';
 import { AppStorage } from '~/core/app-storage';
 import { ServerStatusTracker } from '~/shared/server-status-tracker';
 import { ENV } from '~/environments/environment.default';
+import { AuthResponse } from '~/shared/stylist-api/auth-api-models';
 
 class TokenStorageImpl implements TokenStorage {
   constructor(private appStorage: AppStorage) {}
@@ -101,9 +102,9 @@ export class MyAppComponent {
 
       // We were previously authenticated, let's try to refresh the token
       // and validate it and show the correct page after that.
-      let authResponse;
+      let authResponse: AuthResponse;
       try {
-        authResponse = await this.authApiService.refreshAuth();
+        authResponse = (await this.authApiService.refreshAuth().toPromise()).response;
       } catch (e) {
         this.logger.error('App: Error when trying to refresh auth.');
       }

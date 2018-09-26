@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import * as faker from 'faker';
 
-import { ApiResponse } from '~/core/api/base.models';
+import { ApiResponse } from '~/shared/api/base.models';
 import { AppointmentModel, AppointmentsHistoryResponse, AppointmentStatus, HomeResponse } from '~/core/api/appointments.models';
 
 @Injectable()

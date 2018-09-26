@@ -2,7 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { Content, IonicPage, NavParams, Slides } from 'ionic-angular';
 
 import { DiscountsApi } from '~/shared/stylist-api/discounts.api';
-import { Discounts, MaximumDiscounts, MaximumDiscountsWithVars, WeekdayDiscount } from '~/shared/stylist-api/discounts.models';
+import { MaximumDiscounts, MaximumDiscountsWithVars, WeekdayDiscount } from '~/shared/stylist-api/discounts.models';
 import { PageNames } from '~/core/page-names';
 import { loading } from '~/core/utils/loading';
 import { FirstBooking } from '~/discounts/discounts-first-booking/discounts-first-booking.component';
@@ -38,10 +38,10 @@ export class DiscountsComponent {
     is_maximum_discount_enabled: false
   };
   discountTabs = [
-    {name: 'Daily'},
-    {name: 'Loyalty'},
-    {name: 'First visit'},
-    {name: 'Maximum'}
+    { name: 'Daily' },
+    { name: 'Loyalty' },
+    { name: 'First visit' },
+    { name: 'Maximum' }
   ];
   activeTab: DiscountTabNames;
   isProfile: Boolean;
@@ -65,14 +65,21 @@ export class DiscountsComponent {
 
   @loading
   async loadInitialData(): Promise<void> {
-    const {first_booking, weekdays, ...rebook} = await this.discountsApi.getDiscounts() as Discounts;
+    const discounts = (await this.discountsApi.getDiscounts().toPromise()).response;
+    if (!discounts) {
+      return;
+    }
+
+    const { first_booking, weekdays, ...rebook } = discounts;
     this.firstBooking.percentage = first_booking;
     this.weekdays = weekdays.sort((a, b) => a.weekday - b.weekday); // from 1 (Monday) to 7 (Sunday)
     this.rebook = DiscountsRevisitComponent.transformRebookToDiscounts(rebook);
 
-    const maximumDiscounts = await this.discountsApi.getMaximumDiscounts() as MaximumDiscounts;
-    this.maximumDiscounts.maximum_discount = maximumDiscounts.maximum_discount;
-    this.maximumDiscounts.is_maximum_discount_enabled = maximumDiscounts.is_maximum_discount_enabled;
+    const maximumDiscounts: MaximumDiscounts = (await this.discountsApi.getMaximumDiscounts().toPromise()).response;
+    if (maximumDiscounts) {
+      this.maximumDiscounts.maximum_discount = maximumDiscounts.maximum_discount;
+      this.maximumDiscounts.is_maximum_discount_enabled = maximumDiscounts.is_maximum_discount_enabled;
+    }
   }
 
   async doRefresh(refresher): Promise<void> {
@@ -104,25 +111,21 @@ export class DiscountsComponent {
   }
 
   onWeekdayChange(): void {
-    this.discountsApi.setDiscounts({
-      weekdays: this.weekdays
-    });
+    this.discountsApi.setDiscounts({ weekdays: this.weekdays }).toPromise();
   }
 
   onRevisitChange(): void {
-    this.discountsApi.setDiscounts(DiscountsRevisitComponent.transformDiscountsToRebook(this.rebook));
+    this.discountsApi.setDiscounts(DiscountsRevisitComponent.transformDiscountsToRebook(this.rebook)).toPromise();
   }
 
   onFirstVisitChange(): void {
-    this.discountsApi.setDiscounts({
-      first_booking: this.firstBooking.percentage
-    });
+    this.discountsApi.setDiscounts({ first_booking: this.firstBooking.percentage }).toPromise();
   }
 
   onMaximumDiscountChange(): void {
     this.discountsApi.setMaximumDiscounts({
       maximum_discount: this.maximumDiscounts.maximum_discount,
       is_maximum_discount_enabled: this.maximumDiscounts.is_maximum_discount_enabled
-    });
+    }).toPromise();
   }
 }

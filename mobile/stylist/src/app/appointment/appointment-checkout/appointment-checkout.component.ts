@@ -69,10 +69,12 @@ export class AppointmentCheckoutComponent {
       if (!this.params) {
         // Entering this view for the first time. Load the data.
         this.params = this.navParams.get('data') as AppointmentCheckoutParams;
-        this.appointment = await this.homeService.getAppointmentById(this.params.appointmentUuid);
-        this.selectedServices = this.appointment.services.map(el => ({ service_uuid: el.service_uuid }));
-        this.hasTaxIncluded = true; // Enable tax by default
-        this.hasCardFeeIncluded = this.appointment.has_card_fee_included;
+        this.appointment = (await this.homeService.getAppointmentById(this.params.appointmentUuid).toPromise()).response;
+        if (this.appointment) {
+          this.selectedServices = this.appointment.services.map(el => ({ service_uuid: el.service_uuid }));
+          this.hasTaxIncluded = true; // Enable tax by default
+          this.hasCardFeeIncluded = this.appointment.has_card_fee_included;
+        }
       }
       await this.updatePreview();
     } finally {
@@ -87,6 +89,10 @@ export class AppointmentCheckoutComponent {
    */
   async updatePreview(): Promise<void> {
 
+    if (!this.appointment) {
+      return;
+    }
+
     try {
       this.isLoading = true;
       const appointmentPreview: AppointmentPreviewRequest = {
@@ -97,8 +103,10 @@ export class AppointmentCheckoutComponent {
         has_card_fee_included: this.hasCardFeeIncluded
       };
 
-      this.previewResponse = await this.homeService.getAppointmentPreview(appointmentPreview) as AppointmentPreviewResponse;
-      this.subTotalRegularPrice = this.previewResponse.services.reduce((a, c) => (a + c.regular_price), 0);
+      this.previewResponse = (await this.homeService.getAppointmentPreview(appointmentPreview).toPromise()).response;
+      if (this.previewResponse) {
+        this.subTotalRegularPrice = this.previewResponse.services.reduce((a, c) => (a + c.regular_price), 0);
+      }
     } finally {
       this.isLoading = false;
     }
@@ -142,7 +150,10 @@ export class AppointmentCheckoutComponent {
       has_tax_included: this.hasTaxIncluded
     };
 
-    await this.homeService.changeAppointment(this.params.appointmentUuid, request);
+    const { response } = await this.homeService.changeAppointment(this.params.appointmentUuid, request).toPromise();
+    if (!response) {
+      return;
+    }
 
     // Replace current page with checkout confirmation page. We push the new page first
     // and then remove the current page to avoid 2 UI transitions.

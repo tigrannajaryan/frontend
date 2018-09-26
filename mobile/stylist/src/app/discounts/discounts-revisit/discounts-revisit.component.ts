@@ -53,8 +53,10 @@ export class DiscountsRevisitComponent {
   }
 
   async loadInitialData(): Promise<void> {
-    const discounts: Discounts = await loading(this, this.discountsApi.getDiscounts());
-    this.discounts = DiscountsRevisitComponent.transformRebookToDiscounts(discounts);
+    const discounts: Discounts = (await loading(this, this.discountsApi.getDiscounts())).response;
+    if (discounts) {
+      this.discounts = DiscountsRevisitComponent.transformRebookToDiscounts(discounts);
+    }
   }
 
   protected onContinue(): void {
@@ -62,6 +64,7 @@ export class DiscountsRevisitComponent {
   }
 
   protected onRevisitChange(): void {
-    this.discountsApi.setDiscounts(DiscountsRevisitComponent.transformDiscountsToRebook(this.discounts));
+    this.discountsApi.setDiscounts(
+      DiscountsRevisitComponent.transformDiscountsToRebook(this.discounts)).toPromise();
   }
 }

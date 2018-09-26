@@ -1,4 +1,8 @@
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/observable/of';
+
+import { ApiResponse } from '~/shared/api/base.models';
 import { Worktime } from './worktime.models';
 
 /**
@@ -13,20 +17,20 @@ export class WorktimeApiMock {
   /**
    * Set the profile of the stylist. The stylist must be already authenticated as a user.
    */
-  async getWorktime(): Promise<Worktime> {
+  getWorktime(): Observable<ApiResponse<Worktime>> {
     const worktime: Worktime = {
       weekdays: []
     };
 
-    return Promise.resolve(worktime);
+    return Observable.of({ response: worktime });
   }
 
   /**
    * Set service to stylist. The stylist must be already authenticated as a user.
    */
-  async setWorktime(data: Worktime): Promise<Worktime> {
+  setWorktime(data: Worktime): Observable<ApiResponse<Worktime>> {
     this.lastSet = data;
 
-    return Promise.resolve(data);
+    return Observable.of({ response: data });
   }
 }

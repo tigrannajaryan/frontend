@@ -61,6 +61,8 @@ import { StylistServiceMock } from '~/shared/stylist-api/stylist-service-mock';
 
 import { AppStorage } from '~/core/app-storage';
 import { AppStorageMock } from '~/core/app-storage-mock';
+import { HomeService } from '~/shared/stylist-api/home.service';
+import { HomeServiceMock } from '~/shared/stylist-api/home.service.mock';
 
 declare const require: any;
 
@@ -111,6 +113,7 @@ export class TestUtils {
         { provide: NavController, useFactory: () => NavControllerMock.instance() },
         { provide: AuthApiService, useClass: AuthApiServiceMock },
         { provide: WorktimeApi, useClass: WorktimeApiMock },
+        { provide: HomeService, useClass: HomeServiceMock },
         { provide: StylistServiceProvider, useClass: StylistServiceMock },
         { provide: PopoverController, useClass: PopoverControllerMock },
         { provide: GoogleAnalytics, useClass: GoogleAnalyticsMock },

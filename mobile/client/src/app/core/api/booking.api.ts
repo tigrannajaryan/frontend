@@ -1,12 +1,16 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import * as moment from 'moment';
 
-import { ApiResponse } from '~/core/api/base.models';
-import { BaseService } from '~/core/api/base-service';
+import { ApiResponse } from '~/shared/api/base.models';
+import { ApiRequestOptions } from '~/shared/api-errors';
+import { Logger } from '~/shared/logger';
+import { ServerStatusTracker } from '~/shared/server-status-tracker';
+
+import { BaseService } from '~/shared/api/base-service';
 import { GetPricelistResponse, ServiceModel } from '~/core/api/services.models';
 import { AppointmentModel } from '~/core/api/appointments.models';
-import { ApiRequestOptions } from '~/shared/api-errors';
 
 type ISODateTime = string;
 
@@ -32,6 +36,14 @@ export interface CreateAppointmentRequest {
 
 @Injectable()
 export class BookingApi extends BaseService {
+
+  constructor(
+    http: HttpClient,
+    logger: Logger,
+    serverStatus: ServerStatusTracker
+  ) {
+    super(http, logger, serverStatus);
+  }
 
   getTimeslots(stylistUuid: string, date: moment.Moment): Observable<ApiResponse<TimeslotsResponse>> {
     const params = {

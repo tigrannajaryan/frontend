@@ -5,8 +5,8 @@ import { Actions, Effect } from '@ngrx/effects';
 import { Observable } from 'rxjs/Observable';
 import { catchError, map } from 'rxjs/operators';
 
+import { ApiResponse } from '~/shared/api/base.models';
 import { LOADING_DELAY, RequestState } from '~/core/api/request.models.ts';
-import { ApiResponse } from '~/core/api/base.models';
 import { ProfileModel } from '~/core/api/profile.models';
 import { ProfileApi } from '~/core/api/profile-api';
 
@@ -25,7 +25,7 @@ import {
   UpdateProfileErrorAction,
   UpdateProfileSuccessAction
 } from '~/core/reducers/profile.reducer';
-import { BaseService } from '~/core/api/base-service';
+import { BaseService } from '~/shared/api/base-service';
 
 @Injectable()
 export class ProfileEffects {

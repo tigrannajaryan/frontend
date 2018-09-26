@@ -8,7 +8,7 @@ import {
 } from 'ionic-angular';
 
 import { loading } from '~/shared/utils/loading';
-import { StylistServiceProvider } from '~/shared/stylist-api/stylist-service';
+import { ServiceTemplateSetResponse, StylistServiceProvider, StylistServicesListResponse } from '~/shared/stylist-api/stylist-service';
 import { ServiceCategory, ServiceTemplateItem } from '~/shared/stylist-api/stylist-models';
 
 import { showAlert } from '~/core/utils/alert';
@@ -59,15 +59,15 @@ export class ServicesListComponent {
 
   async loadInitialData(): Promise<void> {
     const uuid = this.navParams.get('uuid');
-    let response;
+    let response: StylistServicesListResponse | ServiceTemplateSetResponse;
 
     if (uuid && uuid !== ServiceListType.blank) {
-      response = await loading(this, this.stylistService.getServiceTemplateSetByUuid(uuid));
+      response = (await loading(this, this.stylistService.getServiceTemplateSetByUuid(uuid))).response;
     } else if (uuid === ServiceListType.blank) {
-      response = await loading(this, this.stylistService.getStylistServices());
+      response = (await loading(this, this.stylistService.getStylistServices())).response;
       response.categories = ServicesListComponent.buildBlankCategoriesList(response.categories);
     } else {
-      response = await loading(this, this.stylistService.getStylistServices());
+      response = (await loading(this, this.stylistService.getStylistServices())).response;
     }
     this.categories = response.categories;
     this.timeGap = response.service_time_gap_minutes;
@@ -100,12 +100,14 @@ export class ServicesListComponent {
     const categoriesServices = this.checkCategoriesServices();
 
     if (categoriesServices) {
-      await this.stylistService.setStylistServices({
+      const { response } = await this.stylistService.setStylistServices({
         services: categoriesServices,
         service_time_gap_minutes: this.timeGap
-      });
+      }).toPromise();
 
-      this.navCtrl.push(PageNames.Worktime);
+      if (response) {
+        this.navCtrl.push(PageNames.Worktime);
+      }
     }
   }
 
@@ -157,11 +159,8 @@ export class ServicesListComponent {
     const [service] = category.services.splice(idx, 1);
 
     if (service.uuid !== undefined) {
-      try {
-        await this.stylistService.deleteStylistService(service.uuid);
-      } catch (e) {
-        showAlert('Error', e);
-
+      const { error } = await this.stylistService.deleteStylistService(service.uuid).toPromise();
+      if (error) {
         // put service back if error occurred
         category.services.splice(idx, 0, service);
       }
@@ -224,7 +223,7 @@ export class ServicesListComponent {
       this.stylistService.setStylistServices({
         services: categoriesServices,
         service_time_gap_minutes: this.timeGap
-      });
+      }).toPromise();
     }
   }
 }

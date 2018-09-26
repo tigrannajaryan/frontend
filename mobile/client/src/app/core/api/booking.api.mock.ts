@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
-import { ApiResponse } from '~/core/api/base.models';
+import { ApiResponse } from '~/shared/api/base.models';
 import { TimeslotsResponse } from './booking.api';
 import { GetPricelistResponse, ServiceModel } from '~/core/api/services.models';
 
