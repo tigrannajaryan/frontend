@@ -9,7 +9,7 @@
 <div class="AppointmentItem-wp">
   <div class="AppointmentItem-top">
     <div class="AppointmentItem-topTime">
-      {{ appointment.datetime_start_at | date: 'h:mmaaaaa' }}
+      {{ formatTimeInZone(appointment.datetime_start_at) }}
 
       <span *ngIf="hasDate" class="AppointmentItem-topTimeDay">{{ appointment.datetime_start_at | date: 'E, LLL dd' }}</span>
     </div>
