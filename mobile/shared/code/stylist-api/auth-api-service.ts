@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/toPromise';
 
-import { BaseApiService } from './base-api-service';
+import { BaseService } from '~/shared/api/base-service';
 import { Logger } from '~/shared/logger';
 import { ServerStatusTracker } from '~/shared/server-status-tracker';
 import { UserContext } from '~/shared/user-context';
+import { ApiResponse } from '~/shared/api/base.models';
 import { AuthCredentials, AuthResponse } from './auth-api-models';
 
 export interface AuthError {
@@ -23,15 +25,15 @@ export interface TokenStorage {
  * AuthServiceProvider provides authentication against server API.
  */
 @Injectable()
-export class AuthApiService extends BaseApiService {
+export class AuthApiService extends BaseService {
 
   private authToken: string;
   private tokenStorage: TokenStorage;
 
   constructor(
-    protected http: HttpClient,
-    protected logger: Logger,
-    protected serverStatus: ServerStatusTracker,
+    http: HttpClient,
+    logger: Logger,
+    serverStatus: ServerStatusTracker,
     protected appContext: UserContext
   ) {
     super(http, logger, serverStatus);
@@ -47,7 +49,7 @@ export class AuthApiService extends BaseApiService {
    * Authenticate using the API. If successfull remembers the auth response
    * and token which can be later obtained via getAuthToken().
    */
-  async doAuth(credentials: AuthCredentials): Promise<AuthResponse> {
+  doAuth(credentials: AuthCredentials): Observable<ApiResponse<AuthResponse>> {
     return this.processAuthResponse(
       () => this.post<AuthResponse>('auth/get-token', credentials));
   }
@@ -56,7 +58,7 @@ export class AuthApiService extends BaseApiService {
    * Register a new user authenticate using the API. If successfull remembers the auth response
    * and token which can be later obtained via getAuthToken().
    */
-  async registerByEmail(credentials: AuthCredentials): Promise<AuthResponse> {
+  registerByEmail(credentials: AuthCredentials): Observable<ApiResponse<AuthResponse>> {
     return this.processAuthResponse(
       () => this.post<AuthResponse>('auth/register', credentials));
   }
@@ -72,7 +74,7 @@ export class AuthApiService extends BaseApiService {
     return this.authToken;
   }
 
-  async refreshAuth(): Promise<AuthResponse> {
+  refreshAuth(): Observable<ApiResponse<AuthResponse>> {
     const request = { token: this.authToken };
     return this.processAuthResponse(
       () => this.post<AuthResponse>('auth/refresh-token', request));
@@ -85,17 +87,17 @@ export class AuthApiService extends BaseApiService {
    *                to AuthResponse.
    * @returns the same response that it received from apiCall (or re-throws the error).
    */
-  private async processAuthResponse(apiCall: () => Promise<AuthResponse>): Promise<AuthResponse> {
+  private processAuthResponse(apiCall: () => Observable<ApiResponse<AuthResponse>>): Observable<ApiResponse<AuthResponse>> {
     return apiCall()
-      .then(response => {
-        this.setAuthResponse(response);
+      .map(response => {
+        if (!response.error) {
+          this.setAuthResponse(response.response);
+        } else {
+          // Failed authentication. Clear previously saved successfull response (if any).
+          this.setAuthResponse(undefined);
+          this.logger.error('Authentication failed:', response.error.getMessage());
+        }
         return response;
-      })
-      .catch(e => {
-        // Failed authentication. Clear previously saved successfull response (if any).
-        this.setAuthResponse(undefined);
-        this.logger.error('Authentication failed:', JSON.stringify(e));
-        throw e;
       });
   }
 

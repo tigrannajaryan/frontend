@@ -6,7 +6,7 @@ import { Logger } from '~/shared/logger';
 import { loading } from '~/shared/utils/loading';
 
 import { AppointmentModel, AppointmentsHistoryResponse } from '~/core/api/appointments.models';
-import { ApiResponse } from '~/core/api/base.models';
+import { ApiResponse } from '~/shared/api/base.models';
 import { AppointmentsDataStore } from '~/core/api/appointments.datastore';
 import { PageNames } from '~/core/page-names';
 import { AppointmentPageParams } from '~/appointment-page/appointment-page.component';

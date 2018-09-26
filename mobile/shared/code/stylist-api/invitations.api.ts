@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs/Observable';
 
 import { Logger } from '~/shared/logger';
 import { ServerStatusTracker } from '~/shared/server-status-tracker';
-import { BaseApiService } from '~/shared/stylist-api/base-api-service';
+import { BaseService } from '~/shared/api/base-service';
+import { ApiResponse } from '~/shared/api/base.models';
 import { ClientInvitation, InvitationsResponse } from './invitations.models';
 
 /**
@@ -12,26 +14,26 @@ import { ClientInvitation, InvitationsResponse } from './invitations.models';
  * AuthServiceProvider.
  */
 @Injectable()
-export class InvitationsApi extends BaseApiService {
+export class InvitationsApi extends BaseService {
 
   constructor(
-    public http: HttpClient,
-    public logger: Logger,
-    protected serverStatus: ServerStatusTracker) {
+    http: HttpClient,
+    logger: Logger,
+    serverStatus: ServerStatusTracker) {
     super(http, logger, serverStatus);
   }
 
   /**
    * Sends invitation(s) to the provided client(s). The stylist must be already authenticated as a user.
    */
-  async createInvitations(data: ClientInvitation[]): Promise<InvitationsResponse> {
+  createInvitations(data: ClientInvitation[]): Observable<ApiResponse<InvitationsResponse>> {
     return this.post<InvitationsResponse>('stylist/invitations', data);
   }
 
   /**
    * Return the list of previously sent invitations.
    */
-  async getInvitations(): Promise<InvitationsResponse> {
+  getInvitations(): Observable<ApiResponse<InvitationsResponse>> {
     return this.get<InvitationsResponse>('stylist/invitations');
   }
 }

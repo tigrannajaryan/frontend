@@ -7,7 +7,6 @@ import { loading } from '~/core/utils/loading';
 import { createNavHistoryList } from '~/core/functions';
 import { PageNames } from '~/core/page-names';
 import { AppStorage } from '~/core/app-storage';
-import { ApiFieldAndNonFieldErrors } from '~/shared/api-errors';
 
 export enum LoginOrRegisterType {
   login,
@@ -48,28 +47,23 @@ export class LoginRegisterComponent {
 
   @loading
   async login(): Promise<void> {
-    try {
-      // Remember the email
-      this.appStorage.set('userEmail', this.formData.email);
+    // Remember the email
+    this.appStorage.set('userEmail', this.formData.email);
 
-      // Call auth API
-      const authCredentials: AuthCredentials = {
-        email: this.formData.email,
-        password: this.formData.password,
-        role: UserRole.stylist
-      };
-      const authResponse = await this.authService.doAuth(authCredentials);
+    // Call auth API
+    const authCredentials: AuthCredentials = {
+      email: this.formData.email,
+      password: this.formData.password,
+      role: UserRole.stylist
+    };
+    const { response } = await this.authService.doAuth(authCredentials).toPromise();
 
-      // Find out what page should be shown to the user and navigate to
-      // it while also properly populating the navigation history
-      // so that Back buttons work correctly.
-      const pages = createNavHistoryList(authResponse.profile_status);
+    // Find out what page should be shown to the user and navigate to
+    // it while also properly populating the navigation history
+    // so that Back buttons work correctly.
+    if (response) {
+      const pages = createNavHistoryList(response.profile_status);
       this.navCtrl.setPages(pages);
-    } catch (e) {
-      if (e instanceof ApiFieldAndNonFieldErrors) {
-        // TODO: Iterate over e.errors Map and show all errors on the form.
-      }
-      throw e;
     }
   }
 
@@ -80,15 +74,17 @@ export class LoginRegisterComponent {
       password: this.formData.password,
       role: UserRole.stylist
     };
-    await this.authService.registerByEmail(authCredentialsRecord);
+    const { response } = await this.authService.registerByEmail(authCredentialsRecord).toPromise();
 
-    // Remember the email
-    this.appStorage.set('userEmail', this.formData.email);
+    if (response) {
+      // Remember the email
+      this.appStorage.set('userEmail', this.formData.email);
 
-    // This is a new user, enable help screens
-    this.appStorage.set('showHomeScreenHelp', true);
+      // This is a new user, enable help screens
+      this.appStorage.set('showHomeScreenHelp', true);
 
-    this.navCtrl.push(PageNames.RegisterSalon, {}, { animate: false });
+      this.navCtrl.push(PageNames.RegisterSalon, {}, { animate: false });
+    }
   }
 
   onLoginOrRegister(): void {

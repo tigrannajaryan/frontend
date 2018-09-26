@@ -23,10 +23,10 @@ export class ServicesEffects {
     .ofType(servicesActionTypes.LOAD)
     .map((action: LoadAction) => action)
     .switchMap(() => Observable.defer(withLoader(async () => {
-      try {
-        const { categories } = await this.stylistService.getStylistServices();
-        return new LoadSuccessAction(categories);
-      } catch (error) {
+      const { response, error } = (await this.stylistService.getStylistServices().toPromise());
+      if (response) {
+        return new LoadSuccessAction(response.categories);
+      } else {
         showAlert(
           'An error occurred',
           'Loading of services failed',

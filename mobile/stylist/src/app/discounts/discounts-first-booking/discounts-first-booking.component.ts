@@ -34,8 +34,10 @@ export class DiscountsFirstBookingComponent {
   }
 
   async loadInitialData(): Promise<void> {
-    const discounts: Discounts = await loading(this, this.discountsApi.getDiscounts());
-    this.firstBooking.percentage = discounts.first_booking;
+    const discounts: Discounts = (await loading(this, this.discountsApi.getDiscounts())).response;
+    if (discounts) {
+      this.firstBooking.percentage = discounts.first_booking;
+    }
   }
 
   protected onContinue(): void {
@@ -43,6 +45,6 @@ export class DiscountsFirstBookingComponent {
   }
 
   protected onFirstVisitChange(): void {
-    this.discountsApi.setDiscounts({ first_booking: this.firstBooking.percentage });
+    this.discountsApi.setDiscounts({ first_booking: this.firstBooking.percentage }).toPromise();
   }
 }

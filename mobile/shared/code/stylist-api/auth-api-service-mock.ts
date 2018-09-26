@@ -1,4 +1,9 @@
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/observable/of';
+
+import { ApiResponse } from '~/shared/api/base.models';
+import { ApiClientError, HttpStatus } from '~/shared/api-errors';
 import { AuthCredentials, AuthResponse, UserRole } from './auth-api-models';
 import { StylistProfile } from './stylist-models';
 
@@ -22,14 +27,14 @@ export class AuthApiServiceMock {
    * Authenticate using the API. If successfull remembers the auth response
    * and token which can be later obtained via getAuthToken().
    */
-  async doAuth(credentials: AuthCredentials): Promise<AuthResponse> {
+  doAuth(credentials: AuthCredentials): Observable<ApiResponse<AuthResponse>> {
     if (credentials.email === this.successAuthCredentials.email &&
       credentials.password === this.successAuthCredentials.password) {
-      this.authResponse = { token: 'test-token', role: UserRole.stylist};
+      this.authResponse = { token: 'test-token', role: UserRole.stylist };
 
-      return Promise.resolve(this.authResponse);
+      return Observable.of({ response: this.authResponse });
     } else {
-      throw new Error('authentication failed');
+      return Observable.of({ response: undefined, error: new ApiClientError(HttpStatus.unauthorized, undefined) });
     }
   }
 
@@ -37,10 +42,10 @@ export class AuthApiServiceMock {
    * Register a new user authenticate using the API. If successfull remembers the auth response
    * and token which can be later obtained via getAuthToken().
    */
-  async registerByEmail(credentials: AuthCredentials): Promise<AuthResponse> {
+  registerByEmail(credentials: AuthCredentials): Observable<ApiResponse<AuthResponse>> {
     this.authResponse = { token: 'test-token', role: UserRole.stylist };
 
-    return Promise.resolve(this.authResponse);
+    return Observable.of({ response: this.authResponse });
   }
 
   /**
@@ -55,7 +60,7 @@ export class AuthApiServiceMock {
    * Existing limitation: does not work if the stylist profile already exists,
    * so this is a works-only-once type of call. I asked backend to change the behavior.
    */
-  async setStylistProfile(data: StylistProfile): Promise<AuthResponse> {
-    return Promise.resolve({ token: 'test-token', role: UserRole.stylist });
+  setStylistProfile(data: StylistProfile): Observable<ApiResponse<AuthResponse>> {
+    return Observable.of({ response: { token: 'test-token', role: UserRole.stylist } });
   }
 }

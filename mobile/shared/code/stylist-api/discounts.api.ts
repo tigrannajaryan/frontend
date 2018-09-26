@@ -1,21 +1,23 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs/Observable';
 
-import { BaseApiService } from '~/shared/stylist-api/base-api-service';
+import { BaseService } from '~/shared/api/base-service';
 import { Logger } from '~/shared/logger';
 import { ServerStatusTracker } from '~/shared/server-status-tracker';
+import { ApiResponse } from '~/shared/api/base.models';
 import { Discounts, MaximumDiscounts } from './discounts.models';
 
 /**
  * DiscountsApi allows getting and setting the discount for stylist.
  */
 @Injectable()
-export class DiscountsApi extends BaseApiService {
+export class DiscountsApi extends BaseService {
 
   constructor(
-    protected http: HttpClient,
-    protected logger: Logger,
-    protected serverStatus: ServerStatusTracker
+    http: HttpClient,
+    logger: Logger,
+    serverStatus: ServerStatusTracker
   ) {
     super(http, logger, serverStatus);
   }
@@ -23,28 +25,28 @@ export class DiscountsApi extends BaseApiService {
   /**
    * Get the discounts of the stylist. The stylist must be already authenticated as a user.
    */
-  async getDiscounts(): Promise<Discounts> {
+  getDiscounts(): Observable<ApiResponse<Discounts>> {
     return this.get<Discounts>('stylist/discounts');
   }
 
   /**
    * Get the maximum discounts of the stylist. The stylist must be already authenticated as a user.
    */
-  async getMaximumDiscounts(): Promise<MaximumDiscounts> {
+  getMaximumDiscounts(): Observable<ApiResponse<MaximumDiscounts>> {
     return this.get<MaximumDiscounts>('stylist/maximum-discount');
   }
 
   /**
    * Set discounts to stylist. The stylist must be already authenticated as a user.
    */
-  async setDiscounts(discounts: Discounts): Promise<Discounts> {
+  setDiscounts(discounts: Discounts): Observable<ApiResponse<Discounts>> {
     return this.patch<Discounts>('stylist/discounts', discounts);
   }
 
   /**
    * Set maximum discounts to stylist. The stylist must be already authenticated as a user.
    */
-  async setMaximumDiscounts(maximumDiscounts: MaximumDiscounts): Promise<MaximumDiscounts> {
+  setMaximumDiscounts(maximumDiscounts: MaximumDiscounts): Observable<ApiResponse<MaximumDiscounts>> {
     return this.post<MaximumDiscounts>('stylist/maximum-discount', maximumDiscounts);
   }
 }

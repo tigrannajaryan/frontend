@@ -135,7 +135,7 @@ export class HomeComponent {
           this.autoRefresh();
         });
       },
-      1000 * 3600);
+        1000 * 3600);
     });
   }
 
@@ -200,8 +200,11 @@ export class HomeComponent {
    * Handler for 'Cancel' action.
    */
   async cancelAppointment(appointment: Appointment): Promise<void> {
-    await this.homeService.changeAppointment(appointment.uuid, { status: AppointmentStatuses.cancelled_by_stylist });
-    this.loadAppointments(this.activeTab);
+    const { response } = await this.homeService.changeAppointment(appointment.uuid,
+      { status: AppointmentStatuses.cancelled_by_stylist }).toPromise();
+    if (response) {
+      this.loadAppointments(this.activeTab);
+    }
   }
 
   async onRefresh(refresher): Promise<void> {
@@ -242,8 +245,11 @@ export class HomeComponent {
 
     this.isLoading = true;
     try {
-      const home = await this.homeService.getHome(query);
-      this.processHomeData(home);
+      const { response } = await this.homeService.getHome(query).toPromise();
+      if (!response) {
+        return;
+      }
+      this.processHomeData(response);
       // Tell the content to recalculate its dimensions. According to Ionic docs this
       // should be called after dynamically adding/removing headers, footers, or tabs.
       // See https://ionicframework.com/docs/api/components/content/Content/#resize

@@ -80,7 +80,7 @@ export class ServiceItemComponent {
 
   @loading
   async deleteService(service: ServiceTemplateItem): Promise<void> {
-    await this.stylistService.deleteStylistService(service.uuid);
+    await this.stylistService.deleteStylistService(service.uuid).toPromise();
   }
 
   /**

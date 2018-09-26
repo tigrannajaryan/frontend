@@ -38,7 +38,10 @@ export class ServicesComponent {
   }
 
   async ionViewWillLoad(): Promise<void> {
-    this.serviceTemplateSets = (await loading(this, this.stylistService.getServiceTemplateSetsList())).service_template_sets;
+    const { response } = await loading(this, this.stylistService.getServiceTemplateSetsList());
+    if (response) {
+      this.serviceTemplateSets = response.service_template_sets;
+    }
   }
 
   openService(serviceItem?: ServiceTemplateSetBase): void {

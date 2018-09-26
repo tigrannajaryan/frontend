@@ -9,7 +9,7 @@ import { UserContext } from '~/shared/user-context';
 import { GAWrapper } from '~/shared/google-analytics';
 import { HasErrorPipe } from '~/shared/pipes/has-error.pipe';
 import { PricePipe } from '~/shared/pipes/price.pipe';
-import { BaseApiService } from '~/shared/stylist-api/base-api-service';
+import { BaseService } from '~/shared/api/base-service';
 import { DirectivesModule } from '~/core/directives/directive.module';
 import { ComponentsModule } from './components/components.module';
 
@@ -37,7 +37,7 @@ const declarations = [
     ...declarations
   ],
   providers: [
-    BaseApiService,
+    BaseService,
     Logger,
     GoogleAnalytics,
     GAWrapper,
