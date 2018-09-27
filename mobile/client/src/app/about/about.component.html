@@ -14,8 +14,8 @@
         <h1><span (click)="onNameClick()">MadeBeauty</span></h1>
         <h2>Version {{ appVersion }}, Build {{ getBuildNumber() }}</h2>
         <h2 *ngIf="!getEnv().production">Commit hash:
-          <a href="https://github.com/madebeauty/monorepo/commit/{{ __COMMIT_HASH__ }}">
-            {{ __COMMIT_HASH__ }}
+          <a href="https://github.com/madebeauty/monorepo/commit/{{ commitHash() }}">
+            {{ commitHash() }}
           </a>
         </h2>
         <h2 *ngIf="getEnv().ffEnableIncomplete">Incomplete Features Enabled: Yes</h2>
