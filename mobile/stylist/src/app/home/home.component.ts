@@ -320,7 +320,7 @@ export class HomeComponent {
       const animationSpeed = 500;
       this.slides.slideTo(index, animationSpeed);
 
-      if (viewChanged) {
+      if (viewChanged && this.content) {
         this.content.scrollToTop(animationSpeed);
       }
     }
