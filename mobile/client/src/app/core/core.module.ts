@@ -21,6 +21,7 @@ import { PhoneInputDirective } from '~/core/directives/phone-input.directive';
 import { AppointmentItemComponent } from '~/core/components/appointment-item/appointment-item.component';
 import { BookServicesHeaderComponent } from '~/booking/services-header/services-header';
 import { MadeHeaderComponent } from '~/core/components/made-header/made-header.component';
+import { PhoneInputComponent } from '~/auth/phone-input/phone-input.component';
 import { ProfileHeaderComponent } from '~/core/components/profile-header/profile-header.component';
 
 export enum DefaultImage {
@@ -41,6 +42,7 @@ const declarations = [
   MbIconsComponent,
   NumListComponent,
   NumListComponent,
+  PhoneInputComponent,
   PhoneInputDirective,
   PricePipe,
   ProfileHeaderComponent,
