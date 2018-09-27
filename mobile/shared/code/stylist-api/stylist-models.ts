@@ -112,3 +112,12 @@ export interface ServiceItem extends ServiceTemplateItem {
 export interface ServicesPhotoSample {
   url: string;
 }
+
+export interface SetStylistServicesParams {
+  services: ServiceItem[];
+  service_time_gap_minutes: number;
+}
+
+export interface StylistServicesListResponse extends StylistServicesList {
+  service_time_gap_minutes: number;
+}

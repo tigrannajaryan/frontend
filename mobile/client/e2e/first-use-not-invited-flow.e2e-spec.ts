@@ -1,12 +1,12 @@
 import { waitFor, waitForNot } from './shared-e2e/utils';
 import { backdoorApi } from './shared-e2e/backdoor-api';
 
-import { phoneLoginPage } from './phone-login-page';
-import { phoneCodePage } from './phone-code-page';
-import { firstPage } from './first-page';
-import { howMadeWorksPage } from './how-made-works-page';
-import { howPricingWorksPage } from './how-pricing-works-page';
-import { stylistsSearchPage } from './stylists-search-page';
+import { phoneLoginPage } from './pages/phone-login-page';
+import { phoneCodePage } from './pages/phone-code-page';
+import { firstPage } from './pages/first-page';
+import { howMadeWorksPage } from './pages/how-made-works-page';
+import { howPricingWorksPage } from './pages/how-pricing-works-page';
+import { stylistsSearchPage } from './pages/stylists-search-page';
 import { clientApp } from './client-app';
 
 describe('First use flow for not invited clients', () => {
