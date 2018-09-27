@@ -11,7 +11,7 @@ import {
   ConfirmCodeResponse,
   GetCodeParams,
   GetCodeResponse
-} from '~/auth/auth.models';
+} from '~/shared/api/auth.models';
 
 import AuthErrors from '~/core/data/auth.errors.json';
 

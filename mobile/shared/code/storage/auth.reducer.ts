@@ -1,9 +1,10 @@
 import { Action, ActionReducer, createFeatureSelector, createSelector, State } from '@ngrx/store';
 
-import { RequestState } from '~/core/api/request.models';
-import { AuthTokenModel } from '~/auth/auth.models';
-import { StylistModel } from '~/core/api/stylists.models';
+import { RequestState } from '~/shared/api/request.models';
+import { AuthTokenModel } from '~/shared/api/auth.models';
 import { ApiError } from '~/shared/api-errors';
+
+import { StylistModel } from '~/core/api/stylists.models';
 
 export enum authActionTypes {
   REQUEST_CODE = 'AUTH_REQUEST_CODE',

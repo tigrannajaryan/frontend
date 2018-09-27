@@ -6,8 +6,8 @@ import { randomPhone, replaceNbspWithSpaces } from '~/core/utils/test-utils';
 
 import { PageNames } from '~/core/page-names';
 
-import { AuthEffects } from '~/auth/auth.effects';
-import { AuthService } from '~/auth/auth.api';
+import { AuthEffects } from '~/shared/storage/auth.effects';
+import { AuthService } from '~/shared/api/auth.api';
 import { AuthPageComponent } from './auth-start.component';
 
 const countriesMock = [

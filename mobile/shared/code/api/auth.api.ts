@@ -12,7 +12,7 @@ import {
   ConfirmCodeResponse,
   GetCodeParams,
   GetCodeResponse
-} from '~/auth/auth.models';
+} from '~/shared/api/auth.models';
 
 @Injectable()
 export class AuthService extends BaseService {

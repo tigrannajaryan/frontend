@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 
 import { PageNames } from '~/core/page-names';
-import { RequestState } from '~/core/api/request.models';
+import { RequestState } from '~/shared/api/request.models';
 import {
   GetStylistServicesAction,
   selectServicesRequestState,

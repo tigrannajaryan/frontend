@@ -6,7 +6,7 @@ import { Observable } from 'rxjs/Observable';
 import { componentIsActive } from '~/core/utils/component-is-active';
 
 import { PageNames } from '~/core/page-names';
-import { RequestState } from '~/core/api/request.models';
+import { RequestState } from '~/shared/api/request.models';
 import {
   AuthState,
   ConfirmCodeAction,
@@ -15,13 +15,13 @@ import {
   selectConfirmCodeError,
   selectConfirmCodeState,
   selectRequestCodeState
-} from '~/auth/auth.reducer';
+} from '~/shared/storage/auth.reducer';
 import { selectInvitedByStylist, StylistState } from '~/core/reducers/stylists.reducer';
 import { PreferredStylistsData } from '~/core/api/preferred-stylists.data';
-import { AuthEffects } from '~/auth/auth.effects';
+import { AuthEffects } from '~/shared/storage/auth.effects';
 
 import { ApiError, FieldErrorItem } from '~/shared/api-errors';
-import { AuthProcessState } from '~/auth/auth-process-state';
+import { AuthProcessState } from '~/shared/storage/auth-process-state';
 
 import { StylistPageType } from '~/onboarding/stylist-invitation/stylist-invitation.component';
 

@@ -5,6 +5,9 @@
 		},
 		{
 			"path": "stylist"
+		},
+		{
+			"path": "shared"
 		}
 	],
   "settings": {}

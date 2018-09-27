@@ -6,14 +6,14 @@ import { componentIsActive } from '~/core/utils/component-is-active';
 import { PhoneData } from '~/shared/components/phone-input/phone-input.component';
 
 import { PageNames } from '~/core/page-names';
-import { RequestState } from '~/core/api/request.models';
+import { RequestState } from '~/shared/api/request.models';
 import {
   AuthState,
   RequestCodeAction,
   RequestCodeSuccessAction,
   selectRequestCodeState
-} from '~/auth/auth.reducer';
-import { AuthEffects } from '~/auth/auth.effects';
+} from '~/shared/storage/auth.reducer';
+import { AuthEffects } from '~/shared/storage/auth.effects';
 
 @IonicPage()
 @Component({

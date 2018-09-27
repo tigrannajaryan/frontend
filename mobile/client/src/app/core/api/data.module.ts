@@ -5,8 +5,8 @@ import { AppointmentsApi } from '~/core/api/appointments.api';
 import { AppointmentsApiMock } from '~/core/api/appointments.api.mock';
 import { AppointmentsDataStore } from '~/core/api/appointments.datastore';
 
-import { AuthProcessState } from '~/auth/auth-process-state';
-import { AuthService } from '~/auth/auth.api';
+import { AuthProcessState } from '~/shared/storage/auth-process-state';
+import { AuthService } from '~/shared/api/auth.api';
 import { BookingData } from '~/core/api/booking.data';
 import { BookingApi } from '~/core/api/booking.api';
 import { BookingApiMock } from '~/core/api/booking.api.mock';

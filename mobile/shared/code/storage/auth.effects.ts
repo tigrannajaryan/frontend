@@ -5,14 +5,13 @@ import { Observable } from 'rxjs/Observable';
 
 import { NonFieldErrorItem } from '~/shared/api-errors';
 import { hasError } from '~/shared/pipes/has-error.pipe';
-import { saveToken } from '~/core/utils/token-utils';
-import { LOADING_DELAY, RequestState } from '~/core/api/request.models';
-import { AuthService } from '~/auth/auth.api';
+import { LOADING_DELAY, RequestState } from '~/shared/api/request.models';
+import { AuthService } from '~/shared/api/auth.api';
 import {
   AuthTokenModel,
   ConfirmCodeParams,
   GetCodeParams
-} from '~/auth/auth.models';
+} from '~/shared/api/auth.models';
 import {
   authActionTypes,
   AuthState,
@@ -26,7 +25,9 @@ import {
   RequestCodeSuccessAction,
   selectConfirmCodeState,
   selectRequestCodeState
-} from '~/auth/auth.reducer';
+} from '~/shared/storage/auth.reducer';
+
+import { saveToken } from '~/core/utils/token-utils';
 
 @Injectable()
 export class AuthEffects {

@@ -28,7 +28,7 @@ import { getMetaReducers } from '~/app.reducers';
 
 import { LogoutEffects } from '~/core/effects/logout.effects';
 
-import { AuthEffects } from '~/auth/auth.effects';
+import { AuthEffects } from '~/shared/storage/auth.effects';
 import { ServicesEffects } from '~/core/effects/services.effects';
 import { StylistsEffects } from '~/core/effects/stylists.effects';
 
@@ -38,7 +38,7 @@ import { DataModule } from '~/core/api/data.module';
 import { ServerStatusTracker } from '~/shared/server-status-tracker';
 import { BaseService } from '~/shared/api/base-service';
 
-import { authPath, authReducer } from '~/auth/auth.reducer';
+import { authPath, authReducer } from '~/shared/storage/auth.reducer';
 import { profilePath, profileReducer } from '~/core/reducers/profile.reducer';
 import { stylistsPath, stylistsReducer } from '~/core/reducers/stylists.reducer';
 import { servicesPath, servicesReducer } from '~/core/reducers/services.reducer';
