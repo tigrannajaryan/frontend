@@ -27,7 +27,6 @@ import {
   selectConfirmCodeState,
   selectRequestCodeState
 } from '~/auth/auth.reducer';
-import { SetPhoneAction } from '~/core/reducers/profile.reducer';
 
 @Injectable()
 export class AuthEffects {
@@ -105,10 +104,6 @@ export class AuthEffects {
       )
     )
     .share();
-
-  @Effect() setProfilePhone = this.actions
-    .ofType(authActionTypes.CONFIRM_CODE_SUCCESS)
-    .map((action: ConfirmCodeSuccessAction) => new SetPhoneAction(action.phone));
 
   constructor(
     private actions: Actions,
