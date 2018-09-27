@@ -10,17 +10,13 @@ import { SharedEventTypes } from '~/shared/events/event-types';
 import { ApiResponse } from '~/shared/api/base.models';
 
 import {
-  ServiceItem, ServiceTemplateSet, ServiceTemplateSetBase, StylistProfile,
-  StylistServicesList, StylistSummary
+  ServiceItem, ServiceTemplateSet, ServiceTemplateSetBase,
+  SetStylistServicesParams, StylistProfile, StylistServicesListResponse, StylistSummary
 } from './stylist-models';
 import { AppointmentDateOffer } from './home.models';
 
 export interface ServiceTemplateSetListResponse {
   service_template_sets: ServiceTemplateSetBase[];
-}
-
-export interface StylistServicesListResponse extends StylistServicesList {
-  service_time_gap_minutes: number;
 }
 
 export interface ServiceTemplateSetResponse extends ServiceTemplateSet {
@@ -106,8 +102,8 @@ export class StylistServiceProvider extends BaseService {
   /**
    * Set service to stylist. The stylist must be already authenticated as a user.
    */
-  setStylistServices(data: any): Observable<ApiResponse<ServiceItem>> {
-    return this.post<ServiceItem>('stylist/services', data);
+  setStylistServices(data: SetStylistServicesParams): Observable<ApiResponse<StylistServicesListResponse>> {
+    return this.post<StylistServicesListResponse>('stylist/services', data);
   }
 
   /**

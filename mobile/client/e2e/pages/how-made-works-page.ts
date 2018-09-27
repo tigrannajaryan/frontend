@@ -1,6 +1,6 @@
 import { $ } from 'protractor';
 
-import { waitFor, waitForNot } from './shared-e2e/utils';
+import { waitFor, waitForNot } from '../shared-e2e/utils';
 
 class HowMadeWorksPage {
   // UI element declarations.

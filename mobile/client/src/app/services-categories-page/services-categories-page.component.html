@@ -22,7 +22,8 @@
     <!-- Showing categories cards -->
     <div *ngIf="(requestState | async) === RequestState.Succeeded">
       <div *ngIf="(categories | async)?.length > 0" class="SharedCategories-categories">
-        <div *ngFor="let category of categories | async" class="SharedCategories-card SharedCard" (click)="onProceedToServices(category.uuid)">
+        <div *ngFor="let category of categories | async" class="SharedCategories-card SharedCard" (click)="onProceedToServices(category.uuid)"
+          [attr.data-test-id]="'category' + category.category_code">
           <div class="SharedCategories-cardImg" [style.backgroundImage]="'url(' + 'assets/icons/services-categories/' + category.category_code +'.png)'"></div>
           <div>
             <div class="SharedCategories-cardTitle">{{ category.name }}</div>
