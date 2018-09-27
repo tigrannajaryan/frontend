@@ -23,7 +23,8 @@
   "exclude": [
     "node_modules",
     "src/**/*.spec.ts",
-    "src/**/__tests__/*.ts"
+    "src/**/__tests__/*.ts",
+    "src/test.ts"
   ],
   "compileOnSave": false,
   "atom": {
