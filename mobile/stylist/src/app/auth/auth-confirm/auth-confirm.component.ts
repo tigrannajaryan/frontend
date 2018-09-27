@@ -26,7 +26,7 @@ import { TokenStorageImpl } from '~/app.component';
 
 import { CodeData, CodeInputComponent } from '~/shared/components/code-input/code-input.component';
 
-import { createNavHistoryList } from '~/core/functions';
+import { createNavHistoryList, isRegistrationComplete } from '~/core/functions';
 
 @IonicPage()
 @Component({
@@ -72,6 +72,11 @@ export class AuthConfirmPageComponent {
       .withLatestFrom(this.store)
       .subscribe(async ([data, state]) => {
         this.authApiService.init(new TokenStorageImpl(this.storage));
+
+        if (!isRegistrationComplete(data.profileStatus)) {
+          // This is a new user, enable help screens
+          this.storage.set('showHomeScreenHelp', true);
+        }
 
         const requiredPages = createNavHistoryList(data.profileStatus);
         this.navCtrl.setPages(requiredPages);

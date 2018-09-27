@@ -1,15 +1,14 @@
 import * as faker from 'faker';
-import { formatNumber, parseNumber } from 'libphonenumber-js';
 
-import { getRandomEmail, getRandomString, waitFor, waitForNot } from './shared-e2e/utils';
+import { getRandomEmail, getRandomString, normalizePhoneNumber, waitFor, waitForNot } from './shared-e2e/utils';
 import { backdoorApi } from './shared-e2e/backdoor-api';
 
+import { phoneLoginPage } from './shared-e2e/phone-login-page';
+import { phoneCodePage } from './shared-e2e/phone-code-page';
 import { clientApp } from './client-app';
 import { stylistApi } from './shared-e2e/stylist-api';
 import { ClientInvitation } from './shared-app/stylist-api/invitations.models';
 import { SetStylistServicesParams, StylistProfile } from './shared-app/stylist-api/stylist-models';
-import { phoneLoginPage } from './pages/phone-login-page';
-import { phoneCodePage } from './pages/phone-code-page';
 import { firstPage } from './pages/first-page';
 import { AuthCredentials, UserRole } from './shared-app/stylist-api/auth-api-models';
 import { stylistInvitationPage } from './pages/stylist-invitation-page';
@@ -21,10 +20,6 @@ import { homePage } from './pages/home-page';
 import { selectCategoryPage } from './pages/select-category-page';
 import { selectServicePage } from './pages/select-service-page';
 import { Worktime } from './shared-app/stylist-api/worktime.models';
-
-function normalizePhoneNumber(phone: string): string {
-  return formatNumber(parseNumber(phone, 'US'), 'International');
-}
 
 describe('First use flow for invited clients', () => {
 
