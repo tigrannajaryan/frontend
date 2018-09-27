@@ -13,7 +13,7 @@ describe('First Page', () => {
     // expect(firstPage.registerLink.isPresent()).toBeTruthy();
   });
 
-  it('should have correct text for Log in button', () => {
-    expect(firstPage.loginBtn.getText()).toContain('Log in');
+  it('should have correct text for Get Started button', () => {
+    expect(firstPage.loginBtn.getText()).toContain('Get Started');
   });
 });
