@@ -1,7 +1,9 @@
 import * as fetch from 'node-fetch';
+
 import { AuthCredentials, AuthResponse } from '../shared-app/stylist-api/auth-api-models';
 import { InvitationsResponse, ClientInvitation } from '../shared-app/stylist-api/invitations.models';
-import { StylistProfile } from '../shared-app/stylist-api/stylist-models';
+import { Worktime } from '../shared-app/stylist-api/worktime.models';
+import { SetStylistServicesParams, StylistProfile, StylistServicesListResponse } from '../shared-app/stylist-api/stylist-models';
 
 // Get the right environment
 const envName = process.env.MB_ENV ? process.env.MB_ENV : 'default';
@@ -37,7 +39,36 @@ class StylistApi {
     return this.post<InvitationsResponse>('stylist/invitations', data);
   }
 
-  async post<ResponseType>(url: string, body: any): Promise<ResponseType> {
+  /**
+   * Get stylist services. The stylist must be already authenticated as a user.
+   */
+  getStylistServices(): Promise<StylistServicesListResponse> {
+    return this.get<StylistServicesListResponse>('stylist/services');
+  }
+
+  /**
+   * Set service to stylist. The stylist must be already authenticated as a user.
+   */
+  setStylistServices(data: SetStylistServicesParams): Promise<StylistServicesListResponse> {
+    return this.post<StylistServicesListResponse>('stylist/services', data);
+  }
+
+  /**
+   * Sets the working hours of the stylist. The stylist must be already authenticated as a user.
+   */
+  setWorktime(data: Worktime): Promise<Worktime> {
+    return this.post<Worktime>('stylist/availability/weekdays', data.weekdays);
+  }
+
+  get<ResponseType>(url: string): Promise<ResponseType> {
+    return this.request<ResponseType>('GET', url, undefined);
+  }
+
+  post<ResponseType>(url: string, body: any): Promise<ResponseType> {
+    return this.request<ResponseType>('POST', url, body);
+  }
+
+  async request<ResponseType>(method: string, url: string, body: any): Promise<ResponseType> {
     const headers = {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
@@ -48,9 +79,9 @@ class StylistApi {
 
     const response = await fetch(`${apiURL}${url}`,
       {
-        method: 'POST',
+        method,
         headers,
-        body: JSON.stringify(body),
+        body: body ? JSON.stringify(body) : undefined,
       });
 
     if (response.status < 200 || response.status > 299) {

@@ -1,6 +1,4 @@
-import { $, by, element } from 'protractor';
-
-import { waitFor, waitForNot } from './shared-e2e/utils';
+import { by, element } from 'protractor';
 
 class MainTabsPage {
   private tabSelector(tabName: string) {
