@@ -25,7 +25,7 @@ import { AuthProcessState } from '~/auth/auth-process-state';
 
 import { StylistPageType } from '~/onboarding/stylist-invitation/stylist-invitation.component';
 
-import { CodeData, CodeInputComponent } from '~/auth/code-input/code-input.component';
+import { CodeData, CodeInputComponent } from '~/shared/components/code-input/code-input.component';
 
 @IonicPage()
 @Component({

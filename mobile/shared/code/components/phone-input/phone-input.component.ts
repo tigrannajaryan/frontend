@@ -1,10 +1,10 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { getCountryCallingCode } from 'libphonenumber-js';
-
-import { phoneValidator } from '~/core/validators/phone.validator';
-import { DEFAULT_COUNTRY_CODE, getCountryEmojiFlag, getUnifiedPhoneValue } from '~/core/directives/phone-input.directive';
 import Countries from 'country-data/data/countries.json';
+
+import { phoneValidator } from '~/shared/validators/phone.validator';
+import { DEFAULT_COUNTRY_CODE, getCountryEmojiFlag, getUnifiedPhoneValue } from '~/shared/directives/phone-input.directive';
 
 export interface PhoneData {
   phone: string;

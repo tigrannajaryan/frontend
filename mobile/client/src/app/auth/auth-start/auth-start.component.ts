@@ -3,7 +3,7 @@ import { IonicPage, NavController } from 'ionic-angular';
 import { Store } from '@ngrx/store';
 
 import { componentIsActive } from '~/core/utils/component-is-active';
-import { PhoneData } from '~/auth/phone-input/phone-input.component';
+import { PhoneData } from '~/shared/components/phone-input/phone-input.component';
 
 import { PageNames } from '~/core/page-names';
 import { RequestState } from '~/core/api/request.models';

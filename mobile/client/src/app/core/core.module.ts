@@ -16,13 +16,13 @@ import { NumListComponent } from '~/shared/components/num-list/num-list.componen
 import { CheckListComponent } from '~/shared/components/check-list/check-list.component';
 
 import { InputNumberDirective } from '~/core/directives/input-number.directive';
-import { PhoneInputDirective } from '~/core/directives/phone-input.directive';
+import { PhoneInputDirective } from '~/shared/directives/phone-input.directive';
 
 import { AppointmentItemComponent } from '~/core/components/appointment-item/appointment-item.component';
 import { BookServicesHeaderComponent } from '~/booking/services-header/services-header';
-import { CodeInputComponent } from '~/auth/code-input/code-input.component';
+import { CodeInputComponent } from '~/shared/components/code-input/code-input.component';
 import { MadeHeaderComponent } from '~/core/components/made-header/made-header.component';
-import { PhoneInputComponent } from '~/auth/phone-input/phone-input.component';
+import { PhoneInputComponent } from '~/shared/components/phone-input/phone-input.component';
 import { ProfileHeaderComponent } from '~/core/components/profile-header/profile-header.component';
 
 export enum DefaultImage {
