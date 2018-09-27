@@ -34,6 +34,18 @@ import { AppModule } from '~/app.module';
 
 import config from '~/auth/config.json';
 
+function performTokenSave(token: AuthTokenModel): Promise<void> {
+  switch (config && config.role) {
+    case 'stylist': {
+      const storage = AppModule.injector.get(AppStorage); // dynamic inject
+      return storage.set('authToken', token.token);
+    }
+    case 'client':
+    default:
+      return saveToken(token);
+  }
+}
+
 @Injectable()
 export class AuthEffects {
 
@@ -112,7 +124,7 @@ export class AuthEffects {
     .ofType(authActionTypes.CONFIRM_CODE_SUCCESS)
     .switchMap((action: ConfirmCodeSuccessAction): Observable<ConfirmCodeSuccessAction | boolean> =>
       Observable.from(
-        this.performTokenSave(action.token)
+        performTokenSave(action.token)
           .then(() => action)
           .catch((error: Error) => {
             this.errorHandler.handleError(error);
@@ -128,17 +140,5 @@ export class AuthEffects {
     private errorHandler: ErrorHandler,
     private store: Store<AuthState>
   ) {
-  }
-
-  private performTokenSave(token: AuthTokenModel): Promise<void> {
-    switch (config && config.role) {
-      case 'stylist': {
-        const storage = AppModule.injector.get(AppStorage); // dynamic inject
-        return storage.set('authToken', token.token);
-      }
-      case 'client':
-      default:
-        return saveToken(token);
-    }
   }
 }
