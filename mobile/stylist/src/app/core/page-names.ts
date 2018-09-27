@@ -26,7 +26,6 @@ export enum PageNames {
   Home = 'HomeComponent',
   HowPricingWorks = 'HowPricingWorksComponent',
   Invitations = 'InvitationsComponent',
-  LoginRegister = 'LoginRegisterComponent',
   RegisterSalon = 'RegisterSalonComponent',
   Services = 'ServicesComponent',
   ServicesCategories = 'ServicesCategoriesComponent',
