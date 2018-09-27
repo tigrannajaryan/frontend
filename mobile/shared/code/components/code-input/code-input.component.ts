@@ -29,7 +29,9 @@ export class CodeInputComponent {
   @ViewChild('input') codeInput;
 
   autofocus(): void {
-    setTimeout(() => { // autofocus code input
+    // Autofocus code input.
+    // Using setTimeout is the only way to succeed in programmatically setting focus on a real device.
+    setTimeout(() => {
       this.codeInput.setFocus();
     });
   }
