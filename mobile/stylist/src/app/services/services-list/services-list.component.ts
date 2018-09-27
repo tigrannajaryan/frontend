@@ -8,8 +8,8 @@ import {
 } from 'ionic-angular';
 
 import { loading } from '~/shared/utils/loading';
-import { ServiceTemplateSetResponse, StylistServiceProvider, StylistServicesListResponse } from '~/shared/stylist-api/stylist-service';
-import { ServiceCategory, ServiceTemplateItem } from '~/shared/stylist-api/stylist-models';
+import { ServiceTemplateSetResponse, StylistServiceProvider } from '~/shared/stylist-api/stylist-service';
+import { ServiceCategory, ServiceItem, ServiceTemplateItem, StylistServicesListResponse } from '~/shared/stylist-api/stylist-models';
 
 import { showAlert } from '~/core/utils/alert';
 import { PageNames } from '~/core/page-names';
@@ -97,7 +97,7 @@ export class ServicesListComponent {
   }
 
   async onContinue(): Promise<void> {
-    const categoriesServices = this.checkCategoriesServices();
+    const categoriesServices = this.getFlatServiceList();
 
     if (categoriesServices) {
       const { response } = await this.stylistService.setStylistServices({
@@ -111,8 +111,12 @@ export class ServicesListComponent {
     }
   }
 
-  protected checkCategoriesServices(): ServiceCategory[] | undefined {
-    const categoriesServices: ServiceCategory[] =
+  /**
+   * Converts groupped services from this.categores into a flat
+   * array of ServiceItem.
+   */
+  protected getFlatServiceList(): ServiceItem[] | undefined {
+    const serviceList: ServiceItem[] =
       this.categories.reduce((services, category) => (
         services.concat(
           category.services.map(service => ({
@@ -123,11 +127,11 @@ export class ServicesListComponent {
         )
       ), []);
 
-    if (categoriesServices.length === 0) {
+    if (serviceList.length === 0) {
       showAlert('Services are empty', 'At least one service should be added.');
       return;
     }
-    return categoriesServices;
+    return serviceList;
   }
 
   /**
@@ -217,7 +221,7 @@ export class ServicesListComponent {
 
     this.isEmptyCategories = ServicesListComponent.checkIfEmptyCategories(this.categories);
 
-    const categoriesServices = this.checkCategoriesServices();
+    const categoriesServices = this.getFlatServiceList();
 
     if (categoriesServices) {
       this.stylistService.setStylistServices({

@@ -55,7 +55,8 @@
       ],
       "env": {
         // This is needed to make files in "shared/e2e" symlinked directory work
-        "NODE_PRESERVE_SYMLINKS": "1"
+        "NODE_PRESERVE_SYMLINKS": "1",
+        // "MB_ENV": "local"
       }
     }
   ]
