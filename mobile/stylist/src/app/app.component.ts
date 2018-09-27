@@ -6,7 +6,7 @@ import { ScreenOrientation } from '@ionic-native/screen-orientation';
 
 import { async_all } from '~/shared/async-helpers';
 import { Logger } from '~/shared/logger';
-import { getBuildNumber } from '~/shared/get-build-number';
+import { getBuildNumber, getCommitHash } from '~/shared/get-build-number';
 import { GAWrapper } from '~/shared/google-analytics';
 import { AuthApiService, TokenStorage } from '~/shared/stylist-api/auth-api-service';
 
@@ -47,7 +47,7 @@ export class MyAppComponent {
     private screenOrientation: ScreenOrientation
   ) {
     this.logger.info('App: initializing...');
-    this.logger.info(`App: Build number ${getBuildNumber()}`);
+    this.logger.info(`Build: ${getBuildNumber()} Commit: ${getCommitHash()}`);
 
     this.initializeApp();
   }
