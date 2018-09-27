@@ -34,13 +34,18 @@ import { AppModule } from '~/app.module';
 
 import config from '~/auth/config.json';
 
+enum UserRole {
+  Stylist = 'stylist',
+  Client = 'client'
+}
+
 function performTokenSave(token: AuthTokenModel): Promise<void> {
   switch (config && config.role) {
-    case 'stylist': {
+    case UserRole.Stylist: {
       const storage = AppModule.injector.get(AppStorage); // dynamic inject
       return storage.set('authToken', token.token);
     }
-    case 'client':
+    case UserRole.Client:
     default:
       return saveToken(token);
   }
