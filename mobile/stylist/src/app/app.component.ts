@@ -12,19 +12,19 @@ import { AuthApiService, TokenStorage } from '~/shared/stylist-api/auth-api-serv
 
 import { PageNames } from '~/core/page-names';
 import { createNavHistoryList } from '~/core/functions';
-import { AppStorage } from '~/core/app-storage';
+import { AppStorage } from '~/shared/storage/app-storage';
 import { ServerStatusTracker } from '~/shared/server-status-tracker';
 import { ENV } from '~/environments/environment.default';
 import { AuthResponse } from '~/shared/stylist-api/auth-api-models';
 
-class TokenStorageImpl implements TokenStorage {
+export class TokenStorageImpl implements TokenStorage {
   constructor(private appStorage: AppStorage) {}
 
   get(): string {
     return this.appStorage.get('authToken');
   }
 
-  set(token: string): void {
+  set(token: string): Promise<void> {
     return this.appStorage.set('authToken', token);
   }
 }

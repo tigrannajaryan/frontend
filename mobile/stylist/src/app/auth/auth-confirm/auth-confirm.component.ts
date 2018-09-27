@@ -5,7 +5,6 @@ import { Observable } from 'rxjs/Observable';
 
 import { componentIsActive } from '~/shared/utils/component-is-active';
 
-import { PageNames } from '~/core/page-names';
 import { RequestState } from '~/shared/api/request.models';
 import {
   AuthState,
@@ -21,7 +20,13 @@ import { AuthEffects } from '~/shared/storage/auth.effects';
 import { ApiError, FieldErrorItem } from '~/shared/api-errors';
 import { AuthProcessState } from '~/shared/storage/auth-process-state';
 
+import { AuthApiService } from '~/shared/stylist-api/auth-api-service';
+import { AppStorage } from '~/shared/storage/app-storage';
+import { TokenStorageImpl } from '~/app.component';
+
 import { CodeData, CodeInputComponent } from '~/shared/components/code-input/code-input.component';
+
+import { createNavHistoryList } from '~/core/functions';
 
 @IonicPage()
 @Component({
@@ -44,6 +49,8 @@ export class AuthConfirmPageComponent {
   invalidCodeError = new FieldErrorItem('code', { code: 'err_invalid_sms_code' });
 
   constructor(
+    private storage: AppStorage,
+    private authApiService: AuthApiService,
     private authEffects: AuthEffects,
     private authDataState: AuthProcessState,
     private navCtrl: NavController,
@@ -63,8 +70,11 @@ export class AuthConfirmPageComponent {
       .takeWhile(componentIsActive(this))
       .filter((isTokenSaved: boolean) => isTokenSaved)
       .withLatestFrom(this.store)
-      .subscribe(async ([isTokenSaved, state]) => {
-        debugger;
+      .subscribe(async ([data, state]) => {
+        this.authApiService.init(new TokenStorageImpl(this.storage));
+
+        const requiredPages = createNavHistoryList(data.profile_status);
+        this.navCtrl.setPages(requiredPages);
       });
 
     // Handle code verification error

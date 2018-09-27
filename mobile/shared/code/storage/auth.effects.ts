@@ -28,6 +28,11 @@ import {
 } from '~/shared/storage/auth.reducer';
 
 import { saveToken } from '~/shared/storage/token-utils';
+import { AppStorage } from '~/shared/storage/app-storage';
+
+import { AppModule } from '~/app.module';
+
+import config from '~/auth/config.json';
 
 @Injectable()
 export class AuthEffects {
@@ -69,16 +74,27 @@ export class AuthEffects {
     .ofType(authActionTypes.CONFIRM_CODE)
     .map((action: ConfirmCodeAction) => ({ phone: action.phone, code: action.code }))
     .switchMap((params: ConfirmCodeParams) =>
-
       this.authService.confirmCode(params, { hideGenericAlertOnFieldAndNonFieldErrors: true })
         .map(({ response, error }) => {
           if (error) {
             return new ConfirmCodeErrorAction(error);
           }
-          const { created_at, token, stylist_invitation } = response;
+          const {
+            created_at,
+            token,
+            stylist_invitation,
+            profile_status,
+            profile
+          } = response;
           const tokenData: AuthTokenModel = { created_at, token };
           // TODO: replace stylist_invitation[0] with the latest invitation retrieved from the array (when it would be done on the backend)
-          return new ConfirmCodeSuccessAction(params.phone, tokenData, stylist_invitation[0]);
+          return new ConfirmCodeSuccessAction(
+            params.phone,
+            tokenData,
+            stylist_invitation && stylist_invitation[0],
+            profile_status,
+            profile
+          );
         })
     );
 
@@ -96,8 +112,8 @@ export class AuthEffects {
     .ofType(authActionTypes.CONFIRM_CODE_SUCCESS)
     .switchMap((action: ConfirmCodeSuccessAction): Observable<boolean> =>
       Observable.from(
-        saveToken(action.token)
-          .then(() => true)
+        this.performTokenSave(action.token)
+          .then(() => action)
           .catch((error: Error) => {
             this.errorHandler.handleError(error);
             return false;
@@ -112,5 +128,17 @@ export class AuthEffects {
     private errorHandler: ErrorHandler,
     private store: Store<AuthState>
   ) {
+  }
+
+  private performTokenSave(token: AuthTokenModel): Promise<void> {
+    switch(config && config.role) {
+      case 'stylist': {
+        const storage = AppModule.injector.get(AppStorage); // dynamic inject
+        return storage.set('authToken', token.token);
+      }
+      case 'client':
+      default:
+        return saveToken(token);
+    }
   }
 }

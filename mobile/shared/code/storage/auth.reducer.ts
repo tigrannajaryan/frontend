@@ -6,6 +6,9 @@ import { ApiError } from '~/shared/api-errors';
 
 import { StylistModel } from '~/shared/api/stylists.models';
 
+import { ProfileStatus } from '~/shared/stylist-api/auth-api-models';
+import { StylistProfile } from '~/shared/stylist-api/stylist-models';
+
 export enum authActionTypes {
   REQUEST_CODE = 'AUTH_REQUEST_CODE',
   REQUEST_CODE_LOADING = 'AUTH_REQUEST_CODE_LOADING',
@@ -65,7 +68,9 @@ export class ConfirmCodeSuccessAction implements Action {
   constructor(
     public phone: string,
     public token: AuthTokenModel,
-    public invitedBy: StylistModel | undefined
+    public invitedBy: StylistModel | undefined,
+    public profile_status: ProfileStatus | undefined,
+    public profile: StylistProfile | undefined,
   ) {}
 }
 

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AppPersistentData } from '~/core/app-storage';
+import { AppPersistentData } from '~/shared/storage/app-storage';
 
 /**
  * A class to get or set persistent App data.

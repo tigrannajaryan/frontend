@@ -28,7 +28,7 @@ import { CoreModule } from '~/core/core.module';
 import { getMetaReducers } from './app.reducers';
 import { ENV } from '~/environments/environment.default';
 import { GoogleMapsConfig } from '~/core/google-maps-config';
-import { AppStorage } from '~/core/app-storage';
+import { AppStorage } from '~/shared/storage/app-storage';
 
 initSentry();
 

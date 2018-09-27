@@ -6,7 +6,7 @@ import { AuthCredentials, UserRole } from '~/shared/stylist-api/auth-api-models'
 import { loading } from '~/core/utils/loading';
 import { createNavHistoryList } from '~/core/functions';
 import { PageNames } from '~/core/page-names';
-import { AppStorage } from '~/core/app-storage';
+import { AppStorage } from '~/shared/storage/app-storage';
 
 export enum LoginOrRegisterType {
   login,
