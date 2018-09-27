@@ -39,29 +39,25 @@ export class AppointmentsApiMock {
     return response;
   }
 
-  getHome(): Observable<ApiResponse<HomeResponse>> {
-    const upcoming = AppointmentsApiMock.genFake(0, AppointmentStatus.new);
-    const lastVisited = AppointmentsApiMock.genFake(1, AppointmentStatus.checked_out)[0];
+  getHome(upcomingCount = 0, lastVisitedCount = 0): Observable<ApiResponse<HomeResponse>> {
+    const upcoming = AppointmentsApiMock.genFake(upcomingCount, AppointmentStatus.new);
+    const lastVisited = AppointmentsApiMock.genFake(lastVisitedCount, AppointmentStatus.checked_out)[0];
     return new Observable(observer => {
-      setTimeout(() => {
-        observer.next({
-          response: {
-            upcoming,
-            last_visited: lastVisited
-          }
-        });
-        observer.complete();
-      }, 0);
+      observer.next({
+        response: {
+          upcoming,
+          last_visited: lastVisited
+        }
+      });
+      observer.complete();
     });
   }
 
-  getHistory(): Observable<ApiResponse<AppointmentsHistoryResponse>> {
-    const appointments = AppointmentsApiMock.genFake(150, AppointmentStatus.checked_out);
+  getHistory(historyCount = 0): Observable<ApiResponse<AppointmentsHistoryResponse>> {
+    const appointments = AppointmentsApiMock.genFake(historyCount, AppointmentStatus.checked_out);
     return new Observable(observer => {
-      setTimeout(() => {
-        observer.next({ response: { appointments } });
-        observer.complete();
-      }, 1000);
+      observer.next({ response: { appointments } });
+      observer.complete();
     });
   }
 }

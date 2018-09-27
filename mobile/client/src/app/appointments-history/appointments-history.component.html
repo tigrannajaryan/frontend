@@ -28,8 +28,12 @@
           </ion-row>
         </div>
         <div *ngFor="let appointment of appointments">
-          <appointment-item [appointment]="appointment" (cardClick)="onAppointmentClick(appointment)" hasRebook="true"
-            (rebookClick)="onRebookClick(appointment)"></appointment-item>
+          <appointment-item
+            [appointment]="appointment"
+            (cardClick)="onAppointmentClick(appointment)"
+            (rebookClick)="onRebookClick(appointment)"
+            hasRebook="true"
+            data-test-id="historyAppointment"></appointment-item>
         </div>
       </div>
     </div>

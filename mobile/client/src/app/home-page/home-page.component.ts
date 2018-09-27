@@ -12,7 +12,7 @@ import { EventTypes } from '~/core/event-types';
 import { startRebooking } from '~/booking/booking-utils';
 import { ProfileDataStore } from '~/profile/profile.data';
 
-enum AppointmentType {
+export enum AppointmentType {
   upcoming,
   past
 }
@@ -46,13 +46,13 @@ export class HomePageComponent {
       .subscribe(apiResponse => this.onHomeData(apiResponse.response));
   }
 
-  onHomeData(homeData: HomeResponse): void {
-    this.homeData = homeData;
-  }
-
   ionViewDidLoad(): void {
     this.logger.info('HomePageComponent.ionViewDidLoad');
     this.onRefresh(false);
+  }
+
+  onHomeData(homeData: HomeResponse): void {
+    this.homeData = homeData;
   }
 
   onRefresh(invalidateCache = true): void {
