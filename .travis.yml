@@ -37,6 +37,7 @@ cache:
 # global env variables, common to each build's environment
 env:
   global:
+    - APP_VERSION_NUMBER=1.1.2
     - IOS_SDK="iphoneos11.4"
     - ANDROID_SDK=android_sdk
     - ANDROID_BUILD_TOOLS_VERSION="28.0.1"
@@ -61,7 +62,6 @@ jobs:
     - name: Client Staging Build
       env:
         APP_TYPE=client
-        APP_VERSION_NUMBER=1.1.2
         MB_ENV=staging
         IOS_APP_BUNDLE_ID="com.madebeauty.client.staging"
         ANDROID_APP_BUNDLE_ID="com.madebeauty.client.staging.android"
@@ -69,23 +69,18 @@ jobs:
         IOS_APP_DESCRIPTION="MadeBeauty Staging"
         IOS_PROVISIONING_PROFILE="client-staging"
         IOS_PROVISIONING_PROFILE_ID="b76338ed-b7e9-4053-ab42-ec80d7eea4ba"
-        FB_APP_ID=1332946860139961
-        FB_APP_NAME="Made Staging"
         FASTLANE_SKIP_WAITING=true
         FASTLANE_DISTRIBUTE_EXTERNAL=false
         SENTRY_PROJECT=mobile-client-staging
     - name: Stylist Staging Build
       env:
         APP_TYPE=stylist
-        APP_VERSION_NUMBER=1.1.2
         MB_ENV=staging
         IOS_APP_BUNDLE_ID="com.madebeauty.stylist.beta"
         IOS_APP_NAME="Made Pro Staging"
         IOS_APP_DESCRIPTION="Fill up your days. Earn more."
         IOS_PROVISIONING_PROFILE="made-final-appstore"
         IOS_PROVISIONING_PROFILE_ID="b36b0583-9122-4176-becf-38d769edee4d"
-        FB_APP_ID=1332946860139961
-        FB_APP_NAME="Made Staging"
         FASTLANE_SKIP_WAITING=true
         FASTLANE_DISTRIBUTE_EXTERNAL=false
         SENTRY_PROJECT=mobile-stylist-staging
@@ -93,7 +88,6 @@ jobs:
       if: branch = develop AND type = push  # run this stage only if it's not a PR
       env:
         APP_TYPE=client
-        APP_VERSION_NUMBER=1.1.2
         MB_ENV=prod
         IOS_APP_BUNDLE_ID="com.madebeauty.client.production"
         ANDROID_APP_BUNDLE_ID="com.madebeauty.client.prod"
@@ -101,8 +95,6 @@ jobs:
         IOS_APP_DESCRIPTION="MadeBeauty"
         IOS_PROVISIONING_PROFILE="client-production"
         IOS_PROVISIONING_PROFILE_ID="222754f3-76d8-4094-9da5-78e105d5f541"
-        FB_APP_ID=877860949068191
-        FB_APP_NAME="Made"
         FASTLANE_SKIP_WAITING=true
         FASTLANE_DISTRIBUTE_EXTERNAL=false
         SENTRY_PROJECT=mobile-client-production
@@ -110,15 +102,12 @@ jobs:
       if: branch = develop AND type = push  # run this stage only if it's not a PR
       env:
         APP_TYPE=stylist
-        APP_VERSION_NUMBER=1.1.2
         MB_ENV=prod
         IOS_APP_BUNDLE_ID="com.madebeauty.stylist.production"
         IOS_APP_NAME="Made Pro"
         IOS_APP_DESCRIPTION="Fill up your days. Earn more."
         IOS_PROVISIONING_PROFILE="made-final-appstore"
         IOS_PROVISIONING_PROFILE_ID="b36b0583-9122-4176-becf-38d769edee4d"
-        FB_APP_ID=877860949068191
-        FB_APP_NAME="Made"
         FASTLANE_SKIP_WAITING=true
         FASTLANE_DISTRIBUTE_EXTERNAL=false
         SENTRY_PROJECT=mobile-stylist-production

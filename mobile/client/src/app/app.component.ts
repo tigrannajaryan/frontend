@@ -15,6 +15,7 @@ import { deleteToken, getToken } from '~/shared/storage/token-utils';
 import { AUTHORIZED_ROOT, PageNames, UNAUTHORIZED_ROOT } from '~/core/page-names';
 import { EventTypes } from '~/core/event-types';
 import { ENV } from '~/environments/environment.default';
+import { getBuildNumber, getCommitHash } from '~/shared/get-build-number';
 
 @Component({
   templateUrl: 'app.component.html'
@@ -42,6 +43,7 @@ export class ClientAppComponent implements OnInit, OnDestroy {
     const startTime = Date.now();
 
     this.logger.info('App initializing...');
+    this.logger.info(`Build: ${getBuildNumber()} Commit: ${getCommitHash()}`);
 
     // The call of `deleteToken` prevents weird error of allways navigating to the Auth page.
     this.serverStatusTracker.init(UNAUTHORIZED_ROOT, deleteToken);
