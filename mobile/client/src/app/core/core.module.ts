@@ -4,7 +4,7 @@ import { GoogleAnalytics } from '@ionic-native/google-analytics';
 
 import { GAWrapper } from '~/shared/google-analytics';
 
-import { FormatPhonePipe } from '~/core/pipes/format-phone.pipe';
+import { FormatPhonePipe } from '~/shared/pipes/format-phone.pipe';
 import { HasErrorPipe } from '~/shared/pipes/has-error.pipe';
 import { PricePipe } from '~/shared/pipes/price.pipe';
 

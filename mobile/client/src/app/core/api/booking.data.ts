@@ -7,7 +7,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { DataStore } from '~/core/utils/data-store';
 import { BookingApi, TimeslotsResponse } from '~/core/api/booking.api';
 import { DayOffer, GetPricelistResponse, ServiceModel } from '~/core/api/services.models';
-import { StylistModel } from '~/core/api/stylists.models';
+import { StylistModel } from '~/shared/api/stylists.models';
 
 interface DayOfferWithTotalRegularPrice extends DayOffer {
   totalRegularPrice: number;

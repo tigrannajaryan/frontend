@@ -10,7 +10,7 @@ import {
   PreferredStylistsListResponse,
   SetPreferredStylistResponse,
   StylistsListResponse
-} from '~/core/api/stylists.models';
+} from '~/shared/api/stylists.models';
 
 @Injectable()
 export class StylistsService extends BaseService {

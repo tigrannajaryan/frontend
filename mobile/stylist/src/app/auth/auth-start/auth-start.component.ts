@@ -5,7 +5,6 @@ import { Store } from '@ngrx/store';
 import { componentIsActive } from '~/shared/utils/component-is-active';
 import { PhoneData } from '~/shared/components/phone-input/phone-input.component';
 
-import { PageNames } from '~/core/page-names';
 import { RequestState } from '~/shared/api/request.models';
 import {
   AuthState,
@@ -14,6 +13,8 @@ import {
   selectRequestCodeState
 } from '~/shared/storage/auth.reducer';
 import { AuthEffects } from '~/shared/storage/auth.effects';
+
+import { PageNames } from '~/core/page-names';
 
 @IonicPage()
 @Component({

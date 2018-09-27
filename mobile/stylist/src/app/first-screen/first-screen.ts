@@ -31,4 +31,8 @@ export class FirstScreenComponent {
   goToPage(choosePageType: LoginOrRegisterType): void {
     this.navCtrl.push(PageNames.LoginRegister, { pageType: choosePageType }, { animate: false });
   }
+
+  login(): void {
+    this.navCtrl.push(PageNames.Auth);
+  }
 }

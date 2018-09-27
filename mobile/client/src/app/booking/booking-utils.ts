@@ -4,7 +4,7 @@ import { AppModule } from '~/app.module';
 import { BookingData } from '~/core/api/booking.data';
 import { PreferredStylistsData } from '~/core/api/preferred-stylists.data';
 import { AppointmentModel } from '~/core/api/appointments.models';
-import { PreferredStylistModel } from '~/core/api/stylists.models';
+import { PreferredStylistModel } from '~/shared/api/stylists.models';
 import { ServicesService } from '~/core/api/services-service';
 import { EventTypes } from '~/core/event-types';
 

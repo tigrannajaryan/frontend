@@ -6,7 +6,7 @@ import { Observable } from 'rxjs/Observable';
 
 import { PageNames } from '~/core/page-names';
 import { RequestState } from '~/shared/api/request.models';
-import { StylistModel } from '~/core/api/stylists.models';
+import { StylistModel } from '~/shared/api/stylists.models';
 import { PreferredStylistsData } from '~/core/api/preferred-stylists.data';
 import {
   SearchStylistsAction,

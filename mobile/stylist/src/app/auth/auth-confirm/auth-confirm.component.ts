@@ -16,14 +16,10 @@ import {
   selectConfirmCodeState,
   selectRequestCodeState
 } from '~/shared/storage/auth.reducer';
-import { selectInvitedByStylist, StylistState } from '~/core/reducers/stylists.reducer';
-import { PreferredStylistsData } from '~/core/api/preferred-stylists.data';
 import { AuthEffects } from '~/shared/storage/auth.effects';
 
 import { ApiError, FieldErrorItem } from '~/shared/api-errors';
 import { AuthProcessState } from '~/shared/storage/auth-process-state';
-
-import { StylistPageType } from '~/onboarding/stylist-invitation/stylist-invitation.component';
 
 import { CodeData, CodeInputComponent } from '~/shared/components/code-input/code-input.component';
 
@@ -52,8 +48,7 @@ export class AuthConfirmPageComponent {
     private authDataState: AuthProcessState,
     private navCtrl: NavController,
     private navParams: NavParams,
-    private preferredStylistsData: PreferredStylistsData,
-    private store: Store<AuthState & StylistState>
+    private store: Store<AuthState>
   ) {
   }
 
@@ -69,19 +64,7 @@ export class AuthConfirmPageComponent {
       .filter((isTokenSaved: boolean) => isTokenSaved)
       .withLatestFrom(this.store)
       .subscribe(async ([isTokenSaved, state]) => {
-        const preferredStylists = await this.preferredStylistsData.get();
-        const invitation = selectInvitedByStylist(state);
-        if (preferredStylists.length > 0) {
-          this.navCtrl.setRoot(PageNames.MainTabs);
-        } else if (invitation) {
-          const data = {
-            stylist: invitation,
-            pageType: StylistPageType.Invitation
-          };
-          this.navCtrl.setRoot(PageNames.StylistInvitation, { data });
-        } else {
-          this.navCtrl.setRoot(PageNames.HowMadeWorks);
-        }
+        debugger;
       });
 
     // Handle code verification error

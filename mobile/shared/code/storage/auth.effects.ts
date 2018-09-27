@@ -27,7 +27,7 @@ import {
   selectRequestCodeState
 } from '~/shared/storage/auth.reducer';
 
-import { saveToken } from '~/core/utils/token-utils';
+import { saveToken } from '~/shared/storage/token-utils';
 
 @Injectable()
 export class AuthEffects {

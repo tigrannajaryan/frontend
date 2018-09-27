@@ -4,7 +4,7 @@ import * as faker from 'faker';
 import * as moment from 'moment';
 
 import { ApiResponse } from '~/shared/api/base.models';
-import { BaseServiceMock } from '~/core/api/base-service.mock';
+import { BaseServiceMock } from '~/shared/api/base-service.mock';
 
 import { WeekdayIso } from '~/shared/weekday';
 import {

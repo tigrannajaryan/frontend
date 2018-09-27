@@ -10,7 +10,7 @@ import { ServerStatusTracker } from '~/shared/server-status-tracker';
 import { PreferredStylistsData } from '~/core/api/preferred-stylists.data';
 import { TabIndex } from '~/main-tabs/main-tabs.component';
 
-import { deleteToken, getToken } from '~/core/utils/token-utils';
+import { deleteToken, getToken } from '~/shared/storage/token-utils';
 
 import { AUTHORIZED_ROOT, PageNames, UNAUTHORIZED_ROOT } from '~/core/page-names';
 import { EventTypes } from '~/core/event-types';

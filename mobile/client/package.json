@@ -67,7 +67,7 @@
     "ionic-angular": "3.9.2",
     "ionic-mocks": "1.3.0",
     "ionicons": "3.0.0",
-    "libphonenumber-js": "1.2.15",
+    "libphonenumber-js": "1.2.21",
     "moment": "2.22.1",
     "ngrx-store-freeze": "0.2.2",
     "ngrx-store-logger": "0.2.2",
