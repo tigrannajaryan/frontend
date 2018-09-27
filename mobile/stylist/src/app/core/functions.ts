@@ -1,4 +1,4 @@
-import { ProfileStatus } from '~/shared/stylist-api/auth-api-models';
+import { StylistProfileStatus } from '~/shared/stylist-api/auth-api-models';
 import { PageNames } from './page-names';
 
 export interface PageDescr {
@@ -14,7 +14,7 @@ export interface PageDescr {
  * to show.
  * @param profileStatus as returned by auth.
  */
-export function createNavHistoryList(profileStatus: ProfileStatus): PageDescr[] {
+export function createNavHistoryList(profileStatus: StylistProfileStatus): PageDescr[] {
   const pages: PageDescr[] = [];
 
   // If we are restoring a navigation then the list should start with FirstScreen

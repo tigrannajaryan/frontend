@@ -6,7 +6,7 @@ import { ApiError } from '~/shared/api-errors';
 
 import { StylistModel } from '~/shared/api/stylists.models';
 
-import { ProfileStatus } from '~/shared/stylist-api/auth-api-models';
+import { StylistProfileStatus } from '~/shared/stylist-api/auth-api-models';
 import { StylistProfile } from '~/shared/stylist-api/stylist-models';
 
 export enum authActionTypes {
@@ -69,7 +69,7 @@ export class ConfirmCodeSuccessAction implements Action {
     public phone: string,
     public token: AuthTokenModel,
     public invitedBy: StylistModel | undefined,
-    public profileStatus: ProfileStatus | undefined,
+    public profileStatus: StylistProfileStatus | undefined,
     public profile: StylistProfile | undefined
   ) {}
 }

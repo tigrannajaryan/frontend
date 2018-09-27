@@ -1,6 +1,6 @@
 import { StylistModel } from '~/shared/api/stylists.models';
 
-import { ProfileStatus } from '~/shared/stylist-api/auth-api-models';
+import { StylistProfileStatus } from '~/shared/stylist-api/auth-api-models';
 import { StylistProfile } from '~/shared/stylist-api/stylist-models';
 
 export type UserRole = 'stylist' | 'client';
@@ -27,6 +27,6 @@ export interface AuthTokenModel {
 
 export interface ConfirmCodeResponse extends AuthTokenModel {
   stylist_invitation?: StylistModel;
-  profile_status?: ProfileStatus;
+  profile_status?: StylistProfileStatus;
   profile?: StylistProfile;
 }
