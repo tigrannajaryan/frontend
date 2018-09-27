@@ -6,6 +6,8 @@ import { randomPhone, replaceNbspWithSpaces } from '~/core/utils/test-utils';
 
 import { PageNames } from '~/core/page-names';
 
+import { PhoneInputComponent } from '~/shared/components/phone-input/phone-input.component';
+
 import { AuthEffects } from '~/shared/storage/auth.effects';
 import { AuthService } from '~/shared/api/auth.api';
 import { AuthPageComponent } from './auth-start.component';
@@ -16,7 +18,7 @@ const countriesMock = [
   { alpha2: 'RU', name: 'Russian Federation', countryCallingCodes: ['+7'] }
 ];
 
-const testPhone = randomPhone().slice(2); // without +1
+const testPhone = randomPhone();
 
 let fixture: ComponentFixture<AuthPageComponent>;
 let instance: AuthPageComponent;
@@ -25,8 +27,10 @@ let textContent: string;
 
 describe('Pages: Auth Phone', () => {
   beforeEach(
-    async(() =>
-      TestUtils.beforeEachCompiler([AuthPageComponent])
+    async(() => {
+      PhoneInputComponent.countries = countriesMock;
+
+      return TestUtils.beforeEachCompiler([AuthPageComponent])
         .then(compiled => {
           // Common setup:
           fixture = compiled.fixture;
@@ -34,12 +38,11 @@ describe('Pages: Auth Phone', () => {
         })
         .then(() => {
           // Current spec setup:
-          instance.countries = countriesMock;
           fixture.detectChanges();
 
           textContent = replaceNbspWithSpaces(fixture.nativeElement.textContent);
-        })
-    )
+        });
+    })
   );
 
   it('should create the page', () => {
@@ -58,39 +61,41 @@ describe('Pages: Auth Phone', () => {
       .toContain('Continue');
   });
 
-  it('should have country data', () => {
-    expect(instance.countries)
-      .toBeTruthy();
+  // TODO: test next 2 in phone-input.spec
 
-    expect(fixture.nativeElement.querySelector('[data-test-id=countrySelect] .select-text').textContent)
-      .toContain('+1');
-  });
+  // it('should have country data', () => {
+  //   expect(instance.countries)
+  //     .toBeTruthy();
 
-  it('should type and format phone code', () => {
-    instance.phone.patchValue(testPhone);
+  //   expect(fixture.nativeElement.querySelector('[data-test-id=countrySelect] .select-text').textContent)
+  //     .toContain('+1');
+  // });
 
-    // Perform formatting:
-    const blurEvent = new Event('ionBlur');
-    const phoneInput = fixture.nativeElement.querySelector('[data-test-id=phoneInput]');
-    phoneInput.dispatchEvent(blurEvent);
+  // it('should type and format phone code', () => {
+  //   instance.phone.patchValue(testPhone);
 
-    expect(phoneInput.querySelector('input').value)
-      .toEqual(`${testPhone.slice(0, 3)} ${testPhone.slice(3, 6)}-${testPhone.slice(6, 10)}`);
+  //   // Perform formatting:
+  //   const blurEvent = new Event('ionBlur');
+  //   const phoneInput = fixture.nativeElement.querySelector('[data-test-id=phoneInput]');
+  //   phoneInput.dispatchEvent(blurEvent);
 
-    fixture.detectChanges();
-  });
+  //   expect(phoneInput.querySelector('input').value)
+  //     .toEqual(`${testPhone.slice(0, 3)} ${testPhone.slice(3, 6)}-${testPhone.slice(6, 10)}`);
+
+  //   fixture.detectChanges();
+  // });
 
   it('should submit the phone', async done => {
     const navCtrl = fixture.debugElement.injector.get(NavController);
 
-    instance.phone.patchValue(testPhone);
+    instance.phone = testPhone;
     instance.submit();
 
     const authEffects = fixture.debugElement.injector.get(AuthEffects);
     await authEffects.getCodeRequest.first().toPromise();
 
     expect(navCtrl.push)
-      .toHaveBeenCalledWith(PageNames.AuthConfirm, { phone: `+1${testPhone}` });
+      .toHaveBeenCalledWith(PageNames.AuthConfirm, { phone: testPhone });
 
     done();
   });
@@ -100,10 +105,10 @@ describe('Pages: Auth Phone', () => {
 
     spyOn(authService, 'getCode');
 
-    instance.phone.patchValue(testPhone);
+    instance.phone = testPhone;
     instance.submit();
 
     expect(authService.getCode)
-      .toHaveBeenCalledWith({ phone: `+1${testPhone}` }, { hideGenericAlertOnFieldAndNonFieldErrors: true });
+      .toHaveBeenCalledWith({ phone: testPhone }, { hideGenericAlertOnFieldAndNonFieldErrors: true });
   });
 });

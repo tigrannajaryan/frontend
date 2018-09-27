@@ -16,7 +16,8 @@ export interface PhoneData {
   templateUrl: 'phone-input.component.html'
 })
 export class PhoneInputComponent {
-  countries = Countries && Countries.filter(country => country.countryCallingCodes.length > 0);
+  static countries = Countries && Countries.filter(country => country.countryCallingCodes.length > 0);
+  countries = PhoneInputComponent.countries;
 
   countryCode: FormControl = new FormControl(DEFAULT_COUNTRY_CODE, [Validators.required]);
   phone: FormControl = new FormControl('', [Validators.required, phoneValidator(DEFAULT_COUNTRY_CODE)]);
