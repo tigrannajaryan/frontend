@@ -14,21 +14,7 @@
       <span>{{ phone | formatPhone }}&nbsp;</span><span class="Link" (click)="navCtrl.pop()" data-test-id="editPhoneLink">Edit</span>
     </ion-row>
     <ion-row>
-      <form (ngSubmit)="submit()">
-        <ion-row justify-content-center>
-          <ion-item class="FormControl AuthConfirmPage-codeControl">
-            <ion-input #input type="tel" ngxInputNumber [formControl]="code" [disabled]="isLoading" (keydown)="onAutoblurCode($event)" (focus)="onFocusCode()"></ion-input>
-          </ion-item>
-        </ion-row>
-        <ion-row justify-content-center>
-          <div class="AuthConfirmPage-digits" [ngClass]="{'is-withError': error | async | hasError:invalidCodeError}">
-            <div *ngFor="let digit of digits; let index = index" class="AuthConfirmPage-digit is-number{{ index + 1 }}"></div>
-            <div *ngIf="error | async | hasError:invalidCodeError" class="AuthConfirmPage-error">
-              Please enter a&nbsp;valid code
-            </div>
-          </div>
-        </ion-row>
-      </form>
+      <code-input [isDisabled]="(confirmCodeState | async) === RequestState.Loading" [hasError]="error | async | hasError:invalidCodeError" (codeChange)="onCodeChange($event)"></code-input>
     </ion-row>
     <ion-row justify-content-center>
       <span *ngIf="(confirmCodeState | async) === RequestState.Loading">

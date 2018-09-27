@@ -20,6 +20,7 @@ import { PhoneInputDirective } from '~/core/directives/phone-input.directive';
 
 import { AppointmentItemComponent } from '~/core/components/appointment-item/appointment-item.component';
 import { BookServicesHeaderComponent } from '~/booking/services-header/services-header';
+import { CodeInputComponent } from '~/auth/code-input/code-input.component';
 import { MadeHeaderComponent } from '~/core/components/made-header/made-header.component';
 import { PhoneInputComponent } from '~/auth/phone-input/phone-input.component';
 import { ProfileHeaderComponent } from '~/core/components/profile-header/profile-header.component';
@@ -33,6 +34,7 @@ const declarations = [
   BookServicesHeaderComponent,
   BookServicesHeaderComponent,
   CheckListComponent,
+  CodeInputComponent,
   ContinueFooterComponent,
   FormatPhonePipe,
   HasErrorPipe,
