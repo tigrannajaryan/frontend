@@ -2,6 +2,8 @@ const fs = require('fs');
 const path = require('path');
 const webpack = require('webpack');
 const merge = require('webpack-merge');
+const WebpackOnBuildPlugin = require('on-build-webpack');
+const webpackutil = require('../../scripts/webpack-util');
 
 // get git info from command line
 const commitHash = require('child_process')
@@ -42,8 +44,19 @@ const config = {
 
     new webpack.DefinePlugin({
       __COMMIT_HASH__: JSON.stringify(commitHash),
+    }),
+
+    new WebpackOnBuildPlugin(function(stats) {
+      webpackutil.hashifyFileNames(path.resolve(__dirname, '../'));
     })
   ],
+
+  output: {
+    // Include content-based hash in the chunk file names.
+    // See also hashifyJsFileNames() which updates the file names in index.html
+    filename: '[name].[chunkhash].js'
+  },
+
   resolve: {
     alias: {
       // Make ~ an alias for root source code directory (inspired by Alexei Mironov)

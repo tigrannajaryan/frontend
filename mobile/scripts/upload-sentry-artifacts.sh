@@ -24,7 +24,7 @@ if [[ "$APP_DEVICE_TYPE" == "ios" ]]; then
     FILE_PATH="$TRAVIS_BUILD_DIR/mobile/$APP_TYPE/platforms/ios/www/build"
     SENTRY_RELEASE="$IOS_APP_BUNDLE_ID-$APP_VERSION_NUMBER"
 elif [[ "$APP_DEVICE_TYPE" == "android" ]]; then
-    echo "Going to upload iOS application sourcemaps"
+    echo "Going to upload Android application sourcemaps"
     FILE_PATH="$TRAVIS_BUILD_DIR/mobile/$APP_TYPE/platforms/android/app/src/main/assets/www/build"
     SENTRY_RELEASE="$ANDROID_APP_BUNDLE_ID-$APP_VERSION_NUMBER"
 else
