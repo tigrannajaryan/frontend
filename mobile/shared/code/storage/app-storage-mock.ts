@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AppPersistentData } from '~/core/app-storage';
+import { AppPersistentData } from '~/shared/storage/app-storage';
 
 /**
  * A class to get or set persistent App data.
@@ -37,7 +37,8 @@ export class AppStorageMock {
    * @param key a string name equal to one of properties of AppData
    * @param value the value to store. The type of this value is as declared in AppPersistentData.
    */
-  set<K extends keyof AppPersistentData>(key: K, value: AppPersistentData[K]): void {
+  set<K extends keyof AppPersistentData>(key: K, value: AppPersistentData[K]): Promise<void> {
     this.data[key] = value;
+    return Promise.resolve();
   }
 }

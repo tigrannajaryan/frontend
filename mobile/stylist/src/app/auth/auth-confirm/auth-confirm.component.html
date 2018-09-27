@@ -1,0 +1,36 @@
+<ion-header class="ion-bb-header"><ion-navbar></ion-navbar></ion-header>
+
+<ion-content class="AuthConfirmPage">
+  <ion-grid fixed>
+    <ion-row justify-content-center>
+      <div class="SharedH1">
+        Verification code
+        <div class="SharedH1-subtitle">
+          We’ve sent you a&nbsp;code via text&nbsp;to
+        </div>
+      </div>
+    </ion-row>
+    <ion-row *ngIf="phone" class="AuthConfirmPage-phoneNumber" justify-content-center>
+      <span>{{ phone | formatPhone }}&nbsp;</span><span class="Link" (click)="navCtrl.pop()" data-test-id="editPhoneLink">Edit</span>
+    </ion-row>
+    <ion-row>
+      <code-input [isDisabled]="(confirmCodeState | async) === RequestState.Loading" [hasError]="error | async | hasError:invalidCodeError" (codeChange)="onCodeChange($event)"></code-input>
+    </ion-row>
+    <ion-row justify-content-center>
+      <span *ngIf="(confirmCodeState | async) === RequestState.Loading">
+        Verifying the code…
+      </span>
+      <span *ngIf="(confirmCodeState | async) !== RequestState.Loading">
+        <span *ngIf="(resendCodeCountdown | async) > 0">
+          You can send a&nbsp;new code in&nbsp;{{ resendCodeCountdown | async }}
+        </span>
+        <span *ngIf="(resendCodeCountdown | async) === 0">
+          Didn’t get a&nbsp;code? <span class="Link" (click)="onResendCode()" data-test-id="sendNewCode">Send a&nbsp;new one</span>
+        </span>
+        <span *ngIf="(requestCodeState | async) === RequestState.Loading">
+          Sending a&nbsp;new code…
+        </span>
+      </span>
+    </ion-row>
+  </ion-grid>
+</ion-content>

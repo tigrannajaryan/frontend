@@ -3,12 +3,12 @@ import { Observable } from 'rxjs/Observable';
 import * as faker from 'faker';
 
 import { ApiResponse } from '~/shared/api/base.models';
-import { BaseServiceMock } from '~/core/api/base-service.mock';
+import { BaseServiceMock } from '~/shared/api/base-service.mock';
 import {
   PreferredStylistsListResponse,
   SetPreferredStylistResponse,
   StylistsListResponse
-} from '~/core/api/stylists.models';
+} from '~/shared/api/stylists.models';
 import { randomPhone } from '~/core/utils/test-utils';
 
 export const stylistsMock = Array(5).fill(undefined).map(() => {

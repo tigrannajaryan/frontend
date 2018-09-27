@@ -4,14 +4,14 @@ import { Observable } from 'rxjs/Observable';
 import * as faker from 'faker';
 
 import { ApiResponse } from '~/shared/api/base.models';
-import { BaseServiceMock } from '~/core/api/base-service.mock';
+import { BaseServiceMock } from '~/shared/api/base-service.mock';
 
 import {
   ConfirmCodeParams,
   ConfirmCodeResponse,
   GetCodeParams,
   GetCodeResponse
-} from '~/auth/auth.models';
+} from '~/shared/api/auth.models';
 
 import AuthErrors from '~/core/data/auth.errors.json';
 

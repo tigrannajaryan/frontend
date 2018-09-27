@@ -1,7 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { formatNumber } from 'libphonenumber-js';
 
-import { NumberFormat } from '~/core/directives/phone-input.directive';
+import { NumberFormat } from '~/shared/directives/phone-input.directive';
 
 @Pipe({ name: 'formatPhone' })
 export class FormatPhonePipe implements PipeTransform {

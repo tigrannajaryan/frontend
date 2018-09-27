@@ -3,7 +3,7 @@ import { storeLogger } from 'ngrx-store-logger';
 
 import { ENV } from '~/environments/environment.default';
 
-import { resetOnLogoutReducer } from '~/auth/auth.reducer';
+import { resetOnLogoutReducer } from '~/shared/storage/auth.reducer';
 
 /**
  * storeFreeze prevents state from being mutated. When mutation occurs, an

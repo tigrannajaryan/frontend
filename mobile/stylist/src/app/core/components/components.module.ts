@@ -5,6 +5,9 @@ import { MbIconsComponent } from '~/shared/components/mb-icons/mb-icons.componen
 import { ContinueFooterComponent } from '~/shared/components/continue-footer/continue-footer.component';
 import { CheckListComponent } from '~/shared/components/check-list/check-list.component';
 import { NumListComponent } from '~/shared/components/num-list/num-list.component';
+import { PhoneInputComponent } from '~/shared/components/phone-input/phone-input.component';
+import { CodeInputComponent } from '~/shared/components/code-input/code-input.component';
+
 import { DiscountsApi } from '~/shared/stylist-api/discounts.api';
 
 import { MadeNavComponent } from './made-nav/made-nav.component';
@@ -43,7 +46,9 @@ const components = [
   BackHeaderComponent,
   MbIconsComponent,
   CheckListComponent,
-  NumListComponent
+  NumListComponent,
+  PhoneInputComponent,
+  CodeInputComponent
 ];
 
 @NgModule({

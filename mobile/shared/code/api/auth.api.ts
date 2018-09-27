@@ -11,11 +11,16 @@ import {
   ConfirmCodeParams,
   ConfirmCodeResponse,
   GetCodeParams,
-  GetCodeResponse
-} from '~/auth/auth.models';
+  GetCodeResponse,
+  UserRole
+} from '~/shared/api/auth.models';
+
+import config from '~/auth/config.json';
 
 @Injectable()
 export class AuthService extends BaseService {
+
+  static role: UserRole = (config && config.role) || 'client';
 
   constructor(
     http: HttpClient,
@@ -26,10 +31,10 @@ export class AuthService extends BaseService {
   }
 
   getCode(data: GetCodeParams, options: ApiRequestOptions): Observable<ApiResponse<GetCodeResponse>> {
-    return this.post<GetCodeResponse>('auth/get-code', data, undefined, options);
+    return this.post<GetCodeResponse>('auth/get-code', { ...data, role: AuthService.role }, undefined, options);
   }
 
   confirmCode(data: ConfirmCodeParams, options: ApiRequestOptions): Observable<ApiResponse<ConfirmCodeResponse>> {
-    return this.post<ConfirmCodeResponse>('auth/code/confirm', data, undefined, options);
+    return this.post<ConfirmCodeResponse>('auth/code/confirm', { ...data, role: AuthService.role }, undefined, options);
   }
 }

@@ -9,7 +9,7 @@ import {
   PreferredStylistsListResponse,
   SetPreferredStylistResponse,
   StylistUuidModel
-} from '~/core/api/stylists.models';
+} from '~/shared/api/stylists.models';
 
 @Injectable()
 export class PreferredStylistsData {

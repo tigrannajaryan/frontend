@@ -1,13 +1,12 @@
 import { Component, ViewChild } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 
-import { componentIsActive } from '~/core/utils/component-is-active';
+import { componentIsActive } from '~/shared/utils/component-is-active';
 
 import { PageNames } from '~/core/page-names';
-import { RequestState } from '~/core/api/request.models';
+import { RequestState } from '~/shared/api/request.models';
 import {
   AuthState,
   ConfirmCodeAction,
@@ -16,17 +15,17 @@ import {
   selectConfirmCodeError,
   selectConfirmCodeState,
   selectRequestCodeState
-} from '~/auth/auth.reducer';
+} from '~/shared/storage/auth.reducer';
 import { selectInvitedByStylist, StylistState } from '~/core/reducers/stylists.reducer';
 import { PreferredStylistsData } from '~/core/api/preferred-stylists.data';
-import { AuthEffects } from '~/auth/auth.effects';
+import { AuthEffects } from '~/shared/storage/auth.effects';
 
 import { ApiError, FieldErrorItem } from '~/shared/api-errors';
-import { AuthProcessState } from '~/auth/auth-process-state';
+import { AuthProcessState } from '~/shared/storage/auth-process-state';
 
 import { StylistPageType } from '~/onboarding/stylist-invitation/stylist-invitation.component';
 
-export const CODE_LENGTH = 6;
+import { CodeData, CodeInputComponent } from '~/shared/components/code-input/code-input.component';
 
 @IonicPage()
 @Component({
@@ -34,18 +33,11 @@ export const CODE_LENGTH = 6;
   templateUrl: 'auth-confirm.component.html'
 })
 export class AuthConfirmPageComponent {
-  @ViewChild('input') codeInput;
+  @ViewChild(CodeInputComponent) codeInput: CodeInputComponent;
 
   RequestState = RequestState; // expose to view
 
-  digits = Array(CODE_LENGTH).fill(undefined);
-
   phone: string;
-  code: FormControl = new FormControl('', [
-    Validators.required,
-    Validators.minLength(CODE_LENGTH),
-    Validators.maxLength(CODE_LENGTH)
-  ]);
 
   confirmCodeState: Observable<RequestState>;
 
@@ -68,21 +60,13 @@ export class AuthConfirmPageComponent {
   ionViewWillEnter(): void {
     this.phone = this.navParams.get('phone');
 
-    // Send code confirmation request on valid code entered
-    this.code.statusChanges
-      .takeWhile(componentIsActive(this))
-      .filter(() => this.code.valid)
-      .subscribe(() => {
-        this.store.dispatch(new ConfirmCodeAction(this.phone, this.code.value));
-      });
-
     // Handle confirmation request state
     this.confirmCodeState = this.store.select(selectConfirmCodeState);
 
     // Navigate next on token saved
     this.authEffects.saveToken
       .takeWhile(componentIsActive(this))
-      .filter((isTokenSaved: boolean) => isTokenSaved)
+      .filter(isTokenSaved => isTokenSaved)
       .withLatestFrom(this.store)
       .subscribe(async ([isTokenSaved, state]) => {
         const preferredStylists = await this.preferredStylistsData.get();
@@ -111,9 +95,7 @@ export class AuthConfirmPageComponent {
   }
 
   ionViewDidEnter(): void {
-    setTimeout(() => { // autofocus code input
-      this.codeInput.setFocus();
-    });
+    this.codeInput.autofocus();
   }
 
   onResendCode(): void {
@@ -121,24 +103,14 @@ export class AuthConfirmPageComponent {
     this.authDataState.beginRerequestCountdown();
   }
 
-  onFocusCode(): void {
-    if (this.code.value.length === CODE_LENGTH) { // only happen when error occurred
-      this.code.patchValue('');
+  onCodeChange(codeData: CodeData): void {
+    const { code, valid } = codeData;
+
+    if (valid) {
+      this.store.dispatch(new ConfirmCodeAction(this.phone, code));
+    } else if (code.length === 0) {
+      // if there was an error and the input had been cleared out
       this.store.dispatch(new ResetConfirmCodeErrorAction());
-    }
-  }
-
-  onAutoblurCode(event: any): void {
-    const code: number = event.which || Number(event.code);
-    const key: string = event.key || String.fromCharCode(code);
-
-    if (!isNaN(parseInt(key, 10)) && event.target.value.length === CODE_LENGTH - 1) {
-      event.target.selectionStart = event.target.selectionEnd = 0;
-      event.target.scrollLeft = 0;
-      event.target.blur();
-      setTimeout(() => {
-        this.code.patchValue(event.target.value + key);
-      });
     }
   }
 }

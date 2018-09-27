@@ -76,7 +76,7 @@
         <ion-col>
           <ion-item class="Salon-input">
             <ion-label floating>Phone number</ion-label>
-            <ion-input formControlName="phone" type="tel"></ion-input>
+            <ion-input readonly formControlName="phone" type="tel"></ion-input>
             <div [class.is-active]="form.get('phone').dirty && form.get('phone').errors" class="Salon-inputError" item-end>
               <span *ngIf="form.get('phone').errors?.minlength">Minimal length {{ form.get('phone').errors?.minlength?.requiredLength }} digits</span>
               <span *ngIf="form.get('phone').errors?.maxlength">Maximal length {{ form.get('phone').errors?.maxlength?.requiredLength }} symbols</span>

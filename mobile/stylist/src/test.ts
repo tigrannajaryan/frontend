@@ -59,8 +59,8 @@ import { AuthApiServiceMock } from '~/shared/stylist-api/auth-api-service-mock';
 import { StylistServiceProvider } from '~/shared/stylist-api/stylist-service';
 import { StylistServiceMock } from '~/shared/stylist-api/stylist-service-mock';
 
-import { AppStorage } from '~/core/app-storage';
-import { AppStorageMock } from '~/core/app-storage-mock';
+import { AppStorage } from '~/shared/storage/app-storage';
+import { AppStorageMock } from '~/shared/storage/app-storage-mock';
 import { HomeService } from '~/shared/stylist-api/home.service';
 import { HomeServiceMock } from '~/shared/stylist-api/home.service.mock';
 

@@ -74,8 +74,8 @@ import { AppModule } from '~/app.module';
 
 import { AppointmentsApi } from '~/core/api/appointments.api';
 import { AppointmentsApiMock } from '~/core/api/appointments.api.mock';
-import { AuthService } from '~/auth/auth.api';
-import { AuthServiceMock } from '~/auth/auth.api.mock';
+import { AuthService } from '~/shared/api/auth.api';
+import { AuthServiceMock } from '~/shared/api/auth.api.mock';
 import { BookingApi } from '~/core/api/booking.api';
 import { BookingApiMock } from '~/core/api/booking.api.mock';
 import { ServicesService } from '~/core/api/services-service';
@@ -85,18 +85,18 @@ import { StylistsServiceMock } from '~/core/api/stylists-service.mock';
 import { ProfileApi } from '~/core/api/profile-api';
 import { ProfileApiMock } from '~/core/api/profile-api.mock';
 
-import { authPath, authReducer } from '~/auth/auth.reducer';
+import { authPath, authReducer } from '~/shared/storage/auth.reducer';
 import { profilePath, profileReducer } from '~/core/reducers/profile.reducer';
 import { stylistsPath, stylistsReducer } from '~/core/reducers/stylists.reducer';
 import { servicesPath, servicesReducer } from '~/core/reducers/services.reducer';
 
 import { LogoutEffects } from '~/core/effects/logout.effects';
-import { AuthEffects } from '~/auth/auth.effects';
+import { AuthEffects } from '~/shared/storage/auth.effects';
 import { ServicesEffects } from '~/core/effects/services.effects';
 import { StylistsEffects } from '~/core/effects/stylists.effects';
 
-import { AuthProcessState } from '~/auth/auth-process-state';
-import { AuthProcessStateMock } from '~/auth/auth-process-state.mock';
+import { AuthProcessState } from '~/shared/storage/auth-process-state';
+import { AuthProcessStateMock } from '~/shared/storage/auth-process-state.mock';
 
 import { DataModule } from '~/core/api/data.module';
 

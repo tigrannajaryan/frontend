@@ -14,7 +14,7 @@ import { ProfileCompleteness, ProfileModel } from '~/core/api/profile.models';
 import { checkProfileCompleteness } from '~/core/utils/user-utils';
 
 import { ProfileDataStore } from '~/profile/profile.data';
-import { LogoutAction } from '~/auth/auth.reducer';
+import { LogoutAction } from '~/shared/storage/auth.reducer';
 
 @IonicPage()
 @Component({

@@ -4,7 +4,7 @@ import { NavController, NavParams } from 'ionic-angular';
 import { TestUtils } from '~/../test';
 import { randomPhone, replaceNbspWithSpaces } from '~/core/utils/test-utils';
 
-import { AuthService } from '~/auth/auth.api';
+import { AuthService } from '~/shared/api/auth.api';
 
 import { AuthConfirmPageComponent } from './auth-confirm.component';
 

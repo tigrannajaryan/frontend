@@ -1,0 +1,23 @@
+<ion-header class="ion-bb-header"><ion-navbar></ion-navbar></ion-header>
+
+<ion-content class="AuthPage">
+  <ion-grid fixed>
+    <ion-row justify-content-center>
+      <div class="SharedH1">
+        Phone number
+        <div class="SharedH1-subtitle">
+          Enter your phone number to&nbsp;get a&nbsp;code
+        </div>
+      </div>
+    </ion-row>
+    <ion-row>
+      <phone-input (phoneChange)="onPhoneChange($event)"></phone-input>
+    </ion-row>
+  </ion-grid>
+</ion-content>
+
+<ion-footer class="AuthFooter">
+  <button (click)="submit()" ion-button full color="bb_skin" class="bb-btn-a" [ngClass]="{'is-loading': isLoading}" type="submit" [disabled]="isLoading || isDisabled">
+    {{ isLoading ? 'Loading…' : 'Continue' }}
+  </button>
+</ion-footer>

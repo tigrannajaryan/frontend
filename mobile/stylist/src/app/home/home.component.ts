@@ -14,7 +14,7 @@ import { Logger } from '~/shared/logger';
 import { GAWrapper } from '~/shared/google-analytics';
 import { PageNames } from '~/core/page-names';
 import { showAlert } from '~/core/utils/alert';
-import { AppStorage } from '~/core/app-storage';
+import { AppStorage } from '~/shared/storage/app-storage';
 import { StylistProfile } from '~/shared/stylist-api/stylist-models';
 import { Appointment, AppointmentStatuses, Home } from '~/shared/stylist-api/home.models';
 import { HomeService } from '~/shared/stylist-api/home.service';

@@ -1,24 +1,19 @@
 import { Component } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
 import { IonicPage, NavController } from 'ionic-angular';
 import { Store } from '@ngrx/store';
-import { getCountryCallingCode } from 'libphonenumber-js';
 
-import { componentIsActive } from '~/core/utils/component-is-active';
+import { componentIsActive } from '~/shared/utils/component-is-active';
+import { PhoneData } from '~/shared/components/phone-input/phone-input.component';
 
 import { PageNames } from '~/core/page-names';
-import { RequestState } from '~/core/api/request.models';
+import { RequestState } from '~/shared/api/request.models';
 import {
   AuthState,
   RequestCodeAction,
   RequestCodeSuccessAction,
   selectRequestCodeState
-} from '~/auth/auth.reducer';
-import { AuthEffects } from '~/auth/auth.effects';
-import { phoneValidator } from '~/core/validators/phone.validator';
-
-import { DEFAULT_COUNTRY_CODE, getCountryEmojiFlag, getUnifiedPhoneValue } from '~/core/directives/phone-input.directive';
-import Countries from 'country-data/data/countries.json';
+} from '~/shared/storage/auth.reducer';
+import { AuthEffects } from '~/shared/storage/auth.effects';
 
 @IonicPage()
 @Component({
@@ -26,12 +21,10 @@ import Countries from 'country-data/data/countries.json';
   templateUrl: 'auth-start.component.html'
 })
 export class AuthPageComponent {
-  countries = Countries && Countries.filter(country => country.countryCallingCodes.length > 0);
-
-  countryCode: FormControl = new FormControl(DEFAULT_COUNTRY_CODE, [Validators.required]);
-  phone: FormControl = new FormControl('', [Validators.required, phoneValidator(DEFAULT_COUNTRY_CODE)]);
+  phone: string;
 
   isLoading = false;
+  isDisabled = true;
 
   constructor(
     private authEffects: AuthEffects,
@@ -50,24 +43,21 @@ export class AuthPageComponent {
       });
   }
 
-  countrySelected(): void {
-    this.phone.setValidators([Validators.required, phoneValidator(this.countryCode.value)]);
-  }
+  onPhoneChange(phoneData: PhoneData): void {
+    const { phone, valid } = phoneData;
 
-  getPhoneCode(): string {
-    return `${getCountryEmojiFlag(this.countryCode.value)} +${getCountryCallingCode(this.countryCode.value)}`;
+    this.phone = phone;
+    this.isDisabled = !valid;
   }
 
   submit(): void {
-    const phone = getUnifiedPhoneValue(this.phone.value, this.countryCode.value);
-
-    this.store.dispatch(new RequestCodeAction(phone));
+    this.store.dispatch(new RequestCodeAction(this.phone));
 
     this.authEffects.getCodeRequest
       .first() // subscribes once
       .filter(action => action instanceof RequestCodeSuccessAction)
       .subscribe(() => {
-        this.navCtrl.push(PageNames.AuthConfirm, { phone });
+        this.navCtrl.push(PageNames.AuthConfirm, { phone: this.phone });
       });
   }
 }

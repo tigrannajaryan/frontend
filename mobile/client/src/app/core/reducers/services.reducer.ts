@@ -1,7 +1,7 @@
 import { Action, createFeatureSelector, createSelector } from '@ngrx/store';
 
 import { ApiError } from '~/shared/api-errors';
-import { RequestState } from '~/core/api/request.models';
+import { RequestState } from '~/shared/api/request.models';
 import { ServiceCategoryModel, ServiceModel } from '~/core/api/services.models';
 
 export enum servicesActionTypes {

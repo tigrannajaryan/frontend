@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { App, IonicPage, NavController, NavParams } from 'ionic-angular';
 
 import { PageNames } from '~/core/page-names';
-import { StylistModel } from '~/core/api/stylists.models';
+import { StylistModel } from '~/shared/api/stylists.models';
 import { PreferredStylistsData } from '~/core/api/preferred-stylists.data';
 
 export enum StylistPageType {

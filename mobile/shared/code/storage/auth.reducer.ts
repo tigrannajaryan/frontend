@@ -1,9 +1,13 @@
 import { Action, ActionReducer, createFeatureSelector, createSelector, State } from '@ngrx/store';
 
-import { RequestState } from '~/core/api/request.models';
-import { AuthTokenModel } from '~/auth/auth.models';
-import { StylistModel } from '~/core/api/stylists.models';
+import { RequestState } from '~/shared/api/request.models';
+import { AuthTokenModel } from '~/shared/api/auth.models';
 import { ApiError } from '~/shared/api-errors';
+
+import { StylistModel } from '~/shared/api/stylists.models';
+
+import { StylistProfileStatus } from '~/shared/stylist-api/auth-api-models';
+import { StylistProfile } from '~/shared/stylist-api/stylist-models';
 
 export enum authActionTypes {
   REQUEST_CODE = 'AUTH_REQUEST_CODE',
@@ -64,7 +68,9 @@ export class ConfirmCodeSuccessAction implements Action {
   constructor(
     public phone: string,
     public token: AuthTokenModel,
-    public invitedBy: StylistModel | undefined
+    public invitedBy: StylistModel | undefined,
+    public profileStatus: StylistProfileStatus | undefined,
+    public profile: StylistProfile | undefined
   ) {}
 }
 

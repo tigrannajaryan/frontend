@@ -6,7 +6,7 @@ import { Observable } from 'rxjs/Observable';
 import { catchError, map } from 'rxjs/operators';
 
 import { ApiResponse } from '~/shared/api/base.models';
-import { LOADING_DELAY, RequestState } from '~/core/api/request.models.ts';
+import { LOADING_DELAY, RequestState } from '~/shared/api/request.models.ts';
 import { ProfileModel } from '~/core/api/profile.models';
 import { ProfileApi } from '~/core/api/profile-api';
 
@@ -18,6 +18,7 @@ import {
   profileActionTypes,
   selectProfile,
   selectProfileRequestState,
+  SetPhoneAction,
   UpdateImage,
   UpdateImageError,
   UpdateImageSuccess,
@@ -25,6 +26,7 @@ import {
   UpdateProfileErrorAction,
   UpdateProfileSuccessAction
 } from '~/core/reducers/profile.reducer';
+import { authActionTypes, ConfirmCodeSuccessAction } from '~/shared/storage/auth.reducer';
 import { BaseService } from '~/shared/api/base-service';
 
 @Injectable()
@@ -75,6 +77,10 @@ export class ProfileEffects {
           catchError(error => Observable.of(new UpdateImageError(error)))
         )
     );
+
+  @Effect() setProfilePhone = this.actions
+    .ofType(authActionTypes.CONFIRM_CODE_SUCCESS)
+    .map((action: ConfirmCodeSuccessAction) => new SetPhoneAction(action.phone));
 
   constructor(
     protected actions: Actions,

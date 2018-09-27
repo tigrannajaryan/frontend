@@ -1,6 +1,6 @@
 import { Action, createFeatureSelector, createSelector } from '@ngrx/store';
 
-import { RequestState } from '~/core/api/request.models';
+import { RequestState } from '~/shared/api/request.models';
 import { ProfileModel } from '~/core/api/profile.models';
 import { ApiError } from '~/shared/api-errors';
 

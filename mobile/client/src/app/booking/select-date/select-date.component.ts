@@ -8,7 +8,7 @@ import { loading } from '~/shared/utils/loading';
 import { PageNames } from '~/core/page-names';
 import { DayOffer, ISODate } from '~/core/api/services.models';
 import { BookingData } from '~/core/api/booking.data';
-import { componentIsActive } from '~/core/utils/component-is-active';
+import { componentIsActive } from '~/shared/utils/component-is-active';
 
 import { EventTypes } from '~/core/event-types';
 import { TabIndex } from '~/main-tabs/main-tabs.component';

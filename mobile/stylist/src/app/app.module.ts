@@ -18,13 +18,17 @@ import { SharedSingletonsModule } from '~/shared/shared-singletons.module';
 import { AuthApiService } from '~/shared/stylist-api/auth-api-service';
 import { StylistServiceProvider } from '~/shared/stylist-api/stylist-service';
 
+import { AuthService } from '~/shared/api/auth.api';
+import { authPath, authReducer } from '~/shared/storage/auth.reducer';
+import { AuthEffects } from '~/shared/storage/auth.effects';
+
 import { MyAppComponent } from './app.component';
 import { httpInterceptorProviders } from '~/shared/stylist-api/http-interceptors';
 import { CoreModule } from '~/core/core.module';
-import { getMetaReducers, reducers } from './app.reducers';
+import { getMetaReducers } from './app.reducers';
 import { ENV } from '~/environments/environment.default';
 import { GoogleMapsConfig } from '~/core/google-maps-config';
-import { AppStorage } from '~/core/app-storage';
+import { AppStorage } from '~/shared/storage/app-storage';
 
 initSentry();
 
@@ -42,7 +46,8 @@ const imports = [
    * meta-reducer. This returns all providers for an @ngrx/store
    * based application.
    */
-  StoreModule.forRoot(reducers),
+  StoreModule.forRoot({}),
+  StoreModule.forFeature(authPath, authReducer),
 
   /**
    * EffectsModule.forRoot() is imported once in the root module and
@@ -51,7 +56,9 @@ const imports = [
    *
    * See: https://github.com/ngrx/platform/blob/master/docs/effects/api.md#forroot
    */
-  EffectsModule.forRoot([])
+  EffectsModule.forRoot([
+    AuthEffects
+  ])
 ];
 
 if (!ENV.production) {
@@ -84,6 +91,7 @@ if (!ENV.production) {
   providers: [
     StatusBar,
     SplashScreen,
+    AuthService,
     AuthApiService,
     StylistServiceProvider,
     httpInterceptorProviders,
