@@ -8,6 +8,17 @@ import { ApiResponse } from '~/shared/api/base.models';
 
 import { randomPhone } from '~/core/utils/test-utils';
 
+export const profileNotCompleate = {
+  phone: randomPhone(),
+  first_name: 'First',
+  last_name: 'Last',
+  zip_code: Number(Math.random() * Math.pow(10, 6)),
+  email: `test_profile+${faker.name.firstName()}@madebeauty.com`,
+  city: '',
+  state: '',
+  instagram_url: ''
+};
+
 @Injectable()
 export class ProfileApiMock extends BaseServiceMock {
 
@@ -34,6 +45,7 @@ export class ProfileApiMock extends BaseServiceMock {
     return this.mockRequest<ProfileModel>(
       Observable.create(observer => {
         observer.next(profile);
+        observer.complete();
       })
     );
   }

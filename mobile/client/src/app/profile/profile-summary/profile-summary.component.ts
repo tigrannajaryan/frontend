@@ -33,12 +33,12 @@ export class ProfileSummaryComponent {
   profileCompleteness: ProfileCompleteness;
 
   constructor(
+    public profileDataStore: ProfileDataStore,
     private app: App,
     private alertCtrl: AlertController,
     private clipboard: Clipboard,
     private emailComposer: EmailComposer,
     private loadingCntrl: LoadingController,
-    private profileDataStore: ProfileDataStore,
     private store: Store<{}>
   ) {
   }
