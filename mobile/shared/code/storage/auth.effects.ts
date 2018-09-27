@@ -110,7 +110,7 @@ export class AuthEffects {
 
   @Effect({ dispatch: false }) saveToken = this.actions
     .ofType(authActionTypes.CONFIRM_CODE_SUCCESS)
-    .switchMap((action: ConfirmCodeSuccessAction): Observable<boolean> =>
+    .switchMap((action: ConfirmCodeSuccessAction): Observable<ConfirmCodeSuccessAction | boolean> =>
       Observable.from(
         this.performTokenSave(action.token)
           .then(() => action)
@@ -131,7 +131,7 @@ export class AuthEffects {
   }
 
   private performTokenSave(token: AuthTokenModel): Promise<void> {
-    switch(config && config.role) {
+    switch (config && config.role) {
       case 'stylist': {
         const storage = AppModule.injector.get(AppStorage); // dynamic inject
         return storage.set('authToken', token.token);

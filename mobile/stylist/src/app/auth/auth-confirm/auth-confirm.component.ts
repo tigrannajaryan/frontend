@@ -68,12 +68,12 @@ export class AuthConfirmPageComponent {
     // Navigate next on token saved
     this.authEffects.saveToken
       .takeWhile(componentIsActive(this))
-      .filter((isTokenSaved: boolean) => isTokenSaved)
+      .filter(isTokenSaved => isTokenSaved)
       .withLatestFrom(this.store)
       .subscribe(async ([data, state]) => {
         this.authApiService.init(new TokenStorageImpl(this.storage));
 
-        const requiredPages = createNavHistoryList(data.profile_status);
+        const requiredPages = createNavHistoryList(data.profileStatus);
         this.navCtrl.setPages(requiredPages);
       });
 

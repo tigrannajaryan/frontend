@@ -66,7 +66,7 @@ export class AuthConfirmPageComponent {
     // Navigate next on token saved
     this.authEffects.saveToken
       .takeWhile(componentIsActive(this))
-      .filter((isTokenSaved: boolean) => isTokenSaved)
+      .filter(isTokenSaved => isTokenSaved)
       .withLatestFrom(this.store)
       .subscribe(async ([isTokenSaved, state]) => {
         const preferredStylists = await this.preferredStylistsData.get();

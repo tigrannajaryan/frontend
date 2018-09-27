@@ -16,8 +16,8 @@
   </ion-grid>
 </ion-content>
 
-<ion-footer class="Footer">
-  <button (click)="submit()" ion-button class="Button" [ngClass]="{'is-loading': isLoading}" type="submit" [disabled]="isLoading || isDisabled">
+<ion-footer class="AuthFooter">
+  <button (click)="submit()" ion-button full color="bb_skin" class="bb-btn-a" [ngClass]="{'is-loading': isLoading}" type="submit" [disabled]="isLoading || isDisabled">
     {{ isLoading ? 'Loading…' : 'Continue' }}
   </button>
 </ion-footer>

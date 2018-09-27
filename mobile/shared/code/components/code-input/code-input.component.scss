@@ -1,3 +1,38 @@
 code-input {
   width: 100%;
+
+  .FormControl {
+    padding: 0;
+
+    .label {
+      color: color($grayscale, 500);
+    }
+
+    &.item-block .item-inner { // override ionic styles
+      padding: 0;
+      border-bottom: 1px solid color($grayscale, 200);
+    }
+
+    &.item-input-has-focus .item-inner { // override ionic styles
+      border-bottom-color: #FBB597;
+    }
+
+    ion-select { // override ionic styles
+      flex: 1;
+      align-items: center;
+      max-width: 100%;
+      padding: 0 8px 0 0;
+    }
+
+    .FormControl-errorMsg {
+      font-size: pxtovw(15px);
+      color: #FF6161;
+    }
+
+    // spaced when used in label
+    ion-label .FormControl-errorMsg {
+      display: inline;
+      margin-left: 10px;
+    }
+  }
 }

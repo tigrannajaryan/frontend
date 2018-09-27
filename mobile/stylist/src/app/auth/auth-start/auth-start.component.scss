@@ -1,0 +1,13 @@
+.AuthPage {
+  ion-select { // override ionic styles
+    padding: 0 8px 0 0;
+  }
+}
+
+.AuthFooter {
+  padding: pxtovw(24px) pxtovw(25px);
+
+  button {
+    width: 100%;
+  }
+}
