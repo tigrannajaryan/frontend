@@ -60,6 +60,7 @@
     margin-bottom: pxtovw(8px);
     font-size: $t-h2;
     font-weight: bold;
+    text-align: center;
   }
 
   .StylistInvitationPage-address,
@@ -67,6 +68,7 @@
     margin-bottom: pxtovw(4px);
     font-size: $t-base;
     color: color($grayscale, 500);
+    text-align: center;
 
     [class^="mb-icon"] {
       color: color($colors, honey);
