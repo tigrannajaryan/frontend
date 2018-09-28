@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { IonicPage, NavController } from 'ionic-angular';
+import { NavController } from 'ionic-angular';
 
 import { componentUnloaded } from '~/shared/component-unloaded';
 import { ServiceCategory, ServiceItem } from '~/shared/stylist-api/stylist-models';
@@ -13,7 +13,6 @@ import {
   ServicesState
 } from './services.reducer';
 
-@IonicPage()
 @Component({
   selector: 'page-appointment-services',
   templateUrl: 'appointment-services.html'

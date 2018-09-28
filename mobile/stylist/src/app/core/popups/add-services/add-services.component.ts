@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AlertController, IonicPage, NavController, NavParams } from 'ionic-angular';
+import { AlertController, NavController, NavParams } from 'ionic-angular';
 
 import { StylistServiceProvider } from '~/shared/stylist-api/stylist-service';
 import { ServiceCategory, ServiceItem, StylistServicesList } from '~/shared/stylist-api/stylist-models';
@@ -17,7 +17,6 @@ export class AddServicesComponentParams {
  * The screen is used during appointment checkout process and allows
  * modifying the appointment.
  */
-@IonicPage({ segment: 'appointment-checkout/:appointmentUuid/add-service' })
 @Component({
   selector: 'page-add-service',
   templateUrl: 'add-services.component.html'

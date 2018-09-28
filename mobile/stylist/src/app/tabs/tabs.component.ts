@@ -1,18 +1,16 @@
 import { Component } from '@angular/core';
-import { IonicPage, Tab } from 'ionic-angular';
+import { Tab } from 'ionic-angular';
+import { Page } from 'ionic-angular/navigation/nav-util';
 
 import { GAWrapper } from '~/shared/google-analytics';
 import { PageNames } from '~/core/page-names';
 
 interface TabsObject {
   name: string;
-  link: PageNames;
+  link: Page;
   params: any;
 }
 
-@IonicPage({
-  segment: 'tabs'
-})
 @Component({
   selector: 'page-tabs',
   templateUrl: 'tabs.component.html'

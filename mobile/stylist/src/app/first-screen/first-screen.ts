@@ -1,10 +1,9 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController } from 'ionic-angular';
+import { NavController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 
 import { PageNames } from '~/core/page-names';
 
-@IonicPage()
 @Component({
   selector: 'page-first-screen',
   templateUrl: 'first-screen.html'

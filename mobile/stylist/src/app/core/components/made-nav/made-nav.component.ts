@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { NavController } from 'ionic-angular';
+import { Page } from 'ionic-angular/navigation/nav-util';
 
 import { PageNames } from '~/core/page-names';
 
@@ -14,7 +15,7 @@ export class MadeNavComponent {
     right: []
   };
   @Input()
-  set activePage(activePage: string) {
+  set activePage(activePage: Page) {
     for (const item of this.pages) {
       if (item.page === activePage) {
         this.nav.active = item.name;

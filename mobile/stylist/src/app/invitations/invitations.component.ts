@@ -1,6 +1,5 @@
 import {
   AlertController,
-  IonicPage,
   NavController,
   NavParams,
   Platform
@@ -74,9 +73,6 @@ interface DisplayContactSection {
  */
 const defaultCountry = 'US';
 
-@IonicPage({
-  segment: 'invitations'
-})
 @Component({
   selector: 'page-invitations',
   templateUrl: 'invitations.component.html'

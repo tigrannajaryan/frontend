@@ -9,7 +9,6 @@ import { MapsAPILoader } from '@agm/core';
 import {
   ActionSheetController,
   ActionSheetOptions,
-  IonicPage,
   NavController,
   NavParams
 } from 'ionic-angular';
@@ -27,9 +26,6 @@ import { showAlert } from '~/core/utils/alert';
 
 declare var window: any;
 
-@IonicPage({
-  segment: 'register-salon'
-})
 @Component({
   selector: 'page-register-salon',
   templateUrl: 'register-salon.html'

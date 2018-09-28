@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams } from 'ionic-angular';
 
 import { HomeService } from '~/shared/stylist-api/home.service';
 import {
@@ -26,7 +26,6 @@ export interface AppointmentCheckoutParams {
  * and shows the preview of total price, tax, card fee, the list
  * of included services and allows modifying the list.
  */
-@IonicPage({ segment: 'appointment-checkout/:appointmentUuid' })
 @Component({
   selector: 'page-checkout',
   templateUrl: 'appointment-checkout.component.html'

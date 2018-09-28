@@ -2,7 +2,7 @@ import * as moment from 'moment';
 
 import { Store } from '@ngrx/store';
 import { Component } from '@angular/core';
-import { AlertController, IonicPage, NavController } from 'ionic-angular';
+import { AlertController, NavController } from 'ionic-angular';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { componentUnloaded } from '~/shared/component-unloaded';
@@ -28,7 +28,6 @@ function isOverridableError(errorCodeStr: FieldErrorCode): boolean {
     errorCodeStr === 'err_appointment_intersection';
 }
 
-@IonicPage()
 @Component({
   selector: 'page-appointment-add',
   templateUrl: 'appointment-add.html'

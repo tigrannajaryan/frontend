@@ -1,12 +1,11 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavParams, ViewController } from 'ionic-angular';
+import { NavParams, ViewController } from 'ionic-angular';
 import { ServiceCategory } from '~/shared/stylist-api/stylist-models';
 
 export interface ServicesCategoriesListData {
   categories: ServiceCategory[];
 }
 
-@IonicPage({ segment: 'services-categories' })
 @Component({
   selector: 'pop-services-categories',
   templateUrl: 'services-categories.component.html'

@@ -3,7 +3,6 @@ import { Component, NgZone, ViewChild } from '@angular/core';
 import {
   ActionSheetController,
   AlertController, Content,
-  IonicPage,
   NavController, NavParams, Slides
 } from 'ionic-angular';
 import { Store } from '@ngrx/store';
@@ -43,7 +42,6 @@ const helpText = `Congratulations! Your registration is complete.<br/><br/>
   This is your homescreen. Your appointments will show up here.<br/><br/>
   You can also edit your information from the tab bar listed below.<br/>Let's get started.`;
 
-@IonicPage({ segment: 'home' })
 @Component({
   selector: 'page-home',
   templateUrl: 'home.component.html'

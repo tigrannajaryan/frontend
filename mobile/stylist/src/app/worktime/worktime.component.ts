@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams } from 'ionic-angular';
 
 import { Workday, Worktime } from '~/shared/stylist-api/worktime.models';
 import { WorktimeApi } from '~/shared/stylist-api/worktime.api';
@@ -62,7 +62,6 @@ export const defaultEndTime = '17:00'; // 24 hour hh:mm format
  */
 type HourRange = [string, string];
 
-@IonicPage({ segment: 'worktime' })
 @Component({
   selector: 'page-worktime-component',
   templateUrl: 'worktime.component.html'

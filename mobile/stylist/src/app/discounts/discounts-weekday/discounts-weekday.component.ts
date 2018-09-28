@@ -1,14 +1,11 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController } from 'ionic-angular';
+import { NavController } from 'ionic-angular';
 
 import { Discounts, WeekdayDiscount } from '~/shared/stylist-api/discounts.models';
 import { DiscountsApi } from '~/shared/stylist-api/discounts.api';
 import { loading } from '~/shared/utils/loading';
 import { PageNames } from '~/core/page-names';
 
-@IonicPage({
-  segment: 'discounts-weekday'
-})
 @Component({
   selector: 'page-discounts-weekday',
   templateUrl: 'discounts-weekday.component.html'

@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import {
   AlertController,
-  IonicPage,
   ModalController,
   NavController,
   NavParams
@@ -16,8 +15,6 @@ import { PageNames } from '~/core/page-names';
 import { ServiceListType } from '~/services/services.component';
 import { ServiceItemComponentData } from '~/services/services-item/services-item.component';
 
-// this is required for saving uuid (page refresh will not remove it)
-@IonicPage({ segment: 'services/:uuid' })
 @Component({
   selector: 'page-services-list',
   templateUrl: 'services-list.component.html'

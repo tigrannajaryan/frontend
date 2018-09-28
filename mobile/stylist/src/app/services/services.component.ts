@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams } from 'ionic-angular';
 import { DomSanitizer } from '@angular/platform-browser';
 import { SafeStyle } from '@angular/platform-browser/src/security/dom_sanitization_service';
 
@@ -12,9 +12,6 @@ export enum ServiceListType {
   blank = 'blank'
 }
 
-@IonicPage({
-  segment: 'services'
-})
 @Component({
   selector: 'page-services',
   templateUrl: 'services.component.html'

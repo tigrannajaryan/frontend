@@ -69,7 +69,7 @@ export class ServerStatusTracker {
 
   private subject = new BehaviorSubject<ApiError>(undefined);
 
-  private firstPageName: string;
+  private firstPageName: any;
   private onUnauthorized: () => any;
 
   private static error2SeverityLevel(error: ApiError): Severity {
@@ -101,7 +101,7 @@ export class ServerStatusTracker {
     private app: App,
     private logger: Logger) { }
 
-  init(firstPageName: string, onUnauthorized?: () => (Promise<void> | void)): void {
+  init(firstPageName: any, onUnauthorized?: () => (Promise<void> | void)): void {
     this.firstPageName = firstPageName;
     this.onUnauthorized = onUnauthorized;
   }
