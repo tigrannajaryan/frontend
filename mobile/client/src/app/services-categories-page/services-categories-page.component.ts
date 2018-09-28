@@ -49,26 +49,25 @@ export class ServicesCategoriesPageComponent {
   ) {
   }
 
-  ionViewCanEnter(): Promise<boolean> {
-    return new Promise(async resolve => {
-      const preferredStylists = await this.preferredStylistsData.get({ refresh: true });
-      // Cannot proceed if no prefered styllist is selected
-      if (!preferredStylists || preferredStylists.length === 0) {
-        setTimeout(async () => {
-          await this.navCtrl.setRoot(PageNames.MainTabs);
-          this.events.publish(EventTypes.selectMainTab, TabIndex.Stylists, () => {
-            const alert = this.alertCtrl.create({
-              message: 'Choose your saved stylist to proceed with booking.',
-              buttons: [{ text: 'OK', role: 'cancel' }]
-            });
-            alert.present();
+  async ionViewCanEnter(): Promise<boolean> {
+    const preferredStylists = await this.preferredStylistsData.get({ refresh: true });
+
+    // Cannot proceed if no prefered styllist is selected
+    if (!preferredStylists || preferredStylists.length === 0) {
+      setTimeout(async () => {
+        await this.navCtrl.setRoot(PageNames.MainTabs);
+        this.events.publish(EventTypes.selectMainTab, TabIndex.Stylists, () => {
+          const alert = this.alertCtrl.create({
+            message: 'Choose your saved stylist to proceed with booking.',
+            buttons: [{ text: 'OK', role: 'cancel' }]
           });
+          alert.present();
         });
-        resolve(false);
-      } else {
-        resolve(true);
-      }
-    });
+      });
+      return false;
+    } else {
+      return true;
+    }
   }
 
   async ionViewWillEnter(): Promise<void> {

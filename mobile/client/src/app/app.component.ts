@@ -103,8 +103,6 @@ export class ClientAppComponent implements OnInit, OnDestroy {
   }
 
   async onStartBooking(): Promise<void> {
-    const preferredStylists = await this.preferredStylistsData.get();
-
     // Begin booking process
     this.nav.push(PageNames.ServicesCategories);
   }
