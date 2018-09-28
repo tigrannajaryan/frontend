@@ -258,8 +258,8 @@ export class InvitationsComponent {
     this.loadContacts();
 
     // Preload stylist profile and discounts that we will need later
-    this.stylistProfile = this.stylistApi.getProfile().toPromise();
-    this.discounts = this.discountsApi.getDiscounts().toPromise();
+    this.stylistProfile = this.stylistApi.getProfile().get();
+    this.discounts = this.discountsApi.getDiscounts().get();
   }
 
   /**
@@ -281,7 +281,7 @@ export class InvitationsComponent {
 
     // Initiate asynchronously in parallel reading local contacts and reading invitations from backend
     const localContactsPromise = this.getLocalContacts();
-    const invitationsPromise = this.invitationsApi.getInvitations().toPromise();
+    const invitationsPromise = this.invitationsApi.getInvitations().get();
 
     // Set both promises to resolve or error. We catch the errors and wrap them in a proxy ErrorWrapper class
     // to be able to differentiate from success case later. Note: if we don't catch here then by default
@@ -638,7 +638,7 @@ export class InvitationsComponent {
       this.updateSelectedContacts();
 
       // Let our backend know that the message was sent
-      const { response } = await this.invitationsApi.createInvitations([invitation]).toPromise();
+      const { response } = await this.invitationsApi.createInvitations([invitation]).get();
       if (!response) {
         return;
       }
@@ -663,7 +663,7 @@ export class InvitationsComponent {
     // Send empty invitations list to backend to make sure the profile's
     // has_invited_clients is marked true and we do not bother the user
     // again during next login.
-    this.invitationsApi.createInvitations([]).toPromise();
+    this.invitationsApi.createInvitations([]).get();
   }
 
   /**

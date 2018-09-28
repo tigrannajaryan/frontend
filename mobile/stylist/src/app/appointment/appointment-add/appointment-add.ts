@@ -117,7 +117,7 @@ export class AppointmentAddComponent {
     // We will handle ApiFieldAndNonFieldErrors ourselves, so tell API to not show alerts
     const options = { hideGenericAlertOnFieldAndNonFieldErrors: true };
 
-    const { error } = await this.appointmentService.createAppointment(data, forced, options).toPromise();
+    const { error } = await this.appointmentService.createAppointment(data, forced, options).get();
     if (error) {
       if (error instanceof ApiFieldAndNonFieldErrors) {
         // Process our specific errors here

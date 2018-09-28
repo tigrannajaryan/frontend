@@ -65,6 +65,6 @@ export class DiscountsRevisitComponent {
 
   protected onRevisitChange(): void {
     this.discountsApi.setDiscounts(
-      DiscountsRevisitComponent.transformDiscountsToRebook(this.discounts)).toPromise();
+      DiscountsRevisitComponent.transformDiscountsToRebook(this.discounts)).get();
   }
 }

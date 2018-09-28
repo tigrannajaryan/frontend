@@ -65,7 +65,7 @@ export class DiscountsComponent {
 
   @loading
   async loadInitialData(): Promise<void> {
-    const discounts = (await this.discountsApi.getDiscounts().toPromise()).response;
+    const discounts = (await this.discountsApi.getDiscounts().get()).response;
     if (!discounts) {
       return;
     }
@@ -75,7 +75,7 @@ export class DiscountsComponent {
     this.weekdays = weekdays.sort((a, b) => a.weekday - b.weekday); // from 1 (Monday) to 7 (Sunday)
     this.rebook = DiscountsRevisitComponent.transformRebookToDiscounts(rebook);
 
-    const maximumDiscounts: MaximumDiscounts = (await this.discountsApi.getMaximumDiscounts().toPromise()).response;
+    const maximumDiscounts: MaximumDiscounts = (await this.discountsApi.getMaximumDiscounts().get()).response;
     if (maximumDiscounts) {
       this.maximumDiscounts.maximum_discount = maximumDiscounts.maximum_discount;
       this.maximumDiscounts.is_maximum_discount_enabled = maximumDiscounts.is_maximum_discount_enabled;
@@ -111,21 +111,21 @@ export class DiscountsComponent {
   }
 
   onWeekdayChange(): void {
-    this.discountsApi.setDiscounts({ weekdays: this.weekdays }).toPromise();
+    this.discountsApi.setDiscounts({ weekdays: this.weekdays }).get();
   }
 
   onRevisitChange(): void {
-    this.discountsApi.setDiscounts(DiscountsRevisitComponent.transformDiscountsToRebook(this.rebook)).toPromise();
+    this.discountsApi.setDiscounts(DiscountsRevisitComponent.transformDiscountsToRebook(this.rebook)).get();
   }
 
   onFirstVisitChange(): void {
-    this.discountsApi.setDiscounts({ first_booking: this.firstBooking.percentage }).toPromise();
+    this.discountsApi.setDiscounts({ first_booking: this.firstBooking.percentage }).get();
   }
 
   onMaximumDiscountChange(): void {
     this.discountsApi.setMaximumDiscounts({
       maximum_discount: this.maximumDiscounts.maximum_discount,
       is_maximum_discount_enabled: this.maximumDiscounts.is_maximum_discount_enabled
-    }).toPromise();
+    }).get();
   }
 }

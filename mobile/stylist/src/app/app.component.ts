@@ -104,7 +104,7 @@ export class MyAppComponent {
       // and validate it and show the correct page after that.
       let authResponse: AuthResponse;
       try {
-        authResponse = (await this.authApiService.refreshAuth().toPromise()).response;
+        authResponse = (await this.authApiService.refreshAuth().get()).response;
       } catch (e) {
         this.logger.error('App: Error when trying to refresh auth.');
       }

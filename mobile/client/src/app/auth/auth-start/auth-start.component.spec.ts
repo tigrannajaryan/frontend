@@ -92,7 +92,7 @@ describe('Pages: Auth Phone', () => {
     instance.submit();
 
     const authEffects = fixture.debugElement.injector.get(AuthEffects);
-    await authEffects.getCodeRequest.first().toPromise();
+    await authEffects.getCodeRequest.get();
 
     expect(navCtrl.push)
       .toHaveBeenCalledWith(PageNames.AuthConfirm, { phone: testPhone });

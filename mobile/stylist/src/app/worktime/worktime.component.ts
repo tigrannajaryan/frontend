@@ -112,7 +112,7 @@ export class WorktimeComponent {
 
   async loadInitialData(): Promise<void> {
     // Load data from backend and show it
-    const { response } = await loading(this, this.api.getWorktime().toPromise());
+    const { response } = await loading(this, this.api.getWorktime().get());
     if (response) {
       this.cards = this.api2presentation(response);
     }
@@ -158,9 +158,9 @@ export class WorktimeComponent {
     }
   }
 
-  async autoSave(): Promise<void> {
+  autoSave(): void {
     // Save to backend
-    await this.api.setWorktime(this.presentation2api(this.cards)).toPromise();
+    this.api.setWorktime(this.presentation2api(this.cards)).get();
   }
 
   /**

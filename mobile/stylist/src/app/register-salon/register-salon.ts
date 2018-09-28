@@ -99,7 +99,7 @@ export class RegisterSalonComponent {
   @loading
   async loadFormInitialData(): Promise<void> {
 
-    const { response } = await this.apiService.getProfile().toPromise();
+    const { response } = await this.apiService.getProfile().get();
     if (!response) {
       return;
     }
@@ -215,7 +215,7 @@ export class RegisterSalonComponent {
       // tslint:disable-next-line:no-null-keyword
       salon_name: profile.salon_name || null
     };
-    const { response } = await this.apiService.setProfile(data).toPromise();
+    const { response } = await this.apiService.setProfile(data).get();
     if (response) {
       this.nextRoute();
     }

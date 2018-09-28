@@ -77,7 +77,7 @@ export class AppointmentPageComponent {
   }
 
   async onDoCancel(): Promise<void> {
-    const { error } = await this.api.cancelAppointment(this.params.appointment).toPromise();
+    const { error } = await this.api.cancelAppointment(this.params.appointment).get();
     if (!error) {
       // Let caller know
       if (this.params.onCancel) {

@@ -42,7 +42,7 @@ export class AddServicesComponent {
 
   @loading
   async loadInitialData(): Promise<void> {
-    const response: StylistServicesList = (await this.stylistService.getStylistServices().toPromise()).response;
+    const response: StylistServicesList = (await this.stylistService.getStylistServices().get()).response;
     if (response) {
       this.serviceCategories = this.filterSelectedServices(response.categories);
     }

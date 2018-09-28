@@ -49,8 +49,8 @@ export class PreferredStylistsData {
     // TODO: remove next line when work with multiple preferred stylists
     await this.clearAll();
 
-    const { response: setResponse } = await this.api.setPreferredStylist(newStylist.uuid).first().toPromise();
-    const { response: getResponse } = await this.api.getPreferredStylists().first().toPromise();
+    const { response: setResponse } = await this.api.setPreferredStylist(newStylist.uuid).get();
+    const { response: getResponse } = await this.api.getPreferredStylists().get();
 
     if (setResponse && getResponse) {
       const stylist = getResponse.stylists.find(s => s.uuid === newStylist.uuid);
@@ -77,7 +77,7 @@ export class PreferredStylistsData {
   async clearAll(): Promise<void> {
     const preferredStylists = await this.get({ refresh: true });
     await Promise.all(
-      preferredStylists.map(stylist => this.api.deletePreferredStylist(stylist.preference_uuid).first().toPromise())
+      preferredStylists.map(stylist => this.api.deletePreferredStylist(stylist.preference_uuid).get())
     );
     this.data.set({ stylists: [] });
   }
