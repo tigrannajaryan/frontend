@@ -69,7 +69,7 @@ export class AppointmentCheckoutComponent {
       if (!this.params) {
         // Entering this view for the first time. Load the data.
         this.params = this.navParams.get('data') as AppointmentCheckoutParams;
-        this.appointment = (await this.homeService.getAppointmentById(this.params.appointmentUuid).toPromise()).response;
+        this.appointment = (await this.homeService.getAppointmentById(this.params.appointmentUuid).get()).response;
         if (this.appointment) {
           this.selectedServices = this.appointment.services.map(el => ({ service_uuid: el.service_uuid }));
           this.hasTaxIncluded = true; // Enable tax by default
@@ -103,7 +103,7 @@ export class AppointmentCheckoutComponent {
         has_card_fee_included: this.hasCardFeeIncluded
       };
 
-      this.previewResponse = (await this.homeService.getAppointmentPreview(appointmentPreview).toPromise()).response;
+      this.previewResponse = (await this.homeService.getAppointmentPreview(appointmentPreview).get()).response;
       if (this.previewResponse) {
         this.subTotalRegularPrice = this.previewResponse.services.reduce((a, c) => (a + c.regular_price), 0);
       }
@@ -150,7 +150,7 @@ export class AppointmentCheckoutComponent {
       has_tax_included: this.hasTaxIncluded
     };
 
-    const { response } = await this.homeService.changeAppointment(this.params.appointmentUuid, request).toPromise();
+    const { response } = await this.homeService.changeAppointment(this.params.appointmentUuid, request).get();
     if (!response) {
       return;
     }

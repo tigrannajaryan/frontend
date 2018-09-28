@@ -19,7 +19,7 @@ export class ProfileEffects {
     .ofType(profileActionTypes.LOAD)
     .map((action: LoadProfileAction) => action)
     .switchMap(() => Observable.defer(async () => {
-      const { response, error } = await this.stylistService.getProfile().toPromise();
+      const { response, error } = await this.stylistService.getProfile().get();
       if (response) {
         return new LoadProfileSuccessAction(response);
       } else {

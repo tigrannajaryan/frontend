@@ -23,7 +23,7 @@ export class ServicesEffects {
     .ofType(servicesActionTypes.LOAD)
     .map((action: LoadAction) => action)
     .switchMap(() => Observable.defer(withLoader(async () => {
-      const { response, error } = (await this.stylistService.getStylistServices().toPromise());
+      const { response, error } = (await this.stylistService.getStylistServices().get());
       if (response) {
         return new LoadSuccessAction(response.categories);
       } else {
