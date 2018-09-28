@@ -1,6 +1,6 @@
 import { $ } from 'protractor';
 
-import { waitForNot } from '../shared-e2e/utils';
+import { waitForNot } from './utils';
 
 /**
  * LoginRegister page definition

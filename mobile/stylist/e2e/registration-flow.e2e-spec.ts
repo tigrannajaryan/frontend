@@ -1,11 +1,13 @@
 import { browser } from 'protractor';
 import * as faker from 'faker';
 
-import { getRandomNumber, getRandomString, waitFor, waitForNot, globals, click } from './shared-e2e/utils';
+import { click, getRandomString, globals, waitFor, waitForNot, clearIonicStorage } from './shared-e2e/utils';
+import { backdoorApi } from './shared-e2e/backdoor-api';
 import { almostDonePage } from './shared-e2e/almost-done-page';
 import { howPricingWorksPage } from './shared-e2e/how-pricing-works-page';
+import { phoneLoginPage } from './shared-e2e/phone-login-page';
+import { phoneCodePage } from './shared-e2e/phone-code-page';
 
-import { logregPage } from './pages/logreg-page';
 import { profilePage } from './pages/profile-page';
 import { welcomeToMadePage } from './pages/welcome-to-made-page';
 import { firstPage } from './pages/first-page';
@@ -20,26 +22,39 @@ import { mainTabsPage } from './pages/main-tabs-page';
 
 describe('Registration Flow', () => {
 
-  const email = `${getRandomString(15)}-test@madebeauty.com`;
-  const password = getRandomString(10);
+  let phoneNumber: string;
   const firstName = faker.name.firstName();
   const lastName = faker.name.lastName();
   const salonName = faker.company.companyName(0);
   const address = faker.address.streetAddress();
-  const phoneNumber = getRandomNumber(10);
   const instagramName = getRandomString(8);
   const websiteName = getRandomString(8);
 
-  it('should be able to start registration', async () => {
-    browser.get('');
-    await waitFor(firstPage.registerLink);
+  beforeAll(async () => {
+    phoneNumber = await backdoorApi.getNewUnusedPhoneNumber();
+  });
 
-    // Client the register link
-    await firstPage.navigateToRegister();
+  it('Can navigate to login screen', async () => {
+    await clearIonicStorage();
+    await browser.get('');
+    await firstPage.getStarted();
+    await waitFor(phoneLoginPage.phoneInput);
+  });
 
-    // Register using email and password
-    await logregPage.register(email, password);
-    await waitForNot(logregPage.registerBtn);
+  it('Can login with new phone number', async () => {
+    // Enter phone number
+    await phoneLoginPage.login(phoneNumber);
+
+    // and code input is visible
+    await waitFor(phoneCodePage.codeInput);
+
+    const loginCode = await backdoorApi.getCode(`+1${phoneNumber}`);
+
+    // Enter the correct code
+    await phoneCodePage.codeInput.clear();
+    await phoneCodePage.codeInput.sendKeys(loginCode);
+
+    await waitForNot(phoneCodePage.codeInput);
   });
 
   it('should be able to fill registration form', async () => {
