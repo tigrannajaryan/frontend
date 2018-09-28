@@ -3,6 +3,7 @@ import { App } from 'ionic-angular';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Severity } from '@sentry/shim';
 
+import { ENV } from '~/environments/environment.default';
 import { Logger } from '~/shared/logger';
 import {
   ApiClientError,
@@ -81,6 +82,21 @@ export class ServerStatusTracker {
     }
   }
 
+  private static shouldReportToSentry(error: ApiError): boolean {
+    if (error instanceof ApiFieldAndNonFieldErrors) {
+      // Don't report ApiFieldAndNonFieldErrors to Sentry.
+      return false;
+    }
+
+    if (!ENV.production && error instanceof ServerUnreachableError) {
+      // Don't report ServerUnreachableError to Sentry if it is not production.
+      return false;
+    }
+
+    // Report everything else
+    return true;
+  }
+
   constructor(
     private app: App,
     private logger: Logger) { }
@@ -112,8 +128,7 @@ export class ServerStatusTracker {
       return;
     }
 
-    if (!(error instanceof ApiFieldAndNonFieldErrors)) {
-      // Report everything except ApiFieldAndNonFieldErrors to Sentry.
+    if (ServerStatusTracker.shouldReportToSentry(error)) {
       reportToSentry(error, ServerStatusTracker.error2SeverityLevel(error));
     }
 
