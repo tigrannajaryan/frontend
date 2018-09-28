@@ -1,6 +1,6 @@
 import { waitFor } from './shared-e2e/utils';
-import { phoneLoginPage } from './pages/phone-login-page';
 import { firstPage } from './pages/first-page';
+import { phoneLoginPage } from './shared-e2e/phone-login-page';
 import { clientApp } from './client-app';
 
 describe('Login Pages', () => {
