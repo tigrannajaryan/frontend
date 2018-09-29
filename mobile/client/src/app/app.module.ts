@@ -21,7 +21,7 @@ import { initSentry } from '~/shared/sentry';
 import { SharedSingletonsModule } from '~/shared/shared-singletons.module';
 
 import { AuthInterceptor } from '~/core/http-interceptors/auth-interceptor';
-import { ClientUnhandledErrorHandler } from '~/core/unhandled-error-handler';
+import { UnhandledErrorHandler } from '~/shared/unhandled-error-handler';
 
 import { ClientAppComponent } from '~/app.component';
 import { getMetaReducers } from '~/app.reducers';
@@ -132,7 +132,7 @@ if (ENV.production) {
     {
       // Our custom handler for unhandled exceptions
       provide: ErrorHandler,
-      useClass: ClientUnhandledErrorHandler
+      useClass: UnhandledErrorHandler
     },
 
     {
