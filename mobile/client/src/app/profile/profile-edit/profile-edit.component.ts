@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActionSheetController, ActionSheetOptions, IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 
+import { reportToSentry } from '~/shared/sentry';
 import { PhotoSourceType } from '~/shared/constants';
 import { downscalePhoto, urlToFile } from '~/shared/image-utils';
 
@@ -126,7 +127,11 @@ export class ProfileEditComponent {
       animateFailed(isFailed => this.isFailed = isFailed),
       animateSucceeded(isSucceeded => this.isSucceeded = isSucceeded),
       this.profileApi.updateProfile(value)
-    );
+    ).catch(error => {
+      reportToSentry(error);
+      showAlert('Unable to save your info', 'Please try again later.');
+      return { response: undefined };
+    });
     if (response) {
       this.profileDataStore.set(response);
       this.form.patchValue(response);
