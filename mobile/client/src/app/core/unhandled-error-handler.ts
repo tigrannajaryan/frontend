@@ -30,10 +30,10 @@ export class ClientUnhandledErrorHandler {
     reportToSentry(error);
 
     // Show error popup (async)
-    this.showErrorMsg(error.name, error.stack);
+    this.showErrorMsg(error.name, error.message);
   }
 
-  private showErrorMsg(errorName: string, errorStack?: string): void {
+  private showErrorMsg(errorName: string, msg?: string): void {
     // Do UI updates via setTimeout to work around known Angular bug:
     // https://stackoverflow.com/questions/37836172/angular-2-doesnt-update-view-after-exception-is-thrown)
     // Also force Application update via Application.tick().
@@ -42,7 +42,7 @@ export class ClientUnhandledErrorHandler {
 
     setTimeout(() => {
       errorName = errorName.replace(/\n/gm, '<br/>');
-      this.popup(errorName, errorStack);
+      this.popup(errorName, msg);
 
       // Force UI update
       const appRef: ApplicationRef = this.injector.get(ApplicationRef);
