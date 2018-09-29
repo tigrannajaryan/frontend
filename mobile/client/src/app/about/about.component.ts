@@ -48,7 +48,7 @@ export class AboutComponent {
   }
 
   testMethodForNestedException(): void {
-    throw new Error(' Not a real error, just for debugging');
+    throw new Error('This error looks like "Error: Loading chunk 19 failed" but it is really just a test message.');
   }
 
 }

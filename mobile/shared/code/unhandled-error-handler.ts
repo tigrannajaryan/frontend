@@ -1,10 +1,15 @@
 import { ApplicationRef, Injectable, Injector } from '@angular/core';
-import { AlertController } from 'ionic-angular';
+import { AlertButton, AlertController } from 'ionic-angular';
 import { GoogleAnalytics } from '@ionic-native/google-analytics';
 
 import { ApiError } from '~/shared/api-errors';
 import { Logger } from '~/shared/logger';
 import { reportToSentry } from '~/shared/sentry';
+
+enum UIAction {
+  justAlert,
+  showRestartAlert
+}
 
 /**
  * Custom unhandled error handler.
@@ -12,6 +17,8 @@ import { reportToSentry } from '~/shared/sentry';
  */
 @Injectable()
 export class UnhandledErrorHandler {
+
+  initialHref = window.location.href;
 
   constructor(
     private logger: Logger,
@@ -26,6 +33,7 @@ export class UnhandledErrorHandler {
    * See https://angular.io/api/core/ErrorHandler
    */
   handleError(error: any): void {
+    const originalError = error;
     if (error.rejection) {
       // This is most likely an exception thrown from async function.
       error = error.rejection;
@@ -33,8 +41,7 @@ export class UnhandledErrorHandler {
 
     if (error instanceof ApiError) {
       // All API errors are handled by ServerStatusTracker, nothing else needs to be done
-      // we just supress this errors here since they are already processed. The only
-      // exception is ApiClientError with HttpStatus.unauthorized status.
+      // we just supress this errors here since they are already processed.
       return;
     }
 
@@ -51,44 +58,67 @@ export class UnhandledErrorHandler {
         // Ignore errors during reporting, there is nothing else we can do.
       });
 
-    //   // Other server error. This should never happen unless we have bugs or
-    //   // frontend calls an endpoint that doesn't exist, etc. Show detailed
-    //   // error message for diagnostics.
-    //   errorMsg = `Server error ${error.status}`;
-    //   if (error.errorBody) {
-    //     errorMsg = `${errorMsg}\n${JSON.stringify(error.errorBody)}`;
-    //   }
-    //
-
     let errorMsg = 'Unknown error';
     if (error.stack) {
       errorMsg = `${errorMsg}\n${error.stack}`;
     }
     reportToSentry(error);
 
+    if (originalError.message && /Error: Loading chunk \d+ failed/.test(originalError.message)) {
+      // Chunk loading error. Show user friendly error mesage.
+      this.showErrorMsg(UIAction.showRestartAlert, '', 'Oops! Something went wrong! We recommend restarting the app.');
+    } else {
+      // Show error popup (async)
+      this.showErrorMsg(UIAction.justAlert, error.name, error.stack);
+    }
+  }
+
+  private showErrorMsg(uiAction: UIAction, errorName: string, errorDetails?: string): void {
     // Do UI updates via setTimeout to work around known Angular bug:
     // https://stackoverflow.com/questions/37836172/angular-2-doesnt-update-view-after-exception-is-thrown)
     // Also force Application update via Application.tick().
     // This is the only way I found reliably results in UI showing the error.
     // Despite Angular team claims the bug is still not fixed in Angular 5.2.9.
 
-    setTimeout(() => this.showError(errorMsg));
+    setTimeout(() => {
+      errorName = errorName.replace(/\n/gm, '<br/>');
+
+      if (uiAction === UIAction.justAlert) {
+        this.popup(errorName, errorDetails, ['Dismiss']);
+      } else if (uiAction === UIAction.showRestartAlert) {
+        this.popup(errorName, errorDetails,
+          [
+            {
+              text: 'Dismiss',
+              role: 'cancel'
+            },
+            {
+              text: 'Restart App',
+              handler: () => { this.restartApp(); }
+            }
+          ]
+        );
+      }
+
+      // Force UI update
+      const appRef: ApplicationRef = this.injector.get(ApplicationRef);
+      appRef.tick();
+    });
   }
 
-  private showError(errorMsg: string): void {
-    errorMsg = errorMsg.replace(/\n/gm, '<br/>');
-    this.popup(errorMsg);
-
-    // Force UI update
-    const appRef: ApplicationRef = this.injector.get(ApplicationRef);
-    appRef.tick();
+  private restartApp(): void {
+    // Show splash screen (useful if your app takes time to load)
+    // navigator.splashscreen.show();
+    // Reload original app url (ie your index.html file)
+    window.location.assign(this.initialHref);
   }
 
-  private popup(msg: string): void {
+  private popup(title: string, msg: string, buttons: Array<AlertButton | string>): void {
     // Show an error message
     const alert = this.alertCtrl.create({
-      subTitle: msg,
-      buttons: ['Dismiss']
+      subTitle: title,
+      message: msg.replace(/\n/, '<br><br>').replace(/\n\s\s\s\s/img, '<br>-&nbsp;'),
+      buttons
     });
     alert.present();
   }
