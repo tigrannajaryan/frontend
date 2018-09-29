@@ -59,8 +59,8 @@ const config = {
   }
 };
 
-// Application production only config
-const prodConfig = process.env.MB_ENV === 'prod' ? {
+// Config with extensive hashing
+const prodConfig = ['prod', 'staging'].indexOf(process.env.MB_ENV) !== -1 ? {
   output: {
     // Include content-based hash in the chunk file names.
     // See also hashifyJsFileNames() which updates the file names in index.html
