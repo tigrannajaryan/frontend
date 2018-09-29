@@ -15,6 +15,8 @@ import {
   StylistState
 } from '~/core/reducers/stylists.reducer';
 
+import { openInstagram } from '~/shared/utils/open-external-app';
+
 export const MIN_QUERY_LENGTH = 2;
 
 @Component({
@@ -74,5 +76,9 @@ export class StylistsPageComponent {
     }
 
     this.activeStylist = undefined;
+  }
+
+  onInstagramClick(username: string): void {
+    openInstagram(username);
   }
 }

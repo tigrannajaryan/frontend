@@ -30,7 +30,9 @@
   </ion-row>
 
   <ion-row align-items-center *ngIf="stylist.instagram_url" justify-content-center class="StylistInvitationPage-phone">
-    <i class="mb-icon-instagram"></i>&nbsp;{{ stylist.instagram_url }}
+    <span [class.Link]="pageType === StylistPageType.MyStylist" (click)="onInstagramClick(stylist.instagram_url)">
+      <i class="mb-icon-instagram"></i>&nbsp;{{ stylist.instagram_url }}
+    </span>
   </ion-row>
 
   <!-- Fix unnecessary space issue on invitation screen: -->

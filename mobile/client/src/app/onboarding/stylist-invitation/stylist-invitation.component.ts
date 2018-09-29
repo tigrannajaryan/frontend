@@ -5,6 +5,8 @@ import { PageNames } from '~/core/page-names';
 import { StylistModel } from '~/shared/api/stylists.models';
 import { PreferredStylistsData } from '~/core/api/preferred-stylists.data';
 
+import { openInstagram } from '~/shared/utils/open-external-app';
+
 export enum StylistPageType {
   MyStylist,
   Invitation
@@ -68,6 +70,12 @@ export class StylistInvitationPageComponent {
       default:
         // When this screen is a tab of MainTabs’ tabs proceed to Stylists directly (and as a default too):
         this.app.getRootNav().push(PageNames.Stylists);
+    }
+  }
+
+  onInstagramClick(username: string): void {
+    if (this.pageType === StylistPageType.MyStylist) {
+      openInstagram(username);
     }
   }
 }

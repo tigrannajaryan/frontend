@@ -42,7 +42,7 @@
         <div class="StylistsPage-cardInfo"><img src="assets/icons/location.svg" />&nbsp; <p>{{ stylist.salon_address }}</p></div>
         <div class="StylistsPage-cardFooter">
           <div *ngIf="stylist.phone" class="StylistsPage-cardInfo"><img src="assets/icons/phone.svg" />&nbsp;<p>{{ stylist.phone | formatPhone }}</p></div>
-          <div *ngIf="stylist.instagram_url" class="StylistsPage-cardInfo"><img src="assets/icons/instagram.svg" />&nbsp;<p>{{ stylist.instagram_url }}</p></div>
+          <div *ngIf="stylist.instagram_url" class="StylistsPage-cardInfo" (click)="onInstagramClick(stylist.instagram_url)"><img src="assets/icons/instagram.svg" />&nbsp;<p class="Link">{{ stylist.instagram_url }}</p></div>
           <button (click)="onContinueWithStylist(stylist)" ion-button class="Button StylistsPage-submit" data-test-id="addStylist">{{ continueText || ("Add " + stylist.first_name +"!") }}</button>
         </div>
       </div>
