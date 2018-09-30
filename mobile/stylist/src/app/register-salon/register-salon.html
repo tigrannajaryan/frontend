@@ -89,7 +89,7 @@
       <ion-row>
         <ion-col>
           <ion-item class="Salon-input">
-            <ion-label floating>Instagram user name (optional)</ion-label>
+            <ion-label floating>Instagram user name</ion-label>
             <ion-input formControlName="instagram_url" type="text"></ion-input>
             <div [class.is-active]="form.get('instagram_url').dirty && form.get('instagram_url').errors" class="Salon-inputError" item-end>
               <span *ngIf="form.get('instagram_url').errors?.pattern">Wrong name</span>
@@ -101,7 +101,7 @@
       <ion-row>
         <ion-col>
           <ion-item class="Salon-input">
-            <ion-label floating>Website (optional)</ion-label>
+            <ion-label floating>Website</ion-label>
             <ion-input formControlName="website_url" type="text"></ion-input>
           </ion-item>
         </ion-col>
