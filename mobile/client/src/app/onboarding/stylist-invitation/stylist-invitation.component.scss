@@ -27,6 +27,7 @@
 
   .StylistInvitationPage-title {
     margin: pxtovw(15px) 0 pxtovw(24px);
+    font-weight: 600;
   }
 
   .StylistInvitationPage-pic {
@@ -59,7 +60,7 @@
   .StylistInvitationPage-name {
     margin-bottom: pxtovw(8px);
     font-size: $t-h2;
-    font-weight: bold;
+    font-weight: 600;
     text-align: center;
   }
 

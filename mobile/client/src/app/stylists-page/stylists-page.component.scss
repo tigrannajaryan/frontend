@@ -171,7 +171,6 @@
       .StylistsPage-cardTitle {
         margin: pxtovw(7px) 0 pxtovw(2px);
         font-size: pxtovw(29px);
-        font-weight: 500;
       }
 
       .StylistsPage-cardTitle,
@@ -202,6 +201,7 @@
 
         height: $header-height + $card-padding * 2 + $new-pic-size;
         font-size: pxtovw(22px);
+        font-weight: 600;
       }
 
       .StylistsPage-cardFooter {
