@@ -23,10 +23,12 @@ export interface AppointmentModel {
   salon_name: string;
   total_client_price_before_tax: number;
   total_card_fee: number;
+  grand_total: number;
   total_tax: number;
   tax_percentage: number;
   card_fee_percentage: number;
   datetime_start_at: string;
+  profile_photo_url: string;
   duration_minutes: number;
   status: AppointmentStatus;
   services: AppointmentServiceModel[];
