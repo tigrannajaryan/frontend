@@ -47,8 +47,8 @@ export function composeRequest<T>(...extensions): Promise<ApiResponse<T>> {
   }
 
   // (!) Never subscribe in extensions because subscribe emits request.
-  // We emit request only once by calling toPromise:
-  return request.toPromise();
+  // We emit request only once by calling .first().toPromise():
+  return request.first().toPromise();
 }
 
 /**

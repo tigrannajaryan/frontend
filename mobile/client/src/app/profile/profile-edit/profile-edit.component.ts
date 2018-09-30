@@ -38,13 +38,13 @@ export class ProfileEditComponent {
   private cameraOptions: CameraOptions;
 
   constructor(
+    public profileDataStore: ProfileDataStore,
     private actionSheetCtrl: ActionSheetController,
     private baseService: BaseService,
     private camera: Camera,
     private formBuilder: FormBuilder,
     private navCtrl: NavController,
     private navParams: NavParams,
-    private profileDataStore: ProfileDataStore,
     private profileApi: ProfileApi
   ) {
   }
