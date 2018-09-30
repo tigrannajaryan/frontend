@@ -5,7 +5,7 @@
     </ion-title>
     <ion-buttons end>
       <ion-spinner *ngIf="isUpdating"></ion-spinner>
-      <button *ngIf="!isUpdating" (click)="onSubmit()" [disabled]="!form.valid" class="ProfilePage-submit" ion-button clear>
+      <button *ngIf="!isUpdating" (click)="onSubmit()" [disabled]="!form.valid" class="ProfilePage-submit" ion-button clear data-test-id="submit">
         <span *ngIf="!isFailed && !isSucceeded">Done</span>
         <ion-icon *ngIf="isSucceeded && !isFailed" [ngClass]="{ 'ProfilePage-animatedSuccess': isSucceeded }" name="md-checkmark"></ion-icon>
         <ion-icon *ngIf="isFailed" name="md-close" class="ProfilePage-animatedFail"></ion-icon>
@@ -16,7 +16,7 @@
 
 <ion-content no-padding class="ProfilePage">
   <div class="contentSidePadding">
-    <div (click)="onProcessPhoto()" [style.backgroundImage]="'url(' + (this.form.value.profile_photo_url || DEFAULT_IMAGE) + ')'" class="ProfilePage-pic">
+    <div (click)="onProcessPhoto()" [style.backgroundImage]="'url(' + (this.form.value.profile_photo_url || DEFAULT_IMAGE) + ')'" class="ProfilePage-pic" data-test-id="profile_photo">
       <div class="ProfilePage-add">
         <ion-icon name="md-camera"></ion-icon>
       </div>
@@ -30,21 +30,21 @@
                 <span>First name</span>
                 <span *ngIf="form.get('first_name').touched && form.get('first_name').hasError('required')" class="FormControl-errorMsg">required</span>
               </ion-label>
-              <ion-input formControlName="first_name" type="text"></ion-input>
+              <ion-input formControlName="first_name" type="text" data-test-id="first_name"></ion-input>
             </ion-item>
             <ion-item class="ProfilePage-formControl FormControl" col-6>
               <ion-label floating>
                 <span>Last name</span>
                 <span *ngIf="form.get('last_name').touched && form.get('last_name').hasError('required')" class="FormControl-errorMsg">required</span>
               </ion-label>
-              <ion-input formControlName="last_name" type="text"></ion-input>
+              <ion-input formControlName="last_name" type="text" data-test-id="last_name"></ion-input>
             </ion-item>
           </ion-row>
           <ion-row>
             <ion-item class="ProfilePage-formControl FormControl">
               <ion-label floating>
                 <span>Email</span>
-                <span *ngIf="form.get('zip_code').touched && form.get('zip_code').hasError('required')" class="FormControl-errorMsg">required</span>
+                <span *ngIf="form.get('email').touched && form.get('email').hasError('required')" class="FormControl-errorMsg">required</span>
                 <span *ngIf="form.get('email').touched && form.get('email').hasError('email')" class="FormControl-errorMsg">enter a valid email</span>
               </ion-label>
               <ion-input type="email" formControlName="email"></ion-input>
@@ -55,11 +55,11 @@
               <ion-label floating>
                 <span>Zip code</span>
                 <span *ngIf="form.get('zip_code').touched && form.get('zip_code').hasError('required')" class="FormControl-errorMsg">required</span>
-                <span *ngIf="form.get('zip_code').touched && form.get('zip_code').hasError('minlength')" class="FormControl-errorMsg">
+                <span *ngIf="form.get('zip_code').touched && form.get('zip_code').hasError('minlength')" class="FormControl-errorMsg" data-test-id="zip_code_minlength_error">
                   minimum {{ form.controls.zip_code.errors.minlength.requiredLength }} digits
                 </span>
               </ion-label>
-              <ion-input type="text" formControlName="zip_code"></ion-input>
+              <ion-input type="text" formControlName="zip_code" data-test-id="zip_code"></ion-input>
             </ion-item>
           </ion-row>
         </ion-grid>

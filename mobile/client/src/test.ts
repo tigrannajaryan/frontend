@@ -31,6 +31,7 @@ import {
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 import {
+  ActionSheetController,
   AlertController,
   App,
   Config,
@@ -50,6 +51,9 @@ import {
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { Storage } from '@ionic/storage';
+import { Clipboard } from '@ionic-native/clipboard';
+import { EmailComposer } from '@ionic-native/email-composer';
+import { Camera } from '@ionic-native/camera';
 
 import {
   AlertControllerMock,
@@ -99,6 +103,7 @@ import { AuthProcessState } from '~/shared/storage/auth-process-state';
 import { AuthProcessStateMock } from '~/shared/storage/auth-process-state.mock';
 
 import { DataModule } from '~/core/api/data.module';
+import { BaseService } from '~/shared/api/base-service';
 
 declare const require: any;
 
@@ -143,6 +148,8 @@ export class TestUtils {
       providers: [
         App, Form, Keyboard, DomController, Logger, MenuController, NavController,
         NavParams, GestureController, AlertControllerMock, LoadingControllerMock,
+        Clipboard, EmailComposer, ProfileApiMock, ActionSheetController, BaseService,
+        Camera,
         { provide: AlertController, useFactory: () => AlertControllerMock.instance() },
         { provide: Config, useFactory: () => ConfigMock.instance() },
         { provide: DeepLinker, useFactory: () => ConfigMock.instance() },
