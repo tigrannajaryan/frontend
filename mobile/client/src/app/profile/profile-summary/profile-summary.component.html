@@ -7,25 +7,25 @@
       <div [style.backgroundImage]="'url(' + (profile.profile_photo_url || DEFAULT_IMAGE) + ')'"
            class="ProfilePage-pic"></div>
       <ion-row justify-content-center class="ProfilePage-title">
-        <span *ngIf="isProfileCompleted()">{{ profile.first_name }} {{ profile.last_name }}</span>
+        <span *ngIf="isProfileCompleted()" data-test-id="userName">{{ profile.first_name }} {{ profile.last_name }}</span>
         <span *ngIf="!isProfileCompleted()" data-test-id="phone">{{ profile.phone | formatPhone }}</span>
       </ion-row>
       <div *ngIf="isProfileCompleted()" class="ProfilePage-subtitle">
         <p data-test-id="phone">{{ profile.phone | formatPhone }}</p>
-        {{ profile.email }}
-        <span *ngIf="profile.city || profile.state">
+        <span data-test-id="email">{{ profile.email }}</span>
+        <span *ngIf="profile.city || profile.state" data-test-id="address">
           <br/>
           {{ profile?.city }} {{ profile.city && profile.state ? ', ' : '' }} {{ profile?.state }}
         </span>
       </div>
-      <div *ngIf="!profileCompleteness.isProfileComplete" class="ProfilePage-completion">
-        <ion-row justify-content-center>Profile completion {{ profileCompleteness.completenessPercent }}%</ion-row>
+      <div *ngIf="!profileCompleteness.isProfileComplete" data-test-id="isProfileComplete" class="ProfilePage-completion">
+        <ion-row justify-content-center data-test-id="completenessPercent">Profile completion {{ profileCompleteness.completenessPercent }}%</ion-row>
         <ion-row justify-content-center>
           <div class="ProfilePage-completionBar"><span [style.width]="profileCompleteness.completenessPercent + '%'"></span></div>
         </ion-row>
       </div>
       <ion-row justify-content-center>
-        <button ion-button block="false" small (click)="onEdit()" class="ProfilePage-edit Button">Edit profile</button>
+        <button ion-button block="false" small (click)="onEdit()" class="ProfilePage-edit Button" data-test-id="editProfile">Edit profile</button>
       </ion-row>
     </div>
     <ion-row *ngIf="isLoading" justify-content-center>
@@ -40,25 +40,25 @@
           </td>
         </tr>
         <tr>
-          <td (click)="goTo(PageNames.HowMadeWorks, { hideContinueButton: true })" class="Table-col">How MADE works</td>
+          <td (click)="goTo(PageNames.HowMadeWorks, { hideContinueButton: true })" class="Table-col" data-test-id="howMADEWorks">How MADE works</td>
           <td class="ProfilePage-arrow Table-col">
             <img src="assets/icons/arrow-right.svg" />
           </td>
         </tr>
         <tr>
-          <td (click)="goTo(PageNames.About)" class="Table-col">About</td>
+          <td (click)="goTo(PageNames.About)" class="Table-col" data-test-id="about">About</td>
           <td class="ProfilePage-arrow Table-col">
             <img src="assets/icons/arrow-right.svg" />
           </td>
         </tr>
         <tr>
           <td colspan="2" class="ProfilePage-tableCenteredText Table-col">
-            <span (click)="onContactByEmail('faq@madebeauty.com')" class="Link">FAQ@madebeauty.com</span>
+            <span (click)="onContactByEmail('faq@madebeauty.com')" class="Link" data-test-id="emailLink">FAQ@madebeauty.com</span>
           </td>
         </tr>
         <tr>
           <td colspan="2" class="ProfilePage-tableCenteredText Table-col">
-            <span (click)="onLogout()" class="ProfilePage-logout Link">Logout</span>
+            <span (click)="onLogout()" class="ProfilePage-logout Link" data-test-id="logout">Logout</span>
           </td>
         </tr>
       </tbody>
