@@ -11,7 +11,9 @@
     <div class="AppointmentItem-topTime">
       {{ formatTimeInZone(appointment.datetime_start_at) }}
 
-      <span *ngIf="hasDate" class="AppointmentItem-topTimeDay">{{ appointment.datetime_start_at | date: 'E, LLL dd' }}</span>
+      <span *ngIf="hasDate" class="AppointmentItem-topTimeDay">
+        {{ appointment.datetime_start_at | date: 'E, LLL dd' }}
+      </span>
     </div>
 
     <div class="AppointmentItem-topPrice">
@@ -20,14 +22,12 @@
   </div>
 
 
-
   <div class="AppointmentItem-desc">
       <span>{{ getServices() }}</span>
   </div>
 
   <div class="AppointmentItem-name">
     <div [style.background-image]="appointment.client_profile_photo_url ? 'url(' + appointment.client_profile_photo_url + ')' : null" class="AppointmentItem-nameAva"></div>
-    {{ appointment.client_first_name }}
-    {{ appointment.client_last_name }}
+    <div class="AppointmentItem-nameText">{{ appointment.client_first_name }} {{ appointment.client_last_name }}</div>
   </div>
 </div>

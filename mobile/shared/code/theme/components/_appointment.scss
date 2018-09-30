@@ -1,0 +1,146 @@
+appointment-item {
+  .AppointmentItem-wp {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: space-between;
+    padding: pxtovw(16px) pxtovw(23px);
+    margin-bottom: pxtovw(15px);
+    background: color($colors-shared, white);
+    border-radius: 20px;
+    box-shadow: 0 0 50px 15px color($colors-shared, abbey);
+
+    &.isChecked {
+      visibility: hidden;
+    }
+  }
+
+  .AppointmentItem-Header {
+    margin: 0 pxtovw(3px) pxtovw(6px);
+    font-size: pxtovw(17px);
+    color: color($colors-shared, orange);
+    text-align: right;
+  }
+
+  .AppointmentItem-status {
+    position: absolute;
+    top: pxtovw(-2px);
+    left: pxtovw(40px);
+    z-index: 2;
+    padding: pxtovw(6px) pxtovw(6px);
+    font-size: $t-small;
+    color: color($colors, white);
+    border-radius: 6px;
+
+    &.Not.checked.out {
+      background: color($colors-shared, danger);
+    }
+
+    &.Now {
+      background: color($colors-shared, mauve);
+    }
+
+    &.Next {
+      background: color($colors-shared, anakiwa);
+    }
+  }
+
+  .AppointmentItem-top {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .AppointmentItem-topTime {
+    font-size: pxtovw(18px);
+    font-weight: 700;
+    white-space: nowrap;
+  }
+
+  .AppointmentItem-topTimeDay {
+    display: inline-block;
+    margin-left: pxtovw(5px);
+    font-size: pxtovw(12px);
+    font-weight: 400;
+    color: color($colors-shared, santasGray);
+    letter-spacing: pxtovw(0.5px);
+  }
+
+  .AppointmentItem-topPrice {
+    display: flex;
+    align-items: start;
+    justify-content: flex-end;
+    font-size: pxtovw(18px);
+    font-weight: 700;
+    text-align: right;
+  }
+
+  .AppointmentItem-topPriceCur {
+    position: relative;
+    top: 1px;
+    font-size: pxtovw(12px);
+  }
+
+  .AppointmentItem-desc {
+    margin: pxtovw(2.8px) 0 pxtovw(9px);
+    text-align: left;
+  }
+
+  .AppointmentItem-desc span {
+    position: relative;
+    display: block;
+    max-height: pxtovw(44px);
+    padding-right: 1em;
+    overflow: hidden;
+    font-size: pxtovw(21px);
+    font-weight: 700;
+    line-height: pxtovw(22px);
+    letter-spacing: pxtovw(0.09px);
+
+    &:before {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      content: '...';
+    }
+
+    &:after {
+      position: absolute;
+      right: 0;
+      width: 1em;
+      height: 1em;
+      margin-top: 0.2em;
+      content: '';
+      background: white;
+    }
+  }
+
+  .AppointmentItem-name {
+    display: flex;
+    align-items: center;
+    font-size: pxtovw(15px);
+    color: color($colors-shared, santasGray);
+    text-align: right;
+  }
+
+  .AppointmentItem-nameAva {
+    display: inline-block;
+    flex: 0 0 auto;
+    width: pxtovw(16px);
+    height: pxtovw(16px);
+    margin-right: pxtovw(5px);
+    vertical-align: middle;
+    background-image: url('../assets/imgs/icons/avatar.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover !important;
+    border: 1px solid color($colors-shared, watusi);
+    border-radius: 50%;
+  }
+
+  .AppointmentItem-nameText {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+}
