@@ -40,7 +40,7 @@
               <!-- price -->
               <div [class.priceEstimated]="params.appointment.status === AppointmentStatus.new">
                 <div class="label">{{ params.appointment.status === AppointmentStatus.new ? 'Estimated price' : 'Final price' }}</div>
-                <div class="price">{{ params.appointment.grand_total }}</div>
+                <div class="price">{{ params.appointment.grand_total.toFixed() }}</div>
               </div>
             </ion-col>
           </ion-row>
