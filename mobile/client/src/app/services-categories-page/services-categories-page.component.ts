@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { AlertController, Events, IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
+
+import { Logger } from '~/shared/logger';
 
 import { PageNames } from '~/core/page-names';
 import { RequestState } from '~/shared/api/request.models';
@@ -12,8 +14,12 @@ import {
   ServicesState
 } from '~/core/reducers/services.reducer';
 import { ServiceCategoryModel } from '~/core/api/services.models';
+
+import { TabIndex } from '~/main-tabs/main-tabs.component';
+import { EventTypes } from '~/core/event-types';
+
 import { getPreferredStylist, startBooking } from '~/booking/booking-utils';
-import { Logger } from '~/shared/logger';
+import { PreferredStylistsData } from '~/core/api/preferred-stylists.data';
 
 @IonicPage()
 @Component({
@@ -33,11 +39,35 @@ export class ServicesCategoriesPageComponent {
   isAdditionalService = false;
 
   constructor(
+    private alertCtrl: AlertController,
+    private events: Events,
     private logger: Logger,
     private navCtrl: NavController,
     private navParams: NavParams,
+    private preferredStylistsData: PreferredStylistsData,
     private store: Store<ServicesState>
   ) {
+  }
+
+  async ionViewCanEnter(): Promise<boolean> {
+    const preferredStylists = await this.preferredStylistsData.get({ refresh: true });
+
+    // Cannot proceed if no prefered styllist is selected
+    if (!preferredStylists || preferredStylists.length === 0) {
+      setTimeout(async () => {
+        await this.navCtrl.setRoot(PageNames.MainTabs);
+        this.events.publish(EventTypes.selectMainTab, TabIndex.Stylists, () => {
+          const alert = this.alertCtrl.create({
+            message: 'Choose your saved stylist to proceed with booking.',
+            buttons: [{ text: 'OK', role: 'cancel' }]
+          });
+          alert.present();
+        });
+      });
+      return false;
+    } else {
+      return true;
+    }
   }
 
   async ionViewWillEnter(): Promise<void> {

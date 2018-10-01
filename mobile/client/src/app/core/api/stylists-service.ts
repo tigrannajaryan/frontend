@@ -12,6 +12,8 @@ import {
   StylistsListResponse
 } from '~/shared/api/stylists.models';
 
+import { ApiClientError, HttpStatus } from '~/shared/api-errors';
+
 @Injectable()
 export class StylistsService extends BaseService {
 
@@ -36,6 +38,9 @@ export class StylistsService extends BaseService {
   }
 
   deletePreferredStylist(preferenceUuid: string): Observable<ApiResponse<void>> {
-    return this.delete(`client/preferred-stylists/${preferenceUuid}`);
+    return this.delete(`client/preferred-stylists/${preferenceUuid}`, {
+      // Do not throw error on not_found (already deleted):
+      hideGenericAlertOnErrorsLike: [new ApiClientError(HttpStatus.notFound, undefined)]
+    });
   }
 }
