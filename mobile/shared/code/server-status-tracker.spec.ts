@@ -31,13 +31,13 @@ describe('ServerStatusTracker', () => {
 
   it('should report ServerUnreachableError as warning to Sentry', async () => {
     spyOn(Sentry, 'captureException');
-    spyOn(Sentry, 'setTagsContext');
+    // spyOn(Sentry, 'setTagsContext');
 
     const error = new ServerUnreachableError();
     instance.notify(error);
 
     if (ENV.production) {
-      expect(Sentry.setTagsContext).toHaveBeenCalledWith({ 'made.severity': Severity.Warning });
+      // expect(Sentry.setTagsContext).toHaveBeenCalledWith({ 'made.severity': Severity.Warning });
       expect(Sentry.captureException).toHaveBeenCalledWith(error);
     } else {
       expect(Sentry.captureException).not.toHaveBeenCalled();
@@ -46,23 +46,23 @@ describe('ServerStatusTracker', () => {
 
   it('should report ServerInternalError as warning to Sentry', async () => {
     spyOn(Sentry, 'captureException');
-    spyOn(Sentry, 'setTagsContext');
+    // spyOn(Sentry, 'setTagsContext');
 
     const error = new ServerInternalError('some error');
     instance.notify(error);
 
-    expect(Sentry.setTagsContext).toHaveBeenCalledWith({ 'made.severity': Severity.Fatal });
+    // expect(Sentry.setTagsContext).toHaveBeenCalledWith({ 'made.severity': Severity.Fatal });
     expect(Sentry.captureException).toHaveBeenCalledWith(error);
   });
 
   it('should not report ApiFieldAndNonFieldErrors to Sentry', async () => {
     spyOn(Sentry, 'captureException');
-    spyOn(Sentry, 'setTagsContext');
+    // spyOn(Sentry, 'setTagsContext');
 
     const error = new ApiFieldAndNonFieldErrors([]);
     instance.notify(error);
 
-    expect(Sentry.setTagsContext).not.toHaveBeenCalled();
+    // expect(Sentry.setTagsContext).not.toHaveBeenCalled();
     expect(Sentry.captureException).not.toHaveBeenCalled();
   });
 });
