@@ -6,7 +6,7 @@
   {{ appointmentTag }}
 </div>
 
-<div class="AppointmentItem-wp">
+<div class="AppointmentItem-wp" [class.WithBadge]="appointmentTag || null">
   <div class="AppointmentItem-top">
     <div class="AppointmentItem-topTime">
       {{ formatTimeInZone(appointment.datetime_start_at) }}
@@ -26,8 +26,16 @@
       <span>{{ getServices() }}</span>
   </div>
 
-  <div class="AppointmentItem-name">
-    <div [style.background-image]="appointment.client_profile_photo_url ? 'url(' + appointment.client_profile_photo_url + ')' : null" class="AppointmentItem-nameAva"></div>
-    <div class="AppointmentItem-nameText">{{ appointment.client_first_name }} {{ appointment.client_last_name }}</div>
+  <div class="AppointmentItemFooter">
+    <div class="AppointmentItemFooter-cell">
+      <i [style.background-image]="appointment.client_profile_photo_url ? 'url(' + appointment.client_profile_photo_url + ')' : null" class="AppointmentItemFooter-ava"></i>
+      <span class="AppointmentItemFooter-text isBold">{{ appointment.client_first_name }} {{ appointment.client_last_name }}</span>
+    </div>
+
+
+    <div class="AppointmentItemFooter-cell">
+      <i class="mb-icon-phone-a"></i>
+      <span class="AppointmentItemFooter-text">{{ appointment.client_phone }}</span>
+    </div>
   </div>
 </div>
