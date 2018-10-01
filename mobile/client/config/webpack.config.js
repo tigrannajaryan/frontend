@@ -10,7 +10,10 @@ const commitHash = require('child_process')
   .execSync('git rev-parse --short HEAD')
   .toString();
 
+// Ionic’s config to extend
 const webpackConfig = require('../node_modules/@ionic/app-scripts/config/webpack.config');
+
+// Application common config
 const config = {
   plugins: [
     new webpack.EnvironmentPlugin({
@@ -44,18 +47,8 @@ const config = {
 
     new webpack.DefinePlugin({
       __COMMIT_HASH__: JSON.stringify(commitHash),
-    }),
-
-    new WebpackOnBuildPlugin(function(stats) {
-      webpackutil.hashifyFileNames(path.resolve(__dirname, '../'));
     })
   ],
-
-  output: {
-    // Include content-based hash in the chunk file names.
-    // See also hashifyJsFileNames() which updates the file names in index.html
-    filename: '[name].[chunkhash].js'
-  },
 
   resolve: {
     alias: {
@@ -66,7 +59,21 @@ const config = {
   }
 };
 
+// Config with extensive hashing
+const prodConfig = ['prod', 'staging'].indexOf(process.env.MB_ENV) !== -1 ? {
+  output: {
+    // Include content-based hash in the chunk file names.
+    // See also hashifyJsFileNames() which updates the file names in index.html
+    filename: '[name].[chunkhash].js'
+  },
+  plugins: [
+    new WebpackOnBuildPlugin(function(stats) {
+      webpackutil.hashifyFileNames(path.resolve(__dirname, '../'));
+    })
+  ]
+} : {};
+
 module.exports = {
-  prod: merge(webpackConfig.prod, config),
-  dev: merge(webpackConfig.dev, config)
+  prod: merge(webpackConfig.prod, config, prodConfig),
+  dev: merge(webpackConfig.dev, config, prodConfig)
 };
