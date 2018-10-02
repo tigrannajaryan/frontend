@@ -1,13 +1,14 @@
 import { Component, ViewChild } from '@angular/core';
-import { Events, IonicPage, Tab, Tabs } from 'ionic-angular';
+import { Events, Tab, Tabs } from 'ionic-angular';
 
 import { GAWrapper } from '~/shared/google-analytics';
 import { PageNames } from '~/core/page-names';
 import { EventTypes } from '~/core/event-types';
+import { Page } from 'ionic-angular/navigation/nav-util';
 
 interface TabsObject {
   name: string;
-  link: PageNames; // should be PageNames when we will have all pages
+  link: Page; // should be PageNames when we will have all pages
   params: any;
 }
 
@@ -18,10 +19,6 @@ export enum TabIndex {
   Profile
 }
 
-@IonicPage({
-  segment: 'main-tabs',
-  priority: 'high'
-})
 @Component({
   selector: 'main-tabs',
   templateUrl: 'main-tabs.component.html'

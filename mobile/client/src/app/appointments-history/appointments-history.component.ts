@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { App, IonicPage, Refresher } from 'ionic-angular';
+import { App, Refresher } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
 
 import { Logger } from '~/shared/logger';
@@ -13,7 +13,6 @@ import { AppointmentPageParams } from '~/appointment-page/appointment-page.compo
 import { startRebooking } from '~/booking/booking-utils';
 import { ProfileDataStore } from '~/profile/profile.data';
 
-@IonicPage()
 @Component({
   selector: 'page-history',
   templateUrl: 'appointments-history.component.html'

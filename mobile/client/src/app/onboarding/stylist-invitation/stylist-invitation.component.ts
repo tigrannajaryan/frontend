@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { App, IonicPage, NavController, NavParams } from 'ionic-angular';
+import { App, NavController, NavParams } from 'ionic-angular';
 
 import { PageNames } from '~/core/page-names';
 import { StylistModel } from '~/shared/api/stylists.models';
@@ -15,7 +15,6 @@ export interface StylistPageParams {
   stylist?: StylistModel;
 }
 
-@IonicPage()
 @Component({
   selector: 'page-stylist-invitation',
   templateUrl: 'stylist-invitation.component.html'

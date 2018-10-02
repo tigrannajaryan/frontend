@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AlertController, Events, IonicPage, NavController, NavParams } from 'ionic-angular';
+import { AlertController, Events, NavController, NavParams } from 'ionic-angular';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 
@@ -21,7 +21,6 @@ import { EventTypes } from '~/core/event-types';
 import { getPreferredStylist, startBooking } from '~/booking/booking-utils';
 import { PreferredStylistsData } from '~/core/api/preferred-stylists.data';
 
-@IonicPage()
 @Component({
   selector: 'page-services-categories',
   templateUrl: 'services-categories-page.component.html'

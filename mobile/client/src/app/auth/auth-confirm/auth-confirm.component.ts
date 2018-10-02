@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams } from 'ionic-angular';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 
@@ -27,7 +27,6 @@ import { StylistPageType } from '~/onboarding/stylist-invitation/stylist-invitat
 
 import { CodeData, CodeInputComponent } from '~/shared/components/code-input/code-input.component';
 
-@IonicPage()
 @Component({
   selector: 'page-auth-confirm',
   templateUrl: 'auth-confirm.component.html'

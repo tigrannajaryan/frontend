@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { IonicPage, NavController, NavParams, Tab } from 'ionic-angular';
+import { NavController, NavParams, Tab } from 'ionic-angular';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 
@@ -17,7 +17,6 @@ import {
 
 export const MIN_QUERY_LENGTH = 2;
 
-@IonicPage()
 @Component({
   selector: 'page-stylists',
   templateUrl: 'stylists-page.component.html'

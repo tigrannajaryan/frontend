@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController } from 'ionic-angular';
+import { NavController } from 'ionic-angular';
 import * as moment from 'moment';
 
 import { Logger } from '~/shared/logger';
@@ -32,7 +32,6 @@ interface TimeslotSection {
   slots: DisplayTimeslot[];
 }
 
-@IonicPage()
 @Component({
   selector: 'page-select-time',
   templateUrl: 'select-time.component.html'

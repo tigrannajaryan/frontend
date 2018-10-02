@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { App, Events, IonicPage, Refresher } from 'ionic-angular';
+import { App, Events, Refresher } from 'ionic-angular';
 
 import { Logger } from '~/shared/logger';
 import { componentUnloaded } from '~/shared/component-unloaded';
@@ -17,7 +17,6 @@ export enum AppointmentType {
   past
 }
 
-@IonicPage()
 @Component({
   selector: 'page-home',
   templateUrl: 'home-page.component.html'
