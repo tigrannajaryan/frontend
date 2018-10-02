@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController } from 'ionic-angular';
+import { NavController } from 'ionic-angular';
 
 import { Discounts } from '~/shared/stylist-api/discounts.models';
 import { DiscountsApi } from '~/shared/stylist-api/discounts.api';
@@ -11,9 +11,6 @@ export interface FirstBooking {
   percentage: number;
 }
 
-@IonicPage({
-  segment: 'discounts-first-booking'
-})
 @Component({
   selector: 'page-discounts-first-booking',
   templateUrl: 'discounts-first-booking.component.html'

@@ -30,6 +30,48 @@ import { ENV } from '~/environments/environment.default';
 import { GoogleMapsConfig } from '~/core/google-maps-config';
 import { AppStorage } from '~/shared/storage/app-storage';
 
+import { AboutComponent } from '~/about/about.component';
+import { AlmostDoneComponent } from '~/discounts/almost-done/almost-done.component';
+import { AppointmentAddComponent } from '~/appointment/appointment-add/appointment-add';
+import { AppointmentCheckoutComponent } from '~/appointment/appointment-checkout/appointment-checkout.component';
+import { AddServicesComponent } from '~/core/popups/add-services/add-services.component';
+import { AppointmentServicesComponent } from '~/appointment/appointment-services/appointment-services';
+import { AuthPageComponent } from '~/auth/auth-start/auth-start.component';
+import { AuthConfirmPageComponent } from '~/auth/auth-confirm/auth-confirm.component';
+import { ChangePercentComponent } from '~/core/popups/change-percent/change-percent.component';
+import { ConfirmCheckoutComponent } from '~/core/popups/confirm-checkout/confirm-checkout.component';
+import { DiscountsComponent } from '~/discounts/discounts.component';
+import { DiscountsAlertComponent } from '~/discounts/discounts-alert/discounts-alert.component';
+import { DiscountsFirstBookingComponent } from '~/discounts/discounts-first-booking/discounts-first-booking.component';
+import { DiscountsRevisitComponent } from '~/discounts/discounts-revisit/discounts-revisit.component';
+import { DiscountsWeekdayComponent } from '~/discounts/discounts-weekday/discounts-weekday.component';
+import { HomeComponent } from '~/home/home.component';
+import { FirstScreenComponent } from '~/first-screen/first-screen';
+import { HowPricingWorksComponent } from '~/discounts/discounts-welcome/how-pricing-works.component';
+import { InvitationsComponent } from '~/invitations/invitations.component';
+import { RegisterSalonComponent } from '~/register-salon/register-salon';
+import { ServicesComponent } from '~/services/services.component';
+import { ServicesCategoriesComponent } from '~/services/services-categories/services-categories.component';
+import { ServicesListComponent } from '~/services/services-list/services-list.component';
+import { ServiceItemComponent } from '~/services/services-item/services-item.component';
+import { TabsComponent } from '~/tabs/tabs.component';
+import { WelcomeToMadeComponent } from '~/discounts/welcome-to-made/welcome-to-made.component';
+import { WorktimeComponent } from '~/worktime/worktime.component';
+
+import { AuthProcessState } from '~/shared/storage/auth-process-state';
+import { HomeService } from '~/shared/stylist-api/home.service';
+import { WorktimeApi } from '~/shared/stylist-api/worktime.api';
+import { InvitationsApi } from '~/shared/stylist-api/invitations.api';
+import { Contacts } from '@ionic-native/contacts';
+import { OpenNativeSettings } from '@ionic-native/open-native-settings';
+import { SMS } from '@ionic-native/sms';
+import { profileReducer, profileStatePath } from '~/core/components/user-header/profile.reducer';
+import { ProfileEffects } from '~/core/components/user-header/profile.effects';
+import { Camera } from '@ionic-native/camera';
+import { UiKitPreviewComponent } from '~/ui-kit-preview/ui-kit-preview.component';
+import { servicesReducer } from '~/appointment/appointment-services/services.reducer';
+import { ServicesEffects } from '~/appointment/appointment-services/services.effects';
+
 initSentry();
 
 const imports = [
@@ -69,10 +111,40 @@ if (!ENV.production) {
   );
 }
 
+const declarations = [
+  MyAppComponent,
+  AboutComponent,
+  AddServicesComponent,
+  AlmostDoneComponent,
+  AppointmentAddComponent,
+  AppointmentCheckoutComponent,
+  AppointmentServicesComponent,
+  AuthPageComponent,
+  AuthConfirmPageComponent,
+  ChangePercentComponent,
+  ConfirmCheckoutComponent,
+  DiscountsComponent,
+  DiscountsAlertComponent,
+  DiscountsFirstBookingComponent,
+  DiscountsRevisitComponent,
+  DiscountsWeekdayComponent,
+  FirstScreenComponent,
+  HomeComponent,
+  HowPricingWorksComponent,
+  InvitationsComponent,
+  RegisterSalonComponent,
+  ServicesComponent,
+  ServicesCategoriesComponent,
+  ServiceItemComponent,
+  ServicesListComponent,
+  TabsComponent,
+  UiKitPreviewComponent,
+  WelcomeToMadeComponent,
+  WorktimeComponent
+];
+
 @NgModule({
-  declarations: [
-    MyAppComponent
-  ],
+  declarations,
 
   imports: [
     IonicModule.forRoot(MyAppComponent, {
@@ -80,14 +152,21 @@ if (!ENV.production) {
       backButtonIcon: 'md-arrow-back',
       tabsHideOnSubPages: true
     }),
+
+    // User header reducer and effects
+    StoreModule.forFeature(profileStatePath, profileReducer),
+    EffectsModule.forFeature([ProfileEffects]),
+
+    // For appointment screens
+    StoreModule.forFeature('service', servicesReducer),
+    EffectsModule.forFeature([ServicesEffects]),
+
     ...imports
   ],
 
   bootstrap: [IonicApp],
 
-  entryComponents: [
-    MyAppComponent
-  ],
+  entryComponents: declarations,
   providers: [
     StatusBar,
     SplashScreen,
@@ -115,7 +194,18 @@ if (!ENV.production) {
     {
       // Override google maps config
       provide: LAZY_MAPS_API_CONFIG, useClass: GoogleMapsConfig
-    }
+    },
+
+    // Providers for pages
+    AuthProcessState,
+    HomeService,
+    WorktimeApi,
+    InvitationsApi,
+
+    Contacts,
+    OpenNativeSettings,
+    SMS,
+    Camera
   ]
 })
 export class AppModule {

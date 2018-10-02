@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, ModalController, NavController, NavParams, ViewController } from 'ionic-angular';
+import { ModalController, NavController, NavParams, ViewController } from 'ionic-angular';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
 import {
@@ -25,7 +25,6 @@ export interface ServiceItemComponentData {
 /**
  * The modal form that is used for editing of service details.
  */
-@IonicPage({ segment: 'service-item' })
 @Component({
   selector: 'page-service-item',
   templateUrl: 'services-item.component.html'

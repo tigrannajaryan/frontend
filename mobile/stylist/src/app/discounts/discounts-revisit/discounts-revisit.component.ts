@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController } from 'ionic-angular';
+import { NavController } from 'ionic-angular';
 
 import { Discounts, WeekdayDiscount } from '~/shared/stylist-api/discounts.models';
 import { DiscountsApi } from '~/shared/stylist-api/discounts.api';
@@ -11,9 +11,6 @@ enum RebookWeek {
   word = 3
 }
 
-@IonicPage({
-  segment: 'discounts-revisit'
-})
 @Component({
   selector: 'page-discounts-revisit',
   templateUrl: 'discounts-revisit.component.html'

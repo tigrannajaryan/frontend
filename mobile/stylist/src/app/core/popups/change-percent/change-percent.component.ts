@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
+import { NavController, NavParams, ViewController } from 'ionic-angular';
 
 export enum ChangePercentSymbols {
   percent = '%',
@@ -15,7 +15,6 @@ export interface PercentageSliderSettings {
   step?: number;
 }
 
-@IonicPage()
 @Component({
   selector: 'change-percent',
   templateUrl: 'change-percent.component.html'

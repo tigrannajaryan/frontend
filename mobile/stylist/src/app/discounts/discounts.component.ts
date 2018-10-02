@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { Content, IonicPage, NavParams, Slides } from 'ionic-angular';
+import { Content, NavParams, Slides } from 'ionic-angular';
 
 import { DiscountsApi } from '~/shared/stylist-api/discounts.api';
 import { MaximumDiscounts, MaximumDiscountsWithVars, WeekdayDiscount } from '~/shared/stylist-api/discounts.models';
@@ -15,9 +15,6 @@ export enum DiscountTabNames {
   max
 }
 
-@IonicPage({
-  segment: 'discounts'
-})
 @Component({
   selector: 'page-discounts',
   templateUrl: 'discounts.component.html'

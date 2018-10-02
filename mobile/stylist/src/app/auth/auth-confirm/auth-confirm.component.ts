@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams } from 'ionic-angular';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 
@@ -28,7 +28,6 @@ import { CodeData, CodeInputComponent } from '~/shared/components/code-input/cod
 
 import { createNavHistoryList, isRegistrationComplete } from '~/core/functions';
 
-@IonicPage()
 @Component({
   selector: 'page-auth-confirm',
   templateUrl: 'auth-confirm.component.html'

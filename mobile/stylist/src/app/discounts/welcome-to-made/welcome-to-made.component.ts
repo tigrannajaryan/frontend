@@ -1,11 +1,8 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController } from 'ionic-angular';
+import { NavController } from 'ionic-angular';
 
 import { PageNames } from '~/core/page-names';
 
-@IonicPage({
-  segment: 'welcome-to-made'
-})
 @Component({
   selector: 'page-welcome-to-made',
   templateUrl: 'welcome-to-made.component.html'
