@@ -20,12 +20,13 @@ import { homePage } from './pages/home-page';
 import { selectCategoryPage } from './pages/select-category-page';
 import { selectServicePage } from './pages/select-service-page';
 import { Worktime } from './shared-app/stylist-api/worktime.models';
+import { selectDatePage } from './pages/select-date-page';
 
 describe('First use flow for invited clients', () => {
 
   let clientPhoneNumber;
   let stylistProfile: StylistProfile;
-  const serviceNames = ['Myservice'];
+  const serviceNames = ['Myservice1', 'Myservice2'];
 
   beforeAll(async () => {
     // Register new stylist
@@ -68,6 +69,15 @@ describe('First use flow for invited clients', () => {
       name: serviceNames[0],
       description: '',
       base_price: 123,
+      category_name: colorCategory.name,
+      category_uuid: colorCategory.uuid,
+      is_enabled: true,
+      photo_samples: []
+    },
+    {
+      name: serviceNames[1],
+      description: '',
+      base_price: 234,
       category_name: colorCategory.name,
       category_uuid: colorCategory.uuid,
       is_enabled: true,
@@ -152,6 +162,22 @@ describe('First use flow for invited clients', () => {
     await waitFor(selectServicePage.serviceRow(serviceNames[0]));
     expect(selectServicePage.servicePrice(serviceNames[0]).getText()).toEqual('$123');
     expect(selectServicePage.categoryName.getText()).toEqual('Color');
-    selectServicePage.selectService(serviceNames[0]);
+    await selectServicePage.selectService(serviceNames[0]);
+
+    expect(selectDatePage.serviceItemName(0).getText()).toEqual(serviceNames[0]);
+  });
+
+  it('Can add service', async () => {
+    await selectDatePage.addService();
+    await selectCategoryPage.selectCategory('color');
+    await selectServicePage.selectService(serviceNames[1]);
+
+    expect(selectDatePage.serviceItemName(0).getText()).toEqual(serviceNames[0]);
+    expect(selectDatePage.serviceItemName(1).getText()).toEqual(serviceNames[1]);
+  });
+
+  it('Can remove service', async () => {
+    await selectDatePage.deleteService(0);
+    expect(selectDatePage.serviceItemName(0).getText()).toEqual(serviceNames[1]);
   });
 });

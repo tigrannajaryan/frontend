@@ -19,11 +19,12 @@ import { InputNumberDirective } from '~/core/directives/input-number.directive';
 import { PhoneInputDirective } from '~/shared/directives/phone-input.directive';
 
 import { AppointmentItemComponent } from '~/core/components/appointment-item/appointment-item.component';
-import { BookServicesHeaderComponent } from '~/booking/services-header/services-header';
 import { CodeInputComponent } from '~/shared/components/code-input/code-input.component';
 import { MadeHeaderComponent } from '~/core/components/made-header/made-header.component';
 import { PhoneInputComponent } from '~/shared/components/phone-input/phone-input.component';
 import { ProfileHeaderComponent } from '~/core/components/profile-header/profile-header.component';
+import { BookServicesHeaderComponent } from '~/booking/book-services-header/book-services-header';
+import { ServicesHeaderListComponent } from '~/shared/components/services-header-list/services-header-list';
 
 export enum DefaultImage {
   User = 'assets/icons/stylist-avatar.png'
@@ -31,7 +32,6 @@ export enum DefaultImage {
 
 const declarations = [
   AppointmentItemComponent,
-  BookServicesHeaderComponent,
   BookServicesHeaderComponent,
   CheckListComponent,
   CodeInputComponent,
@@ -48,7 +48,8 @@ const declarations = [
   PhoneInputDirective,
   PricePipe,
   ProfileHeaderComponent,
-  ServerStatusComponent
+  ServerStatusComponent,
+  ServicesHeaderListComponent
 ];
 
 @NgModule({

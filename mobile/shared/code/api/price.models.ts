@@ -13,3 +13,9 @@ export interface DayOffer {
   is_working_day: boolean;
   discount_type?: DiscountType;
 }
+
+export interface ServiceModel {
+  uuid: string;
+  name: string;
+  base_price: number;
+}

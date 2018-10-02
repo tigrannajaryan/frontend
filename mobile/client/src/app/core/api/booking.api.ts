@@ -7,9 +7,10 @@ import { ApiResponse } from '~/shared/api/base.models';
 import { ApiRequestOptions } from '~/shared/api-errors';
 import { Logger } from '~/shared/logger';
 import { ServerStatusTracker } from '~/shared/server-status-tracker';
+import { ServiceModel } from '~/shared/api/price.models';
 
 import { BaseService } from '~/shared/api/base-service';
-import { GetPricelistResponse, ServiceModel } from '~/core/api/services.models';
+import { GetPricelistResponse } from '~/core/api/services.models';
 import { AppointmentModel } from '~/core/api/appointments.models';
 
 type ISODateTime = string;

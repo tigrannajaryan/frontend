@@ -3,12 +3,13 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 
+import { ServiceModel } from '~/shared/api/price.models';
 import {
   selectStylistCategory,
   selectStylistCategoryServices,
   ServicesState
 } from '~/core/reducers/services.reducer';
-import { ServiceCategoryModel, ServiceModel } from '~/core/api/services.models';
+import { ServiceCategoryModel } from '~/core/api/services.models';
 import { PageNames } from '~/core/page-names';
 import { BookingData } from '~/core/api/booking.data';
 
