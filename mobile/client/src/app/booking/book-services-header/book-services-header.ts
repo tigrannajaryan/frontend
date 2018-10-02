@@ -2,17 +2,22 @@ import { Component, Input } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
 
-import { PageNames } from '~/core/page-names';
-import { ServiceModel } from '~/core/api/services.models';
+import { ServiceModel } from '~/shared/api/price.models';
 import { BookingData } from '~/core/api/booking.data';
+import { PageNames } from '~/core/page-names';
 
+/**
+ * A component that shows the list of services in the header
+ * during booking process.
+ */
 @Component({
   selector: 'book-services-header',
-  templateUrl: 'services-header.html'
+  templateUrl: 'book-services-header.html'
 })
 export class BookServicesHeaderComponent {
   @Input() readonly: boolean;
 
+  @Input()
   services: Observable<ServiceModel[]>;
 
   constructor(

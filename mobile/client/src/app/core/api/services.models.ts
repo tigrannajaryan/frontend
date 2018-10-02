@@ -1,13 +1,7 @@
-import { DayOffer } from '~/shared/api/price.models';
+import { DayOffer, ServiceModel } from '~/shared/api/price.models';
 
 export interface GetStylistServicesParams {
   stylist_uuid: string;
-}
-
-export interface ServiceModel {
-  uuid: string;
-  name: string;
-  base_price: number;
 }
 
 export interface ServiceCategoryModel {

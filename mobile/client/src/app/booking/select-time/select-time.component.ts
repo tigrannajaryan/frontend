@@ -6,13 +6,13 @@ import { Logger } from '~/shared/logger';
 import { formatTimeInZone } from '~/shared/utils/string-utils';
 import { loading } from '~/shared/utils/loading';
 import { ApiResponse } from '~/shared/api/base.models';
+import { ServiceModel } from '~/shared/api/price.models';
 
 import { showAlert } from '~/core/utils/alert';
 import { PageNames } from '~/core/page-names';
 import { BookingData } from '~/core/api/booking.data';
 import { BookingApi, CreateAppointmentRequest, TimeslotsResponse } from '~/core/api/booking.api';
 import { AppointmentsDataStore } from '~/core/api/appointments.datastore';
-import { ServiceModel } from '~/core/api/services.models';
 import { AppointmentPageParams } from '~/appointment-page/appointment-page.component';
 
 interface DisplayTimeslot {

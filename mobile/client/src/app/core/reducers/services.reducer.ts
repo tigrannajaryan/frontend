@@ -2,7 +2,8 @@ import { Action, createFeatureSelector, createSelector } from '@ngrx/store';
 
 import { ApiError } from '~/shared/api-errors';
 import { RequestState } from '~/shared/api/request.models';
-import { ServiceCategoryModel, ServiceModel } from '~/core/api/services.models';
+import { ServiceModel } from '~/shared/api/price.models';
+import { ServiceCategoryModel } from '~/core/api/services.models';
 
 export enum servicesActionTypes {
   GET_STYLIST_SERVICES = 'SERVICES_GET_STYLIST_SERVICES',
