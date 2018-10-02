@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { Events, IonicPage, NavController, Refresher } from 'ionic-angular';
+import { Events, NavController, Refresher } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
 
 import { composeRequest, loading, withRefresher } from '~/shared/utils/request-utils';
@@ -11,7 +11,6 @@ import { ClientsDataStore } from '~/home/my-clients/clients.data';
 import { EventTypes } from '~/core/event-types';
 import { TabIndex } from '~/tabs/tabs.component';
 
-@IonicPage()
 @Component({
   selector: 'page-my-clients',
   templateUrl: 'my-clients.component.html'
