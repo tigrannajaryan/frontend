@@ -30,7 +30,7 @@
       <ng-container *ngIf="(clients | async)?.length === 0; else clientsList">
         <div>
           <span>There are no clients to show. 😢</span><br>
-          <button (click)="onInviteClick()" ion-button full color="bb_skin" class="bb-btn-a MyClients-inviteBtn">Invite Clients</button>
+          <button (click)="onInviteClick()" ion-button full color="bb_skin" class="bb-btn-a MyClients-inviteBtn" data-test-id="inviteClientsBtn">Invite Clients</button>
         </div>
       </ng-container>
 

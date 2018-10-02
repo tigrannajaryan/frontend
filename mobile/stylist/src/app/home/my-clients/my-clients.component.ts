@@ -4,7 +4,8 @@ import { Observable } from 'rxjs/Observable';
 
 import { composeRequest, loading, withRefresher } from '~/shared/utils/request-utils';
 
-import { ClientModel } from '~/shared/stylist-api/clients-api.models';
+import { ApiResponse } from '~/shared/api/base.models';
+import { ClientModel, GetMyClientsResponse } from '~/shared/stylist-api/clients-api.models';
 import { ClientsDataStore } from '~/home/my-clients/clients.data';
 
 import { EventTypes } from '~/core/event-types';
@@ -30,13 +31,13 @@ export class MyClientsComponent {
   ) {
   }
 
-  ionViewWillLoad(): void {
+  ionViewWillLoad(): Promise<ApiResponse<GetMyClientsResponse>> {
     this.clients = this.clientsData.asObservable().map(({ response }) => response && response.clients);
-    this.requestClients(false);
+    return this.requestClients(false);
   }
 
-  onRefresh(): void {
-    this.requestClients();
+  onRefresh(invalidateCache = true): Promise<ApiResponse<GetMyClientsResponse>> {
+    return this.requestClients(invalidateCache);
   }
 
   onInviteClick(): void {
@@ -44,8 +45,8 @@ export class MyClientsComponent {
     this.events.publish(EventTypes.selectMainTab, TabIndex.Invite);
   }
 
-  private requestClients(invalidateCache = true): void {
-    composeRequest(
+  private requestClients(invalidateCache = true): Promise<ApiResponse<GetMyClientsResponse>> {
+    return composeRequest(
       loading(isLoading => this.isLoading = isLoading),
       withRefresher(this.refresher),
       this.clientsData.get({ refresh: invalidateCache })
