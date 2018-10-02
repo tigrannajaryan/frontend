@@ -35,6 +35,10 @@
 
   .MyClients-clientPhone,
   .MyClients-clientCityState {
+    .textPreloader {
+      margin-bottom: 2px;
+    }
+
     [class^=mb-icon] {
       padding-right: pxtovw(4px);
       color: color($colors, color5);

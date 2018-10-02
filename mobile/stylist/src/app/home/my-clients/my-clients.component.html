@@ -20,8 +20,8 @@
       <ion-row *ngFor="let client of Array(2).fill(undefined)" class="MyClients-client" align-items-center>
         <div class="MyClients-clientImg" [style.backgroundImage]="'url(assets/icons/stylist-avatar.png)'"></div>
         <ion-col class="MyClients-clientInfo">
-          <ion-row class="MyClients-clientPhone"><i class="mb-icon-phone-a"></i><span class="textPreloader">&nbsp;</span></ion-row>
-          <ion-row class="MyClients-clientCityState"><i class="mb-icon-marker"></i><span class="textPreloader">&nbsp;</span></ion-row>
+          <ion-row class="MyClients-clientPhone"><span [style.maxWidth]="'40%'" class="textPreloader"></span></ion-row>
+          <ion-row class="MyClients-clientCityState"><span [style.maxWidth]="'85%'" class="textPreloader"></span></ion-row>
         </ion-col>
       </ion-row>
     </ng-container>
