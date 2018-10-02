@@ -6,8 +6,8 @@ import { Camera, CameraOptions } from '@ionic-native/camera';
 import { PhotoSourceType } from '~/shared/constants';
 import { downscalePhoto, urlToFile } from '~/shared/image-utils';
 
-import { showAlert } from '~/core/utils/alert';
-import { composeRequest, loading } from '~/core/utils/request-utils';
+import { showAlert } from '~/shared/utils/alert';
+import { composeRequest, loading } from '~/shared/utils/request-utils';
 import { animateFailed, animateSucceeded } from '~/core/utils/animation-utils';
 import { DefaultImage } from '~/core/core.module';
 import { ProfileApi } from '~/core/api/profile-api';

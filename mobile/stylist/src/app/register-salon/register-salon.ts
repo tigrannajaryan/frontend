@@ -22,7 +22,7 @@ import { StylistServiceProvider } from '~/shared/stylist-api/stylist-service';
 import { BaseService } from '~/shared/api/base-service';
 import { loading } from '~/core/utils/loading';
 import { PageNames } from '~/core/page-names';
-import { showAlert } from '~/core/utils/alert';
+import { showAlert } from '~/shared/utils/alert';
 
 declare var window: any;
 

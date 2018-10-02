@@ -1,0 +1,55 @@
+<ion-header class="ion-bb-header">
+  <ion-navbar></ion-navbar>
+  <ion-toolbar class="Made-wp Made-wpContent">
+    <div class="Made-h1">
+      My Clients
+      <span *ngIf="clients | async" class="MyClients-badge">
+        {{ (clients | async)?.length }}
+      </span>
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content no-padding class="MyClients">
+  <ion-refresher (ionRefresh)="onRefresh()">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <div class="Made-wp Made-wpContent" [class.MyClients-100H]="(clients | async)?.length === 0">
+    <ng-container *ngIf="isLoading; else realClients">
+      <ion-row *ngFor="let client of Array(2).fill(undefined)" class="MyClients-client" align-items-center>
+        <div class="MyClients-clientImg" [style.backgroundImage]="'url(assets/icons/stylist-avatar.png)'"></div>
+        <ion-col class="MyClients-clientInfo">
+          <ion-row class="MyClients-clientPhone"><i class="mb-icon-phone-a"></i><span class="textPreloader">&nbsp;</span></ion-row>
+          <ion-row class="MyClients-clientCityState"><i class="mb-icon-marker"></i><span class="textPreloader">&nbsp;</span></ion-row>
+        </ion-col>
+      </ion-row>
+    </ng-container>
+
+    <ng-template #realClients>
+      <ng-container *ngIf="(clients | async)?.length === 0; else clientsList">
+        <div>
+          <span>There are no clients to show. 😢</span><br>
+          <button (click)="onInviteClick()" ion-button full color="bb_skin" class="bb-btn-a MyClients-inviteBtn">Invite Clients</button>
+        </div>
+      </ng-container>
+
+      <ng-template #clientsList>
+        <ion-row *ngFor="let client of clients | async" class="MyClients-client" align-items-center>
+          <div class="MyClients-clientImg" [style.backgroundImage]="'url(' + (client.client_photo_url  || 'assets/icons/stylist-avatar.png') + ')'"></div>
+          <ion-col class="MyClients-clientInfo">
+            <div class="Made-h3 MyClients-clientName">{{ client.first_name }} {{ client.last_name }}</div>
+            <ion-row *ngIf="client.phone" class="MyClients-clientPhone">
+              <i class="mb-icon-phone-a"></i>
+              <span>{{ client.phone | formatPhone }}</span>
+            </ion-row>
+            <ion-row *ngIf="client.city || client.state" class="MyClients-clientCityState">
+              <i class="mb-icon-marker"></i>
+              <span>{{ client?.city }} {{ client.city && client.state ? ', ' : '' }} {{ client?.state }}</span>
+            </ion-row>
+          </ion-col>
+        </ion-row>
+      </ng-template>
+    </ng-template>
+  </div>
+</ion-content>

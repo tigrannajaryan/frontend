@@ -12,7 +12,7 @@ import * as deepEqual from 'fast-deep-equal';
 import { Logger } from '~/shared/logger';
 import { GAWrapper } from '~/shared/google-analytics';
 import { PageNames } from '~/core/page-names';
-import { showAlert } from '~/core/utils/alert';
+import { showAlert } from '~/shared/utils/alert';
 import { AppStorage } from '~/shared/storage/app-storage';
 import { StylistProfile } from '~/shared/stylist-api/stylist-models';
 import { Appointment, AppointmentStatuses, Home } from '~/shared/stylist-api/home.models';

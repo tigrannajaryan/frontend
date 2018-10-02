@@ -9,7 +9,7 @@ import {
   SetPreferredStylistResponse,
   StylistsListResponse
 } from '~/shared/api/stylists.models';
-import { randomPhone } from '~/core/utils/test-utils';
+import { randomPhone } from '~/shared/utils/test-utils';
 
 export const stylistsMock = Array(5).fill(undefined).map(() => {
   const [name, lastName] = [faker.name.firstName(), faker.name.lastName()];

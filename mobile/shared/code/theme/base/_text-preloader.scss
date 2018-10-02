@@ -1,0 +1,23 @@
+.textPreloader {
+  $loading-bg-color: color($grayscale, 100);
+
+  @keyframes loading-animation {
+    0% {
+      background-position: 100% 0;
+    }
+
+    100% {
+      background-position: -100% 0;
+    }
+  }
+
+  content: &nbsp;
+  background: linear-gradient(to right, $loading-bg-color 8%, darken($loading-bg-color, 5%) 18%, $loading-bg-color 33%);
+  background-size: 200% 100%;
+  animation: loading-animation 1s linear infinite;
+}
+
+// Set propper width
+ion-row .textPreloader {
+  flex: 1;
+}

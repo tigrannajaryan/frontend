@@ -22,7 +22,7 @@ import { ApiResponse } from '~/shared/api/base.models';
 
 import { PageNames } from '~/core/page-names';
 import { trimStr } from '~/core/functions';
-import { showAlert } from '~/core/utils/alert';
+import { showAlert } from '~/shared/utils/alert';
 
 class ErrorWrapper {
   constructor(readonly error) { }

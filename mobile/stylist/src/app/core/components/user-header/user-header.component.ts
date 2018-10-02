@@ -28,6 +28,10 @@ export class UserHeaderComponent {
     return new Date();
   }
 
+  showMyClients(): void {
+    this.navCtrl.push(PageNames.MyClients);
+  }
+
   protected openPopover(myEvent: Event): void {
     const popover = this.popoverCtrl.create(UserHeaderMenuComponent);
 
