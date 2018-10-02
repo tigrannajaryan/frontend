@@ -11,6 +11,10 @@ enum UIAction {
   showRestartAlert
 }
 
+function lineBreakToBrTag(str: string): string {
+  return str ? str.replace(/\n/gm, '<br/>') : '';
+}
+
 /**
  * Custom unhandled error handler.
  * This handler class is installed in app.module.ts
@@ -81,7 +85,8 @@ export class UnhandledErrorHandler {
     // Despite Angular team claims the bug is still not fixed in Angular 5.2.9.
 
     setTimeout(() => {
-      errorName = errorName.replace(/\n/gm, '<br/>');
+      errorName = lineBreakToBrTag(errorName);
+      errorDetails = lineBreakToBrTag(errorDetails);
 
       if (uiAction === UIAction.justAlert) {
         this.popup(errorName, errorDetails, ['Dismiss']);
