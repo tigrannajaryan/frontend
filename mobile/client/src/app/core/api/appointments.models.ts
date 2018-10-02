@@ -32,6 +32,8 @@ export interface AppointmentModel {
   duration_minutes: number;
   status: AppointmentStatus;
   services: AppointmentServiceModel[];
+  has_card_fee_included: boolean;
+  has_tax_included: boolean;
 }
 
 export interface AppointmentsHistoryResponse {
