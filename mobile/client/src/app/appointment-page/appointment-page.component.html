@@ -53,8 +53,9 @@
                 <span>WAS</span> {{ service.regular_price | price }}</div>
             </ion-col>
           </ion-row>
+
           <!-- show tax if it is present -->
-          <ion-row *ngIf="params.appointment.total_tax && params.appointment.total_client_price_before_tax" class="AppointmentPage-cardAppServiceFees">
+          <ion-row *ngIf="params.appointment.total_tax && params.appointment.has_tax_included" class="AppointmentPage-cardAppServiceFees">
             <ion-col col-7>
               {{ params.appointment.status === AppointmentStatus.new ? 'Est. tax' : 'Taxes' }}
               ({{ params.appointment.tax_percentage | number:'1.0-3' }}%)
@@ -65,8 +66,7 @@
           </ion-row>
 
           <!-- show card fee if it is present -->
-          <ion-row *ngIf="params.appointment.status === AppointmentStatus.checked_out && params.appointment.total_card_fee && params.appointment.total_client_price_before_tax"
-            class="AppointmentPage-cardAppServiceFees">
+          <ion-row *ngIf="params.appointment.total_card_fee && params.appointment.has_card_fee_included" class="AppointmentPage-cardAppServiceFees">
             <ion-col col-7>
               Card fee ({{ params.appointment.card_fee_percentage | number:'1.0-3' }}%)
             </ion-col>
@@ -74,13 +74,14 @@
               ${{ params.appointment.total_card_fee | number:'1.2-2' }}
             </ion-col>
           </ion-row>
+
           <ion-row>
               <ion-col col-7></ion-col>
             <ion-col col-5 class="AppointmentPage-cardAppTip">Tip not included</ion-col>
           </ion-row>
         </ion-grid>
-
       </div>
+
       <div class="AppointmentPage-actions">
         <button ion-button class="Button" *ngIf="params.onConfirmClick" (click)="onConfirmClick()">Confirm booking</button>
 
