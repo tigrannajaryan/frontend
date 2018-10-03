@@ -17,11 +17,11 @@
 
   <div class="Made-wp Made-wpContent" [class.MyClients-100H]="(clients | async)?.length === 0">
     <ng-container *ngIf="isLoading; else realClients">
-      <ion-row *ngFor="let client of Array(2).fill(undefined)" class="MyClients-client" align-items-center>
+      <ion-row *ngFor="let client of [0,0]" class="MyClients-client" align-items-center>
         <div class="MyClients-clientImg" [style.backgroundImage]="'url(assets/icons/stylist-avatar.png)'"></div>
         <ion-col class="MyClients-clientInfo">
-          <ion-row class="MyClients-clientPhone"><span [style.maxWidth]="'40%'" class="textPreloader"></span></ion-row>
-          <ion-row class="MyClients-clientCityState"><span [style.maxWidth]="'85%'" class="textPreloader"></span></ion-row>
+          <ion-row class="MyClients-clientPhone"><span class="textPreloader"></span></ion-row>
+          <ion-row class="MyClients-clientCityState"><span class="textPreloader"></span></ion-row>
         </ion-col>
       </ion-row>
     </ng-container>

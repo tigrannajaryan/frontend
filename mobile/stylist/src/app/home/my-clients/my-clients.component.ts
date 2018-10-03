@@ -6,7 +6,7 @@ import { composeRequest, loading, withRefresher } from '~/shared/utils/request-u
 
 import { ApiResponse } from '~/shared/api/base.models';
 import { ClientModel, GetMyClientsResponse } from '~/shared/stylist-api/clients-api.models';
-import { ClientsDataStore } from '~/home/my-clients/clients.data';
+import { MyClientsDataStore } from '~/home/my-clients/my-clients.data';
 
 import { EventTypes } from '~/core/event-types';
 import { TabIndex } from '~/tabs/tabs.component';
@@ -16,15 +16,13 @@ import { TabIndex } from '~/tabs/tabs.component';
   templateUrl: 'my-clients.component.html'
 })
 export class MyClientsComponent {
-  Array = Array;
-
   @ViewChild(Refresher) refresher: Refresher;
 
   clients: Observable<ClientModel[]>;
   isLoading: boolean;
 
   constructor(
-    private clientsData: ClientsDataStore,
+    private clientsData: MyClientsDataStore,
     private events: Events,
     private navCtrl: NavController
   ) {

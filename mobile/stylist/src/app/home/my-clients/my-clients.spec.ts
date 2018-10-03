@@ -12,7 +12,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestUtils } from '~/../test';
 import { prepareSharedObjectsForTests } from '~/core/test-utils.spec';
 
-import { ClientsDataStore } from '~/home/my-clients/clients.data';
+import { MyClientsDataStore } from '~/home/my-clients/my-clients.data';
 import { DataModule } from '~/core/data.module';
 import { ClientsApiMock, clientsMock } from '~/shared/stylist-api/clients-api.mock';
 

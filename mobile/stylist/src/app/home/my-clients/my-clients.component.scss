@@ -36,6 +36,7 @@
   .MyClients-clientPhone,
   .MyClients-clientCityState {
     .textPreloader {
+      width: 40%;
       margin-bottom: 2px;
     }
 
@@ -56,6 +57,10 @@
 
   .MyClients-clientCityState {
     color: color($grayscale, 600);
+
+    .textPreloader {
+      width: 85%;
+    }
   }
 }
 

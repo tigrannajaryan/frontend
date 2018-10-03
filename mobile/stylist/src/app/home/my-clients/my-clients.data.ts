@@ -7,11 +7,9 @@ import { ClientsApiMock } from '~/shared/stylist-api/clients-api.mock';
 import { GetMyClientsResponse } from '~/shared/stylist-api/clients-api.models';
 
 @Injectable()
-export class ClientsDataStore extends DataStore<GetMyClientsResponse> {
+export class MyMyClientsDataStore extends DataStore<GetMyClientsResponse> {
   constructor(api: ClientsApiMock) {
-    // Amazon requires to update images URLs after one hour:
-    const ttl1hour = moment.duration(1, 'hour').asMilliseconds();
-
-    super('clients', () => api.getMyClients(), { cacheTtlMilliseconds: ttl1hour });
+    // Use 0 cache TTL for any data that can be changed from outside:
+    super('myClients', () => api.getMyClients(), { cacheTtlMilliseconds: 0 });
   }
 }

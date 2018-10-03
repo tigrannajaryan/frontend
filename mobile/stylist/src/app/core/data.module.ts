@@ -2,7 +2,7 @@ import { ModuleWithProviders, NgModule } from '@angular/core';
 import { IonicModule } from 'ionic-angular';
 
 import { ClientsApiMock } from '~/shared/stylist-api/clients-api.mock';
-import { ClientsDataStore } from '~/home/my-clients/clients.data';
+import { MyClientsDataStore } from '~/home/my-clients/my-clients.data';
 
 /**
  * Common data module that includes singletons for the entire app.
@@ -26,7 +26,7 @@ export class DataModule {
       // 'providers' property of any other module, otherwise you will have duplicate objects instead
       // of singletons.
       providers: [
-        ClientsDataStore
+        MyClientsDataStore
       ]
     };
   }
