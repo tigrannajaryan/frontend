@@ -26,7 +26,7 @@
     <i class="mb-icon-marker"></i>&nbsp;<p>{{ stylist.salon_address }}</p>
   </ion-row>
   <ion-row align-items-center *ngIf="stylist.phone" justify-content-center class="StylistInvitationPage-phone">
-    <i class="mb-icon-phone-a"></i>&nbsp;{{ stylist.phone | formatPhone }}
+    <i class="mb-icon-phone-a"></i>&nbsp;<phone-link [phone]="stylist.phone" [readonly]="pageType === StylistPageType.Invitation"></phone-link>
   </ion-row>
 
   <ion-row align-items-center *ngIf="stylist.instagram_url" justify-content-center class="StylistInvitationPage-phone">

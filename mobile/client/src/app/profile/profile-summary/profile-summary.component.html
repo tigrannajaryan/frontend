@@ -8,10 +8,10 @@
            class="ProfilePage-pic"></div>
       <ion-row justify-content-center class="ProfilePage-title">
         <span *ngIf="isProfileCompleted()" data-test-id="userName">{{ profile.first_name }} {{ profile.last_name }}</span>
-        <span *ngIf="!isProfileCompleted()" data-test-id="phone">{{ profile.phone | formatPhone }}</span>
+        <span *ngIf="!isProfileCompleted()" data-test-id="phone"><phone-link [phone]="profile.phone" [readonly]="true"></phone-link></span>
       </ion-row>
       <div *ngIf="isProfileCompleted()" class="ProfilePage-subtitle">
-        <p data-test-id="phone">{{ profile.phone | formatPhone }}</p>
+        <p data-test-id="phone"><phone-link [phone]="profile.phone" [readonly]="true"></phone-link></p>
         <span data-test-id="email">{{ profile.email }}</span>
         <span *ngIf="profile.city || profile.state" data-test-id="address">
           <br/>

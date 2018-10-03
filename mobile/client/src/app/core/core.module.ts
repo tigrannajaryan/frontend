@@ -4,7 +4,6 @@ import { GoogleAnalytics } from '@ionic-native/google-analytics';
 
 import { GAWrapper } from '~/shared/google-analytics';
 
-import { FormatPhonePipe } from '~/shared/pipes/format-phone.pipe';
 import { HasErrorPipe } from '~/shared/pipes/has-error.pipe';
 import { PricePipe } from '~/shared/pipes/price.pipe';
 
@@ -22,6 +21,7 @@ import { AppointmentItemComponent } from '~/core/components/appointment-item/app
 import { CodeInputComponent } from '~/shared/components/code-input/code-input.component';
 import { MadeHeaderComponent } from '~/core/components/made-header/made-header.component';
 import { PhoneInputComponent } from '~/shared/components/phone-input/phone-input.component';
+import { PhoneLinkComponent } from '~/shared/components/phone-link/phone-link.component';
 import { ProfileHeaderComponent } from '~/core/components/profile-header/profile-header.component';
 import { BookServicesHeaderComponent } from '~/booking/book-services-header/book-services-header';
 import { ServicesHeaderListComponent } from '~/shared/components/services-header-list/services-header-list';
@@ -37,7 +37,6 @@ const declarations = [
   CheckListComponent,
   CodeInputComponent,
   ContinueFooterComponent,
-  FormatPhonePipe,
   HasErrorPipe,
   InputNumberDirective,
   MadeHeaderComponent,
@@ -47,6 +46,7 @@ const declarations = [
   NumListComponent,
   PhoneInputComponent,
   PhoneInputDirective,
+  PhoneLinkComponent,
   PriceCalendarComponent,
   PricePipe,
   ProfileHeaderComponent,
