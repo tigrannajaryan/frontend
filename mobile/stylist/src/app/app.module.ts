@@ -31,13 +31,13 @@ import { GoogleMapsConfig } from '~/core/google-maps-config';
 import { AppStorage } from '~/shared/storage/app-storage';
 
 import { AboutComponent } from '~/about/about.component';
-import { AlmostDoneComponent } from '~/discounts/almost-done/almost-done.component';
 import { AppointmentAddComponent } from '~/appointment/appointment-add/appointment-add';
 import { AppointmentCheckoutComponent } from '~/appointment/appointment-checkout/appointment-checkout.component';
 import { AddServicesComponent } from '~/core/popups/add-services/add-services.component';
 import { AppointmentServicesComponent } from '~/appointment/appointment-services/appointment-services';
 import { AuthPageComponent } from '~/auth/auth-start/auth-start.component';
 import { AuthConfirmPageComponent } from '~/auth/auth-confirm/auth-confirm.component';
+import { CalendarExampleComponent } from '~/register-salon/calendar-example/calendar-example.component';
 import { ChangePercentComponent } from '~/core/popups/change-percent/change-percent.component';
 import { ConfirmCheckoutComponent } from '~/core/popups/confirm-checkout/confirm-checkout.component';
 import { DiscountsComponent } from '~/discounts/discounts.component';
@@ -115,12 +115,12 @@ const declarations = [
   MyAppComponent,
   AboutComponent,
   AddServicesComponent,
-  AlmostDoneComponent,
   AppointmentAddComponent,
   AppointmentCheckoutComponent,
   AppointmentServicesComponent,
   AuthPageComponent,
   AuthConfirmPageComponent,
+  CalendarExampleComponent,
   ChangePercentComponent,
   ConfirmCheckoutComponent,
   DiscountsComponent,
