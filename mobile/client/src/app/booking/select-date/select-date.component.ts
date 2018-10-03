@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AlertController, Events, IonicPage, NavController } from 'ionic-angular';
+import { AlertController, Events, NavController } from 'ionic-angular';
 
 import { Logger } from '~/shared/logger';
 import { loading } from '~/shared/utils/loading';
@@ -11,7 +11,6 @@ import { BookingData } from '~/core/api/booking.data';
 import { EventTypes } from '~/core/event-types';
 import { TabIndex } from '~/main-tabs/main-tabs.component';
 
-@IonicPage()
 @Component({
   selector: 'select-date',
   templateUrl: 'select-date.component.html'

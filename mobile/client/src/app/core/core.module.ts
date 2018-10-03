@@ -25,6 +25,7 @@ import { PhoneInputComponent } from '~/shared/components/phone-input/phone-input
 import { ProfileHeaderComponent } from '~/core/components/profile-header/profile-header.component';
 import { BookServicesHeaderComponent } from '~/booking/book-services-header/book-services-header';
 import { ServicesHeaderListComponent } from '~/shared/components/services-header-list/services-header-list';
+import { PriceCalendarComponent } from '~/shared/components/price-calendar/price-calendar.component';
 
 export enum DefaultImage {
   User = 'assets/icons/stylist-avatar.png'
@@ -46,6 +47,7 @@ const declarations = [
   NumListComponent,
   PhoneInputComponent,
   PhoneInputDirective,
+  PriceCalendarComponent,
   PricePipe,
   ProfileHeaderComponent,
   ServerStatusComponent,

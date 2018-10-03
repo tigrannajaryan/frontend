@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActionSheetController, ActionSheetOptions, IonicPage, NavController, NavParams } from 'ionic-angular';
+import { ActionSheetController, ActionSheetOptions, NavController, NavParams } from 'ionic-angular';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 
 import { PhotoSourceType } from '~/shared/constants';
@@ -16,7 +16,6 @@ import { ProfileModel } from '~/core/api/profile.models';
 import { BaseService } from '~/shared/api/base-service';
 import { emptyOr } from '~/shared/validators';
 
-@IonicPage()
 @Component({
   selector: 'profile-edit',
   templateUrl: 'profile-edit.component.html'
