@@ -17,24 +17,6 @@ import { StylistsPageComponent } from './stylists-page.component';
 
 import { openInstagram } from '~/shared/utils/open-external-app';
 
-// Additional mocks
-const providers = [
-  {
-    provide: InAppBrowser,
-    useClass: class InAppBrowserMock {
-      create = jasmine.createSpy('create').and.returnValue(
-        jasmine.createSpyObj('instance', { show: Promise.resolve() })
-      );
-    }
-  },
-  {
-    provide: AppAvailability,
-    useClass: class AppAvailabilityMock {
-      check = jasmine.createSpy('check').and.returnValue(Promise.resolve(true));
-    }
-  }
-];
-
 // Monkey patch SEARCHING_DELAY to 0 to avoid slowing down the tests:
 StylistsEffects.SEARCHING_DELAY = 0;
 
@@ -50,7 +32,7 @@ let instance: StylistsPageComponent;
 describe('Pages: Stylists Search', () => {
   beforeEach(
     async(() =>
-      TestUtils.beforeEachCompiler([StylistsPageComponent], providers)
+      TestUtils.beforeEachCompiler([StylistsPageComponent])
         .then(compiled => {
           // Common setup:
           fixture = compiled.fixture;

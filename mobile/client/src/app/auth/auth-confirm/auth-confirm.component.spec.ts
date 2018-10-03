@@ -52,7 +52,9 @@ describe('Pages: Auth Confirm', () => {
 
   it('should contain formatted phone and edit link', () => {
     expect(textContent)
-      .toContain(`${testPhone.slice(0, 2)} ${testPhone.slice(2, 5)} ${testPhone.slice(5, 8)} ${testPhone.slice(8, 12)} Edit`);
+      .toContain(`${testPhone.slice(0, 2)} ${testPhone.slice(2, 5)} ${testPhone.slice(5, 8)} ${testPhone.slice(8, 12)}`);
+    expect(textContent)
+      .toContain('Edit');
   });
 
   it('should go back on edit phone link click', () => {

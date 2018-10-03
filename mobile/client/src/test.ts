@@ -49,11 +49,13 @@ import {
   Platform
 } from 'ionic-angular';
 
-import { StatusBar } from '@ionic-native/status-bar';
-import { Storage } from '@ionic/storage';
+import { AppAvailability } from '@ionic-native/app-availability';
+import { Camera } from '@ionic-native/camera';
 import { Clipboard } from '@ionic-native/clipboard';
 import { EmailComposer } from '@ionic-native/email-composer';
-import { Camera } from '@ionic-native/camera';
+import { InAppBrowser } from '@ionic-native/in-app-browser';
+import { StatusBar } from '@ionic-native/status-bar';
+import { Storage } from '@ionic/storage';
 
 import {
   AlertControllerMock,
@@ -160,6 +162,20 @@ export class TestUtils {
         { provide: StatusBar, useFactory: () => StatusBarMock.instance() },
         { provide: Storage, useFactory: () => StorageMock.instance() },
         { provide: AuthProcessState, useClass: AuthProcessStateMock },
+        {
+          provide: InAppBrowser,
+          useClass: class InAppBrowserMock {
+            create = jasmine.createSpy('create').and.returnValue(
+              jasmine.createSpyObj('instance', { show: Promise.resolve() })
+            );
+          }
+        },
+        {
+          provide: AppAvailability,
+          useClass: class AppAvailabilityMock {
+            check = jasmine.createSpy('check').and.returnValue(Promise.resolve(true));
+          }
+        },
         // API
         { provide: AuthService, useClass: AuthServiceMock },
         { provide: AppointmentsApi, useClass: AppointmentsApiMock },
