@@ -8,7 +8,7 @@
         </div>
 
         <div class="HomeClients-num">
-          <span *ngIf="home?.followers">{{ home.followers }}</span>
+          <span>{{ followers }}</span>
           <i class="mb-icon-right-arrow"></i>
         </div>
       </div>
@@ -27,7 +27,7 @@
         <button (click)="loadAppointments(tabs[Tabs.today].name)" [class.active]="tabs[Tabs.today].name === activeTab" ion-button
           clear color="dark" class="Home-btnsBtn active">
           {{ tabs[Tabs.today].name }} &nbsp;
-          <b>{{ home.today_visits_count }} of {{ home.today_slots }}</b>
+          <b>{{ home.today_visits_count }} of {{ todaySlots }}</b>
         </button>
         <button (click)="loadAppointments(tabs[Tabs.upcoming].name)" [class.active]="tabs[Tabs.upcoming].name === activeTab" ion-button
           clear color="dark" class="Home-btnsBtn">
