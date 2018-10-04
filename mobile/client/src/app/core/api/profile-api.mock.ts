@@ -6,7 +6,7 @@ import { BaseServiceMock } from '~/shared/api/base-service.mock';
 import { ProfileModel } from '~/core/api/profile.models';
 import { ApiResponse } from '~/shared/api/base.models';
 
-import { randomPhone } from '~/core/utils/test-utils';
+import { randomPhone } from '~/shared/utils/test-utils';
 
 export const profileNotCompleate = {
   phone: randomPhone(),

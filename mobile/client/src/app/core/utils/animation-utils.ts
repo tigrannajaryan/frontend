@@ -1,4 +1,4 @@
-import { Request } from '~/core/utils/request-utils';
+import { Request } from '~/shared/utils/request-utils';
 
 /**
  * Indicate request failed for a short amount of time.

@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 
 import { StylistServiceProvider } from '~/shared/stylist-api/stylist-service';
 import { withLoader } from '~/core/utils/loading';
-import { showAlert } from '~/core/utils/alert';
+import { showAlert } from '~/shared/utils/alert';
 import { Logger } from '~/shared/logger';
 
 import {

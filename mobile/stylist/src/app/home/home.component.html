@@ -1,14 +1,14 @@
 <ion-header class="ion-bb-header" madeUserHeader [profile]="profile | async">
   <ion-toolbar no-padding>
     <div class="Made-wp Made-wpContent">
-      <div class="HomeClients">
+      <div class="HomeClients" (click)="onShowMyClients()">
         <div class="HomeClients-title">
           <i class="mb-icon-heart-a"></i>
           <span>My Clients</span>
         </div>
 
-        <div *ngIf="home?.followers" class="HomeClients-num">
-          <span>{{ home.followers }}</span>
+        <div class="HomeClients-num">
+          <span *ngIf="home?.followers">{{ home.followers }}</span>
           <i class="mb-icon-right-arrow"></i>
         </div>
       </div>

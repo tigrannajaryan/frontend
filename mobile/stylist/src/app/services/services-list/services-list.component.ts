@@ -10,7 +10,7 @@ import { loading } from '~/shared/utils/loading';
 import { ServiceTemplateSetResponse, StylistServiceProvider } from '~/shared/stylist-api/stylist-service';
 import { ServiceCategory, ServiceItem, ServiceTemplateItem, StylistServicesListResponse } from '~/shared/stylist-api/stylist-models';
 
-import { showAlert } from '~/core/utils/alert';
+import { showAlert } from '~/shared/utils/alert';
 import { PageNames } from '~/core/page-names';
 import { ServiceListType } from '~/services/services.component';
 import { ServiceItemComponentData } from '~/services/services-item/services-item.component';

@@ -8,8 +8,8 @@ import { Store } from '@ngrx/store';
 import { componentUnloaded } from '~/shared/component-unloaded';
 
 import { PageNames } from '~/core/page-names';
-import { loading } from '~/core/utils/request-utils';
-import { showAlert } from '~/core/utils/alert';
+import { loading } from '~/shared/utils/request-utils';
+import { showAlert } from '~/shared/utils/alert';
 import { DefaultImage } from '~/core/core.module';
 import { ProfileCompleteness, ProfileModel } from '~/core/api/profile.models';
 import { checkProfileCompleteness } from '~/core/utils/user-utils';
