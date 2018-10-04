@@ -72,11 +72,9 @@ describe('Pages: My Clients', () => {
   it('should show invite btn when empty clients', async done => {
     const api = fixture.debugElement.injector.get(ClientsApi);
 
-    spyOn(api, 'getMyClients').and.returnValue(of({
-      response: {
-        clients: []
-      }
-    }));
+    spyOn(api, 'getMyClients').and.returnValue(
+      of({ response: [] })
+    );
 
     await instance.ionViewWillLoad();
     await instance.onRefresh();

@@ -52,6 +52,9 @@ import {
 
 import { GoogleAnalytics } from '@ionic-native/google-analytics';
 
+import { AppAvailability } from '@ionic-native/app-availability';
+import { InAppBrowser } from '@ionic-native/in-app-browser';
+
 import { AppModule } from '~/app.module';
 
 import { AuthApiService } from '~/shared/stylist-api/auth-api-service';
@@ -62,6 +65,8 @@ import { StylistServiceProvider } from '~/shared/stylist-api/stylist-service';
 import { StylistServiceMock } from '~/shared/stylist-api/stylist-service-mock';
 import { WorktimeApi } from '~/shared/stylist-api/worktime.api';
 import { WorktimeApiMock } from '~/shared/stylist-api/worktime.api.mock';
+
+import { ExternalAppService } from '~/shared/utils/external-app-service';
 
 import { AppStorage } from '~/shared/storage/app-storage';
 import { AppStorageMock } from '~/shared/storage/app-storage-mock';
@@ -119,6 +124,21 @@ export class TestUtils {
         { provide: PopoverController, useClass: PopoverControllerMock },
         { provide: GoogleAnalytics, useClass: GoogleAnalyticsMock },
         { provide: AppStorage, useClass: AppStorageMock },
+        ExternalAppService,
+        {
+          provide: InAppBrowser,
+          useClass: class InAppBrowserMock {
+            create = jasmine.createSpy('create').and.returnValue(
+              jasmine.createSpyObj('instance', { show: Promise.resolve() })
+            );
+          }
+        },
+        {
+          provide: AppAvailability,
+          useClass: class AppAvailabilityMock {
+            check = jasmine.createSpy('check').and.returnValue(Promise.resolve(true));
+          }
+        },
         // the API
         { provide: AuthApiService, useClass: AuthApiServiceMock },
         { provide: ClientsApi, useClass: ClientsApiMock },
