@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import * as moment from 'moment';
 
-import { ApiResponse } from '~/shared/api/base.models';
+import { ApiResponse, ISODateTime } from '~/shared/api/base.models';
 import { ApiRequestOptions } from '~/shared/api-errors';
 import { Logger } from '~/shared/logger';
 import { ServerStatusTracker } from '~/shared/server-status-tracker';
@@ -13,11 +13,9 @@ import { BaseService } from '~/shared/api/base-service';
 import { GetPricelistResponse } from '~/core/api/services.models';
 import { AppointmentModel } from '~/core/api/appointments.models';
 
-type ISODateTime = string;
-
 interface TimeslotModel {
-  start: ISODateTime; // ISO 8601 date and time
-  end: ISODateTime; // ISO 8601 date and time
+  start: ISODateTime;
+  end: ISODateTime;
   is_booked: boolean;
 }
 

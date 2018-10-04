@@ -12,6 +12,10 @@ import { AgmCoreModule, LAZY_MAPS_API_CONFIG } from '@agm/core';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { AppAvailability } from '@ionic-native/app-availability';
+import { Contacts } from '@ionic-native/contacts';
+import { OpenNativeSettings } from '@ionic-native/open-native-settings';
+import { SMS } from '@ionic-native/sms';
+import { Camera } from '@ionic-native/camera';
 
 import { UnhandledErrorHandler } from '~/shared/unhandled-error-handler';
 import { initSentry } from '~/shared/sentry';
@@ -24,26 +28,35 @@ import { ExternalAppService } from '~/shared/utils/external-app-service';
 import { AuthService } from '~/shared/api/auth.api';
 import { authPath, authReducer } from '~/shared/storage/auth.reducer';
 import { AuthEffects } from '~/shared/storage/auth.effects';
-
 import { MyAppComponent } from './app.component';
 import { httpInterceptorProviders } from '~/shared/stylist-api/http-interceptors';
-import { CoreModule } from '~/core/core.module';
 import { getMetaReducers } from './app.reducers';
 import { ENV } from '~/environments/environment.default';
-import { GoogleMapsConfig } from '~/core/google-maps-config';
 import { AppStorage } from '~/shared/storage/app-storage';
+
 import { DataModule } from '~/core/data.module';
+
+import { AuthProcessState } from '~/shared/storage/auth-process-state';
+import { HomeService } from '~/shared/stylist-api/home.service';
+import { WorktimeApi } from '~/shared/stylist-api/worktime.api';
+import { InvitationsApi } from '~/shared/stylist-api/invitations.api';
+import { ClientDetailsApi } from '~/shared/stylist-api/client-details.api';
+
+import { CoreModule } from '~/core/core.module';
+import { GoogleMapsConfig } from '~/core/google-maps-config';
+import { AddServicesComponent } from '~/core/popups/add-services/add-services.component';
+import { ChangePercentComponent } from '~/core/popups/change-percent/change-percent.component';
+import { ConfirmCheckoutComponent } from '~/core/popups/confirm-checkout/confirm-checkout.component';
+import { profileReducer, profileStatePath } from '~/core/components/user-header/profile.reducer';
+import { ProfileEffects } from '~/core/components/user-header/profile.effects';
 
 import { AboutComponent } from '~/about/about.component';
 import { AppointmentAddComponent } from '~/appointment/appointment-add/appointment-add';
 import { AppointmentCheckoutComponent } from '~/appointment/appointment-checkout/appointment-checkout.component';
-import { AddServicesComponent } from '~/core/popups/add-services/add-services.component';
 import { AppointmentServicesComponent } from '~/appointment/appointment-services/appointment-services';
 import { AuthPageComponent } from '~/auth/auth-start/auth-start.component';
 import { AuthConfirmPageComponent } from '~/auth/auth-confirm/auth-confirm.component';
 import { CalendarExampleComponent } from '~/register-salon/calendar-example/calendar-example.component';
-import { ChangePercentComponent } from '~/core/popups/change-percent/change-percent.component';
-import { ConfirmCheckoutComponent } from '~/core/popups/confirm-checkout/confirm-checkout.component';
 import { DiscountsComponent } from '~/discounts/discounts.component';
 import { DiscountsAlertComponent } from '~/discounts/discounts-alert/discounts-alert.component';
 import { DiscountsFirstBookingComponent } from '~/discounts/discounts-first-booking/discounts-first-booking.component';
@@ -54,6 +67,7 @@ import { FirstScreenComponent } from '~/first-screen/first-screen';
 import { HowPricingWorksComponent } from '~/discounts/discounts-welcome/how-pricing-works.component';
 import { InvitationsComponent } from '~/invitations/invitations.component';
 import { MyClientsComponent } from '~/home/my-clients/my-clients.component';
+import { ClientDetailsComponent } from '~/client-details/client-details.component';
 import { RegisterSalonComponent } from '~/register-salon/register-salon';
 import { ServicesComponent } from '~/services/services.component';
 import { ServicesCategoriesComponent } from '~/services/services-categories/services-categories.component';
@@ -62,17 +76,6 @@ import { ServiceItemComponent } from '~/services/services-item/services-item.com
 import { TabsComponent } from '~/tabs/tabs.component';
 import { WelcomeToMadeComponent } from '~/discounts/welcome-to-made/welcome-to-made.component';
 import { WorktimeComponent } from '~/worktime/worktime.component';
-
-import { AuthProcessState } from '~/shared/storage/auth-process-state';
-import { HomeService } from '~/shared/stylist-api/home.service';
-import { WorktimeApi } from '~/shared/stylist-api/worktime.api';
-import { InvitationsApi } from '~/shared/stylist-api/invitations.api';
-import { Contacts } from '@ionic-native/contacts';
-import { OpenNativeSettings } from '@ionic-native/open-native-settings';
-import { SMS } from '@ionic-native/sms';
-import { profileReducer, profileStatePath } from '~/core/components/user-header/profile.reducer';
-import { ProfileEffects } from '~/core/components/user-header/profile.effects';
-import { Camera } from '@ionic-native/camera';
 import { UiKitPreviewComponent } from '~/ui-kit-preview/ui-kit-preview.component';
 import { servicesReducer } from '~/appointment/appointment-services/services.reducer';
 import { ServicesEffects } from '~/appointment/appointment-services/services.effects';
@@ -138,6 +141,7 @@ const declarations = [
   HowPricingWorksComponent,
   InvitationsComponent,
   MyClientsComponent,
+  ClientDetailsComponent,
   RegisterSalonComponent,
   ServicesComponent,
   ServicesCategoriesComponent,
@@ -211,6 +215,7 @@ const declarations = [
     HomeService,
     WorktimeApi,
     InvitationsApi,
+    ClientDetailsApi,
 
     ExternalAppService,
 

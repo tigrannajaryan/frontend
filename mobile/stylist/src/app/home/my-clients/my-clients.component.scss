@@ -42,7 +42,7 @@
 
     [class^=mb-icon] {
       padding-right: pxtovw(4px);
-      color: color($colors, color5);
+      color: color($colors, lightSalmon);
     }
 
     span {
@@ -52,7 +52,7 @@
 
   .MyClients-clientPhone {
     font-weight: bold;
-    color: color($colors, color5);
+    color: color($colors, lightSalmon);
   }
 
   .MyClients-clientCityState {

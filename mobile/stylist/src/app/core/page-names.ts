@@ -26,6 +26,7 @@ import { TabsComponent } from '~/tabs/tabs.component';
 import { WelcomeToMadeComponent } from '~/discounts/welcome-to-made/welcome-to-made.component';
 import { WorktimeComponent } from '~/worktime/worktime.component';
 import { CalendarExampleComponent } from '~/register-salon/calendar-example/calendar-example.component';
+import { ClientDetailsComponent } from '~/client-details/client-details.component';
 
 /**
  * Define page names in one place to avoid typos if the names are used as
@@ -46,6 +47,7 @@ export const PageNames = {
   AuthConfirm: AuthConfirmPageComponent,
   CalendarExample: CalendarExampleComponent,
   ChangePercent: ChangePercentComponent,
+  ClientDetails: ClientDetailsComponent,
   ConfirmCheckoutComponent,
   Discounts: DiscountsComponent,
   DiscountsAlert: DiscountsAlertComponent,
