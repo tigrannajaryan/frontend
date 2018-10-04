@@ -27,7 +27,10 @@ export class HomeServiceMock {
       response: {
         appointments: [],
         today_visits_count: 0,
-        upcoming_visits_count: 0
+        upcoming_visits_count: 0,
+        followers: 0,
+        this_week_earning: 0,
+        today_slots: 0
       }
     });
   }

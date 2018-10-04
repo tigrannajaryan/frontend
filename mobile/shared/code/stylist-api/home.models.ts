@@ -86,6 +86,9 @@ export interface Home {
   appointments: Appointment[];
   today_visits_count: number;
   upcoming_visits_count: number;
+  followers: number;
+  this_week_earning: number;
+  today_slots: number;
 }
 
 export interface CheckoutRequest {

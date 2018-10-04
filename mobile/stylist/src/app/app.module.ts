@@ -10,6 +10,8 @@ import { ScreenOrientation } from '@ionic-native/screen-orientation';
 import { AppVersion } from '@ionic-native/app-version';
 import { AgmCoreModule, LAZY_MAPS_API_CONFIG } from '@agm/core';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { InAppBrowser } from '@ionic-native/in-app-browser';
+import { AppAvailability } from '@ionic-native/app-availability';
 
 import { UnhandledErrorHandler } from '~/shared/unhandled-error-handler';
 import { initSentry } from '~/shared/sentry';
@@ -17,6 +19,7 @@ import { Logger } from '~/shared/logger';
 import { SharedSingletonsModule } from '~/shared/shared-singletons.module';
 import { AuthApiService } from '~/shared/stylist-api/auth-api-service';
 import { StylistServiceProvider } from '~/shared/stylist-api/stylist-service';
+import { ExternalAppService } from '~/shared/utils/external-app-service';
 
 import { AuthService } from '~/shared/api/auth.api';
 import { authPath, authReducer } from '~/shared/storage/auth.reducer';
@@ -177,6 +180,8 @@ const declarations = [
     AppVersion,
     AppStorage,
     ScreenOrientation,
+    InAppBrowser,
+    AppAvailability,
 
     {
       // Our custom handler for unhandled exceptions
@@ -201,6 +206,8 @@ const declarations = [
     HomeService,
     WorktimeApi,
     InvitationsApi,
+
+    ExternalAppService,
 
     Contacts,
     OpenNativeSettings,

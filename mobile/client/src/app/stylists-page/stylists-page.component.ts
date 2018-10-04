@@ -15,6 +15,8 @@ import {
   StylistState
 } from '~/core/reducers/stylists.reducer';
 
+import { ExternalAppService } from '~/shared/utils/external-app-service';
+
 export const MIN_QUERY_LENGTH = 2;
 
 @Component({
@@ -35,6 +37,7 @@ export class StylistsPageComponent {
   requestState?: Observable<RequestState>;
 
   constructor(
+    private externalAppService: ExternalAppService,
     private navCtrl: NavController,
     private navParams: NavParams,
     private preferredStylistsData: PreferredStylistsData,
@@ -74,5 +77,9 @@ export class StylistsPageComponent {
     }
 
     this.activeStylist = undefined;
+  }
+
+  onInstagramClick(username: string): void {
+    this.externalAppService.openInstagram(username);
   }
 }

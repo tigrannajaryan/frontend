@@ -7,7 +7,6 @@ import { InlineSVGModule } from 'ng-inline-svg';
 import { Logger } from '~/shared/logger';
 import { UserContext } from '~/shared/user-context';
 import { GAWrapper } from '~/shared/google-analytics';
-import { FormatPhonePipe } from '~/shared/pipes/format-phone.pipe';
 import { HasErrorPipe } from '~/shared/pipes/has-error.pipe';
 import { PricePipe } from '~/shared/pipes/price.pipe';
 import { BaseService } from '~/shared/api/base-service';
@@ -17,7 +16,6 @@ import { DirectivesModule } from '~/core/directives/directive.module';
 import { ComponentsModule } from './components/components.module';
 
 const declarations = [
-  FormatPhonePipe,
   HasErrorPipe,
   PriceCalendarComponent,
   PricePipe,

@@ -28,6 +28,7 @@ import {
 } from '~/core/components/discounts/discounts-maximum-short/discounts-maximum-short.component';
 import { BackHeaderComponent } from '~/core/components/back-header/back-header.component';
 import { UserHeaderComponent } from '~/core/components/user-header/user-header.component';
+import { PhoneLinkComponent } from '~/shared/components/phone-link/phone-link.component';
 
 const components = [
   MadeNavComponent,
@@ -48,6 +49,7 @@ const components = [
   CheckListComponent,
   NumListComponent,
   PhoneInputComponent,
+  PhoneLinkComponent,
   CodeInputComponent
 ];
 
