@@ -1,7 +1,7 @@
 <ion-navbar class="UserHeader Made-wp">
 
   <ion-title *ngIf="profile" class="UserHeader-title">
-    <span (click)="showMyClients()">{{ profile.first_name }} {{ profile.last_name }}</span>
+    <span>{{ profile.first_name }} {{ profile.last_name }}</span>
     <div class="UserHeader-subtitle">
       <span >{{ getToday() | date: 'EEEE, dd LLL' }}</span>
     </div>

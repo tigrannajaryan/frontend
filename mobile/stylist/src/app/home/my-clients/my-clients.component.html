@@ -40,8 +40,7 @@
           <ion-col class="MyClients-clientInfo">
             <div class="Made-h3 MyClients-clientName">{{ client.first_name }} {{ client.last_name }}</div>
             <ion-row *ngIf="client.phone" class="MyClients-clientPhone">
-              <i class="mb-icon-phone-a"></i>
-              <span>{{ client.phone | formatPhone }}</span>
+              <phone-link [phone]="client.phone" icon="mb-icon-phone-a"></phone-link>
             </ion-row>
             <ion-row *ngIf="client.city || client.state" class="MyClients-clientCityState">
               <i class="mb-icon-marker"></i>

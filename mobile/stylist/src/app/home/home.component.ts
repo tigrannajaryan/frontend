@@ -237,6 +237,10 @@ export class HomeComponent {
     this.refresherEnabled = isEnabled;
   }
 
+  onShowMyClients(): void {
+    this.navCtrl.push(PageNames.MyClients);
+  }
+
   private async loadAppointments(tabType: TabNames): Promise<void> {
     this.activeTab = tabType || this.tabs[Tabs.today].name;
     const query = this.activeTab.toLowerCase();

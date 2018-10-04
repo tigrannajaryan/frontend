@@ -1,5 +1,3 @@
-import * as moment from 'moment';
-
 import { Injectable } from '@angular/core';
 
 import { DataStore } from '~/shared/storage/data-store';

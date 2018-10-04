@@ -25,7 +25,7 @@ export class ClientsApiMock extends BaseServiceMock {
   getMyClients(): Observable<ApiResponse<GetMyClientsResponse>> {
     return this.mockRequest<GetMyClientsResponse>(
       Observable.create(observer => {
-        observer.next({ clients: clientsMock });
+        observer.next(clientsMock);
         observer.complete();
       })
     );
