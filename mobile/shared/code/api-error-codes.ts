@@ -73,7 +73,7 @@ export const fieldErrorMsgs = new Map<FieldErrorCode, string>([
   ['err_appointment_intersection', 'Cannot add appointment intersecting with another.'],
   ['err_appointment_outside_working_hours', 'Cannot add appointment outside working hours.'],
   ['err_appointment_non_working_day', 'Cannot add appointment on non-working day.'],
-  ['err_service_does_not_exist', 'Stylist does not have such service.'],
+  ['err_service_does_not_exist', 'The service no longer exists, please choose another one.'],
   ['err_service_required', 'At least one service must be supplied when creating an appointment.'],
   ['err_non_addon_service_required', 'At least one non-addon service must be supplied when creating an appointment.'],
   ['err_client_does_not_exist', 'This client either does not exist or not related to the stylist.'],
