@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import * as moment from 'moment';
 
-import { DataStore } from '~/core/utils/data-store';
+import { DataStore } from '~/shared/storage/data-store';
 import { AppointmentsHistoryResponse, HomeResponse } from '~/core/api/appointments.models';
 import { AppointmentsApi } from '~/core/api/appointments.api';
 

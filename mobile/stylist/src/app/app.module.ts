@@ -32,6 +32,7 @@ import { getMetaReducers } from './app.reducers';
 import { ENV } from '~/environments/environment.default';
 import { GoogleMapsConfig } from '~/core/google-maps-config';
 import { AppStorage } from '~/shared/storage/app-storage';
+import { DataModule } from '~/core/data.module';
 
 import { AboutComponent } from '~/about/about.component';
 import { AppointmentAddComponent } from '~/appointment/appointment-add/appointment-add';
@@ -52,6 +53,7 @@ import { HomeComponent } from '~/home/home.component';
 import { FirstScreenComponent } from '~/first-screen/first-screen';
 import { HowPricingWorksComponent } from '~/discounts/discounts-welcome/how-pricing-works.component';
 import { InvitationsComponent } from '~/invitations/invitations.component';
+import { MyClientsComponent } from '~/home/my-clients/my-clients.component';
 import { RegisterSalonComponent } from '~/register-salon/register-salon';
 import { ServicesComponent } from '~/services/services.component';
 import { ServicesCategoriesComponent } from '~/services/services-categories/services-categories.component';
@@ -135,6 +137,7 @@ const declarations = [
   HomeComponent,
   HowPricingWorksComponent,
   InvitationsComponent,
+  MyClientsComponent,
   RegisterSalonComponent,
   ServicesComponent,
   ServicesCategoriesComponent,
@@ -155,6 +158,8 @@ const declarations = [
       backButtonIcon: 'md-arrow-back',
       tabsHideOnSubPages: true
     }),
+
+    DataModule.forRoot(),
 
     // User header reducer and effects
     StoreModule.forFeature(profileStatePath, profileReducer),
