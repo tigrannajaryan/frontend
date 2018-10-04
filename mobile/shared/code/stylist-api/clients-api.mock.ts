@@ -16,7 +16,7 @@ export const clientsMock: ClientModel[] =
     first_name: faker.name.firstName(),
     last_name: faker.name.lastName(),
     city: faker.address.city(),
-    state: faker.address.state(),
+    state: faker.address.state()
   }));
 
 @Injectable()
