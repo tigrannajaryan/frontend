@@ -35,8 +35,8 @@ export class MadeNavComponent {
     { name: 'Daily', page: PageNames.DiscountsWeekday },
     { name: 'Revisit', page: PageNames.DiscountsRevisit },
     { name: 'First Visit', page: PageNames.DiscountsFirstBooking },
-    { name: 'Invite Clients', page: PageNames.Invitations },
-    { name: 'Welcome', page: PageNames.AlmostDone }
+    { name: 'My Calendar', page: PageNames.CalendarExample },
+    { name: 'Invite Clients', page: PageNames.Invitations }
   ];
 
   constructor(public navCtrl: NavController) {

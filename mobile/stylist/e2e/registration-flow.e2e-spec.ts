@@ -1,9 +1,8 @@
 import { browser } from 'protractor';
 import * as faker from 'faker';
 
-import { click, getRandomString, globals, waitFor, waitForNot, clearIonicStorage } from './shared-e2e/utils';
+import { clearIonicStorage, click, getRandomString, globals, waitFor, waitForNot } from './shared-e2e/utils';
 import { backdoorApi } from './shared-e2e/backdoor-api';
-import { almostDonePage } from './shared-e2e/almost-done-page';
 import { howPricingWorksPage } from './shared-e2e/how-pricing-works-page';
 import { phoneLoginPage } from './shared-e2e/phone-login-page';
 import { phoneCodePage } from './shared-e2e/phone-code-page';
@@ -19,6 +18,7 @@ import { discountsFirstVisitPage } from './pages/discounts-first-visit-page';
 import { invitationsPage } from './pages/invitations-page';
 import { selectServiceListPage } from './pages/select-service-list-page';
 import { mainTabsPage } from './pages/main-tabs-page';
+import { calendarExamplePage } from './pages/calendar-example-page';
 
 describe('Registration Flow', () => {
 
@@ -133,12 +133,12 @@ describe('Registration Flow', () => {
     await discountsFirstVisitPage.continue();
   });
 
-  it('should show Invitations page', async () => {
-    await invitationsPage.skip();
+  it('should show Calendar Example page', async () => {
+    await calendarExamplePage.continue();
   });
 
-  it('should show Almost Done page', async () => {
-    await almostDonePage.continue();
+  it('should show Invitations page', async () => {
+    await invitationsPage.skip();
   });
 
   it('should see Congratulations message', async () => {

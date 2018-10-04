@@ -25,10 +25,10 @@ export class PriceCalendarComponent {
   protected monthsArray: string[];
   protected weekArray = Array(7).fill('');
 
-  private _prices: CalendarDay[];
+  private _prices: DayOffer[];
 
   @Input()
-  set prices(prices: CalendarDay[]) {
+  set prices(prices: DayOffer[]) {
     this._prices = prices;
     if (!prices || prices.length < 1) {
       this.calendarDays = undefined;
@@ -49,7 +49,7 @@ export class PriceCalendarComponent {
     this.monthsArray = Array(this.monthsCount).fill('');
   }
 
-  get prices(): CalendarDay[] {
+  get prices(): DayOffer[] {
     return this._prices;
   }
 
@@ -66,7 +66,7 @@ export class PriceCalendarComponent {
   }
 }
 
-function getPricesWithOpacity(offers: CalendarDay[], threshold = 0.2): CalendarDay[] {
+function getPricesWithOpacity(offers: DayOffer[], threshold = 0.2): CalendarDay[] {
   if (offers.length === 0) {
     return;
   }

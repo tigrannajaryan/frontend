@@ -1,8 +1,8 @@
 .Calendar {
   .Calendar-title {
     margin-top: pxtovw(24px);
-    font-size: $t-h3;
-    font-weight: 500;
+    font-size: pxtovw(21px);
+    font-weight: bold;
     color: color($grayscale, 500);
   }
 
@@ -21,12 +21,12 @@
     height: $day-height;
     padding-top: pxtovw(3px);
     margin: $day-offset;
-    font-size: $t-base;
+    font-size: pxtovw(13px);
     color: color($grayscale, 500);
     text-align: center;
 
     .Calendar-price {
-      font-size: $t-small;
+      font-size: pxtovw(13px);
       font-weight: normal;
     }
 
