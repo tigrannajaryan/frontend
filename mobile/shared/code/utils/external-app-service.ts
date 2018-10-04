@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Platform } from 'ionic-angular';
-import { InAppBrowser } from '@ionic-native/in-app-browser';
+import { InAppBrowser, InAppBrowserObject } from '@ionic-native/in-app-browser';
 import { AppAvailability } from '@ionic-native/app-availability';
 
 export interface ExternalAppDeepLinkConfig {
@@ -27,7 +27,7 @@ export class ExternalAppService {
    */
   async open(config: ExternalAppDeepLinkConfig): Promise<void> {
     let app: string;
-    let page;
+    let page: InAppBrowserObject;
 
     if (this.platform.is('ios')) {
       app = config.iosSchema;
@@ -67,7 +67,7 @@ export class ExternalAppService {
   }
 
   doPhoneCall(phone: string): void {
-    const page = this.browser.create(`tel:${phone}`);
+    const page: InAppBrowserObject = this.browser.create(`tel:${phone}`);
     page.show();
   }
 }
