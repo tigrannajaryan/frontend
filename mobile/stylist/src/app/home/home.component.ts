@@ -79,6 +79,8 @@ export class HomeComponent {
   refresherEnabled = true;
 
   autoRefreshTimer: any;
+  followers: number;
+  todaySlots: number;
 
   constructor(
     public navCtrl: NavController,
@@ -307,6 +309,9 @@ export class HomeComponent {
       if (!deepEqual(this.appointmentTags, appointmentTags)) {
         this.appointmentTags = appointmentTags;
       }
+
+      this.followers = home.followers;
+      this.todaySlots = home.today_slots;
     }
 
     if (!deepEqual(this.home, home)) {
