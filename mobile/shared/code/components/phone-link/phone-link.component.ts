@@ -11,6 +11,7 @@ import { NumberFormat } from '~/shared/directives/phone-input.directive';
 export class PhoneLinkComponent {
   @Input() phone: string;
   @Input() readonly = false;
+  @Input() icon?: string;
 
   constructor(
     private externalAppService: ExternalAppService

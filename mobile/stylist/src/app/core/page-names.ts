@@ -16,6 +16,7 @@ import { HomeComponent } from '~/home/home.component';
 import { FirstScreenComponent } from '~/first-screen/first-screen';
 import { HowPricingWorksComponent } from '~/discounts/discounts-welcome/how-pricing-works.component';
 import { InvitationsComponent } from '~/invitations/invitations.component';
+import { MyClientsComponent } from '~/home/my-clients/my-clients.component';
 import { RegisterSalonComponent } from '~/register-salon/register-salon';
 import { ServicesComponent } from '~/services/services.component';
 import { ServicesCategoriesComponent } from '~/services/services-categories/services-categories.component';
@@ -55,6 +56,7 @@ export const PageNames = {
   Home: HomeComponent,
   HowPricingWorks: HowPricingWorksComponent,
   Invitations: InvitationsComponent,
+  MyClients: MyClientsComponent,
   RegisterSalon: RegisterSalonComponent,
   Services: ServicesComponent,
   ServicesCategories: ServicesCategoriesComponent,

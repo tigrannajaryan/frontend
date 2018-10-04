@@ -1,0 +1,20 @@
+.textPreloader {
+  $loading-bg-color: color($grayscale, 100);
+
+  @keyframes loading-animation {
+    0% {
+      background-position: 100% 0;
+    }
+
+    100% {
+      background-position: -100% 0;
+    }
+  }
+
+  width: 100%;
+  min-height: 1em;
+  content: &nbsp;
+  background: linear-gradient(to right, $loading-bg-color 20%, darken($loading-bg-color, 5%) 50%, $loading-bg-color 80%) !important;
+  background-size: 200% 100% !important;
+  animation: loading-animation 1s linear infinite;
+}
