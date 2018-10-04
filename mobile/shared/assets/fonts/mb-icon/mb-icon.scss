@@ -59,6 +59,10 @@ $mb-icon-money: "\e908";
 $mb-icon-globe: "\e90c";
 $mb-icon-lock: "\e912";
 $mb-icon-users: "\e919";
+$mb-icon-profile: "\e91c";
+$mb-icon-profile-a: "\e91f";
+$mb-icon-heart-a: "\e92a";
+
 
 @font-face {
   font-family: '#{$icomoon-font-family}';
@@ -68,7 +72,8 @@ $mb-icon-users: "\e919";
   font-weight: normal;
 }
 
-.mb-icon {
+.mb-icon,
+%mb-icon {
   /* use !important to prevent issues with browser extensions that change fonts */
   font-family: '#{$icomoon-font-family}';
   speak: none;
@@ -85,407 +90,489 @@ $mb-icon-users: "\e919";
 
 
 .mb-icon-wash-and-style {
-  @extend .mb-icon;
+  @extend %mb-icon;
+
   &:before {
     content: $mb-icon-wash-and-style;
   }
 }
 
 .mb-icon-wash-and-style-a {
-  @extend .mb-icon;
+  @extend %mb-icon;
+
   &:before {
     content: $mb-icon-wash-and-style-a;
   }
 }
 
 .mb-icon-clock {
-  @extend .mb-icon;
+  @extend %mb-icon;
+
   &:before {
     content: $mb-icon-clock;
   }
 }
 
 .mb-icon-clock-a {
-  @extend .mb-icon;
+  @extend %mb-icon;
+
   &:before {
     content: $mb-icon-clock-a;
   }
 }
 
 .mb-icon-invite {
-  @extend .mb-icon;
+  @extend %mb-icon;
+
   &:before {
     content: $mb-icon-invite;
   }
 }
 
 .mb-icon-invite-a {
-  @extend .mb-icon;
+  @extend %mb-icon;
+
   &:before {
     content: $mb-icon-invite-a;
   }
 }
 
 .mb-icon-stylists {
-  @extend .mb-icon;
+  @extend %mb-icon;
+
   &:before {
     content: $mb-icon-stylists;
   }
 }
 
 .mb-icon-stylists-a {
-  @extend .mb-icon;
+  @extend %mb-icon;
+
   &:before {
     content: $mb-icon-stylists-a;
   }
 }
 
 .mb-icon-plus {
-  @extend .mb-icon;
+  @extend %mb-icon;
+
   &:before {
     content: $mb-icon-plus;
   }
 }
 
 .mb-icon-timer {
-  @extend .mb-icon;
+  @extend %mb-icon;
+
   &:before {
     content: $mb-icon-timer;
   }
 }
 
 .mb-icon-discounts {
-  @extend .mb-icon;
+  @extend %mb-icon;
+
   &:before {
     content: $mb-icon-discounts;
   }
 }
 
 .mb-icon-braids-and-locs {
-  @extend .mb-icon;
+  @extend %mb-icon;
+
   &:before {
     content: $mb-icon-braids-and-locs;
   }
 }
 
 .mb-icon-special-occassions {
-  @extend .mb-icon;
+  @extend %mb-icon;
+
   &:before {
     content: $mb-icon-special-occassions;
   }
 }
 
 .mb-icon-home {
-  @extend .mb-icon;
+  @extend %mb-icon;
+
   &:before {
     content: $mb-icon-home;
   }
 }
 
 .mb-icon-home-a {
-  @extend .mb-icon;
+  @extend %mb-icon;
+
   &:before {
     content: $mb-icon-home-a;
   }
 }
 
 .mb-icon-home-b {
-  @extend .mb-icon;
+  @extend %mb-icon;
+
   &:before {
     content: $mb-icon-home-b;
   }
 }
 
 .mb-icon-discounts-c {
-  @extend .mb-icon;
+  @extend %mb-icon;
+
   &:before {
     content: $mb-icon-discounts-c;
   }
 }
 
 .mb-icon-discounts-a {
-  @extend .mb-icon;
+  @extend %mb-icon;
+
   &:before {
     content: $mb-icon-discounts-a;
   }
 }
 
 .mb-icon-discounts-b {
-  @extend .mb-icon;
+  @extend %mb-icon;
+
   &:before {
     content: $mb-icon-discounts-b;
   }
 }
 
 .mb-icon-right-arrow {
-  @extend .mb-icon;
+  @extend %mb-icon;
+
   &:before {
     content: $mb-icon-right-arrow;
   }
 }
 
 .mb-icon-circle-check {
-  @extend .mb-icon;
+  @extend %mb-icon;
+
   &:before {
     content: $mb-icon-circle-check;
   }
 }
 
 .mb-icon-triangle-down {
-  @extend .mb-icon;
+  @extend %mb-icon;
+
   &:before {
     content: $mb-icon-triangle-down;
   }
 }
 
 .mb-icon-send {
-  @extend .mb-icon;
+  @extend %mb-icon;
+
   &:before {
     content: $mb-icon-send;
   }
 }
 
 .mb-icon-camera {
-  @extend .mb-icon;
+  @extend %mb-icon;
+
   &:before {
     content: $mb-icon-camera;
   }
 }
 
 .mb-icon-calendar {
-  @extend .mb-icon;
+  @extend %mb-icon;
+
   &:before {
     content: $mb-icon-calendar;
   }
 }
 
 .mb-icon-logo {
-  @extend .mb-icon;
+  @extend %mb-icon;
+
   &:before {
     content: $mb-icon-logo;
   }
 }
 
 .mb-icon-trash {
-  @extend .mb-icon;
+  @extend %mb-icon;
+
   &:before {
     content: $mb-icon-trash;
   }
 }
 
 .mb-icon-phone {
-  @extend .mb-icon;
+  @extend %mb-icon;
+
   &:before {
     content: $mb-icon-phone;
   }
 }
 
 .mb-icon-clock-b {
-  @extend .mb-icon;
+  @extend %mb-icon;
+
   &:before {
     content: $mb-icon-clock-b;
   }
 }
 
 .mb-icon-circle {
-  @extend .mb-icon;
+  @extend %mb-icon;
+
   &:before {
     content: $mb-icon-circle;
   }
 }
 
 .mb-icon-faq {
-  @extend .mb-icon;
+  @extend %mb-icon;
+
   &:before {
     content: $mb-icon-faq;
   }
 }
 
 .mb-icon-dots {
-  @extend .mb-icon;
+  @extend %mb-icon;
+
   &:before {
     content: $mb-icon-dots;
   }
 }
 
 .mb-icon-chain {
-  @extend .mb-icon;
+  @extend %mb-icon;
+
   &:before {
     content: $mb-icon-chain;
   }
 }
 
 .mb-icon-mail {
-  @extend .mb-icon;
+  @extend %mb-icon;
+
   &:before {
     content: $mb-icon-mail;
   }
 }
 
 .mb-icon-chain-a {
-  @extend .mb-icon;
+  @extend %mb-icon;
+
   &:before {
     content: $mb-icon-chain-a;
   }
 }
 
 .mb-icon-dollar {
-  @extend .mb-icon;
+  @extend %mb-icon;
+
   &:before {
     content: $mb-icon-dollar;
   }
 }
 
 .mb-icon-heart {
-  @extend .mb-icon;
+  @extend %mb-icon;
+
   &:before {
     content: $mb-icon-heart;
   }
 }
 
 .mb-icon-calendar-add {
-  @extend .mb-icon;
+  @extend %mb-icon;
+
   &:before {
     content: $mb-icon-calendar-add;
   }
 }
 
 .mb-icon-hair {
-  @extend .mb-icon;
+  @extend %mb-icon;
+
   &:before {
     content: $mb-icon-hair;
   }
 }
 
 .mb-icon-treatments {
-  @extend .mb-icon;
+  @extend %mb-icon;
+
   &:before {
     content: $mb-icon-treatments;
   }
 }
 
 .mb-icon-color {
-  @extend .mb-icon;
+  @extend %mb-icon;
+
   &:before {
     content: $mb-icon-color;
   }
 }
 
 .mb-icon-cuts {
-  @extend .mb-icon;
+  @extend %mb-icon;
+
   &:before {
     content: $mb-icon-cuts;
   }
 }
 
 .mb-icon-extensions {
-  @extend .mb-icon;
+  @extend %mb-icon;
+
   &:before {
     content: $mb-icon-extensions;
   }
 }
 
 .mb-icon-check {
-  @extend .mb-icon;
+  @extend %mb-icon;
+
   &:before {
     content: $mb-icon-check;
   }
 }
 
 .mb-icon-conditioners {
-  @extend .mb-icon;
+  @extend %mb-icon;
+
   &:before {
     content: $mb-icon-conditioners;
   }
 }
 
 .mb-icon-search {
-  @extend .mb-icon;
+  @extend %mb-icon;
+
   &:before {
     content: $mb-icon-search;
   }
 }
 
 .mb-icon-cross {
-  @extend .mb-icon;
+  @extend %mb-icon;
+
   &:before {
     content: $mb-icon-cross;
   }
 }
 
 .mb-icon-arrow-left {
-  @extend .mb-icon;
+  @extend %mb-icon;
+
   &:before {
     content: $mb-icon-arrow-left;
   }
 }
 
 .mb-icon-circle-add {
-  @extend .mb-icon;
+  @extend %mb-icon;
+
   &:before {
     content: $mb-icon-circle-add;
   }
 }
 
 .mb-icon-woman {
-  @extend .mb-icon;
+  @extend %mb-icon;
+
   &:before {
     content: $mb-icon-woman;
   }
 }
 
 .mb-icon-marker {
-  @extend .mb-icon;
+  @extend %mb-icon;
+
   &:before {
     content: $mb-icon-marker;
   }
 }
 
 .mb-icon-badge {
-  @extend .mb-icon;
+  @extend %mb-icon;
+
   &:before {
     content: $mb-icon-badge;
   }
 }
 
 .mb-icon-phone-a {
-  @extend .mb-icon;
+  @extend %mb-icon;
+
   &:before {
     content: $mb-icon-phone-a;
   }
 }
 
 .mb-icon-instagram {
-  @extend .mb-icon;
+  @extend %mb-icon;
+
   &:before {
     content: $mb-icon-instagram;
   }
 }
 
 .mb-icon-money {
-  @extend .mb-icon;
+  @extend %mb-icon;
+
   &:before {
     content: $mb-icon-money;
   }
 }
 
 .mb-icon-globe {
-  @extend .mb-icon;
+  @extend %mb-icon;
+
   &:before {
     content: $mb-icon-globe;
   }
 }
 
 .mb-icon-lock {
-  @extend .mb-icon;
+  @extend %mb-icon;
+
   &:before {
     content: $mb-icon-lock;
   }
 }
 
 .mb-icon-users {
-  @extend .mb-icon;
+  @extend %mb-icon;
+
   &:before {
     content: $mb-icon-users;
+  }
+}
+
+.mb-icon-profile {
+  @extend %mb-icon;
+
+  &:before {
+    content: $mb-icon-profile;
+  }
+}
+
+.mb-icon-profile-a {
+  @extend %mb-icon;
+
+  &:before {
+    content: $mb-icon-profile-a;
+  }
+}
+
+.mb-icon-heart-a {
+  @extend %mb-icon;
+
+  &:before {
+    content: $mb-icon-heart-a;
   }
 }

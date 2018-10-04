@@ -162,18 +162,11 @@ $t-base:  pxtorem10(12) !default;
 $t-small: pxtorem10(10) !default;
 
 
-// Media
-// --------------------------------------------------
-
+// Media is deprecated, use pxtovw instead
 $tablet: 'max-width: 600px';
 $smartphone: 'max-width: 500px';
 $phone: 'max-width: 415px';
 $phone-sm: 'max-width: 320px';
+$phone-lg: 'min-width: 413px';
+$phone-md: 'min-width: 374px';
 
-
-// New Media Approach
-// --------------------------------------------------
-
-$phone-lg: 'min-width: 413px'; // (PixelPerfect 750px layout) = (zoom = 0.56%, x = -3px, y = -24px)
-$phone-md: 'min-width: 374px'; // (PixelPerfect 750px layout) = (zoom = 0.51%, x = -4px, y = -20x)
-// by default 320px (PixelPerfect 750px layout) = (zoom = 0.43%, x = -2px, y = -14px)
