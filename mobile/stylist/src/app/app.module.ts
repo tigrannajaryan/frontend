@@ -18,6 +18,7 @@ import { Logger } from '~/shared/logger';
 import { SharedSingletonsModule } from '~/shared/shared-singletons.module';
 import { AuthApiService } from '~/shared/stylist-api/auth-api-service';
 import { StylistServiceProvider } from '~/shared/stylist-api/stylist-service';
+import { ExternalAppService } from '~/shared/utils/external-app-service';
 
 import { AuthService } from '~/shared/api/auth.api';
 import { authPath, authReducer } from '~/shared/storage/auth.reducer';
@@ -203,6 +204,8 @@ const declarations = [
     HomeService,
     WorktimeApi,
     InvitationsApi,
+
+    ExternalAppService,
 
     Contacts,
     OpenNativeSettings,

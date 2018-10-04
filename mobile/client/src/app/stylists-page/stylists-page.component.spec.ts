@@ -15,7 +15,7 @@ import { StylistsService } from '~/core/api/stylists-service';
 import { PreferredStylistsData } from '~/core/api/preferred-stylists.data';
 import { StylistsPageComponent } from './stylists-page.component';
 
-import { openInstagram } from '~/shared/utils/open-external-app';
+import { ExternalAppService } from '~/shared/utils/external-app-service';
 
 // Monkey patch SEARCHING_DELAY to 0 to avoid slowing down the tests:
 StylistsEffects.SEARCHING_DELAY = 0;
@@ -146,13 +146,14 @@ describe('Pages: Stylists Search', () => {
   });
 
   it('should open instagram app', done => {
+    const externalAppService = fixture.debugElement.injector.get(ExternalAppService);
     const appAvailability = fixture.debugElement.injector.get(AppAvailability);
     const browser = fixture.debugElement.injector.get(InAppBrowser);
     const platform = fixture.debugElement.injector.get(Platform);
 
     const instagram = stylistsMock[0].instagram_url;
 
-    openInstagram(instagram);
+    externalAppService.openInstagram(instagram);
 
     setTimeout(() => {
       expect(platform.is)

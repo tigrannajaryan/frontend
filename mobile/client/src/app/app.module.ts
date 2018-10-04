@@ -38,8 +38,9 @@ import { ProfileEffects } from '~/core/effects/profile.effects';
 import { CoreModule } from '~/core/core.module';
 import { DataModule } from '~/core/api/data.module';
 
-import { ServerStatusTracker } from '~/shared/server-status-tracker';
 import { BaseService } from '~/shared/api/base-service';
+import { ExternalAppService } from '~/shared/utils/external-app-service';
+import { ServerStatusTracker } from '~/shared/server-status-tracker';
 
 import { authPath, authReducer } from '~/shared/storage/auth.reducer';
 import { profilePath, profileReducer } from '~/core/reducers/profile.reducer';
@@ -170,6 +171,7 @@ const declarations = [
 
     // Shared:
     BaseService,
+    ExternalAppService,
     ServerStatusTracker,
 
     { // Add auth token to all requests

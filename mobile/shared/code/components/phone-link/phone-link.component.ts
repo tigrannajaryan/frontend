@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
-import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { formatNumber } from 'libphonenumber-js';
 
+import { ExternalAppService } from '~/shared/utils/external-app-service';
 import { NumberFormat } from '~/shared/directives/phone-input.directive';
 
 @Component({
@@ -12,16 +12,13 @@ export class PhoneLinkComponent {
   @Input() phone: string;
   @Input() readonly = false;
 
-  isSupported: Promise<boolean>;
-
   constructor(
-    private browser: InAppBrowser
+    private externalAppService: ExternalAppService
   ) {
   }
 
   async onClick(): Promise<void> {
-    const page = this.browser.create(`tel:${this.phone}`);
-    page.show();
+    this.externalAppService.doPhoneCall(this.phone);
   }
 
   getFormattedPhone(): string {

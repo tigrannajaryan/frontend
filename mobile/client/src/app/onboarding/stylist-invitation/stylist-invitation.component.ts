@@ -5,7 +5,7 @@ import { PageNames } from '~/core/page-names';
 import { StylistModel } from '~/shared/api/stylists.models';
 import { PreferredStylistsData } from '~/core/api/preferred-stylists.data';
 
-import { openInstagram } from '~/shared/utils/open-external-app';
+import { ExternalAppService } from '~/shared/utils/external-app-service';
 
 export enum StylistPageType {
   MyStylist,
@@ -29,6 +29,7 @@ export class StylistInvitationPageComponent {
 
   constructor(
     private app: App,
+    private externalAppService: ExternalAppService,
     private navCtrl: NavController,
     private navParams: NavParams,
     private preferredStylistsData: PreferredStylistsData
@@ -75,7 +76,7 @@ export class StylistInvitationPageComponent {
 
   onInstagramClick(username: string): void {
     if (this.pageType === StylistPageType.MyStylist) {
-      openInstagram(username);
+      this.externalAppService.openInstagram(username);
     }
   }
 }

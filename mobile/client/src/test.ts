@@ -68,6 +68,8 @@ import {
   StorageMock
 } from 'ionic-mocks';
 
+import { ExternalAppService } from '~/shared/utils/external-app-service';
+
 import { SharedSingletonsModule } from '~/shared/shared-singletons.module';
 import { CoreModule } from '~/core/core.module';
 
@@ -162,6 +164,7 @@ export class TestUtils {
         { provide: StatusBar, useFactory: () => StatusBarMock.instance() },
         { provide: Storage, useFactory: () => StorageMock.instance() },
         { provide: AuthProcessState, useClass: AuthProcessStateMock },
+        ExternalAppService,
         {
           provide: InAppBrowser,
           useClass: class InAppBrowserMock {
