@@ -11,6 +11,7 @@ import { AppVersion } from '@ionic-native/app-version';
 import { AgmCoreModule, LAZY_MAPS_API_CONFIG } from '@agm/core';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
+import { AppAvailability } from '@ionic-native/app-availability';
 
 import { UnhandledErrorHandler } from '~/shared/unhandled-error-handler';
 import { initSentry } from '~/shared/sentry';
@@ -180,6 +181,7 @@ const declarations = [
     AppStorage,
     ScreenOrientation,
     InAppBrowser,
+    AppAvailability,
 
     {
       // Our custom handler for unhandled exceptions
