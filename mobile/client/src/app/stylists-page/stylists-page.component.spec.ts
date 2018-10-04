@@ -1,7 +1,11 @@
 import * as faker from 'faker';
 
 import { of } from 'rxjs/observable/of';
+import { Platform } from 'ionic-angular';
 import { async, ComponentFixture } from '@angular/core/testing';
+
+import { InAppBrowser } from '@ionic-native/in-app-browser';
+import { AppAvailability } from '@ionic-native/app-availability';
 
 import { TestUtils } from '~/../test';
 
@@ -10,6 +14,8 @@ import { preferenceMock, stylistsMock } from '~/core/api/stylists-service.mock';
 import { StylistsService } from '~/core/api/stylists-service';
 import { PreferredStylistsData } from '~/core/api/preferred-stylists.data';
 import { StylistsPageComponent } from './stylists-page.component';
+
+import { ExternalAppService } from '~/shared/utils/external-app-service';
 
 // Monkey patch SEARCHING_DELAY to 0 to avoid slowing down the tests:
 StylistsEffects.SEARCHING_DELAY = 0;
@@ -134,6 +140,30 @@ describe('Pages: Stylists Search', () => {
 
       expect(stylistsService.setPreferredStylist)
         .toHaveBeenCalledWith(stylistsMock[0].uuid);
+
+      done();
+    });
+  });
+
+  it('should open instagram app', done => {
+    const externalAppService = fixture.debugElement.injector.get(ExternalAppService);
+    const appAvailability = fixture.debugElement.injector.get(AppAvailability);
+    const browser = fixture.debugElement.injector.get(InAppBrowser);
+    const platform = fixture.debugElement.injector.get(Platform);
+
+    const instagram = stylistsMock[0].instagram_url;
+
+    externalAppService.openInstagram(instagram);
+
+    setTimeout(() => {
+      expect(platform.is)
+        .toHaveBeenCalledWith('ios');
+
+      expect(appAvailability.check)
+        .toHaveBeenCalledWith('instagram://');
+
+      expect(browser.create)
+        .toHaveBeenCalledWith(`instagram://user?username=${instagram}`);
 
       done();
     });

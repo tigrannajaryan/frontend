@@ -5,6 +5,8 @@ import { PageNames } from '~/core/page-names';
 import { StylistModel } from '~/shared/api/stylists.models';
 import { PreferredStylistsData } from '~/core/api/preferred-stylists.data';
 
+import { ExternalAppService } from '~/shared/utils/external-app-service';
+
 export enum StylistPageType {
   MyStylist,
   Invitation
@@ -27,6 +29,7 @@ export class StylistInvitationPageComponent {
 
   constructor(
     private app: App,
+    private externalAppService: ExternalAppService,
     private navCtrl: NavController,
     private navParams: NavParams,
     private preferredStylistsData: PreferredStylistsData
@@ -68,6 +71,12 @@ export class StylistInvitationPageComponent {
       default:
         // When this screen is a tab of MainTabs’ tabs proceed to Stylists directly (and as a default too):
         this.app.getRootNav().push(PageNames.Stylists);
+    }
+  }
+
+  onInstagramClick(username: string): void {
+    if (this.pageType === StylistPageType.MyStylist) {
+      this.externalAppService.openInstagram(username);
     }
   }
 }

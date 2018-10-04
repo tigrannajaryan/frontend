@@ -5,14 +5,16 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { IonicApp, IonicModule } from 'ionic-angular';
 
+import { AppAvailability } from '@ionic-native/app-availability';
 import { AppVersion } from '@ionic-native/app-version';
+import { Camera } from '@ionic-native/camera';
 import { Clipboard } from '@ionic-native/clipboard';
 import { EmailComposer } from '@ionic-native/email-composer';
-import { SplashScreen } from '@ionic-native/splash-screen';
-import { StatusBar } from '@ionic-native/status-bar';
+import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { IonicStorageModule } from '@ionic/storage';
 import { ScreenOrientation } from '@ionic-native/screen-orientation';
-import { Camera } from '@ionic-native/camera';
+import { SplashScreen } from '@ionic-native/splash-screen';
+import { StatusBar } from '@ionic-native/status-bar';
 
 import { META_REDUCERS, StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
@@ -36,8 +38,9 @@ import { ProfileEffects } from '~/core/effects/profile.effects';
 import { CoreModule } from '~/core/core.module';
 import { DataModule } from '~/core/api/data.module';
 
-import { ServerStatusTracker } from '~/shared/server-status-tracker';
 import { BaseService } from '~/shared/api/base-service';
+import { ExternalAppService } from '~/shared/utils/external-app-service';
+import { ServerStatusTracker } from '~/shared/server-status-tracker';
 
 import { authPath, authReducer } from '~/shared/storage/auth.reducer';
 import { profilePath, profileReducer } from '~/core/reducers/profile.reducer';
@@ -157,15 +160,18 @@ const declarations = [
     Logger,
 
     // Plugins
+    AppAvailability,
     AppVersion,
     Clipboard,
     EmailComposer,
+    InAppBrowser,
     SplashScreen,
     StatusBar,
     ScreenOrientation,
 
     // Shared:
     BaseService,
+    ExternalAppService,
     ServerStatusTracker,
 
     { // Add auth token to all requests

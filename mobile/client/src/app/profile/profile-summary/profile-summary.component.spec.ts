@@ -1,13 +1,14 @@
 import { async, ComponentFixture } from '@angular/core/testing';
+import { formatNumber } from 'libphonenumber-js';
 
 import { TestUtils } from '~/../test';
 
+import { NumberFormat } from '~/shared/directives/phone-input.directive';
 import { ProfileSummaryComponent } from '~/profile/profile-summary/profile-summary.component';
 import { ProfileApiMock, profileNotCompleate } from '~/core/api/profile-api.mock';
 import { ProfileApi } from '~/core/api/profile-api';
 import { ProfileModel } from '~/core/api/profile.models';
 import { checkProfileCompleteness } from '~/core/utils/user-utils';
-import { FormatPhonePipe } from '~/shared/pipes/format-phone.pipe';
 
 let fixture: ComponentFixture<ProfileSummaryComponent>;
 let instance: ProfileSummaryComponent;
@@ -49,7 +50,7 @@ describe('Pages: Profile summary', () => {
       expect(userName.innerText).toBe(`${instance.profile.first_name} ${instance.profile.last_name}`);
 
       const phone = fixture.nativeElement.querySelector('[data-test-id=phone]');
-      expect(phone.innerText).toBe(new FormatPhonePipe().transform(instance.profile.phone));
+      expect(phone.innerText).toBe(formatNumber(instance.profile.phone, NumberFormat.International));
 
       const email = fixture.nativeElement.querySelector('[data-test-id=email]');
       expect(email.innerText).toBe(instance.profile.email);
