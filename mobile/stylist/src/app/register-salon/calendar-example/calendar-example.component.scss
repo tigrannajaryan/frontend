@@ -1,0 +1,30 @@
+page-calendar-example {
+  .CalendarExample-Title {
+    width: pxtovw(192px);
+  }
+
+  .CalendarExample-Subtitle {
+    margin: pxtovw(8px) 0;
+    font-size: pxtovw(15px);
+    line-height: pxtovw(24px);
+    color: color($shared-colors, color1);
+    letter-spacing: pxtovw(0.1px);
+  }
+
+  .CalendarExample-RegularPrice {
+    margin: pxtovw(19px) 0;
+  }
+
+  .CalendarExample-RegularPriceText {
+    font-size: pxtovw(15px);
+    color: color($shared-colors, color1);
+  }
+
+  .CalendarExample-RegularPriceDollarSign {
+    font-size: pxtovw(12px);
+  }
+
+  .CalendarExample-RegularPriceAmount {
+    font-size: pxtovw(21px);
+  }
+}

@@ -19,9 +19,7 @@ import { ComponentsModule } from './components/components.module';
 const declarations = [
   FormatPhonePipe,
   HasErrorPipe,
-  PriceCalendarComponent, // Added temporarily to avoid AOT compiler error.
-                          // Should be moved to the module of page where it is
-                          // really used in the future.
+  PriceCalendarComponent,
   PricePipe,
   ServicesHeaderListComponent
 ];
