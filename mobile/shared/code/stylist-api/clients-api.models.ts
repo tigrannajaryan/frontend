@@ -8,6 +8,4 @@ export interface ClientModel {
   photo?: string;
 }
 
-export interface GetMyClientsResponse {
-  clients: ClientModel[];
-}
+export type GetMyClientsResponse = ClientModel[];

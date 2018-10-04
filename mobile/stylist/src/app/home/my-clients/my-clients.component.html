@@ -15,7 +15,7 @@
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 
-  <div class="Made-wp Made-wpContent" [class.MyClients-100H]="(clients | async)?.length === 0">
+  <div class="Made-wp Made-wpContent" [class.MyClients-100H]="!isLoading && (clients | async)?.length === 0">
     <ng-container *ngIf="isLoading; else realClients">
       <ion-row *ngFor="let client of [0,0]" class="MyClients-client" align-items-center>
         <div class="MyClients-clientImg" [style.backgroundImage]="'url(assets/icons/stylist-avatar.png)'"></div>

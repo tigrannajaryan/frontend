@@ -29,7 +29,7 @@ export class MyClientsComponent {
   }
 
   ionViewWillLoad(): Promise<ApiResponse<GetMyClientsResponse>> {
-    this.clients = this.clientsData.asObservable().map(({ response }) => response && response.clients);
+    this.clients = this.clientsData.asObservable().map(({ response }) => response);
     return this.requestClients(false);
   }
 
