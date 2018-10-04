@@ -36,7 +36,7 @@
 
       <ng-template #clientsList>
         <ion-row *ngFor="let client of clients | async" class="MyClients-client" align-items-center>
-          <div class="MyClients-clientImg" [style.backgroundImage]="'url(' + (client.client_photo_url  || 'assets/icons/stylist-avatar.png') + ')'"></div>
+          <div class="MyClients-clientImg" [style.backgroundImage]="'url(' + (client.photo  || 'assets/icons/stylist-avatar.png') + ')'"></div>
           <ion-col class="MyClients-clientInfo">
             <div class="Made-h3 MyClients-clientName">{{ client.first_name }} {{ client.last_name }}</div>
             <ion-row *ngIf="client.phone" class="MyClients-clientPhone">

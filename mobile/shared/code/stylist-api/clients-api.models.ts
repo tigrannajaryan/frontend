@@ -5,7 +5,7 @@ export interface ClientModel {
   last_name?: string;
   city?: string;
   state?: string;
-  client_photo_url?: string;
+  photo?: string;
 }
 
 export interface GetMyClientsResponse {

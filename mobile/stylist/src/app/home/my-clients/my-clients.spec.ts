@@ -14,7 +14,7 @@ import { prepareSharedObjectsForTests } from '~/core/test-utils.spec';
 
 import { MyClientsDataStore } from '~/home/my-clients/my-clients.data';
 import { DataModule } from '~/core/data.module';
-import { ClientsApiMock, clientsMock } from '~/shared/stylist-api/clients-api.mock';
+import { ClientsApi, clientsMock } from '~/shared/stylist-api/clients-api';
 
 import { MyClientsComponent } from './my-clients.component';
 
@@ -70,7 +70,7 @@ describe('Pages: My Clients', () => {
   });
 
   it('should show invite btn when empty clients', async done => {
-    const api = fixture.debugElement.injector.get(ClientsApiMock);
+    const api = fixture.debugElement.injector.get(ClientsApi);
 
     spyOn(api, 'getMyClients').and.returnValue(of({
       response: {

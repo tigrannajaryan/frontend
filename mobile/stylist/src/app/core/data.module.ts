@@ -1,7 +1,7 @@
 import { ModuleWithProviders, NgModule } from '@angular/core';
 import { IonicModule } from 'ionic-angular';
 
-import { ClientsApiMock } from '~/shared/stylist-api/clients-api.mock';
+import { ClientsApi } from '~/shared/stylist-api/clients-api';
 import { MyClientsDataStore } from '~/home/my-clients/my-clients.data';
 
 /**
@@ -15,7 +15,7 @@ import { MyClientsDataStore } from '~/home/my-clients/my-clients.data';
   // Add API service providers in the 'providers' array here
   providers: [
     // services
-    ClientsApiMock
+    ClientsApi
   ]
 })
 export class DataModule {
