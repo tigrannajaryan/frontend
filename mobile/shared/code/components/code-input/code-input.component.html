@@ -1,7 +1,7 @@
 <form>
   <ion-row justify-content-center>
     <ion-item class="FormControl AuthConfirmPage-codeControl">
-      <ion-input #input type="tel" ngxInputNumber [formControl]="code" [disabled]="isLoading" (keydown)="onAutoblurCode($event)" (keyup)="onChange()" (focus)="onFocusCode()"></ion-input>
+      <ion-input #input type="tel" ngxInputNumber [formControl]="code" [disabled]="isLoading" (focus)="onFocusCode()" (input)="onInput($event)"></ion-input>
     </ion-item>
   </ion-row>
   <ion-row justify-content-center>
