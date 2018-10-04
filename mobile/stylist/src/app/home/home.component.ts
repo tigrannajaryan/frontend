@@ -274,8 +274,6 @@ export class HomeComponent {
     this.tabs[index].appointments = home.appointments;
     this.tabs[index].loaded = true;
 
-    let viewChanged = false;
-
     // appointmentTags for today tab
     if (this.activeTab === this.tabs[Tabs.today].name) {
       // Create tags for each appointment based on their start/end times
@@ -307,13 +305,11 @@ export class HomeComponent {
       }
 
       if (!deepEqual(this.appointmentTags, appointmentTags)) {
-        viewChanged = true;
         this.appointmentTags = appointmentTags;
       }
     }
 
     if (!deepEqual(this.home, home)) {
-      viewChanged = true;
       this.home = home;
     }
 
@@ -321,10 +317,6 @@ export class HomeComponent {
     if (this.slides) {
       const animationSpeed = 500;
       this.slides.slideTo(index, animationSpeed);
-
-      if (viewChanged && this.content) {
-        this.content.scrollToTop(animationSpeed);
-      }
     }
   }
 }
