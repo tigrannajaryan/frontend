@@ -11,9 +11,10 @@ export function initSentry(): void {
   const APP_VERSION_NUMBER = process.env.APP_VERSION_NUMBER || '0.0.0';
 
   if (ENV.sentryDsn) {
-    Sentry.init({ dsn: ENV.sentryDsn });
-    const releaseId = `${APP_BUNDLE_ID}-${APP_VERSION_NUMBER}`;
-    Sentry.setRelease(releaseId);
+    Sentry.init({
+      dsn: ENV.sentryDsn,
+      release: `${APP_BUNDLE_ID}-${APP_VERSION_NUMBER}`
+    });
     Sentry.setDist(BUILD_NUMBER);
     Sentry.configureScope(scope => {
       scope.setExtra('buildNum', BUILD_NUMBER);
