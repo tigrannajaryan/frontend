@@ -27,7 +27,6 @@ export class ExternalAppService {
    */
   async open(config: ExternalAppDeepLinkConfig): Promise<void> {
     let app: string;
-    let page: InAppBrowserObject;
 
     if (this.platform.is('ios')) {
       app = config.iosSchema;
@@ -37,21 +36,37 @@ export class ExternalAppService {
 
     if (!app) {
       // Just show in browser:
-      page = this.browser.create(config.httpUrl);
-      page.show();
+      this.openLink(config.httpUrl);
       return;
     }
 
     try {
       await this.appAvailability.check(app);
       // Open url in the app (deeplink):
-      page = this.browser.create(config.appUrl);
+      this.openLink(config.appUrl);
     } catch {
       // Show in browser in case of no app:
-      page = this.browser.create(config.httpUrl);
-    } finally {
-      page.show();
+      this.openLink(config.httpUrl);
     }
+  }
+
+  /**
+   * Simply open a browser page
+   */
+  openWebPage(url: string): void {
+    const validLink = /^(http|\/\/)/;
+    if (!validLink.test(url)) {
+      url = `//${url}`;
+    }
+    this.openLink(url);
+  }
+
+  /**
+   * Make a call with phone app
+   */
+  doPhoneCall(phone: string): void {
+    // Open phone app using a deep link:
+    this.openLink(`tel:${phone}`);
   }
 
   /**
@@ -66,8 +81,8 @@ export class ExternalAppService {
     });
   }
 
-  doPhoneCall(phone: string): void {
-    const page: InAppBrowserObject = this.browser.create(`tel:${phone}`);
+  private openLink(link: string): void {
+    const page: InAppBrowserObject = this.browser.create(link);
     page.show();
   }
 }
