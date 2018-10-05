@@ -15,3 +15,4 @@ export interface ApiResponse<ReponseType> {
 }
 
 export type ISODate = string; // ISO 8601: YYYY-MM-DD
+export type ISODateTime = string; // ISO 8601: YYYY-MM-DDTHH:mm:ss

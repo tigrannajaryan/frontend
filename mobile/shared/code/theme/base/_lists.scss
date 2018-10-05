@@ -53,3 +53,35 @@
   border: 1px solid rgb(212, 212, 212);
   border-radius: 50%;
 }
+
+.MadeLinkList {
+
+}
+.MadeLinkList-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: pxtovw(48px);
+  border-top: 1px solid color($grayscale-shared, 200);
+
+  &:last-child {
+    border-bottom: 1px solid color($grayscale-shared, 200);
+  }
+}
+.MadeLinkList-cell {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  color: black;
+  font-size: pxtovw(15px);
+  line-height: pxtovw(16px);
+
+  i[class*='mb-icon'] {
+    margin-right: pxtovw(5px);
+  }
+
+  &.isGrey {
+    color: color($grayscale-shared, 500);
+    letter-spacing: pxtovw(0.2px);
+  }
+}

@@ -1,0 +1,35 @@
+.ClientInfo-ava {
+  width: pxtovw(120px);
+  height: pxtovw(120px);
+  margin: 0 auto pxtovw(16px);
+  background: url('../assets/imgs/icons/avatar.png');
+  background-color: color($grayscale, 100);
+  background-repeat: no-repeat;
+  background-size: cover;
+  border-radius: 50%; // circle
+}
+
+.ClientInfo-title {
+  margin-bottom: pxtovw(16px);
+  font-size: pxtovw(28px);
+  font-weight: 600;
+  line-height: pxtovw(32px);
+  text-align: center;
+}
+
+.ClientInfo-text {
+  margin-bottom: pxtovw(8px);
+  font-size: pxtovw(18px);
+  line-height: pxtovw(24px);
+  color: color($colors, warmGrey);
+  text-align: center;
+
+  &.isPhone {
+    font-weight: 600;
+    color: color($colors, lightSalmon);
+  }
+}
+
+.ClientInfo-List {
+  margin-top: pxtovw(24px);
+}

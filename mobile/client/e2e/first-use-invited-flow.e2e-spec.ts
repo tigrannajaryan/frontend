@@ -177,8 +177,8 @@ describe('First use flow for invited clients', () => {
     expect(selectDatePage.serviceItemName(1).getText()).toEqual(serviceNames[1]);
   });
 
-  it('Can remove service', async () => {
-    await selectDatePage.deleteService(0);
-    expect(selectDatePage.serviceItemName(0).getText()).toEqual(serviceNames[1]);
-  });
+  // it('Can remove service', async () => {
+  //   await selectDatePage.deleteService(0);
+  //   expect(selectDatePage.serviceItemName(0).getText()).toEqual(serviceNames[1]);
+  // });
 });

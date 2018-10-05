@@ -8,6 +8,7 @@ import { ApiResponse } from '~/shared/api/base.models';
 import { ClientModel, GetMyClientsResponse } from '~/shared/stylist-api/clients-api.models';
 import { MyClientsDataStore } from '~/home/my-clients/my-clients.data';
 
+import { PageNames } from '~/core/page-names';
 import { EventTypes } from '~/core/event-types';
 import { TabIndex } from '~/tabs/tabs.component';
 
@@ -40,6 +41,10 @@ export class MyClientsComponent {
   onInviteClick(): void {
     this.navCtrl.popToRoot();
     this.events.publish(EventTypes.selectMainTab, TabIndex.Invite);
+  }
+
+  onClientClick(client: ClientModel): void {
+    this.navCtrl.push(PageNames.ClientDetails, { client });
   }
 
   private requestClients(invalidateCache = true): Promise<ApiResponse<GetMyClientsResponse>> {

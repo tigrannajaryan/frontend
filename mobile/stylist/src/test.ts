@@ -10,6 +10,16 @@ import 'zone.js/dist/jasmine-patch';
 import 'zone.js/dist/async-test';
 import 'zone.js/dist/fake-async-test';
 
+import 'rxjs/add/operator/catch';
+import 'rxjs/add/operator/delay';
+import 'rxjs/add/operator/filter';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/share';
+import 'rxjs/add/operator/switchMap';
+import 'rxjs/add/operator/takeWhile';
+import 'rxjs/add/operator/toPromise';
+import 'rxjs/add/operator/withLatestFrom';
+
 import { getTestBed, TestBed } from '@angular/core/testing';
 
 import {
@@ -61,6 +71,8 @@ import { AuthApiService } from '~/shared/stylist-api/auth-api-service';
 import { AuthApiServiceMock } from '~/shared/stylist-api/auth-api-service-mock';
 import { ClientsApi } from '~/shared/stylist-api/clients-api';
 import { ClientsApiMock } from '~/shared/stylist-api/clients-api.mock';
+import { ClientDetailsApi } from '~/shared/stylist-api/client-details.api';
+import { ClientDetailsApiMock } from '~/shared/stylist-api/client-details.api.mock';
 import { StylistServiceProvider } from '~/shared/stylist-api/stylist-service';
 import { StylistServiceMock } from '~/shared/stylist-api/stylist-service-mock';
 import { WorktimeApi } from '~/shared/stylist-api/worktime.api';
@@ -142,6 +154,7 @@ export class TestUtils {
         // the API
         { provide: AuthApiService, useClass: AuthApiServiceMock },
         { provide: ClientsApi, useClass: ClientsApiMock },
+        { provide: ClientDetailsApi, useClass: ClientDetailsApiMock },
         { provide: HomeService, useClass: HomeServiceMock },
         { provide: StylistServiceProvider, useClass: StylistServiceMock },
         { provide: WorktimeApi, useClass: WorktimeApiMock },
