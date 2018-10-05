@@ -2,8 +2,6 @@ const fs = require('fs');
 const path = require('path');
 const webpack = require('webpack');
 const merge = require('webpack-merge');
-const WebpackOnBuildPlugin = require('on-build-webpack');
-const webpackutil = require('../../scripts/webpack-util');
 
 // get git info from command line
 const commitHash = require('child_process')
@@ -59,21 +57,7 @@ const config = {
   }
 };
 
-// Config with extensive hashing
-const prodConfig = ['prod', 'staging'].indexOf(process.env.MB_ENV) !== -1 ? {
-  output: {
-    // Include content-based hash in the chunk file names.
-    // See also hashifyJsFileNames() which updates the file names in index.html
-    filename: '[name].[chunkhash].js'
-  },
-  plugins: [
-    new WebpackOnBuildPlugin(function(stats) {
-      webpackutil.hashifyFileNames(path.resolve(__dirname, '../'));
-    })
-  ]
-} : {};
-
 module.exports = {
-  prod: merge(webpackConfig.prod, config, prodConfig),
-  dev: merge(webpackConfig.dev, config, prodConfig)
+  prod: merge(webpackConfig.prod, config),
+  dev: merge(webpackConfig.dev, config)
 };
