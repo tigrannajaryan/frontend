@@ -16,9 +16,6 @@ export function initSentry(): void {
       release: `${APP_BUNDLE_ID}-${APP_VERSION_NUMBER}`
     });
     Sentry.setDist(BUILD_NUMBER);
-    Sentry.configureScope(scope => {
-      scope.setExtra('buildNum', BUILD_NUMBER);
-    });
   }
 }
 
