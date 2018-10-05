@@ -15,7 +15,6 @@ export function initSentry(): void {
     const releaseId = `${APP_BUNDLE_ID}-${APP_VERSION_NUMBER}`;
     Sentry.setRelease(releaseId);
     Sentry.setDist(BUILD_NUMBER);
-    Sentry.setExtraContext({ buildNum: BUILD_NUMBER });
   }
 }
 
@@ -23,7 +22,9 @@ export function reportToSentry(error: any, level: Severity = Severity.Error): vo
   try {
     // Sentry Cordova does not provide a way to set error severity level. The workaround
     // is to set a custom tag for severity and use it on Sentry side.
-    Sentry.setTagsContext({ 'made.severity': level });
+    Sentry.configureScope(scope => {
+      scope.setTag('made.severity', level);
+    });
     Sentry.captureException(error.originalError || error);
   } catch (e) {
     console.error(e);
