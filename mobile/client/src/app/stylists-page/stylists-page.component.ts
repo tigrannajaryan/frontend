@@ -82,4 +82,8 @@ export class StylistsPageComponent {
   onInstagramClick(username: string): void {
     this.externalAppService.openInstagram(username);
   }
+
+  onWebsiteClick(url: string): void {
+    this.externalAppService.openWebPage(url);
+  }
 }
