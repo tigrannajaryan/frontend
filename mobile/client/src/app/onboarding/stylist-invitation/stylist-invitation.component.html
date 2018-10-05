@@ -28,10 +28,14 @@
   <ion-row align-items-center *ngIf="stylist.phone" justify-content-center class="StylistInvitationPage-phone">
     <i class="mb-icon-phone-a"></i>&nbsp;<phone-link [phone]="stylist.phone" [readonly]="pageType === StylistPageType.Invitation"></phone-link>
   </ion-row>
-
   <ion-row align-items-center *ngIf="stylist.instagram_url" justify-content-center class="StylistInvitationPage-phone">
     <span [class.Link]="pageType === StylistPageType.MyStylist" (click)="onInstagramClick(stylist.instagram_url)">
       <i class="mb-icon-instagram"></i>&nbsp;{{ stylist.instagram_url }}
+    </span>
+  </ion-row>
+  <ion-row align-items-center *ngIf="stylist.website_url" justify-content-center class="StylistInvitationPage-phone">
+    <span [class.Link]="pageType === StylistPageType.MyStylist">
+      <i class="mb-icon-globe"></i>&nbsp;{{ stylist.website_url }}
     </span>
   </ion-row>
 

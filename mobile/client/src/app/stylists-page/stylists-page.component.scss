@@ -101,8 +101,9 @@
       color: color($colors, orange);
     }
 
-    img {
+    [class^=mb-icon] {
       margin: pxtovw(4px) 0 0;
+      color: color($colors, orange);
     }
 
     p {
@@ -133,6 +134,7 @@
   .StylistsPage-cardFooter {
     width: 0;
     height: 0;
+    min-height: 0;
     overflow: hidden;
   }
 
@@ -150,7 +152,7 @@
     .StylistsPage-cardTitle,
     .StylistsPage-cardSubtitle,
     .StylistsPage-cardFooter {
-      transition: all 0.05s ease-in;
+      transition: all 0.08s ease-in;
     }
 
     &.is-active {
@@ -210,9 +212,10 @@
       }
 
       .StylistsPage-cardFooter {
-        $footer-height: pxtovw(136px);
+        $footer-height: pxtovw(100px);
 
-        height: $footer-height;
+        height: auto;
+        min-height: $footer-height;
       }
 
       .StylistsPage-cardHeader,
