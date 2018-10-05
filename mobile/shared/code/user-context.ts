@@ -22,7 +22,9 @@ export class UserContext {
       this.userId = userId;
       this.logger.info(`Current user is ${userId}`);
       this.ga.setUserId(userId);
-      Sentry.setUserContext({ id: userId });
+      Sentry.configureScope(scope => {
+        scope.setUser({ id: userId });
+      });
     }
   }
 }
