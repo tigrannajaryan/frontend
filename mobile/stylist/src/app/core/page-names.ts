@@ -1,5 +1,4 @@
 import { AboutComponent } from '~/about/about.component';
-import { AlmostDoneComponent } from '~/discounts/almost-done/almost-done.component';
 import { AppointmentAddComponent } from '~/appointment/appointment-add/appointment-add';
 import { AppointmentCheckoutComponent } from '~/appointment/appointment-checkout/appointment-checkout.component';
 import { AddServicesComponent } from '~/core/popups/add-services/add-services.component';
@@ -17,6 +16,7 @@ import { HomeComponent } from '~/home/home.component';
 import { FirstScreenComponent } from '~/first-screen/first-screen';
 import { HowPricingWorksComponent } from '~/discounts/discounts-welcome/how-pricing-works.component';
 import { InvitationsComponent } from '~/invitations/invitations.component';
+import { MyClientsComponent } from '~/home/my-clients/my-clients.component';
 import { RegisterSalonComponent } from '~/register-salon/register-salon';
 import { ServicesComponent } from '~/services/services.component';
 import { ServicesCategoriesComponent } from '~/services/services-categories/services-categories.component';
@@ -25,6 +25,7 @@ import { ServiceItemComponent } from '~/services/services-item/services-item.com
 import { TabsComponent } from '~/tabs/tabs.component';
 import { WelcomeToMadeComponent } from '~/discounts/welcome-to-made/welcome-to-made.component';
 import { WorktimeComponent } from '~/worktime/worktime.component';
+import { CalendarExampleComponent } from '~/register-salon/calendar-example/calendar-example.component';
 
 /**
  * Define page names in one place to avoid typos if the names are used as
@@ -38,12 +39,12 @@ import { WorktimeComponent } from '~/worktime/worktime.component';
 export const PageNames = {
   About: AboutComponent,
   AddServicesComponent,
-  AlmostDone: AlmostDoneComponent,
   AppointmentAdd: AppointmentAddComponent,
   AppointmentCheckout: AppointmentCheckoutComponent,
   AppointmentServices: AppointmentServicesComponent,
   Auth: AuthPageComponent,
   AuthConfirm: AuthConfirmPageComponent,
+  CalendarExample: CalendarExampleComponent,
   ChangePercent: ChangePercentComponent,
   ConfirmCheckoutComponent,
   Discounts: DiscountsComponent,
@@ -55,6 +56,7 @@ export const PageNames = {
   Home: HomeComponent,
   HowPricingWorks: HowPricingWorksComponent,
   Invitations: InvitationsComponent,
+  MyClients: MyClientsComponent,
   RegisterSalon: RegisterSalonComponent,
   Services: ServicesComponent,
   ServicesCategories: ServicesCategoriesComponent,

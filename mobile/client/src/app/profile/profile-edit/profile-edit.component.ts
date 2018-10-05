@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActionSheetController, ActionSheetOptions, IonicPage, NavController, NavParams } from 'ionic-angular';
+import { ActionSheetController, ActionSheetOptions, NavController, NavParams } from 'ionic-angular';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 
 import { PhotoSourceType } from '~/shared/constants';
 import { downscalePhoto, urlToFile } from '~/shared/image-utils';
 
-import { showAlert } from '~/core/utils/alert';
-import { composeRequest, loading } from '~/core/utils/request-utils';
+import { showAlert } from '~/shared/utils/alert';
+import { composeRequest, loading } from '~/shared/utils/request-utils';
 import { animateFailed, animateSucceeded } from '~/core/utils/animation-utils';
 import { DefaultImage } from '~/core/core.module';
 import { ProfileApi } from '~/core/api/profile-api';
@@ -16,7 +16,6 @@ import { ProfileModel } from '~/core/api/profile.models';
 import { BaseService } from '~/shared/api/base-service';
 import { emptyOr } from '~/shared/validators';
 
-@IonicPage()
 @Component({
   selector: 'profile-edit',
   templateUrl: 'profile-edit.component.html'

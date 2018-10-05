@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import * as moment from 'moment';
 
-import { DataStore } from '~/core/utils/data-store';
+import { DataStore } from '~/shared/storage/data-store';
 
 import { ProfileModel } from '~/core/api/profile.models';
 import { ProfileApi } from '~/core/api/profile-api';

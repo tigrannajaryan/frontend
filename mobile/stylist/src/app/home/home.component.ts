@@ -12,7 +12,7 @@ import * as deepEqual from 'fast-deep-equal';
 import { Logger } from '~/shared/logger';
 import { GAWrapper } from '~/shared/google-analytics';
 import { PageNames } from '~/core/page-names';
-import { showAlert } from '~/core/utils/alert';
+import { showAlert } from '~/shared/utils/alert';
 import { AppStorage } from '~/shared/storage/app-storage';
 import { StylistProfile } from '~/shared/stylist-api/stylist-models';
 import { Appointment, AppointmentStatuses, Home } from '~/shared/stylist-api/home.models';
@@ -79,6 +79,8 @@ export class HomeComponent {
   refresherEnabled = true;
 
   autoRefreshTimer: any;
+  followers: number;
+  todaySlots: number;
 
   constructor(
     public navCtrl: NavController,
@@ -237,6 +239,10 @@ export class HomeComponent {
     this.refresherEnabled = isEnabled;
   }
 
+  onShowMyClients(): void {
+    this.navCtrl.push(PageNames.MyClients);
+  }
+
   private async loadAppointments(tabType: TabNames): Promise<void> {
     this.activeTab = tabType || this.tabs[Tabs.today].name;
     const query = this.activeTab.toLowerCase();
@@ -270,8 +276,6 @@ export class HomeComponent {
     this.tabs[index].appointments = home.appointments;
     this.tabs[index].loaded = true;
 
-    let viewChanged = false;
-
     // appointmentTags for today tab
     if (this.activeTab === this.tabs[Tabs.today].name) {
       // Create tags for each appointment based on their start/end times
@@ -303,13 +307,14 @@ export class HomeComponent {
       }
 
       if (!deepEqual(this.appointmentTags, appointmentTags)) {
-        viewChanged = true;
         this.appointmentTags = appointmentTags;
       }
+
+      this.followers = home.followers;
+      this.todaySlots = home.today_slots;
     }
 
     if (!deepEqual(this.home, home)) {
-      viewChanged = true;
       this.home = home;
     }
 
@@ -317,10 +322,6 @@ export class HomeComponent {
     if (this.slides) {
       const animationSpeed = 500;
       this.slides.slideTo(index, animationSpeed);
-
-      if (viewChanged && this.content) {
-        this.content.scrollToTop(animationSpeed);
-      }
     }
   }
 }

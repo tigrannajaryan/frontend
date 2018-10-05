@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController } from 'ionic-angular';
+import { NavController } from 'ionic-angular';
 import * as moment from 'moment';
 
 import { Logger } from '~/shared/logger';
@@ -8,7 +8,7 @@ import { loading } from '~/shared/utils/loading';
 import { ApiResponse } from '~/shared/api/base.models';
 import { ServiceModel } from '~/shared/api/price.models';
 
-import { showAlert } from '~/core/utils/alert';
+import { showAlert } from '~/shared/utils/alert';
 import { PageNames } from '~/core/page-names';
 import { BookingData } from '~/core/api/booking.data';
 import { BookingApi, CreateAppointmentRequest, TimeslotsResponse } from '~/core/api/booking.api';
@@ -32,7 +32,6 @@ interface TimeslotSection {
   slots: DisplayTimeslot[];
 }
 
-@IonicPage()
 @Component({
   selector: 'page-select-time',
   templateUrl: 'select-time.component.html'

@@ -8,7 +8,7 @@ page-home {
   }
 
   .ion-bb-header .toolbar-background {
-    background: #fff; // can't use variabel on ionic classes
+    background: white; // can't use variabel on ionic classes
   }
 
   .Home-main {
@@ -46,15 +46,6 @@ page-home {
     }
   }
 
-  .Home-upTextInfo {
-    padding: pxtovw(2px) pxtovw(11px);
-    margin-left: pxtovw(7px);
-    font-size: $t-h4;
-    color: color($colors, white);
-    background: color($colors, color20);
-    border-radius: 20px;
-  }
-
   .Home-items {
     display: block;
     min-height: pxtovw(400px);
@@ -88,23 +79,17 @@ page-home {
 
 .Home-btnsBtn {
   width: 33.333%;
-  padding: 0 pxtorem10(10) pxtorem10(2);
+  height: pxtovw(34px);
+  padding: 0 pxtovw(5px);
   margin: 0;
-  font-size: pxtorem10(13);
+  font-size: pxtovw(15px);
   text-transform: capitalize;
-  border-bottom: 2px solid transparent;
+  border-bottom: pxtovw(2px) solid transparent;
   border-radius: initial;
   opacity: 0.4;
 
-  @media ($phone-md) {
-    padding: 0 pxtorem10(10) pxtorem10(8);
-    font-size: pxtorem10(15);
-  }
-
-  @media ($phone-lg) {
-    height: pxtorem10(48);
-    padding: 0 pxtorem10(14);
-    font-size: pxtorem10(17);
+  b {
+    text-transform: initial;
   }
 }
 
@@ -112,4 +97,63 @@ page-home {
 .Home-btnsBtn.active {
   border-bottom: 2px solid color($colors, bb_honey);
   opacity: 1;
+}
+
+
+.HomeClients {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: pxtovw(15px) 0 pxtovw(25px);
+
+  .HomeClients-title {
+    font-size: pxtovw(16px);
+    line-height: pxtovw(24px);
+
+    i {
+      display: inline-block;
+      margin-right: pxtovw(11px);
+      color: #FCBDA1;
+      vertical-align: middle;
+    }
+
+    span {
+      display: inline-block;
+      vertical-align: middle;
+    }
+  }
+
+  .HomeClients-num {
+    font-size: pxtovw(15px);
+    line-height: pxtovw(16px);
+
+    i {
+      display: inline-block;
+      margin: 0 pxtovw(5px) 0 pxtovw(8px);
+      color: #BFBFBF;
+      vertical-align: middle;
+    }
+
+    span {
+      display: inline-block;
+      vertical-align: middle;
+    }
+  }
+}
+
+.HomeAppointment {
+  display: flex;
+  align-items: center;
+  margin-bottom: pxtovw(30px);
+  font-size: pxtovw(22px);
+  font-weight: 600;
+
+  .HomeAppointment-info {
+    padding: pxtovw(2px) pxtovw(9px);
+    margin-left: pxtovw(7px);
+    font-size: pxtovw(15px);
+    color: color($colors, white);
+    background: color($colors, color20);
+    border-radius: 20px;
+  }
 }

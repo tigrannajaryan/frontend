@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams } from 'ionic-angular';
 
 import { PageNames } from '~/core/page-names';
 
-@IonicPage()
 @Component({
   selector: 'page-how-made-works',
   templateUrl: 'how-made-works.component.html'

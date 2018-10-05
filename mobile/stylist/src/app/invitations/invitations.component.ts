@@ -22,7 +22,7 @@ import { ApiResponse } from '~/shared/api/base.models';
 
 import { PageNames } from '~/core/page-names';
 import { trimStr } from '~/core/functions';
-import { showAlert } from '~/core/utils/alert';
+import { showAlert } from '~/shared/utils/alert';
 
 class ErrorWrapper {
   constructor(readonly error) { }
@@ -654,7 +654,7 @@ export class InvitationsComponent {
    * Event handler for 'Skip' click.
    */
   protected onSkip(): void {
-    this.navCtrl.push(PageNames.AlmostDone);
+    this.navCtrl.push(PageNames.Tabs);
 
     // Send empty invitations list to backend to make sure the profile's
     // has_invited_clients is marked true and we do not bother the user
@@ -672,7 +672,7 @@ export class InvitationsComponent {
     }
 
     // This is during registation.
-    this.navCtrl.push(PageNames.AlmostDone);
+    this.navCtrl.push(PageNames.Tabs);
   }
 
   private async composeInvitationText(): Promise<string> {

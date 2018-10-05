@@ -5,13 +5,16 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { IonicApp, IonicModule } from 'ionic-angular';
 
+import { AppAvailability } from '@ionic-native/app-availability';
 import { AppVersion } from '@ionic-native/app-version';
+import { Camera } from '@ionic-native/camera';
 import { Clipboard } from '@ionic-native/clipboard';
 import { EmailComposer } from '@ionic-native/email-composer';
-import { SplashScreen } from '@ionic-native/splash-screen';
-import { StatusBar } from '@ionic-native/status-bar';
+import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { IonicStorageModule } from '@ionic/storage';
 import { ScreenOrientation } from '@ionic-native/screen-orientation';
+import { SplashScreen } from '@ionic-native/splash-screen';
+import { StatusBar } from '@ionic-native/status-bar';
 
 import { META_REDUCERS, StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
@@ -26,22 +29,44 @@ import { UnhandledErrorHandler } from '~/shared/unhandled-error-handler';
 import { ClientAppComponent } from '~/app.component';
 import { getMetaReducers } from '~/app.reducers';
 
-import { LogoutEffects } from '~/core/effects/logout.effects';
-
 import { AuthEffects } from '~/shared/storage/auth.effects';
+import { LogoutEffects } from '~/core/effects/logout.effects';
 import { ServicesEffects } from '~/core/effects/services.effects';
 import { StylistsEffects } from '~/core/effects/stylists.effects';
+import { ProfileEffects } from '~/core/effects/profile.effects';
 
 import { CoreModule } from '~/core/core.module';
 import { DataModule } from '~/core/api/data.module';
 
-import { ServerStatusTracker } from '~/shared/server-status-tracker';
 import { BaseService } from '~/shared/api/base-service';
+import { ExternalAppService } from '~/shared/utils/external-app-service';
+import { ServerStatusTracker } from '~/shared/server-status-tracker';
 
 import { authPath, authReducer } from '~/shared/storage/auth.reducer';
 import { profilePath, profileReducer } from '~/core/reducers/profile.reducer';
 import { stylistsPath, stylistsReducer } from '~/core/reducers/stylists.reducer';
 import { servicesPath, servicesReducer } from '~/core/reducers/services.reducer';
+
+import { AboutComponent } from '~/about/about.component';
+import { AppointmentPageComponent } from '~/appointment-page/appointment-page.component';
+import { AppointmentsHistoryComponent } from '~/appointments-history/appointments-history.component';
+import { AuthPageComponent } from '~/auth/auth-start/auth-start.component';
+import { AuthConfirmPageComponent } from '~/auth/auth-confirm/auth-confirm.component';
+import { BookingCompleteComponent } from '~/booking/booking-complete/booking-complete.component';
+import { FirstScreenComponent } from '~/first-screen/first-screen.component';
+import { HomePageComponent } from '~/home-page/home-page.component';
+import { HowMadeWorksComponent } from '~/onboarding/how-made-works/how-made-works.component';
+import { HowPricingWorksComponent } from '~/onboarding/how-pricing-works/how-pricing-works.component';
+import { MainTabsComponent } from '~/main-tabs/main-tabs.component';
+import { ProfileEditComponent } from '~/profile/profile-edit/profile-edit.component';
+import { ProfileSummaryComponent } from '~/profile/profile-summary/profile-summary.component';
+import { SelectDateComponent } from '~/booking/select-date/select-date.component';
+import { SelectTimeComponent } from '~/booking/select-time/select-time.component';
+import { ServicesPageComponent } from '~/services-page/services-page.component';
+import { ServicesCategoriesPageComponent } from '~/services-categories-page/services-categories-page.component';
+import { StylistInvitationPageComponent } from '~/onboarding/stylist-invitation/stylist-invitation.component';
+import { StylistsPageComponent } from '~/stylists-page/stylists-page.component';
+import { UiKitPreviewComponent } from '~/ui-kit-preview/ui-kit-preview.component';
 
 import { ENV } from '~/environments/environment.default';
 
@@ -53,10 +78,32 @@ if (ENV.production) {
   enableProdMode();
 }
 
+const declarations = [
+  ClientAppComponent,
+  AboutComponent,
+  AppointmentPageComponent,
+  AppointmentsHistoryComponent,
+  AuthPageComponent,
+  AuthConfirmPageComponent,
+  BookingCompleteComponent,
+  FirstScreenComponent,
+  HomePageComponent,
+  HowMadeWorksComponent,
+  HowPricingWorksComponent,
+  MainTabsComponent,
+  ProfileEditComponent,
+  ProfileSummaryComponent,
+  SelectDateComponent,
+  SelectTimeComponent,
+  ServicesPageComponent,
+  ServicesCategoriesPageComponent,
+  StylistInvitationPageComponent,
+  StylistsPageComponent,
+  UiKitPreviewComponent
+];
+
 @NgModule({
-  declarations: [
-    ClientAppComponent
-  ],
+  declarations,
   imports: [
     BrowserModule,
     HttpClientModule,
@@ -87,6 +134,7 @@ if (ENV.production) {
     StoreModule.forFeature(profilePath, profileReducer),
     StoreModule.forFeature(stylistsPath, stylistsReducer),
     StoreModule.forFeature(servicesPath, servicesReducer),
+    EffectsModule.forFeature([ProfileEffects]),
 
     /**
      * EffectsModule.forRoot() is imported once in the root module and
@@ -106,22 +154,24 @@ if (ENV.production) {
 
   bootstrap: [IonicApp],
 
-  entryComponents: [
-    ClientAppComponent
-  ],
+  entryComponents: declarations,
+
   providers: [
     Logger,
 
     // Plugins
+    AppAvailability,
     AppVersion,
     Clipboard,
     EmailComposer,
+    InAppBrowser,
     SplashScreen,
     StatusBar,
     ScreenOrientation,
 
     // Shared:
     BaseService,
+    ExternalAppService,
     ServerStatusTracker,
 
     { // Add auth token to all requests
@@ -140,7 +190,9 @@ if (ENV.production) {
       provide: META_REDUCERS,
       deps: [Logger],
       useFactory: getMetaReducers
-    }
+    },
+
+    Camera
   ]
 })
 export class AppModule {

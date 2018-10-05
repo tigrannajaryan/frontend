@@ -2,7 +2,7 @@ import { async, ComponentFixture } from '@angular/core/testing';
 import { NavController } from 'ionic-angular';
 
 import { TestUtils } from '~/../test';
-import { randomPhone, replaceNbspWithSpaces } from '~/core/utils/test-utils';
+import { randomPhone, replaceNbspWithSpaces } from '~/shared/utils/test-utils';
 
 import { PageNames } from '~/core/page-names';
 

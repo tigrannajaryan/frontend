@@ -2,7 +2,7 @@ import { async, ComponentFixture } from '@angular/core/testing';
 import { NavController, NavParams } from 'ionic-angular';
 
 import { TestUtils } from '~/../test';
-import { randomPhone, replaceNbspWithSpaces } from '~/core/utils/test-utils';
+import { randomPhone, replaceNbspWithSpaces } from '~/shared/utils/test-utils';
 
 import { AuthService } from '~/shared/api/auth.api';
 
@@ -52,7 +52,9 @@ describe('Pages: Auth Confirm', () => {
 
   it('should contain formatted phone and edit link', () => {
     expect(textContent)
-      .toContain(`${testPhone.slice(0, 2)} ${testPhone.slice(2, 5)} ${testPhone.slice(5, 8)} ${testPhone.slice(8, 12)} Edit`);
+      .toContain(`${testPhone.slice(0, 2)} ${testPhone.slice(2, 5)} ${testPhone.slice(5, 8)} ${testPhone.slice(8, 12)}`);
+    expect(textContent)
+      .toContain('Edit');
   });
 
   it('should go back on edit phone link click', () => {

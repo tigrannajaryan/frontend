@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AlertController, IonicPage, NavController, NavParams } from 'ionic-angular';
+import { AlertController, NavController, NavParams } from 'ionic-angular';
 
 import { Logger } from '~/shared/logger';
 import { formatTimeInZone } from '~/shared/utils/string-utils';
@@ -14,7 +14,6 @@ export interface AppointmentPageParams {
   hasRebook?: boolean;
 }
 
-@IonicPage()
 @Component({
   selector: 'page-appointment',
   templateUrl: 'appointment-page.component.html'

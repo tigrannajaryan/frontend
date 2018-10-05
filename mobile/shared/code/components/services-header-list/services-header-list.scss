@@ -26,12 +26,13 @@
     margin: 0 pxtovw(4px) pxtovw(4px) 0;
     line-height: pxtovw(28px);
     color: color($grayscale, 800);
-    background: color($colors, primary);
+    background: #fee0d0;
     border-radius: pxtovw(3px);
 
     .ServiciesHeader-seviceName {
       display: inline-block;
-      font-size: pxtovw(15px);
+      font-size: pxtovw(16px);
+      font-weight: 600;
     }
 
     .ServiciesHeader-serviceItemClose {

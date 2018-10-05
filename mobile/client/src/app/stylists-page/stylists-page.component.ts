@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { IonicPage, NavController, NavParams, Tab } from 'ionic-angular';
+import { NavController, NavParams, Tab } from 'ionic-angular';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 
@@ -15,9 +15,10 @@ import {
   StylistState
 } from '~/core/reducers/stylists.reducer';
 
+import { ExternalAppService } from '~/shared/utils/external-app-service';
+
 export const MIN_QUERY_LENGTH = 2;
 
-@IonicPage()
 @Component({
   selector: 'page-stylists',
   templateUrl: 'stylists-page.component.html'
@@ -36,6 +37,7 @@ export class StylistsPageComponent {
   requestState?: Observable<RequestState>;
 
   constructor(
+    private externalAppService: ExternalAppService,
     private navCtrl: NavController,
     private navParams: NavParams,
     private preferredStylistsData: PreferredStylistsData,
@@ -75,5 +77,9 @@ export class StylistsPageComponent {
     }
 
     this.activeStylist = undefined;
+  }
+
+  onInstagramClick(username: string): void {
+    this.externalAppService.openInstagram(username);
   }
 }

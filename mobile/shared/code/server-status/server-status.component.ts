@@ -13,7 +13,7 @@ import {
   ServerUnknownError,
   ServerUnreachableError
 } from '~/shared/api-errors';
-import { showAlert } from '~/core/utils/alert';
+import { showAlert } from '~/shared/utils/alert';
 
 const toastDurationMs = 3000;
 

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams } from 'ionic-angular';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 
@@ -13,7 +13,6 @@ import { ServiceCategoryModel } from '~/core/api/services.models';
 import { PageNames } from '~/core/page-names';
 import { BookingData } from '~/core/api/booking.data';
 
-@IonicPage()
 @Component({
   selector: 'page-services',
   templateUrl: 'services-page.component.html'

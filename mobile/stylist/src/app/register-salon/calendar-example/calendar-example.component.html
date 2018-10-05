@@ -1,0 +1,18 @@
+<ion-header madeBackHeader></ion-header>
+
+<ion-content no-padding>
+  <made-nav [activePage]="PageNames.CalendarExample"></made-nav>
+
+  <div class="Made-wp Made-wpContent">
+    <div class="Made-h1 CalendarExample-Title">Example: What Clients See</div>
+
+    <div class="CalendarExample-Subtitle">View your own calendar after registration.</div>
+
+    <services-header-list [services]="services" [readonly]="false">
+    </services-header-list>
+
+    <price-calendar [prices]="prices"></price-calendar>
+  </div>
+</ion-content>
+
+<ion-footer madeContinueFooter [title]="'Continue'" (continue)="onContinue()"></ion-footer>

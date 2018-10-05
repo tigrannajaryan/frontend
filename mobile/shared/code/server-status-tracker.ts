@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { App } from 'ionic-angular';
+import { Page } from 'ionic-angular/navigation/nav-util';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Severity } from '@sentry/shim';
 
@@ -69,7 +70,7 @@ export class ServerStatusTracker {
 
   private subject = new BehaviorSubject<ApiError>(undefined);
 
-  private firstPageName: any;
+  private firstPageName: Page;
   private onUnauthorized: () => any;
 
   private static error2SeverityLevel(error: ApiError): Severity {
@@ -101,7 +102,7 @@ export class ServerStatusTracker {
     private app: App,
     private logger: Logger) { }
 
-  init(firstPageName: any, onUnauthorized?: () => (Promise<void> | void)): void {
+  init(firstPageName: Page, onUnauthorized?: () => (Promise<void> | void)): void {
     this.firstPageName = firstPageName;
     this.onUnauthorized = onUnauthorized;
   }

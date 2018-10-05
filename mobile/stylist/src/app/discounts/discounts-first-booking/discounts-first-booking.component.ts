@@ -38,7 +38,7 @@ export class DiscountsFirstBookingComponent {
   }
 
   protected onContinue(): void {
-    this.navCtrl.push(PageNames.Invitations);
+    this.navCtrl.push(PageNames.CalendarExample);
   }
 
   protected onFirstVisitChange(): void {

@@ -28,6 +28,8 @@ export class CodeInputComponent {
 
   @ViewChild('input') codeInput;
 
+  isScrolled = false;
+
   autofocus(): void {
     // Autofocus code input.
     // Using setTimeout is the only way to succeed in programmatically setting focus on a real device.
@@ -36,41 +38,36 @@ export class CodeInputComponent {
     });
   }
 
-  onChange(): void {
-    this.codeChange.emit({
-      code: this.code.value,
-      valid: this.code.valid
-    });
-  }
-
   /**
    * Reset value on code with error become focused.
    */
   onFocusCode(): void {
-    if (this.code.value.length === CodeInputComponent.CODE_LENGTH) {
+    if (!this.isScrolled && this.code.value.length >= CodeInputComponent.CODE_LENGTH) {
       // only happen when error occurred
       this.code.patchValue('');
       this.code.updateValueAndValidity();
-      this.onChange();
+      this.emitOnChange();
     }
   }
 
-  /**
-   * Scroll code input to the left to prevent numbers to change their position relative to the boxes.
-   */
-  onAutoblurCode(event: any): void {
-    const code: number = event.which || Number(event.code);
-    const key: string = event.key || String.fromCharCode(code);
+  onInput(event: any): void {
+    this.emitOnChange();
 
-    if (!isNaN(parseInt(key, 10)) && event.target.value.length === CodeInputComponent.CODE_LENGTH - 1) {
+    if (this.code.value.length >= CodeInputComponent.CODE_LENGTH) {
+      // Scroll code input to the left to prevent numbers changing their position in boxes.
+      // isScrolled=true should prevent clearing out the input when the focus event is fired.
+      this.isScrolled = true;
       event.target.selectionStart = event.target.selectionEnd = 0;
       event.target.scrollLeft = 0;
+      this.isScrolled = false;
       event.target.blur();
-      setTimeout(() => {
-        this.code.patchValue(event.target.value + key);
-        this.code.updateValueAndValidity();
-        this.onChange();
-      });
     }
+  }
+
+  private emitOnChange(): void {
+    this.codeChange.emit({
+      code: this.code.value,
+      valid: this.code.valid
+    });
   }
 }

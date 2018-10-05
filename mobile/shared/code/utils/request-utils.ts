@@ -3,7 +3,7 @@ import { Observable } from 'rxjs/Observable';
 
 import { ApiResponse } from '~/shared/api/base.models';
 import { LOADING_DELAY } from '~/shared/api/request.models';
-import { showAlert } from '~/core/utils/alert';
+import { showAlert } from '~/shared/utils/alert';
 
 export type Request<T> = Observable<ApiResponse<T>>;
 export type Extension<T> = (...args: any[]) => (request: Request<T>) => Request<T>;

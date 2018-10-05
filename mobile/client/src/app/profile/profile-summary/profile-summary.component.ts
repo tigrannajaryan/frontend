@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { AlertController, App, IonicPage, LoadingController } from 'ionic-angular';
+import { AlertController, App, LoadingController } from 'ionic-angular';
+import { Page } from 'ionic-angular/navigation/nav-util';
 import { Clipboard } from '@ionic-native/clipboard';
 import { EmailComposer } from '@ionic-native/email-composer';
 import { Store } from '@ngrx/store';
@@ -7,8 +8,8 @@ import { Store } from '@ngrx/store';
 import { componentUnloaded } from '~/shared/component-unloaded';
 
 import { PageNames } from '~/core/page-names';
-import { loading } from '~/core/utils/request-utils';
-import { showAlert } from '~/core/utils/alert';
+import { loading } from '~/shared/utils/request-utils';
+import { showAlert } from '~/shared/utils/alert';
 import { DefaultImage } from '~/core/core.module';
 import { ProfileCompleteness, ProfileModel } from '~/core/api/profile.models';
 import { checkProfileCompleteness } from '~/core/utils/user-utils';
@@ -16,7 +17,6 @@ import { checkProfileCompleteness } from '~/core/utils/user-utils';
 import { ProfileDataStore } from '~/profile/profile.data';
 import { LogoutAction } from '~/shared/storage/auth.reducer';
 
-@IonicPage()
 @Component({
   selector: 'profile-summary',
   templateUrl: 'profile-summary.component.html'
@@ -64,7 +64,7 @@ export class ProfileSummaryComponent {
     this.app.getRootNav().push(PageNames.ProfileEdit, { profile: this.profile });
   }
 
-  goTo(page: PageNames, params: any): void {
+  goTo(page: Page, params: any): void {
     this.app.getRootNav().push(page, params);
   }
 

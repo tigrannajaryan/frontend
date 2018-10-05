@@ -1,11 +1,13 @@
 appointment-item {
+  position: relative;
+  display: block;
+
   .AppointmentItem-wp {
-    position: relative;
     display: flex;
     flex-direction: column;
     align-items: stretch;
     justify-content: space-between;
-    padding: pxtovw(16px) pxtovw(23px);
+    padding: pxtovw(16px) pxtovw(24px);
     margin-bottom: pxtovw(15px);
     background: color($colors-shared, white);
     border-radius: 20px;
@@ -13,6 +15,10 @@ appointment-item {
 
     &.isChecked {
       visibility: hidden;
+    }
+
+    &.WithBadge {
+      padding: pxtovw(18px) pxtovw(24px) pxtovw(16px);
     }
   }
 
@@ -25,16 +31,21 @@ appointment-item {
 
   .AppointmentItem-status {
     position: absolute;
-    top: pxtovw(-2px);
-    left: pxtovw(40px);
+    top: pxtovw(-9px);
+    left: pxtovw(24px);
     z-index: 2;
-    padding: pxtovw(6px) pxtovw(6px);
-    font-size: $t-small;
+    padding: pxtovw(3px) pxtovw(10px);
+    font-size: pxtovw(13px);
     color: color($colors, white);
-    border-radius: 6px;
+    border-radius: pxtovw(16px);
+    text-transform: uppercase;
 
     &.Not.checked.out {
       background: color($colors-shared, danger);
+    }
+
+    &.New {
+      background: #E96D5C;
     }
 
     &.Now {
@@ -42,7 +53,8 @@ appointment-item {
     }
 
     &.Next {
-      background: color($colors-shared, anakiwa);
+      color: black;
+      background: color($colors-shared, lightPeach);
     }
   }
 
@@ -82,7 +94,7 @@ appointment-item {
   }
 
   .AppointmentItem-desc {
-    margin: pxtovw(2.8px) 0 pxtovw(9px);
+    margin: pxtovw(2.8px) 0 pxtovw(7px);
     text-align: left;
   }
 
@@ -115,20 +127,37 @@ appointment-item {
     }
   }
 
-  .AppointmentItem-name {
+  .AppointmentItemFooter {
     display: flex;
-    align-items: center;
     font-size: pxtovw(15px);
     color: color($colors-shared, santasGray);
-    text-align: right;
   }
 
-  .AppointmentItem-nameAva {
+  .AppointmentItemFooter-cell {
+    align-items: center;
+    width: 50%;
+    overflow: hidden;
+    text-align: left;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    i {
+      display: inline-block;
+      color: #fee6d8;
+      vertical-align: middle;
+    }
+
+    &.isFull {
+      width: 100%;
+    }
+  }
+
+  .AppointmentItemFooter-ava {
     display: inline-block;
     flex: 0 0 auto;
-    width: pxtovw(16px);
-    height: pxtovw(16px);
-    margin-right: pxtovw(5px);
+    width: pxtovw(21px);
+    height: pxtovw(21px);
+    margin-right: pxtovw(1px);
     vertical-align: middle;
     background-image: url('../assets/imgs/icons/avatar.png');
     background-repeat: no-repeat;
@@ -138,9 +167,11 @@ appointment-item {
     border-radius: 50%;
   }
 
-  .AppointmentItem-nameText {
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
+  .AppointmentItemFooter-text {
+    vertical-align: middle;
+
+    &.isBold {
+      font-weight: 700;
+    }
   }
 }

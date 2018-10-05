@@ -96,6 +96,11 @@
     font-size: pxtovw(15px);
     line-height: pxtovw(24px);
 
+    .Link {
+      // Add more contrast:
+      color: color($colors, orange);
+    }
+
     img {
       margin: pxtovw(4px) 0 0;
     }

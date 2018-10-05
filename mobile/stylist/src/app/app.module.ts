@@ -10,6 +10,8 @@ import { ScreenOrientation } from '@ionic-native/screen-orientation';
 import { AppVersion } from '@ionic-native/app-version';
 import { AgmCoreModule, LAZY_MAPS_API_CONFIG } from '@agm/core';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { InAppBrowser } from '@ionic-native/in-app-browser';
+import { AppAvailability } from '@ionic-native/app-availability';
 
 import { UnhandledErrorHandler } from '~/shared/unhandled-error-handler';
 import { initSentry } from '~/shared/sentry';
@@ -17,6 +19,7 @@ import { Logger } from '~/shared/logger';
 import { SharedSingletonsModule } from '~/shared/shared-singletons.module';
 import { AuthApiService } from '~/shared/stylist-api/auth-api-service';
 import { StylistServiceProvider } from '~/shared/stylist-api/stylist-service';
+import { ExternalAppService } from '~/shared/utils/external-app-service';
 
 import { AuthService } from '~/shared/api/auth.api';
 import { authPath, authReducer } from '~/shared/storage/auth.reducer';
@@ -29,15 +32,16 @@ import { getMetaReducers } from './app.reducers';
 import { ENV } from '~/environments/environment.default';
 import { GoogleMapsConfig } from '~/core/google-maps-config';
 import { AppStorage } from '~/shared/storage/app-storage';
+import { DataModule } from '~/core/data.module';
 
 import { AboutComponent } from '~/about/about.component';
-import { AlmostDoneComponent } from '~/discounts/almost-done/almost-done.component';
 import { AppointmentAddComponent } from '~/appointment/appointment-add/appointment-add';
 import { AppointmentCheckoutComponent } from '~/appointment/appointment-checkout/appointment-checkout.component';
 import { AddServicesComponent } from '~/core/popups/add-services/add-services.component';
 import { AppointmentServicesComponent } from '~/appointment/appointment-services/appointment-services';
 import { AuthPageComponent } from '~/auth/auth-start/auth-start.component';
 import { AuthConfirmPageComponent } from '~/auth/auth-confirm/auth-confirm.component';
+import { CalendarExampleComponent } from '~/register-salon/calendar-example/calendar-example.component';
 import { ChangePercentComponent } from '~/core/popups/change-percent/change-percent.component';
 import { ConfirmCheckoutComponent } from '~/core/popups/confirm-checkout/confirm-checkout.component';
 import { DiscountsComponent } from '~/discounts/discounts.component';
@@ -49,6 +53,7 @@ import { HomeComponent } from '~/home/home.component';
 import { FirstScreenComponent } from '~/first-screen/first-screen';
 import { HowPricingWorksComponent } from '~/discounts/discounts-welcome/how-pricing-works.component';
 import { InvitationsComponent } from '~/invitations/invitations.component';
+import { MyClientsComponent } from '~/home/my-clients/my-clients.component';
 import { RegisterSalonComponent } from '~/register-salon/register-salon';
 import { ServicesComponent } from '~/services/services.component';
 import { ServicesCategoriesComponent } from '~/services/services-categories/services-categories.component';
@@ -115,12 +120,12 @@ const declarations = [
   MyAppComponent,
   AboutComponent,
   AddServicesComponent,
-  AlmostDoneComponent,
   AppointmentAddComponent,
   AppointmentCheckoutComponent,
   AppointmentServicesComponent,
   AuthPageComponent,
   AuthConfirmPageComponent,
+  CalendarExampleComponent,
   ChangePercentComponent,
   ConfirmCheckoutComponent,
   DiscountsComponent,
@@ -132,6 +137,7 @@ const declarations = [
   HomeComponent,
   HowPricingWorksComponent,
   InvitationsComponent,
+  MyClientsComponent,
   RegisterSalonComponent,
   ServicesComponent,
   ServicesCategoriesComponent,
@@ -152,6 +158,8 @@ const declarations = [
       backButtonIcon: 'md-arrow-back',
       tabsHideOnSubPages: true
     }),
+
+    DataModule.forRoot(),
 
     // User header reducer and effects
     StoreModule.forFeature(profileStatePath, profileReducer),
@@ -177,6 +185,8 @@ const declarations = [
     AppVersion,
     AppStorage,
     ScreenOrientation,
+    InAppBrowser,
+    AppAvailability,
 
     {
       // Our custom handler for unhandled exceptions
@@ -201,6 +211,8 @@ const declarations = [
     HomeService,
     WorktimeApi,
     InvitationsApi,
+
+    ExternalAppService,
 
     Contacts,
     OpenNativeSettings,

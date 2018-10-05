@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController } from 'ionic-angular';
+import { NavController } from 'ionic-angular';
 import { Store } from '@ngrx/store';
 
 import { componentIsActive } from '~/shared/utils/component-is-active';
@@ -15,7 +15,6 @@ import {
 } from '~/shared/storage/auth.reducer';
 import { AuthEffects } from '~/shared/storage/auth.effects';
 
-@IonicPage()
 @Component({
   selector: 'page-auth-start',
   templateUrl: 'auth-start.component.html'
