@@ -9,9 +9,11 @@
     <div [style.background-image]="clientDetails?.photo ? 'url(' + clientDetails.photo + ')' : null" class="ClientInfo-ava" data-test-id="clientAva"></div>
 
     <div *ngIf="clientDetails?.first_name || clientDetails?.last_name" class="ClientInfo-title" data-test-id="clientName">{{ clientDetails.first_name }} {{ clientDetails.last_name }}</div>
-    <div *ngIf="clientDetails?.phone" class="ClientInfo-text isPhone" data-test-id="clientPhone">{{ clientDetails.phone }}</div>
+    <div *ngIf="clientDetails?.phone" class="ClientInfo-text isPhone" data-test-id="clientPhone"><phone-link [phone]="clientDetails.phone"></phone-link></div>
     <div *ngIf="clientDetails?.email" class="ClientInfo-text" data-test-id="clientEmail">{{ clientDetails.email }}</div>
-    <div *ngIf="clientDetails?.city" class="ClientInfo-text" data-test-id="clientAddress">{{ clientDetails.city }}</div>
+    <div *ngIf="clientDetails?.city || clientDetails?.state" class="ClientInfo-text" data-test-id="clientAddress">
+      {{ clientDetails?.city }} {{ clientDetails?.city && clientDetails?.state ? ', ' : '' }} {{ clientDetails?.state }}
+    </div>
 
     <div class="MadeLinkList ClientInfo-List">
       <div *ngIf="clientDetails?.last_visit_datetime" class="MadeLinkList-row">
@@ -24,10 +26,10 @@
       </div>
 
       <!-- Note: hide “View Client's Calendar” link for now since we don’t yet have this page. -->
-      <div class="MadeLinkList-row">
+      <!-- <div class="MadeLinkList-row">
         <div class="MadeLinkList-cell">View Client's Calendar</div>
         <div class="MadeLinkList-cell isGrey" data-test-id="calendarLink"><i class="mb-icon-right-arrow"></i></div>
-      </div>
+      </div> -->
     </div>
   </div>
 </ion-content>

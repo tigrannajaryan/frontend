@@ -11,7 +11,7 @@
 <ng-template #realClient>
   <ion-row (click)="clientClick.emit(client)" class="Client" align-items-center>
     <div class="Client-img" [style.backgroundImage]="'url(' + (client.photo  || 'assets/icons/stylist-avatar.png') + ')'"></div>
-    <ion-col class="Client-info">
+    <ion-col class="Client-info" data-test-id="clientInfo">
       <div class="Made-h3 Client-name">{{ client.first_name }} {{ client.last_name }}</div>
       <ion-row *ngIf="client.phone" class="Client-phone">
         <phone-link [phone]="client.phone" icon="mb-icon-phone-a"></phone-link>

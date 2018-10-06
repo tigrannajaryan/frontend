@@ -1,14 +1,20 @@
 import { async, ComponentFixture } from '@angular/core/testing';
+import { NavParams } from 'ionic-angular';
+
+import { prepareSharedObjectsForTests } from '~/core/test-utils.spec';
+import { TestUtils } from '~/../test';
+
+import { clientDetailsMock } from '~/shared/stylist-api/client-details.api.mock';
 
 import { ClientDetailsComponent } from './client-details.component';
-import { TestUtils } from '~/../test';
-import { NavParams } from 'ionic-angular';
-import { clientDetailsMock } from '~/shared/stylist-api/client-details.api.mock';
 
 let fixture: ComponentFixture<ClientDetailsComponent>;
 let instance: ClientDetailsComponent;
 
 describe('Pages: ClientDetailsComponent', () => {
+
+  prepareSharedObjectsForTests();
+
   beforeEach(
     async(() =>
       TestUtils.beforeEachCompiler([ClientDetailsComponent])

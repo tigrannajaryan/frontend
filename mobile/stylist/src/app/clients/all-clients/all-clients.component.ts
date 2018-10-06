@@ -5,7 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import { composeRequest, loading, withRefresher } from '~/shared/utils/request-utils';
 
 import { ApiResponse } from '~/shared/api/base.models';
-import { ClientModel, GetAllClientsResponse } from '~/shared/stylist-api/clients-api.models';
+import { ClientModel, GetNearbyClientsResponse } from '~/shared/stylist-api/clients-api.models';
 import { AllClientsDataStore } from '~/clients/all-clients/all-clients.data';
 
 @Component({
@@ -23,16 +23,16 @@ export class AllClientsComponent {
   ) {
   }
 
-  ionViewWillLoad(): Promise<ApiResponse<GetAllClientsResponse>> {
-    this.clients = this.clientsData.asObservable().map(({ response }) => response);
+  ionViewWillLoad(): Promise<ApiResponse<GetNearbyClientsResponse>> {
+    this.clients = this.clientsData.asObservable().map(({ response }) => response && response.clients);
     return this.requestClients(false);
   }
 
-  onRefresh(invalidateCache = true): Promise<ApiResponse<GetAllClientsResponse>> {
+  onRefresh(invalidateCache = true): Promise<ApiResponse<GetNearbyClientsResponse>> {
     return this.requestClients(invalidateCache);
   }
 
-  private requestClients(invalidateCache = true): Promise<ApiResponse<GetAllClientsResponse>> {
+  private requestClients(invalidateCache = true): Promise<ApiResponse<GetNearbyClientsResponse>> {
     return composeRequest(
       loading(isLoading => this.isLoading = isLoading),
       withRefresher(this.refresher),

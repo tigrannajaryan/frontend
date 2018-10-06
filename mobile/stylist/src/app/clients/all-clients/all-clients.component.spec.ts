@@ -35,7 +35,7 @@ describe('Pages: All Clients', () => {
 
   it('should show All Clients header', () => {
     expect(fixture.nativeElement.textContent)
-      .toContain('All Clients');
+      .toContain('Clients In My Area');
   });
 
   it('should show clients names and surnames', async done => {

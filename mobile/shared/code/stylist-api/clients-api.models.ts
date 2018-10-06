@@ -11,5 +11,8 @@ export interface MyClientModel extends ClientModel {
   state?: string;
 }
 
-export type GetAllClientsResponse = ClientModel[];
+export interface GetNearbyClientsResponse {
+  clients: ClientModel[];
+}
+
 export type GetMyClientsResponse = MyClientModel[];
