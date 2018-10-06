@@ -9,14 +9,14 @@
 </ng-container>
 
 <ng-template #realClient>
-  <ion-row (click)="clientClick.emit(client)" class="Client" align-items-center>
+  <ion-row (click)="!fullnameOnly && clientClick.emit(client)" class="Client" align-items-center>
     <div class="Client-img" [style.backgroundImage]="'url(' + (client.photo  || 'assets/icons/stylist-avatar.png') + ')'"></div>
     <ion-col class="Client-info" data-test-id="clientInfo">
       <div class="Made-h3 Client-name">{{ client.first_name }} {{ client.last_name }}</div>
-      <ion-row *ngIf="client.phone" class="Client-phone">
+      <ion-row *ngIf="!fullnameOnly && client.phone" class="Client-phone">
         <phone-link [phone]="client.phone" icon="mb-icon-phone-a"></phone-link>
       </ion-row>
-      <ion-row *ngIf="client.city || client.state" class="Client-cityState">
+      <ion-row *ngIf="!fullnameOnly && (client.city || client.state)" class="Client-cityState">
         <i class="mb-icon-marker"></i>
         <span>{{ client?.city }} {{ client.city && client.state ? ', ' : '' }} {{ client?.state }}</span>
       </ion-row>

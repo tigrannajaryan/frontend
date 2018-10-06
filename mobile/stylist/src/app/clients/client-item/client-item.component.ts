@@ -8,6 +8,7 @@ import { ClientModel, MyClientModel } from '~/shared/stylist-api/clients-api.mod
 })
 export class ClientItemComponent {
   @Input() isLoading: boolean;
+  @Input() fullnameOnly: boolean; // when only pic and fullname are shown
   @Input() client: ClientModel | MyClientModel;
 
   @Output() clientClick = new EventEmitter<ClientModel | MyClientModel>();
