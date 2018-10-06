@@ -108,4 +108,6 @@
     <plugin name="cordova-plugin-screen-orientation" spec="3.0.1" />
     <plugin name="cordova-plugin-inappbrowser" spec="3.0.0" />
     <plugin name="cordova-plugin-appavailability" spec="0.4.2" />
+    <plugin name="cordova-plugin-email-composer" spec="0.8.15" />
+    <plugin name="cordova-clipboard" spec="1.2.1" />
 </widget>

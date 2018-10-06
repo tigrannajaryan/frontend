@@ -16,6 +16,8 @@ import { Contacts } from '@ionic-native/contacts';
 import { OpenNativeSettings } from '@ionic-native/open-native-settings';
 import { SMS } from '@ionic-native/sms';
 import { Camera } from '@ionic-native/camera';
+import { Clipboard } from '@ionic-native/clipboard';
+import { EmailComposer } from '@ionic-native/email-composer';
 
 import { UnhandledErrorHandler } from '~/shared/unhandled-error-handler';
 import { initSentry } from '~/shared/sentry';
@@ -193,6 +195,8 @@ const declarations = [
     ScreenOrientation,
     InAppBrowser,
     AppAvailability,
+    Clipboard,
+    EmailComposer,
 
     {
       // Our custom handler for unhandled exceptions

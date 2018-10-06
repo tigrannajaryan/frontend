@@ -1,15 +1,13 @@
 import { Component } from '@angular/core';
-import { AlertController, App, LoadingController } from 'ionic-angular';
+import { AlertController, App } from 'ionic-angular';
 import { Page } from 'ionic-angular/navigation/nav-util';
-import { Clipboard } from '@ionic-native/clipboard';
-import { EmailComposer } from '@ionic-native/email-composer';
 import { Store } from '@ngrx/store';
 
 import { componentUnloaded } from '~/shared/component-unloaded';
+import { ExternalAppService } from '~/shared/utils/external-app-service';
 
 import { PageNames } from '~/core/page-names';
 import { loading } from '~/shared/utils/request-utils';
-import { showAlert } from '~/shared/utils/alert';
 import { DefaultImage } from '~/core/core.module';
 import { ProfileCompleteness, ProfileModel } from '~/core/api/profile.models';
 import { checkProfileCompleteness } from '~/core/utils/user-utils';
@@ -36,9 +34,7 @@ export class ProfileSummaryComponent {
     public profileDataStore: ProfileDataStore,
     private app: App,
     private alertCtrl: AlertController,
-    private clipboard: Clipboard,
-    private emailComposer: EmailComposer,
-    private loadingCntrl: LoadingController,
+    private externalAppService: ExternalAppService,
     private store: Store<{}>
   ) {
   }
@@ -69,20 +65,7 @@ export class ProfileSummaryComponent {
   }
 
   async onContactByEmail(mailTo: string): Promise<void> {
-    const loader = this.loadingCntrl.create();
-    loader.present();
-    try {
-      const hasPermission = await this.emailComposer.hasPermission();
-      if (!hasPermission) {
-        await this.emailComposer.requestPermission();
-      }
-      await this.emailComposer.open({ to: mailTo });
-    } catch {
-      this.clipboard.copy(mailTo);
-      showAlert('Email copied', 'Email successfully copied to the clipboard.');
-    } finally {
-      loader.dismiss();
-    }
+    this.externalAppService.openMailApp(mailTo);
   }
 
   async onLogout(): Promise<void> {

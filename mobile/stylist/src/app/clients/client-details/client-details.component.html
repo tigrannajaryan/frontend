@@ -10,7 +10,7 @@
 
     <div *ngIf="clientDetails?.first_name || clientDetails?.last_name" class="ClientInfo-title" data-test-id="clientName">{{ clientDetails.first_name }} {{ clientDetails.last_name }}</div>
     <div *ngIf="clientDetails?.phone" class="ClientInfo-text isPhone" data-test-id="clientPhone"><phone-link [phone]="clientDetails.phone"></phone-link></div>
-    <div *ngIf="clientDetails?.email" class="ClientInfo-text" data-test-id="clientEmail">{{ clientDetails.email }}</div>
+    <div *ngIf="clientDetails?.email" (click)="onEmailClick(clientDetails.email)" class="ClientInfo-text isEmail" data-test-id="clientEmail">{{ clientDetails.email }}</div>
     <div *ngIf="clientDetails?.city || clientDetails?.state" class="ClientInfo-text" data-test-id="clientAddress">
       {{ clientDetails?.city }} {{ clientDetails?.city && clientDetails?.state ? ', ' : '' }} {{ clientDetails?.state }}
     </div>
