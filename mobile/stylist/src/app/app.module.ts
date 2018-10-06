@@ -51,6 +51,7 @@ import { profileReducer, profileStatePath } from '~/core/components/user-header/
 import { ProfileEffects } from '~/core/components/user-header/profile.effects';
 
 import { AboutComponent } from '~/about/about.component';
+import { AllClientsComponent } from '~/clients/all-clients/all-clients.component';
 import { AppointmentAddComponent } from '~/appointment/appointment-add/appointment-add';
 import { AppointmentCheckoutComponent } from '~/appointment/appointment-checkout/appointment-checkout.component';
 import { AppointmentServicesComponent } from '~/appointment/appointment-services/appointment-services';
@@ -66,8 +67,8 @@ import { HomeComponent } from '~/home/home.component';
 import { FirstScreenComponent } from '~/first-screen/first-screen';
 import { HowPricingWorksComponent } from '~/discounts/discounts-welcome/how-pricing-works.component';
 import { InvitationsComponent } from '~/invitations/invitations.component';
-import { MyClientsComponent } from '~/home/my-clients/my-clients.component';
-import { ClientDetailsComponent } from '~/client-details/client-details.component';
+import { MyClientsComponent } from '~/clients/my-clients/my-clients.component';
+import { ClientDetailsComponent } from '~/clients/client-details/client-details.component';
 import { RegisterSalonComponent } from '~/register-salon/register-salon';
 import { ServicesComponent } from '~/services/services.component';
 import { ServicesCategoriesComponent } from '~/services/services-categories/services-categories.component';
@@ -122,6 +123,7 @@ if (!ENV.production) {
 const declarations = [
   MyAppComponent,
   AboutComponent,
+  AllClientsComponent,
   AddServicesComponent,
   AppointmentAddComponent,
   AppointmentCheckoutComponent,

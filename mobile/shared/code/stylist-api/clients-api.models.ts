@@ -1,11 +1,15 @@
 export interface ClientModel {
-  uuid: string;
-  phone: string;
   first_name?: string;
   last_name?: string;
-  city?: string;
-  state?: string;
   photo?: string;
 }
 
-export type GetMyClientsResponse = ClientModel[];
+export interface MyClientModel extends ClientModel {
+  uuid: string;
+  phone: string;
+  city?: string;
+  state?: string;
+}
+
+export type GetAllClientsResponse = ClientModel[];
+export type GetMyClientsResponse = MyClientModel[];

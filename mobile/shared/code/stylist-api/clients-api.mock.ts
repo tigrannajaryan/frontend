@@ -7,7 +7,7 @@ import { randomPhone } from '~/shared/utils/test-utils';
 import { ApiResponse } from '~/shared/api/base.models';
 import { BaseServiceMock } from '~/shared/api/base-service.mock';
 
-import { ClientModel, GetMyClientsResponse } from '~/shared/stylist-api/clients-api.models';
+import { ClientModel, GetAllClientsResponse, GetMyClientsResponse } from '~/shared/stylist-api/clients-api.models';
 
 export const clientsMock: ClientModel[] =
   Array(20).fill(undefined).map(() => ({
@@ -26,6 +26,20 @@ export class ClientsApiMock extends BaseServiceMock {
     return this.mockRequest<GetMyClientsResponse>(
       Observable.create(observer => {
         observer.next(clientsMock);
+        observer.complete();
+      })
+    );
+  }
+
+  getAllClients(): Observable<ApiResponse<GetAllClientsResponse>> {
+    return this.mockRequest<GetAllClientsResponse>(
+      Observable.create(observer => {
+        observer.next(
+          Array(20).fill(undefined).map(() => ({
+            first_name: faker.name.firstName(),
+            last_name: faker.name.lastName()
+          }))
+        );
         observer.complete();
       })
     );
