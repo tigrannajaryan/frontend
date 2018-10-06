@@ -1,9 +1,3 @@
-import 'rxjs/add/observable/from';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/operator/first';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/toPromise';
-
 import { of } from 'rxjs/observable/of';
 
 import { async, ComponentFixture } from '@angular/core/testing';
@@ -14,7 +8,7 @@ import { prepareSharedObjectsForTests } from '~/core/test-utils.spec';
 
 import { DataModule } from '~/core/data.module';
 import { ClientsApi } from '~/shared/stylist-api/clients-api';
-import { clientsMock } from '~/shared/stylist-api/clients-api.mock';
+import { myClientsMock } from '~/shared/stylist-api/clients-api.mock';
 
 import { MyClientsComponent } from './my-clients.component';
 
@@ -53,7 +47,7 @@ describe('Pages: My Clients', () => {
 
     fixture.detectChanges();
 
-    clientsMock.forEach(client => {
+    myClientsMock.forEach(client => {
       expect(fixture.nativeElement.textContent)
         .toContain(`${client.first_name} ${client.last_name}`);
       expect(fixture.nativeElement.textContent)
