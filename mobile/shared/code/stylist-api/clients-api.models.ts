@@ -15,4 +15,6 @@ export interface GetNearbyClientsResponse {
   clients: ClientModel[];
 }
 
-export type GetMyClientsResponse = MyClientModel[];
+export interface GetMyClientsResponse {
+  clients: MyClientModel[];
+}

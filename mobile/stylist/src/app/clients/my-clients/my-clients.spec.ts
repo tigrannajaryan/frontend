@@ -67,7 +67,7 @@ describe('Pages: My Clients', () => {
     const api = fixture.debugElement.injector.get(ClientsApi);
 
     spyOn(api, 'getMyClients').and.returnValue(
-      of({ response: [] })
+      of({ response: { clients: [] } })
     );
 
     await instance.ionViewWillLoad();
