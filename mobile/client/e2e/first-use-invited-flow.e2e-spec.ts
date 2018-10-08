@@ -172,6 +172,7 @@ describe('First use flow for invited clients', () => {
     await selectCategoryPage.selectCategory('color');
     await selectServicePage.selectService(serviceNames[1]);
 
+    waitFor(selectDatePage.serviceItemName(0));
     expect(selectDatePage.serviceItemName(0).getText()).toEqual(serviceNames[0]);
     expect(selectDatePage.serviceItemName(1).getText()).toEqual(serviceNames[1]);
   });
