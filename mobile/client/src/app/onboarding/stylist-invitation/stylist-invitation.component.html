@@ -34,7 +34,7 @@
     </span>
   </ion-row>
   <ion-row align-items-center *ngIf="stylist.website_url" justify-content-center class="StylistInvitationPage-phone">
-    <span [class.Link]="pageType === StylistPageType.MyStylist">
+    <span [class.Link]="pageType === StylistPageType.MyStylist" (click)="onWebsiteClick(stylist.website_url)">
       <i class="mb-icon-globe"></i>&nbsp;{{ stylist.website_url }}
     </span>
   </ion-row>

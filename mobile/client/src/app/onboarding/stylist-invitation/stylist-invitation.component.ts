@@ -79,4 +79,10 @@ export class StylistInvitationPageComponent {
       this.externalAppService.openInstagram(username);
     }
   }
+
+  onWebsiteClick(websiteUrl: string): void {
+    if (this.pageType === StylistPageType.MyStylist) {
+      this.externalAppService.openWebPage(websiteUrl);
+    }
+  }
 }
