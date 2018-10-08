@@ -2,12 +2,18 @@ import { ModuleWithProviders, NgModule } from '@angular/core';
 import { IonicModule } from 'ionic-angular';
 
 import { ClientsApi } from '~/shared/stylist-api/clients-api';
-import { MyClientsDataStore } from '~/home/my-clients/my-clients.data';
+
+import { AllClientsDataStore } from '~/clients/all-clients/all-clients.data';
+import { MyClientsDataStore } from '~/clients/my-clients/my-clients.data';
+
+export enum DataCacheKey {
+  allClients = 'allClients',
+  myClients = 'myClients'
+}
 
 /**
  * Common data module that includes singletons for the entire app.
  */
-
 @NgModule({
   imports: [
     IonicModule
@@ -26,6 +32,7 @@ export class DataModule {
       // 'providers' property of any other module, otherwise you will have duplicate objects instead
       // of singletons.
       providers: [
+        AllClientsDataStore,
         MyClientsDataStore
       ]
     };

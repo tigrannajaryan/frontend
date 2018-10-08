@@ -6,7 +6,7 @@ import { composeRequest, loading, withRefresher } from '~/shared/utils/request-u
 
 import { ApiResponse } from '~/shared/api/base.models';
 import { ClientModel, GetMyClientsResponse } from '~/shared/stylist-api/clients-api.models';
-import { MyClientsDataStore } from '~/home/my-clients/my-clients.data';
+import { MyClientsDataStore } from '~/clients/my-clients/my-clients.data';
 
 import { PageNames } from '~/core/page-names';
 import { EventTypes } from '~/core/event-types';
@@ -30,7 +30,7 @@ export class MyClientsComponent {
   }
 
   ionViewWillLoad(): Promise<ApiResponse<GetMyClientsResponse>> {
-    this.clients = this.clientsData.asObservable().map(({ response }) => response);
+    this.clients = this.clientsData.asObservable().map(({ response }) => response && response.clients);
     return this.requestClients(false);
   }
 
@@ -45,6 +45,10 @@ export class MyClientsComponent {
 
   onClientClick(client: ClientModel): void {
     this.navCtrl.push(PageNames.ClientDetails, { client });
+  }
+
+  onAllClientsClick(): void {
+    this.navCtrl.push(PageNames.AllClients);
   }
 
   private requestClients(invalidateCache = true): Promise<ApiResponse<GetMyClientsResponse>> {

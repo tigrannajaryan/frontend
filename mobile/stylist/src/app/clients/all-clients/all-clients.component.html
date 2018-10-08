@@ -1,0 +1,22 @@
+<ion-header class="ion-bb-header">
+  <ion-navbar></ion-navbar>
+  <ion-toolbar class="Made-wp Made-wpContent">
+    <div class="Made-h1">Clients In My Area</div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content no-padding class="MyClients">
+  <ion-refresher (ionRefresh)="onRefresh()">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <div class="Made-wp Made-wpContent" [class.MyClients-100H]="!isLoading && (clients | async)?.length === 0">
+    <ng-container *ngIf="(clients | async)?.length === 0; else clientsList">
+      <span>There are no clients in your area yet.</span>
+    </ng-container>
+
+    <ng-template #clientsList>
+      <client-item *ngFor="let client of clients | async" [client]="client" [fullnameOnly]="true"></client-item>
+    </ng-template>
+  </div>
+</ion-content>

@@ -16,6 +16,8 @@ import { Contacts } from '@ionic-native/contacts';
 import { OpenNativeSettings } from '@ionic-native/open-native-settings';
 import { SMS } from '@ionic-native/sms';
 import { Camera } from '@ionic-native/camera';
+import { Clipboard } from '@ionic-native/clipboard';
+import { EmailComposer } from '@ionic-native/email-composer';
 
 import { UnhandledErrorHandler } from '~/shared/unhandled-error-handler';
 import { initSentry } from '~/shared/sentry';
@@ -51,6 +53,7 @@ import { profileReducer, profileStatePath } from '~/core/components/user-header/
 import { ProfileEffects } from '~/core/components/user-header/profile.effects';
 
 import { AboutComponent } from '~/about/about.component';
+import { AllClientsComponent } from '~/clients/all-clients/all-clients.component';
 import { AppointmentAddComponent } from '~/appointment/appointment-add/appointment-add';
 import { AppointmentCheckoutComponent } from '~/appointment/appointment-checkout/appointment-checkout.component';
 import { AppointmentServicesComponent } from '~/appointment/appointment-services/appointment-services';
@@ -66,8 +69,8 @@ import { HomeComponent } from '~/home/home.component';
 import { FirstScreenComponent } from '~/first-screen/first-screen';
 import { HowPricingWorksComponent } from '~/discounts/discounts-welcome/how-pricing-works.component';
 import { InvitationsComponent } from '~/invitations/invitations.component';
-import { MyClientsComponent } from '~/home/my-clients/my-clients.component';
-import { ClientDetailsComponent } from '~/client-details/client-details.component';
+import { MyClientsComponent } from '~/clients/my-clients/my-clients.component';
+import { ClientDetailsComponent } from '~/clients/client-details/client-details.component';
 import { RegisterSalonComponent } from '~/register-salon/register-salon';
 import { ServicesComponent } from '~/services/services.component';
 import { ServicesCategoriesComponent } from '~/services/services-categories/services-categories.component';
@@ -122,6 +125,7 @@ if (!ENV.production) {
 const declarations = [
   MyAppComponent,
   AboutComponent,
+  AllClientsComponent,
   AddServicesComponent,
   AppointmentAddComponent,
   AppointmentCheckoutComponent,
@@ -191,6 +195,8 @@ const declarations = [
     ScreenOrientation,
     InAppBrowser,
     AppAvailability,
+    Clipboard,
+    EmailComposer,
 
     {
       // Our custom handler for unhandled exceptions

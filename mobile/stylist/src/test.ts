@@ -10,9 +10,12 @@ import 'zone.js/dist/jasmine-patch';
 import 'zone.js/dist/async-test';
 import 'zone.js/dist/fake-async-test';
 
+import 'rxjs/add/observable/from';
+
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/delay';
 import 'rxjs/add/operator/filter';
+import 'rxjs/add/operator/first';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/switchMap';
@@ -63,6 +66,8 @@ import {
 import { GoogleAnalytics } from '@ionic-native/google-analytics';
 
 import { AppAvailability } from '@ionic-native/app-availability';
+import { Clipboard } from '@ionic-native/clipboard';
+import { EmailComposer } from '@ionic-native/email-composer';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
 
 import { AppModule } from '~/app.module';
@@ -124,6 +129,7 @@ export class TestUtils {
       providers: [
         App, Form, Keyboard, DomController, MenuController, NavController,
         NavParams, GestureController, AlertControllerMock, LoadingControllerMock,
+        Clipboard, EmailComposer,
         { provide: App, useClass: AppMock },
         { provide: Platform, useFactory: () => PlatformMock.instance() },
         { provide: StatusBar, useFactory: () => StatusBarMock.instance() },

@@ -38,8 +38,10 @@
     "@ionic-native/app-availability": "4.15.0",
     "@ionic-native/app-version": "4.9.0",
     "@ionic-native/camera": "4.7.0",
+    "@ionic-native/clipboard": "4.15.0",
     "@ionic-native/contacts": "4.7.0",
     "@ionic-native/core": "4.6.0",
+    "@ionic-native/email-composer": "4.15.0",
     "@ionic-native/google-analytics": "4.7.0",
     "@ionic-native/in-app-browser": "4.15.0",
     "@ionic-native/open-native-settings": "4.10.0",
@@ -58,6 +60,7 @@
     "@sentry/shim": "0.5.4",
     "angular-tslint-rules": "1.3.0",
     "cordova-android": "7.0.0",
+    "cordova-clipboard": "1.2.1",
     "cordova-ios": "4.5.4",
     "cordova-ios-plugin-no-export-compliance": "0.0.5",
     "cordova-open-native-settings": "1.5.1",
@@ -66,6 +69,7 @@
     "cordova-plugin-camera": "4.0.3",
     "cordova-plugin-contacts": "3.0.1",
     "cordova-plugin-device": "2.0.2",
+    "cordova-plugin-email-composer": "0.8.15",
     "cordova-plugin-google-analytics": "1.8.3",
     "cordova-plugin-inappbrowser": "3.0.0",
     "cordova-plugin-ionic-keyboard": "2.0.5",
@@ -148,7 +152,9 @@
       "cordova-sms-plugin": {},
       "cordova-plugin-screen-orientation": {},
       "cordova-plugin-inappbrowser": {},
-      "cordova-plugin-appavailability": {}
+      "cordova-plugin-appavailability": {},
+      "cordova-plugin-email-composer": {},
+      "cordova-clipboard": {}
     },
     "platforms": [
       "android",
