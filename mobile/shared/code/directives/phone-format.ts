@@ -13,5 +13,4 @@ export class PhonePipe implements PipeTransform {
         }
         return formatNumber(value, NumberFormat.International);
     }
-
 }
