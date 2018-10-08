@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Platform } from 'ionic-angular';
-
-import { showAlert } from '~/shared/utils/alert';
+import { AlertController, Platform } from 'ionic-angular';
 
 import { AppAvailability } from '@ionic-native/app-availability';
 import { Clipboard } from '@ionic-native/clipboard';
@@ -21,6 +19,7 @@ export interface ExternalAppDeepLinkConfig {
 @Injectable()
 export class ExternalAppService {
   constructor(
+    private alertCtrl: AlertController,
     private appAvailability: AppAvailability,
     private browser: InAppBrowser,
     private clipboard: Clipboard,
@@ -80,7 +79,15 @@ export class ExternalAppService {
       await this.emailComposer.open({ to: email });
     } catch {
       this.clipboard.copy(email);
-      showAlert('Email copied', 'Email successfully copied to the clipboard.');
+      const alert = this.alertCtrl.create({
+        title: 'Email copied',
+        subTitle: 'Email successfully copied to the clipboard.',
+        buttons: [{
+          text: 'Dismiss',
+          role: 'cancel'
+        }]
+      });
+      alert.present();
     }
   }
 

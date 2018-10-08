@@ -66,6 +66,8 @@ import {
 import { GoogleAnalytics } from '@ionic-native/google-analytics';
 
 import { AppAvailability } from '@ionic-native/app-availability';
+import { Clipboard } from '@ionic-native/clipboard';
+import { EmailComposer } from '@ionic-native/email-composer';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
 
 import { AppModule } from '~/app.module';
@@ -127,6 +129,7 @@ export class TestUtils {
       providers: [
         App, Form, Keyboard, DomController, MenuController, NavController,
         NavParams, GestureController, AlertControllerMock, LoadingControllerMock,
+        Clipboard, EmailComposer,
         { provide: App, useClass: AppMock },
         { provide: Platform, useFactory: () => PlatformMock.instance() },
         { provide: StatusBar, useFactory: () => StatusBarMock.instance() },
