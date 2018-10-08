@@ -19,7 +19,9 @@ export class PhoneLinkComponent {
   }
 
   async onClick(): Promise<void> {
-    this.externalAppService.doPhoneCall(this.phone);
+    if (!this.readonly) {
+      this.externalAppService.doPhoneCall(this.phone);
+    }
   }
 
   getFormattedPhone(): string {
