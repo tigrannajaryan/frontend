@@ -19,6 +19,7 @@ import { Appointment, AppointmentStatuses, Home } from '~/shared/stylist-api/hom
 import { HomeService } from '~/shared/stylist-api/home.service';
 import { AppointmentCheckoutParams } from '~/appointment/appointment-checkout/appointment-checkout.component';
 import { LoadProfileAction, ProfileState, selectProfile } from '~/core/components/user-header/profile.reducer';
+import { ExternalAppService } from '~/shared/utils/external-app-service';
 
 export enum AppointmentTag {
   NotCheckedOut = 'Not checked out',
@@ -92,7 +93,8 @@ export class HomeComponent {
     private actionSheetCtrl: ActionSheetController,
     private appStorage: AppStorage,
     private logger: Logger,
-    private ga: GAWrapper
+    private ga: GAWrapper,
+    private externalAppService: ExternalAppService
   ) {
   }
 
@@ -163,6 +165,11 @@ export class HomeComponent {
         text: 'Checkout Client',
         handler: () => {
           this.checkOutAppointmentClick(appointment);
+        }
+      }, {
+        text: `Call client: ${ appointment.client_phone }`,
+        handler: () => {
+          this.externalAppService.doPhoneCall(appointment.client_phone);
         }
       }, {
         text: 'Cancel Appointment',
