@@ -1,0 +1,40 @@
+<ion-header class="ion-bb-header">
+  <ion-navbar>
+    <ion-buttons end>
+      <button (click)="onAllClientsClick()" ion-button clear class="Link">All clients</button>
+    </ion-buttons>
+  </ion-navbar>
+  <ion-toolbar class="Made-wp Made-wpContent">
+    <div class="Made-h1">
+      My Clients
+      <span *ngIf="clients | async" class="MyClients-badge">
+        {{ (clients | async)?.length }}
+      </span>
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content no-padding class="MyClients">
+  <ion-refresher (ionRefresh)="onRefresh()">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <div class="Made-wp Made-wpContent" [class.MyClients-100H]="!isLoading && (clients | async)?.length === 0">
+    <ng-container *ngIf="isLoading; else realClients">
+      <client-item *ngFor="let client of [0,0]" [isLoading]="true"></client-item>
+    </ng-container>
+
+    <ng-template #realClients>
+      <ng-container *ngIf="(clients | async)?.length === 0; else clientsList">
+        <div>
+          <span>There are no clients to show. 😢</span><br>
+          <button (click)="onInviteClick()" ion-button full color="bb_skin" class="bb-btn-a MyClients-inviteBtn" data-test-id="inviteClientsBtn">Invite Clients</button>
+        </div>
+      </ng-container>
+
+      <ng-template #clientsList>
+        <client-item *ngFor="let client of clients | async" [client]="client" (clientClick)="onClientClick(client)"></client-item>
+      </ng-template>
+    </ng-template>
+  </div>
+</ion-content>

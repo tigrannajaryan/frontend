@@ -29,6 +29,7 @@ import {
 import { BackHeaderComponent } from '~/core/components/back-header/back-header.component';
 import { UserHeaderComponent } from '~/core/components/user-header/user-header.component';
 import { PhoneLinkComponent } from '~/shared/components/phone-link/phone-link.component';
+import { ClientItemComponent } from '~/clients/client-item/client-item.component';
 
 const components = [
   MadeNavComponent,
@@ -50,7 +51,8 @@ const components = [
   NumListComponent,
   PhoneInputComponent,
   PhoneLinkComponent,
-  CodeInputComponent
+  CodeInputComponent,
+  ClientItemComponent
 ];
 
 @NgModule({

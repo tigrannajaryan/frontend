@@ -24,7 +24,8 @@
   color: color($colors, warmGrey);
   text-align: center;
 
-  &.isPhone {
+  &.isPhone,
+  &.isEmail {
     font-weight: 600;
     color: color($colors, lightSalmon);
   }

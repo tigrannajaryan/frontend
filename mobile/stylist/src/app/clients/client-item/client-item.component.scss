@@ -1,0 +1,52 @@
+.Client {
+  padding: pxtovw(16px) 0;
+  font-size: $t-h4;
+  border-top: 1px solid color($grayscale, 200);
+
+  .Client-img {
+    $size: 56px;
+
+    width: pxtovw($size);
+    height: pxtovw($size);
+    background-size: cover;
+    border-radius: 50%;
+  }
+
+  .Client-info {
+    padding-left: pxtovw(16px);
+  }
+
+  .Client-name {
+    margin: 0;
+  }
+
+  .Client-phone,
+  .Client-cityState {
+    .textPreloader {
+      width: 40%;
+      margin-bottom: 2px;
+    }
+
+    [class^=mb-icon] {
+      padding-right: pxtovw(4px);
+      color: color($colors, lightSalmon);
+    }
+
+    span {
+      flex: 1;
+    }
+  }
+
+  .Client-phone {
+    font-weight: bold;
+    color: color($colors, lightSalmon);
+  }
+
+  .Client-cityState {
+    color: color($grayscale, 600);
+
+    .textPreloader {
+      width: 85%;
+    }
+  }
+}

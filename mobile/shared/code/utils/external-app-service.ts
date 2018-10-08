@@ -1,7 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Platform } from 'ionic-angular';
-import { InAppBrowser, InAppBrowserObject } from '@ionic-native/in-app-browser';
+import { AlertController, Platform } from 'ionic-angular';
+
 import { AppAvailability } from '@ionic-native/app-availability';
+import { Clipboard } from '@ionic-native/clipboard';
+import { EmailComposer } from '@ionic-native/email-composer';
+import { InAppBrowser, InAppBrowserObject } from '@ionic-native/in-app-browser';
 
 export interface ExternalAppDeepLinkConfig {
   // Will be used to identify that app exists on the device.
@@ -16,8 +19,11 @@ export interface ExternalAppDeepLinkConfig {
 @Injectable()
 export class ExternalAppService {
   constructor(
+    private alertCtrl: AlertController,
     private appAvailability: AppAvailability,
     private browser: InAppBrowser,
+    private clipboard: Clipboard,
+    private emailComposer: EmailComposer,
     private platform: Platform
   ) {
   }
@@ -59,6 +65,30 @@ export class ExternalAppService {
       url = `//${url}`;
     }
     this.openLink(url);
+  }
+
+  /**
+   * Open native email app
+   */
+  async openMailApp(email: string): Promise<void> {
+    try {
+      const hasPermission = await this.emailComposer.hasPermission();
+      if (!hasPermission) {
+        await this.emailComposer.requestPermission();
+      }
+      await this.emailComposer.open({ to: email });
+    } catch {
+      this.clipboard.copy(email);
+      const alert = this.alertCtrl.create({
+        title: 'Email copied',
+        subTitle: 'Email successfully copied to the clipboard.',
+        buttons: [{
+          text: 'Dismiss',
+          role: 'cancel'
+        }]
+      });
+      alert.present();
+    }
   }
 
   /**
