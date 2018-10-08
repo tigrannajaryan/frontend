@@ -13,8 +13,8 @@ export class HowMadeWorksComponent {
   list = [
     'Book with your favorite hair stylist',
     'Choose your services',
-    'Get a personalized calendar that automatically updates prices',
-    'Select the time and the price that work best for you!'
+    'Pick from multiple price options that update automatically',
+    'Select the price and time that works best for you!'
   ];
 
   constructor(
