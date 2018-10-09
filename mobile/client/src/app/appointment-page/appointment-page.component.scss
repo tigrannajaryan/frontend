@@ -18,19 +18,10 @@
     margin-top: pxtovw(23px);
   }
 
-  .AppointmentPage-stylistPic,
-  .AppointmentPage-cardAppStylist img,
   .AppointmentPage-cardAppDate img {
     width: pxtovw(32px);
     height: pxtovw(32px);
     margin-right: pxtovw(5px);
-  }
-
-  .AppointmentPage-stylistPic {
-    display: inline-block;
-    background-repeat: no-repeat;
-    background-size: cover;
-    border-radius: 50%;
   }
 
   .AppointmentPage-appDate {
@@ -45,19 +36,6 @@
 
   .AppointmentPage-cardAppDateDay {
     font-size: pxtovw(15px);
-  }
-
-  .AppointmentPage-cardAppStylist {
-    color: color($grayscale, 500);
-    text-align: right;
-  }
-
-  .AppointmentPage-cardAppStylist span {
-    position: relative;
-    top: pxtovw(-3px);
-    display: inline-block;
-    font-weight: 400;
-    line-height: pxtovw(16px);
   }
 
   .AppointmentPage-cardAppPrice {

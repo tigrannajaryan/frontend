@@ -4,7 +4,17 @@
   <made-nav [activePage]="PageNames.CalendarExample"></made-nav>
 
   <div class="Made-wp Made-wpContent">
-    <div class="Made-h1 CalendarExample-Title">Example: What Clients See</div>
+    <ion-row>
+      <div class="Made-h1" col-8 no-padding>
+        Example: What Clients See
+      </div>
+
+      <user-name-photo
+        [firstName]="'User'"
+        [lastName]="'Example'"
+        col-4>
+      </user-name-photo>
+    </ion-row>
 
     <div class="CalendarExample-Subtitle">View your own calendar after registration.</div>
 

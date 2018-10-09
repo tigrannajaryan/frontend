@@ -25,14 +25,12 @@
               </div>
             </ion-col>
 
-            <ion-col col-6 class="AppointmentPage-cardAppStylist" align-self-end>
-              <!-- stylists's full name -->
-              <span>{{ params.appointment.stylist_first_name }}
-                <br/> {{ params.appointment.stylist_last_name }}</span>
-
-              <!-- show photo or avatar if photo is missing -->
-              <div class="AppointmentPage-stylistPic" [style.backgroundImage]="'url(' + (params.appointment.profile_photo_url || 'assets/icons/stylist-avatar.png') + ')'"></div>
-            </ion-col>
+            <user-name-photo
+              [firstName]="params.appointment.stylist_first_name"
+              [lastName]="params.appointment.stylist_last_name"
+              [photoUrl]="params.appointment.profile_photo_url"
+              col-6>
+            </user-name-photo>
           </ion-row>
 
           <ion-row>
