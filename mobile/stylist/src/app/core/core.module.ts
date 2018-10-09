@@ -12,6 +12,8 @@ import { PricePipe } from '~/shared/pipes/price.pipe';
 import { BaseService } from '~/shared/api/base-service';
 import { PriceCalendarComponent } from '~/shared/components/price-calendar/price-calendar.component';
 import { ServicesHeaderListComponent } from '~/shared/components/services-header-list/services-header-list';
+import { UserNamePhotoComponent } from '~/shared/components/user-name-photo/user-name-photo.component';
+
 import { DirectivesModule } from '~/core/directives/directive.module';
 import { ComponentsModule } from './components/components.module';
 
@@ -19,7 +21,8 @@ const declarations = [
   HasErrorPipe,
   PriceCalendarComponent,
   PricePipe,
-  ServicesHeaderListComponent
+  ServicesHeaderListComponent,
+  UserNamePhotoComponent
 ];
 
 @NgModule({

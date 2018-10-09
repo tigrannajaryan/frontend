@@ -1,0 +1,27 @@
+user-name-photo {
+  display: flex;
+  align-content: center;
+  align-items: flex-start;
+  justify-content: flex-end;
+  padding: 0 !important;
+
+  .UserName-text {
+    display: inline-block;
+    font-weight: 400;
+    line-height: pxtovw(16px);
+    color: color($grayscale, 500);
+    text-align: right;
+  }
+
+  .UserName-ava {
+    display: inline-block;
+    width: pxtovw(32px);
+    height: pxtovw(32px);
+    margin-right: pxtovw(1px);
+    margin-left: pxtovw(7px);
+    background-image: url('../assets/icons/example-user.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    border-radius: 50%;
+  }
+}
