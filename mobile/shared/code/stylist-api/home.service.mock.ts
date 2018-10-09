@@ -86,7 +86,8 @@ export class HomeServiceMock {
         services: [],
         client_uuid: 'string',
         client_profile_photo_url: 'string',
-        grand_total: 0
+        grand_total: 0,
+        created_at: 'string'
       }
     });
   }

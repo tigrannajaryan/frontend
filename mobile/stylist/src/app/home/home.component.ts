@@ -26,7 +26,8 @@ import { NumberFormat } from '~/shared/directives/phone-input.directive';
 export enum AppointmentTag {
   NotCheckedOut = 'Not checked out',
   Now = 'Now',
-  Next = 'Next'
+  Next = 'Next',
+  New = 'New'
 }
 
 export enum Tabs {
@@ -293,6 +294,8 @@ export class HomeComponent {
       let metNext = false;
       for (const appointment of home.appointments) {
         const startTime = moment(new Date(appointment.datetime_start_at));
+        const createdAt = moment(new Date(appointment.created_at));
+        const pastTime = moment(new Date()).subtract({hours: 12});
 
         const endTime = startTime.clone();
         endTime.add(appointment.duration_minutes, 'minutes');
@@ -306,11 +309,11 @@ export class HomeComponent {
           } else {
             tag = AppointmentTag.NotCheckedOut;
           }
-        } else {
-          if (!metNext) {
-            tag = AppointmentTag.Next;
-            metNext = true;
-          }
+        } else if (!metNext) {
+          tag = AppointmentTag.Next;
+          metNext = true;
+        } else if (createdAt >= pastTime) {
+          tag = AppointmentTag.New;
         }
         appointmentTags.push(tag);
       }
