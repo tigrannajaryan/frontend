@@ -1,3 +1,5 @@
+import { ISODateTime } from '~/shared/api/base.models';
+
 export enum AppointmentStatuses {
   new = 'new',
   no_show = 'no_show',
@@ -53,7 +55,7 @@ export interface NewAppointmentRequest {
   client_first_name: string;
   client_last_name: string;
   services: AppointmentServiceUuid[];
-  datetime_start_at: string; // ISO 8601: 2018-05-20T18:00:00-04:00
+  datetime_start_at: ISODateTime;
 }
 
 export interface Appointment {
@@ -66,13 +68,14 @@ export interface Appointment {
   total_card_fee: number;
   has_tax_included: boolean;
   has_card_fee_included: boolean;
-  datetime_start_at: string;
+  datetime_start_at: ISODateTime;
   duration_minutes: number;
   status: AppointmentStatuses;
   services: AppointmentService[];
   client_uuid: string;
   client_profile_photo_url: string;
   grand_total: number;
+  created_at: ISODateTime;
 }
 
 export interface AppointmentDateOffer {
