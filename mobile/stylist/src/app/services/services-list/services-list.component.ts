@@ -170,6 +170,17 @@ export class ServicesListComponent {
     this.isEmptyCategories = ServicesListComponent.checkIfEmptyCategories(this.categories);
   }
 
+  saveRequest(): void {
+    const categoriesServices = this.getFlatServiceList();
+
+    if (categoriesServices) {
+      this.stylistService.setStylistServices({
+        services: categoriesServices,
+        service_time_gap_minutes: this.timeGap
+      }).get();
+    }
+  }
+
   /**
    * Process the results of modal service item form.
    * @param itemToEdit original item that we asked the form to edit (empty means new item)
@@ -218,13 +229,6 @@ export class ServicesListComponent {
 
     this.isEmptyCategories = ServicesListComponent.checkIfEmptyCategories(this.categories);
 
-    const categoriesServices = this.getFlatServiceList();
-
-    if (categoriesServices) {
-      this.stylistService.setStylistServices({
-        services: categoriesServices,
-        service_time_gap_minutes: this.timeGap
-      }).get();
-    }
+    this.saveRequest();
   }
 }
