@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { GoogleAnalytics } from '@ionic-native/google-analytics';
 import { AppVersion } from '@ionic-native/app-version';
 import { ViewController } from 'ionic-angular';
+import * as camelcase from 'camelcase';
 
 import { getBuildNumber } from '~/shared/get-build-number';
 import { Logger } from '~/shared/logger';
@@ -54,10 +55,15 @@ export class GAWrapper {
   }
 
   trackViewChange(view: ViewController): void {
-    const viewComponentName: string = view ? view.id : 'unknown';
+    // Get page name from the HTML native element's tagName property. This is the best we have at runtime.
+    // Class name, ids, etc. are all uglified by AOT compiler in production build.
+    const pageRef = view.pageRef();
+    let viewName: string = (pageRef && pageRef.nativeElement) ? pageRef.nativeElement.tagName : 'unknown';
 
-    // Remove 'Component' suffix for better readability of GA results.
-    const viewName = viewComponentName.replace(/Component$/, '');
+    // Remove 'PAGE-' prefix and convert to PascalCase for better readability of GA results.
+    viewName = viewName.replace(/^PAGE-/, '');
+    viewName = camelcase(viewName, { pascalCase: true });
+
     this.trackView(viewName);
   }
 

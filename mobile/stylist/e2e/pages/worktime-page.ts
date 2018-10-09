@@ -8,14 +8,14 @@ class WorktimePage {
    * @param weekDayNum number in 0-6 range
    */
   getWeekDayToggle(cardNum: number, weekDayNum: number) {
-    return $(`page-worktime-component [data-test-id='${cardNum}'] [data-test-id=weekDayBox${weekDayNum}]`);
+    return $(`page-hours [data-test-id='${cardNum}'] [data-test-id=weekDayBox${weekDayNum}]`);
   }
 
   getWeekDayToggleClickableArea(cardNum: number, weekDayNum: number) {
-    return $(`page-worktime-component [data-test-id='${cardNum}'] [data-test-id=weekDayLabel${weekDayNum}]`);
+    return $(`page-hours [data-test-id='${cardNum}'] [data-test-id=weekDayLabel${weekDayNum}]`);
   }
 
-  get continueButton() { return $('page-worktime-component button[data-test-id=continueBtn]'); }
+  get continueButton() { return $('page-hours button[data-test-id=continueBtn]'); }
 
   // Operations
   async isWeekdaySelected(cardNum: number, weekDayNum: number): Promise<boolean> {

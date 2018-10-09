@@ -63,7 +63,7 @@ export const defaultEndTime = '17:00'; // 24 hour hh:mm format
 type HourRange = [string, string];
 
 @Component({
-  selector: 'page-worktime-component',
+  selector: 'page-hours',
   templateUrl: 'worktime.component.html'
 })
 export class WorktimeComponent {

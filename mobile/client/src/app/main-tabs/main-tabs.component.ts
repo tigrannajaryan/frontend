@@ -80,7 +80,7 @@ export class MainTabsComponent {
 
   onTabChange(tab: Tab): void {
     // Track all tab changes
-    this.ga.trackView(tab.tabTitle);
+    this.ga.trackViewChange(tab.getActive());
 
     // Track all screen changes inside tab
     if (this.lastSubsrciption) {
