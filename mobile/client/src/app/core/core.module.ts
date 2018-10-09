@@ -26,6 +26,7 @@ import { ProfileHeaderComponent } from '~/core/components/profile-header/profile
 import { BookServicesHeaderComponent } from '~/booking/book-services-header/book-services-header';
 import { ServicesHeaderListComponent } from '~/shared/components/services-header-list/services-header-list';
 import { PriceCalendarComponent } from '~/shared/components/price-calendar/price-calendar.component';
+import { UserNamePhotoComponent } from '~/shared/components/user-name-photo/user-name-photo.component';
 
 export enum DefaultImage {
   User = 'assets/icons/stylist-avatar.png'
@@ -51,7 +52,8 @@ const declarations = [
   PricePipe,
   ProfileHeaderComponent,
   ServerStatusComponent,
-  ServicesHeaderListComponent
+  ServicesHeaderListComponent,
+  UserNamePhotoComponent
 ];
 
 @NgModule({
