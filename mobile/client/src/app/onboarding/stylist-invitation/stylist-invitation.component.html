@@ -16,7 +16,7 @@
 
   <!-- Stylist’s pic: -->
   <ion-row justify-content-center>
-    <div class="StylistInvitationPage-pic" [style.backgroundImage]="'url(' + (stylist.profile_photo_url || 'assets/icons/stylist-avatar.png') + ')'"></div>
+    <div (click)="onStylistPicClick()" [style.backgroundImage]="stylist.profile_photo_url ? 'url(' + stylist.profile_photo_url + ')' : null" class="StylistInvitationPage-pic"></div>
   </ion-row>
 
   <!-- Data: -->

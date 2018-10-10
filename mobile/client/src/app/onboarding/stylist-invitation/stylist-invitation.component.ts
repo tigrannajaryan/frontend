@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
-import { App, NavController, NavParams } from 'ionic-angular';
-
-import { PageNames } from '~/core/page-names';
-import { StylistModel } from '~/shared/api/stylists.models';
-import { PreferredStylistsData } from '~/core/api/preferred-stylists.data';
+import { App, Events, NavController, NavParams } from 'ionic-angular';
 
 import { ExternalAppService } from '~/shared/utils/external-app-service';
+import { StylistModel } from '~/shared/api/stylists.models';
+
+import { PageNames } from '~/core/page-names';
+import { PreferredStylistsData } from '~/core/api/preferred-stylists.data';
+import { EventTypes } from '~/core/event-types';
 
 export enum StylistPageType {
   MyStylist,
@@ -29,6 +30,7 @@ export class StylistInvitationPageComponent {
 
   constructor(
     private app: App,
+    private events: Events,
     private externalAppService: ExternalAppService,
     private navCtrl: NavController,
     private navParams: NavParams,
@@ -84,5 +86,9 @@ export class StylistInvitationPageComponent {
     if (this.pageType === StylistPageType.MyStylist) {
       this.externalAppService.openWebPage(websiteUrl);
     }
+  }
+
+  onStylistPicClick(): void {
+    this.events.publish(EventTypes.startBooking);
   }
 }
