@@ -154,6 +154,10 @@
   {
     "url": "https://raw.githubusercontent.com/Leonidas-from-XIV/node-xml2js/master/LICENSE",
     "title": "xml2js (MIT License)"
+  },
+  {
+    "url": "https://github.com/sindresorhus/camelcase/blob/master/license",
+    "title": "camelcase (MIT License)"
   }
 ]
 
