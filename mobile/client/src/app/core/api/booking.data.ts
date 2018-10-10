@@ -45,7 +45,7 @@ export class BookingData implements OnDestroy {
     this.servicesSubscription = this.selectedServicesObservable.subscribe(async () => {
       if (this._pricelist && this._offer) {
         const { response } = await this.pricelist.get();
-        const newOffer = response.prices.find(offer => this._offer && offer.date === this._offer.date);
+        const newOffer = response && response.prices.find(offer => this._offer && offer.date === this._offer.date);
         if (newOffer) {
           this.setOffer(newOffer);
         } else {
