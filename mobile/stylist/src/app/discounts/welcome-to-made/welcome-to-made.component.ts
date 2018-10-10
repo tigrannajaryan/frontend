@@ -14,7 +14,7 @@ export class WelcomeToMadeComponent {
     'You set your services and full prices.',
     'You select your discounts.',
     'Your clients book.',
-    'We help track your prices and reduce discounts automatically as your calendar fills up!'
+    'We track and steadily increase prices to full rate as your day fills up!'
   ];
 
   constructor(private navCtrl: NavController) {}
