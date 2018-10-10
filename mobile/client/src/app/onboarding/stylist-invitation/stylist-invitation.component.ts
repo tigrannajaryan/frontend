@@ -30,11 +30,11 @@ export class StylistInvitationPageComponent {
 
   constructor(
     private app: App,
+    private events: Events,
     private externalAppService: ExternalAppService,
     private navCtrl: NavController,
     private navParams: NavParams,
-    private preferredStylistsData: PreferredStylistsData,
-    private events: Events
+    private preferredStylistsData: PreferredStylistsData
   ) {
   }
 
@@ -88,7 +88,7 @@ export class StylistInvitationPageComponent {
     }
   }
 
-  onStylistPickClick(): void {
+  onStylistPicClick(): void {
     this.events.publish(EventTypes.startBooking);
   }
 }
