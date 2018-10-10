@@ -142,7 +142,7 @@ export class AppointmentCheckoutComponent {
     this.navCtrl.pop();
   }
 
-  async finalizeCheckoutClick(): Promise<void> {
+  async onFinalizeCheckoutClick(): Promise<void> {
     const request: AppointmentChangeRequest = {
       status: AppointmentStatuses.checked_out,
       services: this.selectedServices,

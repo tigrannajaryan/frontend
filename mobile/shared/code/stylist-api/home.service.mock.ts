@@ -53,7 +53,18 @@ export class HomeServiceMock {
         total_client_price_before_tax: 0,
         total_tax: 0,
         total_card_fee: 0,
-        services: []
+        tax_percentage: 0,
+        card_fee_percentage: 0,
+        services: [
+            {
+                service_uuid: '',
+                service_name: 'Color',
+                client_price: 0,
+                regular_price: 0,
+                is_original: false,
+                isChecked: false
+            }
+        ]
       }
     });
   }
@@ -80,7 +91,7 @@ export class HomeServiceMock {
         total_card_fee: 0,
         has_tax_included: false,
         has_card_fee_included: false,
-        datetime_start_at: 'string',
+        datetime_start_at: '2018-01-02T00:00:00+00:00',
         duration_minutes: 0,
         status: AppointmentStatuses.new,
         services: [],
