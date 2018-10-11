@@ -11,6 +11,7 @@ import { NumberFormat } from '~/shared/directives/phone-input.directive';
 export class PhoneLinkComponent {
   @Input() phone: string;
   @Input() readonly = false;
+  @Input() shortForm = true;
   @Input() icon?: string;
 
   constructor(
@@ -25,6 +26,18 @@ export class PhoneLinkComponent {
   }
 
   getFormattedPhone(): string {
-    return formatNumber(this.phone, NumberFormat.International);
+    const phone = formatNumber(this.phone, NumberFormat.International);
+    if (this.shortForm) {
+      return this.getLocalNumber(phone);
+    }
+    return phone;
+  }
+
+  private getLocalNumber(phone: string): string {
+    if (/^\+1\s/.test(phone)) {
+      // Show local number if US:
+      return phone.replace(/^\+1\s/, '').replace(/\s/g, '-');
+    }
+    return phone;
   }
 }

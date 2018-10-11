@@ -11,7 +11,7 @@
       </div>
     </ion-row>
     <ion-row *ngIf="phone" class="AuthConfirmPage-phoneNumber" justify-content-center>
-      <span><phone-link [phone]="phone" [readonly]="true"></phone-link>&nbsp;</span><span class="Link" (click)="navCtrl.pop()" data-test-id="editPhoneLink">Edit</span>
+      <span><phone-link [phone]="phone" [readonly]="true" [shortForm]="false"></phone-link>&nbsp;</span><span class="Link" (click)="navCtrl.pop()" data-test-id="editPhoneLink">Edit</span>
     </ion-row>
     <ion-row>
       <code-input [isDisabled]="(confirmCodeState | async) === RequestState.Loading" [hasError]="error | async | hasError:invalidCodeError" (codeChange)="onCodeChange($event)"></code-input>
