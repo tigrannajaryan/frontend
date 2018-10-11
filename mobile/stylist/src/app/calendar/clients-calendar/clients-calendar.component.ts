@@ -29,16 +29,16 @@ export class ClientsCalendarComponent {
   ) {
   }
 
-  ionViewWillLoad(): void {
+  ionViewWillLoad(): Promise<void> {
     const clientUuid = this.navParams.get('clientUuid');
 
     this.profile = this.store.select(selectProfile);
 
     // TODO: add loading state
-    this.clientsApi.getPricing(clientUuid)
+    return this.clientsApi.getPricing(clientUuid)
       .combineLatest(Observable.from(this.servicesData.get()))
       .takeUntil(componentUnloaded(this))
-      .subscribe(([pricing, services]) => {
+      .map(([pricing, services]) => {
         if (pricing.response) {
           this.prices = pricing.response.prices;
 
@@ -49,7 +49,8 @@ export class ClientsCalendarComponent {
                 .filter(service => pricing.response.service_uuids.indexOf(service.uuid) !== -1);
           }
         }
-      });
+      })
+      .toPromise();
   }
 
   /**

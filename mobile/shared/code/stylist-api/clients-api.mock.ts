@@ -10,6 +10,8 @@ import { ApiResponse } from '~/shared/api/base.models';
 import { BaseServiceMock } from '~/shared/api/base-service.mock';
 import { DiscountType } from '~/shared/api/price.models';
 
+import { serviceItemsMock } from '~/shared/stylist-api/stylist-service-mock';
+
 import {
   ClientModel,
   GetMyClientsResponse,
@@ -60,6 +62,7 @@ export class ClientsApiMock extends BaseServiceMock {
       Observable.create(observer => {
         observer.next({
           client_uuid: clientUuid,
+          service_uuids: serviceItemsMock.map(service => service.uuid),
           prices: [{
             date: moment().format('YYYY-MM-DD'),
             // tslint:disable-next-line:no-null-keyword

@@ -1,7 +1,7 @@
 // Stylist profile
 
 export interface StylistProfile {
-  uuid?: number;
+  uuid?: string;
   first_name: string;
   last_name: string;
   phone: string;
@@ -84,7 +84,7 @@ export interface ServiceCategory {
   uuid: string;
   name: string;
   services: Array<ServiceTemplateItem | ServiceItem>;
-  category_code: string;
+  category_code?: string;
 }
 
 export interface ServiceTemplateItem {
@@ -95,18 +95,15 @@ export interface ServiceTemplateItem {
 
   uuid?: string;
   name: string;
-  description: string;
+  description?: string;
   base_price: number;
 }
 
 // Services
 export interface ServiceItem extends ServiceTemplateItem {
   service_uuid?: string;
-
-  category_name: string;
-  category_uuid: string;
-  is_enabled: boolean;
-  photo_samples: ServicesPhotoSample[];
+  is_enabled?: boolean;
+  photo_samples?: ServicesPhotoSample[];
 }
 
 export interface ServicesPhotoSample {
@@ -118,6 +115,4 @@ export interface SetStylistServicesParams {
   service_time_gap_minutes: number;
 }
 
-export interface StylistServicesListResponse extends StylistServicesList {
-  service_time_gap_minutes: number;
-}
+export type StylistServicesListResponse = StylistServicesList;
