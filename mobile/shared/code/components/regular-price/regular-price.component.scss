@@ -1,0 +1,39 @@
+.Pricing {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  font-size: pxtovw(15px);
+  color: color($grayscale, 500);
+
+  .Pricing-regular {
+    align-self: flex-start;
+    color: color($grayscale, 500);
+  }
+
+  .Pricing-regular > div {
+    display: inline-block;
+    font-size: pxtovw(21px);
+    font-weight: bold;
+    line-height: pxtovw(22px);
+    color: black;
+  }
+
+  .Pricing-withSales {
+    align-self: flex-end;
+    justify-content: flex-end;
+  }
+
+  .Pricing-withSales > div {
+    display: inline-block;
+    font-size: pxtovw(21px);
+    font-weight: bold;
+    line-height: pxtovw(23px);
+    color: #5DCA91; // mint in client
+  }
+
+  .Pricing-regular > div:first-letter,
+  .Pricing-withSales > div:first-letter {
+    font-size: pxtovw(14px);
+    vertical-align: text-top;
+  }
+}
