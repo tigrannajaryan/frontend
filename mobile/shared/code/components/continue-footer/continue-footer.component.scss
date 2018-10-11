@@ -31,7 +31,8 @@
   height: 100%;
 }
 
-.Discounts-btn {
+.Discounts-btn,
+%Discounts-btn{
   width: 100%;
   height: auto;
   padding: pxtovw(20px) 0;
@@ -46,5 +47,10 @@
     color: color($shared-colors, secondary);
     background: none;
   }
+}
+
+.Discounts-btn--light {
+  @extend %Discounts-btn;
+  padding: pxtovw(17px) 0;
 }
 

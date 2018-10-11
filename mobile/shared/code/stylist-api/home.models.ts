@@ -35,6 +35,8 @@ export interface AppointmentPreviewResponse {
   total_client_price_before_tax: number;
   total_tax: number;
   total_card_fee: number;
+  tax_percentage: number;
+  card_fee_percentage: number;
   services: AppointmentService[];
 }
 

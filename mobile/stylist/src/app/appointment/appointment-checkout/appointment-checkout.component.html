@@ -1,97 +1,110 @@
 <ion-header madeBackHeader></ion-header>
 
 
-<ion-content padding>
-  <div class="bb-wp-a">
-    <div *ngIf="appointment" class="p-c-top">
-      <div class="p-c-top-time">
-        {{ appointment.datetime_start_at | date: 'h:mmaaaaa' }}
-      </div>
+<ion-content no-padding>
+  <div *ngIf="appointment" class="Made-wp Made-wpContent">
+    <div class="CheckOut">
+      <ion-row align-items-center class="CheckOut-Header">
+        <ion-col col-6 no-padding>
+          <div [class.isAlreadyCheckedOut]="params?.isAlreadyCheckedOut" class="CheckOut-HeaderIcon">
+            <i [class]="params?.isAlreadyCheckedOut ? 'mb-icon-check' : 'mb-icon-calendar'"></i>
+          </div>
+          <div class="CheckOut-HeaderDate" data-test-id="appointmentDateTime">
+            <b>{{ appointment.datetime_start_at | date: 'h:mmaaaaa' }}</b>
+            {{ appointment.datetime_start_at | date: 'E, LLL MM' }}
+          </div>
+        </ion-col>
 
-      <div class="p-c-top-user">
-        <div [style.background-image]="appointment.client_profile_photo_url ? 'url(' + appointment.client_profile_photo_url + ')' : null" class="p-c-top-user-ava"></div>
-        <div class="p-c-top-user-name">
-          {{ appointment.client_first_name }} {{ appointment.client_last_name }}
+        <user-name-photo
+          [firstName]="appointment.client_first_name"
+          [lastName]="appointment.client_last_name"
+          [photoUrl]="appointment.client_profile_photo_url"
+          col-6>
+        </user-name-photo>
+      </ion-row>
+
+      <ng-container *ngIf="previewResponse">
+        <div class="CheckOut-Price">
+          <div class="CheckOut-PriceTitle" data-test-id="appointmentTitle">
+            <ng-container *ngIf="!params?.isAlreadyCheckedOut; else isFinalPrice">Total Price</ng-container>
+            <ng-template #isFinalPrice>Final Price</ng-template>
+          </div>
+
+          <div class="CheckOut-PriceNum">
+            <ion-spinner *ngIf="isLoading" [duration]="500"></ion-spinner>
+            <ng-container *ngIf="!isLoading">
+              <span>$</span>
+              <b data-test-id="appointmentPrice">{{ previewResponse.grand_total.toFixed() }}</b>
+            </ng-container>
+          </div>
         </div>
-      </div>
-    </div>
 
-    <div *ngIf="previewResponse" class="p-c-box">
-      <div class="p-c-box-title">Your total price is</div>
+        <div class="CheckOut-list">
+          <ng-container *ngIf="previewResponse.services.length > 0">
+            <div [class.lastAndCheckedOut]="params?.isAlreadyCheckedOut">
+              <ion-row *ngFor="let service of previewResponse.services; let index = index;" data-test-id="appointmentServices" align-items-center class="CheckOut-row">
+                <ion-col col-7 no-padding class="CheckOut-col">
+                  <div>{{ service.service_name }}</div>
+                </ion-col>
+                <ion-col col-5 class="CheckOut-col havePaddingLeft">
+                  ${{ service.client_price | number: '1.2' }}
 
-      <div no-padding class="p-c-box-price">
-        <ion-spinner *ngIf="isLoading" duration="500"></ion-spinner>
-        <div *ngIf="!isLoading">
-          <div class="p-c-box-price-sign">$</div>
-          <div class="p-c-box-price-num">{{ previewResponse.grand_total.toFixed() }}</div>
-        </div>
-      </div>
+                  <i (click)="removeServiceClick(service)"
+                    *ngIf="previewResponse.services.length > 1 && appointment.status != AppointmentStatuses.checked_out"
+                    class="mb-icon-trash">
+                  </i>
+                </ion-col>
+              </ion-row>
 
+              <ion-row
+                *ngIf="!params?.isAlreadyCheckedOut || hasTaxIncluded"
+                align-items-center
+                class="CheckOut-row"
+                data-test-id="appointmentTaxPercentage">
+                <ion-col col-7 no-padding class="CheckOut-col">
+                  Tax Rate  ({{ previewResponse.tax_percentage | number: '1.2' }}%)
+                </ion-col>
+                <ion-col col-5 class="CheckOut-col havePaddingLeft row">
+                  <span [class.lineThrough]="!hasTaxIncluded" [class.inactive]="!hasTaxIncluded">${{ previewResponse.total_tax.toFixed(2) | number: '1.2' }}</span>
 
-      <ion-grid *ngIf="previewResponse" no-padding class="p-c-box-change">
-        <ion-row>
-          <ion-col col-4>
-            <div class="p-c-box-change-title">Price before tax</div>
-            <div class="p-c-box-change-num">
-              <span *ngIf="subTotalRegularPrice.toFixed() != previewResponse.total_client_price_before_tax.toFixed() " class="p-c-box-change-num-regular-price">
-                ${{ subTotalRegularPrice.toFixed() }}
-              </span>
-              &nbsp; ${{ previewResponse.total_client_price_before_tax.toFixed() }}
+                  <ion-toggle *ngIf="!params?.isAlreadyCheckedOut" (ionChange)="updatePreview()" [(ngModel)]="hasTaxIncluded" class="ion-bb-toggle"></ion-toggle>
+                </ion-col>
+              </ion-row>
+
+              <ion-row
+                *ngIf="!params?.isAlreadyCheckedOut || hasCardFeeIncluded"
+                align-items-center
+                class="CheckOut-row"
+                data-test-id="appointmentCardFeePercentage">
+                <ion-col col-7 no-padding class="CheckOut-col">
+                  Card Fee ({{ previewResponse.card_fee_percentage | number: '1.2' }}%)
+                </ion-col>
+                <ion-col col-5 class="CheckOut-col havePaddingLeft row">
+                  <span [class.lineThrough]="!hasCardFeeIncluded" [class.inactive]="!hasCardFeeIncluded">${{ previewResponse.total_card_fee.toFixed(2) | number: '1.2' }}</span>
+
+                  <ion-toggle *ngIf="!params?.isAlreadyCheckedOut" (ionChange)="updatePreview()" [(ngModel)]="hasCardFeeIncluded" class="ion-bb-toggle"></ion-toggle>
+                </ion-col>
+              </ion-row>
             </div>
-          </ion-col>
-          <ion-col col-4>
-            <div class="p-c-box-change-title">Tax incl.</div>
-            <div class="p-c-box-change-num">
-              ${{ previewResponse.total_tax.toFixed(2) }}
-              <ion-toggle [disabled]="params?.isAlreadyCheckedOut" (ionChange)="updatePreview()" [(ngModel)]="hasTaxIncluded" class="ion-bb-toggle"></ion-toggle>
-            </div>
-          </ion-col>
-          <ion-col col-4>
-            <div class="p-c-box-change-title">Card fee</div>
-            <div class="p-c-box-change-num">
-              ${{ previewResponse.total_card_fee.toFixed(2) }}
-              <ion-toggle [disabled]="params?.isAlreadyCheckedOut" (ionChange)="updatePreview()" [(ngModel)]="hasCardFeeIncluded" class="ion-bb-toggle"></ion-toggle>
-            </div>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
+          </ng-container>
 
-
-      <div *ngIf="previewResponse.services.length > 0">
-        <ion-grid no-padding no-margin class="p-c-box-service">
-          <ion-row no-border>
-            <ion-col col-7>
-              <div class="p-c-box-service-title">Service</div>
-            </ion-col>
-            <ion-col col-5>
-              <div class="p-c-box-service-title">Price</div>
+          <ion-row *ngIf="!params?.isAlreadyCheckedOut" data-test-id="appointmentAddServiceBtn" justify-content-center class="CheckOut-listBtn">
+            <ion-col col-8>
+              <button (click)="addServicesClick()" class="Discounts-btn--light" ion-button>Add service</button>
             </ion-col>
           </ion-row>
-        </ion-grid>
-        <ion-grid [class.lastAndCheckedOut]="params?.isAlreadyCheckedOut" no-padding class="p-c-box-service withmargin">
-          <ion-row *ngFor="let service of previewResponse.services; let index = index;">
-            <ion-col col-7>
-              <div class="p-c-box-service-text">{{ service.service_name }}</div>
-            </ion-col>
-            <ion-col col-4>
-              <div class="p-c-box-service-text">
-                ${{ service.client_price }}
-              </div>
-            </ion-col>
-            <ion-col col-1>
-              <div class="p-c-box-service-text">
-                <ion-icon *ngIf="previewResponse.services.length > 1 && appointment.status != AppointmentStatuses.checked_out" (click)="removeServiceClick(service)" name="trash"></ion-icon>
-              </div>
-            </ion-col>
-          </ion-row>
-        </ion-grid>
-      </div>
-
-      <button *ngIf="!params?.isAlreadyCheckedOut" (click)="addServicesClick()" col-6 ion-button outline color="bb_violet" class="bb-btn-a">Add service</button>
-    </div>
-
-    <div *ngIf="!params?.isAlreadyCheckedOut" class="p-c-fin">
-      <button (click)="finalizeCheckoutClick()" col-6 ion-button color="bb_honey" class="bb-btn-a black">Finalize checkout</button>
+        </div>
+      </ng-container>
     </div>
   </div>
+
 </ion-content>
+
+
+<ion-footer
+  *ngIf="!params?.isAlreadyCheckedOut"
+  (continue)="onFinalizeCheckoutClick()"
+  data-test-id="appointmentFinalizeCheckout"
+  madeContinueFooter
+  [title]="'Finalize checkout'">
+</ion-footer>

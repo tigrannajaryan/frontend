@@ -8,6 +8,7 @@ user-name-photo {
   .UserName-text {
     display: inline-block;
     font-weight: 400;
+    font-size: pxtovw(15px);
     line-height: pxtovw(16px);
     color: color($grayscale, 500);
     text-align: right;
