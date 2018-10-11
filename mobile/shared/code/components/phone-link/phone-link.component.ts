@@ -4,6 +4,14 @@ import { formatNumber } from 'libphonenumber-js';
 import { ExternalAppService } from '~/shared/utils/external-app-service';
 import { NumberFormat } from '~/shared/directives/phone-input.directive';
 
+function getLocalNumber(phone: string): string {
+  if (/^\+1\s/.test(phone)) {
+    // Show local number if US:
+    return phone.replace(/^\+1\s/, '').replace(/\s/g, '-');
+  }
+  return phone;
+}
+
 @Component({
   selector: 'phone-link',
   templateUrl: 'phone-link.component.html'
@@ -28,15 +36,7 @@ export class PhoneLinkComponent {
   getFormattedPhone(): string {
     const phone = formatNumber(this.phone, NumberFormat.International);
     if (this.shortForm) {
-      return this.getLocalNumber(phone);
-    }
-    return phone;
-  }
-
-  private getLocalNumber(phone: string): string {
-    if (/^\+1\s/.test(phone)) {
-      // Show local number if US:
-      return phone.replace(/^\+1\s/, '').replace(/\s/g, '-');
+      return getLocalNumber(phone);
     }
     return phone;
   }
