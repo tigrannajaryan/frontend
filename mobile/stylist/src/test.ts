@@ -89,6 +89,7 @@ import { WorktimeApi } from '~/shared/stylist-api/worktime.api';
 import { WorktimeApiMock } from '~/shared/stylist-api/worktime.api.mock';
 
 import { ExternalAppService } from '~/shared/utils/external-app-service';
+import { Logger } from '~/shared/logger';
 
 import { AppStorage } from '~/shared/storage/app-storage';
 import { AppStorageMock } from '~/shared/storage/app-storage-mock';
@@ -136,7 +137,7 @@ export class TestUtils {
       providers: [
         App, Form, Keyboard, DomController, MenuController, NavController,
         NavParams, GestureController, AlertControllerMock, LoadingControllerMock,
-        Clipboard, EmailComposer,
+        Clipboard, EmailComposer, Logger,
         { provide: App, useClass: AppMock },
         { provide: Platform, useFactory: () => PlatformMock.instance() },
         { provide: StatusBar, useFactory: () => StatusBarMock.instance() },
