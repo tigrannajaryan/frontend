@@ -8,6 +8,7 @@ import { componentUnloaded } from '~/shared/component-unloaded';
 import { DayOffer } from '~/shared/api/price.models';
 import { ServiceItem, StylistProfile } from '~/shared/stylist-api/stylist-models';
 import { StylistServicesDataStore } from '~/services/services-list/services.data';
+import { MyClientModel } from '~/shared/stylist-api/clients-api.models';
 import { ClientsApi } from '~/shared/stylist-api/clients-api';
 
 import { ProfileState, selectProfile } from '~/core/components/user-header/profile.reducer';
@@ -17,7 +18,7 @@ import { ProfileState, selectProfile } from '~/core/components/user-header/profi
   templateUrl: 'clients-calendar.component.html'
 })
 export class ClientsCalendarComponent {
-  clientUuid?: string;
+  client?: MyClientModel;
 
   profile: Observable<StylistProfile>;
   prices: DayOffer[] = [];
@@ -32,12 +33,11 @@ export class ClientsCalendarComponent {
   }
 
   ionViewWillLoad(): Promise<void> {
-    this.clientUuid = this.navParams.get('clientUuid');
-
+    this.client = this.navParams.get('client') as MyClientModel;
     this.profile = this.store.select(selectProfile);
 
     // TODO: add loading state
-    return this.clientsApi.getPricing(this.clientUuid)
+    return this.clientsApi.getPricing(this.client && this.client.uuid)
       .combineLatest(Observable.from(this.servicesData.get()))
       .takeUntil(componentUnloaded(this))
       .map(([pricing, services]) => {
@@ -58,8 +58,8 @@ export class ClientsCalendarComponent {
   /**
    * Return the possessive form of the stylist first name, e.g. Richard’s, Amadeus’s.
    */
-  getNamePossessiveForm(profile: StylistProfile): string {
-    const name = profile && profile.first_name;
+  getNamePossessiveForm(client: MyClientModel): string {
+    const name = client && client.first_name;
     return name ? `${name}’s ` : '';
   }
 

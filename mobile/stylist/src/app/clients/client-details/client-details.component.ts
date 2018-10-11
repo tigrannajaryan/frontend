@@ -4,8 +4,7 @@ import { NavController, NavParams } from 'ionic-angular';
 import { ExternalAppService } from '~/shared/utils/external-app-service';
 
 import { ClientDetailsApi } from '~/shared/stylist-api/client-details.api';
-import { MyClientModel } from '~/shared/stylist-api/clients-api.models';
-import { ClientDetailsModel } from '~/shared/stylist-api/client-details.models';
+import { ClientDetailsModel, MyClientModel } from '~/shared/stylist-api/clients-api.models';
 
 import { PageNames } from '~/core/page-names';
 
@@ -37,6 +36,6 @@ export class ClientDetailsComponent {
   }
 
   onCalendarClick(): void {
-    this.navCtrl.push(PageNames.ClientsCalendar, { clientUuid: this.clientDetails.uuid });
+    this.navCtrl.push(PageNames.ClientsCalendar, { client: this.clientDetails });
   }
 }

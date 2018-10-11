@@ -2,17 +2,14 @@
   <ion-toolbar class="Made-wp Made-wpContent ClientsCalendar-header">
     <ion-row justify-content-between>
       <div class="Made-h1 ClientsCalendar-title">
-        <ng-container *ngIf="clientUuid; else noClient">{{ this.getNamePossessiveForm(profile | async) }}Calendar Preview</ng-container>
+        <ng-container *ngIf="client; else noClient">{{ this.getNamePossessiveForm(client) }}Calendar Preview</ng-container>
         <ng-template #noClient>My Calendar</ng-template>
       </div>
-      <user-name-photo
-        *ngIf="profile | async"
-        [firstName]="(profile | async)?.first_name"
-        [lastName]="(profile | async)?.last_name"
-        [photoUrl]="(profile | async)?.profile_photo_url">
-      </user-name-photo>
+      <ng-container *ngIf="(profile | async) as profileData">
+        <user-name-photo [firstName]="profileData?.first_name" [lastName]="profileData?.last_name" [photoUrl]="profileData?.profile_photo_url"></user-name-photo>
+      </ng-container>
     </ion-row>
-    <div *ngIf="!clientUuid" class="ClientsCalendar-small">Calendar view of a new client</div>
+    <div *ngIf="!client" class="ClientsCalendar-small">Calendar view of a new client</div>
     <services-header-list [services]="services" [readonly]="false" (addService)="onAddService()"></services-header-list>
     <ion-row *ngIf="getRegularPrice(services) as regularPrice" class="ClientsCalendar-regularPrice" align-items-center>
       <span class="ClientsCalendar-small">Regular price</span><sup>$</sup><b>{{ regularPrice }}</b>

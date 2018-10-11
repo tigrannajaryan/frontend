@@ -1,3 +1,4 @@
+import { ISODateTime } from '~/shared/api/base.models';
 import { DayOffer } from '~/shared/api/price.models';
 
 export interface ClientModel {
@@ -11,6 +12,13 @@ export interface MyClientModel extends ClientModel {
   phone: string;
   city?: string;
   state?: string;
+}
+
+export interface ClientDetailsModel extends MyClientModel {
+  last_visit_datetime: ISODateTime;
+  last_services_names: string[];
+
+  email?: string;
 }
 
 export interface GetNearbyClientsResponse {

@@ -12,6 +12,7 @@ import { LoadProfileAction, ProfileState, selectProfile } from '~/core/component
 
 import { DataModule } from '~/core/data.module';
 import { ClientsApi } from '~/shared/stylist-api/clients-api';
+import { myClientsMock } from '~/shared/stylist-api/clients-api.mock';
 import { StylistServiceProvider } from '~/shared/stylist-api/stylist-service';
 import { categoryMock } from '~/shared/stylist-api/stylist-service-mock';
 
@@ -56,10 +57,8 @@ describe('Pages: Client’s Calendar ', () => {
 
     // Using setTimeout to be sure that all async work inside profile effects is done:
     setTimeout(async () => {
-      const profile = await store.select(selectProfile).first().toPromise();
-
       await instance.ionViewWillLoad();
-      instance.clientUuid = profile.uuid;
+      instance.client = myClientsMock[0];
       fixture.detectChanges();
 
       expect(fixture.nativeElement.textContent)
@@ -68,7 +67,7 @@ describe('Pages: Client’s Calendar ', () => {
         .not.toContain('Calendar view of a new client');
 
       expect(fixture.nativeElement.textContent)
-        .toContain(`${profile.first_name}’s Calendar Preview`);
+        .toContain(`${myClientsMock[0].first_name}’s Calendar Preview`);
 
       done();
     });
