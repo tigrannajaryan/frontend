@@ -12,7 +12,7 @@
         [photoUrl]="(profile | async)?.profile_photo_url">
       </user-name-photo>
     </ion-row>
-    <div class="ClientsCalendar-small">Calendar view of a new client</div>
+    <div *ngIf="!clientUuid" class="ClientsCalendar-small">Calendar view of a new client</div>
     <services-header-list [services]="services" [readonly]="false" (addService)="onAddService()"></services-header-list>
     <ion-row *ngIf="getRegularPrice(services) as regularPrice" class="ClientsCalendar-regularPrice" align-items-center>
       <span class="ClientsCalendar-small">Regular price</span><sup>$</sup><b>{{ regularPrice }}</b>

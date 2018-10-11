@@ -49,6 +49,8 @@ describe('Pages: Client’s Calendar ', () => {
 
     expect(fixture.nativeElement.textContent)
       .toContain('My Calendar');
+    expect(fixture.nativeElement.textContent)
+      .toContain('Calendar view of a new client');
 
     store.dispatch(new LoadProfileAction());
 
@@ -59,6 +61,11 @@ describe('Pages: Client’s Calendar ', () => {
       await instance.ionViewWillLoad();
       instance.clientUuid = profile.uuid;
       fixture.detectChanges();
+
+      expect(fixture.nativeElement.textContent)
+        .not.toContain('My Calendar');
+      expect(fixture.nativeElement.textContent)
+        .not.toContain('Calendar view of a new client');
 
       expect(fixture.nativeElement.textContent)
         .toContain(`${profile.first_name}’s Calendar Preview`);
