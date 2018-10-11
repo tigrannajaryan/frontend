@@ -44,15 +44,21 @@ describe('Pages: Client’s Calendar ', () => {
       .toBeTruthy();
   });
 
-  it('should show header', async done => {
+  it('should show proper header', async done => {
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.textContent)
+      .toContain('My Calendar');
+
     store.dispatch(new LoadProfileAction());
 
     // Using setTimeout to be sure that all async work inside profile effects is done:
     setTimeout(async () => {
-      await instance.ionViewWillLoad();
-      fixture.detectChanges();
-
       const profile = await store.select(selectProfile).first().toPromise();
+
+      await instance.ionViewWillLoad();
+      instance.clientUuid = profile.uuid;
+      fixture.detectChanges();
 
       expect(fixture.nativeElement.textContent)
         .toContain(`${profile.first_name}’s Calendar Preview`);
