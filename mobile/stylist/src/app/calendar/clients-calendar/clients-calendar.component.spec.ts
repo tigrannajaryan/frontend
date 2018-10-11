@@ -1,16 +1,14 @@
-import { of } from 'rxjs/observable/of';
-
 import { async, ComponentFixture } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-
 import { Store } from '@ngrx/store';
+import { of } from 'rxjs/observable/of';
 
 import { TestUtils } from '~/../test';
+
+import { LoadProfileAction, ProfileState } from '~/core/components/user-header/profile.reducer';
+import { DataModule } from '~/core/data.module';
 import { prepareSharedObjectsForTests } from '~/core/test-utils.spec';
 
-import { LoadProfileAction, ProfileState, selectProfile } from '~/core/components/user-header/profile.reducer';
-
-import { DataModule } from '~/core/data.module';
 import { ClientsApi } from '~/shared/stylist-api/clients-api';
 import { myClientsMock } from '~/shared/stylist-api/clients-api.mock';
 import { StylistServiceProvider } from '~/shared/stylist-api/stylist-service';
