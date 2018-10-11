@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { Content, NavParams, Slides } from 'ionic-angular';
+import { Content, NavController, NavParams, Slides } from 'ionic-angular';
 
 import { DiscountsApi } from '~/shared/stylist-api/discounts.api';
 import { MaximumDiscounts, MaximumDiscountsWithVars, WeekdayDiscount } from '~/shared/stylist-api/discounts.models';
@@ -47,6 +47,7 @@ export class DiscountsComponent {
 
   constructor(
     public navParams: NavParams,
+    private navCtrl: NavController,
     private discountsApi: DiscountsApi
   ) {
   }
@@ -124,5 +125,9 @@ export class DiscountsComponent {
       maximum_discount: this.maximumDiscounts.maximum_discount,
       is_maximum_discount_enabled: this.maximumDiscounts.is_maximum_discount_enabled
     }).get();
+  }
+
+  onMyCalendarClick(): void {
+    this.navCtrl.push(PageNames.ClientsCalendar);
   }
 }

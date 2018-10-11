@@ -1,4 +1,8 @@
-<ion-header madeBackHeader [hasBackButton]="isProfile"></ion-header>
+<ion-header madeBackHeader [hasBackButton]="isProfile">
+  <ion-buttons end>
+    <button (click)="onMyCalendarClick()" ion-button clear class="Link">My Calendar</button>
+  </ion-buttons>
+</ion-header>
 
 
 <ion-content no-padding>

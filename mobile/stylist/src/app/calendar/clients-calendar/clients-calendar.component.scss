@@ -13,20 +13,17 @@
     font-weight: bold;
     color: black;
 
-    small {
-      font-size: pxtovw(15px);
-      font-weight: normal;
-      color: color($grayscale, 500);
-    }
-
     sup {
       top: pxtovw(-1px);
       margin-left: pxtovw(8px);
       font-size: pxtovw(12px);
     }
   }
-}
 
-.ClientsCalendar {
-  padding-top: pxtovw(62px); // compensate hidden stuff in toolbar
+  .ClientsCalendar-small {
+    margin: pxtovw(2px) 0 pxtovw(3px);
+    font-size: pxtovw(15px);
+    font-weight: normal;
+    color: color($grayscale, 500);
+  }
 }

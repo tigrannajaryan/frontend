@@ -17,6 +17,8 @@ import { ProfileState, selectProfile } from '~/core/components/user-header/profi
   templateUrl: 'clients-calendar.component.html'
 })
 export class ClientsCalendarComponent {
+  clientUuid?: string;
+
   profile: Observable<StylistProfile>;
   prices: DayOffer[] = [];
   services: ServiceItem[] = [];
@@ -30,12 +32,12 @@ export class ClientsCalendarComponent {
   }
 
   ionViewWillLoad(): Promise<void> {
-    const clientUuid = this.navParams.get('clientUuid');
+    this.clientUuid = this.navParams.get('clientUuid');
 
     this.profile = this.store.select(selectProfile);
 
     // TODO: add loading state
-    return this.clientsApi.getPricing(clientUuid)
+    return this.clientsApi.getPricing(this.clientUuid)
       .combineLatest(Observable.from(this.servicesData.get()))
       .takeUntil(componentUnloaded(this))
       .map(([pricing, services]) => {
