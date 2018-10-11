@@ -8,7 +8,11 @@ import { ServerStatusTracker } from '~/shared/server-status-tracker';
 import { ApiResponse } from '~/shared/api/base.models';
 import { BaseService } from '~/shared/api/base-service';
 
-import { GetMyClientsResponse, GetNearbyClientsResponse } from '~/shared/stylist-api/clients-api.models';
+import {
+  GetMyClientsResponse,
+  GetNearbyClientsResponse,
+  GetPricingResponse
+} from '~/shared/stylist-api/clients-api.models';
 
 @Injectable()
 export class ClientsApi extends BaseService {
@@ -27,5 +31,9 @@ export class ClientsApi extends BaseService {
 
   getNearbyClients(): Observable<ApiResponse<GetNearbyClientsResponse>> {
     return this.get<GetNearbyClientsResponse>('stylist/nearby-clients');
+  }
+
+  getPricing(clientUuid?: string, serviceUuids?: string[]): Observable<ApiResponse<GetPricingResponse>> {
+    return this.post<GetPricingResponse>('stylist/clients/pricing', { client_uuid: clientUuid, service_uuids: serviceUuids });
   }
 }

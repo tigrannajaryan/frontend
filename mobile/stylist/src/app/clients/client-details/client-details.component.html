@@ -25,11 +25,10 @@
         <div class="MadeLinkList-cell isGrey" col-6 text-right data-test-id="lastService"><span *ngFor="let service of clientDetails.last_services_names">{{ service }}</span></div>
       </div>
 
-      <!-- Note: hide “View Client's Calendar” link for now since we don’t yet have this page. -->
-      <!-- <div class="MadeLinkList-row">
+      <div (click)="onCalendarClick()" class="MadeLinkList-row">
         <div class="MadeLinkList-cell">View Client's Calendar</div>
         <div class="MadeLinkList-cell isGrey" data-test-id="calendarLink"><i class="mb-icon-right-arrow"></i></div>
-      </div> -->
+      </div>
     </div>
   </div>
 </ion-content>

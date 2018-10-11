@@ -24,7 +24,6 @@ import { initSentry } from '~/shared/sentry';
 import { Logger } from '~/shared/logger';
 import { SharedSingletonsModule } from '~/shared/shared-singletons.module';
 import { AuthApiService } from '~/shared/stylist-api/auth-api-service';
-import { StylistServiceProvider } from '~/shared/stylist-api/stylist-service';
 import { ExternalAppService } from '~/shared/utils/external-app-service';
 
 import { AuthService } from '~/shared/api/auth.api';
@@ -60,6 +59,7 @@ import { AppointmentServicesComponent } from '~/appointment/appointment-services
 import { AuthPageComponent } from '~/auth/auth-start/auth-start.component';
 import { AuthConfirmPageComponent } from '~/auth/auth-confirm/auth-confirm.component';
 import { CalendarExampleComponent } from '~/register-salon/calendar-example/calendar-example.component';
+import { ClientsCalendarComponent } from '~/calendar/clients-calendar/clients-calendar.component';
 import { DiscountsComponent } from '~/discounts/discounts.component';
 import { DiscountsAlertComponent } from '~/discounts/discounts-alert/discounts-alert.component';
 import { DiscountsFirstBookingComponent } from '~/discounts/discounts-first-booking/discounts-first-booking.component';
@@ -134,6 +134,7 @@ const declarations = [
   AuthConfirmPageComponent,
   CalendarExampleComponent,
   ChangePercentComponent,
+  ClientsCalendarComponent,
   ConfirmCheckoutComponent,
   DiscountsComponent,
   DiscountsAlertComponent,
@@ -188,7 +189,6 @@ const declarations = [
     SplashScreen,
     AuthService,
     AuthApiService,
-    StylistServiceProvider,
     httpInterceptorProviders,
     AppVersion,
     AppStorage,

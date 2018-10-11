@@ -1,3 +1,5 @@
+import { DayOffer } from '~/shared/api/price.models';
+
 export interface ClientModel {
   first_name?: string;
   last_name?: string;
@@ -17,4 +19,10 @@ export interface GetNearbyClientsResponse {
 
 export interface GetMyClientsResponse {
   clients: MyClientModel[];
+}
+
+export interface GetPricingResponse {
+  prices: DayOffer[];
+  client_uuid?: string;
+  service_uuids?: string[];
 }
