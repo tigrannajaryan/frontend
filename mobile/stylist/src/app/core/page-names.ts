@@ -7,6 +7,7 @@ import { AppointmentServicesComponent } from '~/appointment/appointment-services
 import { AuthPageComponent } from '~/auth/auth-start/auth-start.component';
 import { AuthConfirmPageComponent } from '~/auth/auth-confirm/auth-confirm.component';
 import { ChangePercentComponent } from '~/core/popups/change-percent/change-percent.component';
+import { ClientsCalendarComponent } from '~/calendar/clients-calendar/clients-calendar.component';
 import { ConfirmCheckoutComponent } from '~/core/popups/confirm-checkout/confirm-checkout.component';
 import { DiscountsComponent } from '~/discounts/discounts.component';
 import { DiscountsAlertComponent } from '~/discounts/discounts-alert/discounts-alert.component';
@@ -50,6 +51,7 @@ export const PageNames = {
   CalendarExample: CalendarExampleComponent,
   ChangePercent: ChangePercentComponent,
   ClientDetails: ClientDetailsComponent,
+  ClientsCalendar: ClientsCalendarComponent,
   ConfirmCheckoutComponent,
   Discounts: DiscountsComponent,
   DiscountsAlert: DiscountsAlertComponent,

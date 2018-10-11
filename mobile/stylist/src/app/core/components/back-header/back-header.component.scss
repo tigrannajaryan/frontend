@@ -43,4 +43,13 @@
     margin-left: pxtovw(20px);
     font-size: pxtovw(18px);
   }
+
+  .Link {
+    padding: 0;
+    margin: 0;
+    font-size: $t-h3;
+    font-weight: bold;
+    color: color($colors, lightSalmon);
+    text-transform: none;
+  }
 }

@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
-import { NavParams } from 'ionic-angular';
+import { NavController, NavParams } from 'ionic-angular';
 
 import { ExternalAppService } from '~/shared/utils/external-app-service';
 
 import { ClientDetailsApi } from '~/shared/stylist-api/client-details.api';
-import { MyClientModel } from '~/shared/stylist-api/clients-api.models';
-import { ClientDetailsModel } from '~/shared/stylist-api/client-details.models';
+import { ClientDetailsModel, MyClientModel } from '~/shared/stylist-api/clients-api.models';
+
+import { PageNames } from '~/core/page-names';
 
 @Component({
   selector: 'client-details',
@@ -18,6 +19,7 @@ export class ClientDetailsComponent {
   constructor(
     private clientDetailsApi: ClientDetailsApi,
     private externalAppService: ExternalAppService,
+    private navCtrl: NavController,
     private navParams: NavParams
   ) {}
 
@@ -31,5 +33,9 @@ export class ClientDetailsComponent {
 
   onEmailClick(email: string): void {
     this.externalAppService.openMailApp(email);
+  }
+
+  onCalendarClick(): void {
+    this.navCtrl.push(PageNames.ClientsCalendar, { client: this.clientDetails });
   }
 }

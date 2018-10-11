@@ -6,7 +6,7 @@ import { Logger } from '~/shared/logger';
 import { ServerStatusTracker } from '~/shared/server-status-tracker';
 import { BaseService } from '~/shared/api/base-service';
 import { ApiResponse } from '~/shared/api/base.models';
-import { ClientDetailsModel } from '~/shared/stylist-api/client-details.models';
+import { ClientDetailsModel } from '~/shared/stylist-api/clients-api.models';
 
 /**
  * ClientDetailsApi allows getting details of the particular client of the stylist.

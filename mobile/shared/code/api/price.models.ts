@@ -1,8 +1,12 @@
 import { ISODate } from './base.models';
 
 export enum DiscountType {
+  FirstBooking = 'first_booking',
   FirstVisit = 'first-visit',
   FrequentVisit = 'frequent-visit',
+  RevisitWithin1Week = 'revisit_within_1_week',
+  RevisitWithin2Weeks = 'revisit_within_2_weeks',
+  RevisitWithin4Weeks = 'revisit_within_4_weeks',
   Weekday = 'weekday'
 }
 

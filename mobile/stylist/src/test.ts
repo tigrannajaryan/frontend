@@ -13,6 +13,7 @@ import 'zone.js/dist/fake-async-test';
 import 'rxjs/add/observable/from';
 
 import 'rxjs/add/operator/catch';
+import 'rxjs/add/operator/combineLatest';
 import 'rxjs/add/operator/delay';
 import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/first';
@@ -70,7 +71,11 @@ import { Clipboard } from '@ionic-native/clipboard';
 import { EmailComposer } from '@ionic-native/email-composer';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
 
-import { AppModule } from '~/app.module';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+
+import { profileReducer, profileStatePath } from '~/core/components/user-header/profile.reducer';
+import { ProfileEffects } from '~/core/components/user-header/profile.effects';
 
 import { AuthApiService } from '~/shared/stylist-api/auth-api-service';
 import { AuthApiServiceMock } from '~/shared/stylist-api/auth-api-service-mock';
@@ -84,11 +89,14 @@ import { WorktimeApi } from '~/shared/stylist-api/worktime.api';
 import { WorktimeApiMock } from '~/shared/stylist-api/worktime.api.mock';
 
 import { ExternalAppService } from '~/shared/utils/external-app-service';
+import { Logger } from '~/shared/logger';
 
 import { AppStorage } from '~/shared/storage/app-storage';
 import { AppStorageMock } from '~/shared/storage/app-storage-mock';
 import { HomeService } from '~/shared/stylist-api/home.service';
 import { HomeServiceMock } from '~/shared/stylist-api/home.service.mock';
+
+import { AppModule } from '~/app.module';
 
 declare const require: any;
 
@@ -129,7 +137,7 @@ export class TestUtils {
       providers: [
         App, Form, Keyboard, DomController, MenuController, NavController,
         NavParams, GestureController, AlertControllerMock, LoadingControllerMock,
-        Clipboard, EmailComposer,
+        Clipboard, EmailComposer, Logger,
         { provide: App, useClass: AppMock },
         { provide: Platform, useFactory: () => PlatformMock.instance() },
         { provide: StatusBar, useFactory: () => StatusBarMock.instance() },
@@ -168,6 +176,11 @@ export class TestUtils {
       ],
       imports: [
         IonicModule,
+        // ngrx
+        StoreModule.forRoot({}),
+        StoreModule.forFeature(profileStatePath, profileReducer),
+        EffectsModule.forRoot([]),
+        EffectsModule.forFeature([ProfileEffects]),
         ...imports
       ]
     });

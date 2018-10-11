@@ -4,11 +4,29 @@ import 'rxjs/add/observable/of';
 import * as faker from 'faker';
 
 import { ApiResponse } from '~/shared/api/base.models';
-import { StylistSummary } from './stylist-models';
+import {
+  ServiceCategory,
+  ServiceItem,
+  StylistProfile,
+  StylistServicesListResponse,
+  StylistSummary
+} from './stylist-models';
+
+export const serviceItemsMock: ServiceItem[] = [0, 0].map(() => ({
+  uuid: faker.random.uuid(),
+  name: faker.commerce.productName(),
+  base_price: Number(faker.commerce.price())
+}));
+
+export const categoryMock: ServiceCategory = {
+  uuid: faker.random.uuid(),
+  name: faker.commerce.productName(),
+  services: serviceItemsMock
+};
 
 export const profileSummaryMock = {
   profile: {
-    id: faker.random.number(),
+    uuid: faker.random.uuid(),
     first_name: faker.name.firstName(),
     last_name: faker.name.lastName(),
     phone: faker.phone.phoneNumber(),
@@ -59,7 +77,23 @@ export const profileSummaryMock = {
 @Injectable()
 export class StylistServiceMock {
 
+  getProfile(): Observable<ApiResponse<StylistProfile>> {
+    return Observable.of({ response: profileSummaryMock.profile });
+  }
+
   getStylistSummary(): Observable<ApiResponse<StylistSummary>> {
     return Observable.of({ response: profileSummaryMock });
+  }
+
+  getStylistServices(): Observable<ApiResponse<StylistServicesListResponse>> {
+    return Observable.of({
+      response: {
+        categories: [{
+          uuid: faker.random.uuid(),
+          name: faker.commerce.productName(),
+          services: serviceItemsMock
+        }]
+      }
+    });
   }
 }

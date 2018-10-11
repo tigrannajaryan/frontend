@@ -2,13 +2,16 @@ import { ModuleWithProviders, NgModule } from '@angular/core';
 import { IonicModule } from 'ionic-angular';
 
 import { ClientsApi } from '~/shared/stylist-api/clients-api';
+import { StylistServiceProvider } from '~/shared/stylist-api/stylist-service';
 
 import { AllClientsDataStore } from '~/clients/all-clients/all-clients.data';
 import { MyClientsDataStore } from '~/clients/my-clients/my-clients.data';
+import { StylistServicesDataStore } from '~/services/services-list/services.data';
 
 export enum DataCacheKey {
   allClients = 'allClients',
-  myClients = 'myClients'
+  myClients = 'myClients',
+  stylistServices = 'stylistServices'
 }
 
 /**
@@ -21,7 +24,8 @@ export enum DataCacheKey {
   // Add API service providers in the 'providers' array here
   providers: [
     // services
-    ClientsApi
+    ClientsApi,
+    StylistServiceProvider
   ]
 })
 export class DataModule {
@@ -33,7 +37,8 @@ export class DataModule {
       // of singletons.
       providers: [
         AllClientsDataStore,
-        MyClientsDataStore
+        MyClientsDataStore,
+        StylistServicesDataStore
       ]
     };
   }

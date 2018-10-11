@@ -1,0 +1,24 @@
+<ion-header madeBackHeader>
+  <ion-toolbar class="Made-wp Made-wpContent ClientsCalendar-header">
+    <ion-row justify-content-between>
+      <div class="Made-h1 ClientsCalendar-title">
+        <ng-container *ngIf="client; else noClient">{{ this.getNamePossessiveForm(client) }}Calendar Preview</ng-container>
+        <ng-template #noClient>My Calendar</ng-template>
+      </div>
+      <ng-container *ngIf="(profile | async) as profileData">
+        <user-name-photo [firstName]="profileData?.first_name" [lastName]="profileData?.last_name" [photoUrl]="profileData?.profile_photo_url"></user-name-photo>
+      </ng-container>
+    </ion-row>
+    <div *ngIf="!client" class="ClientsCalendar-small">Calendar view of a new client</div>
+    <services-header-list [services]="services" [readonly]="false" (addService)="onAddService()"></services-header-list>
+    <ion-row *ngIf="getRegularPrice(services) as regularPrice" class="ClientsCalendar-regularPrice" align-items-center>
+      <span class="ClientsCalendar-small">Regular price</span><sup>$</sup><b>{{ regularPrice }}</b>
+    </ion-row>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content no-padding>
+  <div class="Made-wp Made-wpContent ClientsCalendar">
+    <price-calendar [prices]="prices"></price-calendar>
+  </div>
+</ion-content>

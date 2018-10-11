@@ -9,6 +9,7 @@ import {
 import { loading } from '~/shared/utils/loading';
 import { ServiceTemplateSetResponse, StylistServiceProvider } from '~/shared/stylist-api/stylist-service';
 import { ServiceCategory, ServiceItem, ServiceTemplateItem, StylistServicesListResponse } from '~/shared/stylist-api/stylist-models';
+import { StylistServicesDataStore } from '~/services/services-list/services.data';
 
 import { showAlert } from '~/shared/utils/alert';
 import { PageNames } from '~/core/page-names';
@@ -41,11 +42,12 @@ export class ServicesListComponent {
   }
 
   constructor(
+    private alertCtrl: AlertController,
     public navCtrl: NavController,
     public navParams: NavParams,
     public modalCtrl: ModalController,
-    private stylistService: StylistServiceProvider,
-    private alertCtrl: AlertController
+    private servicesData: StylistServicesDataStore,
+    private stylistService: StylistServiceProvider
   ) {
   }
 
@@ -61,10 +63,10 @@ export class ServicesListComponent {
     if (uuid && uuid !== ServiceListType.blank) {
       response = (await loading(this, this.stylistService.getServiceTemplateSetByUuid(uuid))).response;
     } else if (uuid === ServiceListType.blank) {
-      response = (await loading(this, this.stylistService.getStylistServices())).response;
+      response = (await loading(this, this.servicesData.get())).response;
       response.categories = ServicesListComponent.buildBlankCategoriesList(response.categories);
     } else {
-      response = (await loading(this, this.stylistService.getStylistServices())).response;
+      response = (await loading(this, this.servicesData.get())).response;
     }
     this.categories = response.categories;
     this.timeGap = response.service_time_gap_minutes;
@@ -103,6 +105,9 @@ export class ServicesListComponent {
       }).get();
 
       if (response) {
+        // Refresh services list data
+        await this.servicesData.get({ refresh: true });
+
         this.navCtrl.push(PageNames.Worktime);
       }
     }
