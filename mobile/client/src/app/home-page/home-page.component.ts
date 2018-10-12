@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { App, Events, Refresher } from 'ionic-angular';
+import { App, Content, Events, Refresher } from 'ionic-angular';
 
 import { Logger } from '~/shared/logger';
 import { componentUnloaded } from '~/shared/component-unloaded';
@@ -27,6 +27,7 @@ export class HomePageComponent {
 
   // Declare refresher to make it accessible for loading() function
   @ViewChild(Refresher) refresher: Refresher;
+  @ViewChild(Content) content: Content;
 
   homeData: HomeResponse;
 
@@ -52,6 +53,13 @@ export class HomePageComponent {
 
   onHomeData(homeData: HomeResponse): void {
     this.homeData = homeData;
+
+    // Tell the content to recalculate its dimensions. According to Ionic docs this
+    // should be called after dynamically adding/removing headers, footers, or tabs.
+    // See https://ionicframework.com/docs/api/components/content/Content/#resize
+    if (this.content) {
+      this.content.resize();
+    }
   }
 
   onRefresh(invalidateCache = true): void {
