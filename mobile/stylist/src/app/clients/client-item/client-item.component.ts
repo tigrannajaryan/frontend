@@ -10,6 +10,6 @@ export class ClientItemComponent {
   @Input() isLoading: boolean;
   @Input() fullnameOnly: boolean; // when only pic and fullname are shown
   @Input() client: ClientModel | MyClientModel;
-
+  @Input() showArrow: boolean;
   @Output() clientClick = new EventEmitter<ClientModel | MyClientModel>();
 }
