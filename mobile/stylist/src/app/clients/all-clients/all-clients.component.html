@@ -15,7 +15,7 @@
     </ng-container>
 
     <ng-template #clientsList>
-      <client-item *ngFor="let client of clients | async" [client]="client" [fullnameOnly]="true"></client-item>
+      <client-item *ngFor="let client of clients | async" [client]="client" [fullnameOnly]="true" [showArrow]="false"></client-item>
     </ng-template>
   </div>
 </ion-content>
