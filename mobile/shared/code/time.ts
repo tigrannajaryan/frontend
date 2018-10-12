@@ -5,22 +5,31 @@ import * as moment from 'moment';
  */
 export class Time {
   readonly secondsSinceMidnight: number;
+  private timeMoment: moment.Moment;
 
   constructor(str: string) {
-    const m = moment(str, 'HH:mm:ss');
-    if (!m.isValid()) {
+    this.timeMoment = moment(str, 'HH:mm:ss');
+    if (!this.timeMoment.isValid()) {
       throw Error('Invalid time');
     }
 
-    const midnight = m.clone()
+    const midnight = this.timeMoment.clone()
       .startOf('day');
 
-    const diffSecs = m.diff(midnight, 'seconds');
+    const diffSecs = this.timeMoment.diff(midnight, 'seconds');
     this.secondsSinceMidnight = diffSecs;
   }
 
   laterThan(other: Time): boolean {
     return this.secondsSinceMidnight > other.secondsSinceMidnight;
+  }
+
+  toString(): string {
+    if (this.timeMoment.minutes()) {
+      return this.timeMoment.format('h:mma');
+    } else {
+      return this.timeMoment.format('ha');
+    }
   }
 }
 
@@ -41,6 +50,10 @@ export class TimeRange {
 
   durationInMins(): number {
     return (this.end.secondsSinceMidnight - this.start.secondsSinceMidnight) / 60;
+  }
+
+  toString(): string {
+    return `${this.start.toString()}-${this.end.toString()}`;
   }
 }
 
