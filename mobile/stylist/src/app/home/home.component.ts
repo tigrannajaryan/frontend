@@ -6,7 +6,8 @@ import {
   NavController, NavParams, Slides
 } from 'ionic-angular';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
 import * as deepEqual from 'fast-deep-equal';
 
 import { Logger } from '~/shared/logger';
@@ -22,6 +23,7 @@ import { LoadProfileAction, ProfileState, selectProfile } from '~/core/component
 import { ExternalAppService } from '~/shared/utils/external-app-service';
 import { formatNumber } from 'libphonenumber-js';
 import { NumberFormat } from '~/shared/directives/phone-input.directive';
+import { ApiResponse } from '~/shared/api/base.models';
 
 export enum AppointmentTag {
   NotCheckedOut = 'Not checked out',
@@ -85,6 +87,8 @@ export class HomeComponent {
   autoRefreshTimer: any;
   followers: number;
   todaySlots: number;
+
+  getHomeSubscription: Subscription;
 
   constructor(
     public navCtrl: NavController,
@@ -259,15 +263,23 @@ export class HomeComponent {
 
     this.isLoading = true;
     try {
-      const { response } = await this.homeService.getHome(query).get();
-      if (!response) {
-        return;
+      // Cancel request on the fly to prevent a bug:
+      // when you change the tabs speedily
+      // you may see appointments in the wrong tab
+      // because of response delay
+      if (this.getHomeSubscription) {
+        this.getHomeSubscription.unsubscribe();
       }
-      this.processHomeData(response);
-      // Tell the content to recalculate its dimensions. According to Ionic docs this
-      // should be called after dynamically adding/removing headers, footers, or tabs.
-      // See https://ionicframework.com/docs/api/components/content/Content/#resize
-      this.content.resize();
+      this.getHomeSubscription = this.homeService.getHome(query).subscribe(({ response }: ApiResponse<Home>) => {
+        if (!response) {
+          return;
+        }
+        this.processHomeData(response);
+        // Tell the content to recalculate its dimensions. According to Ionic docs this
+        // should be called after dynamically adding/removing headers, footers, or tabs.
+        // See https://ionicframework.com/docs/api/components/content/Content/#resize
+        this.content.resize();
+      });
     } finally {
       this.isLoading = false;
     }
