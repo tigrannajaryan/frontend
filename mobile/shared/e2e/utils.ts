@@ -87,7 +87,7 @@ export function getRandomEmail(): string {
 export function normalizePhoneNumber(phone: string, shortForm: boolean = true): string {
   const formattedPhone = formatNumber(parseNumber(phone, 'US'), 'International');
   return shortForm && /^\+1\s/.test(formattedPhone) ?
-    formatNumber.replace(/^\+1\s/, '').replace(/\s/g, '-') :
+    formattedPhone.replace(/^\+1\s/, '').replace(/\s/g, '-') :
     formattedPhone;
 }
 
