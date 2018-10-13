@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
-export function getPrice(value: string) {
+export function getPrice(value: string): string {
   const price = parseInt(value, 10);
   if (Number.isNaN(price)) {
     return '';
