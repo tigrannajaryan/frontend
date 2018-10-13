@@ -3,8 +3,8 @@
     Regular price
     <div>{{ getPrice(regularPrice) }}</div>
   </div>
-  <div *ngIf="price" class="Pricing-withSales">
+  <div *ngIf="clientPrice" class="Pricing-withSales">
     Your price
-    <div>{{ getPrice(price) }}</div>
+    <div>{{ getPrice(clientPrice) }}</div>
   </div>
 </div>

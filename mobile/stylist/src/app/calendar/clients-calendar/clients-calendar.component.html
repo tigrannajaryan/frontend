@@ -12,7 +12,7 @@
     <div *ngIf="!client" class="ClientsCalendar-small">Calendar view of a new client</div>
     <services-header-list (addService)="onAddService()" (deleteService)="onDeleteService($event)" [services]="services" [readonly]="false"></services-header-list>
     <ng-container *ngIf="getRegularPrice(services) as regularPrice">
-      <regular-price [regularPrice]="regularPrice"></regular-price>
+      <price-pair [regularPrice]="regularPrice"></price-pair>
     </ng-container>
   </ion-toolbar>
 </ion-header>

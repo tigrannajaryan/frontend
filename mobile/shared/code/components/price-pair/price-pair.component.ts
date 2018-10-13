@@ -2,14 +2,14 @@ import { Component, Input } from '@angular/core';
 import { getPrice } from '~/shared/pipes/price.pipe';
 
 @Component({
-  selector: 'regular-price',
-  templateUrl: 'regular-price.component.html'
+  selector: 'price-pair',
+  templateUrl: 'price-pair.component.html'
 })
-export class RegularPriceComponent {
+export class PricePairComponent {
   @Input() regularPrice: number;
-  @Input() price?: number;
+  @Input() clientPrice?: number;
 
-  getPrice(price: number) {
+  getPrice(price: number): string {
     return getPrice(price.toString());
   }
 }

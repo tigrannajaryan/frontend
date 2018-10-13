@@ -12,7 +12,7 @@ import { ContinueFooterComponent } from '~/shared/components/continue-footer/con
 import { MadeLinkDirective } from '~/shared/directives/made-link.directive';
 import { MbIconsComponent } from '~/shared/components/mb-icons/mb-icons.component';
 import { NumListComponent } from '~/shared/components/num-list/num-list.component';
-import { RegularPriceComponent } from '~/shared/components/regular-price/regular-price.component';
+import { PricePairComponent } from '~/shared/components/price-pair/price-pair.component';
 import { ServerStatusComponent } from '~/shared/server-status/server-status.component';
 
 import { InputNumberDirective } from '~/core/directives/input-number.directive';
@@ -52,7 +52,7 @@ const declarations = [
   PriceCalendarComponent,
   PricePipe,
   ProfileHeaderComponent,
-  RegularPriceComponent,
+  PricePairComponent,
   ServerStatusComponent,
   ServicesHeaderListComponent,
   UserNamePhotoComponent

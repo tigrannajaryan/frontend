@@ -7,7 +7,7 @@ import { CheckListComponent } from '~/shared/components/check-list/check-list.co
 import { NumListComponent } from '~/shared/components/num-list/num-list.component';
 import { PhoneInputComponent } from '~/shared/components/phone-input/phone-input.component';
 import { CodeInputComponent } from '~/shared/components/code-input/code-input.component';
-import { RegularPriceComponent } from '~/shared/components/regular-price/regular-price.component';
+import { PricePairComponent } from '~/shared/components/price-pair/price-pair.component';
 
 import { DiscountsApi } from '~/shared/stylist-api/discounts.api';
 
@@ -54,7 +54,7 @@ const components = [
   PhoneLinkComponent,
   CodeInputComponent,
   ClientItemComponent,
-  RegularPriceComponent
+  PricePairComponent
 ];
 
 @NgModule({

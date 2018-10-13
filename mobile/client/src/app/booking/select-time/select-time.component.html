@@ -7,10 +7,10 @@
 
 <ion-content class="SelectTimeslot">
   <div class="contentSidePadding">
-    <regular-price
+    <price-pair
       *ngIf="bookingData.offer"
       [regularPrice]="bookingData.offer?.totalRegularPrice"
-      [price]="bookingData.offer?.price"></regular-price>
+      [clientPrice]="bookingData.offer?.price"></price-pair>
 
     <div class="Spinner">
       <ion-spinner *ngIf="isLoading"></ion-spinner>
