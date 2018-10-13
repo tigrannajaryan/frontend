@@ -1,6 +1,8 @@
 import { $, browser, element, ElementFinder, ExpectedConditions, Locator, by } from 'protractor';
 import { formatNumber, parseNumber } from 'libphonenumber-js';
 
+import { getLocalNumber } from '~/shared/utils/phone-numbers';
+
 const waitTimeout = 10000; // ms
 
 /**
@@ -84,8 +86,9 @@ export function getRandomEmail(): string {
   return `test-${getRandomString(20)}@madebeauty.com`;
 }
 
-export function normalizePhoneNumber(phone: string): string {
-  return formatNumber(parseNumber(phone, 'US'), 'International');
+export function normalizePhoneNumber(phone: string, shortForm: boolean = true): string {
+  const formattedPhone = formatNumber(parseNumber(phone, 'US'), 'International');
+  return shortForm ? getLocalNumber(formattedPhone) : phone;
 }
 
 /**
