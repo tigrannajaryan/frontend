@@ -5,7 +5,6 @@ import { ExternalAppService } from '~/shared/utils/external-app-service';
 import { getLocalNumber } from '~/shared/utils/phone-numbers';
 import { NumberFormat } from '~/shared/directives/phone-input.directive';
 
-
 @Component({
   selector: 'phone-link',
   templateUrl: 'phone-link.component.html'
