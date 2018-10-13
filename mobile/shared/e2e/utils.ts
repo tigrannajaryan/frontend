@@ -88,7 +88,7 @@ export function normalizePhoneNumber(phone: string, shortForm: boolean = true): 
   const formattedPhone = formatNumber(parseNumber(phone, 'US'), 'International');
   return shortForm && /^\+1\s/.test(formattedPhone) ?
     formatNumber.replace(/^\+1\s/, '').replace(/\s/g, '-') :
-    phone;
+    formattedPhone;
 }
 
 /**
