@@ -113,7 +113,10 @@ export const nonFieldErrorMsgs = new Map<NonFieldErrorCode, string>([
   ['err_orig_iat_is_required', 'Internal error: malformed token.'],
   ['err_wait_to_rerequest_new_code', 'Minimum 2 minutes wait required to re-request new code.'],
   ['err_available_time_not_set', 'Day marked as available, but time is not set.'],
-  ['err_stylist_location_unavailable', 'We cannot determine your area from your address. Please make sure to specify a correct address in your profile.']
+  [
+    'err_stylist_location_unavailable',
+    'We cannot determine your area from your address. Please make sure to specify a correct address in your profile.'
+  ]
 ]);
 
 /**
