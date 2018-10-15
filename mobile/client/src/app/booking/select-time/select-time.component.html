@@ -7,14 +7,10 @@
 
 <ion-content class="SelectTimeslot">
   <div class="contentSidePadding">
-    <div *ngIf="bookingData.offer" class="SelectTimeslot-pricing">
-      <div class="SelectTimeslot-pricingRegular">Regular price
-        <div>{{ bookingData.offer?.totalRegularPrice | price }}</div>
-      </div>
-      <div class="SelectTimeslot-pricingYour">Your price
-        <div>{{ bookingData.offer?.price | price }}</div>
-      </div>
-    </div>
+    <price-pair
+      *ngIf="bookingData.offer"
+      [regularPrice]="bookingData.offer?.totalRegularPrice"
+      [clientPrice]="bookingData.offer?.price"></price-pair>
 
     <div class="Spinner">
       <ion-spinner *ngIf="isLoading"></ion-spinner>

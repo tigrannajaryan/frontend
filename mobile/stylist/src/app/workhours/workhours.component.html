@@ -2,63 +2,59 @@
 
 
 <ion-content no-padding>
-  <made-nav *ngIf="!isProfile" [activePage]="PageNames.Worktime"></made-nav>
+  <made-nav *ngIf="!isProfile" [activePage]="PageNames.WorkHours"></made-nav>
 
 
   <div class="Made-wp Made-wpContent">
-    <div class="Made-h1">Worktime</div>
+    <div class="Made-h1">My Hours</div>
 
     <!-- Show spinner if loading is in progress -->
     <div class="Spinner">
       <ion-spinner *ngIf="isLoading"></ion-spinner>
     </div>
 
-    <div class="Made-text">
-      <div class="Made-textItem">
-        Tap to block days you don't work and adjust your work hours.
+    <div class="Workingtime-Summary">
+      <div *ngFor="let card of cards; let index = index">
+        {{ card.getSummaryStr() }}
       </div>
     </div>
 
-
+    <div class="Made-textItem Workingtime-Infotext">
+      Tap to block days you don't work and adjust your work hours.
+    </div>
 
     <!--shifts block start -->
     <div *ngFor="let card of cards; let index = index" class="Workingtime" [attr.data-test-id]="index">
       <button *ngIf="cards.length > 1" (click)="deleteCard(index)" ion-button clear class="Workingtime-delete">
-        <ion-icon name="ios-trash-outline"></ion-icon>
+        <i class="mb-icon-trash"></i>
       </button>
 
       <div class="Workingtime-head">
         <div class="Workingtime-headItem">
           <ion-label class="Workingtime-headLabel">Start</ion-label>
-          <ion-datetime (ionChange)="autoSave()" [(ngModel)]="card.workStartAt" displayFormat="h:mma" pickerFormat="h mm A" class="Workingtime-headTime"></ion-datetime>
+          <ion-datetime (ionChange)="autoSave()" [(ngModel)]="card.workStartAt" displayFormat="h:mma" pickerFormat="h mm A"
+            class="Workingtime-headTime"></ion-datetime>
         </div>
         <div class="Workingtime-headItem">
           <ion-label class="Workingtime-headLabel">End</ion-label>
           <ion-datetime (ionChange)="autoSave()" [(ngModel)]="card.workEndAt" displayFormat="h:mma" class="Workingtime-headTime"></ion-datetime>
         </div>
-        <div class="Workingtime-headItemBig">
-          <ion-label class="Workingtime-headLabel">Duration</ion-label>
-          <span class="Workingtime-headTime">{{ card.getDurationStr() }}</span>
-        </div>
+        <div class="Workingtime-headItemPadding"></div>
       </div>
 
-
       <div class="Workingtime-days">
-        <div
-          *ngFor="let day of card.weekdays; let index = index"
-          [class.is-available]="day.enabled" class="Workingtime-daysItem"
+        <div *ngFor="let day of card.weekdays; let index = index" [class.is-available]="day.enabled" class="Workingtime-daysItem"
           [attr.data-test-id]="'weekDayBox'+index">
           <span (click)="toggleWeekday(day)" [attr.data-test-id]="'weekDayLabel'+index">{{ day.label }}</span>
         </div>
       </div>
     </div>
 
-
     <h3 class="Workingtime-info">Tap button below to add another shift</h3>
 
     <ion-row text-center>
       <ion-col col-2></ion-col>
-      <ion-col col-8><button (click)="addNewCard()" class="Discounts-btn" ion-button>Add new shift</button></ion-col>
+      <ion-col col-8><button (click)="addNewCard()" class="Discounts-btn" ion-button>Add New Shift</button></ion-col>
       <ion-col col-2></ion-col>
     </ion-row>
   </div>

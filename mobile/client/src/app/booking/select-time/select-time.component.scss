@@ -1,44 +1,4 @@
 .SelectTimeslot {
-  .SelectTimeslot-pricing {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    font-size: $t-base;
-    color: color($grayscale, 500);
-  }
-
-  .SelectTimeslot-pricingRegular {
-    align-self: flex-start;
-    color: color($grayscale, 500);
-  }
-
-  .SelectTimeslot-pricingRegular div {
-    display: inline-block;
-    font-size: $t-h3;
-    font-weight: bold;
-    line-height: pxtovw(22px);
-    color: color($grayscale, 800);
-  }
-
-  .SelectTimeslot-pricingYour {
-    align-self: flex-end;
-    justify-content: flex-end;
-  }
-
-  .SelectTimeslot-pricingYour div {
-    display: inline-block;
-    font-size: $t-h3;
-    font-weight: bold;
-    line-height: pxtovw(23px);
-    color: color($colors, mint);
-  }
-
-  .SelectTimeslot-pricingYour div:first-letter,
-  .SelectTimeslot-pricingRegular div:first-letter {
-    font-size: pxtovw(14px);
-    vertical-align: text-top;
-  }
-
   .SelectTimeslot-sectionTitle {
     margin: pxtovw(20px) 0 pxtovw(15px);
     font-size: $t-base;

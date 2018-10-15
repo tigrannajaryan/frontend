@@ -30,7 +30,7 @@ export class MadeNavComponent {
     { name: 'Personal Info', page: PageNames.RegisterSalon },
     { name: 'Welcome', page: PageNames.WelcomeToMade },
     { name: 'Services', page: PageNames.Services },
-    { name: 'Worktime', page: PageNames.Worktime },
+    { name: 'My Hours', page: PageNames.WorkHours },
     { name: 'Welcome', page: PageNames.HowPricingWorks },
     { name: 'Daily', page: PageNames.DiscountsWeekday },
     { name: 'Revisit', page: PageNames.DiscountsRevisit },
