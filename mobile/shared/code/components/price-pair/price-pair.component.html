@@ -1,0 +1,10 @@
+<div class="Pricing">
+  <div class="Pricing-regular">
+    Regular price
+    <div>{{ getPrice(regularPrice) }}</div>
+  </div>
+  <div *ngIf="clientPrice" class="Pricing-withSales">
+    Your price
+    <div>{{ getPrice(clientPrice) }}</div>
+  </div>
+</div>

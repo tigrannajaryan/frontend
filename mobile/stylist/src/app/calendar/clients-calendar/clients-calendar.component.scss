@@ -7,17 +7,8 @@
     flex: 1;
   }
 
-  .ClientsCalendar-regularPrice {
-    margin-top: 16px;
-    font-size: pxtovw(21px);
-    font-weight: bold;
-    color: black;
-
-    sup {
-      top: pxtovw(-1px);
-      margin-left: pxtovw(8px);
-      font-size: pxtovw(12px);
-    }
+  .Pricing {
+    margin: 16px 0 4px;
   }
 
   .ClientsCalendar-small {
@@ -26,4 +17,8 @@
     font-weight: normal;
     color: color($grayscale, 500);
   }
+}
+
+.ClientsCalendar {
+  padding-top: 66px;
 }
