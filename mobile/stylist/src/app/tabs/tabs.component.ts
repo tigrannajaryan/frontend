@@ -33,7 +33,7 @@ export class TabsComponent {
     },
     {
       name: 'Hours',
-      link: PageNames.Worktime,
+      link: PageNames.WorkHours,
       params: { isProfile: true }
     },
     {

@@ -6,6 +6,8 @@ export enum WeekdayIso {
 // To get weekday full name, e.g. WEEKDAY_FULL_NAMES[WeekdayIso.Fri]
 export const WEEKDAY_FULL_NAMES = [undefined, 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
+export const WEEKDAY_SHORT_NAMES = [undefined, 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+
 /**
  * Get today’s weekday ISO value (from 1 to 7)
  * JS 0(Sun)..6(Sat) –> ISO 1(Mon)..7(Sun)
