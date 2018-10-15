@@ -39,7 +39,7 @@ export function createNavHistoryList(profileStatus: StylistProfileStatus): PageD
     return pages;
   }
 
-  pages.push({ page: PageNames.Worktime });
+  pages.push({ page: PageNames.WorkHours });
   if (!profileStatus.has_business_hours_set) {
     return pages;
   }

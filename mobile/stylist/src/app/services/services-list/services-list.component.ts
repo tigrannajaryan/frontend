@@ -108,7 +108,7 @@ export class ServicesListComponent {
         // Refresh services list data
         await this.servicesData.get({ refresh: true });
 
-        this.navCtrl.push(PageNames.Worktime);
+        this.navCtrl.push(PageNames.WorkHours);
       }
     }
   }

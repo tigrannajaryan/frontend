@@ -44,6 +44,10 @@ $grayscale: (
   800: black,
 );
 
+$fontWeights: (
+  semibold: 600
+);
+
 $colors: (
   light:      color($grayscale, 100),
   medium-dark:color($grayscale, 600),

@@ -97,7 +97,9 @@ describe('Pages: Client’s Calendar ', () => {
     }, 0);
 
     expect(fixture.nativeElement.textContent)
-      .toContain(`Regular price$${regularPrice}`);
+      .toContain('Regular price');
+    expect(fixture.nativeElement.textContent)
+      .toContain(`$${regularPrice}`);
 
     done();
   });

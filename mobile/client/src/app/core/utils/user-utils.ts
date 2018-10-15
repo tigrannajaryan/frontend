@@ -1,7 +1,7 @@
 import { ProfileCompleteness, ProfileModel } from '~/core/api/profile.models';
 
 export function checkProfileCompleteness(fields: ProfileModel): ProfileCompleteness {
-  const { birthday, city, state, ...profileCompleteness } = fields;
+  const { birthday, city, privacy, state, ...profileCompleteness } = fields;
 
   const fieldsValuesArray = Object.keys(profileCompleteness).map(key => fields[key]);
   const complete = fieldsValuesArray.reduce((previousValue, currentValue, index, array) => {
