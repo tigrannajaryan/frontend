@@ -78,10 +78,10 @@ import { ServicesListComponent } from '~/services/services-list/services-list.co
 import { ServiceItemComponent } from '~/services/services-item/services-item.component';
 import { TabsComponent } from '~/tabs/tabs.component';
 import { WelcomeToMadeComponent } from '~/discounts/welcome-to-made/welcome-to-made.component';
-import { WorktimeComponent } from '~/worktime/worktime.component';
 import { UiKitPreviewComponent } from '~/ui-kit-preview/ui-kit-preview.component';
 import { servicesReducer } from '~/appointment/appointment-services/services.reducer';
 import { ServicesEffects } from '~/appointment/appointment-services/services.effects';
+import { WorkHoursComponent } from '~/workhours/workhours.component';
 
 initSentry();
 
@@ -155,7 +155,7 @@ const declarations = [
   TabsComponent,
   UiKitPreviewComponent,
   WelcomeToMadeComponent,
-  WorktimeComponent
+  WorkHoursComponent
 ];
 
 @NgModule({

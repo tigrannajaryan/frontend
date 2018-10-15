@@ -11,9 +11,9 @@
     </ion-row>
     <div *ngIf="!client" class="ClientsCalendar-small">Calendar view of a new client</div>
     <services-header-list (addService)="onAddService()" (deleteService)="onDeleteService($event)" [services]="services" [readonly]="false"></services-header-list>
-    <ion-row *ngIf="getRegularPrice(services) as regularPrice" class="ClientsCalendar-regularPrice" align-items-center>
-      <span class="ClientsCalendar-small">Regular price</span><sup>$</sup><b>{{ regularPrice }}</b>
-    </ion-row>
+    <ng-container *ngIf="getRegularPrice(services) as regularPrice">
+      <price-pair [regularPrice]="regularPrice"></price-pair>
+    </ng-container>
   </ion-toolbar>
 </ion-header>
 

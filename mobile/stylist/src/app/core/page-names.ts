@@ -26,7 +26,7 @@ import { ServicesListComponent } from '~/services/services-list/services-list.co
 import { ServiceItemComponent } from '~/services/services-item/services-item.component';
 import { TabsComponent } from '~/tabs/tabs.component';
 import { WelcomeToMadeComponent } from '~/discounts/welcome-to-made/welcome-to-made.component';
-import { WorktimeComponent } from '~/worktime/worktime.component';
+import { WorkHoursComponent } from '~/workhours/workhours.component';
 import { CalendarExampleComponent } from '~/register-salon/calendar-example/calendar-example.component';
 import { ClientDetailsComponent } from '~/clients/client-details/client-details.component';
 
@@ -70,5 +70,5 @@ export const PageNames = {
   ServicesList: ServicesListComponent,
   Tabs: TabsComponent,
   WelcomeToMade: WelcomeToMadeComponent,
-  Worktime: WorktimeComponent
+  WorkHours: WorkHoursComponent
 };

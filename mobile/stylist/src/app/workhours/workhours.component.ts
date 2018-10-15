@@ -4,7 +4,7 @@ import { NavController, NavParams } from 'ionic-angular';
 import { Workday, Worktime } from '~/shared/stylist-api/worktime.models';
 import { WorktimeApi } from '~/shared/stylist-api/worktime.api';
 import { convertMinsToHrsMins, Time, TimeRange } from '~/shared/time';
-import { WeekdayIso } from '~/shared/weekday';
+import { WEEKDAY_SHORT_NAMES, WeekdayIso } from '~/shared/weekday';
 import { Logger } from '~/shared/logger';
 
 import { PageNames } from '~/core/page-names';
@@ -26,20 +26,45 @@ interface VisualWeekday {
  * Represents a week card with start/end times and
  * the list of weekdays.
  */
-class VisualWeekCard {
+export class VisualWeekCard {
+  readonly weekdays: VisualWeekday[];
+  private timeRange: TimeRange;
+  private _workStartAt: string;
+  private _workEndAt: string;
+
+  get workStartAt(): string {
+    return this._workStartAt;
+  }
+
+  set workStartAt(v: string) {
+    this._workStartAt = v;
+    this.recalcTimeRange();
+  }
+
+  get workEndAt(): string {
+    return this._workEndAt;
+  }
+
+  set workEndAt(v: string) {
+    this._workEndAt = v;
+    this.recalcTimeRange();
+  }
+
   constructor(
-    readonly workStartAt: string,
-    readonly workEndAt: string,
-    readonly weekdays: VisualWeekday[]) { }
+    workStartAt: string,
+    workEndAt: string,
+    weekdays: VisualWeekday[]
+  ) {
+    this._workStartAt = workStartAt;
+    this._workEndAt = workEndAt;
+    this.recalcTimeRange();
+    this.weekdays = weekdays.sort((a, b) => a.weekdayIso - b.weekdayIso);
+  }
 
   calcDurationInMins(): number {
-    try {
-      const timeRange = new TimeRange(
-        new Time(this.workStartAt),
-        new Time(this.workEndAt));
-
-      return timeRange.durationInMins();
-    } catch (e) {
+    if (this.timeRange) {
+      return this.timeRange.durationInMins();
+    } else {
       // For visualization purposes invalid time range
       // should be shown as zero duration.
       return 0;
@@ -48,6 +73,69 @@ class VisualWeekCard {
 
   getDurationStr(): string {
     return convertMinsToHrsMins(this.calcDurationInMins());
+  }
+
+  getSummaryStr(): string {
+    if (this.weekdays.length < 1) {
+      return '';
+    }
+
+    let result = '';
+
+    let lastStart;
+    for (let i = 0; i < this.weekdays.length;) {
+      // Find next enabled day
+      while (i < this.weekdays.length && !this.weekdays[i].enabled) {
+        i++;
+      }
+
+      if (i < this.weekdays.length) {
+        lastStart = this.weekdays[i];
+      } else {
+        // Couldn't find, end.
+        break;
+      }
+
+      // Find next disabled day
+      while (i < this.weekdays.length && this.weekdays[i].enabled) {
+        i++;
+      }
+
+      // We now have a continuous enabled day block
+
+      if (result) {
+        // Add comma to previous result
+        result = `${result}, `;
+      }
+
+      if (this.weekdays[i - 1].weekdayIso - lastStart.weekdayIso > 0) {
+        // Block is more than day, use "Mon - Wed" format.
+        // tslint:disable-next-line:prefer-template
+        result = result +
+          WEEKDAY_SHORT_NAMES[lastStart.weekdayIso] + ' - ' +
+          WEEKDAY_SHORT_NAMES[this.weekdays[i - 1].weekdayIso];
+      } else {
+        // One day block, use "Mon" format.
+        result = result +
+          WEEKDAY_SHORT_NAMES[lastStart.weekdayIso];
+      }
+    }
+
+    if (result && this.timeRange) {
+      // Add time to the result
+      result = `${result}: ${this.timeRange.toString()}`;
+    }
+    return result;
+  }
+
+  private recalcTimeRange(): void {
+    try {
+      this.timeRange = new TimeRange(
+        new Time(this.workStartAt),
+        new Time(this.workEndAt));
+    } catch {
+      this.timeRange = undefined;
+    }
   }
 }
 
@@ -64,9 +152,9 @@ type HourRange = [string, string];
 
 @Component({
   selector: 'page-hours',
-  templateUrl: 'worktime.component.html'
+  templateUrl: 'workhours.component.html'
 })
-export class WorktimeComponent {
+export class WorkHoursComponent {
   protected PageNames = PageNames;
   isProfile?: Boolean;
 
@@ -94,7 +182,7 @@ export class WorktimeComponent {
     return new VisualWeekCard(
       defaultStartTime,
       defaultEndTime,
-      WorktimeComponent.createWeekdays(enabled)
+      WorkHoursComponent.createWeekdays(enabled)
     );
   }
 
@@ -140,7 +228,7 @@ export class WorktimeComponent {
   }
 
   addNewCard(): void {
-    this.cards.push(WorktimeComponent.createCard(false));
+    this.cards.push(WorkHoursComponent.createCard(false));
   }
 
   deleteCard(index: number): void {
@@ -186,7 +274,7 @@ export class WorktimeComponent {
           card = new VisualWeekCard(
             weekday.work_start_at,
             weekday.work_end_at,
-            WorktimeComponent.createWeekdays(false)
+            WorkHoursComponent.createWeekdays(false)
           );
           cardsMapByTime.set(cardKey, card);
         }
@@ -213,7 +301,7 @@ export class WorktimeComponent {
     if (cardsArray.length === 0) {
       // No cards in the input data, but must have at least one card
       // so create one with all days enabled.
-      cardsArray.push(WorktimeComponent.createCard(true));
+      cardsArray.push(WorkHoursComponent.createCard(true));
     }
 
     return cardsArray;

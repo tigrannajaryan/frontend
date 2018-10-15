@@ -14,6 +14,7 @@ export interface ProfileModel extends ProfileImageModel {
   city?: string;
   state?: string;
   instagram_url?: string;
+  privacy?: string;
 }
 
 export interface ProfileCompleteness {
