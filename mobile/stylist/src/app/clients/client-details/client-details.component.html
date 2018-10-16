@@ -16,13 +16,23 @@
     </div>
 
     <div class="MadeLinkList ClientInfo-List">
-      <div *ngIf="clientDetails?.last_visit_datetime" class="MadeLinkList-row">
+      <div class="MadeLinkList-row">
         <div class="MadeLinkList-cell">Last Visit</div>
-        <div class="MadeLinkList-cell isGrey" data-test-id="lastVisit">{{ clientDetails.last_visit_datetime | date: 'LLLL dd, yyyy' }}</div>
+        <div class="MadeLinkList-cell isGrey" col-6 text-right data-test-id="lastVisit">
+          <ng-container *ngIf="clientDetails?.last_visit_datetime; else noLastVisitDatetime">
+            {{ clientDetails.last_visit_datetime | date: 'LLLL dd, yyyy' }}
+          </ng-container>
+          <ng-template #noLastVisitDatetime>None Yet</ng-template>
+        </div>
       </div>
-      <div *ngIf="clientDetails?.last_services_names" class="MadeLinkList-row">
+      <div class="MadeLinkList-row">
         <div class="MadeLinkList-cell">Last Service</div>
-        <div class="MadeLinkList-cell isGrey" col-6 text-right data-test-id="lastService"><span *ngFor="let service of clientDetails.last_services_names">{{ service }}</span></div>
+        <div class="MadeLinkList-cell isGrey" col-6 text-right data-test-id="lastService">
+          <ng-container *ngIf="clientDetails?.last_services_names?.length > 0; else noLastServices">
+            <span *ngFor="let service of clientDetails.last_services_names">{{ service }}</span>
+          </ng-container>
+          <ng-template #noLastServices>None Yet</ng-template>
+        </div>
       </div>
 
       <div (click)="onCalendarClick()" class="MadeLinkList-row">
