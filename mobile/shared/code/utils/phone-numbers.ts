@@ -1,6 +1,19 @@
 import { CountryCode, formatNumber, parseNumber } from 'libphonenumber-js';
 
 /**
+ * Show local number for listed countries:
+ *
+ * Canada (+1),
+ * US (+1).
+ */
+export function getLocalNumber(phone: string): string {
+  if (/^\+1\s/.test(phone)) { // US, Canada
+    return phone.replace(/^\+1\s/, '').replace(/\s/g, '-');
+  }
+  return phone;
+}
+
+/**
  * Validate and format a phone number string as a number in default country
  * or as international number and returns details of parsing.
  * If the number is valid returns it in normalized form.

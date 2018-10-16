@@ -4,11 +4,14 @@ import { formatNumber } from 'libphonenumber-js';
 import { TestUtils } from '~/../test';
 
 import { NumberFormat } from '~/shared/directives/phone-input.directive';
-import { ProfileSummaryComponent } from '~/profile/profile-summary/profile-summary.component';
+import { getLocalNumber } from '~/shared/utils/phone-numbers';
+
 import { ProfileApiMock, profileNotCompleate } from '~/core/api/profile-api.mock';
 import { ProfileApi } from '~/core/api/profile-api';
 import { ProfileModel } from '~/core/api/profile.models';
 import { checkProfileCompleteness } from '~/core/utils/user-utils';
+
+import { ProfileSummaryComponent } from '~/profile/profile-summary/profile-summary.component';
 
 let fixture: ComponentFixture<ProfileSummaryComponent>;
 let instance: ProfileSummaryComponent;
@@ -50,13 +53,16 @@ describe('Pages: Profile summary', () => {
       expect(userName.innerText).toBe(`${instance.profile.first_name} ${instance.profile.last_name}`);
 
       const phone = fixture.nativeElement.querySelector('[data-test-id=phone]');
-      expect(phone.innerText).toBe(formatNumber(instance.profile.phone, NumberFormat.International));
+      expect(phone.innerText).toBe(
+        getLocalNumber(formatNumber(instance.profile.phone, NumberFormat.International))
+      );
 
       const email = fixture.nativeElement.querySelector('[data-test-id=email]');
       expect(email.innerText).toBe(instance.profile.email);
 
       const fixtureAddress = fixture.nativeElement.querySelector('[data-test-id=address]');
-      const instanceAddress = `${ instance.profile.city } ${ instance.profile.city && instance.profile.state ? ', ' : '' }${ instance.profile.state }`;
+      const instanceAddress =
+        `${ instance.profile.city } ${ instance.profile.city && instance.profile.state ? ', ' : '' }${ instance.profile.state }`;
       expect(fixtureAddress.innerText.trim()).toBe(instanceAddress.trim());
 
       const isProfileComplete = fixture.nativeElement.querySelector('[data-test-id=isProfileComplete]');
