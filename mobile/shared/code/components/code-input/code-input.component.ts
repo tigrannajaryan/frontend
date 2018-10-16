@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 
 export interface CodeData {
@@ -10,7 +10,7 @@ export interface CodeData {
   selector: 'code-input',
   templateUrl: 'code-input.component.html'
 })
-export class CodeInputComponent {
+export class CodeInputComponent implements AfterViewInit {
   static CODE_LENGTH = 6;
 
   digits = Array(CodeInputComponent.CODE_LENGTH).fill(undefined);
@@ -28,7 +28,16 @@ export class CodeInputComponent {
 
   @ViewChild('input') codeInput;
 
+  // Prevents firing focus event
   isScrolled = false;
+
+  // Get native input (for more details see https://forum.ionicframework.com/t/ion-input-and-the-nativeelement/82049)
+  @ViewChild('input', { read: ElementRef }) codeInputRef;
+  nativeInput: HTMLInputElement;
+
+  ngAfterViewInit(): void {
+    this.nativeInput = this.codeInputRef.nativeElement.querySelector('input');
+  }
 
   autofocus(): void {
     // Autofocus code input.
@@ -50,17 +59,19 @@ export class CodeInputComponent {
     }
   }
 
+  // Note: using (ionChange)="onInput($event)" because of a strange bug: doubled onInput and therefor doubled code confirm request
+  // (more info https://github.com/ionic-team/ionic/issues/12432)
   onInput(event: any): void {
     this.emitOnChange();
 
-    if (this.code.value.length >= CodeInputComponent.CODE_LENGTH) {
+    if (this.codeInput.value.length >= CodeInputComponent.CODE_LENGTH) {
       // Scroll code input to the left to prevent numbers changing their position in boxes.
       // isScrolled=true should prevent clearing out the input when the focus event is fired.
       this.isScrolled = true;
-      event.target.selectionStart = event.target.selectionEnd = 0;
-      event.target.scrollLeft = 0;
+      this.nativeInput.selectionStart = this.nativeInput.selectionEnd = 0;
+      this.nativeInput.scrollLeft = 0;
       this.isScrolled = false;
-      event.target.blur();
+      this.nativeInput.blur();
     }
   }
 
