@@ -23,7 +23,7 @@ export class StylistsEffects {
     .pipe(debounce(() => timer(StylistsEffects.SEARCHING_DELAY)))
     .withLatestFrom(this.store)
     .switchMap(([action, state]) =>
-      this.stylistsService.search(action.query)
+      this.stylistsService.search(action.params)
         .map(({ response, error }) => {
           if (error) {
             return new SearchStylistsErrorAction(error);

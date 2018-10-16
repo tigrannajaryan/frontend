@@ -2,9 +2,7 @@ import { ModuleWithProviders, NgModule } from '@angular/core';
 import { IonicModule } from 'ionic-angular';
 
 import { AppointmentsApi } from '~/core/api/appointments.api';
-import { AppointmentsApiMock } from '~/core/api/appointments.api.mock';
 import { AppointmentsDataStore } from '~/core/api/appointments.datastore';
-
 import { AuthProcessState } from '~/shared/storage/auth-process-state';
 import { AuthService } from '~/shared/api/auth.api';
 import { BookingData } from '~/core/api/booking.data';
@@ -28,7 +26,6 @@ import { ProfileDataStore } from '~/profile/profile.data';
   providers: [
     // services
     AppointmentsApi,
-    AppointmentsApiMock, // TODO: remove
     AuthService,
     BookingApi,
     BookingApiMock,

@@ -7,11 +7,12 @@ import { BaseServiceMock } from '~/shared/api/base-service.mock';
 import {
   PreferredStylistsListResponse,
   SetPreferredStylistResponse,
-  StylistsListResponse
+  StylistsListResponse,
+  StylistsSearchParams
 } from '~/shared/api/stylists.models';
 import { randomPhone } from '~/shared/utils/test-utils';
 
-export const stylistsMock = Array(5).fill(undefined).map(() => {
+export const stylistsMock = Array(25).fill(undefined).map(() => {
   const [name, lastName] = [faker.name.firstName(), faker.name.lastName()];
   return {
     uuid: faker.random.uuid(),
@@ -31,7 +32,7 @@ export const preferenceMock = {
 @Injectable()
 export class StylistsServiceMock extends BaseServiceMock {
 
-  search(): Observable<ApiResponse<StylistsListResponse>> {
+  search(params: StylistsSearchParams): Observable<ApiResponse<StylistsListResponse>> {
     return this.mockRequest<StylistsListResponse>(
       Observable.create(observer => {
         observer.next({

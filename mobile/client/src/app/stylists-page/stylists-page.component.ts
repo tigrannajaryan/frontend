@@ -6,7 +6,7 @@ import { Observable } from 'rxjs/Observable';
 
 import { PageNames } from '~/core/page-names';
 import { RequestState } from '~/shared/api/request.models';
-import { StylistModel } from '~/shared/api/stylists.models';
+import { StylistModel, StylistsSearchParams } from '~/shared/api/stylists.models';
 import { PreferredStylistsData } from '~/core/api/preferred-stylists.data';
 import {
   SearchStylistsAction,
@@ -27,6 +27,7 @@ export class StylistsPageComponent {
   continueText?: string; // nav param
 
   query: FormControl = new FormControl('');
+  locationQuery: FormControl = new FormControl('');
 
   loadingStylists = Array(2).fill(undefined);
 
@@ -55,10 +56,11 @@ export class StylistsPageComponent {
   }
 
   onSearchStylists(): void {
-    const query = this.query.value;
-
-    // TODO: search close to client’s location
-    this.store.dispatch(new SearchStylistsAction(query));
+    const params: StylistsSearchParams = {
+      search_like: this.query.value,
+      search_location: this.locationQuery.value || undefined
+    };
+    this.store.dispatch(new SearchStylistsAction(params));
   }
 
   onSetActiveStylist(event: Event, stylist: StylistModel | undefined): void {
