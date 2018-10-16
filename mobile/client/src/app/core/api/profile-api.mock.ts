@@ -35,7 +35,8 @@ export class ProfileApiMock extends BaseServiceMock {
           email: `test_profile+${slug}@madebeauty.com`,
           city: 'Brooklyn',
           state: 'NY',
-          instagram_url: slug
+          instagram_url: slug,
+          privacy: 'public'
         });
       })
     );

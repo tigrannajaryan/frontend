@@ -52,6 +52,12 @@
           </td>
         </tr>
         <tr>
+          <td (click)="goTo(PageNames.Privacy, { profile: profile })" class="Table-col" data-test-id="about">Privacy</td>
+          <td class="ProfilePage-arrow Table-col">
+            <img src="assets/icons/arrow-right.svg" />
+          </td>
+        </tr>
+        <tr>
           <td colspan="2" class="ProfilePage-tableCenteredText Table-col">
             <span (click)="onContactByEmail('faq@madebeauty.com')" class="Link" data-test-id="emailLink">FAQ@madebeauty.com</span>
           </td>

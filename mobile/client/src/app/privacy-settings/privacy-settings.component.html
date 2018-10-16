@@ -1,0 +1,34 @@
+<ion-header madeHeader></ion-header>
+
+
+<ion-content>
+  <div class="contentSidePadding PrivacySettings-wp">
+    <div class="Made-h1 text-center" data-test-id="privacySettingsH1">Privacy Settings</div>
+    <div class="PrivacySettings-title" data-test-id="privacySettingsH2">Default privacy settings</div>
+    <div class="SharedCategories-cardSubtitle" data-test-id="privacySettingsH3">Select your default privacy setting.</div>
+
+
+    <div *ngIf="profile" class="PrivacySettingsList">
+      <div (click)="showWarningPopup(PrivacyMode.public)" class="PrivacySettingsList-item" data-test-id="privacySettingsItem">
+        <i class="mb-icon-globe"></i>
+
+        <div class="PrivacySettingsList-itemText">
+          <h2 class="PrivacySettingsList-itemTitle">Public</h2>
+          Visible to everyone on the application
+        </div>
+
+        <i [style.visibility]="!(profile.privacy === PrivacyMode.public) ? 'hidden' : 'visible'" class="mb-icon-check" data-test-id="privacySettingsPublicMode"></i>
+      </div>
+      <div (click)="showWarningPopup(PrivacyMode.private)" class="PrivacySettingsList-item">
+        <i class="mb-icon-lock"></i>
+
+        <div class="PrivacySettingsList-itemText">
+          <h2 class="PrivacySettingsList-itemTitle">Private</h2>
+          Visible only to your stylist
+        </div>
+
+        <i [style.visibility]="!(profile.privacy === PrivacyMode.private) ? 'hidden' : 'visible'" class="mb-icon-check" data-test-id="privacySettingsPrivateMode"></i>
+      </div>
+    </div>
+  </div>
+</ion-content>
