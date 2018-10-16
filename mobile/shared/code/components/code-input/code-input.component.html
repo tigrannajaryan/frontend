@@ -1,7 +1,8 @@
 <form>
   <ion-row justify-content-center>
     <ion-item class="FormControl AuthConfirmPage-codeControl">
-      <ion-input #input type="tel" ngxInputNumber [formControl]="code" [disabled]="isLoading" (focus)="onFocusCode()" (input)="onInput($event)"></ion-input>
+      <!-- NB! Using (ionChange)="onInput($event)" because of a strange bug: doubled onInput and therefor doubled code confirm request (https://github.com/ionic-team/ionic/issues/12432) -->
+      <ion-input #input type="tel" ngxInputNumber [formControl]="code" [disabled]="isLoading" (focus)="onFocusCode()" (ionChange)="onInput($event)"></ion-input>
     </ion-item>
   </ion-row>
   <ion-row justify-content-center>
