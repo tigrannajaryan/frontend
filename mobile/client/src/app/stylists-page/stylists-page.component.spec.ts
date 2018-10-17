@@ -88,7 +88,7 @@ describe('Pages: Stylists Search', () => {
   });
 
   it('should use location data in search', async done => {
-    await instance.ionViewDidLoad();
+    await instance.ionViewWillEnter();
     expect(instance.coords)
       .toBeDefined();
     done();

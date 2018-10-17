@@ -20,6 +20,7 @@
         <span *ngIf="(stylists | async)?.length > 0" class="Badge">{{ (stylists | async)?.length }}<span *ngIf="moreStylistsAvailable | async">+</span></span>
       </div>
       <div *ngIf="(requestState | async) === RequestState.Loading && (stylists | async) !== undefined" class="StylistsPage-loader">searching…</div>
+      <div *ngIf="isGeolocationInProcess" class="StylistsPage-loader">checking location…</div>
     </ion-row>
 
   </ion-toolbar>

@@ -3,45 +3,51 @@ $card-padding: pxtovw(16px);
 .StylistsPage-header {
   padding-bottom: pxtovw(8px);
   box-shadow: 0 pxtovw(2px) pxtovw(16px) white;
-}
 
-.StylistsPage-search {
-  $icon-size: pxtovw(16px);
-  $input-offset: pxtovw(48px);
+  .StylistsPage-search {
+    $icon-size: pxtovw(16px);
+    $input-offset: pxtovw(48px);
 
-  position: relative;
+    position: relative;
 
-  .StylistsPage-searchInput {
-    overflow: hidden;
-    border-radius: pxtovw(10px);
-    box-shadow: 0 pxtovw(2px) pxtovw(8px) rgba(black, 0.1);
+    .StylistsPage-searchInput {
+      overflow: hidden;
+      border-radius: pxtovw(10px);
+      box-shadow: 0 pxtovw(2px) pxtovw(8px) rgba(black, 0.1);
 
-    .text-input {
-      padding-left: $input-offset;
+      .text-input {
+        padding-left: $input-offset;
+      }
+    }
+
+    .StylistsPage-locationInput input:not(:focus)::placeholder {
+      color: color($colors, darkSkyBlue);
+      opacity: 1;
+    }
+
+    [class^="mb-icon"] {
+      position: absolute;
+      top: 50%;
+      left: ($input-offset - $icon-size) / 2;
+      z-index: 1;
+      margin: (-1 * $icon-size / 2) 0 0;
+      color: color($colors, orange);
+    }
+
+    + .StylistsPage-search {
+      margin-top: pxtovw(8px);
     }
   }
 
-  .StylistsPage-locationInput input:not(:focus)::placeholder {
-    color: color($colors, darkSkyBlue);
-    opacity: 1;
+  .StylistsPage-title {
+    margin-top: pxtovw(24px);
   }
 
-  [class^="mb-icon"] {
-    position: absolute;
-    top: 50%;
-    left: ($input-offset - $icon-size) / 2;
-    z-index: 1;
-    margin: (-1 * $icon-size / 2) 0 0;
-    color: color($colors, orange);
+  .StylistsPage-loader {
+    margin-top: pxtovw(4px);
+    font-size: $t-base;
+    font-weight: normal;
   }
-
-  + .StylistsPage-search {
-    margin-top: pxtovw(8px);
-  }
-}
-
-.StylistsPage-title {
-  margin-top: pxtovw(24px);
 }
 
 .StylistsPage {
@@ -49,11 +55,6 @@ $card-padding: pxtovw(16px);
 
   .StylistsPage-content {
     padding-top: 0;
-  }
-
-  .StylistsPage-loader {
-    font-size: $t-base;
-    font-weight: normal;
   }
 
   .StylistsPage-stylists {

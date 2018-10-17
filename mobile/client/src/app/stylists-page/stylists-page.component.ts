@@ -41,6 +41,7 @@ export class StylistsPageComponent {
   RequestState = RequestState; // expose to view
   requestState?: Observable<RequestState>;
 
+  isGeolocationInProcess = false;
   isLocationInputFocused = false;
 
   constructor(
@@ -53,22 +54,16 @@ export class StylistsPageComponent {
   ) {
   }
 
-  ionViewWillEnter(): void {
+  async ionViewWillEnter(): Promise<void> {
     this.continueText = this.navParams.get('continueText');
 
     this.stylists = this.store.select(selectStylists);
     this.moreStylistsAvailable = this.store.select(selectIsMoreStylistsAvailable);
     this.requestState = this.store.select(selectStylistsRequestState);
 
+    await this.requestGeolocation();
+
     this.onSearchStylists();
-  }
-
-  async ionViewDidLoad(): Promise<void> {
-    this.coords = await this.geolocationService.getUserCoordinates();
-
-    if (this.coords) {
-      this.onSearchStylists();
-    }
   }
 
   onSearchStylists(): void {
@@ -108,5 +103,11 @@ export class StylistsPageComponent {
 
   setLocationInputFocused(isFocused: boolean): void {
     this.isLocationInputFocused = isFocused;
+  }
+
+  private async requestGeolocation(): Promise<void> {
+    this.isGeolocationInProcess = true;
+    this.coords = await this.geolocationService.getUserCoordinates();
+    this.isGeolocationInProcess = false;
   }
 }
