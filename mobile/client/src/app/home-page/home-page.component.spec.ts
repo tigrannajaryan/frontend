@@ -13,7 +13,7 @@ let instance: HomePageComponent;
 describe('Pages: Home', () => {
   beforeEach(
     async(() =>
-      TestUtils.beforeEachCompiler([HomePageComponent])
+      TestUtils.beforeEachCompiler([HomePageComponent], [AppointmentsApiMock])
         .then(compiled => {
           // Common setup:
           fixture = compiled.fixture;
