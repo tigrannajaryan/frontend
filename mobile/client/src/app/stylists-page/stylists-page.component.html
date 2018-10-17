@@ -1,14 +1,20 @@
 <ion-header madeHeader>
-  <ion-toolbar class="contentSidePadding">
+  <ion-toolbar class="contentSidePadding StylistsPage-header">
 
-    <ion-item class="FormControl StylistsPage-search">
-      <ion-input type="text" placeholder="Type service, stylist or salon name" [formControl]="query" (input)="onSearchStylists()" data-test-id="searchInput"></ion-input>
-    </ion-item>
-    <ion-item class="FormControl StylistsPage-search">
-      <ion-input type="text" placeholder="Neigborhood, city, state or zip code" [formControl]="locationQuery" (input)="onSearchStylists()"></ion-input>
-    </ion-item>
+    <div class="StylistsPage-search">
+      <i class="mb-icon-search"></i>
+      <ion-item class="FormControl StylistsPage-searchInput">
+        <ion-input type="text" placeholder="Type service, stylist or salon name" [formControl]="query" (input)="onSearchStylists()" data-test-id="searchInput"></ion-input>
+      </ion-item>
+    </div>
+    <div class="StylistsPage-search">
+      <i class="mb-icon-marker"></i>
+      <ion-item class="FormControl StylistsPage-searchInput StylistsPage-locationInput">
+        <ion-input type="text" [placeholder]="isLocationInputFocused ? 'Neigborhood, city, state or zip code' : 'Current Location'" [formControl]="locationQuery" (focus)="setLocationInputFocused(true)" (input)="onSearchStylists()" (blur)="setLocationInputFocused(false)"></ion-input>
+      </ion-item>
+    </div>
 
-    <ion-row class="H2" align-items-center justify-content-between>
+    <ion-row class="H2 StylistsPage-title" align-items-center justify-content-between>
       <div>
         <span>Search stylists</span>
         <span *ngIf="(stylists | async)?.length > 0" class="Badge">{{ (stylists | async)?.length }}</span>
@@ -20,7 +26,7 @@
 </ion-header>
 
 <ion-content class="StylistsPage">
-  <div class="contentSidePadding">
+  <div class="contentSidePadding StylistsPage-content">
 
     <!-- Showing loading cards -->
     <div *ngIf="(requestState | async) === RequestState.Loading && (stylists | async) === undefined" class="StylistsPage-stylists">

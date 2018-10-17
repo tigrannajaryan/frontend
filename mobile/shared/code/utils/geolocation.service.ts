@@ -6,6 +6,19 @@ import { Coordinates, Geolocation, Geoposition } from '@ionic-native/geolocation
 @Injectable()
 export class GeolocationService {
 
+  static getGeopositionInBrowser(): Promise<Geoposition> {
+    return new Promise(resolve => {
+      if (!('geolocation' in navigator)) {
+        return resolve();
+      }
+      navigator.geolocation.getCurrentPosition(resolve, () => resolve(), {
+        enableHighAccuracy: true,
+        timeout: 5000,
+        maximumAge: 0
+      });
+    });
+  }
+
   constructor(
     private alertCtrl: AlertController,
     private diagnostic: Diagnostic,
@@ -17,10 +30,10 @@ export class GeolocationService {
   /**
    * Requests permissions if needed and returns geoposition coordinates (latitude, longitude) if possible.
    */
-  async getUserCoordinates(twoStepPriming: boolean = false): Promise<Coordinates | undefined> {
+  async getUserCoordinates(twoStepPriming = false): Promise<Coordinates | undefined> {
 
-    if (!this.platform.is('cordova') && ('geolocation' in navigator)) {
-      const geoposition = await this.getGeopositionInBrowser();
+    if (!this.platform.is('cordova')) {
+      const geoposition = await GeolocationService.getGeopositionInBrowser();
       return geoposition && geoposition.coords;
     }
 
@@ -54,8 +67,8 @@ export class GeolocationService {
   /**
    * Checks if user gave permissions to track his coordinates.
    */
-  private async isPermissionGranted(): Promise<boolean> {
-    return await this.diagnostic.isLocationAvailable();
+  private isPermissionGranted(): Promise<boolean> {
+    return this.diagnostic.isLocationAvailable();
   }
 
   /**
@@ -100,15 +113,5 @@ export class GeolocationService {
     } catch (error) {
       // Unable to get user location. User might refuse to allow getting it.
     }
-  }
-
-  private getGeopositionInBrowser(): Promise<Geolocation> {
-    return new Promise(resolve => {
-      navigator.geolocation.getCurrentPosition(resolve, () => resolve(), {
-        enableHighAccuracy: true,
-        timeout: 5000,
-        maximumAge: 0
-      });
-    });
   }
 }

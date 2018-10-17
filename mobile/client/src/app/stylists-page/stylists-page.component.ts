@@ -40,6 +40,8 @@ export class StylistsPageComponent {
   RequestState = RequestState; // expose to view
   requestState?: Observable<RequestState>;
 
+  isLocationInputFocused = false;
+
   constructor(
     private externalAppService: ExternalAppService,
     private geolocationService: GeolocationService,
@@ -101,5 +103,9 @@ export class StylistsPageComponent {
 
   onWebsiteClick(url: string): void {
     this.externalAppService.openWebPage(url);
+  }
+
+  setLocationInputFocused(isFocused: boolean): void {
+    this.isLocationInputFocused = isFocused;
   }
 }

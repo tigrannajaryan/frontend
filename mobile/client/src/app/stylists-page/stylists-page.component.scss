@@ -1,7 +1,55 @@
 $card-padding: pxtovw(16px);
 
+.StylistsPage-header {
+  padding-bottom: pxtovw(8px);
+  box-shadow: 0 2px 16px white;
+}
+
+.StylistsPage-search {
+  $icon-size: pxtovw(16px);
+  $input-offset: pxtovw(48px);
+
+  position: relative;
+
+  .StylistsPage-searchInput {
+    overflow: hidden;
+    border-radius: pxtovw(10px);
+    box-shadow: 0 pxtovw(2px) pxtovw(8px) rgba(black, 0.1);
+
+    .text-input {
+      padding-left: $input-offset;
+    }
+  }
+
+  .StylistsPage-locationInput input:not(:focus)::placeholder {
+    color: color($colors, darkSkyBlue);
+    opacity: 1;
+  }
+
+  [class^="mb-icon"] {
+    position: absolute;
+    top: 50%;
+    left: ($input-offset - $icon-size) / 2;
+    z-index: 1;
+    margin: (-1 * $icon-size / 2) 0 0;
+    color: color($colors, orange);
+  }
+
+  + .StylistsPage-search {
+    margin-top: pxtovw(8px);
+  }
+}
+
+.StylistsPage-title {
+  margin-top: pxtovw(24px);
+}
+
 .StylistsPage {
   $pic-size: pxtovw(64px);
+
+  .StylistsPage-content {
+    padding-top: 0;
+  }
 
   .StylistsPage-loader {
     font-size: $t-base;

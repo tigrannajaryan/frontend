@@ -14,9 +14,6 @@ import { PreferredStylistsData } from '~/core/api/preferred-stylists.data';
 import { ProfileApi } from '~/core/api/profile-api';
 import { ProfileDataStore } from '~/profile/profile.data';
 
-// TODO: just for test
-import { StylistsServiceMock } from '~/core/api/stylists-service.mock';
-
 /**
  * Common data module that includes singletons for the entire app.
  */
@@ -34,9 +31,7 @@ import { StylistsServiceMock } from '~/core/api/stylists-service.mock';
     BookingApiMock,
     ProfileApi,
     StylistsService,
-    ServicesService,
-
-    StylistsServiceMock // TODO: remove
+    ServicesService
   ]
 })
 export class DataModule {
