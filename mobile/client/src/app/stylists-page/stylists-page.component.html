@@ -10,7 +10,7 @@
     <div class="StylistsPage-search">
       <i class="mb-icon-marker"></i>
       <ion-item class="FormControl StylistsPage-searchInput StylistsPage-locationInput">
-        <ion-input type="text" [placeholder]="isLocationInputFocused ? 'Neigborhood, city, state or zip code' : 'Current Location'" [formControl]="locationQuery" (focus)="setLocationInputFocused(true)" (input)="onSearchStylists()" (blur)="setLocationInputFocused(false)"></ion-input>
+        <ion-input type="text" [placeholder]="isLocationInputFocused ? 'Neigborhood, city, state or zip code' : 'Current Location'" [formControl]="locationQuery" (focus)="setLocationInputFocused(true)" (input)="onSearchStylists()" (blur)="setLocationInputFocused(false)" data-test-id="locationInput"></ion-input>
       </ion-item>
     </div>
 

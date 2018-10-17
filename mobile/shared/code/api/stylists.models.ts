@@ -16,14 +16,6 @@ export interface PreferredStylistModel extends StylistModel {
   preference_uuid: string;
 }
 
-export interface StylistsSearchParams {
-  search_like: string;
-  search_location?: string;
-  latitude?: number;
-  longitude?: number;
-  accuracy?: number;
-}
-
 export interface StylistsListResponse {
   stylists: StylistModel[];
   more_results_available?: boolean;

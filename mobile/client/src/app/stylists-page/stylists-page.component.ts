@@ -6,7 +6,7 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 
 import { RequestState } from '~/shared/api/request.models';
-import { StylistModel, StylistsSearchParams } from '~/shared/api/stylists.models';
+import { StylistModel } from '~/shared/api/stylists.models';
 import { ExternalAppService } from '~/shared/utils/external-app-service';
 import { GeolocationService } from '~/shared/utils/geolocation.service';
 
@@ -73,13 +73,13 @@ export class StylistsPageComponent {
   }
 
   onSearchStylists(): void {
-    const params: StylistsSearchParams = {
-      search_like: this.query.value,
-      search_location: this.locationQuery.value,
-      latitude: this.coords && this.coords.latitude,
-      longitude: this.coords && this.coords.longitude
-    };
-    this.store.dispatch(new SearchStylistsAction(params));
+    const params = [
+      /* search_like: */ this.query.value,
+      /* search_location: */ this.locationQuery.value,
+      /* latitude: */ this.coords && this.coords.latitude,
+      /* longitude: */ this.coords && this.coords.longitude
+    ];
+    this.store.dispatch(new SearchStylistsAction(...params));
   }
 
   onSetActiveStylist(event: Event, stylist: StylistModel | undefined): void {

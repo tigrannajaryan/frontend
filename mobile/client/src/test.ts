@@ -69,6 +69,8 @@ import {
 } from 'ionic-mocks';
 
 import { ExternalAppService } from '~/shared/utils/external-app-service';
+import { GeolocationService } from '~/shared/utils/geolocation.service';
+import { GeolocationServiceMock } from '~/shared/utils/geolocation.service.mock';
 
 import { SharedSingletonsModule } from '~/shared/shared-singletons.module';
 import { CoreModule } from '~/core/core.module';
@@ -165,6 +167,7 @@ export class TestUtils {
         { provide: Storage, useFactory: () => StorageMock.instance() },
         { provide: AuthProcessState, useClass: AuthProcessStateMock },
         ExternalAppService,
+        { provide: GeolocationService, useClass: GeolocationServiceMock },
         {
           provide: InAppBrowser,
           useClass: class InAppBrowserMock {

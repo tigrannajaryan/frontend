@@ -16,6 +16,7 @@ import { PreferredStylistsData } from '~/core/api/preferred-stylists.data';
 import { StylistsPageComponent } from './stylists-page.component';
 
 import { ExternalAppService } from '~/shared/utils/external-app-service';
+import { defaultLocation } from '~/shared/utils/geolocation.service.mock';
 
 // Monkey patch SEARCHING_DELAY to 0 to avoid slowing down the tests:
 StylistsEffects.SEARCHING_DELAY = 0;
@@ -74,6 +75,29 @@ describe('Pages: Stylists Search', () => {
         expect(textContent)
           .toContain(`Add ${stylist.first_name}!`);
       });
+
+      done();
+    });
+  });
+
+  it('should show ”Current Location” placeholder when empty location input', () => {
+    fixture.detectChanges();
+
+    const locationInput = fixture.nativeElement.querySelector('[data-test-id=locationInput] input');
+    expect(locationInput.placeholder)
+      .toBe('Current Location');
+  });
+
+  fit('should use location data in search', async done => {
+    const stylistsService = fixture.debugElement.injector.get(StylistsService);
+    spyOn(stylistsService, 'search');
+
+    await instance.ionViewDidLoad();
+
+    // Skip loading:
+    setTimeout(() => {
+      expect(stylistsService.search)
+        .toHaveBeenCalledWith('', '', defaultLocation.latitude, defaultLocation.longitude);
 
       done();
     });

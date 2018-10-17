@@ -9,8 +9,7 @@ import { BaseService } from '~/shared/api/base-service';
 import {
   PreferredStylistsListResponse,
   SetPreferredStylistResponse,
-  StylistsListResponse,
-  StylistsSearchParams
+  StylistsListResponse
 } from '~/shared/api/stylists.models';
 
 import { ApiClientError, HttpStatus } from '~/shared/api-errors';
@@ -26,8 +25,18 @@ export class StylistsService extends BaseService {
     super(http, logger, serverStatus);
   }
 
-  search(params: StylistsSearchParams): Observable<ApiResponse<StylistsListResponse>> {
-    return this.post<StylistsListResponse>('client/search-stylists', params);
+  search(
+    searchLike: string,
+    searchLocation?: string,
+    latitude?: number,
+    longitude?: number,
+    accuracy?: number
+  ): Observable<ApiResponse<StylistsListResponse>> {
+    return this.post<StylistsListResponse>('client/search-stylists', {
+      search_like: searchLike,
+      search_location: searchLocation,
+      latitude, longitude, accuracy
+    });
   }
 
   getPreferredStylists(): Observable<ApiResponse<PreferredStylistsListResponse>> {
