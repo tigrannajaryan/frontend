@@ -29,7 +29,10 @@ export class StylistsEffects {
             return new SearchStylistsErrorAction(error);
           }
           // TODO: remove `.slice(0, 100)` when implementing portions
-          return new SearchStylistSuccessAction(response.stylists.slice(0, 100));
+          return new SearchStylistSuccessAction(
+            response.stylists.slice(0, 100),
+            response.more_results_available
+          );
         })
     );
 

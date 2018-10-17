@@ -26,6 +26,7 @@ export interface StylistsSearchParams {
 
 export interface StylistsListResponse {
   stylists: StylistModel[];
+  more_results_available?: boolean;
 }
 
 export interface PreferredStylistsListResponse {

@@ -14,6 +14,7 @@ import { PreferredStylistsData } from '~/core/api/preferred-stylists.data';
 import { PageNames } from '~/core/page-names';
 import {
   SearchStylistsAction,
+  selectIsMoreStylistsAvailable,
   selectStylists,
   selectStylistsRequestState,
   StylistState
@@ -35,6 +36,7 @@ export class StylistsPageComponent {
   loadingStylists = Array(2).fill(undefined);
 
   stylists: Observable<StylistModel[]>;
+  moreStylistsAvailable: Observable<boolean>;
   activeStylist?: StylistModel;
 
   RequestState = RequestState; // expose to view
@@ -56,6 +58,7 @@ export class StylistsPageComponent {
     this.continueText = this.navParams.get('continueText');
 
     this.stylists = this.store.select(selectStylists);
+    this.moreStylistsAvailable = this.store.select(selectIsMoreStylistsAvailable);
     this.requestState = this.store.select(selectStylistsRequestState);
 
     this.onSearchStylists();

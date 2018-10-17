@@ -17,7 +17,7 @@
     <ion-row class="H2 StylistsPage-title" align-items-center justify-content-between>
       <div>
         <span>Search stylists</span>
-        <span *ngIf="(stylists | async)?.length > 0" class="Badge">{{ (stylists | async)?.length }}</span>
+        <span *ngIf="(stylists | async)?.length > 0" class="Badge">{{ (stylists | async)?.length }}<span *ngIf="moreStylistsAvailable | async">+</span></span>
       </div>
       <div *ngIf="(requestState | async) === RequestState.Loading && (stylists | async) !== undefined" class="StylistsPage-loader">searching…</div>
     </ion-row>
