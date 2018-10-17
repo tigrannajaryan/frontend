@@ -55,16 +55,24 @@ export class GAWrapper {
   }
 
   trackViewChange(view: ViewController): void {
-    // Get page name from the HTML native element's tagName property. This is the best we have at runtime.
-    // Class name, ids, etc. are all uglified by AOT compiler in production build.
-    const pageRef = view.pageRef();
-    let viewName: string = (pageRef && pageRef.nativeElement) ? pageRef.nativeElement.tagName : 'unknown';
+    try {
+      // Get page name from the HTML native element's tagName property. This is the best we have at runtime.
+      // Class name, ids, etc. are all uglified by AOT compiler in production build.
+      const pageRef = view.pageRef();
+      let viewName: string = (pageRef && pageRef.nativeElement && pageRef.nativeElement.tagName) ?
+        pageRef.nativeElement.tagName : 'unknown';
 
-    // Remove 'PAGE-' prefix and convert to PascalCase for better readability of GA results.
-    viewName = viewName.replace(/^PAGE-/, '');
-    viewName = camelcase(viewName, { pascalCase: true });
+      // Remove 'PAGE-' prefix and convert to PascalCase for better readability of GA results.
+      viewName = viewName.replace(/^PAGE-/, '');
+      viewName = camelcase(viewName, { pascalCase: true });
 
-    this.trackView(viewName);
+      this.trackView(viewName);
+    } catch (e) {
+      // We have an unclear case of runtime error in Sentry
+      // https://sentry.io/madebeauty/mobile-client-staging/issues/723651505/
+      // So we just play defensive here and catch exceptions and log them.
+      this.logger.warn('Error in trackViewChange', e);
+    }
   }
 
   setUserId(userId: string): void {
