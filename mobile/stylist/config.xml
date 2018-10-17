@@ -110,4 +110,12 @@
     <plugin name="cordova-plugin-appavailability" spec="0.4.2" />
     <plugin name="cordova-plugin-email-composer" spec="0.8.15" />
     <plugin name="cordova-clipboard" spec="1.2.1" />
+    <plugin name="cordova.plugins.diagnostic" spec="4.0.10" />
+    <plugin name="cordova-plugin-geolocation" spec="4.0.1" />
+    <plugin name="cordova-plugin-geolocation" spec="4.0.1">
+        <variable name="GEOLOCATION_USAGE_DESCRIPTION" value="EDIT THIS TEXT WHEN IMPLEMENTING GEOLOCATION" />
+    </plugin>
+    <edit-config file="*-Info.plist" mode="merge" target="NSLocationWhenInUseUsageDescription">
+        <string>EDIT THIS TEXT WHEN IMPLEMENTING GEOLOCATION</string>
+    </edit-config>
 </widget>
