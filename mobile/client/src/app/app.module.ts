@@ -9,7 +9,9 @@ import { AppAvailability } from '@ionic-native/app-availability';
 import { AppVersion } from '@ionic-native/app-version';
 import { Camera } from '@ionic-native/camera';
 import { Clipboard } from '@ionic-native/clipboard';
+import { Diagnostic } from '@ionic-native/diagnostic';
 import { EmailComposer } from '@ionic-native/email-composer';
+import { Geolocation } from '@ionic-native/geolocation';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { IonicStorageModule } from '@ionic/storage';
 import { ScreenOrientation } from '@ionic-native/screen-orientation';
@@ -40,6 +42,7 @@ import { DataModule } from '~/core/api/data.module';
 
 import { BaseService } from '~/shared/api/base-service';
 import { ExternalAppService } from '~/shared/utils/external-app-service';
+import { GeolocationService } from '~/shared/utils/geolocation.service';
 import { ServerStatusTracker } from '~/shared/server-status-tracker';
 
 import { authPath, authReducer } from '~/shared/storage/auth.reducer';
@@ -165,7 +168,9 @@ const declarations = [
     AppAvailability,
     AppVersion,
     Clipboard,
+    Diagnostic,
     EmailComposer,
+    Geolocation,
     InAppBrowser,
     SplashScreen,
     StatusBar,
@@ -174,6 +179,7 @@ const declarations = [
     // Shared:
     BaseService,
     ExternalAppService,
+    GeolocationService,
     ServerStatusTracker,
 
     { // Add auth token to all requests

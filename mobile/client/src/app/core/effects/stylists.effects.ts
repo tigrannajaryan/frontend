@@ -4,7 +4,8 @@ import { Store } from '@ngrx/store';
 import { debounce } from 'rxjs/operators';
 import { timer } from 'rxjs/observable/timer';
 
-import { StylistsService } from '~/core/api/stylists-service';
+// import { StylistsService } from '~/core/api/stylists-service';
+import { StylistsServiceMock } from '~/core/api/stylists-service.mock';
 import {
   SearchStylistsAction,
   SearchStylistsErrorAction,
@@ -36,7 +37,7 @@ export class StylistsEffects {
   constructor(
     private actions: Actions,
     private store: Store<StylistState>,
-    private stylistsService: StylistsService
+    private stylistsService: StylistsServiceMock
   ) {
   }
 }

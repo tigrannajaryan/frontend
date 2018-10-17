@@ -1,21 +1,23 @@
 import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { NavController, NavParams, Tab } from 'ionic-angular';
+import { Coordinates } from '@ionic-native/geolocation';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 
-import { PageNames } from '~/core/page-names';
 import { RequestState } from '~/shared/api/request.models';
 import { StylistModel, StylistsSearchParams } from '~/shared/api/stylists.models';
+import { ExternalAppService } from '~/shared/utils/external-app-service';
+import { GeolocationService } from '~/shared/utils/geolocation.service';
+
 import { PreferredStylistsData } from '~/core/api/preferred-stylists.data';
+import { PageNames } from '~/core/page-names';
 import {
   SearchStylistsAction,
   selectStylists,
   selectStylistsRequestState,
   StylistState
 } from '~/core/reducers/stylists.reducer';
-
-import { ExternalAppService } from '~/shared/utils/external-app-service';
 
 export const MIN_QUERY_LENGTH = 2;
 
@@ -28,6 +30,7 @@ export class StylistsPageComponent {
 
   query: FormControl = new FormControl('');
   locationQuery: FormControl = new FormControl('');
+  coords: Coordinates;
 
   loadingStylists = Array(2).fill(undefined);
 
@@ -39,6 +42,7 @@ export class StylistsPageComponent {
 
   constructor(
     private externalAppService: ExternalAppService,
+    private geolocationService: GeolocationService,
     private navCtrl: NavController,
     private navParams: NavParams,
     private preferredStylistsData: PreferredStylistsData,
@@ -55,10 +59,20 @@ export class StylistsPageComponent {
     this.onSearchStylists();
   }
 
+  async ionViewDidLoad(): Promise<void> {
+    this.coords = await this.geolocationService.getUserCoordinates();
+
+    if (this.coords) {
+      this.onSearchStylists();
+    }
+  }
+
   onSearchStylists(): void {
     const params: StylistsSearchParams = {
       search_like: this.query.value,
-      search_location: this.locationQuery.value || undefined
+      search_location: this.locationQuery.value,
+      latitude: this.coords && this.coords.latitude,
+      longitude: this.coords && this.coords.longitude
     };
     this.store.dispatch(new SearchStylistsAction(params));
   }
