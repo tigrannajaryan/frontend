@@ -84,8 +84,11 @@ export function getRandomEmail(): string {
   return `test-${getRandomString(20)}@madebeauty.com`;
 }
 
-export function normalizePhoneNumber(phone: string): string {
-  return formatNumber(parseNumber(phone, 'US'), 'International');
+export function normalizePhoneNumber(phone: string, shortForm: boolean = true): string {
+  const formattedPhone = formatNumber(parseNumber(phone, 'US'), 'International');
+  return shortForm && /^\+1\s/.test(formattedPhone) ?
+    formattedPhone.replace(/^\+1\s/, '').replace(/\s/g, '-') :
+    formattedPhone;
 }
 
 /**

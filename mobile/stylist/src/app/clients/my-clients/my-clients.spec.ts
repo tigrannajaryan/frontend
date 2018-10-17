@@ -52,7 +52,7 @@ describe('Pages: My Clients', () => {
         .toContain(`${client.first_name} ${client.last_name}`);
       expect(fixture.nativeElement.textContent)
         .toContain(
-          `${client.phone.slice(0, 2)} ${client.phone.slice(2, 5)} ${client.phone.slice(5, 8)} ${client.phone.slice(8, 11)}`
+          `${client.phone.slice(2, 5)}-${client.phone.slice(5, 8)}-${client.phone.slice(8, 11)}`
         );
       expect(fixture.nativeElement.textContent)
         .toContain(client.city);

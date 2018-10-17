@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import { formatNumber } from 'libphonenumber-js';
 
 import { ExternalAppService } from '~/shared/utils/external-app-service';
+import { getLocalNumber } from '~/shared/utils/phone-numbers';
 import { NumberFormat } from '~/shared/directives/phone-input.directive';
 
 @Component({
@@ -11,6 +12,7 @@ import { NumberFormat } from '~/shared/directives/phone-input.directive';
 export class PhoneLinkComponent {
   @Input() phone: string;
   @Input() readonly = false;
+  @Input() shortForm = true;
   @Input() icon?: string;
 
   constructor(
@@ -25,6 +27,7 @@ export class PhoneLinkComponent {
   }
 
   getFormattedPhone(): string {
-    return formatNumber(this.phone, NumberFormat.International);
+    const phone = formatNumber(this.phone, NumberFormat.International);
+    return this.shortForm ? getLocalNumber(phone) : phone;
   }
 }

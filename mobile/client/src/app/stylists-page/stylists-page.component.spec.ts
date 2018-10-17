@@ -67,7 +67,7 @@ describe('Pages: Stylists Search', () => {
           .toContain(stylist.salon_address);
         expect(textContent)
           .toContain(
-            `${stylist.phone.slice(0, 2)} ${stylist.phone.slice(2, 5)} ${stylist.phone.slice(5, 8)} ${stylist.phone.slice(8, 11)}`
+            `${stylist.phone.slice(2, 5)}-${stylist.phone.slice(5, 8)}-${stylist.phone.slice(8, 11)}`
           );
         expect(textContent)
           .toContain(stylist.instagram_url);
