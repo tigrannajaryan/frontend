@@ -88,7 +88,7 @@ describe('Pages: Stylists Search', () => {
       .toBe('Current Location');
   });
 
-  fit('should use location data in search', async done => {
+  it('should use location data in search', async done => {
     const stylistsService = fixture.debugElement.injector.get(StylistsService);
     spyOn(stylistsService, 'search');
 
