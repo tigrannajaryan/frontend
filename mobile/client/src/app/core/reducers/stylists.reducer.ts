@@ -2,7 +2,7 @@ import { Action, createFeatureSelector, createSelector } from '@ngrx/store';
 
 import { ApiError } from '~/shared/api-errors';
 import { RequestState } from '~/shared/api/request.models';
-import { StylistModel } from '~/shared/api/stylists.models';
+import { StylistModel, StylistsSearchParams } from '~/shared/api/stylists.models';
 import { authActionTypes, ConfirmCodeSuccessAction } from '~/shared/storage/auth.reducer';
 
 export enum stylistsActionTypes {
@@ -13,12 +13,7 @@ export enum stylistsActionTypes {
 
 export class SearchStylistsAction implements Action {
   readonly type = stylistsActionTypes.SEARCH_STYLISTS;
-  constructor(
-    public searchLike?: string,
-    public searchLocation?: string,
-    public latitude?: number,
-    public longitude?: number
-  ) {}
+  constructor(public params: StylistsSearchParams) {}
 }
 
 export class SearchStylistsErrorAction implements Action {

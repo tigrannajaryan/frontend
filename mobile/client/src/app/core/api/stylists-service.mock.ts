@@ -7,7 +7,8 @@ import { BaseServiceMock } from '~/shared/api/base-service.mock';
 import {
   PreferredStylistsListResponse,
   SetPreferredStylistResponse,
-  StylistsListResponse
+  StylistsListResponse,
+  StylistsSearchParams
 } from '~/shared/api/stylists.models';
 import { randomPhone } from '~/shared/utils/test-utils';
 
@@ -31,7 +32,7 @@ export const preferenceMock = {
 @Injectable()
 export class StylistsServiceMock extends BaseServiceMock {
 
-  search(...args: any[]): Observable<ApiResponse<StylistsListResponse>> {
+  search(params: StylistsSearchParams): Observable<ApiResponse<StylistsListResponse>> {
     return this.mockRequest<StylistsListResponse>(
       Observable.create(observer => {
         observer.next({

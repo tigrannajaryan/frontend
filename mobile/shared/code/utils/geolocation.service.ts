@@ -1,7 +1,12 @@
 import { Injectable } from '@angular/core';
 import { AlertController, Platform } from 'ionic-angular';
 import { Diagnostic } from '@ionic-native/diagnostic';
-import { Coordinates, Geolocation, Geoposition } from '@ionic-native/geolocation';
+import { Geolocation, Geoposition } from '@ionic-native/geolocation';
+
+export interface LatLng {
+  latitude: number;
+  longitude: number;
+}
 
 @Injectable()
 export class GeolocationService {
@@ -30,7 +35,7 @@ export class GeolocationService {
   /**
    * Requests permissions if needed and returns geoposition coordinates (latitude, longitude) if possible.
    */
-  async getUserCoordinates(twoStepPriming = false): Promise<Coordinates | undefined> {
+  async getUserCoordinates(twoStepPriming = false): Promise<LatLng | undefined> {
 
     if (!this.platform.is('cordova')) {
       const geoposition = await GeolocationService.getGeopositionInBrowser();

@@ -1,14 +1,13 @@
 import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { NavController, NavParams, Tab } from 'ionic-angular';
-import { Coordinates } from '@ionic-native/geolocation';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 
 import { RequestState } from '~/shared/api/request.models';
-import { StylistModel } from '~/shared/api/stylists.models';
+import { StylistModel, StylistsSearchParams } from '~/shared/api/stylists.models';
 import { ExternalAppService } from '~/shared/utils/external-app-service';
-import { GeolocationService } from '~/shared/utils/geolocation.service';
+import { GeolocationService, LatLng } from '~/shared/utils/geolocation.service';
 
 import { PreferredStylistsData } from '~/core/api/preferred-stylists.data';
 import { PageNames } from '~/core/page-names';
@@ -31,7 +30,7 @@ export class StylistsPageComponent {
 
   query: FormControl = new FormControl('');
   locationQuery: FormControl = new FormControl('');
-  coords: Coordinates;
+  coords: LatLng;
 
   loadingStylists = Array(2).fill(undefined);
 
@@ -73,13 +72,12 @@ export class StylistsPageComponent {
   }
 
   onSearchStylists(): void {
-    const params = [
-      /* search_like: */ this.query.value,
-      /* search_location: */ this.locationQuery.value,
-      /* latitude: */ this.coords && this.coords.latitude,
-      /* longitude: */ this.coords && this.coords.longitude
-    ];
-    this.store.dispatch(new SearchStylistsAction(...params));
+    const params: StylistsSearchParams = {
+      search_like: this.query.value,
+      search_location: this.locationQuery.value,
+      geolocation: this.coords
+    };
+    this.store.dispatch(new SearchStylistsAction(params));
   }
 
   onSetActiveStylist(event: Event, stylist: StylistModel | undefined): void {

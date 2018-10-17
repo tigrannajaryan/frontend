@@ -1,3 +1,5 @@
+import { LatLng } from '~/shared/utils/geolocation.service';
+
 export interface StylistUuidModel {
   uuid: string;
 }
@@ -14,6 +16,12 @@ export interface StylistModel extends StylistUuidModel {
 
 export interface PreferredStylistModel extends StylistModel {
   preference_uuid: string;
+}
+
+export interface StylistsSearchParams {
+  search_like: string;
+  search_location?: string;
+  geolocation?: LatLng;
 }
 
 export interface StylistsListResponse {

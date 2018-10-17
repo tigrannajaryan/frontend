@@ -16,7 +16,6 @@ import { PreferredStylistsData } from '~/core/api/preferred-stylists.data';
 import { StylistsPageComponent } from './stylists-page.component';
 
 import { ExternalAppService } from '~/shared/utils/external-app-service';
-import { defaultLocation } from '~/shared/utils/geolocation.service.mock';
 
 // Monkey patch SEARCHING_DELAY to 0 to avoid slowing down the tests:
 StylistsEffects.SEARCHING_DELAY = 0;
@@ -89,18 +88,10 @@ describe('Pages: Stylists Search', () => {
   });
 
   it('should use location data in search', async done => {
-    const stylistsService = fixture.debugElement.injector.get(StylistsService);
-    spyOn(stylistsService, 'search');
-
     await instance.ionViewDidLoad();
-
-    // Skip loading:
-    setTimeout(() => {
-      expect(stylistsService.search)
-        .toHaveBeenCalledWith('', '', defaultLocation.latitude, defaultLocation.longitude);
-
-      done();
-    });
+    expect(instance.coords)
+      .toBeDefined();
+    done();
   });
 
   it('should show ”no stylists in your area yet”', done => {

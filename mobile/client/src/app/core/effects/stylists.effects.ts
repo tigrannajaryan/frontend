@@ -22,17 +22,13 @@ export class StylistsEffects {
     .map((action: SearchStylistsAction) => action)
     .pipe(debounce(() => timer(StylistsEffects.SEARCHING_DELAY)))
     .withLatestFrom(this.store)
-    .switchMap(([action, state]) =>
-      this.stylistsService.search(action.searchLike, action.searchLocation, action.latitude, action.longitude)
+    .switchMap(([action]) =>
+      this.stylistsService.search(action.params)
         .map(({ response, error }) => {
           if (error) {
             return new SearchStylistsErrorAction(error);
           }
-          // TODO: remove `.slice(0, 100)` when implementing portions
-          return new SearchStylistSuccessAction(
-            response.stylists.slice(0, 100),
-            response.more_results_available
-          );
+          return new SearchStylistSuccessAction(response.stylists, response.more_results_available);
         })
     );
 

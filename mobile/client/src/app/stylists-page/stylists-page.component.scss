@@ -2,7 +2,7 @@ $card-padding: pxtovw(16px);
 
 .StylistsPage-header {
   padding-bottom: pxtovw(8px);
-  box-shadow: 0 2px 16px white;
+  box-shadow: 0 pxtovw(2px) pxtovw(16px) white;
 }
 
 .StylistsPage-search {
