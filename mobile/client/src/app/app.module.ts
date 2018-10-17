@@ -69,6 +69,7 @@ import { StylistsPageComponent } from '~/stylists-page/stylists-page.component';
 import { UiKitPreviewComponent } from '~/ui-kit-preview/ui-kit-preview.component';
 
 import { ENV } from '~/environments/environment.default';
+import { PrivacySettingsComponent } from '~/privacy-settings/privacy-settings.component';
 
 // Init sentry reporting (inits only if ENV.sentryDsn):
 initSentry();
@@ -99,6 +100,7 @@ const declarations = [
   ServicesCategoriesPageComponent,
   StylistInvitationPageComponent,
   StylistsPageComponent,
+  PrivacySettingsComponent,
   UiKitPreviewComponent
 ];
 

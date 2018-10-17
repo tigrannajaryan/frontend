@@ -1,0 +1,52 @@
+privacy-settings {
+  .PrivacySettings-wp {
+    padding-top: pxtovw(10px);
+  }
+
+  .PrivacySettings-title {
+    padding: pxtovw(17px) 0 pxtovw(7px);
+    font-size: $shared-h3;
+    font-weight: 700;
+    line-height: pxtovw(24px);
+  }
+
+  .PrivacySettingsList {
+    margin: pxtovw(35px) 0 0;
+  }
+
+  .PrivacySettingsList-item {
+    display: flex;
+    align-items: flex-start;
+    padding: 0 0 pxtovw(12px) pxtovw(11px);
+    margin: 0 0 pxtovw(13px);
+    border-bottom: 1px solid color($grayscale, 200);
+
+    i {
+      min-width: pxtovw(24px);
+      font-size: pxtovw(24px);
+      text-align: center;
+    }
+
+    i.mb-icon-check {
+      justify-self: end;
+      min-width: 0;
+      color: #FCBFA4;
+    }
+  }
+
+  .PrivacySettingsList-itemTitle {
+    margin: 0;
+    font-size: $shared-h4;
+    line-height: pxtovw(24px);
+    color: black;
+  }
+
+  .PrivacySettingsList-itemText {
+    width: 100%;
+    padding: 0 pxtovw(20px);
+    font-size: $shared-h5;
+    line-height: pxtovw(15px);
+    color: color($grayscale, 500);
+    letter-spacing: pxtovw(-0.3px);
+  }
+}

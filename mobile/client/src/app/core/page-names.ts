@@ -17,6 +17,7 @@ import { ServicesPageComponent } from '~/services-page/services-page.component';
 import { ServicesCategoriesPageComponent } from '~/services-categories-page/services-categories-page.component';
 import { StylistInvitationPageComponent } from '~/onboarding/stylist-invitation/stylist-invitation.component';
 import { StylistsPageComponent } from '~/stylists-page/stylists-page.component';
+import { PrivacySettingsComponent } from '~/privacy-settings/privacy-settings.component';
 
 /**
  * Define page names in one place to avoid typos if the names are used as
@@ -39,6 +40,7 @@ export const PageNames = {
   HowMadeWorks: HowMadeWorksComponent,
   HowPricingWorks: HowPricingWorksComponent,
   MainTabs: MainTabsComponent,
+  Privacy: PrivacySettingsComponent,
   ProfileEdit: ProfileEditComponent,
   ProfileSummary: ProfileSummaryComponent,
   SelectDate: SelectDateComponent,
