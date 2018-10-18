@@ -54,9 +54,6 @@
   border-radius: 50%;
 }
 
-.MadeLinkList {
-
-}
 .MadeLinkList-row {
   display: flex;
   align-items: center;
@@ -68,13 +65,14 @@
     border-bottom: 1px solid color($grayscale-shared, 200);
   }
 }
+
 .MadeLinkList-cell {
-  text-overflow: ellipsis;
   overflow: hidden;
-  white-space: nowrap;
-  color: black;
   font-size: pxtovw(15px);
   line-height: pxtovw(16px);
+  color: black;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 
   i[class*='mb-icon'] {
     margin-right: pxtovw(5px);

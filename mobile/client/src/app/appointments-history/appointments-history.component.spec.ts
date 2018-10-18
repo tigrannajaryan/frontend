@@ -13,7 +13,7 @@ let instance: AppointmentsHistoryComponent;
 describe('Pages: History', () => {
   beforeEach(
     async(() =>
-      TestUtils.beforeEachCompiler([AppointmentsHistoryComponent])
+      TestUtils.beforeEachCompiler([AppointmentsHistoryComponent], [AppointmentsApiMock])
         .then(compiled => {
           // Common setup:
           fixture = compiled.fixture;

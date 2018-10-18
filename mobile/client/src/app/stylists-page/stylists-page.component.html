@@ -1,20 +1,33 @@
-<ion-header madeHeader></ion-header>
+<ion-header madeHeader>
+  <ion-toolbar class="contentSidePadding StylistsPage-header">
 
-<ion-content class="StylistsPage">
-  <div class="contentSidePadding">
-    <div class="StylistsPage-searchWrap">
-      <ion-item class="FormControl StylistsPage-search">
-        <ion-input type="text" placeholder="Search stylists for…" [formControl]="query" (input)="onSearchStylists()" data-test-id="searchInput"></ion-input>
+    <div class="StylistsPage-search">
+      <i class="mb-icon-search"></i>
+      <ion-item class="FormControl StylistsPage-searchInput">
+        <ion-input type="text" placeholder="Type service, stylist or salon name" [formControl]="query" (input)="onSearchStylists()" data-test-id="searchInput"></ion-input>
       </ion-item>
-      <i class="StylistsPage-searchIcon mb-icon-search"></i>
     </div>
-    <ion-row class="H2" align-items-center justify-content-between>
+    <div class="StylistsPage-search">
+      <i class="mb-icon-marker"></i>
+      <ion-item class="FormControl StylistsPage-searchInput StylistsPage-locationInput">
+        <ion-input type="text" [placeholder]="isLocationInputFocused ? 'Neigborhood, city, state or zip code' : 'Current Location'" [formControl]="locationQuery" (focus)="setLocationInputFocused(true)" (input)="onSearchStylists()" (blur)="setLocationInputFocused(false)" data-test-id="locationInput"></ion-input>
+      </ion-item>
+    </div>
+
+    <ion-row class="H2 StylistsPage-title" align-items-center justify-content-between>
       <div>
-        <span>All stylists</span>
-        <span *ngIf="(stylists | async)?.length > 0" class="Badge">{{ (stylists | async)?.length }}</span>
+        <span>Search stylists</span>
+        <span *ngIf="(stylists | async)?.length > 0" class="Badge">{{ (stylists | async)?.length }}<span *ngIf="moreStylistsAvailable | async">+</span></span>
       </div>
       <div *ngIf="(requestState | async) === RequestState.Loading && (stylists | async) !== undefined" class="StylistsPage-loader">searching…</div>
+      <div *ngIf="isGeolocationInProcess" class="StylistsPage-loader">checking location…</div>
     </ion-row>
+
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="StylistsPage">
+  <div class="contentSidePadding StylistsPage-content">
 
     <!-- Showing loading cards -->
     <div *ngIf="(requestState | async) === RequestState.Loading && (stylists | async) === undefined" class="StylistsPage-stylists">

@@ -2,7 +2,7 @@ import { Action, createFeatureSelector, createSelector } from '@ngrx/store';
 
 import { ApiError } from '~/shared/api-errors';
 import { RequestState } from '~/shared/api/request.models';
-import { StylistModel } from '~/shared/api/stylists.models';
+import { StylistModel, StylistsSearchParams } from '~/shared/api/stylists.models';
 import { authActionTypes, ConfirmCodeSuccessAction } from '~/shared/storage/auth.reducer';
 
 export enum stylistsActionTypes {
@@ -13,7 +13,7 @@ export enum stylistsActionTypes {
 
 export class SearchStylistsAction implements Action {
   readonly type = stylistsActionTypes.SEARCH_STYLISTS;
-  constructor(public query?: string) {}
+  constructor(public params: StylistsSearchParams) {}
 }
 
 export class SearchStylistsErrorAction implements Action {
@@ -23,7 +23,10 @@ export class SearchStylistsErrorAction implements Action {
 
 export class SearchStylistSuccessAction implements Action {
   readonly type = stylistsActionTypes.SEARCH_STYLISTS_SUCCESS;
-  constructor(public stylists: StylistModel[]) {}
+  constructor(
+    public stylists: StylistModel[],
+    public moreStylistsAvailable: boolean
+  ) {}
 }
 
 type Actions =
@@ -37,6 +40,7 @@ export interface StylistState {
   invitationAccepted?: boolean;
 
   stylists?: StylistModel[];
+  moreStylistsAvailable?: boolean;
 
   requestState: RequestState;
   error?: ApiError;
@@ -72,7 +76,8 @@ export function stylistsReducer(state: StylistState = initialState, action: Acti
       return {
         ...state,
         requestState: RequestState.Succeeded,
-        stylists: action.stylists
+        stylists: action.stylists,
+        moreStylistsAvailable: action.moreStylistsAvailable
       };
 
     default:
@@ -97,4 +102,9 @@ export const selectInvitedByStylist = createSelector(
 export const selectStylists = createSelector(
   selectStylistFromState,
   (state: StylistState): StylistModel[] | undefined => state.stylists
+);
+
+export const selectIsMoreStylistsAvailable = createSelector(
+  selectStylistFromState,
+  (state: StylistState): boolean | undefined => state.moreStylistsAvailable
 );
