@@ -9,11 +9,9 @@ if [[ $TRAVIS_PULL_REQUEST != "false" ]]; then
     exit 0
 fi
 
-# if app type is client - install android pre-requisites
-if [[ $APP_TYPE = "client" ]]; then
-    $TRAVIS_BUILD_DIR/mobile/scripts/install-android.sh
-    export PATH=${PATH}:$ANDROID_HOME/platform-tools:$ANDROID_HOME/tools
-fi
+# install android pre-requisites
+$TRAVIS_BUILD_DIR/mobile/scripts/install-android.sh
+export PATH=${PATH}:$ANDROID_HOME/platform-tools:$ANDROID_HOME/tools
 
 
 cd $TRAVIS_BUILD_DIR/mobile/$APP_TYPE
@@ -22,12 +20,10 @@ echo "--Creating www folder"
 mkdir www || true
 npm install -g cordova@8.0.0
 
-# build Android app only for the Client app
+# build Android app
 
-if [[ $APP_TYPE = "client" ]]; then
-    export APP_BUNDLE_ID=$ANDROID_APP_BUNDLE_ID
-    $TRAVIS_BUILD_DIR/mobile/scripts/build-android-app.sh
-fi
+export APP_BUNDLE_ID=$ANDROID_APP_BUNDLE_ID
+$TRAVIS_BUILD_DIR/mobile/scripts/build-android-app.sh
 
 # prepare and build iOS app
 

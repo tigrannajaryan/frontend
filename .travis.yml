@@ -77,6 +77,7 @@ jobs:
         APP_TYPE=stylist
         MB_ENV=staging
         IOS_APP_BUNDLE_ID="com.madebeauty.stylist.beta"
+        ANDROID_APP_BUNDLE_ID="com.madebeauty.stylist.staging.android"
         IOS_APP_NAME="Made Pro Staging"
         IOS_APP_DESCRIPTION="Fill up your days. Earn more."
         IOS_PROVISIONING_PROFILE="made-final-appstore"
@@ -104,6 +105,7 @@ jobs:
         APP_TYPE=stylist
         MB_ENV=prod
         IOS_APP_BUNDLE_ID="com.madebeauty.stylist.production"
+        ANDROID_APP_BUNDLE_ID="com.madebeauty.stylist.prod"
         IOS_APP_NAME="Made Pro"
         IOS_APP_DESCRIPTION="Fill up your days. Earn more."
         IOS_PROVISIONING_PROFILE="made-final-appstore"
