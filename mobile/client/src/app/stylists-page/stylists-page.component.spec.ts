@@ -49,8 +49,8 @@ describe('Pages: Stylists Search', () => {
       .toBeTruthy();
   });
 
-  it('should show default stylists list', done => {
-    instance.ionViewWillEnter();
+  it('should show default stylists list', async done => {
+    await instance.ionViewWillEnter();
 
     // Skip loading:
     setTimeout(() => {
@@ -94,13 +94,13 @@ describe('Pages: Stylists Search', () => {
     done();
   });
 
-  it('should show ”no stylists in your area yet”', done => {
+  it('should show ”no stylists in your area yet”', async done => {
     const stylistsService = fixture.debugElement.injector.get(StylistsService);
     spyOn(stylistsService, 'search').and.returnValue(
       of(emptyStylistsResponseMock)
     );
 
-    instance.ionViewWillEnter();
+    await instance.ionViewWillEnter();
 
     // Skip loading:
     setTimeout(() => {
@@ -114,13 +114,13 @@ describe('Pages: Stylists Search', () => {
     });
   });
 
-  it('should show ”No stylists found”', done => {
+  it('should show ”No stylists found”', async done => {
     const stylistsService = fixture.debugElement.injector.get(StylistsService);
     spyOn(stylistsService, 'search').and.returnValue(
       of(emptyStylistsResponseMock)
     );
 
-    instance.ionViewWillEnter();
+    await instance.ionViewWillEnter();
     instance.query.patchValue(faker.lorem.word());
 
     // Skip loading:
@@ -135,7 +135,7 @@ describe('Pages: Stylists Search', () => {
     });
   });
 
-  it('should set preferred stylist', done => {
+  it('should set preferred stylist', async done => {
     const preferredStylistsData = fixture.debugElement.injector.get(PreferredStylistsData);
     const stylistsService = fixture.debugElement.injector.get(StylistsService);
 
@@ -143,7 +143,7 @@ describe('Pages: Stylists Search', () => {
       of({ response: preferenceMock })
     );
 
-    instance.ionViewWillEnter();
+    await instance.ionViewWillEnter();
 
     // Skip loading:
     setTimeout(async () => {
