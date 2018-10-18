@@ -29,12 +29,12 @@
     <i class="mb-icon-phone-a"></i>&nbsp;<phone-link [phone]="stylist.phone" [readonly]="pageType === StylistPageType.Invitation"></phone-link>
   </ion-row>
   <ion-row align-items-center *ngIf="stylist.instagram_url" justify-content-center class="StylistInvitationPage-phone">
-    <span [class.Link]="pageType === StylistPageType.MyStylist" (click)="onInstagramClick(stylist.instagram_url)">
+    <span [class.Link]="pageType === StylistPageType.MyStylist" (click)="onInstagramClick(stylist.instagram_url)" class="is-fszInherited">
       <i class="mb-icon-instagram"></i>&nbsp;{{ stylist.instagram_url }}
     </span>
   </ion-row>
   <ion-row align-items-center *ngIf="stylist.website_url" justify-content-center class="StylistInvitationPage-phone">
-    <span [class.Link]="pageType === StylistPageType.MyStylist" (click)="onWebsiteClick(stylist.website_url)">
+    <span [class.Link]="pageType === StylistPageType.MyStylist" (click)="onWebsiteClick(stylist.website_url)" class="is-fszInherited">
       <i class="mb-icon-globe"></i>&nbsp;{{ stylist.website_url }}
     </span>
   </ion-row>
@@ -50,14 +50,14 @@
         <button (click)="onContinueWithStylist()" ion-button class="StylistInvitationPage-submit Button">Let‘s get started!</button>
       </ion-row>
       <ion-row justify-content-center>
-        <span (click)="onProceedToStylists()" class="Link">It’s not my stylist</span>
+        <span (click)="onProceedToStylists()" class="Link is-fszInherited">It’s not my stylist</span>
       </ion-row>
     </ng-container>
 
     <!-- My stylist: -->
     <ng-container *ngSwitchCase="StylistPageType.MyStylist">
       <ion-row justify-content-center>
-        <span (click)="onProceedToStylists()" class="Link StylistInvitationPage-Link">Looking for a&nbsp;new stylist?</span>
+        <span (click)="onProceedToStylists()" class="Link is-fszInherited StylistInvitationPage-Link">Looking for a&nbsp;new stylist?</span>
       </ion-row>
     </ng-container>
   </div>

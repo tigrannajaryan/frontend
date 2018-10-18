@@ -1,10 +1,15 @@
-import { AlertController, NavParams } from 'ionic-angular';
+import { NavParams } from 'ionic-angular';
 import { async, ComponentFixture } from '@angular/core/testing';
 
 import { TestUtils } from '~/../test';
 
 import { PrivacyMode, PrivacySettingsComponent } from '~/privacy-settings/privacy-settings.component';
 import { ProfileApiMock } from '~/core/api/profile-api.mock';
+import { ProfileApi } from '~/core/api/profile-api';
+import { FollowersApi } from '~/core/api/followers.api';
+import { FollowersApiMock } from '~/core/api/followers.api.mock';
+import { FollowersResponse } from '~/core/api/followers.models';
+import { ProfileModel } from '~/core/api/profile.models';
 
 
 let fixture: ComponentFixture<PrivacySettingsComponent>;
@@ -21,11 +26,19 @@ describe('Pages: Privacy Settings', () => {
         })
         .then(async () => {
           const navParams = fixture.debugElement.injector.get(NavParams);
+          const profileApi = fixture.debugElement.injector.get(ProfileApi);
           const profileApiMock = await fixture.debugElement.injector.get(ProfileApiMock);
           const { response } = await profileApiMock.getProfile().get();
           navParams.data.profile = response;
 
-          instance.ionViewWillLoad();
+          spyOn(profileApi, 'getProfile').and.returnValue(
+            profileApiMock.getProfile()
+          );
+
+          profileApiMock.getProfile().subscribe(({ response }: { response?: ProfileModel }) => {
+            instance.profile = response;
+          });
+
           fixture.detectChanges();
         })
     )
@@ -37,7 +50,6 @@ describe('Pages: Privacy Settings', () => {
   });
 
   it('should have profile data', () => {
-    instance.ionViewWillLoad();
     expect(instance.profile).toBeDefined();
   });
 

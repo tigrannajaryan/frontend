@@ -23,9 +23,10 @@
       <div *ngIf="appointments.length > 0; else noAppointments">
         <!-- show appointment cards -->
         <div class="AppHistoryPage-subtitleContainer">
-          <ion-row class="AppHistoryPage-subtitle" align-items-center>
-            <span>Past visits</span><span class="Badge">{{ appointments.length }}</span>
-          </ion-row>
+          <div class="Badge-H2">
+            Past visits
+            <span class="Badge">{{ appointments.length }}</span>
+          </div>
         </div>
         <div *ngFor="let appointment of appointments">
           <appointment-item

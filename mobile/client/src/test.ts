@@ -110,6 +110,8 @@ import { AuthProcessStateMock } from '~/shared/storage/auth-process-state.mock';
 
 import { DataModule } from '~/core/api/data.module';
 import { BaseService } from '~/shared/api/base-service';
+import { FollowersApiMock } from '~/core/api/followers.api.mock';
+import { FollowersApi } from '~/core/api/followers.api';
 
 declare const require: any;
 
@@ -189,6 +191,7 @@ export class TestUtils {
         { provide: ServicesService, useClass: ServicesServiceMock },
         { provide: StylistsService, useClass: StylistsServiceMock },
         { provide: ProfileApi, useClass: ProfileApiMock },
+        { provide: FollowersApi, useClass: FollowersApiMock },
         ...providers
       ],
       imports: [

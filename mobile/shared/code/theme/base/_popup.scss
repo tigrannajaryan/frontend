@@ -1,0 +1,31 @@
+.mb-popup-orange {
+  .alert-wrapper {
+    min-width: pxtovw(327px);
+  }
+
+  .alert-head {
+    padding: pxtovw(25px) pxtovw(25px) pxtovw(4px);
+  }
+
+  .alert-title {
+    i {
+      font-size: pxtovw(40px);
+      color: color($colors-shared, lightSalmon);
+    }
+  }
+
+  .alert-sub-title {
+    margin: pxtovw(15px) 0 0;
+    font-size: pxtovw(18px);
+    line-height: pxtovw(24px);
+    color: black;
+  }
+
+  .alert-button {
+    height: 56px;
+
+    &[ion-button="alert-button"] {
+      color: color($colors-shared, lightSalmon);
+    }
+  }
+}

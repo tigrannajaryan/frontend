@@ -63,10 +63,15 @@
   ion-buttons[end] {
     position: absolute;
     right: pxtovw(25px);
+    margin: 0;
 
     button {
       font-size: pxtovw(24px);
       color: black;
+    }
+
+    .Link {
+      @extend %Link;
     }
   }
 }

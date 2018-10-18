@@ -26,6 +26,7 @@ export const MIN_QUERY_LENGTH = 2;
   templateUrl: 'stylists-page.component.html'
 })
 export class StylistsPageComponent {
+  PageNames = PageNames;
   continueText?: string; // nav param
 
   query: FormControl = new FormControl('');

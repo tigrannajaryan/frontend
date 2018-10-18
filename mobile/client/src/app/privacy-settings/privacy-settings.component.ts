@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
-import { AlertController, NavParams } from 'ionic-angular';
+import { AlertController } from 'ionic-angular';
 
 import { ProfileApi } from '~/core/api/profile-api';
 import { ProfileModel } from '~/core/api/profile.models';
+import { ProfileDataStore } from '~/profile/profile.data';
+import { componentUnloaded } from '~/shared/component-unloaded';
 
 export enum PrivacyMode {
   public = 'public',
@@ -19,37 +21,46 @@ export class PrivacySettingsComponent {
   profile: ProfileModel;
 
   constructor(
-    private navParams: NavParams,
+    public profileDataStore: ProfileDataStore,
     private alertCtrl: AlertController,
     private profileApi: ProfileApi
   ) {
   }
 
-  ionViewCanEnter(): boolean {
-    return Boolean(this.navParams.get('profile'));
-  }
-
-  ionViewWillLoad(): void {
-    this.profile = this.navParams.get('profile');
+  async ionViewWillEnter(): Promise<void> {
+    this.profileDataStore.asObservable()
+      .takeUntil(componentUnloaded(this))
+      .subscribe(({ response }: { response?: ProfileModel }) => { // ApiResponse<ProfileModel>
+        if (response) {
+          this.profile = response;
+        }
+      });
   }
 
   showWarningPopup(privacy: PrivacyMode): void {
-    const alert = this.alertCtrl.create({
-      title: 'Are you sure you want to change your privacy settings?',
-      subTitle: 'Changing your settings means you won\'t be able to view other MADE Clients.',
-      buttons: [{
-        text: 'Cancel',
-        role: 'cancel'
-      }, {
-        text: 'Yes, Change',
-        handler: () => {
-          setTimeout(async () => {
-            const { response } = await this.profileApi.updateProfile({ privacy }).get();
-            this.profile = response;
-          });
-        }
-      }]
-    });
-    alert.present();
+    if (privacy === PrivacyMode.private) {
+      const alert = this.alertCtrl.create({
+        title: 'Are you sure you want to change your privacy settings?',
+        subTitle: 'Changing your settings means you won\'t be able to view other MADE Clients.',
+        buttons: [{
+          text: 'Cancel',
+          role: 'cancel'
+        }, {
+          text: 'Yes, Change',
+          handler: () => {
+            this.updateProfileSettings(privacy);
+          }
+        }]
+      });
+      alert.present();
+    } else {
+      this.updateProfileSettings(privacy);
+    }
+  }
+
+  private async updateProfileSettings(privacy: PrivacyMode): Promise<void> {
+    const { response } = await this.profileApi.updateProfile({ privacy }).get();
+    this.profile = response;
+    this.profileDataStore.set(response);
   }
 }

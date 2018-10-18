@@ -14,6 +14,12 @@ import { checkProfileCompleteness } from '~/core/utils/user-utils';
 
 import { ProfileDataStore } from '~/profile/profile.data';
 import { LogoutAction } from '~/shared/storage/auth.reducer';
+import { ApiResponse } from '~/shared/api/base.models';
+
+
+function compressResponse<T>(response: T): T {
+  return response;
+}
 
 @Component({
   selector: 'profile-summary',
@@ -44,7 +50,7 @@ export class ProfileSummaryComponent {
 
     attachLoader(this.profileDataStore.asObservable())
       .takeUntil(componentUnloaded(this))
-      .subscribe(({ response }: { response?: ProfileModel }) => { // ApiResponse<ProfileModel>
+      .subscribe(compressResponse((response: ApiResponse<ProfileModel>)) => {
         if (response) {
           this.profile = response;
           this.profileCompleteness = checkProfileCompleteness(this.profile);

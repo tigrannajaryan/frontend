@@ -73,6 +73,7 @@ import { UiKitPreviewComponent } from '~/ui-kit-preview/ui-kit-preview.component
 
 import { ENV } from '~/environments/environment.default';
 import { PrivacySettingsComponent } from '~/privacy-settings/privacy-settings.component';
+import { FollowersComponent } from '~/followers/followers.component';
 
 // Init sentry reporting (inits only if ENV.sentryDsn):
 initSentry();
@@ -91,6 +92,7 @@ const declarations = [
   AuthConfirmPageComponent,
   BookingCompleteComponent,
   FirstScreenComponent,
+  FollowersComponent,
   HomePageComponent,
   HowMadeWorksComponent,
   HowPricingWorksComponent,

@@ -1,4 +1,4 @@
 <ng-container *ngIf="phone">
   <i *ngIf="icon" [class]="icon"></i>
-  <span (click)="onClick()" [class.Link]="!readonly">{{ getFormattedPhone() }}</span>
+  <span (click)="onClick()" [class.Link]="!readonly" class="is-fszInherited">{{ getFormattedPhone() }}</span>
 </ng-container>

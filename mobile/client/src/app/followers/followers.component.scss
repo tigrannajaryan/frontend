@@ -1,0 +1,57 @@
+followers {
+  .Followers-wp {
+    padding-top: pxtovw(4px);
+  }
+
+  .Followers-title {
+    font-size: $shared-h2;
+    font-weight: 600;
+    line-height: pxtovw(32px);
+  }
+
+  .FollowersList {
+    margin: pxtovw(41px) 0 0;
+  }
+
+  .FollowersList-item {
+    display: flex;
+    align-items: center;
+    padding: 0 0 pxtovw(16px);
+    margin: 0 0 pxtovw(15px);
+    border-bottom: 1px solid color($grayscale, 200);
+  }
+
+  .FollowersList-ava {
+    display: inline-block;
+    flex: 0 0 auto;
+    width: pxtovw(56px);
+    height: pxtovw(56px);
+    margin-right: pxtovw(16px);
+    vertical-align: middle;
+    background-image: url('../assets/imgs/icons/avatar.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover !important;
+    border-radius: 50%;
+  }
+
+  .FollowersList-name {
+    width: 100%;
+    font-size: $shared-h4;
+    font-weight: 700;
+    line-height: pxtovw(24px);
+    letter-spacing: pxtovw(-0.3px);
+  }
+
+  .FollowersList-icon {
+    font-size: $shared-h4;
+    color: color($colors-shared, lightSalmon);
+  }
+
+  .Followers-private {
+    margin: pxtovw(50px) 0;
+    color: color($grayscale, 500);
+    text-align: center;
+  }
+}
+

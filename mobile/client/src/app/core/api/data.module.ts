@@ -13,6 +13,7 @@ import { StylistsService } from '~/core/api/stylists-service';
 import { PreferredStylistsData } from '~/core/api/preferred-stylists.data';
 import { ProfileApi } from '~/core/api/profile-api';
 import { ProfileDataStore } from '~/profile/profile.data';
+import { FollowersApi } from '~/core/api/followers.api';
 
 /**
  * Common data module that includes singletons for the entire app.
@@ -31,6 +32,7 @@ import { ProfileDataStore } from '~/profile/profile.data';
     BookingApiMock,
     ProfileApi,
     StylistsService,
+    FollowersApi,
     ServicesService
   ]
 })

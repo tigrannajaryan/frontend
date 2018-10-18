@@ -65,6 +65,10 @@ page-home {
       font-size: pxtorem10(20);
     }
   }
+
+  .Home-Appointments {
+    margin-bottom: pxtovw(30px);
+  }
 }
 
 .Home-btns {
@@ -138,22 +142,5 @@ page-home {
       display: inline-block;
       vertical-align: middle;
     }
-  }
-}
-
-.HomeAppointment {
-  display: flex;
-  align-items: center;
-  margin-bottom: pxtovw(30px);
-  font-size: pxtovw(22px);
-  font-weight: 600;
-
-  .HomeAppointment-info {
-    padding: pxtovw(2px) pxtovw(9px);
-    margin-left: pxtovw(7px);
-    font-size: pxtovw(15px);
-    color: color($colors, white);
-    background: color($colors, color20);
-    border-radius: 20px;
   }
 }
