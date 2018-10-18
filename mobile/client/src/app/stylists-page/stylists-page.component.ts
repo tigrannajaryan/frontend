@@ -107,7 +107,12 @@ export class StylistsPageComponent {
 
   private async requestGeolocation(): Promise<void> {
     this.isGeolocationInProcess = true;
-    this.coords = await this.geolocationService.getUserCoordinates();
-    this.isGeolocationInProcess = false;
+    try {
+      this.coords = await this.geolocationService.getUserCoordinates();
+    } catch {
+      // Simply ignore location. It fallbacks to ip-location anyway.
+    } finally {
+      this.isGeolocationInProcess = false;
+    }
   }
 }
