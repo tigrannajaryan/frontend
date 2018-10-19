@@ -71,14 +71,17 @@ export class ProfileSummaryComponent {
   async onLogout(): Promise<void> {
     const prompt = this.alertCtrl.create({
       title: '',
-      subTitle: 'Do you want to logout?',
-      buttons: [{
-        text: 'Logout now',
-        handler: () => this.store.dispatch(new LogoutAction())
-      }, {
-        text: 'Cancel',
-        role: 'cancel'
-      }]
+      subTitle: 'Are you sure you want to Logout?',
+      buttons: [
+        {
+          text: 'Yes, Logout',
+          handler: () => this.store.dispatch(new LogoutAction())
+        },
+        {
+          text: 'No',
+          role: 'cancel'
+        }
+      ]
     });
     prompt.present();
   }
