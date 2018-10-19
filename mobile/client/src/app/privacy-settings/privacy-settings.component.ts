@@ -35,7 +35,7 @@ export class PrivacySettingsComponent {
 
   showWarningPopup(privacy: PrivacyMode): void {
     const alert = this.alertCtrl.create({
-      title: 'Are you sure you want to change your privacy-settings settings?',
+      title: 'Are you sure you want to change your privacy settings?',
       subTitle: 'Changing your settings means you won\'t be able to view other MADE Clients.',
       buttons: [{
         text: 'Cancel',
