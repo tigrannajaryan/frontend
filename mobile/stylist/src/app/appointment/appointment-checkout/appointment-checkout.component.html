@@ -47,7 +47,7 @@
                   <div>{{ service.service_name }}</div>
                 </ion-col>
                 <ion-col col-5 class="CheckOut-col havePaddingLeft">
-                  ${{ service.client_price | number: '1.2' }}
+                  ${{ service.client_price }}
 
                   <i (click)="removeServiceClick(service)"
                     *ngIf="previewResponse.services.length > 1 && appointment.status != AppointmentStatuses.checked_out"
