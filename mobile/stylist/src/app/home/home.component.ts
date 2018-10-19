@@ -29,7 +29,8 @@ export enum AppointmentTag {
   NotCheckedOut = 'Not checked out',
   Now = 'Now',
   Next = 'Next',
-  New = 'New'
+  New = 'New',
+  NoShow = 'No-show'
 }
 
 export enum Tabs {
@@ -167,36 +168,65 @@ export class HomeComponent {
       return;
     }
 
-    const buttons = [
-      {
-        text: 'Checkout Client',
+    // Build the list of action buttons to show
+    const buttons = [];
+
+    if (this.activeTab !== this.tabs[Tabs.upcoming].name) {
+      // If we are not on Upcoming tab show the "Checkout" action
+      buttons.push({
+        text: 'Checkout client',
         handler: () => {
           this.checkOutAppointmentClick(appointment);
         }
-      }, {
-        text: `Call client: ${ formatNumber(appointment.client_phone, NumberFormat.International) }`,
+      });
+
+      // and "no-show" action
+      buttons.push({
+        text: 'Client no-show',
+        handler: () => {
+          this.markNoShow(appointment);
+        }
+      });
+    }
+
+    if (appointment.client_phone) {
+      // If the client phone number is know show "Call client" action
+      buttons.push({
+        text: `Call client: ${formatNumber(appointment.client_phone, NumberFormat.International)}`,
         handler: () => {
           this.externalAppService.doPhoneCall(appointment.client_phone);
         }
-      }, {
-        text: 'Cancel Appointment',
+      });
+    }
+
+    // Add "Cancel appointment" and "Back" actions
+    buttons.splice(buttons.length, 0,
+      {
+        text: 'Cancel appointment',
         role: 'destructive',
         handler: () => {
           this.cancelAppointment(appointment);
         }
-      }, {
+      },
+      {
         text: 'Back',
         role: 'cancel'
       }
-    ];
-
-    // remove 'Checkout Client' if this is upcoming tab
-    if (this.activeTab === this.tabs[Tabs.upcoming].name) {
-      buttons.splice(0, 1);
-    }
+    );
 
     const actionSheet = this.actionSheetCtrl.create({ buttons });
     actionSheet.present();
+  }
+
+  /**
+   * Handler for 'No-show' action.
+   */
+  async markNoShow(appointment: Appointment): Promise<void> {
+    const { response } = await this.homeService.changeAppointment(appointment.uuid,
+      { status: AppointmentStatuses.no_show }).get();
+    if (response) {
+      this.loadAppointments(this.activeTab);
+    }
   }
 
   /**
@@ -307,7 +337,7 @@ export class HomeComponent {
       for (const appointment of home.appointments) {
         const startTime = moment(new Date(appointment.datetime_start_at));
         const createdAt = moment(new Date(appointment.created_at));
-        const pastTime = moment(new Date()).subtract({hours: 12});
+        const pastTime = moment(new Date()).subtract({ hours: 12 });
 
         const endTime = startTime.clone();
         endTime.add(appointment.duration_minutes, 'minutes');
@@ -315,7 +345,9 @@ export class HomeComponent {
         const now = moment();
 
         let tag: AppointmentTag;
-        if (startTime < now) {
+        if (appointment.status === AppointmentStatuses.no_show) {
+          tag = AppointmentTag.NoShow;
+        } else if (startTime < now) {
           if (endTime > now) {
             tag = AppointmentTag.Now;
           } else {
