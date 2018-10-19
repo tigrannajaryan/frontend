@@ -15,8 +15,8 @@ import { SelectDateComponent } from '~/booking/select-date/select-date.component
 import { SelectTimeComponent } from '~/booking/select-time/select-time.component';
 import { ServicesPageComponent } from '~/services-page/services-page.component';
 import { ServicesCategoriesPageComponent } from '~/services-categories-page/services-categories-page.component';
-import { StylistInvitationPageComponent } from '~/onboarding/stylist-invitation/stylist-invitation.component';
-import { StylistsPageComponent } from '~/stylists-page/stylists-page.component';
+import { StylistComponent } from '~/stylists/stylist/stylist.component';
+import { StylistsPageComponent } from '~/stylists/stylists.component';
 import { PrivacySettingsComponent } from '~/privacy-settings/privacy-settings.component';
 import { FollowersComponent } from '~/followers/followers.component';
 
@@ -49,7 +49,7 @@ export const PageNames = {
   SelectTime: SelectTimeComponent,
   Services: ServicesPageComponent,
   ServicesCategories: ServicesCategoriesPageComponent,
-  StylistInvitation: StylistInvitationPageComponent,
+  Stylist: StylistComponent,
   Stylists: StylistsPageComponent
 };
 

@@ -44,24 +44,15 @@
         *ngFor="let stylist of stylists | async"
         class="StylistsPage-card"
         [ngClass]="{'is-active': stylist.uuid === activeStylist?.uuid}"
-        (click)="onSetActiveStylist($event, stylist)">
+        (click)="onContinueWithStylist(stylist)"
+        data-test-id="StylistCard">
         <div class="StylistsPage-cardImg" [style.backgroundImage]="'url(' + (stylist.profile_photo_url  || 'assets/icons/stylist-avatar.png') + ')'"></div>
-        <div class="StylistsPage-cardHeader">
-          Your selected stylist
-          <i (click)="onSetActiveStylist($event, undefined)" class="StylistsPage-cardClose mb-icon-cross"></i>
-        </div>
         <div class="StylistsPage-cardSubtitle">{{ stylist.salon_name }}</div>
         <div class="StylistsPage-cardTitle">{{ stylist.first_name }} {{ stylist.last_name }}</div>
         <div *ngIf="stylist.followers_count" [madeLink]="[PageNames.Followers, { stylistUuid: stylist.uuid }]" class="StylistsPage-cardInfo">
           <i class="mb-icon-heart-a"></i>&nbsp;<p class="Link">{{ stylist.followers_count }} MADE Clients</p>
         </div>
         <div class="StylistsPage-cardInfo"><i class="mb-icon-marker"></i>&nbsp; <p>{{ stylist.salon_address }}</p></div>
-        <div class="StylistsPage-cardFooter">
-          <div *ngIf="stylist.phone" class="StylistsPage-cardInfo">&nbsp;<p><phone-link [phone]="stylist.phone" icon="mb-icon-phone-a"></phone-link></p></div>
-          <div *ngIf="stylist.instagram_url" (click)="onInstagramClick(stylist.instagram_url)" class="StylistsPage-cardInfo"><i class="mb-icon-instagram"></i>&nbsp;<p class="Link">{{ stylist.instagram_url }}</p></div>
-          <div *ngIf="stylist.website_url" (click)="onWebsiteClick(stylist.website_url)" class="StylistsPage-cardInfo"><i class="mb-icon-globe"></i>&nbsp;<p class="Link">{{ stylist.website_url }}</p></div>
-          <button (click)="onContinueWithStylist(stylist)" ion-button class="Button StylistsPage-submit" data-test-id="addStylist">{{ continueText || ("Add " + stylist.first_name +"!") }}</button>
-        </div>
       </div>
       <div *ngIf="(stylists | async)?.length === 0">
         <ng-container *ngIf="!query.value; else notFound">I'm sorry there are no stylists in your area yet. But check back often we're adding new stylists every day!</ng-container>

@@ -37,7 +37,7 @@ export class MainTabsComponent {
     },
     {
       name: 'Stylists',
-      link: PageNames.StylistInvitation,
+      link: PageNames.Stylist,
       params: {}
     },
     {

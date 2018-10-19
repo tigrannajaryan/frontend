@@ -1,0 +1,74 @@
+<ion-header madeHeader [hideBackButton]="pageType !== StylistPageType.StylistInSearch"></ion-header>
+
+<ion-content class="StylistInvitationPage contentSidePadding">
+  <!-- Title: -->
+  <ion-row justify-content-center>
+      <div [ngSwitch]="pageType" class="StylistInvitationPage-title SharedH1">
+        <!-- Invitation: -->
+        <ng-container *ngSwitchCase="StylistPageType.Invitation">We found your stylist</ng-container>
+
+        <!-- My stylist: -->
+        <ng-container *ngSwitchCase="StylistPageType.MyStylist">My stylist</ng-container>
+
+        <!-- Stylist in search: -->
+        <!-- no title -->
+      </div>
+    </ion-row>
+
+    <!-- Stylist’s pic: -->
+    <ion-row justify-content-center>
+      <div (click)="onStylistPicClick()" [style.backgroundImage]="stylist?.profile_photo_url ? 'url(' + stylist.profile_photo_url + ')' : null" class="StylistInvitationPage-pic"></div>
+    </ion-row>
+
+    <!-- Data: -->
+    <div *ngIf="stylist">
+      <ion-row justify-content-center align-items-center class="StylistInvitationPage-salonName">{{ stylist.salon_name }}</ion-row>
+      <ion-row justify-content-center align-items-center class="StylistInvitationPage-name">{{ stylist.first_name }} {{ stylist.last_name }}</ion-row>
+      <ion-row align-items-center *ngIf="stylist.salon_address" justify-content-center class="StylistInvitationPage-address">
+        <i class="mb-icon-marker"></i>&nbsp;<p>{{ stylist.salon_address }}</p>
+      </ion-row>
+      <ion-row align-items-center *ngIf="stylist.phone" justify-content-center class="StylistInvitationPage-phone">
+        <i class="mb-icon-phone-a"></i>&nbsp;<phone-link [phone]="stylist.phone" [readonly]="pageType === StylistPageType.Invitation"></phone-link>
+      </ion-row>
+      <ion-row align-items-center *ngIf="stylist.instagram_url" justify-content-center class="StylistInvitationPage-phone">
+        <span [class.Link]="pageType !== StylistPageType.Invitation" (click)="onInstagramClick(stylist.instagram_url)" class="is-fszInherited">
+          <i class="mb-icon-instagram"></i>&nbsp;{{ stylist.instagram_url }}
+        </span>
+      </ion-row>
+      <ion-row align-items-center *ngIf="stylist.website_url" justify-content-center class="StylistInvitationPage-phone" class="is-fszInherited">
+        <span [class.Link]="pageType !== StylistPageType.Invitation" (click)="onWebsiteClick(stylist.website_url)">
+          <i class="mb-icon-globe"></i>&nbsp;{{ stylist.website_url }}
+        </span>
+      </ion-row>
+    </div>
+
+    <!-- Fix unnecessary space issue on invitation screen: -->
+    <div *ngIf="pageType === StylistPageType.Invitation" class="flex-1"></div>
+
+    <!-- Footer: -->
+    <div [ngSwitch]="pageType" class="Footer StylistInvitationPage-footer">
+      <!-- Invitation: -->
+      <ng-container *ngSwitchCase="StylistPageType.Invitation">
+        <ion-row justify-content-center>
+          <button (click)="onContinueWithStylist()" ion-button class="StylistInvitationPage-submit Button">Let‘s get started!</button>
+        </ion-row>
+        <ion-row justify-content-center>
+          <span (click)="onProceedToStylists()" class="Link is-fszInherited">It’s not my stylist</span>
+        </ion-row>
+      </ng-container>
+
+      <!-- My stylist: -->
+      <ng-container *ngSwitchCase="StylistPageType.MyStylist">
+        <ion-row justify-content-center>
+          <span (click)="onProceedToStylists()" class="Link StylistInvitationPage-Link is-fszInherited">Looking for a&nbsp;new stylist?</span>
+        </ion-row>
+      </ng-container>
+
+      <!-- Stylist in search: -->
+      <ng-container *ngSwitchCase="StylistPageType.StylistInSearch">
+        <ion-row justify-content-center>
+          <button (click)="onContinueWithStylist()" ion-button class="StylistInvitationPage-submit Button">Select as my stylist</button>
+        </ion-row>
+      </ng-container>
+    </div>
+</ion-content>

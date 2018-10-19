@@ -25,6 +25,11 @@
 
   padding-top: pxtovw(30px);
 
+  .scroll-content {
+    // Overrifding ionic’s style due to some strange offset calculation bug:
+    margin-top: 0 !important;
+  }
+
   .StylistInvitationPage-title {
     margin: pxtovw(15px) 0 pxtovw(24px);
     font-weight: 600;
