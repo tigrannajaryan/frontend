@@ -84,8 +84,8 @@ describe('Registration Flow', () => {
     await welcomeToMadePage.continue();
   });
 
-  it('can navigate through How pricing works page', async () => {
-    await howPricingWorksPage.continue();
+  it('should show Calendar Example page', async () => {
+    await calendarExamplePage.continue();
   });
 
   it('should show service list selection', async () => {
@@ -131,10 +131,6 @@ describe('Registration Flow', () => {
 
   it('should show First Visit Discounts page', async () => {
     await discountsFirstVisitPage.continue();
-  });
-
-  it('should show Calendar Example page', async () => {
-    await calendarExamplePage.continue();
   });
 
   it('should show Invitations page', async () => {

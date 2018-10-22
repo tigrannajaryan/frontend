@@ -14,15 +14,15 @@ import * as Fuse from 'fuse.js/dist/fuse';
 import { normalizePhoneNumber } from '~/shared/utils/phone-numbers';
 import { Discounts } from '~/shared/stylist-api/discounts.models';
 import { DiscountsApi } from '~/shared/stylist-api/discounts.api';
-import { StylistServiceProvider } from '~/shared/stylist-api/stylist-service';
 import { StylistProfile } from '~/shared/stylist-api/stylist-models';
 import { ClientInvitation, InvitationsResponse, InvitationStatus } from '~/shared/stylist-api/invitations.models';
 import { InvitationsApi } from '~/shared/stylist-api/invitations.api';
 import { ApiResponse } from '~/shared/api/base.models';
+import { showAlert } from '~/shared/utils/alert';
 
 import { PageNames } from '~/core/page-names';
 import { trimStr } from '~/core/functions';
-import { showAlert } from '~/shared/utils/alert';
+import { ProfileDataStore } from '~/core/profile.data';
 
 class ErrorWrapper {
   constructor(readonly error) { }
@@ -244,8 +244,8 @@ export class InvitationsComponent {
     private navParams: NavParams,
     private openNativeSettings: OpenNativeSettings,
     private platform: Platform,
-    private sms: SMS,
-    private stylistApi: StylistServiceProvider
+    private profileData: ProfileDataStore,
+    private sms: SMS
   ) {
   }
 
@@ -254,7 +254,7 @@ export class InvitationsComponent {
     this.loadContacts();
 
     // Preload stylist profile and discounts that we will need later
-    this.stylistProfile = this.stylistApi.getProfile().get();
+    this.stylistProfile = this.profileData.get();
     this.discounts = this.discountsApi.getDiscounts().get();
   }
 
