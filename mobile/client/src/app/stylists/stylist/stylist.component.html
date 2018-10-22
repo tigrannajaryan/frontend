@@ -25,7 +25,7 @@
       <ion-row justify-content-center align-items-center class="StylistInvitationPage-salonName">{{ stylist.salon_name }}</ion-row>
       <ion-row justify-content-center align-items-center class="StylistInvitationPage-name">{{ stylist.first_name }} {{ stylist.last_name }}</ion-row>
       <ion-row align-items-center *ngIf="stylist.salon_address" justify-content-center class="StylistInvitationPage-address">
-        <i class="mb-icon-marker"></i>&nbsp;<p>{{ stylist.salon_address }}</p>
+        <i class="mb-icon-marker"></i>&nbsp;<span>{{ stylist.salon_address }}</span>
       </ion-row>
       <ion-row align-items-center *ngIf="stylist.phone" justify-content-center class="StylistInvitationPage-phone">
         <i class="mb-icon-phone-a"></i>&nbsp;<phone-link [phone]="stylist.phone" [readonly]="pageType === StylistPageType.Invitation"></phone-link>
