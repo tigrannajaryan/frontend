@@ -2,14 +2,16 @@ import { AlertController, NavParams } from 'ionic-angular';
 import { Component } from '@angular/core';
 
 import { componentUnloaded } from '~/shared/component-unloaded';
+import { loading } from '~/shared/utils/request-utils';
+import { ApiResponse } from '~/shared/api/base.models';
 
 import { FollowersApi } from '~/core/api/followers.api';
 import { FollowersModel } from '~/core/api/followers.models';
 import { PageNames } from '~/core/page-names';
-import { ProfileDataStore } from '~/profile/profile.data';
 import { ProfileModel } from '~/core/api/profile.models';
+
+import { ProfileDataStore } from '~/profile/profile.data';
 import { PrivacyMode } from '~/privacy-settings/privacy-settings.component';
-import { loading } from '~/shared/utils/request-utils';
 
 @Component({
   selector: 'followers',
@@ -36,9 +38,10 @@ export class FollowersComponent {
 
     attachLoader(this.profileDataStore.asObservable())
       .takeUntil(componentUnloaded(this))
-      .subscribe(({ response }: { response?: ProfileModel }) => { // ApiResponse<ProfileModel>
-        if (response) {
-          this.profile = response;
+      .subscribe((apiRes: ApiResponse<ProfileModel>) => {
+        const profile: ProfileModel = apiRes.response;
+        if (profile) {
+          this.profile = profile;
         }
       });
 

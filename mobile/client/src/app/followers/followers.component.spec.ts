@@ -24,7 +24,27 @@ describe('Pages: Followers', () => {
           // Common setup:
           fixture = compiled.fixture;
           instance = compiled.instance;
+
+          const profileApi = fixture.debugElement.injector.get(ProfileApi);
+          const profileApiMock = fixture.debugElement.injector.get(ProfileApiMock);
+          spyOn(profileApi, 'getProfile').and.returnValue(
+            profileApiMock.getProfile()
+          );
+          profileApiMock.getProfile().subscribe((apiRes: ApiResponse<ProfileModel>) => {
+            instance.profile = apiRes.response;
+          });
+
+          const followersApi = fixture.debugElement.injector.get(FollowersApi);
+          const followersApiMock = fixture.debugElement.injector.get(FollowersApiMock);
+          spyOn(followersApi, 'getFollowers').and.returnValue(
+            followersApiMock.getFollowers('')
+          );
+          followersApiMock.getFollowers('').subscribe((apiRes: ApiResponse<FollowersResponse>) => {
+            instance.followers = apiRes.response.followers;
+          });
+
           instance.ionViewWillEnter();
+          fixture.detectChanges();
         })
     )
   );
@@ -34,63 +54,25 @@ describe('Pages: Followers', () => {
       .toBeTruthy();
   });
 
-  it('should load the data', done => {
-    const profileApi = fixture.debugElement.injector.get(ProfileApi);
-    const profileApiMock = fixture.debugElement.injector.get(ProfileApiMock);
-    const followersApi = fixture.debugElement.injector.get(FollowersApi);
-    const followersApiMock = fixture.debugElement.injector.get(FollowersApiMock);
-
-    spyOn(profileApi, 'getProfile').and.returnValue(
-      profileApiMock.getProfile()
-    );
-    spyOn(followersApi, 'getFollowers').and.returnValue(
-      followersApiMock.getFollowers('')
-    );
-
-    followersApiMock.getFollowers('').subscribe(({ response }: { response?: FollowersResponse }) => {
-      instance.followers = response.followers;
-      expect(instance.followers).toBeDefined();
-    });
-
-    profileApiMock.getProfile().subscribe(({ response }: { response?: ProfileModel }) => {
-      instance.profile = response;
-      expect(instance.profile).toBeDefined();
-
-      done();
-    });
+  it('should load the data', () => {
+    expect(instance.followers).toBeDefined();
+    expect(instance.profile).toBeDefined();
   });
 
   it('should show followers popup if stylist have followers', done => {
-    const profileApi = fixture.debugElement.injector.get(ProfileApi);
-    const profileApiMock = fixture.debugElement.injector.get(ProfileApiMock);
-    const followersApi = fixture.debugElement.injector.get(FollowersApi);
-    const followersApiMock = fixture.debugElement.injector.get(FollowersApiMock);
-
-    spyOn(profileApi, 'getProfile').and.returnValue(
-      profileApiMock.getProfile()
-    );
-    spyOn(followersApi, 'getFollowers').and.returnValue(
-      followersApiMock.getFollowers('')
-    );
     spyOn(instance, 'showFollowersPopup').and.callThrough();
 
-    followersApiMock.getFollowers('').subscribe(({ response }: { response?: FollowersResponse }) => {
-      instance.followers = response.followers;
-      instance.showFollowersPopup(instance.followers[0]);
-    });
+    fixture.detectChanges();
 
-    profileApiMock.getProfile().subscribe(({ response }: { response?: ProfileModel }) => {
-      instance.profile = response;
-      fixture.detectChanges();
+    instance.showFollowersPopup(instance.followers[0]);
 
-      const stylistFollowerItem = fixture.nativeElement.querySelector('[data-test-id=stylistFollowerItem]');
-      expect(stylistFollowerItem.innerText.trim()).toBe(`${instance.followers[0].first_name} ${instance.followers[0].last_name}`);
+    const stylistFollowerItem = fixture.nativeElement.querySelector('[data-test-id=stylistFollowerItem]');
+    expect(stylistFollowerItem.innerText.trim()).toBe(`${instance.followers[0].first_name} ${instance.followers[0].last_name}`);
 
-      stylistFollowerItem.click();
-      expect(instance.showFollowersPopup).toHaveBeenCalled();
+    stylistFollowerItem.click();
+    expect(instance.showFollowersPopup).toHaveBeenCalled();
 
-      done();
-    });
+    done();
   });
 
   it('should have a link to privacy settings page', () => {
@@ -99,58 +81,18 @@ describe('Pages: Followers', () => {
   });
 
   it('should have title with followers count', done => {
-    const profileApi = fixture.debugElement.injector.get(ProfileApi);
-    const profileApiMock = fixture.debugElement.injector.get(ProfileApiMock);
-    const followersApi = fixture.debugElement.injector.get(FollowersApi);
-    const followersApiMock = fixture.debugElement.injector.get(FollowersApiMock);
+    const stylistName = fixture.nativeElement.querySelector('[data-test-id=stylistName]');
+    expect(stylistName.innerText).toBe(`${instance.profile.first_name}'s Clients ${instance.followers.length}`);
 
-    spyOn(profileApi, 'getProfile').and.returnValue(
-      profileApiMock.getProfile()
-    );
-    spyOn(followersApi, 'getFollowers').and.returnValue(
-      followersApiMock.getFollowers('')
-    );
-
-    followersApiMock.getFollowers('').subscribe(({ response }: { response?: FollowersResponse }) => {
-      instance.followers = response.followers;
-    });
-
-    profileApiMock.getProfile().subscribe(({ response }: { response?: ProfileModel }) => {
-      instance.profile = response;
-      fixture.detectChanges();
-
-      const stylistName = fixture.nativeElement.querySelector('[data-test-id=stylistName]');
-      expect(stylistName.innerText).toBe(`${instance.profile.first_name}'s Clients ${instance.followers.length}`);
-
-      done();
-    });
+    done();
   });
 
   it('should have list of followers', done => {
-    const profileApi = fixture.debugElement.injector.get(ProfileApi);
-    const profileApiMock = fixture.debugElement.injector.get(ProfileApiMock);
-    const followersApi = fixture.debugElement.injector.get(FollowersApi);
-    const followersApiMock = fixture.debugElement.injector.get(FollowersApiMock);
+    fixture.detectChanges();
 
-    spyOn(profileApi, 'getProfile').and.returnValue(
-      profileApiMock.getProfile()
-    );
-    spyOn(followersApi, 'getFollowers').and.returnValue(
-      followersApiMock.getFollowers('')
-    );
+    const stylistFollowerItem = fixture.nativeElement.querySelector('[data-test-id=stylistFollowerItem]');
+    expect(stylistFollowerItem.innerText.trim()).toBe(`${instance.followers[0].first_name} ${instance.followers[0].last_name}`);
 
-    followersApiMock.getFollowers('').subscribe(({ response }: { response?: FollowersResponse }) => {
-      instance.followers = response.followers;
-    });
-
-    profileApiMock.getProfile().subscribe(({ response }: { response?: ProfileModel }) => {
-      instance.profile = response;
-      fixture.detectChanges();
-
-      const stylistFollowerItem = fixture.nativeElement.querySelector('[data-test-id=stylistFollowerItem]');
-      expect(stylistFollowerItem.innerText.trim()).toBe(`${instance.followers[0].first_name} ${instance.followers[0].last_name}`);
-
-      done();
-    });
+    done();
   });
 });

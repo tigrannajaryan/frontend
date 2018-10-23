@@ -12,6 +12,7 @@ import { ProfileModel } from '~/core/api/profile.models';
 import { checkProfileCompleteness } from '~/core/utils/user-utils';
 
 import { ProfileSummaryComponent } from '~/profile/profile-summary/profile-summary.component';
+import { ApiResponse } from '~/shared/api/base.models';
 
 let fixture: ComponentFixture<ProfileSummaryComponent>;
 let instance: ProfileSummaryComponent;
@@ -43,9 +44,10 @@ describe('Pages: Profile summary', () => {
       profileApiMock.getProfile()
     );
 
-    profileApiMock.getProfile().subscribe(({ response }: { response?: ProfileModel }) => {
-      instance.profile = response;
-      instance.profileCompleteness = checkProfileCompleteness(response);
+    profileApiMock.getProfile().subscribe((apiRes: ApiResponse<ProfileModel>) => {
+      const profile: ProfileModel = apiRes.response;
+      instance.profile = profile;
+      instance.profileCompleteness = checkProfileCompleteness(profile);
       expect(instance.profileCompleteness.isProfileComplete).toBe(true);
 
       fixture.detectChanges();

@@ -3,8 +3,11 @@ import { AlertController } from 'ionic-angular';
 
 import { ProfileApi } from '~/core/api/profile-api';
 import { ProfileModel } from '~/core/api/profile.models';
-import { ProfileDataStore } from '~/profile/profile.data';
+
 import { componentUnloaded } from '~/shared/component-unloaded';
+import { ApiResponse } from '~/shared/api/base.models';
+
+import { ProfileDataStore } from '~/profile/profile.data';
 
 export enum PrivacyMode {
   public = 'public',
@@ -30,9 +33,10 @@ export class PrivacySettingsComponent {
   async ionViewWillEnter(): Promise<void> {
     this.profileDataStore.asObservable()
       .takeUntil(componentUnloaded(this))
-      .subscribe(({ response }: { response?: ProfileModel }) => { // ApiResponse<ProfileModel>
-        if (response) {
-          this.profile = response;
+      .subscribe((apiRes: ApiResponse<ProfileModel>) => {
+        const profile: ProfileModel = apiRes.response;
+        if (profile) {
+          this.profile = profile;
         }
       });
   }

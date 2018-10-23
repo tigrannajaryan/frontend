@@ -10,6 +10,7 @@ import { FollowersApi } from '~/core/api/followers.api';
 import { FollowersApiMock } from '~/core/api/followers.api.mock';
 import { FollowersResponse } from '~/core/api/followers.models';
 import { ProfileModel } from '~/core/api/profile.models';
+import { ApiResponse } from '~/shared/api/base.models';
 
 
 let fixture: ComponentFixture<PrivacySettingsComponent>;
@@ -35,8 +36,9 @@ describe('Pages: Privacy Settings', () => {
             profileApiMock.getProfile()
           );
 
-          profileApiMock.getProfile().subscribe(({ response }: { response?: ProfileModel }) => {
-            instance.profile = response;
+          profileApiMock.getProfile().subscribe((apiRes: ApiResponse<ProfileModel>) => {
+            const profile: ProfileModel = apiRes.response;
+            instance.profile = profile;
           });
 
           fixture.detectChanges();
