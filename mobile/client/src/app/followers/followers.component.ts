@@ -45,8 +45,6 @@ export class FollowersComponent {
         }
       });
 
-
-
     const stylistUuid = this.navParams.get('stylistUuid');
     const { response } = await this.followersApi.getFollowers(stylistUuid).get();
     if (response) {
