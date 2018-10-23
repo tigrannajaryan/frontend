@@ -67,7 +67,10 @@
       <!-- Stylist in search: -->
       <ng-container *ngSwitchCase="StylistPageType.StylistInSearch">
         <ion-row justify-content-center>
-          <button (click)="onContinueWithStylist()" ion-button class="StylistInvitationPage-submit Button">Select</button>
+          <button (click)="onContinueWithStylist()" ion-button class="StylistInvitationPage-submit Button">
+            <ng-container *ngIf="onboarding; else selectTpl">Let‘s get started!</ng-container>
+            <ng-template #selectTpl>Select</ng-template>
+          </button>
         </ion-row>
       </ng-container>
     </div>

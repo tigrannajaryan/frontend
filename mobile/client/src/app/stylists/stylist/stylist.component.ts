@@ -8,10 +8,10 @@ import { PageNames } from '~/core/page-names';
 import { PreferredStylistsData } from '~/core/api/preferred-stylists.data';
 import { EventTypes } from '~/core/event-types';
 
-import { MainTabsComponent, TabIndex } from '~/main-tabs/main-tabs.component';
+import { TabIndex } from '~/main-tabs/main-tabs.component';
 
 export enum StylistPageType {
-  Invitation,
+  Invitation = 1,
   MyStylist,
   StylistInSearch
 }
@@ -19,6 +19,7 @@ export enum StylistPageType {
 export interface StylistPageParams {
   pageType?: StylistPageType;
   stylist?: StylistModel;
+  onboarding?: boolean;
 }
 
 @Component({
@@ -28,6 +29,9 @@ export interface StylistPageParams {
 export class StylistComponent {
   pageType: StylistPageType;
   stylist: StylistModel;
+
+  // Indicates that we are inside onboarding flow:
+  onboarding = false;
 
   // expose to the view
   StylistPageType = StylistPageType;
@@ -47,6 +51,7 @@ export class StylistComponent {
 
     this.pageType = params.pageType || StylistPageType.MyStylist;
     this.stylist = params.stylist;
+    this.onboarding = params.onboarding;
 
     // Select from preferred stylists if no stylist:
     if (!this.stylist) {
@@ -68,9 +73,9 @@ export class StylistComponent {
         if (this.navCtrl.parent && this.navCtrl instanceof Tab) {
           this.navCtrl.pop();
         } else {
-          const root = this.navCtrl.getByIndex(0).component;
+          // TODO: pop to root with an event to update preferred stylist’s data
           await this.navCtrl.setRoot(PageNames.MainTabs);
-          if (root === MainTabsComponent) { // not in onboarding flow
+          if (!this.onboarding) {
             this.events.publish(EventTypes.selectMainTab, TabIndex.Stylists);
           }
         }

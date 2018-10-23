@@ -75,7 +75,8 @@ export class AuthConfirmPageComponent {
         } else if (invitation) {
           const data = {
             stylist: invitation,
-            pageType: StylistPageType.Invitation
+            pageType: StylistPageType.Invitation,
+            onboarding: true
           };
           this.navCtrl.setRoot(PageNames.Stylist, { data });
         } else {

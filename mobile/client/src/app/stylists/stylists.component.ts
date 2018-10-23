@@ -19,15 +19,19 @@ import {
 
 import { StylistPageParams, StylistPageType } from '~/stylists/stylist/stylist.component';
 
-export const MIN_QUERY_LENGTH = 2;
+interface StylistsPageParams {
+  onboarding?: boolean;
+}
 
 @Component({
   selector: 'page-stylists',
   templateUrl: 'stylists.component.html'
 })
 export class StylistsPageComponent {
+  static MIN_QUERY_LENGTH = 2;
+
   PageNames = PageNames;
-  continueText?: string; // nav param
+  onboarding = false;
 
   query: FormControl = new FormControl('');
   locationQuery: FormControl = new FormControl('');
@@ -53,7 +57,9 @@ export class StylistsPageComponent {
   }
 
   async ionViewWillLoad(): Promise<void> {
-    this.continueText = this.navParams.get('continueText');
+    const params = (this.navParams.get('data') || {}) as StylistsPageParams;
+
+    this.onboarding = params.onboarding;
 
     this.stylists = this.store.select(selectStylists);
     this.moreStylistsAvailable = this.store.select(selectIsMoreStylistsAvailable);
@@ -85,12 +91,15 @@ export class StylistsPageComponent {
    * Returns params for the Stylist’s page.
    * Note: this function is used in tests and therefor declared public
    */
-  getStylistPageParams = (stylist: StylistModel): { data: StylistPageParams } => ({
-    data: {
-      pageType: StylistPageType.StylistInSearch,
-      stylist
-    }
-  });
+  getStylistPageParams(stylist: StylistModel): { data: StylistPageParams } {
+    return {
+      data: {
+        pageType: StylistPageType.StylistInSearch,
+        onboarding: this.onboarding,
+        stylist
+      }
+    };
+  }
 
   private async requestGeolocation(): Promise<void> {
     this.isGeolocationInProcess = true;

@@ -66,7 +66,7 @@ describe('Pages: Stylists Search', () => {
     });
   });
 
-  fit('should open stylist page', async done => {
+  it('should open stylist page', async done => {
     await instance.ionViewWillLoad();
 
     // Skip loading:
