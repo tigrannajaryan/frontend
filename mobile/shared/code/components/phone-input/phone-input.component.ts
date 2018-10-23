@@ -25,10 +25,10 @@ export class PhoneInputComponent {
   @Output() phoneChange = new EventEmitter<PhoneData>();
 
   onChange(): void {
-    this.phoneChange.emit({
-      phone: getUnifiedPhoneValue(this.phone.value, this.countryCode.value),
-      valid: this.phone.valid
-    });
+    let phone = getUnifiedPhoneValue(this.phone.value, this.countryCode.value);
+    // Remove \u202c and/or \u202d (see https://madebeauty.atlassian.net/browse/FRON-1022):
+    phone = phone.replace(/\\.*$/gm, '');
+    this.phoneChange.emit({ phone, valid: this.phone.valid });
   }
 
   onCountrySelected(): void {
