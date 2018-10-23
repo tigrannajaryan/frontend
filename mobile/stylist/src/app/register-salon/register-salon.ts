@@ -209,6 +209,8 @@ export class RegisterSalonComponent {
     const { vars, ...profile } = this.form.value;
     const data = {
       ...profile,
+      // remove @ from instagram username:
+      instagram_url: profile.instagram_url.replace(/^\@/, ''),
       // the API requires null if empty salon_name
       // tslint:disable-next-line:no-null-keyword
       salon_name: profile.salon_name || null
