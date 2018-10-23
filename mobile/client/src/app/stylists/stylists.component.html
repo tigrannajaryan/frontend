@@ -49,8 +49,8 @@
         <div class="StylistsPage-cardImg" [style.backgroundImage]="'url(' + (stylist.profile_photo_url  || 'assets/icons/stylist-avatar.png') + ')'"></div>
         <div class="StylistsPage-cardSubtitle">{{ stylist.salon_name }}</div>
         <div class="StylistsPage-cardTitle">{{ stylist.first_name }} {{ stylist.last_name }}</div>
-        <div *ngIf="stylist.followers_count" [madeLink]="[PageNames.Followers, { stylistUuid: stylist.uuid }]" class="StylistsPage-cardInfo">
-          <i class="mb-icon-heart-a"></i>&nbsp;<p class="Link">{{ stylist.followers_count }} MADE Clients</p>
+        <div *ngIf="stylist.followers_count" class="StylistsPage-cardInfo">
+          <i class="mb-icon-heart-a"></i>&nbsp;<p><b>{{ stylist.followers_count }}</b> MADE Clients</p>
         </div>
         <div class="StylistsPage-cardInfo"><i class="mb-icon-marker"></i>&nbsp; <p>{{ stylist.salon_address }}</p></div>
       </div>

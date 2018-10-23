@@ -30,6 +30,8 @@ export class StylistComponent {
   pageType: StylistPageType;
   stylist: StylistModel;
 
+  PageNames = PageNames;
+
   // Indicates that we are inside onboarding flow:
   onboarding = false;
 
