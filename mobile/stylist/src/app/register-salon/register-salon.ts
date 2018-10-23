@@ -20,9 +20,11 @@ import { downscalePhoto, urlToFile } from '~/shared/image-utils';
 import { PhotoSourceType } from '~/shared/constants';
 import { StylistServiceProvider } from '~/shared/stylist-api/stylist-service';
 import { BaseService } from '~/shared/api/base-service';
+import { showAlert } from '~/shared/utils/alert';
+import { getPhoneNumber } from '~/shared/utils/phone-numbers';
+
 import { loading } from '~/core/utils/loading';
 import { PageNames } from '~/core/page-names';
-import { showAlert } from '~/shared/utils/alert';
 
 declare var window: any;
 
@@ -117,7 +119,7 @@ export class RegisterSalonComponent {
       vars: { image: profile_photo_url ? `url(${profile_photo_url})` : null },
       first_name,
       last_name,
-      phone,
+      phone: getPhoneNumber(phone),
       salon_name,
       salon_address,
       profile_photo_id,
