@@ -4,7 +4,7 @@ import { formatNumber } from 'libphonenumber-js';
 import { TestUtils } from '~/../test';
 
 import { NumberFormat } from '~/shared/directives/phone-input.directive';
-import { getLocalNumber } from '~/shared/utils/phone-numbers';
+import { getPhoneNumber } from '~/shared/utils/phone-numbers';
 
 import { ProfileApiMock, profileNotCompleate } from '~/core/api/profile-api.mock';
 import { ProfileApi } from '~/core/api/profile-api';
@@ -56,7 +56,7 @@ describe('Pages: Profile summary', () => {
 
       const phone = fixture.nativeElement.querySelector('[data-test-id=phone]');
       expect(phone.innerText).toBe(
-        getLocalNumber(formatNumber(instance.profile.phone, NumberFormat.International))
+        getPhoneNumber(formatNumber(instance.profile.phone, NumberFormat.International))
       );
 
       const email = fixture.nativeElement.querySelector('[data-test-id=email]');
