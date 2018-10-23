@@ -1,0 +1,36 @@
+<ion-header class="madeHeader">
+  <ion-navbar class="Made-wp BackHeader-backBtn">
+    <ion-title>
+      <i class="mb-icon-logo"></i>
+    </ion-title>
+
+    <ion-buttons *ngIf="profile?.privacy === PrivacyMode.private" end>
+      <button [madeLink]="[PageNames.Privacy]" ion-button clear class="Link" data-test-id="privacySettings">Privacy Settings</button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content no-padding>
+  <div class="Followers-wp contentSidePadding">
+    <div *ngIf="isLoading" class="Spinner"><ion-spinner></ion-spinner></div>
+
+    <div *ngIf="followers && profile.privacy === PrivacyMode.public; else PrivacyPrivate">
+      <div *ngIf="profile?.first_name" class="Badge-H1" data-test-id="stylistName">{{ profile.first_name + "'s" }} Clients <span class="Badge">{{ followers.length }}</span></div>
+
+      <div class="FollowersList">
+        <div *ngFor="let follower of followers" (click)="showFollowersPopup(follower)" class="FollowersList-item" data-test-id="stylistFollowerItem">
+          <div [style.backgroundImage]="follower?.photo_url ? 'url(' + follower.photo_url + ');' : null" class="FollowersList-ava"></div>
+
+          <div class="FollowersList-name">
+            {{ follower.first_name }} {{ follower.last_name }}
+          </div>
+
+          <i *ngIf="follower.booking_count > 2" class="mb-icon-wash-and-style FollowersList-icon"></i>
+        </div>
+      </div>
+    </div>
+
+    <ng-template #PrivacyPrivate><div class="Made-h3 Followers-private">To see this stylist's clients please update your privacy settings.</div></ng-template>
+  </div>
+</ion-content>

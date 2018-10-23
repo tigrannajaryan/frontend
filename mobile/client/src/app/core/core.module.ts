@@ -50,9 +50,9 @@ const declarations = [
   PhoneInputDirective,
   PhoneLinkComponent,
   PriceCalendarComponent,
+  PricePairComponent,
   PricePipe,
   ProfileHeaderComponent,
-  PricePairComponent,
   ServerStatusComponent,
   ServicesHeaderListComponent,
   UserNamePhotoComponent

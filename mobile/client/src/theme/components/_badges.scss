@@ -1,16 +1,3 @@
-.Badge {
-  $badge-size: pxtovw(24px);
-
-  height: $badge-size;
-  padding: pxtovw(3px) pxtovw(14px);
-  margin: pxtovw(1px) 0 0 pxtovw(8px);
-  font-size: $t-base;
-  font-weight: 500;
-  color: white;
-  background: color($colors, violet);
-  border-radius: pxtovw(15px);
-}
-
 .Indicator {
   &:after {
     position: absolute;

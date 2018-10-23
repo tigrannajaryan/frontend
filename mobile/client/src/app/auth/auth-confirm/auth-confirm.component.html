@@ -11,7 +11,7 @@
       </div>
     </ion-row>
     <ion-row *ngIf="phone" class="AuthConfirmPage-phoneNumber" justify-content-center>
-      <span><phone-link [phone]="phone" [readonly]="true" [shortForm]="false"></phone-link>&nbsp;</span><span class="Link" (click)="navCtrl.pop()" data-test-id="editPhoneLink">Edit</span>
+      <span><phone-link [phone]="phone" [readonly]="true" [shortForm]="false"></phone-link>&nbsp;</span><span class="Link is-fszInherited" (click)="navCtrl.pop()" data-test-id="editPhoneLink">Edit</span>
     </ion-row>
     <ion-row>
       <code-input [isDisabled]="(confirmCodeState | async) === RequestState.Loading" [hasError]="error | async | hasError:invalidCodeError" (codeChange)="onCodeChange($event)"></code-input>
@@ -25,7 +25,7 @@
           You can send a&nbsp;new code in&nbsp;{{ resendCodeCountdown | async }}
         </span>
         <span *ngIf="(resendCodeCountdown | async) === 0">
-          Didn’t get a&nbsp;code? <span class="Link" (click)="onResendCode()" data-test-id="sendNewCode">Send a&nbsp;new one</span>
+          Didn’t get a&nbsp;code? <span class="Link is-fszInherited" (click)="onResendCode()" data-test-id="sendNewCode">Send a&nbsp;new one</span>
         </span>
         <span *ngIf="(requestCodeState | async) === RequestState.Loading">
           Sending a&nbsp;new code…

@@ -10,6 +10,7 @@ export interface StylistModel extends StylistUuidModel {
   salon_name: string;
   salon_address: string;
   phone: string;
+  followers_count: number;
   instagram_url?: string;
   profile_photo_url?: string;
 }

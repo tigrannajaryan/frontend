@@ -5,6 +5,8 @@ import { Store } from '@ngrx/store';
 
 import { componentUnloaded } from '~/shared/component-unloaded';
 import { ExternalAppService } from '~/shared/utils/external-app-service';
+import { LogoutAction } from '~/shared/storage/auth.reducer';
+import { ApiResponse } from '~/shared/api/base.models';
 
 import { PageNames } from '~/core/page-names';
 import { loading } from '~/shared/utils/request-utils';
@@ -13,7 +15,6 @@ import { ProfileCompleteness, ProfileModel } from '~/core/api/profile.models';
 import { checkProfileCompleteness } from '~/core/utils/user-utils';
 
 import { ProfileDataStore } from '~/profile/profile.data';
-import { LogoutAction } from '~/shared/storage/auth.reducer';
 
 @Component({
   selector: 'profile-summary',
@@ -44,9 +45,10 @@ export class ProfileSummaryComponent {
 
     attachLoader(this.profileDataStore.asObservable())
       .takeUntil(componentUnloaded(this))
-      .subscribe(({ response }: { response?: ProfileModel }) => { // ApiResponse<ProfileModel>
-        if (response) {
-          this.profile = response;
+      .subscribe((apiRes: ApiResponse<ProfileModel>) => {
+        const profile: ProfileModel = apiRes.response;
+        if (profile) {
+          this.profile = profile;
           this.profileCompleteness = checkProfileCompleteness(this.profile);
         }
       });

@@ -1,0 +1,13 @@
+.Link,
+%Link {
+  padding: 0;
+  margin: 0;
+  font-size: $shared-h4;
+  font-weight: 600;
+  color: color($colors-shared, lightSalmon);
+  text-transform: none;
+
+  &.is-fszInherited {
+    font-size: inherit;
+  }
+}

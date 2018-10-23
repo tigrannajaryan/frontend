@@ -15,8 +15,8 @@
     </div>
 
     <ion-row class="H2 StylistsPage-title" align-items-center justify-content-between>
-      <div>
-        <span>Search stylists</span>
+      <div class="Badge-H2">
+        Search stylists
         <span *ngIf="(stylists | async)?.length > 0" class="Badge">{{ (stylists | async)?.length }}<span *ngIf="moreStylistsAvailable | async">+</span></span>
       </div>
       <div *ngIf="(requestState | async) === RequestState.Loading && (stylists | async) !== undefined" class="StylistsPage-loader">searching…</div>
@@ -52,6 +52,9 @@
         </div>
         <div class="StylistsPage-cardSubtitle">{{ stylist.salon_name }}</div>
         <div class="StylistsPage-cardTitle">{{ stylist.first_name }} {{ stylist.last_name }}</div>
+        <div *ngIf="stylist.followers_count" [madeLink]="[PageNames.Followers, { stylistUuid: stylist.uuid }]" class="StylistsPage-cardInfo">
+          <i class="mb-icon-heart-a"></i>&nbsp;<p class="Link">{{ stylist.followers_count }} MADE Clients</p>
+        </div>
         <div class="StylistsPage-cardInfo"><i class="mb-icon-marker"></i>&nbsp; <p>{{ stylist.salon_address }}</p></div>
         <div class="StylistsPage-cardFooter">
           <div *ngIf="stylist.phone" class="StylistsPage-cardInfo">&nbsp;<p><phone-link [phone]="stylist.phone" icon="mb-icon-phone-a"></phone-link></p></div>
