@@ -35,6 +35,12 @@ buildscript {
 
 allprojects {
     repositories {
+        // We previously had a build error due to not available (removed)
+        // https://jcenter.bintray.com/com/android/support/support-v4/26.1.0/support-v4-26.1.0.aar
+        // To fix this we swap the order of maven and jcenter repositories and make maven
+        // the first so that support-v4 is searched there first.
+        // This is the correct solution according to Android docs:
+        // https://developer.android.com/topic/libraries/support-library/setup
         maven {
             url "https://maven.google.com"
         }

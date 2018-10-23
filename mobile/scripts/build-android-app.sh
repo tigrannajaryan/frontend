@@ -11,12 +11,7 @@ cd $TRAVIS_BUILD_DIR/mobile/$APP_TYPE
 ./node_modules/ionic/bin/ionic cordova platform rm android
 ./node_modules/ionic/bin/ionic cordova platform add android
 
-# Fix build error due to not available (removed)
-# https://jcenter.bintray.com/com/android/support/support-v4/26.1.0/support-v4-26.1.0.aar
-# sed -i '' '/jcenter\(\)/d' ./platforms/android/build.gradle
-
-echo "copying $TRAVIS_BUILD_DIR/mobile/scripts/build.gradle to ./platforms/android/build.gradle"
-
+# Use our own build.gradle file which has the correct order of repositories listed
 cp $TRAVIS_BUILD_DIR/mobile/scripts/build.gradle  ./platforms/android/build.gradle
 
 ./node_modules/ionic/bin/ionic cordova build android --release --verbose --prod

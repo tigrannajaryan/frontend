@@ -23,4 +23,4 @@ wget -nv https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip
 unzip -qq sdk-tools-linux-4333796.zip
 
 # install build tools auto-accepting Android licenses
-echo y | $TRAVIS_BUILD_DIR/$ANDROID_SDK/tools/bin/sdkmanager "build-tools;$ANDROID_BUILD_TOOLS_VERSION" "platforms;android-28"
+echo y | $TRAVIS_BUILD_DIR/$ANDROID_SDK/tools/bin/sdkmanager "build-tools;$ANDROID_BUILD_TOOLS_VERSION" "platforms;android-28" > /dev/null
