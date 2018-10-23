@@ -2,15 +2,17 @@ import * as faker from 'faker';
 
 import { getRandomEmail, getRandomString, normalizePhoneNumber, waitFor, waitForNot } from './shared-e2e/utils';
 import { backdoorApi } from './shared-e2e/backdoor-api';
-
 import { phoneLoginPage } from './shared-e2e/phone-login-page';
 import { phoneCodePage } from './shared-e2e/phone-code-page';
-import { clientApp } from './client-app';
 import { stylistApi } from './shared-e2e/stylist-api';
 import { ClientInvitation } from './shared-app/stylist-api/invitations.models';
 import { SetStylistServicesParams, StylistProfile } from './shared-app/stylist-api/stylist-models';
-import { firstPage } from './pages/first-page';
+import { Worktime } from './shared-app/stylist-api/worktime.models';
 import { AuthCredentials, UserRole } from './shared-app/stylist-api/auth-api-models';
+import { getPhoneNumber } from './shared-app/utils/phone-numbers';
+
+import { clientApp } from './client-app';
+import { firstPage } from './pages/first-page';
 import { stylistInvitationPage } from './pages/stylist-invitation-page';
 import { howMadeWorksPage } from './pages/how-made-works-page';
 import { howPricingWorksPage } from './pages/how-pricing-works-page';
@@ -19,7 +21,6 @@ import { profileSummaryPage } from './pages/profile-summary-page';
 import { homePage } from './pages/home-page';
 import { selectCategoryPage } from './pages/select-category-page';
 import { selectServicePage } from './pages/select-service-page';
-import { Worktime } from './shared-app/stylist-api/worktime.models';
 import { selectDatePage } from './pages/select-date-page';
 
 describe('First use flow for invited clients', () => {
@@ -132,7 +133,7 @@ describe('First use flow for invited clients', () => {
     expect(await stylistInvitationPage.salonName.getText()).toEqual(stylistProfile.salon_name);
     expect((await stylistInvitationPage.address.getText()).trim()).toEqual(stylistProfile.salon_address);
     expect(await stylistInvitationPage.stylistName.getText()).toEqual(`${stylistProfile.first_name} ${stylistProfile.last_name}`);
-    expect((await stylistInvitationPage.stylistPhone.getText()).trim()).toEqual(stylistProfile.phone);
+    expect((await stylistInvitationPage.stylistPhone.getText()).trim()).toEqual(getPhoneNumber(`+1 ${ stylistProfile.phone }`));
 
     await stylistInvitationPage.getStarted();
   });
@@ -145,7 +146,7 @@ describe('First use flow for invited clients', () => {
   it('Can see profile page', async () => {
     await mainTabsPage.profileTab.click();
     await waitFor(profileSummaryPage.phone);
-    expect((await profileSummaryPage.phone.getText()).trim()).toEqual(normalizePhoneNumber(clientPhoneNumber));
+    expect((await profileSummaryPage.phone.getText()).trim()).toEqual(getPhoneNumber(`+1 ${ clientPhoneNumber }`));
     expect((await profileSummaryPage.profileCompletion.getText()).trim()).toEqual('Profile completion 17%');
   });
 

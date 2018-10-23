@@ -42,7 +42,8 @@ export class PhoneInputDirective {
   }
 
   @HostListener('keydown', [ '$event' ])
-  keydown(event: KeyboardEvent): void {
+  keydown(event: any): void {
+    event = (event as KeyboardEvent);
     const code: number = event.which || Number(event.code);
     const key: string = event.key || String.fromCharCode(code);
 

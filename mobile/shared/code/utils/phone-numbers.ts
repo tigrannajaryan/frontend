@@ -1,12 +1,20 @@
 import { CountryCode, formatNumber, parseNumber } from 'libphonenumber-js';
+import { NumberFormat } from '~/shared/directives/phone-input.directive';
 
 /**
- * Show local number for listed countries:
- *
- * Canada (+1),
- * US (+1).
+ * Phone number formatting.
+ * @param phone = string, example `+1 0000000000`, `0000000000`
+ * @param format = NumberFormat enum, example `NumberFormat.National` `NumberFormat.International`
+ * @returns formatted phone `(000) 000-0000` or with country code `+1 (000) 000-0000`
+ *          depends of format param
  */
-export function getLocalNumber(phone: string): string {
+export function getPhoneNumber(phone: string, format: NumberFormat = NumberFormat.National): string {
+  phone = formatNumber(phone, format);
+
+  if (format === NumberFormat.International) {
+    return phone;
+  }
+
   if (/^\+1\s/.test(phone)) { // US, Canada
     return phone.replace(/^\+1\s/, '').replace(/\s/g, '-');
   }
