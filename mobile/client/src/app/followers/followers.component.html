@@ -20,7 +20,7 @@
 
       <div class="FollowersList">
         <div *ngFor="let follower of followers" (click)="showFollowersPopup(follower)" class="FollowersList-item" data-test-id="stylistFollowerItem">
-          <div [style.backgroundImage]="follower?.photo_url ? 'url(' + follower.photo_url + ');' : null" class="FollowersList-ava"></div>
+          <div [style.backgroundImage]="'url(' + (follower.photo_url ? follower.photo_url : 'assets/icons/stylist-avatar.png') + ')'"  class="FollowersList-ava"></div>
 
           <div class="FollowersList-name">
             {{ follower.first_name }} {{ follower.last_name }}
