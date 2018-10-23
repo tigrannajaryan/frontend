@@ -159,13 +159,6 @@ $card-padding: pxtovw(16px);
     }
   }
 
-  .StylistsPage-cardFooter {
-    width: 0;
-    height: 0;
-    min-height: 0;
-    overflow: hidden;
-  }
-
   .StylistsPage-card {
     @extend %SharedCard;
 
@@ -173,85 +166,5 @@ $card-padding: pxtovw(16px);
     padding-bottom: pxtovw(10px);
     padding-left: $card-padding + pxtovw(24px) + $pic-size;
     background: white;
-
-    &,
-    .StylistsPage-cardImg,
-    .StylistsPage-cardHeader,
-    .StylistsPage-cardTitle,
-    .StylistsPage-cardSubtitle,
-    .StylistsPage-cardFooter {
-      transition: all 0.08s ease-in;
-    }
-
-    &.is-active {
-      $new-pic-size: pxtovw(120px);
-      $pic-top-offset: pxtovw(56px);
-
-      padding: pxtovw(15px) pxtovw(25px);
-      background: color($colors, primary);
-
-      .StylistsPage-cardImg {
-        top: $pic-top-offset + $pic-size / 2;
-        left: 50%;
-        width: $new-pic-size;
-        height: $new-pic-size;
-        margin-left: -1 * $new-pic-size / 2;
-        background-color: white;
-      }
-
-      .StylistsPage-cardClose {
-        display: inline-block;
-      }
-
-      .StylistsPage-cardTitle {
-        margin: pxtovw(7px) 0 pxtovw(2px);
-        font-size: pxtovw(29px);
-      }
-
-      .StylistsPage-cardTitle,
-      .StylistsPage-cardSubtitle {
-        text-align: center;
-        white-space: initial;
-      }
-
-      .StylistsPage-cardSubtitle {
-        font-size: pxtovw(13px);
-      }
-
-      .StylistsPage-cardInfo {
-        justify-content: center;
-        text-align: center;
-
-        p {
-          margin: 0;
-          overflow: initial;
-          font-size: pxtovw(15px);
-          text-overflow: initial;
-          white-space: initial;
-        }
-      }
-
-      .StylistsPage-cardHeader {
-        $header-height: pxtovw(26px);
-
-        height: $header-height + $card-padding * 2 + $new-pic-size;
-        font-size: pxtovw(22px);
-        font-weight: 600;
-      }
-
-      .StylistsPage-cardFooter {
-        $footer-height: pxtovw(100px);
-
-        height: auto;
-        min-height: $footer-height;
-      }
-
-      .StylistsPage-cardHeader,
-      .StylistsPage-cardTitle,
-      .StylistsPage-cardSubtitle,
-      .StylistsPage-cardFooter {
-        width: 100%;
-      }
-    }
   }
 }

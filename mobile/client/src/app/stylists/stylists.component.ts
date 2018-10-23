@@ -1,15 +1,13 @@
 import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { NavController, NavParams, Tab } from 'ionic-angular';
+import { NavController, NavParams } from 'ionic-angular';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 
 import { RequestState } from '~/shared/api/request.models';
 import { StylistModel, StylistsSearchParams } from '~/shared/api/stylists.models';
-import { ExternalAppService } from '~/shared/utils/external-app-service';
 import { GeolocationService, LatLng } from '~/shared/utils/geolocation.service';
 
-import { PreferredStylistsData } from '~/core/api/preferred-stylists.data';
 import { PageNames } from '~/core/page-names';
 import {
   SearchStylistsAction,
@@ -19,15 +17,21 @@ import {
   StylistState
 } from '~/core/reducers/stylists.reducer';
 
-export const MIN_QUERY_LENGTH = 2;
+import { StylistPageParams, StylistPageType } from '~/stylists/stylist/stylist.component';
+
+interface StylistsPageParams {
+  onboarding?: boolean;
+}
 
 @Component({
   selector: 'page-stylists',
-  templateUrl: 'stylists-page.component.html'
+  templateUrl: 'stylists.component.html'
 })
 export class StylistsPageComponent {
+  static MIN_QUERY_LENGTH = 2;
+
   PageNames = PageNames;
-  continueText?: string; // nav param
+  onboarding = false;
 
   query: FormControl = new FormControl('');
   locationQuery: FormControl = new FormControl('');
@@ -37,7 +41,6 @@ export class StylistsPageComponent {
 
   stylists: Observable<StylistModel[]>;
   moreStylistsAvailable: Observable<boolean>;
-  activeStylist?: StylistModel;
 
   RequestState = RequestState; // expose to view
   requestState?: Observable<RequestState>;
@@ -46,17 +49,17 @@ export class StylistsPageComponent {
   isLocationInputFocused = false;
 
   constructor(
-    private externalAppService: ExternalAppService,
     private geolocationService: GeolocationService,
     private navCtrl: NavController,
     private navParams: NavParams,
-    private preferredStylistsData: PreferredStylistsData,
     private store: Store<StylistState>
   ) {
   }
 
-  async ionViewWillEnter(): Promise<void> {
-    this.continueText = this.navParams.get('continueText');
+  async ionViewWillLoad(): Promise<void> {
+    const params = (this.navParams.get('data') || {}) as StylistsPageParams;
+
+    this.onboarding = params.onboarding;
 
     this.stylists = this.store.select(selectStylists);
     this.moreStylistsAvailable = this.store.select(selectIsMoreStylistsAvailable);
@@ -76,34 +79,26 @@ export class StylistsPageComponent {
     this.store.dispatch(new SearchStylistsAction(params));
   }
 
-  onSetActiveStylist(event: Event, stylist: StylistModel | undefined): void {
-    this.activeStylist = stylist;
-    event.stopPropagation();
-  }
-
-  async onContinueWithStylist(stylist: StylistModel): Promise<void> {
-    await this.preferredStylistsData.set(stylist);
-
-    // Pop back if it‘s a MainTab nav (when not in onboarding flow):
-    if (this.navCtrl.parent && this.navCtrl instanceof Tab) {
-      this.navCtrl.pop();
-    } else {
-      this.navCtrl.setRoot(PageNames.MainTabs);
-    }
-
-    this.activeStylist = undefined;
-  }
-
-  onInstagramClick(username: string): void {
-    this.externalAppService.openInstagram(username);
-  }
-
-  onWebsiteClick(url: string): void {
-    this.externalAppService.openWebPage(url);
-  }
-
   setLocationInputFocused(isFocused: boolean): void {
     this.isLocationInputFocused = isFocused;
+  }
+
+  onContinueWithStylist(stylist: StylistModel): void {
+    this.navCtrl.push(PageNames.Stylist, this.getStylistPageParams(stylist));
+  }
+
+  /**
+   * Returns params for the Stylist’s page.
+   * Note: this function is used in tests and therefor declared public
+   */
+  getStylistPageParams(stylist: StylistModel): { data: StylistPageParams } {
+    return {
+      data: {
+        pageType: StylistPageType.StylistInSearch,
+        onboarding: this.onboarding,
+        stylist
+      }
+    };
   }
 
   private async requestGeolocation(): Promise<void> {

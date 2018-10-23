@@ -23,7 +23,7 @@ import { AuthEffects } from '~/shared/storage/auth.effects';
 import { ApiError, FieldErrorItem } from '~/shared/api-errors';
 import { AuthProcessState } from '~/shared/storage/auth-process-state';
 
-import { StylistPageType } from '~/onboarding/stylist-invitation/stylist-invitation.component';
+import { StylistPageParams, StylistPageType } from '~/stylists/stylist/stylist.component';
 
 import { CodeData, CodeInputComponent } from '~/shared/components/code-input/code-input.component';
 
@@ -73,11 +73,12 @@ export class AuthConfirmPageComponent {
         if (preferredStylists.length > 0) {
           this.navCtrl.setRoot(PageNames.MainTabs);
         } else if (invitation) {
-          const data = {
+          const data: StylistPageParams = {
             stylist: invitation,
-            pageType: StylistPageType.Invitation
+            pageType: StylistPageType.Invitation,
+            onboarding: true
           };
-          this.navCtrl.setRoot(PageNames.StylistInvitation, { data });
+          this.navCtrl.setRoot(PageNames.Stylist, { data });
         } else {
           this.navCtrl.setRoot(PageNames.HowMadeWorks);
         }

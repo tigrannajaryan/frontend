@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { App, Events, NavController, NavParams } from 'ionic-angular';
+import { App, Events, NavController, NavParams, Tab } from 'ionic-angular';
 
 import { ExternalAppService } from '~/shared/utils/external-app-service';
 import { StylistModel } from '~/shared/api/stylists.models';
@@ -8,24 +8,32 @@ import { PageNames } from '~/core/page-names';
 import { PreferredStylistsData } from '~/core/api/preferred-stylists.data';
 import { EventTypes } from '~/core/event-types';
 
+import { TabIndex } from '~/main-tabs/main-tabs.component';
+
 export enum StylistPageType {
+  Invitation = 1,
   MyStylist,
-  Invitation
+  StylistInSearch
 }
 
 export interface StylistPageParams {
   pageType?: StylistPageType;
   stylist?: StylistModel;
+  onboarding?: boolean;
 }
 
 @Component({
-  selector: 'page-stylist-invitation',
-  templateUrl: 'stylist-invitation.component.html'
+  selector: 'page-stylist',
+  templateUrl: 'stylist.component.html'
 })
-export class StylistInvitationPageComponent {
+export class StylistComponent {
   pageType: StylistPageType;
   stylist: StylistModel;
 
+  // Indicates that we are inside onboarding flow:
+  onboarding = false;
+
+  // expose to the view
   StylistPageType = StylistPageType;
 
   constructor(
@@ -43,6 +51,7 @@ export class StylistInvitationPageComponent {
 
     this.pageType = params.pageType || StylistPageType.MyStylist;
     this.stylist = params.stylist;
+    this.onboarding = params.onboarding;
 
     // Select from preferred stylists if no stylist:
     if (!this.stylist) {
@@ -59,7 +68,22 @@ export class StylistInvitationPageComponent {
   async onContinueWithStylist(): Promise<void> {
     await this.preferredStylistsData.set(this.stylist);
 
-    this.navCtrl.push(PageNames.HowMadeWorks);
+    switch (this.pageType) {
+      case StylistPageType.StylistInSearch:
+        if (this.navCtrl.parent && this.navCtrl instanceof Tab) {
+          this.navCtrl.pop();
+        } else {
+          // TODO: pop to root with an event to update preferred stylist’s data
+          await this.navCtrl.setRoot(PageNames.MainTabs);
+          if (!this.onboarding) {
+            this.events.publish(EventTypes.selectMainTab, TabIndex.Stylists);
+          }
+        }
+        break;
+      case StylistPageType.MyStylist:
+      default:
+        this.navCtrl.push(PageNames.HowMadeWorks);
+    }
   }
 
   onProceedToStylists(): void {
