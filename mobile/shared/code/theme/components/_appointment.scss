@@ -40,7 +40,7 @@ appointment-item {
     text-transform: uppercase;
     border-radius: pxtovw(16px);
 
-    &.Not.checked.out {
+    &.Not.checked.out, &.No-show {
       background: color($colors-shared, danger);
     }
 
