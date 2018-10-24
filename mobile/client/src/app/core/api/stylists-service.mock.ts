@@ -21,8 +21,7 @@ export const stylistsMock = Array(25).fill(undefined).map(() => {
     salon_name: faker.commerce.productName(),
     salon_address: faker.address.streetAddress(),
     phone: randomPhone(),
-    instagram_url: faker.helpers.slugify(`${name}${lastName}`),
-    followers_count: 5
+    instagram_url: faker.helpers.slugify(`${name}${lastName}`)
   };
 });
 

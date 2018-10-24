@@ -36,7 +36,7 @@ export class AuthServiceMock extends BaseServiceMock {
           observer.next({
             token: faker.internet.password(),
             created_at: Number(new Date()),
-            stylist_invitation: [{
+            stylist_invitation: {
               uuid: faker.random.uuid(),
               first_name: name,
               last_name: lastName,
@@ -44,7 +44,7 @@ export class AuthServiceMock extends BaseServiceMock {
               salon_address: faker.address.streetAddress(),
               phone: `+1347${(Math.random() * Math.pow(10, 7)).toFixed()}`,
               instagram_url: faker.helpers.slugify(`${name}${lastName}`)
-            }]
+            }
           });
          }, 500);
       })

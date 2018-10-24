@@ -1,16 +1,21 @@
 import * as faker from 'faker';
 
-import { async, ComponentFixture } from '@angular/core/testing';
-import { NavController } from 'ionic-angular';
 import { of } from 'rxjs/observable/of';
+import { Platform } from 'ionic-angular';
+import { async, ComponentFixture } from '@angular/core/testing';
+
+import { InAppBrowser } from '@ionic-native/in-app-browser';
+import { AppAvailability } from '@ionic-native/app-availability';
 
 import { TestUtils } from '~/../test';
 
-import { PageNames } from '~/core/page-names';
 import { StylistsEffects } from '~/core/effects/stylists.effects';
-import { stylistsMock } from '~/core/api/stylists-service.mock';
+import { preferenceMock, stylistsMock } from '~/core/api/stylists-service.mock';
 import { StylistsService } from '~/core/api/stylists-service';
-import { StylistsPageComponent } from './stylists.component';
+import { PreferredStylistsData } from '~/core/api/preferred-stylists.data';
+import { StylistsPageComponent } from './stylists-page.component';
+
+import { ExternalAppService } from '~/shared/utils/external-app-service';
 
 // Monkey patch SEARCHING_DELAY to 0 to avoid slowing down the tests:
 StylistsEffects.SEARCHING_DELAY = 0;
@@ -45,7 +50,7 @@ describe('Pages: Stylists Search', () => {
   });
 
   it('should show default stylists list', async done => {
-    await instance.ionViewWillLoad();
+    await instance.ionViewWillEnter();
 
     // Skip loading:
     setTimeout(() => {
@@ -60,27 +65,15 @@ describe('Pages: Stylists Search', () => {
           .toContain(stylist.salon_name);
         expect(textContent)
           .toContain(stylist.salon_address);
+        expect(textContent)
+          .toContain(
+            `(${stylist.phone.slice(2, 5)}) ${stylist.phone.slice(5, 8)}-${stylist.phone.slice(8, 11)}`
+          );
+        expect(textContent)
+          .toContain(stylist.instagram_url);
+        expect(textContent)
+          .toContain(`Add ${stylist.first_name}!`);
       });
-
-      done();
-    });
-  });
-
-  it('should open stylist page', async done => {
-    await instance.ionViewWillLoad();
-
-    // Skip loading:
-    setTimeout(() => {
-      fixture.detectChanges();
-
-      const fakeParams = instance.getStylistPageParams(stylistsMock[0]);
-      spyOn(instance, 'getStylistPageParams').and.returnValue(fakeParams);
-
-      fixture.nativeElement.querySelector('[data-test-id=StylistCard]').click();
-
-      const navCtrl = fixture.debugElement.injector.get(NavController);
-      expect(navCtrl.push)
-        .toHaveBeenCalledWith(PageNames.Stylist, fakeParams);
 
       done();
     });
@@ -95,7 +88,7 @@ describe('Pages: Stylists Search', () => {
   });
 
   it('should use location data in search', async done => {
-    await instance.ionViewWillLoad();
+    await instance.ionViewWillEnter();
     expect(instance.coords)
       .toBeDefined();
     done();
@@ -107,7 +100,7 @@ describe('Pages: Stylists Search', () => {
       of(emptyStylistsResponseMock)
     );
 
-    await instance.ionViewWillLoad();
+    await instance.ionViewWillEnter();
 
     // Skip loading:
     setTimeout(() => {
@@ -127,7 +120,7 @@ describe('Pages: Stylists Search', () => {
       of(emptyStylistsResponseMock)
     );
 
-    await instance.ionViewWillLoad();
+    await instance.ionViewWillEnter();
     instance.query.patchValue(faker.lorem.word());
 
     // Skip loading:
@@ -137,6 +130,55 @@ describe('Pages: Stylists Search', () => {
       const textContent = fixture.nativeElement.textContent;
       expect(textContent)
         .toContain('No stylists found');
+
+      done();
+    });
+  });
+
+  it('should set preferred stylist', async done => {
+    const preferredStylistsData = fixture.debugElement.injector.get(PreferredStylistsData);
+    const stylistsService = fixture.debugElement.injector.get(StylistsService);
+
+    spyOn(stylistsService, 'setPreferredStylist').and.returnValue(
+      of({ response: preferenceMock })
+    );
+
+    await instance.ionViewWillEnter();
+
+    // Skip loading:
+    setTimeout(async () => {
+      fixture.detectChanges();
+
+      // Click on ”Add” btn of the first stylist:
+      fixture.nativeElement.querySelector('[data-test-id=addStylist]').click();
+      await preferredStylistsData.get();
+
+      expect(stylistsService.setPreferredStylist)
+        .toHaveBeenCalledWith(stylistsMock[0].uuid);
+
+      done();
+    });
+  });
+
+  it('should open instagram app', done => {
+    const externalAppService = fixture.debugElement.injector.get(ExternalAppService);
+    const appAvailability = fixture.debugElement.injector.get(AppAvailability);
+    const browser = fixture.debugElement.injector.get(InAppBrowser);
+    const platform = fixture.debugElement.injector.get(Platform);
+
+    const instagram = stylistsMock[0].instagram_url;
+
+    externalAppService.openInstagram(instagram);
+
+    setTimeout(() => {
+      expect(platform.is)
+        .toHaveBeenCalledWith('ios');
+
+      expect(appAvailability.check)
+        .toHaveBeenCalledWith('instagram://');
+
+      expect(browser.create)
+        .toHaveBeenCalledWith(`instagram://user?username=${instagram}`);
 
       done();
     });

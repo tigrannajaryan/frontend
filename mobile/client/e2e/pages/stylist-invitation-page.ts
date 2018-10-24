@@ -4,11 +4,11 @@ import { waitFor, waitForNot } from '../shared-e2e/utils';
 
 class StylistInvitationPage {
   // UI element declarations.
-  get startBtn() { return $('page-stylist button.StylistInvitationPage-submit'); }
-  get salonName() { return $('page-stylist .StylistInvitationPage-salonName'); }
-  get stylistName() { return $('page-stylist .StylistInvitationPage-name'); }
-  get address() { return $('page-stylist .StylistInvitationPage-address'); }
-  get stylistPhone() { return $('page-stylist .StylistInvitationPage-phone'); }
+  get startBtn() { return $('page-stylist-invitation button.StylistInvitationPage-submit'); }
+  get salonName() { return $('page-stylist-invitation .StylistInvitationPage-salonName'); }
+  get stylistName() { return $('page-stylist-invitation .StylistInvitationPage-name'); }
+  get address() { return $('page-stylist-invitation .StylistInvitationPage-address'); }
+  get stylistPhone() { return $('page-stylist-invitation .StylistInvitationPage-phone'); }
 
   // Operations
   async getStarted() {

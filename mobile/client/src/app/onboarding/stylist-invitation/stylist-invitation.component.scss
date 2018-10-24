@@ -25,11 +25,6 @@
 
   padding-top: pxtovw(30px);
 
-  .scroll-content {
-    // Overrifding ionic’s style due to some strange offset calculation bug:
-    margin-top: 0 !important;
-  }
-
   .StylistInvitationPage-title {
     margin: pxtovw(15px) 0 pxtovw(24px);
     font-weight: 600;
@@ -80,6 +75,22 @@
     [class^="mb-icon"] {
       color: color($colors, honey);
     }
+  }
+
+  .StylistInvitationPage-address {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    max-width: 80%;
+    margin: 0 auto pxtovw(4px);
+  }
+
+  .StylistInvitationPage-address p {
+    flex: 1;
+    margin: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   .StylistInvitationPage-footer {
