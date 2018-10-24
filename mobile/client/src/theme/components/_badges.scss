@@ -1,12 +1,18 @@
-.Indicator {
+.Indicator,
+%Indicator {
   &:after {
     position: absolute;
-    right: pxtovw(2px);
-    bottom: pxtovw(2px);
-    width: pxtovw(7px);
-    height: pxtovw(7px);
-    content: '';
+    right: 0;
+    bottom: pxtovw(1px);
+    width: pxtovw(10px);
+    height: pxtovw(10px);
+    font-size: pxtovw(9px);
+    line-height: pxtovw(10px);
+    color: white;
+    content: '!';
     background: color($colors, warning);
+    background-size: contain;
+    border: pxtovw(2px) solid white;
     border-radius: 50%;
   }
 

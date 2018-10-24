@@ -1,15 +1,21 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnDestroy, ViewChild } from '@angular/core';
 import { Events, Tab, Tabs } from 'ionic-angular';
 
 import { GAWrapper } from '~/shared/google-analytics';
 import { PageNames } from '~/core/page-names';
 import { EventTypes } from '~/core/event-types';
 import { Page } from 'ionic-angular/navigation/nav-util';
+import { checkProfileCompleteness } from '~/core/utils/user-utils';
+import { Observable, Subscription } from 'rxjs';
+import { ApiResponse } from '~/shared/api/base.models';
+import { ProfileModel } from '~/core/api/profile.models';
+import { ProfileDataStore } from '~/profile/profile.data';
 
 interface TabsObject {
   name: string;
   link: Page; // should be PageNames when we will have all pages
   params: any;
+  badge?: string;
 }
 
 export enum TabIndex {
@@ -23,8 +29,9 @@ export enum TabIndex {
   selector: 'main-tabs',
   templateUrl: 'main-tabs.component.html'
 })
-export class MainTabsComponent {
-  protected tabsData: TabsObject[] = [
+export class MainTabsComponent implements OnDestroy {
+  PageNames = PageNames;
+  tabsData: TabsObject[] = [
     {
       name: 'Home',
       link: PageNames.Home,
@@ -43,19 +50,33 @@ export class MainTabsComponent {
     {
       name: 'Profile',
       link: PageNames.ProfileSummary,
-      params: {}
+      params: {},
+      badge: null
     }
   ];
 
   @ViewChild('tabs')
   tabs: Tabs;
+  profileObservable: Observable<ApiResponse<ProfileModel>>;
+  private profileObservableSubscription: Subscription;
 
   private lastSubsrciption: any;
 
   constructor(
     private events: Events,
+    private profileDataStore: ProfileDataStore,
     private ga: GAWrapper
   ) {
+    this.profileObservable = this.profileDataStore.asObservable();
+
+    this.profileDataStore.get();
+
+    this.profileObservableSubscription = this.profileObservable.subscribe(user => {
+      if (user.response) {
+        this.tabsData[TabIndex.Profile].badge =
+          checkProfileCompleteness(user.response).isProfileComplete ? null : this.tabsData[TabIndex.Profile].name;
+      }
+    });
   }
 
   ionViewWillEnter(): void {
@@ -87,5 +108,9 @@ export class MainTabsComponent {
       this.lastSubsrciption.unsubscribe();
     }
     this.lastSubsrciption = tab.viewDidEnter.subscribe(view => this.ga.trackViewChange(view));
+  }
+
+  ngOnDestroy(): void {
+    this.profileObservableSubscription.unsubscribe();
   }
 }
