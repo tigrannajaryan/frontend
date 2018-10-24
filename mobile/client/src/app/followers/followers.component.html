@@ -15,7 +15,7 @@
   <div class="Followers-wp contentSidePadding">
     <div *ngIf="isLoading" class="Spinner"><ion-spinner></ion-spinner></div>
 
-    <div *ngIf="followers && profile.privacy === PrivacyMode.public; else PrivacyPrivate">
+    <div *ngIf="followers && profile?.privacy === PrivacyMode.public; else PrivacyPrivate">
       <div *ngIf="profile?.first_name" class="Badge-H1" data-test-id="stylistName">{{ profile.first_name + "'s" }} Clients <span class="Badge">{{ followers.length }}</span></div>
 
       <div class="FollowersList">
@@ -23,7 +23,7 @@
           <div [style.backgroundImage]="'url(' + (follower.photo_url ? follower.photo_url : 'assets/icons/stylist-avatar.png') + ')'"  class="FollowersList-ava"></div>
 
           <div class="FollowersList-name">
-            {{ follower.first_name }} {{ follower.last_name }}
+            {{ (follower.first_name && follower.last_name) ? follower.first_name + ' ' + follower.last_name : 'Client' }}
           </div>
 
           <i *ngIf="follower.booking_count > 2" class="mb-icon-wash-and-style FollowersList-icon"></i>

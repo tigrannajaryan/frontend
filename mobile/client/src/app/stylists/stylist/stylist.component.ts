@@ -103,13 +103,13 @@ export class StylistComponent {
   }
 
   onInstagramClick(username: string): void {
-    if (this.pageType === StylistPageType.MyStylist) {
+    if (this.pageType !== StylistPageType.Invitation) {
       this.externalAppService.openInstagram(username);
     }
   }
 
   onWebsiteClick(websiteUrl: string): void {
-    if (this.pageType === StylistPageType.MyStylist) {
+    if (this.pageType !== StylistPageType.Invitation) {
       this.externalAppService.openWebPage(websiteUrl);
     }
   }

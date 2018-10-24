@@ -57,6 +57,18 @@
     }
   }
 
+  .StylistInvitationPage-bio {
+    @include content-padding;
+
+    padding-top: 0;
+    padding-bottom: 0;
+
+    [class^="mb-icon"] {
+      display: inline-block;
+      transform: translateY(pxtovw(2px)); // compensates icon’s offset
+    }
+  }
+
   .StylistInvitationPage-salonName {
     margin: pxtovw(26px) 0 pxtovw(8px);
     font-size: $t-small;
