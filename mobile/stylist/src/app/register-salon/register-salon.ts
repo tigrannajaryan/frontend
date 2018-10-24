@@ -39,6 +39,8 @@ export class RegisterSalonComponent {
   autocomplete: Autocomplete;
   autocompleteInput: HTMLInputElement;
 
+  private rawPhone: string;
+
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
@@ -114,12 +116,15 @@ export class RegisterSalonComponent {
       website_url
     } = response;
 
+    this.rawPhone = phone;
+    const formattedPhone = getPhoneNumber(phone);
+
     this.form.patchValue({
       // tslint:disable-next-line:no-null-keyword
       vars: { image: profile_photo_url ? `url(${profile_photo_url})` : null },
       first_name,
       last_name,
-      phone: getPhoneNumber(phone),
+      phone: formattedPhone,
       salon_name,
       salon_address,
       profile_photo_id,
@@ -209,8 +214,10 @@ export class RegisterSalonComponent {
     const { vars, ...profile } = this.form.value;
     const data = {
       ...profile,
+      // use raw phone number (required field, cannot omit):
+      phone: this.rawPhone,
       // remove @ from instagram username:
-      instagram_url: profile.instagram_url.replace(/^\@/, ''),
+      instagram_url: profile.instagram_url && profile.instagram_url.replace(/^\@/, ''),
       // the API requires null if empty salon_name
       // tslint:disable-next-line:no-null-keyword
       salon_name: profile.salon_name || null
