@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -ev
+set -evx
 
 # if this is a pull request - just exit, we don't want to build actual
 # apps during PR builds
@@ -10,9 +10,8 @@ if [[ $TRAVIS_PULL_REQUEST != "false" ]]; then
 fi
 
 # install android pre-requisites
-# TEMPORARILY DISABLE ANDROID BUILD
-# $TRAVIS_BUILD_DIR/mobile/scripts/install-android.sh
-# export PATH=${PATH}:$ANDROID_HOME/platform-tools:$ANDROID_HOME/tools
+$TRAVIS_BUILD_DIR/mobile/scripts/install-android.sh
+export PATH=${PATH}:$ANDROID_HOME/platform-tools:$ANDROID_HOME/tools
 
 
 cd $TRAVIS_BUILD_DIR/mobile/$APP_TYPE
@@ -23,9 +22,8 @@ npm install -g cordova@8.0.0
 
 # build Android app
 
-# TEMPORARILY DISABLE ANDROID BUILD
-# export APP_BUNDLE_ID=$ANDROID_APP_BUNDLE_ID
-# $TRAVIS_BUILD_DIR/mobile/scripts/build-android-app.sh
+export APP_BUNDLE_ID=$ANDROID_APP_BUNDLE_ID
+$TRAVIS_BUILD_DIR/mobile/scripts/build-android-app.sh
 
 # prepare and build iOS app
 

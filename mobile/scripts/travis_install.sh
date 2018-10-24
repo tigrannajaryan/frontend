@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -ev
+set -evx
 
 echo "Running INSTALL phase"
 cd $TRAVIS_BUILD_DIR/mobile
