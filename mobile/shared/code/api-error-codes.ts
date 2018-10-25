@@ -103,7 +103,8 @@ export type NonFieldErrorCode =
   'err_available_time_not_set' |
   'err_stylist_location_unavailable' |
   'err_stylist_does_not_exist' |
-  'err_privacy_setting_private';
+  'err_privacy_setting_private' |
+  'err_cannot_modify_appointment';
 
 // Mapping of all non-field error codes to human readable messages
 export const nonFieldErrorMsgs = new Map<NonFieldErrorCode, string>([
@@ -120,7 +121,8 @@ export const nonFieldErrorMsgs = new Map<NonFieldErrorCode, string>([
       'We cannot determine your area from your address. Please make sure to specify a correct address in your profile.'
   ],
   ['err_stylist_does_not_exist', 'This stylist account no longer exist.'],
-  ['err_privacy_setting_private', 'You can\'t see followers of this stylist because of privacy setting.']
+  ['err_privacy_setting_private', 'You can\'t see followers of this stylist because of privacy setting.'],
+  ['err_cannot_modify_appointment', 'Cannot modify the appointment.']
 ]);
 
 /**
