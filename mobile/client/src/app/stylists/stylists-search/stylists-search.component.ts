@@ -24,8 +24,8 @@ interface StylistsPageParams {
 }
 
 @Component({
-  selector: 'page-stylists',
-  templateUrl: 'stylists.component.html'
+  selector: 'page-stylists-search',
+  templateUrl: 'stylists-search.component.html'
 })
 export class StylistsPageComponent {
   static MIN_QUERY_LENGTH = 2;
