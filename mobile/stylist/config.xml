@@ -104,7 +104,6 @@
     <plugin name="cordova-plugin-app-version" spec="0.1.9" />
     <plugin name="cordova-open-native-settings" spec="1.5.1" />
     <plugin name="cordova-sms-plugin" spec="0.1.11" />
-    <engine name="android" spec="7.0.0" />
     <engine name="ios" spec="4.5.4" />
     <plugin name="cordova-plugin-screen-orientation" spec="3.0.1" />
     <plugin name="cordova-plugin-inappbrowser" spec="3.0.0" />
@@ -119,4 +118,10 @@
     <edit-config file="*-Info.plist" mode="merge" target="NSLocationWhenInUseUsageDescription">
         <string>EDIT THIS TEXT WHEN IMPLEMENTING GEOLOCATION</string>
     </edit-config>
+    <plugin name="phonegap-plugin-push" spec="2.1.3">
+        <variable name="FCM_VERSION" value="11.6.2" />
+        <variable name="SENDER_ID" value="17636556416" />
+    </plugin>
+    <allow-navigation href="http://192.168.31.112:8100" />
+    <engine name="android" spec="~7.0.0" />
 </widget>
