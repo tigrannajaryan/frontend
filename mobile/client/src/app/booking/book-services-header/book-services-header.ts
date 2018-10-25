@@ -1,8 +1,9 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
 
 import { ServiceModel } from '~/shared/api/price.models';
+
 import { BookingData } from '~/core/api/booking.data';
 import { PageNames } from '~/core/page-names';
 
@@ -20,6 +21,8 @@ export class BookServicesHeaderComponent {
   @Input()
   services: Observable<ServiceModel[]>;
 
+  @Output() serviceChange = new EventEmitter();
+
   constructor(
     private bookingData: BookingData,
     private navCtrl: NavController
@@ -29,9 +32,11 @@ export class BookServicesHeaderComponent {
 
   onDelete(service: ServiceModel): void {
     this.bookingData.deleteService(service);
+    this.serviceChange.emit();
   }
 
   onAdd(): void {
     this.navCtrl.push(PageNames.ServicesCategories, { isAdditionalService: true });
+    this.serviceChange.emit();
   }
 }
