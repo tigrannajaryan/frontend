@@ -12,6 +12,7 @@ import { ProfileModel } from '~/core/api/profile.models';
 
 import { ProfileDataStore } from '~/profile/profile.data';
 import { PrivacyMode } from '~/privacy-settings/privacy-settings.component';
+import { StylistModel } from '~/shared/api/stylists.models';
 
 @Component({
   selector: 'followers',
@@ -22,6 +23,7 @@ export class FollowersComponent {
   PageNames = PageNames;
   isLoading = false;
 
+  stylist: StylistModel;
   profile: ProfileModel;
   followers: FollowersModel[];
 
@@ -45,8 +47,8 @@ export class FollowersComponent {
         }
       });
 
-    const stylistUuid = this.navParams.get('stylistUuid');
-    const { response } = await this.followersApi.getFollowers(stylistUuid).get();
+    this.stylist = this.navParams.get('stylist');
+    const { response } = await this.followersApi.getFollowers(this.stylist.uuid).get();
     if (response) {
       this.followers = response.followers;
     }

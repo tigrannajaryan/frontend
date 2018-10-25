@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { AlertController, Events, NavController } from 'ionic-angular';
+import { Component, ViewChild } from '@angular/core';
+import { AlertController, Content, Events, NavController } from 'ionic-angular';
 
 import { Logger } from '~/shared/logger';
 import { loading } from '~/shared/utils/loading';
@@ -16,6 +16,7 @@ import { TabIndex } from '~/main-tabs/main-tabs.component';
   templateUrl: 'select-date.component.html'
 })
 export class SelectDateComponent {
+  @ViewChild(Content) content: Content;
   isLoading: boolean;
   prices: DayOffer[];
 
@@ -55,6 +56,15 @@ export class SelectDateComponent {
     this.logger.info('onSelectOffer', offer);
     this.bookingData.setOffer(offer);
     this.navCtrl.push(PageNames.SelectTime);
+  }
+
+  onServiceChange(): void {
+    // Tell the content to recalculate its dimensions. According to Ionic docs this
+    // should be called after dynamically adding/removing headers, footers, or tabs.
+    // See https://ionicframework.com/docs/api/components/content/Content/#resize
+    if (this.content) {
+      this.content.resize();
+    }
   }
 
   private showNoTimeSlotsPopup(): void {

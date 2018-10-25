@@ -24,7 +24,7 @@
   <div *ngIf="stylist" class="StylistInvitationPage-bio">
     <ion-row class="StylistInvitationPage-salonName" justify-content-center align-items-center>{{ stylist.salon_name }}</ion-row>
     <ion-row class="StylistInvitationPage-name" justify-content-center align-items-center>{{ stylist.first_name }} {{ stylist.last_name }}</ion-row>
-    <ion-row *ngIf="stylist?.followers_count" [madeLink]="[PageNames.Followers, { stylistUuid: stylist.uuid }]" class="StylistInvitationPage-address Link" justify-content-center align-items-start nowrap>
+    <ion-row *ngIf="stylist?.followers_count" [madeLink]="[PageNames.Followers, { stylist: stylist }]" class="StylistInvitationPage-address Link" justify-content-center align-items-start nowrap>
       <i class="mb-icon-heart-a"></i>&nbsp;<p class="Link">{{ stylist.followers_count }} MADE Clients</p>
     </ion-row>
     <ion-row *ngIf="stylist.salon_address" class="StylistInvitationPage-address" justify-content-center  align-items-start nowrap>
