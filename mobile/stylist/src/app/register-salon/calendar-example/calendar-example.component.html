@@ -19,7 +19,7 @@
 
     <div class="CalendarExample-Subtitle">View your own calendar after registration.</div>
 
-    <services-header-list [services]="services" [readonly]="false">
+    <services-header-list [services]="services" [readonly]="false" (deleteService)="onDeleteService()">
     </services-header-list>
 
     <price-calendar [prices]="prices"></price-calendar>
