@@ -15,7 +15,7 @@ interface TabsObject {
   name: string;
   link: Page; // should be PageNames when we will have all pages
   params: any;
-  badge?: string;
+  badge?: string | null;
 }
 
 export enum TabIndex {
@@ -51,7 +51,7 @@ export class MainTabsComponent implements OnDestroy {
       name: 'Profile',
       link: PageNames.ProfileSummary,
       params: {},
-      badge: null
+      badge: undefined
     }
   ];
 
@@ -74,7 +74,7 @@ export class MainTabsComponent implements OnDestroy {
     this.profileObservableSubscription = this.profileObservable.subscribe(user => {
       if (user.response) {
         this.tabsData[TabIndex.Profile].badge =
-          checkProfileCompleteness(user.response).isProfileComplete ? null : this.tabsData[TabIndex.Profile].name;
+          checkProfileCompleteness(user.response).isProfileComplete ? undefined : this.tabsData[TabIndex.Profile].name;
       }
     });
   }
