@@ -21,7 +21,7 @@
 
     <div *ngIf="homeData">
       <div *ngIf="homeData.upcoming?.length !== 0 || homeData.last_visited" class="HomePage-subtitleContainer">
-        <div class="Badge-H2">Upcoming visits <span class="Badge">{{ homeData.upcoming.length }}</span></div>
+        <div class="Badge-H2">Upcoming Visits <span class="Badge">{{ homeData.upcoming.length }}</span></div>
       </div>
       <div *ngIf="homeData.upcoming?.length > 0; else noUpcoming">
         <!-- show upcoming appointment cards -->
@@ -45,7 +45,7 @@
       <div *ngIf="homeData.last_visited">
         <!-- show last visit appointment card -->
         <div class="HomePage-subtitleContainer">
-          <span class="HomePage-subtitle">Last visit</span>
+          <span class="HomePage-subtitle">Last Visits</span>
         </div>
         <appointment-item
           [appointment]="homeData.last_visited"
