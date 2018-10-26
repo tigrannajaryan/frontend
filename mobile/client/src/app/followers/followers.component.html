@@ -15,7 +15,7 @@
   <div class="Followers-wp contentSidePadding">
     <div *ngIf="isLoading" class="Spinner"><ion-spinner></ion-spinner></div>
 
-    <div *ngIf="followers && profile?.privacy === PrivacyMode.public; else PrivacyPrivate">
+    <div *ngIf="followers && profile?.privacy === PrivacyMode.public">
       <div *ngIf="stylist?.first_name" class="Badge-H1" data-test-id="stylistName">{{ stylist.first_name + "'s" }} Clients <span class="Badge">{{ followers.length }}</span></div>
 
       <div class="FollowersList">
@@ -31,6 +31,6 @@
       </div>
     </div>
 
-    <ng-template #PrivacyPrivate><div class="Made-h3 Followers-private">To see this stylist's clients please update your privacy settings.</div></ng-template>
+    <div *ngIf="profile?.privacy === PrivacyMode.private"><div class="Made-h3 Followers-private">To see this stylist's clients please update your privacy settings.</div></div>
   </div>
 </ion-content>
