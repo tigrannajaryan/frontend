@@ -11,12 +11,32 @@ export interface PhoneData {
   valid: boolean;
 }
 
+export interface CountryData {
+  alpha2: string,
+  countryCallingCodes: string[];
+  currencies: string[];
+  emoji: string;
+  languages: string[];
+  name: string;
+  ioc: string;
+}
+
+function prepareCountriesData(Countries: CountryData[]) {
+  return (
+    Countries
+      // Limit countries bu country.ioc to omit countries like UM (+1 United States Minor Outlying Islands).
+      // Phone library we use don’t accept UM country code. US can be safely used instead of it.
+      .filter(country => country.ioc && country.countryCallingCodes.length > 0)
+  );
+}
+
 @Component({
   selector: 'phone-input',
   templateUrl: 'phone-input.component.html'
 })
 export class PhoneInputComponent {
-  static countries = Countries && Countries.filter(country => country.countryCallingCodes.length > 0);
+  static countries = Countries && prepareCountriesData(Countries);
+
   countries = PhoneInputComponent.countries;
 
   countryCode: FormControl = new FormControl(DEFAULT_COUNTRY_CODE, [Validators.required]);
