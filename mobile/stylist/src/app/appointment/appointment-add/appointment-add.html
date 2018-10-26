@@ -33,7 +33,7 @@
         <ion-icon name="calendar" item-start itemscope></ion-icon>
       </ion-label>
       <ion-datetime #datePicker displayFormat="DDD, MMM D, YYYY" pickerFormat="MMM D YYYY" placeholder="Select date" formControlName="date"
-        initialValue="{{ defaultDate }}"></ion-datetime>
+        initialValue="{{ defaultDate }}" max="{{ nextYear }}"></ion-datetime>
       <ion-icon name="md-arrow-dropdown" item-end></ion-icon>
     </ion-item>
 
