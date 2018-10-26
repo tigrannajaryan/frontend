@@ -4,11 +4,8 @@
       <i class="mb-icon-logo"></i>
     </ion-title>
     <ion-buttons end>
-      <ion-spinner *ngIf="isUpdating"></ion-spinner>
-      <button *ngIf="!isUpdating" (click)="onSubmit()" [disabled]="!form.valid" class="ProfilePage-submit" ion-button clear data-test-id="submit">
-        <span *ngIf="!isFailed && !isSucceeded">Done</span>
-        <ion-icon *ngIf="isSucceeded && !isFailed" [ngClass]="{ 'ProfilePage-animatedSuccess': isSucceeded }" name="md-checkmark"></ion-icon>
-        <ion-icon *ngIf="isFailed" name="md-close" class="ProfilePage-animatedFail"></ion-icon>
+      <button (click)="onSubmit()" [disabled]="!form.valid" class="ProfilePage-submit" ion-button clear data-test-id="submit">
+        Done
       </button>
     </ion-buttons>
   </ion-navbar>
