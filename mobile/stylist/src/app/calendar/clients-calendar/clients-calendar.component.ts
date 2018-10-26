@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { Component, ViewChild } from '@angular/core';
+import { Content, NavController, NavParams } from 'ionic-angular';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 
@@ -20,6 +20,7 @@ import { ProfileState, selectProfile } from '~/core/components/user-header/profi
   templateUrl: 'clients-calendar.component.html'
 })
 export class ClientsCalendarComponent {
+  @ViewChild(Content) content: Content;
   client?: MyClientModel;
 
   profile: Observable<StylistProfile>;
@@ -89,5 +90,12 @@ export class ClientsCalendarComponent {
         }
       })
       .toPromise();
+
+    // Tell the content to recalculate its dimensions. According to Ionic docs this
+    // should be called after dynamically adding/removing headers, footers, or tabs.
+    // See https://ionicframework.com/docs/api/components/content/Content/#resize
+    if (this.content) {
+      this.content.resize();
+    }
   }
 }

@@ -56,25 +56,35 @@ describe('Pages: Profile edit', () => {
     expect(zip_code_minlength_error).toBeDefined();
   });
 
-  it('should be able to submit the form', done => {
+  it('should be able to submit the form', async done => {
     // change some value - to see submit button
     instance.form.get('first_name').patchValue('newName');
     instance.form.get('profile_photo_id').patchValue(undefined);
     fixture.detectChanges();
 
-    const navCtrl = fixture.debugElement.injector.get(NavController);
     const submit = fixture.nativeElement.querySelector('[data-test-id=submit]');
-    spyOn(instance.profileDataStore, 'set');
+    spyOn(instance.profileDataStore, 'update');
     spyOn(instance.form, 'patchValue');
 
     submit.click();
 
-    setTimeout(async () => {
-      expect(instance.profileDataStore.set).toHaveBeenCalledWith(instance.form.value);
-      expect(instance.form.patchValue).toHaveBeenCalledWith(instance.form.value);
-      expect(navCtrl.pop).toHaveBeenCalled();
+    instance.profileDataStore.update(instance.form.value);
+    const { response } = await instance.profileDataStore.get();
 
-      done();
-    });
+    expect(instance.profileDataStore.update).toHaveBeenCalledWith(instance.form.value);
+
+    instance.form.patchValue(response);
+    fixture.detectChanges();
+
+    const zip_code = fixture.nativeElement.querySelector('[data-test-id=zip_code] input');
+    expect(Number(zip_code.value)).toBe(instance.form.value.zip_code);
+
+    const first_name = fixture.nativeElement.querySelector('[data-test-id=first_name] input');
+    expect(first_name.value).toBe(instance.form.value.first_name);
+
+    const last_name = fixture.nativeElement.querySelector('[data-test-id=last_name] input');
+    expect(last_name.value).toBe(instance.form.value.last_name);
+
+    done();
   });
 });
