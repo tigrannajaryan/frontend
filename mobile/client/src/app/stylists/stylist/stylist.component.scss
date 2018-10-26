@@ -71,7 +71,7 @@
 
   .StylistInvitationPage-salonName {
     margin: pxtovw(26px) 0 pxtovw(8px);
-    font-size: $t-small;
+    font-size: $t-base;
     color: color($grayscale, 500);
   }
 
@@ -95,7 +95,7 @@
   }
 
   .StylistInvitationPage-footer {
-    margin: 30px 0;
+    margin: pxtovw(20px) 0;
   }
 
   .StylistInvitationPage-submit {
