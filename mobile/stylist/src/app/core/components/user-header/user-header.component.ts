@@ -4,10 +4,8 @@ import { Store } from '@ngrx/store';
 
 import { StylistProfile } from '~/shared/stylist-api/stylist-models';
 import { AuthApiService } from '~/shared/stylist-api/auth-api-service';
-import { DataStore } from '~/shared/storage/data-store';
 import { PageNames } from '~/core/page-names';
-import { DataModule } from '~/core/data.module';
-import { AppModule } from '~/app.module';
+import { clearAllDataStores } from '~/core/data.module';
 import { LogoutAction } from '~/app.reducers';
 import { UserHeaderMenuActions, UserHeaderMenuComponent } from './user-header-menu/user-header-menu.component';
 
@@ -49,7 +47,7 @@ export class UserHeaderComponent {
           this.store.dispatch(new LogoutAction());
 
           // Clear cached data
-          this.clearAllDataStores();
+          clearAllDataStores();
 
           // Erase all previous navigation history and make FirstScreen the root
           this.app.getRootNav().setRoot(PageNames.FirstScreen);
@@ -68,25 +66,4 @@ export class UserHeaderComponent {
       ev: myEvent
     });
   }
-
-  private clearAllDataStores = (): void => {
-    // Get all data store classes:
-    const dataStores = DataModule.forRoot().providers;
-    // Require one by one and clear it’s data:
-    for (const storeClass of dataStores) {
-      const store = AppModule.injector.get(storeClass);
-      if (store instanceof DataStore) {
-        // Just calling DataStore.prototype.clear:
-        store.clear();
-      } else {
-        // Search for DataStore as a prop and call DataStore.prototype.clear on it:
-        for (const propName of Object.getOwnPropertyNames(store)) {
-          const prop = store[propName];
-          if (prop instanceof DataStore) {
-            prop.clear();
-          }
-        }
-      }
-    }
-  };
 }

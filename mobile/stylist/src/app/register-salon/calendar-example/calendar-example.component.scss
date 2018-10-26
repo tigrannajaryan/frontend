@@ -1,10 +1,9 @@
 page-calendar-example {
   .CalendarExample-Subtitle {
     margin: pxtovw(8px) 0;
-    font-size: pxtovw(15px);
+    font-size: pxtovw(16px);
+    font-weight: map-get($fontWeights, semibold);
     line-height: pxtovw(24px);
-    color: color($shared-colors, color1);
-    letter-spacing: pxtovw(0.1px);
   }
 
   .CalendarExample-RegularPrice {
