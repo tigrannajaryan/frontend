@@ -27,6 +27,12 @@ function prepareCountriesData(Countries: CountryData[]) {
       // Limit countries bu country.ioc to omit countries like UM (+1 United States Minor Outlying Islands).
       // Phone library we use don’t accept UM country code. US can be safely used instead of it.
       .filter(country => country.ioc && country.countryCallingCodes.length > 0)
+      .sort((a, b) => {
+        // Ensure sorting by name:
+        if(a.name < b.name) { return -1; }
+        if(a.name > b.name) { return 1; }
+        return 0;
+      })
   );
 }
 
