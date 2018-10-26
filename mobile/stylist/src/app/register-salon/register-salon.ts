@@ -18,13 +18,13 @@ import 'rxjs/add/operator/pluck';
 import { Logger } from '~/shared/logger';
 import { downscalePhoto, urlToFile } from '~/shared/image-utils';
 import { PhotoSourceType } from '~/shared/constants';
-import { StylistServiceProvider } from '~/shared/stylist-api/stylist-service';
 import { BaseService } from '~/shared/api/base-service';
 import { showAlert } from '~/shared/utils/alert';
 import { getPhoneNumber } from '~/shared/utils/phone-numbers';
 
 import { loading } from '~/core/utils/loading';
 import { PageNames } from '~/core/page-names';
+import { ProfileDataStore } from '~/core/profile.data';
 
 declare var window: any;
 
@@ -45,13 +45,13 @@ export class RegisterSalonComponent {
     public navCtrl: NavController,
     public navParams: NavParams,
     public formBuilder: FormBuilder,
-    private apiService: StylistServiceProvider,
     private baseService: BaseService,
     private domSanitizer: DomSanitizer,
     private camera: Camera,
     private actionSheetCtrl: ActionSheetController,
     private logger: Logger,
-    private mapsAPILoader: MapsAPILoader
+    private mapsAPILoader: MapsAPILoader,
+    private profileData: ProfileDataStore
   ) {
     this.form = this.formBuilder.group({
       vars: this.formBuilder.group({
@@ -99,7 +99,7 @@ export class RegisterSalonComponent {
   @loading
   async loadFormInitialData(): Promise<void> {
 
-    const { response } = await this.apiService.getProfile().get();
+    const { response } = await this.profileData.get();
     if (!response) {
       return;
     }
@@ -222,8 +222,8 @@ export class RegisterSalonComponent {
       // tslint:disable-next-line:no-null-keyword
       salon_name: profile.salon_name || null
     };
-    const { response } = await this.apiService.setProfile(data).get();
-    if (response) {
+    const { error } = await this.profileData.set(data);
+    if (!error) {
       this.nextRoute();
     }
   }

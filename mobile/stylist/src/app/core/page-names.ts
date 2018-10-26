@@ -18,7 +18,6 @@ import { DiscountsRevisitComponent } from '~/discounts/discounts-revisit/discoun
 import { DiscountsWeekdayComponent } from '~/discounts/discounts-weekday/discounts-weekday.component';
 import { FirstScreenComponent } from '~/first-screen/first-screen';
 import { HomeComponent } from '~/home/home.component';
-import { HowPricingWorksComponent } from '~/discounts/discounts-welcome/how-pricing-works.component';
 import { InvitationsComponent } from '~/invitations/invitations.component';
 import { MyClientsComponent } from '~/clients/my-clients/my-clients.component';
 import { RegisterSalonComponent } from '~/register-salon/register-salon';
@@ -60,7 +59,6 @@ export const PageNames = {
   DiscountsWeekday: DiscountsWeekdayComponent,
   FirstScreen: FirstScreenComponent,
   Home: HomeComponent,
-  HowPricingWorks: HowPricingWorksComponent,
   Invitations: InvitationsComponent,
   MyClients: MyClientsComponent,
   RegisterSalon: RegisterSalonComponent,
