@@ -20,6 +20,6 @@ export class WelcomeToMadeComponent {
   constructor(private navCtrl: NavController) {}
 
   onContinue(): void {
-    this.navCtrl.push(PageNames.HowPricingWorks);
+    this.navCtrl.push(PageNames.CalendarExample);
   }
 }

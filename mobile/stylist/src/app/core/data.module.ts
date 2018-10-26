@@ -3,14 +3,18 @@ import { IonicModule } from 'ionic-angular';
 
 import { ClientsApi } from '~/shared/stylist-api/clients-api';
 import { StylistServiceProvider } from '~/shared/stylist-api/stylist-service';
+import { DataStore } from '~/shared/storage/data-store';
 
 import { AllClientsDataStore } from '~/clients/all-clients/all-clients.data';
 import { MyClientsDataStore } from '~/clients/my-clients/my-clients.data';
 import { StylistServicesDataStore } from '~/services/services-list/services.data';
+import { ProfileDataStore } from '~/core/profile.data';
+import { AppModule } from '~/app.module';
 
 export enum DataCacheKey {
   allClients = 'allClients',
   myClients = 'myClients',
+  profile = 'profile',
   stylistServices = 'stylistServices'
 }
 
@@ -38,8 +42,34 @@ export class DataModule {
       providers: [
         AllClientsDataStore,
         MyClientsDataStore,
+        ProfileDataStore,
         StylistServicesDataStore
       ]
     };
+  }
+}
+
+/**
+ * Clear cached content of all data stores. Normally used by Logout or Login actions
+ * to make sure we don't have stale data (e.g. if we need to login using a different user).
+ */
+export function clearAllDataStores(): void {
+  // Get all data store classes:
+  const dataStores = DataModule.forRoot().providers;
+  // Require one by one and clear it’s data:
+  for (const storeClass of dataStores) {
+    const store = AppModule.injector.get(storeClass);
+    if (store instanceof DataStore) {
+      // Just calling DataStore.prototype.clear:
+      store.clear();
+    } else {
+      // Search for DataStore as a prop and call DataStore.prototype.clear on it:
+      for (const propName of Object.getOwnPropertyNames(store)) {
+        const prop = store[propName];
+        if (prop instanceof DataStore) {
+          prop.clear();
+        }
+      }
+    }
   }
 }
