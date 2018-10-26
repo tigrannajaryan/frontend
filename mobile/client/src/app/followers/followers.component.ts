@@ -58,7 +58,7 @@ export class FollowersComponent {
     if (follower.booking_count > 2) {
       const alert = this.alertCtrl.create({
         title: '<i class="mb-icon-wash-and-style"></i>',
-        subTitle: `This client has booked ${ follower.booking_count } or more<br/>times with this stylist`,
+        subTitle: 'This client has booked 3 or more<br/>times with this stylist',
         cssClass: 'mb-popup-orange',
         buttons: [{
           text: 'Close',
