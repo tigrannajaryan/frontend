@@ -18,6 +18,11 @@ export interface ExternalAppDeepLinkConfig {
 
 @Injectable()
 export class ExternalAppService {
+
+  // Fixes InAppBrowser’s page creation in Android. Without these options the app craches in production.
+  // See https://forum.ionicframework.com/t/inappbrowser-crash-on-android-device/82993/2 for more info.
+  private pageOptionsAndroid: String[] = ['_blank', 'location=no'];
+
   constructor(
     private alertCtrl: AlertController,
     private appAvailability: AppAvailability,
@@ -112,7 +117,8 @@ export class ExternalAppService {
   }
 
   private openLink(link: string): void {
-    const page: InAppBrowserObject = this.browser.create(link);
+    const options: String[] = this.platform.is('android') ? this.pageOptionsAndroid : [];
+    const page: InAppBrowserObject = this.browser.create(link, ...options);
     page.show();
   }
 }
