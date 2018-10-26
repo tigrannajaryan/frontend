@@ -1,7 +1,7 @@
 <ion-header madeHeader [showHome]="true">
   <ion-toolbar class="SelectDate SelectDate-header">
     <div class="SelectDate-title SharedH1">Select date</div>
-    <book-services-header></book-services-header>
+    <book-services-header (serviceChange)="onServiceChange()"></book-services-header>
   </ion-toolbar>
 </ion-header>
 
