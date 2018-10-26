@@ -4,6 +4,8 @@ import * as moment from 'moment';
 
 import { PageNames } from '~/core/page-names';
 import { DayOffer, ServiceModel } from '~/shared/api/price.models';
+import { StylistProfile } from '~/shared/stylist-api/stylist-models';
+import { ProfileDataStore } from '~/core/profile.data';
 
 // Some nice looking fake prices
 const fakePrices = [
@@ -33,8 +35,12 @@ export class CalendarExampleComponent {
 
   prices: DayOffer[] = [];
 
+  profile: StylistProfile;
+
   constructor(
-    private navCtrl: NavController) {
+    private navCtrl: NavController,
+    private profileData: ProfileDataStore
+  ) {
     // Generate offers starting from today using fake prices
     for (let i = 0; i < fakePrices.length; i++) {
       this.prices.push({
@@ -46,8 +52,17 @@ export class CalendarExampleComponent {
     }
   }
 
+  async ionViewWillLoad(): Promise<void> {
+    const { response } = await this.profileData.get();
+    if (!response) {
+      return;
+    }
+
+    this.profile = response;
+  }
+
   onContinue(): void {
-    this.navCtrl.push(PageNames.Invitations);
+    this.navCtrl.push(PageNames.Services);
   }
 
   onDeleteService(): void {

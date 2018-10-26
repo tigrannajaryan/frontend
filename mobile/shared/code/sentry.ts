@@ -16,6 +16,7 @@ export function initSentry(): void {
       release: `${APP_BUNDLE_ID}-${APP_VERSION_NUMBER}`
     });
     Sentry.setDist(BUILD_NUMBER);
+    Sentry.setRelease(`${APP_BUNDLE_ID}-${APP_VERSION_NUMBER}`);
   }
 }
 
