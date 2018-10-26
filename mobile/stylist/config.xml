@@ -43,6 +43,7 @@
         <splash density="port-xxhdpi" src="resources/android/splash/drawable-port-xxhdpi-screen.png" />
         <splash density="port-xxxhdpi" src="resources/android/splash/drawable-port-xxxhdpi-screen.png" />
         <resource-file src="google-services.json" target="app/google-services.json" />
+        <hook src="../scripts/cordova-after-platform-add.js" type="after_platform_add" />
     </platform>
     <platform name="ios">
         <config-file parent="NSPhotoLibraryUsageDescription" target="*-Info.plist">
@@ -121,7 +122,9 @@
         <variable name="FCM_VERSION" value="11.6.2" />
         <variable name="SENDER_ID" value="17636556416" />
     </plugin>
-    <allow-navigation href="http://192.168.31.112:8100" />
+    <plugin name="cordova-android-play-services-gradle-release" spec="1.4.4">
+        <variable name="PLAY_SERVICES_VERSION" value="15.+" />
+    </plugin>
     <engine name="android" spec="7.0.0" />
     <engine name="ios" spec="4.5.4" />
 </widget>
