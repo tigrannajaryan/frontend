@@ -6,21 +6,23 @@
   <div class="Made-wp Made-wpContent">
     <ion-row>
       <div class="Made-h1" col-8 no-padding>
-        Example: What Clients See
+        How Pricing Works
       </div>
 
       <user-name-photo
-        [firstName]="'User'"
-        [lastName]="'Example'"
-        [photoUrl]="'assets/icons/example-user.png'"
+        [firstName]="profile?.first_name"
+        [lastName]="profile?.last_name"
+        [photoUrl]="profile?.profile_photo_url ? profile.profile_photo_url : 'assets/icons/stylist-avatar.png'"
         col-4>
       </user-name-photo>
     </ion-row>
 
-    <div class="CalendarExample-Subtitle">View your own calendar after registration.</div>
+    <div class="CalendarExample-Subtitle">Add any promos you like, as days fill prices auto increase back to full rate!</div>
 
     <services-header-list [services]="services" [readonly]="false">
     </services-header-list>
+
+    <price-pair [regularPrice]="200"></price-pair>
 
     <price-calendar [prices]="prices"></price-calendar>
   </div>
