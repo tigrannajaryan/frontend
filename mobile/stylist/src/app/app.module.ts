@@ -67,7 +67,6 @@ import { DiscountsRevisitComponent } from '~/discounts/discounts-revisit/discoun
 import { DiscountsWeekdayComponent } from '~/discounts/discounts-weekday/discounts-weekday.component';
 import { HomeComponent } from '~/home/home.component';
 import { FirstScreenComponent } from '~/first-screen/first-screen';
-import { HowPricingWorksComponent } from '~/discounts/discounts-welcome/how-pricing-works.component';
 import { InvitationsComponent } from '~/invitations/invitations.component';
 import { MyClientsComponent } from '~/clients/my-clients/my-clients.component';
 import { ClientDetailsComponent } from '~/clients/client-details/client-details.component';
@@ -143,7 +142,6 @@ const declarations = [
   DiscountsWeekdayComponent,
   FirstScreenComponent,
   HomeComponent,
-  HowPricingWorksComponent,
   InvitationsComponent,
   MyClientsComponent,
   ClientDetailsComponent,

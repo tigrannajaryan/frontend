@@ -1,9 +1,11 @@
-import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { Component, ViewChild } from '@angular/core';
+import { Content, NavController } from 'ionic-angular';
 import * as moment from 'moment';
 
 import { PageNames } from '~/core/page-names';
 import { DayOffer, ServiceModel } from '~/shared/api/price.models';
+import { StylistProfile } from '~/shared/stylist-api/stylist-models';
+import { ProfileDataStore } from '~/core/profile.data';
 
 // Some nice looking fake prices
 const fakePrices = [
@@ -19,6 +21,7 @@ const fakePrices = [
   templateUrl: 'calendar-example.component.html'
 })
 export class CalendarExampleComponent {
+  @ViewChild(Content) content: Content;
   PageNames = PageNames;
 
   regularPrice = 200;
@@ -32,8 +35,12 @@ export class CalendarExampleComponent {
 
   prices: DayOffer[] = [];
 
+  profile: StylistProfile;
+
   constructor(
-    private navCtrl: NavController) {
+    private navCtrl: NavController,
+    private profileData: ProfileDataStore
+  ) {
     // Generate offers starting from today using fake prices
     for (let i = 0; i < fakePrices.length; i++) {
       this.prices.push({
@@ -45,7 +52,25 @@ export class CalendarExampleComponent {
     }
   }
 
+  async ionViewWillLoad(): Promise<void> {
+    const { response } = await this.profileData.get();
+    if (!response) {
+      return;
+    }
+
+    this.profile = response;
+  }
+
   onContinue(): void {
-    this.navCtrl.push(PageNames.Invitations);
+    this.navCtrl.push(PageNames.Services);
+  }
+
+  onDeleteService(): void {
+    // Tell the content to recalculate its dimensions. According to Ionic docs this
+    // should be called after dynamically adding/removing headers, footers, or tabs.
+    // See https://ionicframework.com/docs/api/components/content/Content/#resize
+    if (this.content) {
+      this.content.resize();
+    }
   }
 }

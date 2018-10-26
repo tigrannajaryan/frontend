@@ -235,7 +235,9 @@ export class HomeComponent {
   checkOutAppointmentClick(appointment: Appointment): void {
     const data: AppointmentCheckoutParams = {
       appointmentUuid: appointment.uuid,
-      isAlreadyCheckedOut: appointment.status !== AppointmentStatuses.new
+
+      // Allow to checkout any appointment that is not already checked out.
+      isAlreadyCheckedOut: appointment.status === AppointmentStatuses.checked_out
     };
     this.navCtrl.push(PageNames.AppointmentCheckout, { data });
   }
