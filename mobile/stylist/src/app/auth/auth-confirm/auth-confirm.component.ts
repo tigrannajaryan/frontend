@@ -27,6 +27,7 @@ import { TokenStorageImpl } from '~/app.component';
 import { CodeData, CodeInputComponent } from '~/shared/components/code-input/code-input.component';
 
 import { createNavHistoryList, isRegistrationComplete } from '~/core/functions';
+import { clearAllDataStores } from '~/core/data.module';
 
 @Component({
   selector: 'page-auth-confirm',
@@ -70,6 +71,19 @@ export class AuthConfirmPageComponent {
       .filter(isTokenSaved => isTokenSaved)
       .withLatestFrom(this.store)
       .subscribe(async ([data, state]) => {
+        // This code is not good: "data" has no static typing and it is
+        // completely unclear what it is really. The compiler doesn' know either :-(
+        // rxjs+ngrx -> unreadable, unmaintainable, fragile code.
+        // Supposedly "data" should contain the stylist profile and
+        // I could use it to populate ProfileDataStore, but I am not going to since
+        // I am not sure and I don't want to make this code even less understable.
+
+        // Clear cached data when logging in. This is to avoid using previous user's
+        // cached data if we login using a different user. We also clear cache during
+        // logout, but it may not be enough since it is possible to be forcedly logged
+        // out without performing logout user action (e.g. on token expiration).
+        clearAllDataStores();
+
         this.authApiService.init(new TokenStorageImpl(this.storage));
 
         if (!isRegistrationComplete(data.profileStatus)) {

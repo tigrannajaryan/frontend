@@ -19,6 +19,7 @@ import { StylistServiceProvider } from '~/shared/stylist-api/stylist-service';
 import { DiscountsApi } from '~/shared/stylist-api/discounts.api';
 import { InvitationsApi } from '~/shared/stylist-api/invitations.api';
 import { InvitationStatus } from '~/shared/stylist-api/invitations.models';
+import { ProfileDataStore } from '~/core/profile.data';
 
 import { CoreModule } from '~/core/core.module';
 import { prepareSharedObjectsForTests } from '~/core/test-utils.spec';
@@ -63,6 +64,7 @@ describe('Pages: InvitationsComponent', () => {
         InvitationsApi,
         DiscountsApi,
         StylistServiceProvider,
+        ProfileDataStore,
         Contacts,
         OpenNativeSettings,
         SMS,

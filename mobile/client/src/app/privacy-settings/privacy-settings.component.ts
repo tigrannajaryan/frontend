@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { AlertController } from 'ionic-angular';
 
-import { ProfileApi } from '~/core/api/profile-api';
 import { ProfileModel } from '~/core/api/profile.models';
 
 import { componentUnloaded } from '~/shared/component-unloaded';
@@ -25,8 +24,7 @@ export class PrivacySettingsComponent {
 
   constructor(
     public profileDataStore: ProfileDataStore,
-    private alertCtrl: AlertController,
-    private profileApi: ProfileApi
+    private alertCtrl: AlertController
   ) {
   }
 
@@ -52,19 +50,13 @@ export class PrivacySettingsComponent {
         }, {
           text: 'Yes, Change',
           handler: () => {
-            this.updateProfileSettings(privacy);
+            this.profileDataStore.update({ privacy });
           }
         }]
       });
       alert.present();
     } else {
-      this.updateProfileSettings(privacy);
+      this.profileDataStore.update({ privacy });
     }
-  }
-
-  private async updateProfileSettings(privacy: PrivacyMode): Promise<void> {
-    const { response } = await this.profileApi.updateProfile({ privacy }).get();
-    this.profile = response;
-    this.profileDataStore.set(response);
   }
 }
