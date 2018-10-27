@@ -63,7 +63,7 @@
     "@sentry/shim": "0.5.4",
     "angular-tslint-rules": "1.3.0",
     "camelcase": "5.0.0",
-    "cordova-android": "7.0.0",
+    "cordova-android": "7.1.0",
     "cordova-android-play-services-gradle-release": "1.4.4",
     "cordova-clipboard": "1.2.1",
     "cordova-ios": "4.5.4",
@@ -85,6 +85,7 @@
     "cordova-plugin-statusbar": "2.4.2",
     "cordova-plugin-whitelist": "1.3.3",
     "cordova-sms-plugin": "0.1.13",
+    "cordova-support-google-services": "1.1.0",
     "cordova.plugins.diagnostic": "4.0.10",
     "country-data": "0.0.31",
     "es6-promise-plugin": "4.2.2",
@@ -99,6 +100,7 @@
     "ngrx-store-freeze": "0.2.2",
     "ngrx-store-logger": "0.2.2",
     "paper": "0.11.5",
+    "phonegap-plugin-multidex": "1.0.0",
     "phonegap-plugin-push": "2.2.3",
     "rxjs": "5.5.8",
     "sentry-cordova": "0.12.3",
@@ -169,11 +171,12 @@
       "cordova.plugins.diagnostic": {},
       "cordova-plugin-geolocation": {},
       "phonegap-plugin-push": {
-        "FCM_VERSION": "11.6.2",
-        "SENDER_ID": "17636556416"
+        "FCM_VERSION": "11.0.1",
+        "SENDER_ID": "17636556416",
+        "ANDROID_SUPPORT_V13_VERSION": "27.+"
       },
       "cordova-android-play-services-gradle-release": {
-        "PLAY_SERVICES_VERSION": "15.+"
+        "PLAY_SERVICES_VERSION": "11.0.1"
       }
     },
     "platforms": [
