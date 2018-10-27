@@ -15,13 +15,14 @@ import {
   selectConfirmCodeState,
   selectRequestCodeState
 } from '~/shared/storage/auth.reducer';
-import { AuthEffects } from '~/shared/storage/auth.effects';
 
+import { AuthEffects } from '~/shared/storage/auth.effects';
 import { ApiError, FieldErrorItem } from '~/shared/api-errors';
 import { AuthProcessState } from '~/shared/storage/auth-process-state';
 
 import { AppStorage } from '~/shared/storage/app-storage';
 
+import { PushNotification } from '~/shared/push-notification';
 import { CodeData, CodeInputComponent } from '~/shared/components/code-input/code-input.component';
 
 import { createNavHistoryList, isRegistrationComplete } from '~/core/functions';
@@ -52,6 +53,7 @@ export class AuthConfirmPageComponent {
     private authDataState: AuthProcessState,
     private navCtrl: NavController,
     private navParams: NavParams,
+    public pushNotification: PushNotification,
     private store: Store<AuthState>
   ) {
   }
@@ -88,6 +90,9 @@ export class AuthConfirmPageComponent {
 
         const requiredPages = createNavHistoryList(data.profileStatus);
         this.navCtrl.setPages(requiredPages);
+
+        // We are now in the app, init the push notifications
+        this.pushNotification.init();
       });
 
     // Handle code verification error

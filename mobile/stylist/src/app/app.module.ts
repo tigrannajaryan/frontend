@@ -18,6 +18,7 @@ import { SMS } from '@ionic-native/sms';
 import { Camera } from '@ionic-native/camera';
 import { Clipboard } from '@ionic-native/clipboard';
 import { EmailComposer } from '@ionic-native/email-composer';
+import { Push } from '@ionic-native/push';
 
 import { UnhandledErrorHandler } from '~/shared/unhandled-error-handler';
 import { initSentry } from '~/shared/sentry';
@@ -40,6 +41,8 @@ import { HomeService } from '~/shared/stylist-api/home.service';
 import { WorktimeApi } from '~/shared/stylist-api/worktime.api';
 import { InvitationsApi } from '~/shared/stylist-api/invitations.api';
 import { ClientDetailsApi } from '~/shared/stylist-api/client-details.api';
+
+import { PushNotification } from '~/shared/push-notification';
 
 import { CoreModule } from '~/core/core.module';
 import { GoogleMapsConfig } from '~/core/google-maps-config';
@@ -192,6 +195,9 @@ const declarations = [
     AppAvailability,
     Clipboard,
     EmailComposer,
+
+    Push,
+    PushNotification,
 
     { // Add auth token to all requests
       provide: HTTP_INTERCEPTORS,

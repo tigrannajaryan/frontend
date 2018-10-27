@@ -9,5 +9,8 @@ export const ENV = {
   sentryDsn: undefined,
 
   // Disable GA reporting by default
-  gaTrackingId: undefined
+  gaTrackingId: undefined,
+
+  // Firebase Cloud Messaging Sender ID. Use Staging push notifications by default
+  FCM_PUSH_SENDER_ID: '17636556416'
 };

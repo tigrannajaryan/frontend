@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "17636556416",
+    "firebase_url": "https://made-staging.firebaseio.com",
+    "project_id": "made-staging",
+    "storage_bucket": "made-staging.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:17636556416:android:caf3e5e3f916d069",
+        "android_client_info": {
+          "package_name": "com.madebeauty.stylist.staging.android"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "17636556416-l518l3bkc3pev82sl9d2dq6vrd1th7hc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD2h97hAyGiDmYq40HIzhpravheqeHmEKI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
