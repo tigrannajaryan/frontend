@@ -21,6 +21,7 @@
   }
 
   .Client-name {
+    font-size: pxtovw(18px);
     margin: 0;
   }
 
@@ -42,11 +43,13 @@
   }
 
   .Client-phone {
+    font-size: pxtovw(15px);
     font-weight: bold;
     color: color($colors, lightSalmon);
   }
 
   .Client-cityState {
+    font-size: pxtovw(15px);
     color: color($grayscale, 600);
 
     .textPreloader {
