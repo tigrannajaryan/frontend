@@ -9,6 +9,7 @@ import { Logger } from '~/shared/logger';
 import { getBuildNumber, getCommitHash } from '~/shared/get-build-number';
 import { GAWrapper } from '~/shared/google-analytics';
 import { AuthApiService, TokenStorage } from '~/shared/stylist-api/auth-api-service';
+import { PushNotification } from '~/shared/push-notification';
 
 import { PageNames } from '~/core/page-names';
 import { createNavHistoryList } from '~/core/functions';
@@ -42,6 +43,7 @@ export class MyAppComponent {
     private authApiService: AuthApiService,
     private logger: Logger,
     private ga: GAWrapper,
+    public pushNotification: PushNotification,
     private serverStatusTracker: ServerStatusTracker,
     private storage: AppStorage,
     private screenOrientation: ScreenOrientation
@@ -117,6 +119,9 @@ export class MyAppComponent {
 
         const requiredPages = createNavHistoryList(authResponse.profile_status);
         this.nav.setPages(requiredPages);
+
+        // We are now in the app, init the push notifications
+        this.pushNotification.init();
         return;
       }
     }
