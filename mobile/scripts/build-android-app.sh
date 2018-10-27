@@ -11,9 +11,6 @@ cd $TRAVIS_BUILD_DIR/mobile/$APP_TYPE
 ./node_modules/ionic/bin/ionic cordova platform rm android
 ./node_modules/ionic/bin/ionic cordova platform add android
 
-# Use our own build.gradle file which has the correct order of repositories listed
-cp $TRAVIS_BUILD_DIR/mobile/scripts/build.gradle  ./platforms/android/build.gradle
-
 ./node_modules/ionic/bin/ionic cordova build android --release --verbose --prod
 
 # Before deploying, zipalign and sign application; see more
