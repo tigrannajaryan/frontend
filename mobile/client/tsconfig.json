@@ -24,7 +24,8 @@
     "node_modules",
     "src/**/*.spec.ts",
     "src/**/__tests__/*.ts",
-    "src/test.ts"
+    "src/test.ts",
+    "src/app/shared/push-notification.ts"
   ],
   "compileOnSave": false,
   "atom": {
