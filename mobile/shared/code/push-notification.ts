@@ -1,9 +1,12 @@
 import { Injectable } from '@angular/core';
 import { NotificationEventResponse, Push, PushObject, PushOptions, RegistrationEventResponse } from '@ionic-native/push';
-import { AlertController } from 'ionic-angular';
+import { ToastController } from 'ionic-angular';
+
 import { Logger } from '~/shared/logger';
 
-const FCM_PUSH_SENDER_ID = '17636556416';
+import { ENV } from '~/environments/environment.default';
+
+// const FCM_PUSH_SENDER_ID = '17636556416';
 
 /**
  * Service that receives push notifications from backend.
@@ -12,10 +15,9 @@ const FCM_PUSH_SENDER_ID = '17636556416';
 @Injectable()
 export class PushNotification {
   constructor(
-    private alertCtrl: AlertController,
     private logger: Logger,
-    // private platform: Platform,
-    private push: Push
+    private push: Push,
+    private toastCtrl: ToastController
   ) {
     this.init();
   }
@@ -52,7 +54,7 @@ export class PushNotification {
 
     const options: PushOptions = {
       android: {
-        senderID: FCM_PUSH_SENDER_ID
+        senderID: ENV.FCM_PUSH_SENDER_ID
       },
       ios: {
         alert: 'true',
@@ -65,40 +67,53 @@ export class PushNotification {
 
     this.logger.info('Push options set');
 
-    pushObject.on('registration').subscribe((registration: RegistrationEventResponse) => {
-      this.logger.info('device registered:', registration.registrationId);
-      // TODO - send device token to server
-    });
-
-    pushObject.on('notification').subscribe((notification: NotificationEventResponse) => {
-      this.logger.info('push message received:', notification.message);
-      // if user using app and push notification comes
-      if (notification.additionalData.foreground) {
-        // if application open, show popup
-        const confirmAlert = this.alertCtrl.create({
-          title: 'New Notification',
-          message: notification.message,
-          buttons: [{
-            text: 'Ignore',
-            role: 'cancel'
-          }, {
-            text: 'View',
-            handler: () => {
-              // TODO: Your logic here
-              // this.nav.push(DetailsPage, { message: notification.message });
-              this.logger.info('Notification View clicked.');
-            }
-          }]
-        });
-        confirmAlert.present();
-      } else {
-        // if user NOT using app and push notification comes
-        // TODO: Your logic on click of push notification directly
-        // this.nav.push(DetailsPage, { message: notification.message });
-        this.logger.info('Push notification clicked');
-      }
-    });
+    pushObject.on('registration').subscribe((registration: RegistrationEventResponse) => this.onDeviceRegistration(registration));
+    pushObject.on('notification').subscribe((notification: NotificationEventResponse) => this.onNotification(notification));
 
     pushObject.on('error').subscribe(error => this.logger.error('Error with Push plugin', error));
+  }
+
+  onDeviceRegistration(registration: RegistrationEventResponse): void {
+    this.logger.info('Push: device registered:', registration.registrationId);
+    // TODO - send device token to server
+  }
+
+  onNotification(notification: NotificationEventResponse): void {
+    this.logger.info('push message received:', notification.message);
+    // if user using app and push notification comes
+    if (notification.additionalData.foreground) {
+      // if application open, show popup
+
+      const toast = this.toastCtrl.create({
+        message: notification.message,
+        duration: 5000,
+        position: 'top',
+        showCloseButton: true
+      });
+
+      toast.present();
+
+      // const confirmAlert = this.alertCtrl.create({
+      //   title: 'New Notification',
+      //   message: notification.message,
+      //   buttons: [{
+      //     text: 'Ignore',
+      //     role: 'cancel'
+      //   }, {
+      //     text: 'View',
+      //     handler: () => {
+      //       // TODO: Your logic here
+      //       // this.nav.push(DetailsPage, { message: notification.message });
+      //       this.logger.info('Notification View clicked.');
+      //     }
+      //   }]
+      // });
+      // confirmAlert.present();
+    } else {
+      // if user NOT using app and push notification comes
+      // TODO: Your logic on click of push notification directly
+      // this.nav.push(DetailsPage, { message: notification.message });
+      this.logger.info('Push notification received in background');
+    }
   }
 }

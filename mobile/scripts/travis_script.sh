@@ -27,9 +27,6 @@ $TRAVIS_BUILD_DIR/mobile/scripts/build-android-app.sh
 
 # prepare and build iOS app
 
-# TEMPORARILY disable iOS build
-exit 0
-
 export APP_BUNDLE_ID=$IOS_APP_BUNDLE_ID
 
 cd $TRAVIS_BUILD_DIR
