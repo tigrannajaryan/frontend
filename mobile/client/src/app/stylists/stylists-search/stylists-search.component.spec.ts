@@ -66,26 +66,6 @@ describe('Pages: Stylists Search', () => {
     });
   });
 
-  it('should open stylist page', async done => {
-    await instance.ionViewWillLoad();
-
-    // Skip loading:
-    setTimeout(() => {
-      fixture.detectChanges();
-
-      const fakeParams = instance.getStylistPageParams(stylistsMock[0]);
-      spyOn(instance, 'getStylistPageParams').and.returnValue(fakeParams);
-
-      fixture.nativeElement.querySelector('[data-test-id=StylistCard]').click();
-
-      const navCtrl = fixture.debugElement.injector.get(NavController);
-      expect(navCtrl.push)
-        .toHaveBeenCalledWith(PageNames.Stylist, fakeParams);
-
-      done();
-    });
-  });
-
   it('should show ”Current Location” placeholder when empty location input', () => {
     fixture.detectChanges();
 
