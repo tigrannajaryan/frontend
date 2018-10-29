@@ -4,7 +4,7 @@ import { AlertController, Platform } from 'ionic-angular';
 import { AppAvailability } from '@ionic-native/app-availability';
 import { Clipboard } from '@ionic-native/clipboard';
 import { EmailComposer } from '@ionic-native/email-composer';
-import { InAppBrowser, InAppBrowserObject } from '@ionic-native/in-app-browser';
+import { InAppBrowser } from '@ionic-native/in-app-browser';
 
 export interface ExternalAppDeepLinkConfig {
   // Will be used to identify that app exists on the device.
@@ -112,7 +112,6 @@ export class ExternalAppService {
   }
 
   private openLink(link: string): void {
-    const page: InAppBrowserObject = this.browser.create(link);
-    page.show();
+    this.browser.create(link); // opens a web page
   }
 }
