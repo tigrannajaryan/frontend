@@ -7,6 +7,7 @@ import { Observable } from 'rxjs/Observable';
 import { RequestState } from '~/shared/api/request.models';
 import { StylistModel, StylistsSearchParams } from '~/shared/api/stylists.models';
 import { GeolocationService, LatLng } from '~/shared/utils/geolocation.service';
+import { ExternalAppService } from '~/shared/utils/external-app-service';
 
 import { PageNames } from '~/core/page-names';
 import { PreferredStylistsData } from '~/core/api/preferred-stylists.data';
@@ -53,6 +54,7 @@ export class StylistsPageComponent {
 
   constructor(
     private events: Events,
+    private externalAppService: ExternalAppService,
     private geolocationService: GeolocationService,
     private navCtrl: NavController,
     private navParams: NavParams,
@@ -108,6 +110,14 @@ export class StylistsPageComponent {
       this.navCtrl.popToRoot();
       this.events.publish(StylistsEvents.ReloadMyStylist);
     }
+  }
+
+  onInstagramClick(instaUsername: string): void {
+    this.externalAppService.openInstagram(instaUsername);
+  }
+
+  onWebsiteClick(websiteUrl: string): void {
+    this.externalAppService.openWebPage(websiteUrl);
   }
 
   private async requestGeolocation(): Promise<void> {
