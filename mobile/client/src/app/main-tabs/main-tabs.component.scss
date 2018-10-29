@@ -50,6 +50,15 @@ ion-icon.tab-button-icon[aria-label^="Profile"]:after {
   content: $mb-icon-profile;
 }
 
+.has-icon ion-badge.badge-ios-Profile,
+.has-icon ion-badge.badge-md-Profile,
+.has-icon ion-badge.badge-wp-Profile {
+  @extend %Indicator;
+  
+  right: calc(50% - 17px);
+  font-size: 0;
+  background: none;
+}
 
 [aria-selected=true] {
   ion-icon.tab-button-icon[aria-label^="Home"]:after {
