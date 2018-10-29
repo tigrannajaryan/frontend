@@ -10,7 +10,7 @@ import { PageNames } from '~/core/page-names';
 import { StylistsEffects } from '~/core/effects/stylists.effects';
 import { stylistsMock } from '~/core/api/stylists-service.mock';
 import { StylistsService } from '~/core/api/stylists-service';
-import { StylistsPageComponent } from './stylists.component';
+import { StylistsPageComponent } from '~/stylists/stylists-search/stylists-search.component';
 
 // Monkey patch SEARCHING_DELAY to 0 to avoid slowing down the tests:
 StylistsEffects.SEARCHING_DELAY = 0;
@@ -61,26 +61,6 @@ describe('Pages: Stylists Search', () => {
         expect(textContent)
           .toContain(stylist.salon_address);
       });
-
-      done();
-    });
-  });
-
-  it('should open stylist page', async done => {
-    await instance.ionViewWillLoad();
-
-    // Skip loading:
-    setTimeout(() => {
-      fixture.detectChanges();
-
-      const fakeParams = instance.getStylistPageParams(stylistsMock[0]);
-      spyOn(instance, 'getStylistPageParams').and.returnValue(fakeParams);
-
-      fixture.nativeElement.querySelector('[data-test-id=StylistCard]').click();
-
-      const navCtrl = fixture.debugElement.injector.get(NavController);
-      expect(navCtrl.push)
-        .toHaveBeenCalledWith(PageNames.Stylist, fakeParams);
 
       done();
     });

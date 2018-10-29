@@ -39,32 +39,32 @@
             <img src="assets/icons/arrow-right.svg" />
           </td>
         </tr>
-        <tr>
-          <td (click)="goTo(PageNames.HowMadeWorks, { hideContinueButton: true })" class="Table-col" data-test-id="howMADEWorks">How MADE works</td>
+        <tr (click)="goTo(PageNames.HowMadeWorks, { hideContinueButton: true })">
+          <td class="Table-col" data-test-id="howMADEWorks">How MADE works</td>
           <td class="ProfilePage-arrow Table-col">
             <img src="assets/icons/arrow-right.svg" />
           </td>
         </tr>
-        <tr>
-          <td (click)="goTo(PageNames.About)" class="Table-col" data-test-id="about">About</td>
+        <tr (click)="goTo(PageNames.About)">
+          <td class="Table-col" data-test-id="about">About</td>
           <td class="ProfilePage-arrow Table-col">
             <img src="assets/icons/arrow-right.svg" />
           </td>
         </tr>
-        <tr>
-          <td (click)="goTo(PageNames.Privacy, { profile: profile })" class="Table-col" data-test-id="about">Privacy</td>
+        <tr (click)="goTo(PageNames.Privacy, { profile: profile })">
+          <td class="Table-col" data-test-id="about">Privacy</td>
           <td class="ProfilePage-arrow Table-col">
             <img src="assets/icons/arrow-right.svg" />
           </td>
         </tr>
-        <tr>
+        <tr (click)="onContactByEmail('faq@madebeauty.com')">
           <td colspan="2" class="ProfilePage-tableCenteredText Table-col">
-            <span (click)="onContactByEmail('faq@madebeauty.com')" class="Link" data-test-id="emailLink">FAQ@madebeauty.com</span>
+            <span class="Link" data-test-id="emailLink">FAQ@madebeauty.com</span>
           </td>
         </tr>
-        <tr>
+        <tr (click)="onLogout()">
           <td colspan="2" class="ProfilePage-tableCenteredText Table-col">
-            <span (click)="onLogout()" class="ProfilePage-logout Link" data-test-id="logout">Logout</span>
+            <span class="ProfilePage-logout Link" data-test-id="logout">Logout</span>
           </td>
         </tr>
       </tbody>

@@ -2,9 +2,9 @@
   display: flex;
   justify-content: space-between;
   width: 100%;
+  margin: pxtovw(19px) 0;
   font-size: pxtovw(15px);
   color: color($grayscale, 500);
-  margin: pxtovw(19px) 0;
 
   .Pricing-regular {
     align-self: flex-start;

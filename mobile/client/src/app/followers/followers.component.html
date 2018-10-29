@@ -23,7 +23,7 @@
           <div [style.backgroundImage]="'url(' + (follower.photo_url ? follower.photo_url : 'assets/icons/stylist-avatar.png') + ')'"  class="FollowersList-ava"></div>
 
           <div class="FollowersList-name">
-            {{ (follower.first_name && follower.last_name) ? follower.first_name + ' ' + follower.last_name : 'Client' }}
+            {{ (follower.first_name || follower.last_name) ? follower?.first_name + ' ' + follower?.last_name : 'Client' }}
           </div>
 
           <i *ngIf="follower.booking_count > 2" class="mb-icon-wash-and-style FollowersList-icon"></i>

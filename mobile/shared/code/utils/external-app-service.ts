@@ -4,7 +4,8 @@ import { AlertController, Platform } from 'ionic-angular';
 import { AppAvailability } from '@ionic-native/app-availability';
 import { Clipboard } from '@ionic-native/clipboard';
 import { EmailComposer } from '@ionic-native/email-composer';
-import { InAppBrowser, InAppBrowserObject } from '@ionic-native/in-app-browser';
+import { InAppBrowser } from '@ionic-native/in-app-browser';
+import { LaunchNavigator, LaunchNavigatorOptions } from '@ionic-native/launch-navigator';
 
 export interface ExternalAppDeepLinkConfig {
   // Will be used to identify that app exists on the device.
@@ -16,8 +17,19 @@ export interface ExternalAppDeepLinkConfig {
   httpUrl: string;
 }
 
+export enum MapsApp {
+  APPLE_MAPS = 'APPLE_MAPS',
+  GOOGLE_MAPS = 'GOOGLE_MAPS',
+  MAPS_ME = 'MAPS_ME'
+}
+
 @Injectable()
 export class ExternalAppService {
+
+  // Fixes InAppBrowser’s page creation in Android. Without these options the app craches in production.
+  // See https://forum.ionicframework.com/t/inappbrowser-crash-on-android-device/82993/2 for more info.
+  private pageOptionsAndroid: string[] = ['_blank', 'location=no'];
+
   constructor(
     private alertCtrl: AlertController,
     private appAvailability: AppAvailability,
@@ -78,16 +90,8 @@ export class ExternalAppService {
       }
       await this.emailComposer.open({ to: email });
     } catch {
-      this.clipboard.copy(email);
-      const alert = this.alertCtrl.create({
-        title: 'Email copied',
-        subTitle: 'Email successfully copied to the clipboard.',
-        buttons: [{
-          text: 'Dismiss',
-          role: 'cancel'
-        }]
-      });
-      alert.present();
+      // Fallback to copy:
+      this.copyToTheClipboard('Email');
     }
   }
 
@@ -111,8 +115,47 @@ export class ExternalAppService {
     });
   }
 
+  /**
+   * Opens an address in maps app or in browser (Google.Maps).
+   * NOTE: tmp passing LaunchNavigator as a param to prevent stylist app’s builds to fail
+   */
+  async openAddress(launchNavigator: LaunchNavigator, address: string): Promise<void> {
+    let appName;
+
+    if (this.platform.is('ios')) {
+      appName = MapsApp.APPLE_MAPS;
+    } else if (this.platform.is('android')) {
+      appName = MapsApp.GOOGLE_MAPS;
+    } else {
+      // Show an address on a google map in browser:
+      this.openLink(`https://maps.google.com/?q=${address}`);
+      return;
+    }
+
+    const options: LaunchNavigatorOptions = {
+      app: launchNavigator.APP[appName]
+    };
+
+    try {
+      await launchNavigator.navigate(address, options);
+    } catch {
+      // Fallback to copy:
+      this.copyToTheClipboard('Address');
+    }
+  }
+
   private openLink(link: string): void {
-    const page: InAppBrowserObject = this.browser.create(link);
-    page.show();
+    const options: string[] = this.platform.is('android') ? this.pageOptionsAndroid : [];
+    this.browser.create(link, ...options);
+  }
+
+  private copyToTheClipboard(whatCopied: string): void {
+    this.clipboard.copy(whatCopied);
+    const alert = this.alertCtrl.create({
+      title: `${whatCopied} copied`,
+      subTitle: `${whatCopied} successfully copied to the clipboard.`,
+      buttons: [{ text: 'Dismiss', role: 'cancel' }]
+    });
+    alert.present();
   }
 }
