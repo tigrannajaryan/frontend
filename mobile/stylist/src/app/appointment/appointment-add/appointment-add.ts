@@ -38,6 +38,7 @@ export class AppointmentAddComponent {
 
   defaultDate = moment(new Date()).format('YYYY-MM-DD');
   defaultTime = '09:00';
+  nextYear = moment().add(1, 'years').format('YYYY-MM-DD');
   minuteValues = Array(4).fill(undefined).map((_, idx) => idx * 15).toString(); // every 15 minutes
 
   constructor(
