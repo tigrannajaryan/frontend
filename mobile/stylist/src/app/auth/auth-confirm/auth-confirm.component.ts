@@ -87,6 +87,9 @@ export class AuthConfirmPageComponent {
         if (!isRegistrationComplete(data.profileStatus)) {
           // This is a new user, enable help screens
           this.storage.set('showHomeScreenHelp', true);
+        } else {
+          // Set it back to false for the case when we change user
+          this.storage.set('showHomeScreenHelp', false);
         }
 
         const requiredPages = createNavHistoryList(data.profileStatus);
