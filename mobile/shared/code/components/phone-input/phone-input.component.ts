@@ -13,12 +13,12 @@ export interface PhoneData {
 
 export interface CountryData {
   alpha2: string;
-  countryCallingCodes: string[];
-  currencies: string[];
-  emoji: string;
-  languages: string[];
   name: string;
+  countryCallingCodes: string[];
   ioc: string;
+  emoji?: string;
+  languages?: string[];
+  currencies?: string[];
 }
 
 function prepareCountriesData(countries: CountryData[]): CountryData[] {
