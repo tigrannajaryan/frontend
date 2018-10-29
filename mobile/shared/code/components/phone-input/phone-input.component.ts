@@ -24,8 +24,13 @@ export interface CountryData {
 function prepareCountriesData(countries: CountryData[]): CountryData[] {
   return (
     countries
-      // Limit countries bu country.ioc to omit countries like UM (+1 United States Minor Outlying Islands).
-      // Phone library we use don’t accept UM country code. US can be safely used instead of it.
+      // IOC is an International Olympic Committee’s three-letter abbreviation country code.
+      // It contains 206 countries. It’s more then United Nations contain: 193 recognized members.
+      // But less then we have in countries.json (> 280). The countries.json includes such as e.g. United States Minor Outlying Islands (UM)
+      // that are a statistical designation defined by the International Organization for Standardization's ISO 3166-1 code.
+      // Phone library we use don’t recognize country codes of non-IOC countries. Therefore we are going to hide them.
+      // By limiting countries by country.ioc existence, we are able to hide countries like UM. And in the case of UM,
+      // it can be safely replaced with the US because either UM or US are using +1 code for dialing.
       .filter(country => country.ioc && country.countryCallingCodes.length > 0)
       .sort((a, b) => {
         // Ensure sorting by name:
