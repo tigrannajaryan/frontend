@@ -21,6 +21,7 @@ import { PhoneInputDirective } from '~/shared/directives/phone-input.directive';
 import { AppointmentItemComponent } from '~/core/components/appointment-item/appointment-item.component';
 import { BookServicesHeaderComponent } from '~/booking/book-services-header/book-services-header';
 import { CodeInputComponent } from '~/shared/components/code-input/code-input.component';
+import { ExpandableHeaderComponent } from '~/shared/components/expandable-header/expandable-header.component';
 import { MadeHeaderComponent } from '~/core/components/made-header/made-header.component';
 import { PhoneInputComponent } from '~/shared/components/phone-input/phone-input.component';
 import { PhoneLinkComponent } from '~/shared/components/phone-link/phone-link.component';
@@ -39,6 +40,7 @@ const declarations = [
   CheckListComponent,
   CodeInputComponent,
   ContinueFooterComponent,
+  ExpandableHeaderComponent,
   HasErrorPipe,
   InputNumberDirective,
   MadeHeaderComponent,

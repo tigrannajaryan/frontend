@@ -1,14 +1,36 @@
+$top-bar-height: pxtovw(44px);
+$header-height: pxtovw(176px);
 $card-padding: pxtovw(16px);
 
+page-stylists .toolbar .toolbar-background {
+  border: 0;
+}
+
 .StylistsPage-header {
-  padding-bottom: pxtovw(8px);
+  @include content-padding;
+
+  max-height: $header-height;
+  padding-top: 0;
+  padding-bottom: 0;
   box-shadow: 0 pxtovw(2px) pxtovw(16px) white;
+  transition: 0.16s linear height;
+  will-change: height;
+
+  .toolbar-content {
+    transition: 0.16s linear transform;
+    transform: translateY(0);
+    will-change: transform;
+  }
 
   .StylistsPage-search {
     $icon-size: pxtovw(16px);
     $input-offset: pxtovw(48px);
 
     position: relative;
+
+    &:first-child {
+      margin-top: pxtovw(17px);
+    }
 
     .StylistsPage-searchInput {
       overflow: hidden;
@@ -40,6 +62,7 @@ $card-padding: pxtovw(16px);
   }
 
   .StylistsPage-title {
+    padding-bottom: pxtovw(8px);
     margin-top: pxtovw(24px);
   }
 
@@ -52,6 +75,13 @@ $card-padding: pxtovw(16px);
 
 .StylistsPage {
   $pic-size: pxtovw(64px);
+
+  .scroll-content {
+    margin-top: 0 !important;
+    transition: 0.16s linear transform;
+    transform: translateY($header-height + $top-bar-height);
+    will-change: transform;
+  }
 
   .StylistsPage-content {
     padding-top: 0;
@@ -276,5 +306,24 @@ $card-padding: pxtovw(16px);
         width: 100%;
       }
     }
+  }
+}
+
+// On scroll
+.is-Minified {
+  .StylistsPage-header {
+    max-height: 0;
+
+    .toolbar-content {
+      transform: translateY(-1 * pxtovw(68px));
+    }
+
+    .StylistsPage-search {
+      visibility: hidden;
+    }
+  }
+
+  &.StylistsPage .scroll-content {
+    transform: translateY($top-bar-height);
   }
 }

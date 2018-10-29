@@ -1,6 +1,5 @@
-<ion-header madeHeader>
-  <ion-toolbar class="contentSidePadding StylistsPage-header">
-
+<ion-header expandableHeader [scrollArea]="content" [headerHeight]="225">
+  <ion-toolbar class="StylistsPage-header">
     <div class="StylistsPage-search">
       <i class="mb-icon-search"></i>
       <ion-item class="FormControl StylistsPage-searchInput">
@@ -22,11 +21,10 @@
       <div *ngIf="(requestState | async) === RequestState.Loading && (stylists | async) !== undefined" class="StylistsPage-loader">searching…</div>
       <div *ngIf="isGeolocationInProcess" class="StylistsPage-loader">checking location…</div>
     </ion-row>
-
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="StylistsPage">
+<ion-content #content class="StylistsPage">
   <div class="contentSidePadding StylistsPage-content">
 
     <!-- Showing loading cards -->
