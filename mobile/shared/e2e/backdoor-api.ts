@@ -1,8 +1,15 @@
 import * as fetch from 'node-fetch';
 import { getRandomNumber } from './utils';
 
+const fs = require('fs');
+const path = require('path');
+
 // Get the right environment
-const envName = process.env.MB_ENV ? process.env.MB_ENV : 'default';
+let envName = process.env.MB_ENV ? process.env.MB_ENV : 'default';
+if (process.env.MB_ENV === 'dev' && fs.existsSync(path.resolve('./src/app/environments/environment.local.ts'))) {
+  console.warn('Replacing .dev env config with .local');
+  envName = 'local';
+}
 const ENV = require(`../../src/app/environments/environment.${envName}`).ENV;
 
 // Get the backdoor API url baseedon the backend url specified in the environment

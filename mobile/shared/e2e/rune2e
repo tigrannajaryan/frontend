@@ -9,6 +9,13 @@ cd $THISDIR/../..
 if [[ $MB_ENV == 'prod' ]]
 then
   echo 'Skipping all E2E tests in production build.'
+elif [[ $MB_ENV == 'dev' ]]
+then
+  # Debug protractor tests using chrome (Node 8+):
+  # - run the command,
+  # - go to chrome://inspect/#devices and click inspect,
+  # - feel free to use debugger keyword in tests now.
+  TEST_HEADLESS=1 NODE_PRESERVE_SYMLINKS=1 node --inspect-brk ./node_modules/.bin/protractor
 else
   TEST_HEADLESS=1 NODE_PRESERVE_SYMLINKS=1 ./node_modules/.bin/protractor
 fi
