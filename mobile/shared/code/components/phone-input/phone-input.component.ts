@@ -11,12 +11,43 @@ export interface PhoneData {
   valid: boolean;
 }
 
+export interface CountryData {
+  alpha2: string;
+  name: string;
+  countryCallingCodes: string[];
+  ioc: string;
+  emoji?: string;
+  languages?: string[];
+  currencies?: string[];
+}
+
+function prepareCountriesData(countries: CountryData[]): CountryData[] {
+  return (
+    countries
+      // IOC is an International Olympic Committee’s three-letter abbreviation country code.
+      // It contains 206 countries. It’s more then United Nations contain: 193 recognized members.
+      // But less then we have in countries.json (> 280). The countries.json includes such as e.g. United States Minor Outlying Islands (UM)
+      // that are a statistical designation defined by the International Organization for Standardization's ISO 3166-1 code.
+      // Phone library we use don’t recognize country codes of non-IOC countries. Therefore we are going to hide them.
+      // By limiting countries by country.ioc existence, we are able to hide countries like UM. And in the case of UM,
+      // it can be safely replaced with the US because either UM or US are using +1 code for dialing.
+      .filter(country => country.ioc && country.countryCallingCodes.length > 0)
+      .sort((a, b) => {
+        // Ensure sorting by name:
+        if (a.name < b.name) { return -1; }
+        if (a.name > b.name) { return 1; }
+        return 0;
+      })
+  );
+}
+
 @Component({
   selector: 'phone-input',
   templateUrl: 'phone-input.component.html'
 })
 export class PhoneInputComponent {
-  static countries = Countries && Countries.filter(country => country.countryCallingCodes.length > 0);
+  static countries = Countries && prepareCountriesData(Countries);
+
   countries = PhoneInputComponent.countries;
 
   countryCode: FormControl = new FormControl(DEFAULT_COUNTRY_CODE, [Validators.required]);
