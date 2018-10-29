@@ -5,16 +5,14 @@ import { Camera, CameraOptions } from '@ionic-native/camera';
 
 import { PhotoSourceType } from '~/shared/constants';
 import { downscalePhoto, urlToFile } from '~/shared/image-utils';
-
-import { showAlert } from '~/shared/utils/alert';
-import { composeRequest, loading } from '~/shared/utils/request-utils';
-import { animateFailed, animateSucceeded } from '~/core/utils/animation-utils';
-import { DefaultImage } from '~/core/core.module';
-import { ProfileApi } from '~/core/api/profile-api';
-import { ProfileDataStore } from '~/profile/profile.data';
-import { ProfileModel } from '~/core/api/profile.models';
 import { BaseService } from '~/shared/api/base-service';
 import { emptyOr } from '~/shared/validators';
+import { showAlert } from '~/shared/utils/alert';
+
+import { DefaultImage } from '~/core/core.module';
+import { ProfileModel } from '~/core/api/profile.models';
+
+import { ProfileDataStore } from '~/profile/profile.data';
 
 @Component({
   selector: 'profile-edit',
@@ -22,11 +20,6 @@ import { emptyOr } from '~/shared/validators';
 })
 export class ProfileEditComponent {
   form: FormGroup;
-
-  isLoading = false;
-  isUpdating = false;
-  isFailed = false;
-  isSucceeded = false;
 
   readonly DEFAULT_IMAGE = DefaultImage.User;
 
@@ -43,8 +36,7 @@ export class ProfileEditComponent {
     private camera: Camera,
     private formBuilder: FormBuilder,
     private navCtrl: NavController,
-    private navParams: NavParams,
-    private profileApi: ProfileApi
+    private navParams: NavParams
   ) {
   }
 
@@ -120,15 +112,11 @@ export class ProfileEditComponent {
       // Add pic id only if it has been changed in order to not reset it by passing null:
       profile_photo_id: this.picChanged ? this.form.value.profile_photo_id : undefined
     };
-    const { response } = await composeRequest<ProfileModel>(
-      loading(isLoading => this.isUpdating = isLoading),
-      animateFailed(isFailed => this.isFailed = isFailed),
-      animateSucceeded(isSucceeded => this.isSucceeded = isSucceeded),
-      this.profileApi.updateProfile(value)
-    );
-    if (response) {
-      this.profileDataStore.set(response);
-      this.form.patchValue(response);
+
+    const updated = await this.profileDataStore.update(value);
+
+    if (updated && updated.response) {
+      this.form.patchValue(updated.response);
       this.navCtrl.pop();
     }
   }

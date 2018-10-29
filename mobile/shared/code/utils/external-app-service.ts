@@ -4,7 +4,7 @@ import { AlertController, Platform } from 'ionic-angular';
 import { AppAvailability } from '@ionic-native/app-availability';
 import { Clipboard } from '@ionic-native/clipboard';
 import { EmailComposer } from '@ionic-native/email-composer';
-import { InAppBrowser, InAppBrowserObject } from '@ionic-native/in-app-browser';
+import { InAppBrowser } from '@ionic-native/in-app-browser';
 
 export interface ExternalAppDeepLinkConfig {
   // Will be used to identify that app exists on the device.
@@ -18,6 +18,11 @@ export interface ExternalAppDeepLinkConfig {
 
 @Injectable()
 export class ExternalAppService {
+
+  // Fixes InAppBrowser’s page creation in Android. Without these options the app craches in production.
+  // See https://forum.ionicframework.com/t/inappbrowser-crash-on-android-device/82993/2 for more info.
+  private pageOptionsAndroid: string[] = ['_blank', 'location=no'];
+
   constructor(
     private alertCtrl: AlertController,
     private appAvailability: AppAvailability,
@@ -112,7 +117,7 @@ export class ExternalAppService {
   }
 
   private openLink(link: string): void {
-    const page: InAppBrowserObject = this.browser.create(link);
-    page.show();
+    const options: string[] = this.platform.is('android') ? this.pageOptionsAndroid : [];
+    this.browser.create(link, ...options);
   }
 }

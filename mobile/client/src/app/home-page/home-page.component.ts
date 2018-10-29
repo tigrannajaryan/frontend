@@ -4,7 +4,7 @@ import { App, Content, Events, Refresher } from 'ionic-angular';
 import { Logger } from '~/shared/logger';
 import { componentUnloaded } from '~/shared/component-unloaded';
 import { loading } from '~/shared/utils/loading';
-import { AppointmentModel, HomeResponse } from '~/core/api/appointments.models';
+import { AppointmentModel, AppointmentStatus, HomeResponse } from '~/core/api/appointments.models';
 import { AppointmentsDataStore } from '~/core/api/appointments.datastore';
 import { PageNames } from '~/core/page-names';
 import { AppointmentPageParams } from '~/appointment-page/appointment-page.component';
@@ -76,8 +76,10 @@ export class HomePageComponent {
     };
 
     if (type === AppointmentType.past) {
+      // Can rebook past appointments
       params.hasRebook = true;
-    } else {
+    } else if (appointment.status === AppointmentStatus.new) {
+      // Can cancel appointments in 'new' state
       params.onCancel = () => this.onCancel();
     }
 
