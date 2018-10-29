@@ -1,4 +1,5 @@
 import { Component, ElementRef, Input, OnInit, Renderer } from '@angular/core';
+import { IonScroll } from 'ionic-angular';
 
 enum ScrollDirection {
   Up = 'up',
@@ -11,9 +12,9 @@ enum ScrollDirection {
 })
 export class ExpandableHeaderComponent implements OnInit {
 
-  @Input() scrollArea: any;
+  @Input() scrollArea: IonScroll;
 
-  private scrollContent: any;
+  private scrollContent: HTMLElement;
 
   constructor(
     public element: ElementRef,
@@ -23,6 +24,8 @@ export class ExpandableHeaderComponent implements OnInit {
 
   ngOnInit(): void {
     this.scrollArea.ionScroll.subscribe(event => this.resizeHeader(event));
+
+    // Access native element of the scrollArea with hidden prop because of no alternative:
     this.scrollContent = this.scrollArea._elementRef.nativeElement;
 
   }
