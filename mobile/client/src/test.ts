@@ -54,6 +54,7 @@ import { Camera } from '@ionic-native/camera';
 import { Clipboard } from '@ionic-native/clipboard';
 import { EmailComposer } from '@ionic-native/email-composer';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
+import { LaunchNavigator } from '@ionic-native/launch-navigator';
 import { StatusBar } from '@ionic-native/status-bar';
 import { Storage } from '@ionic/storage';
 
@@ -168,7 +169,7 @@ export class TestUtils {
         { provide: StatusBar, useFactory: () => StatusBarMock.instance() },
         { provide: Storage, useFactory: () => StorageMock.instance() },
         { provide: AuthProcessState, useClass: AuthProcessStateMock },
-        ExternalAppService,
+        LaunchNavigator, ExternalAppService,
         { provide: GeolocationService, useClass: GeolocationServiceMock },
         {
           provide: InAppBrowser,

@@ -63,7 +63,7 @@
     padding-top: 0;
     padding-bottom: 0;
 
-    [class^="mb-icon"] {
+    [class^="mb-icon"]:not(.mb-icon-marker) {
       display: inline-block;
       transform: translateY(pxtovw(2px)); // compensates icon’s offset
     }
@@ -87,6 +87,7 @@
   }
 
   .StylistInvitationPage-address,
+  .StylistInvitationPage-followers,
   .StylistInvitationPage-phone {
     margin-bottom: pxtovw(4px);
     font-size: $t-base;
@@ -96,6 +97,10 @@
     [class^="mb-icon"] {
       color: color($colors, honey);
     }
+  }
+
+  .StylistInvitationPage-followers {
+    margin-bottom: pxtovw(8px);
   }
 
   .StylistInvitationPage-footer {

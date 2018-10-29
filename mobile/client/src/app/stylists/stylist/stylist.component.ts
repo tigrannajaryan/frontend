@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { App, Events, NavController, NavParams } from 'ionic-angular';
+import { LaunchNavigator } from '@ionic-native/launch-navigator';
 
 import { ExternalAppService } from '~/shared/utils/external-app-service';
 import { PreferredStylistModel, StylistModel } from '~/shared/api/stylists.models';
@@ -43,6 +44,7 @@ export class StylistComponent {
     private app: App,
     private events: Events,
     private externalAppService: ExternalAppService,
+    private launchNavigator: LaunchNavigator,
     private navCtrl: NavController,
     private navParams: NavParams,
     private preferredStylistsData: PreferredStylistsData
@@ -105,6 +107,12 @@ export class StylistComponent {
   onWebsiteClick(websiteUrl: string): void {
     if (this.pageType !== StylistPageType.Invitation) {
       this.externalAppService.openWebPage(websiteUrl);
+    }
+  }
+
+  onAddressClick(address: string): void {
+    if (this.pageType !== StylistPageType.Invitation) {
+      this.externalAppService.openAddress(this.launchNavigator, address);
     }
   }
 

@@ -14,6 +14,7 @@ import { EmailComposer } from '@ionic-native/email-composer';
 import { Geolocation } from '@ionic-native/geolocation';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { IonicStorageModule } from '@ionic/storage';
+import { LaunchNavigator } from '@ionic-native/launch-navigator';
 import { ScreenOrientation } from '@ionic-native/screen-orientation';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
@@ -174,6 +175,7 @@ const declarations = [
     EmailComposer,
     Geolocation,
     InAppBrowser,
+    LaunchNavigator,
     SplashScreen,
     StatusBar,
     ScreenOrientation,
