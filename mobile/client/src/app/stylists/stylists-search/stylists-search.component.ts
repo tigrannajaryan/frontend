@@ -97,7 +97,7 @@ export class StylistsPageComponent {
 
   onFollowersClick(stylist: StylistModel): void {
     if (this.activeStylist === stylist) {
-      this.navCtrl.push(PageNames.Followers, { stylistUuid: stylist.uuid });
+      this.navCtrl.push(PageNames.Followers, { stylist });
     }
   }
 
