@@ -16,7 +16,7 @@ import { SelectTimeComponent } from '~/booking/select-time/select-time.component
 import { ServicesPageComponent } from '~/services-page/services-page.component';
 import { ServicesCategoriesPageComponent } from '~/services-categories-page/services-categories-page.component';
 import { StylistComponent } from '~/stylists/stylist/stylist.component';
-import { StylistsPageComponent } from '~/stylists/stylists.component';
+import { StylistsPageComponent } from '~/stylists/stylists-search/stylists-search.component';
 import { PrivacySettingsComponent } from '~/privacy-settings/privacy-settings.component';
 import { FollowersComponent } from '~/followers/followers.component';
 
