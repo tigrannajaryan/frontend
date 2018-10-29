@@ -12,6 +12,7 @@ export class PhoneLinkComponent {
   @Input() phone: string;
   @Input() readonly = false;
   @Input() shortForm = true;
+  @Input() iconForm = false;
   @Input() icon?: string;
 
   constructor(

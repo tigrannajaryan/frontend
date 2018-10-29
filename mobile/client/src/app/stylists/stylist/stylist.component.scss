@@ -67,6 +67,10 @@
       display: inline-block;
       transform: translateY(pxtovw(2px)); // compensates icon’s offset
     }
+
+    .Link {
+      white-space: normal;
+    }
   }
 
   .StylistInvitationPage-salonName {

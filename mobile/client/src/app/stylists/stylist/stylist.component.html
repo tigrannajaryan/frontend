@@ -1,4 +1,4 @@
-<ion-header madeHeader [hideBackButton]="pageType !== StylistPageType.StylistInSearch"></ion-header>
+<ion-header madeHeader [hideBackButton]="true"></ion-header>
 
 <ion-content class="StylistInvitationPage contentSidePadding">
   <!-- Title: -->
@@ -63,16 +63,6 @@
     <ng-container *ngSwitchCase="StylistPageType.MyStylist">
       <ion-row justify-content-center>
         <span (click)="onProceedToStylists()" class="Link StylistInvitationPage-Link is-fszInherited">Looking for a&nbsp;new stylist?</span>
-      </ion-row>
-    </ng-container>
-
-    <!-- Stylist in search: -->
-    <ng-container *ngSwitchCase="StylistPageType.StylistInSearch">
-      <ion-row justify-content-center>
-        <button (click)="onContinueWithStylist()" ion-button class="StylistInvitationPage-submit Button">
-          <ng-container *ngIf="onboarding; else selectTpl">Let‘s get started!</ng-container>
-          <ng-template #selectTpl>Select</ng-template>
-        </button>
       </ion-row>
     </ng-container>
   </div>
