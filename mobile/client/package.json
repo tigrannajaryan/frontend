@@ -44,6 +44,7 @@
     "@ionic-native/geolocation": "4.15.0",
     "@ionic-native/google-analytics": "4.7.0",
     "@ionic-native/in-app-browser": "4.15.0",
+    "@ionic-native/launch-navigator": "^4.16.0",
     "@ionic-native/screen-orientation": "4.11.0",
     "@ionic-native/splash-screen": "4.6.0",
     "@ionic-native/status-bar": "4.6.0",
@@ -61,10 +62,12 @@
     "cordova-clipboard": "1.2.1",
     "cordova-ios": "4.5.4",
     "cordova-ios-plugin-no-export-compliance": "0.0.5",
+    "cordova-plugin-actionsheet": "2.3.3",
     "cordova-plugin-app-version": "0.1.9",
     "cordova-plugin-appavailability": "0.4.2",
     "cordova-plugin-camera": "4.0.3",
     "cordova-plugin-device": "2.0.2",
+    "cordova-plugin-dialogs": "2.0.1",
     "cordova-plugin-email-composer": "0.8.15",
     "cordova-plugin-geolocation": "4.0.1",
     "cordova-plugin-google-analytics": "1.8.6",
@@ -87,6 +90,7 @@
     "rxjs": "5.5.8",
     "sentry-cordova": "0.12.3",
     "sw-toolbox": "3.6.0",
+    "uk.co.workingedge.phonegap.plugin.launchnavigator": "4.2.2",
     "xml2js": "0.4.19",
     "zone.js": "0.8.20"
   },
@@ -150,7 +154,11 @@
       "cordova-plugin-geolocation": {
         "GEOLOCATION_USAGE_DESCRIPTION": "We use your location to allow searching for ststylists nearby"
       },
-      "cordova.plugins.diagnostic": {}
+      "cordova.plugins.diagnostic": {},
+      "uk.co.workingedge.phonegap.plugin.launchnavigator": {
+        "OKHTTP_VERSION": "3.+",
+        "LOCATION_USAGE_DESCRIPTION": "This app requires access to your location for navigation purposes"
+      }
     },
     "platforms": [
       "android",

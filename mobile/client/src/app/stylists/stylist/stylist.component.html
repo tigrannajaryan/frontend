@@ -27,21 +27,20 @@
     <ion-row *ngIf="stylist?.followers_count" [madeLink]="[PageNames.Followers, { stylist: stylist }]" class="StylistInvitationPage-address Link" justify-content-center align-items-start nowrap>
       <i class="mb-icon-heart-a"></i>&nbsp;<p class="Link">{{ stylist.followers_count }} MADE Clients</p>
     </ion-row>
-    <ion-row *ngIf="stylist.salon_address" class="StylistInvitationPage-address" justify-content-center  align-items-start nowrap>
-      <i class="mb-icon-marker"></i>&nbsp;<span>{{ stylist.salon_address }}</span>
+    <ion-row *ngIf="stylist.salon_address" class="StylistInvitationPage-address" justify-content-center align-items-start nowrap>
+      <i (click)="onAddressClick(stylist.salon_address)" class="mb-icon-marker"></i>&nbsp;
+      <span (click)="onAddressClick(stylist.salon_address)" [class.Link]="pageType !== StylistPageType.Invitation" class="is-fszInherited">{{ stylist.salon_address }}</span>
     </ion-row>
-    <ion-row *ngIf="stylist.phone" class="StylistInvitationPage-phone" justify-content-center  align-items-start nowrap>
-      <i class="mb-icon-phone-a"></i>&nbsp;<phone-link [phone]="stylist.phone" [readonly]="pageType === StylistPageType.Invitation"></phone-link>
+    <ion-row *ngIf="stylist.phone" class="StylistInvitationPage-phone" justify-content-center align-items-start nowrap>
+      <phone-link [phone]="stylist.phone" [readonly]="pageType === StylistPageType.Invitation" icon="mb-icon-phone-a"></phone-link>
     </ion-row>
-    <ion-row *ngIf="stylist.instagram_url" class="StylistInvitationPage-phone" justify-content-center  align-items-start nowrap>
-      <span [class.Link]="pageType !== StylistPageType.Invitation" (click)="onInstagramClick(stylist.instagram_url)" class="is-fszInherited">
-        <i class="mb-icon-instagram"></i>&nbsp;{{ stylist.instagram_url }}
-      </span>
+    <ion-row *ngIf="stylist.instagram_url" class="StylistInvitationPage-phone" justify-content-center align-items-start nowrap>
+      <i (click)="onInstagramClick(stylist.instagram_url)" class="mb-icon-instagram"></i>&nbsp;
+      <span (click)="onInstagramClick(stylist.instagram_url)" [class.Link]="pageType !== StylistPageType.Invitation" class="is-fszInherited">{{ stylist.instagram_url }}</span>
     </ion-row>
-    <ion-row *ngIf="stylist.website_url" class="StylistInvitationPage-phone" justify-content-center  align-items-start nowrap>
-      <span [class.Link]="pageType !== StylistPageType.Invitation" (click)="onWebsiteClick(stylist.website_url)" class="is-fszInherited">
-        <i class="mb-icon-globe"></i>&nbsp;{{ stylist.website_url }}
-      </span>
+    <ion-row *ngIf="stylist.website_url" class="StylistInvitationPage-phone" justify-content-center align-items-start nowrap>
+      <i (click)="onWebsiteClick(stylist.website_url)" class="mb-icon-globe"></i>&nbsp;
+      <span (click)="onWebsiteClick(stylist.website_url)" [class.Link]="pageType !== StylistPageType.Invitation" class="is-fszInherited">{{ stylist.website_url }}</span>
     </ion-row>
   </div>
 
