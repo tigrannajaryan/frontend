@@ -46,6 +46,7 @@
     "@ionic-native/geolocation": "4.15.0",
     "@ionic-native/google-analytics": "4.7.0",
     "@ionic-native/in-app-browser": "4.15.0",
+    "@ionic-native/launch-navigator": "4.16.0",
     "@ionic-native/open-native-settings": "4.10.0",
     "@ionic-native/screen-orientation": "4.11.0",
     "@ionic-native/sms": "4.10.1",
