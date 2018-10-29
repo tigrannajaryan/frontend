@@ -1,15 +1,15 @@
-<ion-header expandableHeader [scrollArea]="content">
+<ion-header expandableHeader [scrollArea]="content" (minified)="onHeaderMinified()">
   <ion-toolbar class="StylistsPage-header">
     <div class="StylistsPage-search">
       <i class="mb-icon-search"></i>
       <ion-item class="FormControl StylistsPage-searchInput">
-        <ion-input type="text" placeholder="Type service, stylist or salon name" [formControl]="query" (input)="onSearchStylists()" data-test-id="searchInput"></ion-input>
+        <ion-input #searchInput type="text" placeholder="Type service, stylist or salon name" [formControl]="query" (input)="onSearchStylists()" data-test-id="searchInput"></ion-input>
       </ion-item>
     </div>
     <div class="StylistsPage-search">
       <i class="mb-icon-marker"></i>
       <ion-item class="FormControl StylistsPage-searchInput StylistsPage-locationInput">
-        <ion-input type="text" [placeholder]="isLocationInputFocused ? 'Street name, city, state or zip code' : 'Current Location'" [formControl]="locationQuery" (focus)="setLocationInputFocused(true)" (input)="onSearchStylists()" (blur)="setLocationInputFocused(false)" data-test-id="locationInput"></ion-input>
+        <ion-input #locationInput type="text" [placeholder]="isLocationInputFocused ? 'Street name, city, state or zip code' : 'Current Location'" [formControl]="locationQuery" (focus)="setLocationInputFocused(true)" (input)="onSearchStylists()" (blur)="setLocationInputFocused(false)" data-test-id="locationInput"></ion-input>
       </ion-item>
     </div>
 

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Events, NavController, NavParams } from 'ionic-angular';
 import { Store } from '@ngrx/store';
@@ -50,6 +50,9 @@ export class StylistsPageComponent {
 
   isGeolocationInProcess = false;
   isLocationInputFocused = false;
+
+  @ViewChild('searchInput') searchInput;
+  @ViewChild('locationInput') locationInput;
 
   constructor(
     private events: Events,
@@ -108,6 +111,11 @@ export class StylistsPageComponent {
       this.navCtrl.popToRoot();
       this.events.publish(StylistsEvents.ReloadMyStylist);
     }
+  }
+
+  onHeaderMinified(): void {
+    this.searchInput.setBlur();
+    this.locationInput.setBlur();
   }
 
   private async requestGeolocation(): Promise<void> {

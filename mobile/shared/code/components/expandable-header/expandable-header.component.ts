@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, OnInit, Renderer } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, Renderer } from '@angular/core';
 
 enum ScrollDirection {
   Up = 'up',
@@ -13,6 +13,8 @@ export class ExpandableHeaderComponent implements OnInit {
   static SCROLLING_DELAY = 400;
 
   @Input() scrollArea: any;
+  @Output() minified = new EventEmitter<void>();
+
   private scrollContent: HTMLElement;
 
   constructor(
@@ -35,10 +37,16 @@ export class ExpandableHeaderComponent implements OnInit {
   }
 
   private update = event => () => {
+
     switch (event.directionY) {
       case ScrollDirection.Down:
+        if (event.scrollTop < 0) {
+          // Skip iOS smooth innertive scrolling
+          return;
+        }
         this.element.nativeElement.classList.add('is-Minified');
         this.scrollContent.classList.add('is-Minified');
+        this.minified.emit();
         break;
 
       case ScrollDirection.Up:
@@ -50,10 +58,4 @@ export class ExpandableHeaderComponent implements OnInit {
         break;
     }
   };
-
-  private blur(): void {
-    if (document.activeElement) {
-      setTimeout(() => document.activeElement.blur());
-    }
-  }
 }
