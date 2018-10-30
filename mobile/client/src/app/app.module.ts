@@ -14,6 +14,7 @@ import { EmailComposer } from '@ionic-native/email-composer';
 import { Geolocation } from '@ionic-native/geolocation';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { IonicStorageModule } from '@ionic/storage';
+import { LaunchNavigator } from '@ionic-native/launch-navigator';
 import { ScreenOrientation } from '@ionic-native/screen-orientation';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
@@ -68,7 +69,7 @@ import { SelectTimeComponent } from '~/booking/select-time/select-time.component
 import { ServicesPageComponent } from '~/services-page/services-page.component';
 import { ServicesCategoriesPageComponent } from '~/services-categories-page/services-categories-page.component';
 import { StylistComponent } from '~/stylists/stylist/stylist.component';
-import { StylistsPageComponent } from '~/stylists/stylists.component';
+import { StylistsPageComponent } from '~/stylists/stylists-search/stylists-search.component';
 import { UiKitPreviewComponent } from '~/ui-kit-preview/ui-kit-preview.component';
 
 import { ENV } from '~/environments/environment.default';
@@ -174,6 +175,7 @@ const declarations = [
     EmailComposer,
     Geolocation,
     InAppBrowser,
+    LaunchNavigator,
     SplashScreen,
     StatusBar,
     ScreenOrientation,

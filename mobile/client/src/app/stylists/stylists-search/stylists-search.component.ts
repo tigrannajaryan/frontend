@@ -1,14 +1,16 @@
 import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { NavController, NavParams } from 'ionic-angular';
+import { Events, NavController, NavParams } from 'ionic-angular';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 
 import { RequestState } from '~/shared/api/request.models';
 import { StylistModel, StylistsSearchParams } from '~/shared/api/stylists.models';
 import { GeolocationService, LatLng } from '~/shared/utils/geolocation.service';
+import { ExternalAppService } from '~/shared/utils/external-app-service';
 
 import { PageNames } from '~/core/page-names';
+import { PreferredStylistsData } from '~/core/api/preferred-stylists.data';
 import {
   SearchStylistsAction,
   selectIsMoreStylistsAvailable,
@@ -17,15 +19,15 @@ import {
   StylistState
 } from '~/core/reducers/stylists.reducer';
 
-import { StylistPageParams, StylistPageType } from '~/stylists/stylist/stylist.component';
+import { StylistsEvents } from '~/stylists/stylist/stylist.component';
 
 interface StylistsPageParams {
   onboarding?: boolean;
 }
 
 @Component({
-  selector: 'page-stylists',
-  templateUrl: 'stylists.component.html'
+  selector: 'page-stylists-search',
+  templateUrl: 'stylists-search.component.html'
 })
 export class StylistsPageComponent {
   static MIN_QUERY_LENGTH = 2;
@@ -42,6 +44,8 @@ export class StylistsPageComponent {
   stylists: Observable<StylistModel[]>;
   moreStylistsAvailable: Observable<boolean>;
 
+  activeStylist?: StylistModel;
+
   RequestState = RequestState; // expose to view
   requestState?: Observable<RequestState>;
 
@@ -49,9 +53,12 @@ export class StylistsPageComponent {
   isLocationInputFocused = false;
 
   constructor(
+    private events: Events,
+    private externalAppService: ExternalAppService,
     private geolocationService: GeolocationService,
     private navCtrl: NavController,
     private navParams: NavParams,
+    private preferredStylistsData: PreferredStylistsData,
     private store: Store<StylistState>
   ) {
   }
@@ -83,22 +90,34 @@ export class StylistsPageComponent {
     this.isLocationInputFocused = isFocused;
   }
 
-  onContinueWithStylist(stylist: StylistModel): void {
-    this.navCtrl.push(PageNames.Stylist, this.getStylistPageParams(stylist));
+  onSetActiveStylist(event: Event, stylist: StylistModel | undefined): void {
+    this.activeStylist = stylist;
+    event.stopPropagation();
   }
 
-  /**
-   * Returns params for the Stylist’s page.
-   * Note: this function is used in tests and therefor declared public
-   */
-  getStylistPageParams(stylist: StylistModel): { data: StylistPageParams } {
-    return {
-      data: {
-        pageType: StylistPageType.StylistInSearch,
-        onboarding: this.onboarding,
-        stylist
-      }
-    };
+  onFollowersClick(stylist: StylistModel): void {
+    if (this.activeStylist === stylist) {
+      this.navCtrl.push(PageNames.Followers, { stylist });
+    }
+  }
+
+  async onContinueWithStylist(stylist: StylistModel): Promise<void> {
+    await this.preferredStylistsData.set(stylist);
+
+    if (this.onboarding) {
+      await this.navCtrl.setRoot(PageNames.MainTabs);
+    } else {
+      this.navCtrl.popToRoot();
+      this.events.publish(StylistsEvents.ReloadMyStylist);
+    }
+  }
+
+  onInstagramClick(instaUsername: string): void {
+    this.externalAppService.openInstagram(instaUsername);
+  }
+
+  onWebsiteClick(websiteUrl: string): void {
+    this.externalAppService.openWebPage(websiteUrl);
   }
 
   private async requestGeolocation(): Promise<void> {

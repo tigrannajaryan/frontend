@@ -13,9 +13,24 @@ import { AuthService } from '~/shared/api/auth.api';
 import { AuthPageComponent } from './auth-start.component';
 
 const countriesMock = [
-  { alpha2: 'CA', name: 'Canada', countryCallingCodes: ['+1'] },
-  { alpha2: 'US', name: 'United States', countryCallingCodes: ['+1'] },
-  { alpha2: 'RU', name: 'Russian Federation', countryCallingCodes: ['+7'] }
+  {
+    alpha2: 'CA',
+    name: 'Canada',
+    countryCallingCodes: ['+1'],
+    ioc: 'CAN'
+  },
+  {
+    alpha2: 'US',
+    name: 'United States',
+    countryCallingCodes: ['+1'],
+    ioc: 'USA'
+  },
+  {
+    alpha2: 'RU',
+    name: 'Russian Federation',
+    countryCallingCodes: ['+7'],
+    ioc: 'RUS'
+  }
 ];
 
 const testPhone = randomPhone();
