@@ -43,6 +43,7 @@
         <splash density="port-xhdpi" src="resources/android/splash/drawable-port-xhdpi-screen.png" />
         <splash density="port-xxhdpi" src="resources/android/splash/drawable-port-xxhdpi-screen.png" />
         <splash density="port-xxxhdpi" src="resources/android/splash/drawable-port-xxxhdpi-screen.png" />
+        <hook src="../scripts/cordova-after-platform-add.js" type="after_platform_add" />
     </platform>
     <platform name="ios">
         <config-file parent="NSPhotoLibraryUsageDescription" target="*-Info.plist">
@@ -110,4 +111,8 @@
     <edit-config file="*-Info.plist" mode="merge" target="NSLocationWhenInUseUsageDescription">
         <string>We use your location to allow searching for stylists nearby.</string>
     </edit-config>
+    <plugin name="uk.co.workingedge.phonegap.plugin.launchnavigator" spec="4.2.2">
+        <variable name="OKHTTP_VERSION" value="3.+" />
+        <variable name="LOCATION_USAGE_DESCRIPTION" value="This app requires access to your location for navigation purposes" />
+    </plugin>
 </widget>

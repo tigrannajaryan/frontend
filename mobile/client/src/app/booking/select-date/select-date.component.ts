@@ -35,8 +35,11 @@ export class SelectDateComponent {
     this.bookingData.selectedServicesObservable
       .takeWhile(componentIsActive(this))
       .subscribe(async () => {
-        const { response } = await loading(this, this.bookingData.pricelist.get());
+        if (!this.bookingData.pricelist) {
+          return;
+        }
 
+        const { response } = await loading(this, this.bookingData.pricelist.get());
         if (response) {
           this.prices = response.prices;
 

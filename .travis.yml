@@ -37,7 +37,7 @@ cache:
 # global env variables, common to each build's environment
 env:
   global:
-    - APP_VERSION_NUMBER=1.1.7
+    - APP_VERSION_NUMBER=1.1.8
     - IOS_SDK="iphoneos11.4"
     - ANDROID_SDK=android_sdk
     - ANDROID_BUILD_TOOLS_VERSION="28.0.1"
@@ -67,8 +67,8 @@ jobs:
         ANDROID_APP_BUNDLE_ID="com.madebeauty.client.staging.android"
         IOS_APP_NAME="MadeBeauty Staging"
         IOS_APP_DESCRIPTION="MadeBeauty Staging"
-        IOS_PROVISIONING_PROFILE="client-staging"
-        IOS_PROVISIONING_PROFILE_ID="b76338ed-b7e9-4053-ab42-ec80d7eea4ba"
+        IOS_PROVISIONING_PROFILE="made-client-staging"
+        IOS_PROVISIONING_PROFILE_ID="c9c6ee42-123f-4368-b221-6ead788fc0ae"
         FASTLANE_SKIP_WAITING=true
         FASTLANE_DISTRIBUTE_EXTERNAL=false
         SENTRY_PROJECT=mobile-client-staging
@@ -80,8 +80,8 @@ jobs:
         ANDROID_APP_BUNDLE_ID="com.madebeauty.stylist.staging.android"
         IOS_APP_NAME="Made Pro Staging"
         IOS_APP_DESCRIPTION="Fill up your days. Earn more."
-        IOS_PROVISIONING_PROFILE="made-final-appstore"
-        IOS_PROVISIONING_PROFILE_ID="b36b0583-9122-4176-becf-38d769edee4d"
+        IOS_PROVISIONING_PROFILE="made-stylist-staging"
+        IOS_PROVISIONING_PROFILE_ID="729a1fd1-d461-4f91-a443-91f6b53d0106"
         FASTLANE_SKIP_WAITING=true
         FASTLANE_DISTRIBUTE_EXTERNAL=false
         SENTRY_PROJECT=mobile-stylist-staging
@@ -94,8 +94,8 @@ jobs:
         ANDROID_APP_BUNDLE_ID="com.madebeauty.client.prod"
         IOS_APP_NAME="MadeBeauty"
         IOS_APP_DESCRIPTION="MadeBeauty"
-        IOS_PROVISIONING_PROFILE="client-production"
-        IOS_PROVISIONING_PROFILE_ID="222754f3-76d8-4094-9da5-78e105d5f541"
+        IOS_PROVISIONING_PROFILE="made-client-production"
+        IOS_PROVISIONING_PROFILE_ID="baad4f2f-c283-40c1-a5f0-2f3c0d89cd44"
         FASTLANE_SKIP_WAITING=true
         FASTLANE_DISTRIBUTE_EXTERNAL=false
         SENTRY_PROJECT=mobile-client-production
@@ -108,8 +108,8 @@ jobs:
         ANDROID_APP_BUNDLE_ID="com.madebeauty.stylist.prod"
         IOS_APP_NAME="Made Pro"
         IOS_APP_DESCRIPTION="Fill up your days. Earn more."
-        IOS_PROVISIONING_PROFILE="made-final-appstore"
-        IOS_PROVISIONING_PROFILE_ID="b36b0583-9122-4176-becf-38d769edee4d"
+        IOS_PROVISIONING_PROFILE="made-stylist-production"
+        IOS_PROVISIONING_PROFILE_ID="fe88a39d-e794-4731-a95c-0b1c9c0342a0"
         FASTLANE_SKIP_WAITING=true
         FASTLANE_DISTRIBUTE_EXTERNAL=false
         SENTRY_PROJECT=mobile-stylist-production

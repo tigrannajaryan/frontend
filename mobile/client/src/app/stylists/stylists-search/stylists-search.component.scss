@@ -91,8 +91,7 @@ $card-padding: pxtovw(16px);
     right: pxtovw(16px);
     display: none;
     font-size: pxtovw(21px);
-    color: white;
-    background: transparent;
+    color: transparent;
   }
 
   .StylistsPage-cardTitle {
@@ -120,9 +119,15 @@ $card-padding: pxtovw(16px);
 
     display: flex;
     align-items: flex-start;
+    justify-content: flex-start;
     margin: 0;
     font-size: pxtovw(15px);
-    line-height: pxtovw(24px);
+    line-height: 20px / 15px * 1em;
+    white-space: normal;
+
+    + .StylistsPage-cardInfo {
+      margin-top: 0;
+    }
 
     .Link {
       // Add more contrast:
@@ -130,24 +135,42 @@ $card-padding: pxtovw(16px);
     }
 
     [class^=mb-icon] {
-      margin: pxtovw(4px) 0 0;
+      min-width: pxtovw(18px);
       color: color($colors, orange);
-    }
-
-    p {
-      margin: 0;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
     }
   }
 
+  .StylistsPage-links {
+    $icon-size: pxtovw(24px);
+
+    margin: pxtovw(16px) 0 pxtovw(24px);
+
+    > * {
+      width: $icon-size;
+      height: $icon-size;
+      margin: 0 ($icon-size / 2);
+      font-size: $icon-size;
+      color: color($colors, orange);
+    }
+  }
+
+  .StylistsPage-cardFooter {
+    width: 0;
+    height: 0;
+    min-height: 0;
+    overflow: hidden;
+  }
+
   .StylistsPage-submit {
+    $submit-height: pxtovw(48px);
+
     display: block;
     width: 73%;
-    margin: pxtovw(16px) auto pxtovw(18px);
+    min-height: $submit-height;
+    margin: 0 auto pxtovw(18px);
+    line-height: $submit-height;
     text-align: center;
-    border: pxtovw(2px) solid white;
+    box-shadow: none;
 
     > span {
       display: inline-block;
@@ -166,5 +189,92 @@ $card-padding: pxtovw(16px);
     padding-bottom: pxtovw(10px);
     padding-left: $card-padding + pxtovw(24px) + $pic-size;
     background: white;
+
+    &,
+    .StylistsPage-cardImg,
+    .StylistsPage-cardHeader,
+    .StylistsPage-cardTitle,
+    .StylistsPage-cardSubtitle,
+    .StylistsPage-cardFooter {
+      transition: all 0.08s ease-in;
+    }
+
+    &.is-active {
+      $new-pic-size: pxtovw(152px);
+      $pic-top-offset: pxtovw(56px);
+
+      padding: pxtovw(15px) pxtovw(25px);
+
+      .StylistsPage-cardImg {
+        top: ($pic-size / 2) + pxtovw(16px);
+        left: 50%;
+        width: $new-pic-size;
+        height: $new-pic-size;
+        margin-left: -1 * $new-pic-size / 2;
+      }
+
+      .StylistsPage-followers {
+        color: color($colors, orange);
+      }
+
+      .StylistsPage-cardClose {
+        display: inline-block;
+        color: black;
+      }
+
+      .StylistsPage-cardTitle {
+        margin: pxtovw(8px) 0;
+        font-size: pxtovw(29px);
+      }
+
+      .StylistsPage-cardTitle,
+      .StylistsPage-cardSubtitle {
+        text-align: center;
+        white-space: initial;
+      }
+
+      .StylistsPage-cardSubtitle {
+        font-size: $t-h4;
+      }
+
+      .StylistsPage-cardInfo {
+        display: inline-block;
+        font-size: pxtovw(18px);
+        text-align: center;
+        white-space: normal;
+
+        + .StylistsPage-cardInfo {
+          margin-top: pxtovw(4px);
+        }
+
+        p {
+          margin: 0;
+          overflow: initial;
+          font-size: pxtovw(15px);
+          text-overflow: initial;
+          white-space: initial;
+        }
+      }
+
+      .StylistsPage-cardHeader {
+        height: pxtovw(161px);
+        font-size: pxtovw(22px);
+        font-weight: 600;
+      }
+
+      .StylistsPage-cardFooter {
+        $footer-height: pxtovw(100px);
+
+        height: auto;
+        min-height: $footer-height;
+      }
+
+      .StylistsPage-cardHeader,
+      .StylistsPage-cardTitle,
+      .StylistsPage-cardSubtitle,
+      .StylistsPage-cardFooter {
+        width: 100%;
+      }
+    }
   }
 }
