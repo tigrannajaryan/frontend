@@ -104,7 +104,7 @@
     <plugin name="cordova-plugin-app-version" spec="0.1.9" />
     <plugin name="cordova-open-native-settings" spec="1.5.1" />
     <plugin name="cordova-sms-plugin" spec="0.1.11" />
-    <engine name="android" spec="7.1.0" />
+    <engine name="android" spec="7.0.0" />
     <engine name="ios" spec="4.5.4" />
     <plugin name="cordova-plugin-screen-orientation" spec="3.0.1" />
     <plugin name="cordova-plugin-inappbrowser" spec="3.0.0" />

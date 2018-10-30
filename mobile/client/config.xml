@@ -102,7 +102,7 @@
     <plugin name="cordova-clipboard" spec="1.2.1" />
     <plugin name="cordova-plugin-inappbrowser" spec="3.0.0" />
     <plugin name="cordova-plugin-appavailability" spec="0.4.2" />
-    <engine name="android" spec="7.1.0" />
+    <engine name="android" spec="7.0.0" />
     <engine name="ios" spec="4.5.4" />
     <plugin name="cordova.plugins.diagnostic" spec="4.0.10" />
     <plugin name="cordova-plugin-geolocation" spec="4.0.1">
