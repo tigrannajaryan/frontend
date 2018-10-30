@@ -1,0 +1,41 @@
+.Tabs-box {
+  background: white;
+  border-bottom: pxtovw(1px) solid color($colors-shared, gallery);
+}
+
+.Tabs-wp {
+  display: flex;
+  justify-content: space-between;
+}
+
+.Tabs-slides {
+  height: auto; // fix bug withs scroll
+}
+
+.Tabs-slide {
+  display: block;
+  padding-top: pxtovw(25px);
+}
+
+.Tabs-btn {
+  flex: 1;
+  height: pxtovw(34px);
+  padding: 0 pxtovw(5px);
+  margin: 0;
+  font-size: pxtovw(15px);
+  color: black;
+  text-transform: capitalize;
+  border-bottom: pxtovw(2px) solid transparent;
+  border-radius: initial;
+  opacity: 0.4;
+
+  b {
+    text-transform: initial;
+  }
+}
+
+.Tabs-btn.activated,
+.Tabs-btn.active {
+  border-bottom: pxtovw(2px) solid color($colors-shared, newOrleans);
+  opacity: 1;
+}

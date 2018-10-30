@@ -15,18 +15,18 @@
     <div [class.DiscountsSettings-title]="!isProfile" class="Made-h1">Discounts <img src="assets/imgs/icons/discount_w.png" alt="" class="DiscountsSettings-icon"></div>
 
 
-    <div class="Home-btns DiscountsSettings-tabs">
-      <div class="Home-btnsWp">
-        <button (click)="changeTab(DiscountTabNames.weekday)" [class.active]="DiscountTabNames.weekday === activeTab" ion-button clear color="dark" class="Home-btnsBtn active">
+    <div class="Tabs-box DiscountsSettings-tabs">
+      <div class="Tabs-wp">
+        <button (click)="changeTab(DiscountTabNames.weekday)" [class.active]="DiscountTabNames.weekday === activeTab" ion-button clear color="dark" class="Tabs-btn active">
           {{ discountTabs[DiscountTabNames.weekday].name }}
         </button>
-        <button (click)="changeTab(DiscountTabNames.revisit)" [class.active]="DiscountTabNames.revisit === activeTab" ion-button clear color="dark" class="Home-btnsBtn">
+        <button (click)="changeTab(DiscountTabNames.revisit)" [class.active]="DiscountTabNames.revisit === activeTab" ion-button clear color="dark" class="Tabs-btn">
           {{ discountTabs[DiscountTabNames.revisit].name }}
         </button>
-        <button (click)="changeTab(DiscountTabNames.firstVisit)" [class.active]="DiscountTabNames.firstVisit === activeTab" ion-button clear color="dark" class="Home-btnsBtn">
+        <button (click)="changeTab(DiscountTabNames.firstVisit)" [class.active]="DiscountTabNames.firstVisit === activeTab" ion-button clear color="dark" class="Tabs-btn">
           {{ discountTabs[DiscountTabNames.firstVisit].name }}
         </button>
-        <button (click)="changeTab(DiscountTabNames.max)" [class.active]="DiscountTabNames.max === activeTab" ion-button clear color="dark" class="Home-btnsBtn">
+        <button (click)="changeTab(DiscountTabNames.max)" [class.active]="DiscountTabNames.max === activeTab" ion-button clear color="dark" class="Tabs-btn">
           {{ discountTabs[DiscountTabNames.max].name }}
         </button>
       </div>

@@ -6,3 +6,9 @@
   pointer-events: none;
   opacity: 0.3;
 }
+
+.Refresh.refresher-active {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

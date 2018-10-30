@@ -7,8 +7,8 @@ import { Logger } from '~/shared/logger';
 import { ServerStatusTracker } from '~/shared/server-status-tracker';
 import { BaseService } from '~/shared/api/base-service';
 import {
+  AddPreferredStylistResponse,
   PreferredStylistsListResponse,
-  SetPreferredStylistResponse,
   StylistsListResponse,
   StylistsSearchParams
 } from '~/shared/api/stylists.models';
@@ -40,8 +40,8 @@ export class StylistsService extends BaseService {
     return this.get<PreferredStylistsListResponse>('client/preferred-stylists');
   }
 
-  setPreferredStylist(stylistUuid: string): Observable<ApiResponse<SetPreferredStylistResponse>> {
-    return this.post<SetPreferredStylistResponse>('client/preferred-stylists', { stylist_uuid: stylistUuid });
+  addPreferredStylist(stylistUuid: string): Observable<ApiResponse<AddPreferredStylistResponse>> {
+    return this.post<AddPreferredStylistResponse>('client/preferred-stylists', { stylist_uuid: stylistUuid });
   }
 
   deletePreferredStylist(preferenceUuid: string): Observable<ApiResponse<void>> {

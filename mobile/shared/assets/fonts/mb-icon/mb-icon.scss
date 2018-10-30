@@ -62,7 +62,7 @@ $mb-icon-users: "\e919";
 $mb-icon-profile: "\e91c";
 $mb-icon-profile-a: "\e91f";
 $mb-icon-heart-a: "\e92a";
-
+$mb-icon-booking: "\e932";
 
 @font-face {
   font-family: '#{$icomoon-font-family}';
@@ -574,5 +574,13 @@ $mb-icon-heart-a: "\e92a";
 
   &:before {
     content: $mb-icon-heart-a;
+  }
+}
+
+.mb-icon-booking {
+  @extend %mb-icon;
+
+  &:before {
+    content: $mb-icon-booking;
   }
 }

@@ -80,7 +80,7 @@ export class StylistComponent {
   }
 
   async onContinueWithStylist(): Promise<void> {
-    await this.preferredStylistsData.set(this.stylist);
+    await this.preferredStylistsData.addStylist(this.stylist);
     this.navCtrl.push(PageNames.HowMadeWorks);
   }
 

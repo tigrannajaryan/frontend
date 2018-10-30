@@ -1,23 +1,52 @@
-<div *ngIf="stylist" class="StylistsPage-card" [class.is-active]="isActive" (click)="onCardOpen()" data-test-id="StylistCard">
-  <div class="StylistsPage-cardImg" [style.backgroundImage]="'url(' + (stylist.profile_photo_url  || 'assets/icons/stylist-avatar.png') + ')'"></div>
-  <div class="StylistsPage-cardHeader">
-    <i (click)="onCardClose($event)" class="StylistsPage-cardClose mb-icon-cross"></i>
-  </div>
-  <div class="StylistsPage-cardSubtitle">{{ stylist.salon_name }}</div>
-  <div class="StylistsPage-cardTitle">{{ stylist.first_name }} {{ stylist.last_name }}</div>
-  <div *ngIf="stylist.followers_count" class="StylistsPage-cardInfo StylistsPage-followers">
-    <i (click)="onFollowersClick(stylist)" class="mb-icon-heart-a"></i>&nbsp;
-    <span (click)="onFollowersClick(stylist)"><b>{{ stylist.followers_count }}</b> MADE Clients</span>
-  </div>
-  <div class="StylistsPage-cardInfo"><i class="mb-icon-marker"></i>&nbsp;<span>{{ stylist.salon_address }}</span></div>
-  <div class="StylistsPage-cardFooter">
-    <ion-row class="StylistsPage-links" justify-content-center align-items-center nowrap>
+<div *ngIf="stylist"
+     [class.is-active]="isActive"
+     [class.is-hearted]="isHearted"
+     (click)="onCardOpen()"
+     class="StylistCard"
+     data-test-id="StylistCard">
+  <i *ngIf="isHearted" (click)="onRemoveStylist()" class="StylistCard-heart mb-icon-heart-a"></i>
+  <i (click)="onCardClose($event)" class="StylistCard-close mb-icon-cross"></i>
+  <i *ngIf="stylist.is_profile_bookable" class="StylistCard-bookable mb-icon-booking"></i>
+
+
+  <div class="StylistCard-photo" [style.backgroundImage]="'url(' + (stylist.profile_photo_url  || 'assets/icons/stylist-avatar.png') + ')'"></div>
+  <div *ngIf="isHearted && isActive" class="StylistCard-name">{{ stylist.first_name }}<br/>{{ stylist.last_name }}</div>
+
+  <div class="StylistCard-body">
+    <div *ngIf="!isHearted" class="StylistCard-salon">{{ stylist.salon_name }}</div>
+
+    <div *ngIf="!(isHearted && isActive)" class="StylistCard-name">{{ stylist.first_name }} {{ stylist.last_name }}</div>
+
+    <div *ngIf="stylist.followers_count && !isHearted" (click)="onFollowersClick(stylist)" class="StylistCard-followers">
+      <i class="mb-icon-heart-a"></i>&nbsp;<span><b>{{ stylist.followers_count }}</b> MADE Clients</span>
+    </div>
+
+    <div class="StylistCard-info">
+      <i class="mb-icon-marker"></i>&nbsp;<span>{{ stylist.salon_address }}</span>
+    </div>
+
+    <div class="StylistCard-links">
       <i *ngIf="stylist.instagram_url" (click)="onInstagramClick()" class="mb-icon-instagram"></i>
       <i *ngIf="stylist.website_url" (click)="onWebsiteClick()" class="mb-icon-globe"></i>
       <!-- Stylist’s calendar preview below. Uncomment when implementing calendar. -->
       <!-- <i class="mb-icon-calendar"></i> -->
       <phone-link [phone]="stylist.phone" [iconForm]="true" icon="mb-icon-phone-a"></phone-link>
-    </ion-row>
-    <button (click)="onSelectStylist()" ion-button small class="Button StylistsPage-submit" data-test-id="addStylist">{{ continueText || ("Add " + stylist.first_name +"!") }}</button>
+    </div>
+
+    <button
+      *ngIf="!isMyStylist"
+      (click)="onSelectStylist()"
+      class="Button StylistCard-submit"
+      data-test-id="addStylist"
+      ion-button small>
+      {{ continueText || ("Add " + stylist.first_name +"!") }}
+    </button>
+
+    <button
+      *ngIf="isMyStylist && !isHearted"
+      (click)="onRemoveStylist()"
+      class="StylistCard-action">
+      Remove Stylist
+    </button>
   </div>
 </div>

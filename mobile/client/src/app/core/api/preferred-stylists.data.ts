@@ -5,9 +5,9 @@ import { ApiResponse } from '~/shared/api/base.models';
 import { DataStore, GetOptions } from '~/shared/storage/data-store';
 import { StylistsService } from '~/core/api/stylists-service';
 import {
+  AddPreferredStylistResponse,
   PreferredStylistModel,
   PreferredStylistsListResponse,
-  SetPreferredStylistResponse,
   StylistUuidModel
 } from '~/shared/api/stylists.models';
 
@@ -29,7 +29,7 @@ export class PreferredStylistsData {
     const ttl1hour = moment.duration(1, 'hour').asMilliseconds();
 
     this.data = new DataStore('preferred-stylists', () => api.getPreferredStylists(),
-    { cacheTtlMilliseconds: ttl1hour });
+      { cacheTtlMilliseconds: ttl1hour });
   }
 
   /**
@@ -37,37 +37,27 @@ export class PreferredStylistsData {
    */
   async get(options?: GetOptions): Promise<PreferredStylistModel[]> {
     const { response } = await this.data.get(options);
+
     return response.stylists || [];
   }
 
   /**
-   * Set a stylist as a preferred stylist of the client:
-   * - perform request only when a stylist is not in the list,
-   * - update corresponding DataStore.
+   * Add selected stylist to my stylists
+   * and update corresponding DataStore.
    */
-  async set(newStylist: StylistUuidModel): Promise<ApiResponse<SetPreferredStylistResponse>> {
-    // TODO: remove next line when work with multiple preferred stylists
-    await this.clearAll();
+  async addStylist(newStylist: StylistUuidModel): Promise<ApiResponse<AddPreferredStylistResponse>> {
+    const { response: addResponse } = await this.api.addPreferredStylist(newStylist.uuid).get();
+    await this.get({ refresh: true });
 
-    const { response: setResponse } = await this.api.setPreferredStylist(newStylist.uuid).get();
-    const { response: getResponse } = await this.api.getPreferredStylists().get();
+    return { response: addResponse };
+  }
 
-    if (setResponse && getResponse) {
-      const stylist = getResponse.stylists.find(s => s.uuid === newStylist.uuid);
-      if (stylist) {
-        this.data.set({
-          stylists: [
-            // TODO: use concat here instead when work with multiple preferred stylists
-            {
-              ...stylist,
-              preference_uuid: setResponse.preference_uuid
-            }
-          ]
-        });
-      }
-    }
-
-    return { response: setResponse };
+  /**
+   * Remove Preferred stylist
+   */
+  async removeStylist(stylistUuid: string): Promise<void> {
+    await this.api.deletePreferredStylist(stylistUuid).get();
+    await this.get({ refresh: true });
   }
 
   /**

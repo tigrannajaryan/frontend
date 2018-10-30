@@ -162,7 +162,7 @@ export function confirmRebook(appointment: AppointmentModel): Promise<boolean> {
         {
           text: 'Yes, continue',
           handler: () => {
-            preferredStylistsData.set({ uuid: appointment.stylist_uuid }).then(() => {
+            preferredStylistsData.addStylist({ uuid: appointment.stylist_uuid }).then(() => {
               resolve(true);
             });
           }

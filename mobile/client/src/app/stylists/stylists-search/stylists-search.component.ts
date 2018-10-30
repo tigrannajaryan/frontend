@@ -18,7 +18,7 @@ import {
   StylistState
 } from '~/core/reducers/stylists.reducer';
 
-import { StylistsEvents } from '~/stylists/stylist/stylist.component';
+import { StylistsEvents } from '~/stylists/my-stylists.component';
 
 interface StylistsPageParams {
   onboarding?: boolean;
@@ -93,7 +93,7 @@ export class StylistsPageComponent {
   }
 
   async onContinueWithStylist(stylist: StylistModel): Promise<void> {
-    await this.preferredStylistsData.set(stylist);
+    await this.preferredStylistsData.addStylist(stylist);
 
     if (this.onboarding) {
       await this.navCtrl.setRoot(PageNames.MainTabs);
