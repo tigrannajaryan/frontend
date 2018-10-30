@@ -50,4 +50,4 @@ echo "Installing pods"
 
 sudo gem install cocoapods
 cd platforms/ios
-pod install
+pod install || true
