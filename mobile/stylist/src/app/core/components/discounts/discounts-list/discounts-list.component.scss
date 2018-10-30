@@ -4,6 +4,7 @@
 }
 
 .DiscountsList-row {
+  min-height: pxtovw(48px);
   padding: pxtovw(11px) 0;
   font-size: pxtovw(14px);
   border-bottom: 1px solid color($grayscale, 200);
