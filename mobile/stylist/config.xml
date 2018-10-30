@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.madebeauty.stylist.staging.android" version="1.1.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="madebeauty.stylist.mobile" android-packageName="com.madebeauty.stylist.staging.android" version="1.1.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <hook src="../scripts/patch_config_xml.js" type="before_platform_rm" />
     <name>Made Pro Dev</name>
     <description>This is set in .travis.yml, see IOS_APP_DESCRIPTION</description>
