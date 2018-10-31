@@ -9,7 +9,6 @@ import { componentIsActive } from '~/shared/utils/component-is-active';
 import { PageNames } from '~/core/page-names';
 import { BookingData } from '~/core/api/booking.data';
 import { EventTypes } from '~/core/event-types';
-import { TabIndex } from '~/main-tabs/main-tabs.component';
 
 @Component({
   selector: 'select-date',
