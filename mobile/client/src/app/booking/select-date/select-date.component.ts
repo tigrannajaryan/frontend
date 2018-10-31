@@ -82,7 +82,7 @@ export class SelectDateComponent {
         handler: () => {
           setTimeout(async () => {
             await this.navCtrl.setRoot(PageNames.MainTabs);
-            this.events.publish(EventTypes.selectMainTab, TabIndex.Stylists, tab => tab.push(PageNames.Stylists));
+            this.events.publish(EventTypes.startBooking);
           });
         }
       }]
