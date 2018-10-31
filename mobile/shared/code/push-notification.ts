@@ -46,9 +46,6 @@ export class PushNotification {
       return;
     }
 
-    const channels = await this.push.listChannels();
-    this.logger.info('Push channels:', channels);
-
     const options: PushOptions = {
       android: {
         senderID: ENV.FCM_PUSH_SENDER_ID
