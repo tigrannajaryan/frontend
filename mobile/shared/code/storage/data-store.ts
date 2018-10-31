@@ -28,7 +28,7 @@ interface DataStorePersistent<T> {
   lastUpdated: Date;
 }
 
-interface GetOptions {
+export interface GetOptions {
   refresh?: boolean;
   requestOptions?: ApiRequestOptions;
 }

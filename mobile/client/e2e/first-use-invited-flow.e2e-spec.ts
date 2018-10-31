@@ -19,6 +19,7 @@ import { howPricingWorksPage } from './pages/how-pricing-works-page';
 import { mainTabsPage } from './pages/main-tabs-page';
 import { profileSummaryPage } from './pages/profile-summary-page';
 import { homePage } from './pages/home-page';
+import { selectStylistPage } from './pages/select-stylist-page';
 import { selectCategoryPage } from './pages/select-category-page';
 import { selectServicePage } from './pages/select-service-page';
 import { selectDatePage } from './pages/select-date-page';
@@ -153,6 +154,10 @@ describe('First use flow for invited clients', () => {
   it('Can start booking appointment', async () => {
     await mainTabsPage.homeTab.click();
     await homePage.startBooking();
+  });
+
+  it('Can select stylist', async () => {
+    await selectStylistPage.selectStylist();
   });
 
   it('Can select service category', async () => {

@@ -15,6 +15,7 @@ import { AUTHORIZED_ROOT, PageNames, UNAUTHORIZED_ROOT } from '~/core/page-names
 import { EventTypes } from '~/core/event-types';
 import { ENV } from '~/environments/environment.default';
 import { getBuildNumber, getCommitHash } from '~/shared/get-build-number';
+import { ServicesCategoriesParams } from '~/services-categories-page/services-categories-page.component';
 
 @Component({
   templateUrl: 'app.component.html'
@@ -82,7 +83,7 @@ export class ClientAppComponent implements OnInit, OnDestroy {
 
     // Subscribe to some interesting global events
     this.events.subscribe(EventTypes.logout, () => this.onLogout());
-    this.events.subscribe(EventTypes.startBooking, () => this.onStartBooking());
+    this.events.subscribe(EventTypes.startBooking, (stylistUuid?: string) => this.onStartBooking(stylistUuid));
     this.events.subscribe(EventTypes.startRebooking, () => this.onStartRebooking());
 
     // All done, measure the loading time and report to GA
@@ -102,9 +103,16 @@ export class ClientAppComponent implements OnInit, OnDestroy {
     this.nav.setRoot(UNAUTHORIZED_ROOT);
   }
 
-  async onStartBooking(): Promise<void> {
+  async onStartBooking(stylistUuid: string): Promise<void> {
     // Begin booking process
-    this.nav.push(PageNames.ServicesCategories);
+    if (stylistUuid) {
+      // Stylist is already selected (happens in re-booking with some services changed), proceed to services:
+      const params: ServicesCategoriesParams = { stylistUuid };
+      this.nav.push(PageNames.ServicesCategories, { params });
+    } else {
+      // Choose stylist first:
+      this.nav.push(PageNames.SelectStylist);
+    }
   }
 
   onStartRebooking(): void {
