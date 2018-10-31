@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import * as moment from 'moment';
 
 import { ApiResponse } from '~/shared/api/base.models';
-import { DataStore } from '~/shared/storage/data-store';
+import { DataStore, GetOptions } from '~/shared/storage/data-store';
 import { StylistsService } from '~/core/api/stylists-service';
 import {
   PreferredStylistModel,
@@ -35,8 +35,8 @@ export class PreferredStylistsData {
   /**
    * Almost the same as DataSet.get.
    */
-  async get(...args): Promise<PreferredStylistModel[]> {
-    const { response } = await this.data.get(...args);
+  async get(options?: GetOptions): Promise<PreferredStylistModel[]> {
+    const { response } = await this.data.get(options);
     return response.stylists || [];
   }
 
