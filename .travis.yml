@@ -37,7 +37,7 @@ cache:
 # global env variables, common to each build's environment
 env:
   global:
-    - APP_VERSION_NUMBER=1.1.8
+    - APP_VERSION_NUMBER=1.1.7
     - IOS_SDK="iphoneos11.4"
     - ANDROID_SDK=android_sdk
     - ANDROID_BUILD_TOOLS_VERSION="28.0.1"
