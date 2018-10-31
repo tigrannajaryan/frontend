@@ -7,6 +7,8 @@ import { ServiceModel } from '~/shared/api/price.models';
 import { BookingData } from '~/core/api/booking.data';
 import { PageNames } from '~/core/page-names';
 
+import { ServicesCategoriesParams } from '~/services-categories-page/services-categories-page.component';
+
 /**
  * A component that shows the list of services in the header
  * during booking process.
@@ -37,8 +39,9 @@ export class BookServicesHeaderComponent {
 
   onAdd(): void {
     const { stylist } = this.bookingData;
+    const params: ServicesCategoriesParams = { isAdditionalService: true, stylistUuid: stylist.uuid };
 
-    this.navCtrl.push(PageNames.ServicesCategories, { isAdditionalService: true, stylistUuid: stylist && stylist.uuid });
+    this.navCtrl.push(PageNames.ServicesCategories, { params });
     this.serviceChange.emit();
   }
 }

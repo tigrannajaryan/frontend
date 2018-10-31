@@ -10,6 +10,7 @@ import { PreferredStylistsData } from '~/core/api/preferred-stylists.data';
 
 import { startBooking } from '~/booking/booking-utils';
 import { TabIndex } from '~/main-tabs/main-tabs.component';
+import { ServicesCategoriesParams } from '~/services-categories-page/services-categories-page.component';
 
 @Component({
   selector: 'select-stylist',
@@ -41,7 +42,9 @@ export class SelectStylistComponent {
 
   async onContinueWithStylist(stylistUuid: string): Promise<void> {
     await startBooking(stylistUuid);
-    this.navCtrl.push(PageNames.ServicesCategories, { stylistUuid });
+
+    const params: ServicesCategoriesParams = { stylistUuid };
+    this.navCtrl.push(PageNames.ServicesCategories, { params });
   }
 
   showNoSelectedStylistWarning = (): void => {

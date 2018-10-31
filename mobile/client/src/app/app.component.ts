@@ -15,6 +15,7 @@ import { AUTHORIZED_ROOT, PageNames, UNAUTHORIZED_ROOT } from '~/core/page-names
 import { EventTypes } from '~/core/event-types';
 import { ENV } from '~/environments/environment.default';
 import { getBuildNumber, getCommitHash } from '~/shared/get-build-number';
+import { ServicesCategoriesParams } from '~/services-categories-page/services-categories-page.component';
 
 @Component({
   templateUrl: 'app.component.html'
@@ -106,7 +107,8 @@ export class ClientAppComponent implements OnInit, OnDestroy {
     // Begin booking process
     if (stylistUuid) {
       // Stylist is already selected (happens in re-booking with some services changed), proceed to services:
-      this.nav.push(PageNames.ServicesCategories, { stylistUuid });
+      const params: ServicesCategoriesParams = { stylistUuid };
+      this.nav.push(PageNames.ServicesCategories, { params });
     } else {
       // Choose stylist first:
       this.nav.push(PageNames.SelectStylist);

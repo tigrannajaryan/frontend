@@ -15,6 +15,11 @@ import {
 } from '~/core/reducers/services.reducer';
 import { ServiceCategoryModel } from '~/core/api/services.models';
 
+export interface ServicesCategoriesParams {
+  stylistUuid: string;
+  isAdditionalService?: boolean;
+}
+
 @Component({
   selector: 'page-services-categories',
   templateUrl: 'services-categories-page.component.html'
@@ -42,8 +47,10 @@ export class ServicesCategoriesPageComponent {
   async ionViewWillEnter(): Promise<void> {
     this.logger.info('ServicesCategoriesPageComponent.ionViewWillEnter');
 
-    this.isAdditionalService = Boolean(this.navParams.get('isAdditionalService'));
-    this.stylistUuid = this.navParams.get('stylistUuid');
+    const params = (this.navParams.get('params') || {}) as ServicesCategoriesParams;
+
+    this.isAdditionalService = Boolean(params.isAdditionalService);
+    this.stylistUuid = params.stylistUuid;
 
     this.categories = this.store.select(selectStylistServiceCategories(this.stylistUuid));
     this.requestState = this.store.select(selectServicesRequestState);
