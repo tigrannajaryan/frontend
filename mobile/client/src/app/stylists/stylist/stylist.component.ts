@@ -117,7 +117,7 @@ export class StylistComponent {
   }
 
   onStylistPicClick(): void {
-    this.events.publish(EventTypes.startBooking);
+    this.events.publish(EventTypes.startBooking, this.stylist.uuid);
   }
 
   private async getPreferredStylist(): Promise<PreferredStylistModel> {
