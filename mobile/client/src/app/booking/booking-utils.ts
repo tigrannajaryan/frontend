@@ -8,6 +8,32 @@ import { PreferredStylistModel } from '~/shared/api/stylists.models';
 import { ServicesService } from '~/core/api/services-service';
 import { EventTypes } from '~/core/event-types';
 
+//
+// Possible cases of booking and re-booking processes
+//
+// Case:  common.
+// Enter: when clicking on book btn or stylist pic on the stylist page.
+// Pages: Select Stylist –> Select Service (2 screens) –> Select Date –> Select Time –> Appointment Preview
+//
+// Case:  no preferred.
+// Enter: in a very rare situation when a user closes app after login and re-opens again.
+//        A user is required to choose at least one stylist before continue.
+// Pages: Select Stylist –> Home:Stylists –> Stylists Search (”Choose your stylists” popup)
+//
+// Case:  no free timeslots.
+// Enter: when no timeslots available on Select Date screen. Can happen when a stylist
+//        set empty working days, e.g. stylist on vacation.
+// Pages: Select Stylist –> Select Service (2) –> Select Date (”No time slots” popup) –> Select Stylist (a different one)
+//
+// Case:  re-booking not preferred and all the services exist (common re-booking).
+// Enter: when clicking on re-book btn.
+// Pages: ”Add to saved stylists” popup –> Select Date –> Select Time –> Appointment Preview
+//
+// Case:  re-booking not preferred and not all the services found.
+// Enter: when clicking on re-book btn and when a stylist removed or changed one of the services.
+// Pages: Select Service (2) –> Select Date –> Select Time –> Appointment Preview
+//
+
 /**
  * Get the preferred stylist of the user. Throws Error if there are no
  * preferred stylists.
