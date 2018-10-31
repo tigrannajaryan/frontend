@@ -38,34 +38,14 @@
 
     <!-- Showing stylists -->
     <div *ngIf="stylists | async" class="StylistsPage-stylists">
-      <div
+      <stylist-card
         *ngFor="let stylist of stylists | async"
-        class="StylistsPage-card"
-        [ngClass]="{'is-active': stylist.uuid === activeStylist?.uuid}"
-        (click)="onSetActiveStylist($event, stylist)"
-        data-test-id="StylistCard">
-        <div class="StylistsPage-cardImg" [style.backgroundImage]="'url(' + (stylist.profile_photo_url  || 'assets/icons/stylist-avatar.png') + ')'"></div>
-        <div class="StylistsPage-cardHeader">
-          <i (click)="onSetActiveStylist($event, undefined)" class="StylistsPage-cardClose mb-icon-cross"></i>
-        </div>
-        <div class="StylistsPage-cardSubtitle">{{ stylist.salon_name }}</div>
-        <div class="StylistsPage-cardTitle">{{ stylist.first_name }} {{ stylist.last_name }}</div>
-        <div *ngIf="stylist.followers_count" class="StylistsPage-cardInfo StylistsPage-followers">
-          <i (click)="onFollowersClick(stylist)" class="mb-icon-heart-a"></i>&nbsp;
-          <span (click)="onFollowersClick(stylist)"><b>{{ stylist.followers_count }}</b> MADE Clients</span>
-        </div>
-        <div class="StylistsPage-cardInfo"><i class="mb-icon-marker"></i>&nbsp;<span>{{ stylist.salon_address }}</span></div>
-        <div class="StylistsPage-cardFooter">
-          <ion-row class="StylistsPage-links" justify-content-center align-items-center nowrap>
-            <i *ngIf="stylist.instagram_url" (click)="onInstagramClick(stylist.instagram_url)" class="mb-icon-instagram"></i>
-            <i *ngIf="stylist.website_url" (click)="onWebsiteClick(stylist.website_url)" class="mb-icon-globe"></i>
-            <!-- Stylist’s calendar preview below. Uncomment when implementing calendar. -->
-            <!-- <i class="mb-icon-calendar"></i> -->
-            <phone-link [phone]="stylist.phone" [iconForm]="true" icon="mb-icon-phone-a"></phone-link>
-          </ion-row>
-          <button (click)="onContinueWithStylist(stylist)" ion-button small class="Button StylistsPage-submit" data-test-id="addStylist">{{ continueText || ("Add " + stylist.first_name +"!") }}</button>
-        </div>
-      </div>
+        [stylist]="stylist"
+        [isActive]="stylist.uuid === activeStylist?.uuid"
+        (openCard)="onSetActiveStylist(stylist)"
+        (closeCard)="onSetActiveStylist(undefined)"
+        (selectStylist)="onContinueWithStylist(stylist)"></stylist-card>
+
       <div *ngIf="(stylists | async)?.length === 0">
         <ng-container *ngIf="!query.value; else notFound">I'm sorry there are no stylists in your area yet. But check back often we're adding new stylists every day!</ng-container>
         <ng-template #notFound>No stylists found</ng-template>

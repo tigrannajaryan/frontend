@@ -91,15 +91,8 @@ export class StylistsPageComponent {
     this.isLocationInputFocused = isFocused;
   }
 
-  onSetActiveStylist(event: Event, stylist: StylistModel | undefined): void {
+  onSetActiveStylist(stylist: StylistModel | undefined): void {
     this.activeStylist = stylist;
-    event.stopPropagation();
-  }
-
-  onFollowersClick(stylist: StylistModel): void {
-    if (this.activeStylist === stylist) {
-      this.navCtrl.push(PageNames.Followers, { stylistUuid: stylist.uuid });
-    }
   }
 
   async onContinueWithStylist(stylist: StylistModel): Promise<void> {

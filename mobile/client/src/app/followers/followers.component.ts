@@ -2,7 +2,6 @@ import { AlertController, NavParams } from 'ionic-angular';
 import { Component } from '@angular/core';
 
 import { componentUnloaded } from '~/shared/component-unloaded';
-import { loading } from '~/shared/utils/request-utils';
 import { ApiResponse } from '~/shared/api/base.models';
 
 import { FollowersApi } from '~/core/api/followers.api';
@@ -13,6 +12,7 @@ import { ProfileModel } from '~/core/api/profile.models';
 import { ProfileDataStore } from '~/profile/profile.data';
 import { PrivacyMode } from '~/privacy-settings/privacy-settings.component';
 import { StylistModel } from '~/shared/api/stylists.models';
+import { loading } from '~/shared/utils/loading';
 
 @Component({
   selector: 'followers',
@@ -21,8 +21,8 @@ import { StylistModel } from '~/shared/api/stylists.models';
 export class FollowersComponent {
   PrivacyMode = PrivacyMode;
   PageNames = PageNames;
-  isLoading = false;
 
+  isLoading: boolean;
   stylist: StylistModel;
   profile: ProfileModel;
   followers: FollowersModel[];
@@ -36,22 +36,20 @@ export class FollowersComponent {
   }
 
   async ionViewWillEnter(): Promise<void> {
-    const attachLoader = loading(isLoading => this.isLoading = isLoading);
-
-    attachLoader(this.profileDataStore.asObservable())
+    this.profileDataStore.asObservable()
       .takeUntil(componentUnloaded(this))
-      .subscribe((apiRes: ApiResponse<ProfileModel>) => {
+      .subscribe(async (apiRes: ApiResponse<ProfileModel>) => {
         const profile: ProfileModel = apiRes.response;
         if (profile) {
           this.profile = profile;
         }
-      });
 
-    this.stylist = this.navParams.get('stylist');
-    const { response } = await this.followersApi.getFollowers(this.stylist.uuid).get();
-    if (response) {
-      this.followers = response.followers;
-    }
+        this.stylist = this.navParams.get('stylist');
+        const { response } = await loading(this, this.followersApi.getFollowers(this.stylist.uuid).get());
+        if (response) {
+          this.followers = response.followers;
+        }
+      });
   }
 
   showFollowersPopup(follower: FollowersModel): void {

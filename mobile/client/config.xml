@@ -43,6 +43,7 @@
         <splash density="port-xhdpi" src="resources/android/splash/drawable-port-xhdpi-screen.png" />
         <splash density="port-xxhdpi" src="resources/android/splash/drawable-port-xxhdpi-screen.png" />
         <splash density="port-xxxhdpi" src="resources/android/splash/drawable-port-xxxhdpi-screen.png" />
+        <hook src="../scripts/cordova-after-platform-add.js" type="after_platform_add" />
     </platform>
     <platform name="ios">
         <config-file parent="NSPhotoLibraryUsageDescription" target="*-Info.plist">
