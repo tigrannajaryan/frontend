@@ -12,6 +12,7 @@ import { MainTabsComponent } from '~/main-tabs/main-tabs.component';
 import { ProfileEditComponent } from '~/profile/profile-edit/profile-edit.component';
 import { ProfileSummaryComponent } from '~/profile/profile-summary/profile-summary.component';
 import { SelectDateComponent } from '~/booking/select-date/select-date.component';
+import { SelectStylistComponent } from '~/stylists/select-stylist/select-stylist.component';
 import { SelectTimeComponent } from '~/booking/select-time/select-time.component';
 import { ServicesPageComponent } from '~/services-page/services-page.component';
 import { ServicesCategoriesPageComponent } from '~/services-categories-page/services-categories-page.component';
@@ -46,6 +47,7 @@ export const PageNames = {
   ProfileEdit: ProfileEditComponent,
   ProfileSummary: ProfileSummaryComponent,
   SelectDate: SelectDateComponent,
+  SelectStylist: SelectStylistComponent,
   SelectTime: SelectTimeComponent,
   Services: ServicesPageComponent,
   ServicesCategories: ServicesCategoriesPageComponent,

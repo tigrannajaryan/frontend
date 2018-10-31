@@ -1,0 +1,28 @@
+<ion-header madeHeader [showHome]="true">
+  <ion-toolbar class="SelectDate SelectDate-header">
+    <div class="SelectDate-title SharedH1">Select Stylist</div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="StylistsPage">
+  <div class="contentSidePadding StylistsPage-content">
+
+    <!-- Showing loading cards -->
+    <div *ngIf="isLoading" class="StylistsPage-stylists">
+      <div *ngFor="let stylist of loadingStylists" class="SharedCard is-loading">
+        <div class="StylistsPage-cardSubtitle">&nbsp;</div>
+        <div class="StylistsPage-cardTitle">&nbsp;</div>
+        <div class="StylistsPage-cardSubtitle">&nbsp;</div>
+      </div>
+    </div>
+
+    <!-- Showing stylists -->
+    <div *ngIf="stylists" class="StylistsPage-stylists">
+      <stylist-card
+        *ngFor="let stylist of stylists"
+        [stylist]="stylist"
+        (openCard)="onContinueWithStylist(stylist.uuid)"></stylist-card>
+    </div>
+
+  </div>
+</ion-content>
