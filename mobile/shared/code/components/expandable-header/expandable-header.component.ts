@@ -1,8 +1,16 @@
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, Renderer } from '@angular/core';
+import { Content } from 'ionic-angular';
 
 enum ScrollDirection {
   Up = 'up',
   Down = 'down'
+}
+
+interface IonicScrollEvent { // not defined in Ionic
+  directionY: string;
+  scrollTop: number;
+
+  domWrite(handler: () => void): void;
 }
 
 @Component({
@@ -12,7 +20,7 @@ enum ScrollDirection {
 export class ExpandableHeaderComponent implements OnInit {
   static SCROLLING_DELAY = 400;
 
-  @Input() scrollArea: any;
+  @Input() scrollArea: Content;
   @Output() minified = new EventEmitter<void>();
 
   private scrollContent: HTMLElement;
@@ -32,11 +40,11 @@ export class ExpandableHeaderComponent implements OnInit {
     this.scrollContent = this.scrollArea._elementRef.nativeElement;
   }
 
-  resizeHeader(event): void {
+  resizeHeader(event: IonicScrollEvent): void {
     event.domWrite(this.update(event));
   }
 
-  private update = event => () => {
+  private update = (event: IonicScrollEvent) => () => {
 
     switch (event.directionY) {
       case ScrollDirection.Down:
