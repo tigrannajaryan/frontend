@@ -55,7 +55,9 @@ describe('Pages: Select Stylist', () => {
 
   it('should redirect to Home with Stylist tab open when no preferred', async done => {
     const stylistsService = fixture.debugElement.injector.get(StylistsService);
-    spyOn(stylistsService, 'getPreferredStylists').and.returnValue(of([]));
+    spyOn(stylistsService, 'getPreferredStylists').and.returnValue(
+      of({ response: { stylists: [] } })
+    );
 
     await instance.ionViewWillEnter();
     fixture.detectChanges();
