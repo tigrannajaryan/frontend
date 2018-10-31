@@ -3,7 +3,6 @@ import { NavController } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
 
 import { ServiceModel } from '~/shared/api/price.models';
-import { StylistModel } from '~/shared/api/stylists.models';
 
 import { BookingData } from '~/core/api/booking.data';
 import { PageNames } from '~/core/page-names';
@@ -18,8 +17,10 @@ import { PageNames } from '~/core/page-names';
 })
 export class BookServicesHeaderComponent {
   @Input() readonly: boolean;
-  @Input() stylist: StylistModel;
-  @Input() services: Observable<ServiceModel[]>;
+
+  @Input()
+  services: Observable<ServiceModel[]>;
+
   @Output() serviceChange = new EventEmitter();
 
   constructor(
