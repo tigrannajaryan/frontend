@@ -35,13 +35,7 @@ export class SelectStylistComponent {
     if (!this.stylists || this.stylists.length === 0) {
       // Cannot proceed if no prefered styllist is selected, redirecting:
       await this.navCtrl.setRoot(PageNames.MainTabs);
-      this.events.publish(EventTypes.selectMainTab, TabIndex.Stylists, () => {
-        const alert = this.alertCtrl.create({
-          message: 'Choose your stylists to proceed with booking.',
-          buttons: [{ text: 'OK', role: 'cancel' }]
-        });
-        alert.present();
-      });
+      this.events.publish(EventTypes.selectMainTab, TabIndex.Stylists, this.showNoSelectedStylistWarning);
     }
   }
 
@@ -49,4 +43,12 @@ export class SelectStylistComponent {
     await startBooking(stylistUuid);
     this.navCtrl.push(PageNames.ServicesCategories, { stylistUuid });
   }
+
+  showNoSelectedStylistWarning = (): void => {
+    const alert = this.alertCtrl.create({
+      message: 'Choose your stylists to proceed with booking.',
+      buttons: [{ text: 'OK', role: 'cancel' }]
+    });
+    alert.present();
+  };
 }

@@ -22,7 +22,7 @@ export const stylistsMock = Array(25).fill(undefined).map(() => {
     salon_address: faker.address.streetAddress(),
     phone: randomPhone(),
     instagram_url: faker.helpers.slugify(`${name}${lastName}`),
-    followers_count: 5
+    followers_count: faker.random.number()
   };
 });
 
@@ -47,7 +47,7 @@ export class StylistsServiceMock extends BaseServiceMock {
     return this.mockRequest<PreferredStylistsListResponse>(
       Observable.create(observer => {
         observer.next({
-          stylists: []
+          stylists: stylistsMock
         });
       })
     );
