@@ -12,8 +12,12 @@ import { EventTypes } from '~/core/event-types';
 // Possible cases of booking and re-booking processes
 //
 // Case:  common.
-// Enter: when clicking on book btn or stylist pic on the stylist page.
+// Enter: when clicking on book btn.
 // Pages: Select Stylist –> Select Service (2 screens) –> Select Date –> Select Time –> Appointment Preview
+//
+// Case:  common from stylist page.
+// Enter: when clicking on the stylist pic on the stylist page we already know the stylist.
+// Pages: Select Service (2 screens) –> Select Date –> Select Time –> Appointment Preview
 //
 // Case:  no preferred.
 // Enter: in a very rare situation when a user closes app after login and re-opens again.
