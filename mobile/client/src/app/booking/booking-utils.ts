@@ -12,7 +12,7 @@ import { EventTypes } from '~/core/event-types';
  * Get the preferred stylist of the user. Throws Error if there are no
  * preferred stylists.
  */
-export async function getPreferredStylist(): Promise<PreferredStylistModel> {
+export async function getPreferredStylist(stylistUuid: string): Promise<PreferredStylistModel> {
   const preferredStylistsData = AppModule.injector.get(PreferredStylistsData);
 
   const preferredStylists = await preferredStylistsData.get();
@@ -20,21 +20,25 @@ export async function getPreferredStylist(): Promise<PreferredStylistModel> {
     throw Error('No preferred stylists. Please find a stylist.');
   }
 
-  // Use the first preferred stylist (if we have any)
-  return preferredStylists[0];
+  const preferredStylist = preferredStylists.find(({ uuid }) => uuid === stylistUuid);
+  if (!preferredStylist) {
+    throw Error('Stylist is not a preferred one.');
+  }
+
+  return preferredStylist;
 }
 
 /**
  * Prepare data to start booking process. Required at least one preferred stylist
  * to be defined in PreferredStylistsData otherwise will throw an Error.
  */
-export async function startBooking(): Promise<PreferredStylistModel> {
-  const preferredStylist = await getPreferredStylist();
-
+export async function startBooking(stylistUuid: string): Promise<PreferredStylistModel> {
   const bookingData = AppModule.injector.get(BookingData);
-  bookingData.start(preferredStylist);
 
-  return preferredStylist;
+  const stylist = await getPreferredStylist(stylistUuid);
+  bookingData.start(stylist);
+
+  return stylist;
 }
 
 /**
@@ -49,7 +53,7 @@ export async function startRebooking(appointment: AppointmentModel): Promise<voi
 
   const events = AppModule.injector.get(Events);
 
-  const preferredStylist = await getPreferredStylist();
+  const preferredStylist = await getPreferredStylist(appointment.stylist_uuid);
 
   // Get current services of our preferred stylist
   const servicesApi = AppModule.injector.get(ServicesService);
@@ -76,10 +80,10 @@ export async function startRebooking(appointment: AppointmentModel): Promise<voi
 
   if (!foundAll) {
     // Some of the selected services are no longer found. Just start the booking process from fresh.
-    events.publish(EventTypes.startBooking);
+    events.publish(EventTypes.startBooking, appointment.stylist_uuid);
   } else {
     // All services still exist. Start booking process.
-    await startBooking();
+    await startBooking(appointment.stylist_uuid);
 
     // Preselect services
     const bookingData = AppModule.injector.get(BookingData);
