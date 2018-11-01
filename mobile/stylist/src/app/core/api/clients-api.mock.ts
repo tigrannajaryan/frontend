@@ -7,10 +7,10 @@ import { Observable } from 'rxjs/Observable';
 import { randomPhone } from '~/shared/utils/test-utils';
 
 import { ApiResponse } from '~/shared/api/base.models';
-import { BaseServiceMock } from '~/shared/api/base-service.mock';
+import { BaseServiceMock } from '~/shared/api/base.service.mock';
 import { DiscountType } from '~/shared/api/price.models';
 
-import { serviceItemsMock } from '~/shared/stylist-api/stylist-service-mock';
+import { serviceItemsMock } from '~/core/api/stylist.service.mock';
 
 import {
   ClientModel,
@@ -18,7 +18,7 @@ import {
   GetNearbyClientsResponse,
   GetPricingResponse,
   MyClientModel
-} from '~/shared/stylist-api/clients-api.models';
+} from '~/core/api/clients-api.models';
 
 export const myClientsMock: MyClientModel[] =
   Array(20).fill(undefined).map(() => ({

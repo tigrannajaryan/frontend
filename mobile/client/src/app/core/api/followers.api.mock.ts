@@ -6,7 +6,7 @@ import * as faker from 'faker';
 import { ApiResponse } from '~/shared/api/base.models';
 import { Logger } from '~/shared/logger';
 import { ServerStatusTracker } from '~/shared/server-status-tracker';
-import { BaseService } from '~/shared/api/base-service';
+import { BaseService } from '~/shared/api/base.service';
 
 import { FollowersModel, FollowersResponse } from '~/core/api/followers.models';
 

@@ -18,7 +18,7 @@ import 'rxjs/add/operator/pluck';
 import { Logger } from '~/shared/logger';
 import { downscalePhoto, urlToFile } from '~/shared/image-utils';
 import { PhotoSourceType } from '~/shared/constants';
-import { BaseService } from '~/shared/api/base-service';
+import { BaseService } from '~/shared/api/base.service';
 import { showAlert } from '~/shared/utils/alert';
 import { getPhoneNumber } from '~/shared/utils/phone-numbers';
 

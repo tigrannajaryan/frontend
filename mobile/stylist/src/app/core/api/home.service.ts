@@ -6,7 +6,7 @@ import * as moment from 'moment';
 import { Logger } from '~/shared/logger';
 import { ApiRequestOptions } from '~/shared/api-errors';
 import { ServerStatusTracker } from '~/shared/server-status-tracker';
-import { BaseService } from '~/shared/api/base-service';
+import { BaseService } from '~/shared/api/base.service';
 import { ApiResponse } from '~/shared/api/base.models';
 
 import {

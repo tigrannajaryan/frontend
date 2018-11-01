@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 
 import { ServicesListComponent } from './services-list.component';
 import { CoreModule } from '~/core/core.module';
-import { StylistServiceProvider } from '~/shared/stylist-api/stylist-service';
+import { StylistServiceProvider } from '~/core/api/stylist.service';
 import { prepareSharedObjectsForTests } from '~/core/test-utils.spec';
 
 describe('Pages: ServicesListComponent', () => {

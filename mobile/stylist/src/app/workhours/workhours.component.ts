@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 
-import { Workday, Worktime } from '~/shared/stylist-api/worktime.models';
-import { WorktimeApi } from '~/shared/stylist-api/worktime.api';
+import { Workday, Worktime } from '~/shared/api/worktime.models';
+import { WorktimeApi } from '~/core/api/worktime.api';
 import { convertMinsToHrsMins, Time, TimeRange } from '~/shared/time';
 import { WEEKDAY_SHORT_NAMES, WeekdayIso } from '~/shared/weekday';
 import { Logger } from '~/shared/logger';

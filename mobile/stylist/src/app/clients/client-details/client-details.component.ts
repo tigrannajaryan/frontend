@@ -3,8 +3,8 @@ import { NavController, NavParams } from 'ionic-angular';
 
 import { ExternalAppService } from '~/shared/utils/external-app-service';
 
-import { ClientDetailsApi } from '~/shared/stylist-api/client-details.api';
-import { ClientDetailsModel, MyClientModel } from '~/shared/stylist-api/clients-api.models';
+import { ClientDetailsApi } from '~/core/api/client-details.api';
+import { ClientDetailsModel, MyClientModel } from '~/core/api/clients-api.models';
 
 import { PageNames } from '~/core/page-names';
 

@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
-import { ClientModel, MyClientModel } from '~/shared/stylist-api/clients-api.models';
+import { ClientModel, MyClientModel } from '~/core/api/clients-api.models';
 
 @Component({
   selector: 'client-item',

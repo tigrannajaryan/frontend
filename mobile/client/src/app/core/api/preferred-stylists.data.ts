@@ -3,7 +3,7 @@ import * as moment from 'moment';
 
 import { ApiResponse } from '~/shared/api/base.models';
 import { DataStore, GetOptions } from '~/shared/storage/data-store';
-import { StylistsService } from '~/core/api/stylists-service';
+import { StylistsService } from '~/core/api/stylists.service';
 import {
   AddPreferredStylistResponse,
   PreferredStylistModel,

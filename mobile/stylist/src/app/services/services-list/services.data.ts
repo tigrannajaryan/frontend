@@ -2,8 +2,8 @@ import * as moment from 'moment';
 import { Injectable } from '@angular/core';
 
 import { DataStore } from '~/shared/storage/data-store';
-import { StylistServiceProvider } from '~/shared/stylist-api/stylist-service';
-import { StylistServicesListResponse } from '~/shared/stylist-api/stylist-models';
+import { StylistServiceProvider } from '~/core/api/stylist.service';
+import { StylistServicesListResponse } from '~/shared/api/stylist-app.models';
 import { DataCacheKey } from '~/core/data.module';
 
 @Injectable()

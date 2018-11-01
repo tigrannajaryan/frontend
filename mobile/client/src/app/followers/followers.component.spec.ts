@@ -4,7 +4,7 @@ import { TestUtils } from '~/../test';
 
 import { FollowersApiMock } from '~/core/api/followers.api.mock';
 import { ProfileApi } from '~/core/api/profile-api';
-import { ProfileApiMock, profileNotCompleate } from '~/core/api/profile-api.mock';
+import { ProfileApiMock } from '~/core/api/profile-api.mock';
 import { ProfileModel } from '~/core/api/profile.models';
 import { FollowersApi } from '~/core/api/followers.api';
 import { FollowersResponse } from '~/core/api/followers.models';
@@ -12,8 +12,7 @@ import { FollowersResponse } from '~/core/api/followers.models';
 import { FollowersComponent } from '~/followers/followers.component';
 import { ApiResponse } from '~/shared/api/base.models';
 import { NavParams } from 'ionic-angular';
-import { stylistsMock, StylistsServiceMock } from '~/core/api/stylists-service.mock';
-import { StylistsService } from '~/core/api/stylists-service';
+import { stylistsMock } from '~/core/api/stylists.service.mock';
 
 let fixture: ComponentFixture<FollowersComponent>;
 let instance: FollowersComponent;

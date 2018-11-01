@@ -3,10 +3,8 @@ import { Action, ActionReducer, createFeatureSelector, createSelector, State } f
 import { RequestState } from '~/shared/api/request.models';
 import { AuthTokenModel, UserProfileStatus } from '~/shared/api/auth.models';
 import { ApiError } from '~/shared/api-errors';
-
 import { StylistModel } from '~/shared/api/stylists.models';
-
-import { StylistProfile } from '~/shared/stylist-api/stylist-models';
+import { StylistProfile } from '~/shared/api/stylist-app.models';
 
 export enum authActionTypes {
   REQUEST_CODE = 'AUTH_REQUEST_CODE',

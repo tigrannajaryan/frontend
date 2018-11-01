@@ -111,8 +111,6 @@ export class ServerStatusTracker {
    * Notify observers about an error. Called by API services classes.
    */
   notify(error: ApiError): void {
-    this.logger.info('ServerStatusTracker.notify', error);
-
     if (error instanceof ApiClientError && error.status === HttpStatus.unauthorized) {
       this.logger.info('ServerStatusTracker: got HttpStatus.unauthorized, redirecting to first page.');
 

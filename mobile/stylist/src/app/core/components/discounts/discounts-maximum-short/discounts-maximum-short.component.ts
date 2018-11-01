@@ -3,7 +3,7 @@ import { ModalController } from 'ionic-angular';
 
 import { PageNames } from '~/core/page-names';
 import { ChangePercentSymbols, PercentageSliderSettings } from '~/core/popups/change-percent/change-percent.component';
-import { MaximumDiscountsWithVars } from '~/shared/stylist-api/discounts.models';
+import { MaximumDiscountsWithVars } from '~/core/api/discounts.models';
 
 enum DefaultUsdSliderSettings {
   min = 20,

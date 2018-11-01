@@ -1,0 +1,1 @@
+APIs and models that are shared between Client and Stylist Apps, such as authentication.

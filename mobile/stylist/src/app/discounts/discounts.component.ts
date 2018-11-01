@@ -1,8 +1,8 @@
 import { Component, ViewChild } from '@angular/core';
 import { Content, NavController, NavParams, Slides } from 'ionic-angular';
 
-import { DiscountsApi } from '~/shared/stylist-api/discounts.api';
-import { MaximumDiscounts, MaximumDiscountsWithVars, WeekdayDiscount } from '~/shared/stylist-api/discounts.models';
+import { DiscountsApi } from '~/core/api/discounts.api';
+import { MaximumDiscounts, MaximumDiscountsWithVars, WeekdayDiscount } from '~/core/api/discounts.models';
 import { PageNames } from '~/core/page-names';
 import { loading } from '~/core/utils/loading';
 import { FirstBooking } from '~/discounts/discounts-first-booking/discounts-first-booking.component';

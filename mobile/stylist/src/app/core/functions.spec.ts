@@ -1,7 +1,7 @@
 import { async } from '@angular/core/testing';
 import { createNavHistoryList } from './functions';
 import { PageNames } from './page-names';
-import { StylistProfileStatus } from '~/shared/stylist-api/stylist-models';
+import { StylistProfileStatus } from '~/shared/api/stylist-app.models';
 
 describe('Shared functions: profileStatusToPage', () => {
 

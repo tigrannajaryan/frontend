@@ -8,9 +8,8 @@ import {
   ServiceCategory,
   ServiceItem,
   StylistProfile,
-  StylistServicesListResponse,
-  StylistSummary
-} from './stylist-models';
+  StylistServicesListResponse
+} from '~/shared/api/stylist-app.models';
 
 export const serviceItemsMock: ServiceItem[] = [0, 0].map(() => ({
   uuid: faker.random.uuid(),
@@ -79,10 +78,6 @@ export class StylistServiceMock {
 
   getProfile(): Observable<ApiResponse<StylistProfile>> {
     return Observable.of({ response: profileSummaryMock.profile });
-  }
-
-  getStylistSummary(): Observable<ApiResponse<StylistSummary>> {
-    return Observable.of({ response: profileSummaryMock });
   }
 
   getStylistServices(): Observable<ApiResponse<StylistServicesListResponse>> {

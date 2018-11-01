@@ -1,9 +1,9 @@
 import * as fetch from 'node-fetch';
 
 import { EmailAuthCredentials, AuthResponse } from '../shared-app/api/auth.models';
-import { InvitationsResponse, ClientInvitation } from '../shared-app/stylist-api/invitations.models';
-import { Worktime } from '../shared-app/stylist-api/worktime.models';
-import { SetStylistServicesParams, StylistProfile, StylistServicesListResponse } from '../shared-app/stylist-api/stylist-models';
+import { InvitationsResponse, ClientInvitation } from '../shared-app/api/invitations.models';
+import { Worktime } from '../shared-app/api/worktime.models';
+import { SetStylistServicesParams, StylistProfile, StylistServicesListResponse } from '../shared-app/api/stylist-app.models';
 
 // Get the right environment
 const envName = process.env.MB_ENV ? process.env.MB_ENV : 'default';

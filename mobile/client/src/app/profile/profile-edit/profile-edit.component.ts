@@ -5,7 +5,7 @@ import { Camera, CameraOptions } from '@ionic-native/camera';
 
 import { PhotoSourceType } from '~/shared/constants';
 import { downscalePhoto, urlToFile } from '~/shared/image-utils';
-import { BaseService } from '~/shared/api/base-service';
+import { BaseService } from '~/shared/api/base.service';
 import { emptyOr } from '~/shared/validators';
 import { showAlert } from '~/shared/utils/alert';
 

@@ -9,7 +9,7 @@ import { PhoneInputComponent } from '~/shared/components/phone-input/phone-input
 import { CodeInputComponent } from '~/shared/components/code-input/code-input.component';
 import { PricePairComponent } from '~/shared/components/price-pair/price-pair.component';
 
-import { DiscountsApi } from '~/shared/stylist-api/discounts.api';
+import { DiscountsApi } from '~/core/api/discounts.api';
 
 import { MadeNavComponent } from './made-nav/made-nav.component';
 import { MadeTableComponent } from './made-table/made-table';

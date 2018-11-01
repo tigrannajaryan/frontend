@@ -2,8 +2,8 @@ import { async, ComponentFixture } from '@angular/core/testing';
 
 import { TestUtils } from '~/../test';
 
-import { StylistsServiceMock } from '~/core/api/stylists-service.mock';
-import { StylistsService } from '~/core/api/stylists-service';
+import { StylistsServiceMock } from '~/core/api/stylists.service.mock';
+import { StylistsService } from '~/core/api/stylists.service';
 import { MyStylistsComponent, Tabs } from '~/stylists/my-stylists.component';
 import { ApiResponse } from '~/shared/api/base.models';
 import { PreferredStylistsListResponse } from '~/shared/api/stylists.models';
@@ -56,24 +56,24 @@ fdescribe('Pages: Stylists Search', () => {
     expect(myStylistsTitle.outerText).toContain(`Stylists ${instance.tabs[Tabs.myStylists].stylists.length}`);
   });
 
-  it('should show ”There Is no preferred stylists yet”', () => {
+  it('should show "There Is no preferred stylists yet"', () => {
     instance.tabs[Tabs.myStylists].stylists = [];
     fixture.detectChanges();
 
     const savedStylistsTabList = fixture.nativeElement.querySelector('[data-test-id=myStylistsTabList]');
     expect(savedStylistsTabList.outerText.trim())
-      .toContain("You did not select preferred stylists yet.");
+      .toContain('You did not select preferred stylists yet.');
 
     const myStylistsTitle = fixture.nativeElement.querySelector('[data-test-id=myStylistsTitle]');
     expect(myStylistsTitle.outerText).toBe('Stylists');
   });
 
-  it('should show ”There Is no saved stylists yet”', () => {
+  it('should show "There Is no saved stylists yet"', () => {
     instance.tabs[Tabs.savedStylists].stylists = [];
     fixture.detectChanges();
 
     const savedStylistsTabList = fixture.nativeElement.querySelector('[data-test-id=savedStylistsTabList]');
     expect(savedStylistsTabList.outerText.trim())
-      .toContain("You did not save any stylists yet.");
+      .toContain('You did not save any stylists yet.');
   });
 });

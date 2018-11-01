@@ -3,7 +3,7 @@ import { Store } from '@ngrx/store';
 import { NavController } from 'ionic-angular';
 
 import { componentUnloaded } from '~/shared/component-unloaded';
-import { ServiceCategory, ServiceItem } from '~/shared/stylist-api/stylist-models';
+import { ServiceCategory, ServiceItem } from '~/shared/api/stylist-app.models';
 
 import {
   LoadAction,
