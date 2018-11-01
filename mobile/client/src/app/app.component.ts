@@ -4,17 +4,17 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { ScreenOrientation } from '@ionic-native/screen-orientation';
 
-import { Logger } from '~/shared/logger';
+import { getBuildNumber, getCommitHash } from '~/shared/get-build-number';
 import { GAWrapper } from '~/shared/google-analytics';
+import { Logger } from '~/shared/logger';
 import { ServerStatusTracker } from '~/shared/server-status-tracker';
-import { PreferredStylistsData } from '~/core/api/preferred-stylists.data';
-
 import { deleteToken, getToken } from '~/shared/storage/token-utils';
 
-import { AUTHORIZED_ROOT, PageNames, UNAUTHORIZED_ROOT } from '~/core/page-names';
+import { PreferredStylistsData } from '~/core/api/preferred-stylists.data';
 import { EventTypes } from '~/core/event-types';
+import { AUTHORIZED_ROOT, PageNames, UNAUTHORIZED_ROOT } from '~/core/page-names';
+
 import { ENV } from '~/environments/environment.default';
-import { getBuildNumber, getCommitHash } from '~/shared/get-build-number';
 import { ServicesCategoriesParams } from '~/services-categories-page/services-categories-page.component';
 
 @Component({
