@@ -24,6 +24,7 @@ import { AppStorage } from '~/shared/storage/app-storage';
 
 import { PushNotification } from '~/shared/push-notification';
 import { CodeData, CodeInputComponent } from '~/shared/components/code-input/code-input.component';
+import { ENV } from '~/environments/environment.default';
 
 import { createNavHistoryList, isRegistrationComplete } from '~/core/functions';
 import { clearAllDataStores } from '~/core/data.module';
@@ -91,8 +92,10 @@ export class AuthConfirmPageComponent {
         const requiredPages = createNavHistoryList(data.profileStatus);
         this.navCtrl.setPages(requiredPages);
 
-        // We are now in the app, init the push notifications
-        this.pushNotification.init();
+        if (ENV.ffEnablePushNotifications) {
+          // We are now in the app, init the push notifications
+          this.pushNotification.init();
+        }
       });
 
     // Handle code verification error

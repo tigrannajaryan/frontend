@@ -4,10 +4,10 @@ set -evx
 
 # if this is a pull request - just exit, we don't want to build actual
 # apps during PR builds
- if [[ $TRAVIS_PULL_REQUEST != "false" ]]; then
-     echo "Skipping actual mobile apps build on a pull request"
-     exit 0
- fi
+if [[ $TRAVIS_PULL_REQUEST != "false" ]]; then
+    echo "Skipping actual mobile apps build on a pull request"
+    exit 0
+fi
 
 # install android pre-requisites
 $TRAVIS_BUILD_DIR/mobile/scripts/install-android.sh

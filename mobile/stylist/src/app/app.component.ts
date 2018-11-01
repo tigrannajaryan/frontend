@@ -108,9 +108,10 @@ export class MyAppComponent {
 
         const requiredPages = createNavHistoryList(authResponse.profile_status as StylistProfileStatus);
         this.nav.setPages(requiredPages);
-
-        // We are now in the app, init the push notifications
-        this.pushNotification.init();
+        if (ENV.ffEnablePushNotifications) {
+          // We are now in the app, init the push notifications
+          this.pushNotification.init();
+        }
         return;
       }
     }

@@ -5,6 +5,9 @@ export const ENV = {
   // Feature flag to enable or disable incomplete features
   ffEnableIncomplete: false,
 
+  // Feature flag to enable push notifications
+  ffEnablePushNotifications: false,
+
   // Disable Sentry reporting by default.
   sentryDsn: undefined,
 
