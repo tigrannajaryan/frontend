@@ -105,14 +105,24 @@ export class ClientAppComponent implements OnInit, OnDestroy {
 
   async onStartBooking(stylistUuid: string): Promise<void> {
     // Begin booking process
+
     if (stylistUuid) {
       // Stylist is already selected (happens in re-booking with some services changed), proceed to services:
       const params: ServicesCategoriesParams = { stylistUuid };
       this.nav.push(PageNames.ServicesCategories, { params });
-    } else {
-      // Choose stylist first:
-      this.nav.push(PageNames.SelectStylist);
+      return;
     }
+
+    const preferredStylists = await this.preferredStylistsData.get();
+    if (preferredStylists.length === 1) {
+      // We have only one stylist, no need to show stylist selector:
+      const params: ServicesCategoriesParams = { stylistUuid: preferredStylists[0].uuid };
+      this.nav.push(PageNames.ServicesCategories, { params });
+      return;
+    }
+
+    // Choose stylist first:
+    this.nav.push(PageNames.SelectStylist);
   }
 
   onStartRebooking(): void {
