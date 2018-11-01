@@ -14,6 +14,7 @@ import { PreferredStylistsData } from '~/core/api/preferred-stylists.data';
 import { EventTypes } from '~/core/event-types';
 import { AUTHORIZED_ROOT, PageNames, UNAUTHORIZED_ROOT } from '~/core/page-names';
 
+import { startBooking } from '~/booking/booking-utils';
 import { ENV } from '~/environments/environment.default';
 import { ServicesCategoriesParams } from '~/services-categories-page/services-categories-page.component';
 
@@ -115,8 +116,10 @@ export class ClientAppComponent implements OnInit, OnDestroy {
 
     const preferredStylists = await this.preferredStylistsData.get();
     if (preferredStylists.length === 1) {
-      // We have only one stylist, no need to show stylist selector:
-      const params: ServicesCategoriesParams = { stylistUuid: preferredStylists[0].uuid };
+      // We have only one stylist, no need to show stylist selector and we are able to start booking:
+      const { uuid } = preferredStylists[0];
+      await startBooking(uuid);
+      const params: ServicesCategoriesParams = { stylistUuid: uuid };
       this.nav.push(PageNames.ServicesCategories, { params });
       return;
     }
