@@ -77,8 +77,6 @@ import { EffectsModule } from '@ngrx/effects';
 import { profileReducer, profileStatePath } from '~/core/components/user-header/profile.reducer';
 import { ProfileEffects } from '~/core/components/user-header/profile.effects';
 
-import { AuthApiService } from '~/shared/stylist-api/auth-api-service';
-import { AuthApiServiceMock } from '~/shared/stylist-api/auth-api-service-mock';
 import { ClientsApi } from '~/shared/stylist-api/clients-api';
 import { ClientsApiMock } from '~/shared/stylist-api/clients-api.mock';
 import { ClientDetailsApi } from '~/shared/stylist-api/client-details.api';
@@ -166,7 +164,6 @@ export class TestUtils {
           }
         },
         // the API
-        { provide: AuthApiService, useClass: AuthApiServiceMock },
         { provide: ClientsApi, useClass: ClientsApiMock },
         { provide: ClientDetailsApi, useClass: ClientDetailsApiMock },
         { provide: HomeService, useClass: HomeServiceMock },

@@ -14,6 +14,16 @@ export interface StylistProfile {
   google_api_key?: string;
 }
 
+export interface StylistProfileStatus {
+  has_personal_data: boolean;
+  has_picture_set: boolean;
+  has_services_set: boolean;
+  has_business_hours_set: boolean;
+  has_weekday_discounts_set: boolean;
+  has_other_discounts_set: boolean;
+  has_invited_clients: boolean;
+}
+
 export interface ServiceInSummary {
   name: string;
   base_price: number;

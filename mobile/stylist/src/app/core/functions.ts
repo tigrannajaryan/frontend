@@ -1,6 +1,6 @@
 import { Page } from 'ionic-angular/navigation/nav-util';
 
-import { StylistProfileStatus } from '~/shared/stylist-api/auth-api-models';
+import { StylistProfileStatus } from '~/shared/stylist-api/stylist-models';
 import { PageNames } from './page-names';
 
 export interface PageDescr {

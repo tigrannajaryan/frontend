@@ -26,7 +26,7 @@ import { Logger } from '~/shared/logger';
 import { initSentry } from '~/shared/sentry';
 import { SharedSingletonsModule } from '~/shared/shared-singletons.module';
 
-import { AuthInterceptor } from '~/core/http-interceptors/auth-interceptor';
+import { AuthInterceptor } from '~/shared/api/auth-interceptor';
 import { UnhandledErrorHandler } from '~/shared/unhandled-error-handler';
 
 import { ClientAppComponent } from '~/app.component';

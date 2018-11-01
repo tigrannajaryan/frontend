@@ -20,9 +20,7 @@ import { AuthEffects } from '~/shared/storage/auth.effects';
 import { ApiError, FieldErrorItem } from '~/shared/api-errors';
 import { AuthProcessState } from '~/shared/storage/auth-process-state';
 
-import { AuthApiService } from '~/shared/stylist-api/auth-api-service';
 import { AppStorage } from '~/shared/storage/app-storage';
-import { TokenStorageImpl } from '~/app.component';
 
 import { CodeData, CodeInputComponent } from '~/shared/components/code-input/code-input.component';
 
@@ -50,7 +48,6 @@ export class AuthConfirmPageComponent {
 
   constructor(
     private storage: AppStorage,
-    private authApiService: AuthApiService,
     private authEffects: AuthEffects,
     private authDataState: AuthProcessState,
     private navCtrl: NavController,
@@ -83,8 +80,6 @@ export class AuthConfirmPageComponent {
         // logout, but it may not be enough since it is possible to be forcedly logged
         // out without performing logout user action (e.g. on token expiration).
         clearAllDataStores();
-
-        this.authApiService.init(new TokenStorageImpl(this.storage));
 
         if (!isRegistrationComplete(data.profileStatus)) {
           // This is a new user, enable help screens
