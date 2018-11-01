@@ -30,6 +30,7 @@ import { ProfileHeaderComponent } from '~/core/components/profile-header/profile
 import { StylistCardComponent } from '~/stylists/stylist-card/stylist-card.component';
 
 import { InputNumberDirective } from '~/core/directives/input-number.directive';
+import { UserContext } from '~/shared/user-context';
 
 export enum DefaultImage {
   User = 'assets/icons/stylist-avatar.png'
@@ -73,7 +74,8 @@ const declarations = [
   ],
   providers: [
     GoogleAnalytics,
-    GAWrapper
+    GAWrapper,
+    UserContext
   ]
 })
 export class CoreModule {}
