@@ -26,6 +26,10 @@ for CHANGED_ENTITY in $CHANGE_SCOPE; do
         echo "$CHANGED_ENTITY belongs to shared folder $MOBILE_FOLDER/$APP_TYPE. Build MUST be triggered"
         exit 1
     fi
+    if [[ $CHANGED_ENTITY = ".travis.yml" ]]; then
+        echo ".travis.yml changed. Build MUST be triggered"
+        exit 1
+    fi
 done
 
 echo "No changes shared folders or to $MOBILE_FOLDER/$APP_TYPE; build will be SKIPPED"
