@@ -44,3 +44,10 @@ echo "--Patching build config to remove standard signing credentials"
 sed -i.bak /CODE_SIGN_IDENTITY.*/d platforms/ios/cordova/build.xcconfig
 sed -i.bak /CODE_SIGN_IDENTITY.*/d platforms/ios/cordova/build-release.xcconfig
 
+# install missing pods - required for Firebase FCM
+
+echo "Installing pods"
+
+sudo gem install cocoapods
+cd platforms/ios
+pod install || true

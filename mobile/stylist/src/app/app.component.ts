@@ -8,6 +8,7 @@ import { async_all } from '~/shared/async-helpers';
 import { Logger } from '~/shared/logger';
 import { getBuildNumber, getCommitHash } from '~/shared/get-build-number';
 import { GAWrapper } from '~/shared/google-analytics';
+import { PushNotification } from '~/shared/push-notification';
 
 import { PageNames } from '~/core/page-names';
 import { createNavHistoryList } from '~/core/functions';
@@ -32,6 +33,7 @@ export class MyAppComponent {
     private authApiService: AuthService,
     private logger: Logger,
     private ga: GAWrapper,
+    public pushNotification: PushNotification,
     private serverStatusTracker: ServerStatusTracker,
     private storage: AppStorage,
     private screenOrientation: ScreenOrientation
@@ -106,6 +108,10 @@ export class MyAppComponent {
 
         const requiredPages = createNavHistoryList(authResponse.profile_status as StylistProfileStatus);
         this.nav.setPages(requiredPages);
+        if (ENV.ffEnablePushNotifications) {
+          // We are now in the app, init the push notifications
+          this.pushNotification.init();
+        }
         return;
       }
     }
