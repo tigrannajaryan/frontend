@@ -11,6 +11,7 @@ export interface StylistModel extends StylistUuidModel {
   salon_address: string;
   phone: string;
   followers_count: number;
+  is_profile_bookable: boolean;
   instagram_url?: string;
   website_url?: string;
   profile_photo_url?: string;
@@ -35,6 +36,6 @@ export interface PreferredStylistsListResponse {
   stylists: PreferredStylistModel[];
 }
 
-export interface SetPreferredStylistResponse {
+export interface AddPreferredStylistResponse {
   preference_uuid: string;
 }

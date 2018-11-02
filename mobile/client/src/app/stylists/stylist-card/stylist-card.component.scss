@@ -1,77 +1,115 @@
-$card-padding: pxtovw(16px);
-$pic-size: pxtovw(64px);
+stylist-card {
+  display: block;
+  text-align: left;
+}
 
-.StylistsPage-cardImg {
+.StylistCard {
+  position: relative;
+  display: flex;
+  flex-flow: row;
+  align-items: center;
+  padding: pxtovw(16px) pxtovw(22px);
+  margin-bottom: pxtovw(16px);
+  background: white;
+  border: pxtovw(2px) solid transparent;
+  border-radius: pxtovw(16px);
+  box-shadow: 0 pxtovw(7px) pxtovw(43px) 0 rgba(0, 0, 0, 0.08);
+  transition: all 150ms ease;
+}
+
+.StylistCard-heart {
   position: absolute;
-  top: 50%;
-  left: pxtovw(23px);
-  width: $pic-size;
-  height: $pic-size;
-  margin-top: -1 * $pic-size / 2;
+  top: pxtovw(16px);
+  left: pxtovw(14px);
+  font-size: pxtovw(21px);
+  color: color($colors, orange);
+  pointer-events: none;
+  opacity: 0;
+  transition: all 150ms ease;
+}
+
+.StylistCard-close {
+  position: absolute;
+  top: pxtovw(16px);
+  right: pxtovw(14px);
+  z-index: 1;
+  font-size: pxtovw(16px);
+  pointer-events: none;
+  opacity: 0;
+  transition: all 150ms ease;
+}
+
+.StylistCard-bookable {
+  position: absolute;
+  top: pxtovw(16px);
+  right: pxtovw(14px);
+  font-size: pxtovw(16px);
+  color: color($colors, orange);
+  opacity: 1;
+  transition: all 150ms ease;
+}
+
+.StylistCard-photo {
+  width: pxtovw(56px);
+  height: pxtovw(56px);
+  margin-right: pxtovw(16px);
   background-color: color($grayscale, 100);
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
   border-radius: 50%; // circle
+  transition: all 150ms ease;
 }
 
-.StylistsPage-cardHeader {
-  width: 0;
-  height: 0;
-  overflow: hidden;
-  font-size: $t-h3;
-  font-weight: 500;
-  text-align: center;
-}
-
-.StylistsPage-cardClose {
-  position: absolute;
-  top: pxtovw(17px);
-  right: pxtovw(16px);
-  display: none;
-  font-size: pxtovw(21px);
-  color: transparent;
-}
-
-.StylistsPage-cardTitle {
-  width: 100%;
-  margin: pxtovw(1px) 0 pxtovw(4px);
-  overflow: hidden;
-  font-size: $t-h3;
-  font-weight: 600;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-%StylistsPage-cardSubtitle,
-.StylistsPage-cardSubtitle {
+.StylistCard-salon {
   width: 100%;
   overflow: hidden;
   font-size: $t-base;
   color: color($grayscale, 500);
   text-overflow: ellipsis;
   white-space: nowrap;
+  transition: all 150ms ease;
 }
 
-.StylistsPage-cardInfo {
-  @extend %StylistsPage-cardSubtitle;
+.StylistCard-name {
+  width: 100%;
+  margin: 0 0 1px;
+  overflow: hidden;
+  font-size: $t-h4;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  transition: all 150ms ease;
+}
 
+.StylistCard-followers {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: flex-start;
   margin: 0;
   font-size: pxtovw(15px);
-  line-height: 20px / 15px * 1em;
+  color: color($grayscale, 500);
   white-space: normal;
-
-  + .StylistsPage-cardInfo {
-    margin-top: 0;
-  }
+  transition: all 150ms ease;
 
   .Link {
     // Add more contrast:
     color: color($colors, orange);
+    transition: all 150ms ease;
   }
+
+  i[class^=mb-icon] {
+    margin-right: pxtovw(2px);
+    font-size: pxtovw(14px);
+    color: color($colors, orange);
+    transition: all 150ms ease;
+  }
+}
+
+.StylistCard-info {
+  font-size: pxtovw(15px);
+  color: color($grayscale, 500);
+  white-space: normal;
 
   [class^=mb-icon] {
     min-width: pxtovw(18px);
@@ -79,10 +117,10 @@ $pic-size: pxtovw(64px);
   }
 }
 
-.StylistsPage-links {
+.StylistCard-links {
   $icon-size: pxtovw(24px);
 
-  margin: pxtovw(16px) 0 pxtovw(24px);
+  margin: pxtovw(25px) 0 pxtovw(28px);
 
   > * {
     width: $icon-size;
@@ -93,14 +131,7 @@ $pic-size: pxtovw(64px);
   }
 }
 
-.StylistsPage-cardFooter {
-  width: 0;
-  height: 0;
-  min-height: 0;
-  overflow: hidden;
-}
-
-.StylistsPage-submit {
+.StylistCard-submit {
   $submit-height: pxtovw(48px);
 
   display: block;
@@ -121,98 +152,115 @@ $pic-size: pxtovw(64px);
   }
 }
 
-.StylistsPage-card {
-  @extend %SharedCard;
+.StylistCard-action {
+  display: block;
+  font-size: $t-h4;
+  font-weight: 600;
+  color: color($colors, orange);
+  text-align: center;
+  background: none;
 
-  position: relative;
-  padding-bottom: pxtovw(10px);
-  padding-left: $card-padding + pxtovw(24px) + $pic-size;
-  background: white;
+  > span {
+    display: inline-block;
+    width: auto;
+    max-width: 100%;
+    overflow: hidden;
+    text-align: left;
+    text-overflow: ellipsis;
+  }
+}
 
-  &,
-  .StylistsPage-cardImg,
-  .StylistsPage-cardHeader,
-  .StylistsPage-cardTitle,
-  .StylistsPage-cardSubtitle,
-  .StylistsPage-cardFooter {
-    transition: all 0.08s ease-in;
+// card closed
+.StylistCard-info,
+.StylistCard-links,
+.StylistCard-submit,
+.StylistCard-action {
+  display: none;
+}
+
+// card expanded
+.StylistCard.is-active {
+  flex-flow: column;
+  align-items: center;
+  text-align: center;
+  border-color: rgb(229, 229, 229);
+
+  .StylistCard-photo {
+    width: pxtovw(88px);
+    height: pxtovw(88px);
+    margin: 0;
   }
 
-  &.is-active {
-    $new-pic-size: pxtovw(152px);
-    $pic-top-offset: pxtovw(56px);
+  .StylistCard-salon {
+    margin-top: 7px;
+    font-size: $t-h4;
+  }
 
-    padding: pxtovw(15px) pxtovw(25px);
+  .StylistCard-name {
+    margin-top: 9px;
+    font-size: $t-h2;
+  }
 
-    .StylistsPage-cardImg {
-      top: ($pic-size / 2) + pxtovw(16px);
-      left: 50%;
-      width: $new-pic-size;
-      height: $new-pic-size;
-      margin-left: -1 * $new-pic-size / 2;
-    }
+  .StylistCard-followers {
+    justify-content: center;
+    margin-top: 8px;
+    font-size: $t-h4;
+    color: color($colors, orange);
+  }
 
-    .StylistsPage-followers {
-      color: color($colors, orange);
-    }
+  .StylistCard-info {
+    margin-top: 12px;
+    font-size: $t-h4;
+  }
 
-    .StylistsPage-cardClose {
-      display: inline-block;
-      color: black;
-    }
+  // card opened
+  .StylistCard-info,
+  .StylistCard-submit,
+  .StylistCard-links {
+    display: block;
+  }
 
-    .StylistsPage-cardTitle {
-      margin: pxtovw(8px) 0;
-      font-size: pxtovw(29px);
-    }
+  .StylistCard-heart,
+  .StylistCard-close {
+    pointer-events: auto;
+    opacity: 1;
+  }
 
-    .StylistsPage-cardTitle,
-    .StylistsPage-cardSubtitle {
-      text-align: center;
-      white-space: initial;
-    }
+  .StylistCard-action {
+    display: inline-block;
+  }
 
-    .StylistsPage-cardSubtitle {
-      font-size: $t-h4;
-    }
+  .StylistCard-bookable {
+    opacity: 0;
+  }
+}
 
-    .StylistsPage-cardInfo {
-      display: inline-block;
-      font-size: pxtovw(18px);
-      text-align: center;
-      white-space: normal;
+.StylistCard.is-hearted {
+  .StylistCard-name {
+    text-align: left;
+  }
 
-      + .StylistsPage-cardInfo {
-        margin-top: pxtovw(4px);
-      }
+  .StylistCard-close {
+    top: pxtovw(19px);
+    right: pxtovw(22px);
+  }
+}
 
-      p {
-        margin: 0;
-        overflow: initial;
-        font-size: pxtovw(15px);
-        text-overflow: initial;
-        white-space: initial;
-      }
-    }
+.StylistCard.is-active.is-hearted {
+  flex-flow: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: pxtovw(67px) pxtovw(22px) pxtovw(14px);
 
-    .StylistsPage-cardHeader {
-      height: pxtovw(161px);
-      font-size: pxtovw(22px);
-      font-weight: 600;
-    }
 
-    .StylistsPage-cardFooter {
-      $footer-height: pxtovw(100px);
+  .StylistCard-photo {
+    width: pxtovw(64px);
+    height: pxtovw(64px);
+    margin-right: pxtovw(16px);
+  }
 
-      height: auto;
-      min-height: $footer-height;
-    }
-
-    .StylistsPage-cardHeader,
-    .StylistsPage-cardTitle,
-    .StylistsPage-cardSubtitle,
-    .StylistsPage-cardFooter {
-      width: 100%;
-    }
+  .StylistCard-name {
+    width: auto;
+    margin-top: pxtovw(2px);
   }
 }

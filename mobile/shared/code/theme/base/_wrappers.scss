@@ -8,3 +8,8 @@
 .Made-wpContent {
   padding-bottom: pxtovw(16px);
 }
+
+.flexBetween {
+  display: flex;
+  justify-content: space-between;
+}
