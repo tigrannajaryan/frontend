@@ -44,7 +44,7 @@ export class MainTabsComponent implements OnDestroy {
     },
     {
       name: 'Stylists',
-      link: PageNames.Stylist,
+      link: PageNames.MyStylists,
       params: {}
     },
     {
