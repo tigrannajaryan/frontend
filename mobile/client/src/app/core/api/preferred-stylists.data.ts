@@ -53,6 +53,14 @@ export class PreferredStylistsData {
   }
 
   /**
+   * Check if a stylist is already a preferred one
+   */
+  async hasStylist(stylistToSearch: StylistUuidModel): Promise<boolean> {
+    const stylists = await this.get();
+    return stylists.some((stylist: StylistUuidModel) => stylist.uuid === stylistToSearch.uuid);
+  }
+
+  /**
    * Remove Preferred stylist
    */
   async removeStylist(stylistUuid: string): Promise<void> {

@@ -1,0 +1,12 @@
+<div class="NonBookableSavePopup-content">
+  <div class="NonBookableSavePopup-img">
+    <img src="assets/icons/firework-3x.png" />
+  </div>
+  <div class="NonBookableSavePopup-msg">
+    Boom! Stylist saved to your favorites.
+    To book, please contact stylist directly:
+    <phone-link *ngIf="stylist" [phone]="stylist.phone"></phone-link>
+  </div>
+  <div (click)="onClose()" class="NonBookableSavePopup-btn Link">Keep Searching</div>
+  <div (click)="onRedirectToSavedStylists()" class="NonBookableSavePopup-btn Link">Go to Saved Stylists</div>
+</div>

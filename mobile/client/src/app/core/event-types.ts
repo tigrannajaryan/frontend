@@ -5,6 +5,7 @@
 export enum EventTypes {
   logout = 'logout',
   selectMainTab = 'selectMainTab',
+  selectStylistTab = 'selectStylistTab',
   startBooking = 'startBooking',
   startRebooking = 'startRebooking'
 }

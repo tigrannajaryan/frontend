@@ -44,7 +44,7 @@ export const PageNames = {
   HowMadeWorks: HowMadeWorksComponent,
   HowPricingWorks: HowPricingWorksComponent,
   MainTabs: MainTabsComponent,
-  MyStylist: MyStylistsComponent,
+  MyStylists: MyStylistsComponent,
   Privacy: PrivacySettingsComponent,
   ProfileEdit: ProfileEditComponent,
   ProfileSummary: ProfileSummaryComponent,
