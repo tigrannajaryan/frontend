@@ -96,7 +96,10 @@ export class StylistsPageComponent {
   }
 
   async onContinueWithStylist(stylist: StylistModel): Promise<void> {
-    await this.preferredStylistsData.addStylist(stylist);
+    const stylistAlreadyPreferred = await this.preferredStylistsData.hasStylist(stylist);
+    if (!stylistAlreadyPreferred) {
+      await this.preferredStylistsData.addStylist(stylist);
+    }
 
     if (this.onboarding) {
       // In case of onboarding we just redirect to Home:
