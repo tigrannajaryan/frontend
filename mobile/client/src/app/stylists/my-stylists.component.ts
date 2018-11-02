@@ -63,6 +63,7 @@ export class MyStylistsComponent {
   }
 
   ionViewWillEnter(): void {
+    // Subscribe to be able to activate tab from outside the component:
     this.events.subscribe(EventTypes.selectStylistTab, (tabIndex: Tabs) => this.onTabChange(tabIndex));
   }
 
