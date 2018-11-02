@@ -62,13 +62,14 @@ import { HomePageComponent } from '~/home-page/home-page.component';
 import { HowMadeWorksComponent } from '~/onboarding/how-made-works/how-made-works.component';
 import { HowPricingWorksComponent } from '~/onboarding/how-pricing-works/how-pricing-works.component';
 import { MainTabsComponent } from '~/main-tabs/main-tabs.component';
+import { MyStylistsComponent } from '~/stylists/my-stylists.component';
+import { NonBookableSavePopupComponent } from '~/stylists/non-bookable-save-popup/non-bookable-save-popup.component';
 import { ProfileEditComponent } from '~/profile/profile-edit/profile-edit.component';
 import { ProfileSummaryComponent } from '~/profile/profile-summary/profile-summary.component';
 import { SelectDateComponent } from '~/booking/select-date/select-date.component';
 import { SelectTimeComponent } from '~/booking/select-time/select-time.component';
 import { ServicesPageComponent } from '~/services-page/services-page.component';
 import { ServicesCategoriesPageComponent } from '~/services-categories-page/services-categories-page.component';
-import { MyStylistsComponent } from '~/stylists/my-stylists.component';
 import { SelectStylistComponent } from '~/stylists/select-stylist/select-stylist.component';
 import { StylistsPageComponent } from '~/stylists/stylists-search/stylists-search.component';
 import { UiKitPreviewComponent } from '~/ui-kit-preview/ui-kit-preview.component';
@@ -101,6 +102,7 @@ const declarations = [
   HowPricingWorksComponent,
   MainTabsComponent,
   MyStylistsComponent,
+  NonBookableSavePopupComponent,
   PrivacySettingsComponent,
   ProfileEditComponent,
   ProfileSummaryComponent,

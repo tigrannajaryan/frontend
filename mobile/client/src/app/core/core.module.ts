@@ -24,12 +24,14 @@ import { UserNamePhotoComponent } from '~/shared/components/user-name-photo/user
 import { PhoneInputDirective } from '~/shared/directives/phone-input.directive';
 
 import { AppointmentItemComponent } from '~/core/components/appointment-item/appointment-item.component';
-import { BookServicesHeaderComponent } from '~/booking/book-services-header/book-services-header';
 import { MadeHeaderComponent } from '~/core/components/made-header/made-header.component';
 import { ProfileHeaderComponent } from '~/core/components/profile-header/profile-header.component';
-import { StylistCardComponent } from '~/stylists/stylist-card/stylist-card.component';
 
 import { InputNumberDirective } from '~/core/directives/input-number.directive';
+
+import { BookServicesHeaderComponent } from '~/booking/book-services-header/book-services-header';
+import { StylistCardComponent } from '~/stylists/stylist-card/stylist-card.component';
+
 import { UserContext } from '~/shared/user-context';
 
 export enum DefaultImage {

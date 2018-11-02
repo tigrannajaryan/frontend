@@ -1,15 +1,12 @@
 import { Component, ViewChild } from '@angular/core';
-import { Refresher, Slides } from 'ionic-angular';
+import { Events, Refresher, Slides } from 'ionic-angular';
 
 import { PreferredStylistModel, PreferredStylistsListResponse, StylistModel } from '~/shared/api/stylists.models';
-
-import { PageNames } from '~/core/page-names';
-import { PreferredStylistsData } from '~/core/api/preferred-stylists.data';
 import { componentUnloaded } from '~/shared/component-unloaded';
 
-export enum StylistsEvents {
-  ReloadMyStylist = 'ReloadMyStylist'
-}
+import { EventTypes } from '~/core/event-types';
+import { PageNames } from '~/core/page-names';
+import { PreferredStylistsData } from '~/core/api/preferred-stylists.data';
 
 export enum Tabs {
   myStylists = 0,
@@ -52,6 +49,7 @@ export class MyStylistsComponent {
   onboarding = false;
 
   constructor(
+    private events: Events,
     private preferredStylistsData: PreferredStylistsData
   ) {
   }
@@ -62,6 +60,15 @@ export class MyStylistsComponent {
     this.preferredStylistsData.data.asObservable()
       .takeUntil(componentUnloaded(this))
       .subscribe(apiResponse => this.splitStylistsList(apiResponse.response));
+  }
+
+  ionViewWillEnter(): void {
+    // Subscribe to be able to activate tab from outside the component:
+    this.events.subscribe(EventTypes.selectStylistTab, (tabIndex: Tabs) => this.onTabChange(tabIndex));
+  }
+
+  ionViewWillLeave(): void {
+    this.events.unsubscribe(EventTypes.selectStylistTab);
   }
 
   onTabChange(tabIndex: Tabs): void {
