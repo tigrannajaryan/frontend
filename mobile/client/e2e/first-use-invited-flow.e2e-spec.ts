@@ -156,10 +156,6 @@ describe('First use flow for invited clients', () => {
     await homePage.startBooking();
   });
 
-  it('Can select stylist', async () => {
-    await selectStylistPage.selectStylist();
-  });
-
   it('Can select service category', async () => {
     await selectCategoryPage.selectCategory('color');
   });

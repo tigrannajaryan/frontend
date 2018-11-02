@@ -4,17 +4,18 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { ScreenOrientation } from '@ionic-native/screen-orientation';
 
-import { Logger } from '~/shared/logger';
+import { getBuildNumber, getCommitHash } from '~/shared/get-build-number';
 import { GAWrapper } from '~/shared/google-analytics';
+import { Logger } from '~/shared/logger';
 import { ServerStatusTracker } from '~/shared/server-status-tracker';
-import { PreferredStylistsData } from '~/core/api/preferred-stylists.data';
-
 import { deleteToken, getToken } from '~/shared/storage/token-utils';
 
-import { AUTHORIZED_ROOT, PageNames, UNAUTHORIZED_ROOT } from '~/core/page-names';
+import { PreferredStylistsData } from '~/core/api/preferred-stylists.data';
 import { EventTypes } from '~/core/event-types';
+import { AUTHORIZED_ROOT, PageNames, UNAUTHORIZED_ROOT } from '~/core/page-names';
+
+import { startBooking } from '~/booking/booking-utils';
 import { ENV } from '~/environments/environment.default';
-import { getBuildNumber, getCommitHash } from '~/shared/get-build-number';
 import { ServicesCategoriesParams } from '~/services-categories-page/services-categories-page.component';
 
 @Component({
@@ -105,14 +106,26 @@ export class ClientAppComponent implements OnInit, OnDestroy {
 
   async onStartBooking(stylistUuid: string): Promise<void> {
     // Begin booking process
+
     if (stylistUuid) {
       // Stylist is already selected (happens in re-booking with some services changed), proceed to services:
       const params: ServicesCategoriesParams = { stylistUuid };
       this.nav.push(PageNames.ServicesCategories, { params });
-    } else {
-      // Choose stylist first:
-      this.nav.push(PageNames.SelectStylist);
+      return;
     }
+
+    const preferredStylists = await this.preferredStylistsData.get();
+    if (preferredStylists.length === 1) {
+      // We have only one stylist, no need to show stylist selector and we are able to start booking:
+      const { uuid } = preferredStylists[0];
+      await startBooking(uuid);
+      const params: ServicesCategoriesParams = { stylistUuid: uuid };
+      this.nav.push(PageNames.ServicesCategories, { params });
+      return;
+    }
+
+    // Choose stylist first:
+    this.nav.push(PageNames.SelectStylist);
   }
 
   onStartRebooking(): void {
