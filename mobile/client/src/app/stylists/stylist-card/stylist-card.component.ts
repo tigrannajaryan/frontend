@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { AlertController, NavController } from 'ionic-angular';
 
 import { StylistModel } from '~/shared/api/stylists.models';
 import { ExternalAppService } from '~/shared/utils/external-app-service';
@@ -13,15 +13,19 @@ import { PageNames } from '~/core/page-names';
 export class StylistCardComponent implements OnInit {
   @Input() stylist: StylistModel;
   @Input() isActive = false;
+  @Input() isMyStylist = false;
+  @Input() isHearted = false;
 
   @Output() openCard = new EventEmitter<StylistModel>();
   @Output() closeCard = new EventEmitter<StylistModel>();
 
   @Output() selectStylist = new EventEmitter<StylistModel>();
+  @Output() removeStylist = new EventEmitter<StylistModel>();
 
   constructor(
     private externalAppService: ExternalAppService,
-    private navCtrl: NavController
+    private navCtrl: NavController,
+    private alertCtrl: AlertController
   ) {
   }
 
@@ -58,5 +62,23 @@ export class StylistCardComponent implements OnInit {
 
   onSelectStylist(): void {
     this.selectStylist.emit(this.stylist);
+  }
+
+  onRemoveStylist(): void {
+    const popup = this.alertCtrl.create({
+      title: 'Are you sure you want to remove this stylist?',
+      buttons: [{
+        text: 'Cancel',
+        role: 'cancel'
+      }, {
+        text: 'Yes, Remove',
+        handler: () => {
+          setTimeout(async () => {
+            this.removeStylist.emit(this.stylist);
+          });
+        }
+      }]
+    });
+    popup.present();
   }
 }

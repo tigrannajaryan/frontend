@@ -11,3 +11,22 @@
     font-size: inherit;
   }
 }
+
+.Circle-add {
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  width: pxtovw(28px);
+  height: pxtovw(28px);
+  background: color($colors-shared, lightSalmon);
+  border-radius: 50%;
+
+  &:after {
+    margin-top: pxtovw(-6px);
+    font-size: pxtovw(30px);
+    font-weight: 100;
+    color: white;
+    content: '+';
+  }
+}
+

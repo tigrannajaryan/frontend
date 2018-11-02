@@ -8,8 +8,8 @@ import { stylistApi } from './shared-e2e/stylist-api';
 import { ClientInvitation } from './shared-app/stylist-api/invitations.models';
 import { SetStylistServicesParams, StylistProfile } from './shared-app/stylist-api/stylist-models';
 import { Worktime } from './shared-app/stylist-api/worktime.models';
-import { AuthCredentials, UserRole } from './shared-app/stylist-api/auth-api-models';
 import { getPhoneNumber } from './shared-app/utils/phone-numbers';
+import { EmailAuthCredentials } from './shared-app/api/auth.models';
 
 import { clientApp } from './client-app';
 import { firstPage } from './pages/first-page';
@@ -32,10 +32,10 @@ describe('First use flow for invited clients', () => {
 
   beforeAll(async () => {
     // Register new stylist
-    const stylistCredentials: AuthCredentials = {
+    const stylistCredentials: EmailAuthCredentials = {
       email: getRandomEmail(),
       password: getRandomString(Math.floor(Math.random() * 20) + 1),
-      role: UserRole.stylist
+      role: 'stylist'
     };
     const authResponse = await stylistApi.registerByEmail(stylistCredentials);
     expect(authResponse.token).toBeDefined();

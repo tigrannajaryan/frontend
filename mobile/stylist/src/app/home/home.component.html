@@ -22,20 +22,20 @@
       </div>
     </div>
 
-    <div *ngIf="home" class="Home-btns">
-      <div class="bb-wp-a Home-btnsWp">
+    <div *ngIf="home" class="Tabs-box">
+      <div class="bb-wp-a Tabs-wp">
         <button (click)="loadAppointments(tabs[Tabs.today].name)" [class.active]="tabs[Tabs.today].name === activeTab" ion-button
-          clear color="dark" class="Home-btnsBtn active">
+          clear color="dark" class="Tabs-btn active">
           {{ tabs[Tabs.today].name }} &nbsp;
           <b>{{ home.today_visits_count }} of {{ todaySlots }}</b>
         </button>
         <button (click)="loadAppointments(tabs[Tabs.upcoming].name)" [class.active]="tabs[Tabs.upcoming].name === activeTab" ion-button
-          clear color="dark" class="Home-btnsBtn">
+          clear color="dark" class="Tabs-btn">
           {{ tabs[Tabs.upcoming].name }} &nbsp;
           <b>{{ home.upcoming_visits_count }}</b>
         </button>
         <button (click)="loadAppointments(tabs[Tabs.past].name)" [class.active]="tabs[Tabs.past].name === activeTab" ion-button clear
-          color="dark" class="Home-btnsBtn">
+          color="dark" class="Tabs-btn">
           {{ tabs[Tabs.past].name }}
         </button>
       </div>

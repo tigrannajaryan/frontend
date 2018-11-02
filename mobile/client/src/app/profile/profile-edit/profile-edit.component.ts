@@ -48,8 +48,14 @@ export class ProfileEditComponent {
     const profile: ProfileModel = this.navParams.get('profile');
 
     this.form = this.formBuilder.group({
-      first_name: [profile.first_name],
-      last_name: [profile.last_name],
+      first_name: [profile.first_name, [
+        Validators.required,
+        Validators.maxLength(30)
+      ]],
+      last_name: [profile.last_name, [
+        Validators.required,
+        Validators.maxLength(150)
+      ]],
       email: [profile.email, [
         emptyOr(Validators.email)
       ]],

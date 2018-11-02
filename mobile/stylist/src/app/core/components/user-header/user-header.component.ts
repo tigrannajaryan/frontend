@@ -3,11 +3,11 @@ import { App, NavController, PopoverController } from 'ionic-angular';
 import { Store } from '@ngrx/store';
 
 import { StylistProfile } from '~/shared/stylist-api/stylist-models';
-import { AuthApiService } from '~/shared/stylist-api/auth-api-service';
 import { PageNames } from '~/core/page-names';
 import { clearAllDataStores } from '~/core/data.module';
 import { LogoutAction } from '~/app.reducers';
 import { UserHeaderMenuActions, UserHeaderMenuComponent } from './user-header-menu/user-header-menu.component';
+import { AuthService } from '~/shared/api/auth.api';
 
 @Component({
   selector: '[madeUserHeader]',
@@ -20,7 +20,7 @@ export class UserHeaderComponent {
     public popoverCtrl: PopoverController,
     protected navCtrl: NavController,
     private app: App,
-    private authApiService: AuthApiService,
+    private authApiService: AuthService,
     private store: Store<any>
   ) {
   }

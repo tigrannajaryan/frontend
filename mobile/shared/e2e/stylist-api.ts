@@ -1,6 +1,6 @@
 import * as fetch from 'node-fetch';
 
-import { AuthCredentials, AuthResponse } from '../shared-app/stylist-api/auth-api-models';
+import { EmailAuthCredentials, AuthResponse } from '../shared-app/api/auth.models';
 import { InvitationsResponse, ClientInvitation } from '../shared-app/stylist-api/invitations.models';
 import { Worktime } from '../shared-app/stylist-api/worktime.models';
 import { SetStylistServicesParams, StylistProfile, StylistServicesListResponse } from '../shared-app/stylist-api/stylist-models';
@@ -19,7 +19,7 @@ class StylistApi {
    * Register a new user authenticate using the API. If successfull remembers the auth response
    * and token which can be later obtained via getAuthToken().
    */
-  async registerByEmail(credentials: AuthCredentials): Promise<AuthResponse> {
+  async registerByEmail(credentials: EmailAuthCredentials): Promise<AuthResponse> {
     const response = await this.post<AuthResponse>('auth/register', credentials);
     this.authToken = response.token;
     return response;

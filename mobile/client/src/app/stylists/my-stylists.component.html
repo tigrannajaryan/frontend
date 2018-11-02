@@ -1,0 +1,81 @@
+<ion-header madeHeader [hideBackButton]="true">
+  <ion-toolbar no-padding>
+    <div class="Made-wp MyStylistsPage-headerMargin">
+      <div class="Badge-H1 flexBetween">
+        <div data-test-id="myStylistsTitle">
+          Stylists <span *ngIf="tabs[Tabs.myStylists].stylists?.length > 0" class="Badge">{{ tabs[Tabs.myStylists].stylists.length }}</span>
+        </div>
+
+        <button [madeLink]="[PageNames.Stylists]" [isRootNav]="true" class="Circle-add"></button>
+      </div>
+
+      <div class="Tabs-box MyStylistsPage-tabsMargin">
+        <div class="Tabs-wp">
+          <button
+            (click)="onTabChange(Tabs.myStylists)"
+            [class.active]="tabs[Tabs.myStylists].name === activeTab"
+            ion-button clear color="dark" class="Tabs-btn">
+            {{ TabNames.myStylists }} &nbsp; <b *ngIf="tabs[Tabs.myStylists].stylists?.length > 0">{{ tabs[Tabs.myStylists].stylists.length }}</b>
+          </button>
+          <button
+            (click)="onTabChange(Tabs.savedStylists)"
+            [class.active]="tabs[Tabs.savedStylists].name === activeTab"
+            ion-button clear color="dark" class="Tabs-btn">
+            {{ TabNames.savedStylists }} &nbsp; <b *ngIf="tabs[Tabs.savedStylists].stylists?.length > 0">{{ tabs[Tabs.savedStylists].stylists.length }}</b>
+          </button>
+        </div>
+      </div>
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content no-padding>
+  <ion-refresher [enabled]="refresherEnabled" (ionRefresh)="onRefresh($event)" class="Refresh">
+    <ion-spinner></ion-spinner>
+  </ion-refresher>
+
+
+  <ion-slides (ionSlideDrag)="onEnableRefresher(false)" (touchend)="onEnableRefresher(true)" (ionSlideDidChange)="onTabSwipe()" no-padding class="Tabs-slides">
+    <ion-slide class="Tabs-slide" data-test-id="myStylistsTabList">
+      <div *ngIf="!tabs[Tabs.myStylists].loaded">
+        <ion-spinner></ion-spinner>
+      </div>
+
+
+      <div *ngIf="tabs[Tabs.myStylists].loaded" class="Made-wp Made-wpContent">
+        <stylist-card
+          *ngFor="let stylist of tabs[Tabs.myStylists].stylists"
+          [stylist]="stylist"
+          [isActive]="stylist.uuid === activeStylist?.uuid"
+          [isMyStylist]="true"
+          (openCard)="onSetActiveStylist(stylist)"
+          (closeCard)="onSetActiveStylist(undefined)"
+          (removeStylist)="onRemoveStylist(stylist)"></stylist-card>
+
+        <div *ngIf="!tabs[Tabs.myStylists].stylists || tabs[Tabs.myStylists].stylists?.length === 0">You did not select preferred stylists yet.</div>
+      </div>
+    </ion-slide>
+
+
+    <ion-slide class="Tabs-slide" data-test-id="savedStylistsTabList">
+      <div *ngIf="!tabs[Tabs.savedStylists].loaded">
+        <ion-spinner></ion-spinner>
+      </div>
+
+      <div *ngIf="tabs[Tabs.savedStylists].loaded" class="Made-wp Made-wpContent">
+        <stylist-card
+          *ngFor="let stylist of tabs[Tabs.savedStylists].stylists"
+          [stylist]="stylist"
+          [isActive]="stylist.uuid === activeStylist?.uuid"
+          [isMyStylist]="true"
+          [isHearted]="true"
+          (openCard)="onSetActiveStylist(stylist)"
+          (closeCard)="onSetActiveStylist(undefined)"
+          (removeStylist)="onRemoveStylist(stylist)"></stylist-card>
+
+        <div *ngIf="!tabs[Tabs.savedStylists].stylists || tabs[Tabs.savedStylists].stylists?.length === 0">You did not save any stylists yet.</div>
+      </div>
+    </ion-slide>
+  </ion-slides>
+</ion-content>

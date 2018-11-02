@@ -8,26 +8,17 @@ import { async_all } from '~/shared/async-helpers';
 import { Logger } from '~/shared/logger';
 import { getBuildNumber, getCommitHash } from '~/shared/get-build-number';
 import { GAWrapper } from '~/shared/google-analytics';
-import { AuthApiService, TokenStorage } from '~/shared/stylist-api/auth-api-service';
+import { PushNotification } from '~/shared/push-notification';
 
 import { PageNames } from '~/core/page-names';
 import { createNavHistoryList } from '~/core/functions';
 import { AppStorage } from '~/shared/storage/app-storage';
 import { ServerStatusTracker } from '~/shared/server-status-tracker';
 import { ENV } from '~/environments/environment.default';
-import { AuthResponse } from '~/shared/stylist-api/auth-api-models';
-
-export class TokenStorageImpl implements TokenStorage {
-  constructor(private appStorage: AppStorage) {}
-
-  get(): string {
-    return this.appStorage.get('authToken');
-  }
-
-  set(token: string): Promise<void> {
-    return this.appStorage.set('authToken', token);
-  }
-}
+import { AuthService } from './shared/api/auth.api';
+import { getToken } from './shared/storage/token-utils';
+import { AuthResponse } from './shared/api/auth.models';
+import { StylistProfileStatus } from '~/shared/stylist-api/stylist-models';
 
 @Component({
   templateUrl: 'app.component.html'
@@ -39,9 +30,10 @@ export class MyAppComponent {
     public platform: Platform,
     public statusBar: StatusBar,
     public splashScreen: SplashScreen,
-    private authApiService: AuthApiService,
+    private authApiService: AuthService,
     private logger: Logger,
     private ga: GAWrapper,
+    public pushNotification: PushNotification,
     private serverStatusTracker: ServerStatusTracker,
     private storage: AppStorage,
     private screenOrientation: ScreenOrientation
@@ -96,16 +88,15 @@ export class MyAppComponent {
   }
 
   async showInitialPage(): Promise<void> {
-    this.authApiService.init(new TokenStorageImpl(this.storage));
-
-    if (this.authApiService.getAuthToken()) {
+    const token = await getToken(); // no expiration
+    if (token) {
       this.logger.info('App: We have a stored authentication information. Attempting to restore.');
 
       // We were previously authenticated, let's try to refresh the token
       // and validate it and show the correct page after that.
       let authResponse: AuthResponse;
       try {
-        authResponse = (await this.authApiService.refreshAuth().get()).response;
+        authResponse = (await this.authApiService.refreshAuth(token.token).get()).response;
       } catch (e) {
         this.logger.error('App: Error when trying to refresh auth.');
       }
@@ -115,8 +106,12 @@ export class MyAppComponent {
       if (authResponse) {
         this.logger.info('App: Authentication refreshed.');
 
-        const requiredPages = createNavHistoryList(authResponse.profile_status);
+        const requiredPages = createNavHistoryList(authResponse.profile_status as StylistProfileStatus);
         this.nav.setPages(requiredPages);
+        if (ENV.ffEnablePushNotifications) {
+          // We are now in the app, init the push notifications
+          this.pushNotification.init();
+        }
         return;
       }
     }

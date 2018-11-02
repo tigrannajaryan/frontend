@@ -60,11 +60,11 @@ export class RegisterSalonComponent {
 
       first_name: ['', [
         Validators.required,
-        Validators.maxLength(25)
+        Validators.maxLength(30)
       ]],
       last_name: ['', [
         Validators.required,
-        Validators.maxLength(25)
+        Validators.maxLength(150)
       ]],
       salon_name: ['', [
         Validators.required,

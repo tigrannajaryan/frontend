@@ -16,10 +16,11 @@ import { SelectStylistComponent } from '~/stylists/select-stylist/select-stylist
 import { SelectTimeComponent } from '~/booking/select-time/select-time.component';
 import { ServicesPageComponent } from '~/services-page/services-page.component';
 import { ServicesCategoriesPageComponent } from '~/services-categories-page/services-categories-page.component';
-import { StylistComponent } from '~/stylists/stylist/stylist.component';
+import { MyStylistsComponent } from '~/stylists/my-stylists.component';
 import { StylistsPageComponent } from '~/stylists/stylists-search/stylists-search.component';
 import { PrivacySettingsComponent } from '~/privacy-settings/privacy-settings.component';
 import { FollowersComponent } from '~/followers/followers.component';
+import { StylistComponent } from '~/stylists/stylist/stylist.component';
 
 /**
  * Define page names in one place to avoid typos if the names are used as
@@ -43,6 +44,7 @@ export const PageNames = {
   HowMadeWorks: HowMadeWorksComponent,
   HowPricingWorks: HowPricingWorksComponent,
   MainTabs: MainTabsComponent,
+  MyStylist: MyStylistsComponent,
   Privacy: PrivacySettingsComponent,
   ProfileEdit: ProfileEditComponent,
   ProfileSummary: ProfileSummaryComponent,

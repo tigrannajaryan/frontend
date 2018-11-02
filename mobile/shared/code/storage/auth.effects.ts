@@ -28,28 +28,6 @@ import {
 } from '~/shared/storage/auth.reducer';
 
 import { saveToken } from '~/shared/storage/token-utils';
-import { AppStorage } from '~/shared/storage/app-storage';
-
-import { AppModule } from '~/app.module';
-
-import config from '~/auth/config.json';
-
-enum UserRole {
-  Stylist = 'stylist',
-  Client = 'client'
-}
-
-function performTokenSave(token: AuthTokenModel): Promise<void> {
-  switch (config && config.role) {
-    case UserRole.Stylist: {
-      const storage = AppModule.injector.get(AppStorage); // dynamic inject
-      return storage.set('authToken', token.token);
-    }
-    case UserRole.Client:
-    default:
-      return saveToken(token);
-  }
-}
 
 @Injectable()
 export class AuthEffects {
@@ -129,7 +107,7 @@ export class AuthEffects {
     .ofType(authActionTypes.CONFIRM_CODE_SUCCESS)
     .switchMap((action: ConfirmCodeSuccessAction): Observable<ConfirmCodeSuccessAction | boolean> =>
       Observable.from(
-        performTokenSave(action.token)
+        saveToken(action.token)
           .then(() => action)
           .catch((error: Error) => {
             this.errorHandler.handleError(error);

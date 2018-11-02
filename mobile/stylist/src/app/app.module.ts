@@ -1,5 +1,5 @@
-import { HttpClientModule } from '@angular/common/http';
-import { StatusBar } from '@ionic-native/status-bar';
+import { AgmCoreModule, LAZY_MAPS_API_CONFIG } from '@agm/core';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, Injector, NgModule } from '@angular/core';
@@ -8,7 +8,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { IonicApp, IonicModule } from 'ionic-angular';
 import { ScreenOrientation } from '@ionic-native/screen-orientation';
 import { AppVersion } from '@ionic-native/app-version';
-import { AgmCoreModule, LAZY_MAPS_API_CONFIG } from '@agm/core';
+import { StatusBar } from '@ionic-native/status-bar';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { AppAvailability } from '@ionic-native/app-availability';
@@ -18,19 +18,18 @@ import { SMS } from '@ionic-native/sms';
 import { Camera } from '@ionic-native/camera';
 import { Clipboard } from '@ionic-native/clipboard';
 import { EmailComposer } from '@ionic-native/email-composer';
+import { Push } from '@ionic-native/push';
 
 import { UnhandledErrorHandler } from '~/shared/unhandled-error-handler';
 import { initSentry } from '~/shared/sentry';
 import { Logger } from '~/shared/logger';
 import { SharedSingletonsModule } from '~/shared/shared-singletons.module';
-import { AuthApiService } from '~/shared/stylist-api/auth-api-service';
 import { ExternalAppService } from '~/shared/utils/external-app-service';
 
 import { AuthService } from '~/shared/api/auth.api';
 import { authPath, authReducer } from '~/shared/storage/auth.reducer';
 import { AuthEffects } from '~/shared/storage/auth.effects';
 import { MyAppComponent } from './app.component';
-import { httpInterceptorProviders } from '~/shared/stylist-api/http-interceptors';
 import { getMetaReducers } from './app.reducers';
 import { ENV } from '~/environments/environment.default';
 import { AppStorage } from '~/shared/storage/app-storage';
@@ -42,6 +41,8 @@ import { HomeService } from '~/shared/stylist-api/home.service';
 import { WorktimeApi } from '~/shared/stylist-api/worktime.api';
 import { InvitationsApi } from '~/shared/stylist-api/invitations.api';
 import { ClientDetailsApi } from '~/shared/stylist-api/client-details.api';
+
+import { PushNotification } from '~/shared/push-notification';
 
 import { CoreModule } from '~/core/core.module';
 import { GoogleMapsConfig } from '~/core/google-maps-config';
@@ -81,6 +82,7 @@ import { UiKitPreviewComponent } from '~/ui-kit-preview/ui-kit-preview.component
 import { servicesReducer } from '~/appointment/appointment-services/services.reducer';
 import { ServicesEffects } from '~/appointment/appointment-services/services.effects';
 import { WorkHoursComponent } from '~/workhours/workhours.component';
+import { AuthInterceptor } from './shared/api/auth-interceptor';
 
 initSentry();
 
@@ -186,8 +188,6 @@ const declarations = [
     StatusBar,
     SplashScreen,
     AuthService,
-    AuthApiService,
-    httpInterceptorProviders,
     AppVersion,
     AppStorage,
     ScreenOrientation,
@@ -195,6 +195,14 @@ const declarations = [
     AppAvailability,
     Clipboard,
     EmailComposer,
+
+    Push,
+    PushNotification,
+
+    { // Add auth token to all requests
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor, multi: true
+    },
 
     {
       // Our custom handler for unhandled exceptions

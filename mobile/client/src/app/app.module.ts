@@ -26,7 +26,7 @@ import { Logger } from '~/shared/logger';
 import { initSentry } from '~/shared/sentry';
 import { SharedSingletonsModule } from '~/shared/shared-singletons.module';
 
-import { AuthInterceptor } from '~/core/http-interceptors/auth-interceptor';
+import { AuthInterceptor } from '~/shared/api/auth-interceptor';
 import { UnhandledErrorHandler } from '~/shared/unhandled-error-handler';
 
 import { ClientAppComponent } from '~/app.component';
@@ -68,7 +68,7 @@ import { SelectDateComponent } from '~/booking/select-date/select-date.component
 import { SelectTimeComponent } from '~/booking/select-time/select-time.component';
 import { ServicesPageComponent } from '~/services-page/services-page.component';
 import { ServicesCategoriesPageComponent } from '~/services-categories-page/services-categories-page.component';
-import { StylistComponent } from '~/stylists/stylist/stylist.component';
+import { MyStylistsComponent } from '~/stylists/my-stylists.component';
 import { SelectStylistComponent } from '~/stylists/select-stylist/select-stylist.component';
 import { StylistsPageComponent } from '~/stylists/stylists-search/stylists-search.component';
 import { UiKitPreviewComponent } from '~/ui-kit-preview/ui-kit-preview.component';
@@ -76,6 +76,7 @@ import { UiKitPreviewComponent } from '~/ui-kit-preview/ui-kit-preview.component
 import { ENV } from '~/environments/environment.default';
 import { PrivacySettingsComponent } from '~/privacy-settings/privacy-settings.component';
 import { FollowersComponent } from '~/followers/followers.component';
+import { StylistComponent } from '~/stylists/stylist/stylist.component';
 
 // Init sentry reporting (inits only if ENV.sentryDsn):
 initSentry();
@@ -86,29 +87,30 @@ if (ENV.production) {
 }
 
 const declarations = [
-  ClientAppComponent,
   AboutComponent,
   AppointmentPageComponent,
   AppointmentsHistoryComponent,
-  AuthPageComponent,
   AuthConfirmPageComponent,
+  AuthPageComponent,
   BookingCompleteComponent,
+  ClientAppComponent,
   FirstScreenComponent,
   FollowersComponent,
   HomePageComponent,
   HowMadeWorksComponent,
   HowPricingWorksComponent,
   MainTabsComponent,
+  MyStylistsComponent,
+  PrivacySettingsComponent,
   ProfileEditComponent,
   ProfileSummaryComponent,
   SelectDateComponent,
   SelectStylistComponent,
   SelectTimeComponent,
-  ServicesPageComponent,
   ServicesCategoriesPageComponent,
+  ServicesPageComponent,
   StylistComponent,
   StylistsPageComponent,
-  PrivacySettingsComponent,
   UiKitPreviewComponent
 ];
 
