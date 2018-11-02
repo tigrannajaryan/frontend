@@ -43,6 +43,10 @@ ion-app.wp {
   padding: 0 pxtovw(25px);
 }
 
+.defGrid.grid {
+  padding: pxtovw(5px);
+}
+
 .alert-md .alert-message,
 .alert-ios .alert-message,
 .alert-wp .alert-message {
