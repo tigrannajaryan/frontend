@@ -14,8 +14,17 @@
     border-radius: pxtovw(16px);
   }
 
+  .NonBookableSavePopup-img {
+    padding: pxtovw(16px) 0;
+    text-align: center;
+
+    > img {
+      width: pxtovw(60px);
+    }
+  }
+
   .NonBookableSavePopup-msg {
-    padding: pxtovw(16px) pxtovw(24px) pxtovw(24px);
+    padding: 0 pxtovw(24px) pxtovw(24px);
     line-height: pxtovw(24px);
   }
 
