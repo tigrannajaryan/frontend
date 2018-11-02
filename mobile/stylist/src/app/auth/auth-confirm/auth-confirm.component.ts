@@ -84,10 +84,9 @@ export class AuthConfirmPageComponent {
         // out without performing logout user action (e.g. on token expiration).
         clearAllDataStores();
 
-        if (!isRegistrationComplete(data.profileStatus)) {
-          // This is a new user, enable help screens
-          this.storage.set('showHomeScreenHelp', true);
-        }
+        // true = This is a new user, enable help screens
+        // false = Set it back to false for the case when we change user
+        this.storage.set('showHomeScreenHelp', !isRegistrationComplete(data.profileStatus));
 
         const requiredPages = createNavHistoryList(data.profileStatus);
         this.navCtrl.setPages(requiredPages);
