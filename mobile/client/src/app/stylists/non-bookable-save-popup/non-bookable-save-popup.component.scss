@@ -1,0 +1,27 @@
+.NonBookableSavePopup {
+  background: rgba(black, 0.5);
+
+  non-bookable-save-popup {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .NonBookableSavePopup-content {
+    width: pxtovw(327px);
+    font-size: $t-h4;
+    background: white;
+    border-radius: pxtovw(16px);
+  }
+
+  .NonBookableSavePopup-msg {
+    padding: pxtovw(16px) pxtovw(24px) pxtovw(24px);
+    line-height: pxtovw(24px);
+  }
+
+  .NonBookableSavePopup-btn {
+    padding: pxtovw(16px) pxtovw(24px);
+    text-align: center;
+    border-top: 1px solid color($grayscale, 200);
+  }
+}
