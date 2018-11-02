@@ -53,7 +53,7 @@ export class AuthConfirmPageComponent {
     private authDataState: AuthProcessState,
     private navCtrl: NavController,
     private navParams: NavParams,
-    public pushNotification: PushNotification,
+    private pushNotification: PushNotification,
     private store: Store<AuthState>
   ) {
   }

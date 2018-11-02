@@ -33,7 +33,7 @@ export class MyAppComponent {
     private authApiService: AuthService,
     private logger: Logger,
     private ga: GAWrapper,
-    public pushNotification: PushNotification,
+    private pushNotification: PushNotification,
     private serverStatusTracker: ServerStatusTracker,
     private storage: StylistAppStorage,
     private screenOrientation: ScreenOrientation

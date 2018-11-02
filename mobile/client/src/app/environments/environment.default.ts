@@ -5,10 +5,15 @@ export const ENV = {
   // Feature flag to enable or disable incomplete features
   ffEnableIncomplete: false,
 
+  // Feature flag to enable push notifications
+  ffEnablePushNotifications: true,
+
   // Disable Sentry reporting by default.
   sentryDsn: undefined,
 
   // Disable GA reporting by default
-  gaTrackingId: undefined
+  gaTrackingId: undefined,
 
+  // Firebase Cloud Messaging Sender ID. Use Staging push notifications by default
+  FCM_PUSH_SENDER_ID: '17636556416'
 };

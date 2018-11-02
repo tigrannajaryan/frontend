@@ -67,18 +67,7 @@ export class AuthConfirmPageComponent {
       .takeWhile(componentIsActive(this))
       .filter(isTokenSaved => isTokenSaved)
       .withLatestFrom(this.store)
-      .subscribe(async ([isTokenSaved, state]) => {
-        const preferredStylists = await this.preferredStylistsData.get();
-        const invitation = selectInvitedByStylist(state);
-        if (preferredStylists.length > 0) {
-          this.navCtrl.setRoot(PageNames.MainTabs);
-        } else if (invitation) {
-          const data: StylistPageParams = { stylist: invitation };
-          this.navCtrl.setRoot(PageNames.Stylist, { data });
-        } else {
-          this.navCtrl.setRoot(PageNames.HowMadeWorks);
-        }
-      });
+      .subscribe(async ([isTokenSaved, state]) => this.onCodeConfirmed(state));
 
     // Handle code verification error
     this.error = this.store.select(selectConfirmCodeError);
@@ -107,6 +96,26 @@ export class AuthConfirmPageComponent {
     } else if (code.length === 0) {
       // if there was an error and the input had been cleared out
       this.store.dispatch(new ResetConfirmCodeErrorAction());
+    }
+  }
+
+  async onCodeConfirmed(state: AuthState & StylistState): Promise<void> {
+    // Get the list of preferred stylists
+    const preferredStylists = await this.preferredStylistsData.get();
+
+    // Also get the invitation (if any)
+    const invitation = selectInvitedByStylist(state);
+    if (preferredStylists.length > 0) {
+      // We already have a preferred stylist, go to main tabs screen.
+      this.navCtrl.setRoot(PageNames.MainTabs);
+    } else if (invitation) {
+      // No preferred stylist, but we have an invitation from a stylist, show it.
+      const data: StylistPageParams = { stylist: invitation };
+      this.navCtrl.setRoot(PageNames.Stylist, { data });
+    } else {
+      // No preferred stylist, no invitation, brand new client. Start with
+      // educational screen.
+      this.navCtrl.setRoot(PageNames.HowMadeWorks);
     }
   }
 }

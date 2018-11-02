@@ -18,6 +18,7 @@ import { LaunchNavigator } from '@ionic-native/launch-navigator';
 import { ScreenOrientation } from '@ionic-native/screen-orientation';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
+import { Push } from '@ionic-native/push';
 
 import { META_REDUCERS, StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
@@ -45,7 +46,7 @@ import { BaseService } from '~/shared/api/base.service';
 import { ExternalAppService } from '~/shared/utils/external-app-service';
 import { GeolocationService } from '~/shared/utils/geolocation.service';
 import { ServerStatusTracker } from '~/shared/server-status-tracker';
-
+import { PushNotification } from './shared/push-notification';
 import { authPath, authReducer } from '~/shared/storage/auth.reducer';
 import { profilePath, profileReducer } from '~/core/reducers/profile.reducer';
 import { stylistsPath, stylistsReducer } from '~/core/reducers/stylists.reducer';
@@ -191,6 +192,9 @@ const declarations = [
     ExternalAppService,
     GeolocationService,
     ServerStatusTracker,
+
+    Push,
+    PushNotification,
 
     { // Add auth token to all requests
       provide: HTTP_INTERCEPTORS,

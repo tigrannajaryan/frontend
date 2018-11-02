@@ -1,15 +1,19 @@
 import { Component, OnDestroy, ViewChild } from '@angular/core';
 import { Events, Tab, Tabs } from 'ionic-angular';
+import { Page } from 'ionic-angular/navigation/nav-util';
+import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
 
 import { GAWrapper } from '~/shared/google-analytics';
+import { ApiResponse } from '~/shared/api/base.models';
+import { PushNotification } from '~/shared/push-notification';
+
 import { PageNames } from '~/core/page-names';
 import { EventTypes } from '~/core/event-types';
-import { Page } from 'ionic-angular/navigation/nav-util';
 import { checkProfileCompleteness } from '~/core/utils/user-utils';
-import { Observable, Subscription } from 'rxjs';
-import { ApiResponse } from '~/shared/api/base.models';
 import { ProfileModel } from '~/core/api/profile.models';
 import { ProfileDataStore } from '~/profile/profile.data';
+import { ENV } from '~/environments/environment.default';
 
 interface TabsObject {
   name: string;
@@ -64,22 +68,26 @@ export class MainTabsComponent implements OnDestroy {
 
   constructor(
     private events: Events,
+    private ga: GAWrapper,
     private profileDataStore: ProfileDataStore,
-    private ga: GAWrapper
+    private pushNotification: PushNotification
   ) {
     this.profileObservable = this.profileDataStore.asObservable();
 
+    // Initiate fetching profile data
     this.profileDataStore.get();
 
-    this.profileObservableSubscription = this.profileObservable.subscribe(user => {
-      if (user.response) {
-        this.tabsData[TabIndex.Profile].badge =
-          checkProfileCompleteness(user.response).isProfileComplete ? undefined : this.tabsData[TabIndex.Profile].name;
-      }
-    });
+    // Subscribe to profile data changes
+    this.profileObservableSubscription = this.profileObservable.subscribe(profileResponse => this.onProfileChange(profileResponse));
   }
 
   ionViewWillEnter(): void {
+    if (ENV.ffEnablePushNotifications) {
+      // Init the push notifications (may show permission priming screen if needed)
+      this.pushNotification.init();
+    }
+
+    // Subscribe to react to external requests to select a specific tab
     this.events.subscribe(EventTypes.selectMainTab, (idx: TabIndex, callback?: (tab: Tab) => void) => {
       this.onTabSelectedFromOutside(idx, callback);
     });
@@ -108,6 +116,13 @@ export class MainTabsComponent implements OnDestroy {
       this.lastSubsrciption.unsubscribe();
     }
     this.lastSubsrciption = tab.viewDidEnter.subscribe(view => this.ga.trackViewChange(view));
+  }
+
+  onProfileChange(profileResponse: ApiResponse<ProfileModel>): void {
+    if (profileResponse.response) {
+      this.tabsData[TabIndex.Profile].badge =
+        checkProfileCompleteness(profileResponse.response).isProfileComplete ? undefined : this.tabsData[TabIndex.Profile].name;
+    }
   }
 
   ngOnDestroy(): void {
