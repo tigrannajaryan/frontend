@@ -32,7 +32,6 @@ import { AuthEffects } from '~/shared/storage/auth.effects';
 import { MyAppComponent } from './app.component';
 import { getMetaReducers } from './app.reducers';
 import { ENV } from '~/environments/environment.default';
-import { AppStorage } from '~/shared/storage/app-storage';
 
 import { DataModule } from '~/core/data.module';
 
@@ -83,6 +82,7 @@ import { servicesReducer } from '~/appointment/appointment-services/services.red
 import { ServicesEffects } from '~/appointment/appointment-services/services.effects';
 import { WorkHoursComponent } from '~/workhours/workhours.component';
 import { AuthInterceptor } from './shared/api/auth-interceptor';
+import { StylistAppStorage } from './core/stylist-app-storage';
 
 initSentry();
 
@@ -189,7 +189,7 @@ const declarations = [
     SplashScreen,
     AuthService,
     AppVersion,
-    AppStorage,
+    StylistAppStorage,
     ScreenOrientation,
     InAppBrowser,
     AppAvailability,

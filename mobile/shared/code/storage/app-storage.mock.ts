@@ -1,19 +1,11 @@
-import { Injectable } from '@angular/core';
-import { AppPersistentData } from '~/shared/storage/app-storage';
-
 /**
  * A class to get or set persistent App data.
  */
-@Injectable()
-export class AppStorageMock {
+export class AppStorageMock<AppPersistentData> {
   private data: AppPersistentData;
 
-  constructor() {
-    this.data = {
-      userEmail: undefined,
-      authToken: undefined,
-      showHomeScreenHelp: false
-    };
+  constructor(initialMockData: AppPersistentData) {
+    this.data = initialMockData;
   }
 
   /**

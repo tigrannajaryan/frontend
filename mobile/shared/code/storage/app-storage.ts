@@ -1,30 +1,20 @@
-import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
-import { Logger } from '~/shared/logger';
 
-/**
- * The list of persistently stored app data. Add any property below that you
- * want to be able to store in persistent storage and access via AppStorage class.
- */
-export interface AppPersistentData {
-  userEmail: string;
-  authToken: string;
-  showHomeScreenHelp: boolean;
-}
+import { Logger } from '~/shared/logger';
 
 const storageKey = 'app-storage';
 
 /**
  * A class to get or set persistent App data.
  */
-@Injectable()
-export class AppStorage {
+export class AppStorage<AppPersistentData> {
   private data: AppPersistentData;
   private dataPromise: Promise<any>;
 
   constructor(
     private storage: Storage,
-    private logger: Logger
+    private logger: Logger,
+    private defaultData: AppPersistentData
   ) {
     this.dataPromise = this.storage.get(storageKey);
   }
@@ -51,11 +41,7 @@ export class AppStorage {
     } else {
       this.logger.info('AppStorage: data does not exists, probably the first run, set default values.');
 
-      this.data = {
-        userEmail: undefined,
-        authToken: undefined,
-        showHomeScreenHelp: false
-      };
+      this.data = this.defaultData;
     }
   }
 
