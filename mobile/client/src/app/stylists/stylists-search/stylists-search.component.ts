@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { Events, NavController, NavParams } from 'ionic-angular';
+import { ModalController, NavController, NavParams } from 'ionic-angular';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 
@@ -18,7 +18,10 @@ import {
   StylistState
 } from '~/core/reducers/stylists.reducer';
 
-import { StylistsEvents } from '~/stylists/my-stylists.component';
+import {
+  NonBookableSavePopupComponent,
+  NonBookableSavePopupParams
+} from '~/stylists/non-bookable-save-popup/non-bookable-save-popup.component';
 
 interface StylistsPageParams {
   onboarding?: boolean;
@@ -52,8 +55,8 @@ export class StylistsPageComponent {
   isLocationInputFocused = false;
 
   constructor(
-    private events: Events,
     private geolocationService: GeolocationService,
+    private modalCtrl: ModalController,
     private navCtrl: NavController,
     private navParams: NavParams,
     private preferredStylistsData: PreferredStylistsData,
@@ -96,11 +99,24 @@ export class StylistsPageComponent {
     await this.preferredStylistsData.addStylist(stylist);
 
     if (this.onboarding) {
+      // In case of onboarding we just redirect to Home:
       await this.navCtrl.setRoot(PageNames.MainTabs);
+
+    } else if (!stylist.is_profile_bookable) {
+      // If stylist is not bookable show a popup:
+      this.showNonBookableStylistSavedPopup(stylist);
+
     } else {
+      // Common case for adding a stylist navigates back to my stylists:
       this.navCtrl.popToRoot();
-      this.events.publish(StylistsEvents.ReloadMyStylist);
     }
+  }
+
+  private showNonBookableStylistSavedPopup(stylist: StylistModel): void {
+    const params: NonBookableSavePopupParams = { stylist };
+    const options = { enableBackdropDismiss: false, cssClass: NonBookableSavePopupComponent.cssClass };
+    const popup = this.modalCtrl.create(NonBookableSavePopupComponent, { params }, options);
+    popup.present();
   }
 
   private async requestGeolocation(): Promise<void> {
