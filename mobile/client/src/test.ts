@@ -44,6 +44,7 @@ import {
   Keyboard,
   LoadingController,
   MenuController,
+  ModalController,
   NavController,
   NavParams,
   Platform
@@ -63,6 +64,7 @@ import {
   ConfigMock,
   EventsMock,
   LoadingControllerMock,
+  ModalControllerMock,
   NavControllerMock,
   PlatformMock,
   StatusBarMock,
@@ -160,6 +162,7 @@ export class TestUtils {
         Clipboard, EmailComposer, ProfileApiMock, ActionSheetController, BaseService,
         Camera,
         { provide: AlertController, useFactory: () => AlertControllerMock.instance() },
+        { provide: ModalController, useFactory: () => ModalControllerMock.instance() },
         { provide: Config, useFactory: () => ConfigMock.instance() },
         { provide: DeepLinker, useFactory: () => ConfigMock.instance() },
         { provide: Events, useFactory: () => EventsMock.instance() },

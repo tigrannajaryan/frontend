@@ -11,7 +11,7 @@ import { PreferredStylistsListResponse } from '~/shared/api/stylists.models';
 let fixture: ComponentFixture<MyStylistsComponent>;
 let instance: MyStylistsComponent;
 
-fdescribe('Pages: Stylists Search', () => {
+describe('MyStylistsComponent', () => {
   beforeEach(
     async(() =>
       TestUtils.beforeEachCompiler([MyStylistsComponent], [StylistsServiceMock])
