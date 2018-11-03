@@ -8,7 +8,6 @@ import { hasError } from '~/shared/pipes/has-error.pipe';
 import { LOADING_DELAY, RequestState } from '~/shared/api/request.models';
 import { AuthService } from '~/shared/api/auth.api';
 import {
-  AuthTokenModel,
   ConfirmCodeParams,
   GetCodeParams
 } from '~/shared/api/auth.models';
@@ -27,7 +26,9 @@ import {
   selectRequestCodeState
 } from '~/shared/storage/auth.reducer';
 
-import { saveToken } from '~/shared/storage/token-utils';
+import { AuthLocalData, authResponseToTokenModel, saveAuthLocalData } from '~/shared/storage/token-utils';
+import { Events } from 'ionic-angular';
+import { AfterLoginEvent, SharedEventTypes } from '../events/shared-event-types';
 
 @Injectable()
 export class AuthEffects {
@@ -74,18 +75,17 @@ export class AuthEffects {
           if (error) {
             return new ConfirmCodeErrorAction(error);
           }
+
           const {
-            created_at,
-            token,
             stylist_invitation,
             profile_status,
             profile
           } = response;
-          const tokenData: AuthTokenModel = { created_at, token };
+          const authLocalData: AuthLocalData = authResponseToTokenModel(response);
           // TODO: replace stylist_invitation[0] with the latest invitation retrieved from the array (when it would be done on the backend)
           return new ConfirmCodeSuccessAction(
             params.phone,
-            tokenData,
+            authLocalData,
             stylist_invitation && stylist_invitation[0],
             profile_status,
             profile
@@ -107,8 +107,17 @@ export class AuthEffects {
     .ofType(authActionTypes.CONFIRM_CODE_SUCCESS)
     .switchMap((action: ConfirmCodeSuccessAction): Observable<ConfirmCodeSuccessAction | boolean> =>
       Observable.from(
-        saveToken(action.token)
-          .then(() => action)
+        saveAuthLocalData(action.authLocalData)
+          .then(() => {
+            // Notify everyone that we are logged in
+            const loginEvent: AfterLoginEvent = {
+              userUuid: action.authLocalData.user_uuid
+            };
+            this.events.publish(SharedEventTypes.afterLogin, loginEvent);
+
+            return action;
+          }
+          )
           .catch((error: Error) => {
             this.errorHandler.handleError(error);
             return false;
@@ -121,6 +130,7 @@ export class AuthEffects {
     private actions: Actions,
     private authService: AuthService,
     private errorHandler: ErrorHandler,
+    private events: Events,
     private store: Store<AuthState>
   ) {
   }

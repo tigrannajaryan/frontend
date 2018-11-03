@@ -16,7 +16,7 @@ import { createNavHistoryList } from '~/core/functions';
 import { ServerStatusTracker } from '~/shared/server-status-tracker';
 import { ENV } from '~/environments/environment.default';
 import { AuthService } from './shared/api/auth.api';
-import { getToken } from './shared/storage/token-utils';
+import { getAuthLocalData } from './shared/storage/token-utils';
 import { AuthResponse } from './shared/api/auth.models';
 import { StylistAppStorage } from './core/stylist-app-storage';
 
@@ -96,7 +96,7 @@ export class MyAppComponent {
   }
 
   async showInitialPage(): Promise<void> {
-    const token = await getToken(); // no expiration
+    const token = await getAuthLocalData(); // no expiration
     if (token) {
       this.logger.info('App: We have a stored authentication information. Attempting to restore.');
 
@@ -106,7 +106,7 @@ export class MyAppComponent {
       try {
         authResponse = (await this.authApiService.refreshAuth(token.token).get()).response;
       } catch (e) {
-        this.logger.error('App: Error when trying to refresh auth.');
+        this.logger.error('App: Error when trying to refresh auth.', e);
       }
       // Find out what page should be shown to the user and navigate to
       // it while also properly populating the navigation history

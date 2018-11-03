@@ -24,11 +24,6 @@ export interface ConfirmCodeParams extends GetCodeParams {
   role: UserRole;
 }
 
-export interface AuthTokenModel {
-  token: string;
-  created_at?: number; // timestamp
-}
-
 // tslint:disable-next-line:no-empty-interface
 export interface ClientProfileStatus {
   // We currently do not send any client profile status in auth response.
@@ -37,13 +32,14 @@ export interface ClientProfileStatus {
 
 export type UserProfileStatus = StylistProfileStatus | ClientProfileStatus;
 
-export interface AuthResponse extends AuthTokenModel {
-  user_uuid?: string; // This field is optional because it is planned to be added to API later.
+export interface AuthResponse {
+  token: string;
+  user_uuid: string;
+  created_at?: number; // timestamp
   profile_status?: UserProfileStatus;
 }
 
 export interface ConfirmCodeResponse extends AuthResponse {
   stylist_invitation?: StylistModel;
   profile?: StylistProfile;
-  user_uuid?: string;
 }

@@ -11,12 +11,12 @@ export enum SharedEventTypes {
    */
   update_gmap_key = 'update_gmap_key',
 
-  login = 'login',
+  afterLogin = 'afterLogin',
 
   beforeLogout = 'beforeLogout',
   afterLogout = 'afterLogout'
 }
 
-export interface LoginEvent {
+export interface AfterLoginEvent {
   userUuid: string;
 }

@@ -7,7 +7,7 @@ import { ENV } from '~/environments/environment.default';
 import { Page } from 'ionic-angular/navigation/nav-util';
 import { NavController } from 'ionic-angular/navigation/nav-controller';
 import { Events, Platform } from 'ionic-angular';
-import { LoginEvent, SharedEventTypes } from '../events/shared-event-types';
+import { AfterLoginEvent, SharedEventTypes } from '../events/shared-event-types';
 
 export interface PrimingScreenParams {
   onAllowClick: Function;
@@ -52,7 +52,7 @@ export class PushNotification {
       return;
     }
 
-    this.events.subscribe(SharedEventTypes.login, (e: LoginEvent) => this.onLogin(e));
+    this.events.subscribe(SharedEventTypes.afterLogin, (e: AfterLoginEvent) => this.onLogin(e));
     this.events.subscribe(SharedEventTypes.beforeLogout, () => this.onBeforeLogout());
   }
 
@@ -77,6 +77,10 @@ export class PushNotification {
     //   // Ask permission on android immediately, since it is granted automatically
     //   this.askSystemPermission();
     }
+  }
+
+  setUser(userUuid: string): void {
+    this.userUuid = userUuid;
   }
 
   /**
@@ -203,7 +207,7 @@ export class PushNotification {
     }
   }
 
-  private onLogin(e: LoginEvent): void {
+  private onLogin(e: AfterLoginEvent): void {
     this.userUuid = e.userUuid;
     this.associateUserWithDevice();
   }

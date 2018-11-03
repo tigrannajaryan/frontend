@@ -3,7 +3,7 @@ import { Events } from 'ionic-angular';
 import { Actions, Effect } from '@ngrx/effects';
 
 import { authActionTypes, LogoutAction } from '~/shared/storage/auth.reducer';
-import { deleteToken } from '~/shared/storage/token-utils';
+import { deleteAuthLocalData } from '~/shared/storage/token-utils';
 import { DataStore } from '~/shared/storage/data-store';
 import { DataModule } from '~/core/api/data.module';
 import { AppModule } from '~/app.module';
@@ -19,7 +19,7 @@ export class LogoutEffects {
         this.events.publish(SharedEventTypes.beforeLogout);
 
         // Remove token:
-        await deleteToken();
+        await deleteAuthLocalData();
         // Clear all DataStores to reset requests caches:
         this.clearAllDataStores();
         // Call success callback if exists:
