@@ -6,14 +6,12 @@ import { Subscription } from 'rxjs/Subscription';
 
 import { GAWrapper } from '~/shared/google-analytics';
 import { ApiResponse } from '~/shared/api/base.models';
-import { PushNotification } from '~/shared/push-notification';
 
 import { PageNames } from '~/core/page-names';
-import { EventTypes } from '~/core/event-types';
+import { ClientEventTypes } from '~/core/client-event-types';
 import { checkProfileCompleteness } from '~/core/utils/user-utils';
 import { ProfileModel } from '~/core/api/profile.models';
 import { ProfileDataStore } from '~/profile/profile.data';
-import { ENV } from '~/environments/environment.default';
 
 interface TabsObject {
   name: string;
@@ -69,8 +67,7 @@ export class MainTabsComponent implements OnDestroy {
   constructor(
     private events: Events,
     private ga: GAWrapper,
-    private profileDataStore: ProfileDataStore,
-    private pushNotification: PushNotification
+    private profileDataStore: ProfileDataStore
   ) {
     this.profileObservable = this.profileDataStore.asObservable();
 
@@ -82,19 +79,14 @@ export class MainTabsComponent implements OnDestroy {
   }
 
   ionViewWillEnter(): void {
-    if (ENV.ffEnablePushNotifications) {
-      // Init the push notifications (may show permission priming screen if needed)
-      this.pushNotification.init();
-    }
-
     // Subscribe to react to external requests to select a specific tab
-    this.events.subscribe(EventTypes.selectMainTab, (idx: TabIndex, callback?: (tab: Tab) => void) => {
+    this.events.subscribe(ClientEventTypes.selectMainTab, (idx: TabIndex, callback?: (tab: Tab) => void) => {
       this.onTabSelectedFromOutside(idx, callback);
     });
   }
 
   ionViewWillLeave(): void {
-    this.events.unsubscribe(EventTypes.selectMainTab);
+    this.events.unsubscribe(ClientEventTypes.selectMainTab);
   }
 
   onTabSelectedFromOutside(idx: TabIndex, callback?: (tab: Tab) => void): void {

@@ -6,7 +6,7 @@ import { Events } from 'ionic-angular';
 import { Logger } from '~/shared/logger';
 import { ServerStatusTracker } from '~/shared/server-status-tracker';
 import { BaseService } from '~/shared/api/base.service';
-import { SharedEventTypes } from '~/shared/events/event-types';
+import { SharedEventTypes } from '~/shared/events/shared-event-types';
 import { ApiResponse } from '~/shared/api/base.models';
 
 import {
@@ -65,7 +65,7 @@ export class StylistServiceProvider extends BaseService {
       .map(response => {
         // Publish event to update gmap key.
         if (response.response) {
-          this.events.publish(SharedEventTypes.UPDATE_GMAP_KEY, response.response.google_api_key);
+          this.events.publish(SharedEventTypes.update_gmap_key, response.response.google_api_key);
         }
         return response;
       });

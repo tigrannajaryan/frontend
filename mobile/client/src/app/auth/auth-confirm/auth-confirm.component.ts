@@ -26,6 +26,7 @@ import { AuthProcessState } from '~/shared/storage/auth-process-state';
 import { StylistPageParams } from '~/stylists/stylist/stylist.component';
 
 import { CodeData, CodeInputComponent } from '~/shared/components/code-input/code-input.component';
+import { PushNotification } from '~/shared/push/push-notification';
 
 @Component({
   selector: 'page-auth-confirm',
@@ -52,6 +53,7 @@ export class AuthConfirmPageComponent {
     private navCtrl: NavController,
     private navParams: NavParams,
     private preferredStylistsData: PreferredStylistsData,
+    private pushNotification: PushNotification,
     private store: Store<AuthState & StylistState>
   ) {
   }
@@ -106,7 +108,12 @@ export class AuthConfirmPageComponent {
     // Also get the invitation (if any)
     const invitation = selectInvitedByStylist(state);
     if (preferredStylists.length > 0) {
-      // We already have a preferred stylist, go to main tabs screen.
+      // We already have a preferred stylist, we can go to main tabs screen.
+
+      // But first show push permission asking screen if needed and wait until the user makes a choice
+      await this.pushNotification.showPermissionScreen(true);
+
+      // All set, show main screen.
       this.navCtrl.setRoot(PageNames.MainTabs);
     } else if (invitation) {
       // No preferred stylist, but we have an invitation from a stylist, show it.

@@ -38,3 +38,8 @@ export function async_all<T1, T2>(promises: [Promise<T1>, Promise<T2>]): Promise
     p2.catch(e => new PromiseError(e))
   ]);
 }
+
+export function async_many(promises: Array<Promise<any>>): Promise<any[]> {
+  const caught = promises.map(p => p.catch(e => new PromiseError(e)));
+  return Promise.all(caught);
+}

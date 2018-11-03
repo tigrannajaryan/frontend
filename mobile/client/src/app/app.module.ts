@@ -46,7 +46,7 @@ import { BaseService } from '~/shared/api/base.service';
 import { ExternalAppService } from '~/shared/utils/external-app-service';
 import { GeolocationService } from '~/shared/utils/geolocation.service';
 import { ServerStatusTracker } from '~/shared/server-status-tracker';
-import { PushNotification } from './shared/push-notification';
+import { PushNotification } from './shared/push/push-notification';
 import { authPath, authReducer } from '~/shared/storage/auth.reducer';
 import { profilePath, profileReducer } from '~/core/reducers/profile.reducer';
 import { stylistsPath, stylistsReducer } from '~/core/reducers/stylists.reducer';
@@ -79,6 +79,7 @@ import { ENV } from '~/environments/environment.default';
 import { PrivacySettingsComponent } from '~/privacy-settings/privacy-settings.component';
 import { FollowersComponent } from '~/followers/followers.component';
 import { StylistComponent } from '~/stylists/stylist/stylist.component';
+import { PushPrimingScreenComponent } from './shared/components/push-priming-screen/push-priming-screen.component';
 
 // Init sentry reporting (inits only if ENV.sentryDsn):
 initSentry();
@@ -104,6 +105,7 @@ const declarations = [
   MainTabsComponent,
   MyStylistsComponent,
   NonBookableSavePopupComponent,
+  PushPrimingScreenComponent,
   PrivacySettingsComponent,
   ProfileEditComponent,
   ProfileSummaryComponent,

@@ -4,7 +4,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { ScreenOrientation } from '@ionic-native/screen-orientation';
 
-import { async_all } from '~/shared/async-helpers';
+import { async_all, async_many } from '~/shared/async-helpers';
 import { Logger } from '~/shared/logger';
 import { getBuildNumber, getCommitHash } from '~/shared/get-build-number';
 import { GAWrapper } from '~/shared/google-analytics';
@@ -56,10 +56,18 @@ export class MyAppComponent {
     // Now that the platform is ready asynchronously initialize in parallel everything
     // that our app needs and wait until all initializations finish. Add here any other
     // initialization operation that must be done before the initial page is shown.
-    await async_all([
+
+    const initializers = [
       this.ga.init(ENV.gaTrackingId),
       this.storage.init()
-    ]);
+    ];
+
+    if (ENV.ffEnablePushNotifications) {
+      // Init the push notifications if the feature is enabled
+      initializers.push(this.pushNotification.init());
+    }
+
+    await async_many(initializers);
 
     // Lock screen orientation to portrait if this is real device
     if (!(this.platform.is('core') || this.platform.is('mobileweb'))) {
@@ -108,10 +116,6 @@ export class MyAppComponent {
 
         const requiredPages = createNavHistoryList(authResponse.profile_status as StylistProfileStatus);
         this.nav.setPages(requiredPages);
-        if (ENV.ffEnablePushNotifications) {
-          // We are now in the app, init the push notifications
-          this.pushNotification.init();
-        }
         return;
       }
     }

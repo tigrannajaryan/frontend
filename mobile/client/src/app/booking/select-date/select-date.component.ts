@@ -8,7 +8,7 @@ import { componentIsActive } from '~/shared/utils/component-is-active';
 
 import { PageNames } from '~/core/page-names';
 import { BookingData } from '~/core/api/booking.data';
-import { EventTypes } from '~/core/event-types';
+import { ClientEventTypes } from '~/core/client-event-types';
 
 @Component({
   selector: 'select-date',
@@ -81,7 +81,7 @@ export class SelectDateComponent {
         handler: () => {
           setTimeout(async () => {
             await this.navCtrl.setRoot(PageNames.MainTabs);
-            this.events.publish(EventTypes.startBooking);
+            this.events.publish(ClientEventTypes.startBooking);
           });
         }
       }]

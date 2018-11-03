@@ -6,7 +6,7 @@ import { PreferredStylistsData } from '~/core/api/preferred-stylists.data';
 import { AppointmentModel } from '~/core/api/appointments.models';
 import { PreferredStylistModel } from '~/shared/api/stylists.models';
 import { ServicesService } from '~/core/api/services.service';
-import { EventTypes } from '~/core/event-types';
+import { ClientEventTypes } from '~/core/client-event-types';
 
 //
 // Possible cases of booking and re-booking processes
@@ -110,7 +110,7 @@ export async function startRebooking(appointment: AppointmentModel): Promise<voi
 
   if (!foundAll) {
     // Some of the selected services are no longer found. Just start the booking process from fresh.
-    events.publish(EventTypes.startBooking, appointment.stylist_uuid);
+    events.publish(ClientEventTypes.startBooking, appointment.stylist_uuid);
   } else {
     // All services still exist. Start booking process.
     await startBooking(appointment.stylist_uuid);
@@ -124,7 +124,7 @@ export async function startRebooking(appointment: AppointmentModel): Promise<voi
     })));
 
     // Services are now selected, we can now start rebooking.
-    events.publish(EventTypes.startRebooking);
+    events.publish(ClientEventTypes.startRebooking);
   }
 }
 

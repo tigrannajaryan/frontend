@@ -8,7 +8,7 @@ import { AppointmentModel, AppointmentStatus, HomeResponse } from '~/core/api/ap
 import { AppointmentsDataStore } from '~/core/api/appointments.datastore';
 import { PageNames } from '~/core/page-names';
 import { AppointmentPageParams } from '~/appointment-page/appointment-page.component';
-import { EventTypes } from '~/core/event-types';
+import { ClientEventTypes } from '~/core/client-event-types';
 import { startRebooking } from '~/booking/booking-utils';
 import { ProfileDataStore } from '~/profile/profile.data';
 
@@ -97,6 +97,6 @@ export class HomePageComponent {
 
   onBookClick(): void {
     this.logger.info('onBookClick');
-    this.events.publish(EventTypes.startBooking);
+    this.events.publish(ClientEventTypes.startBooking);
   }
 }

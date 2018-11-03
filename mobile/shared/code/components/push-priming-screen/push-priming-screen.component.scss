@@ -1,0 +1,9 @@
+push-priming-screen {
+  .PushPrimingText {
+    text-align: center;
+    margin: pxtovw(16px) pxtovw(24px) pxtovw(16px) pxtovw(24px);
+    font-size: pxtovw(18px);
+    color: color($colors, warmGrey);
+    line-height: pxtovw(24px);
+  }
+}

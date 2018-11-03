@@ -92,7 +92,7 @@ export class AuthConfirmPageComponent {
 
         if (ENV.ffEnablePushNotifications) {
           // We are now in the app, init the push notifications
-          this.pushNotification.init();
+          this.pushNotification.askPermission();
         }
       });
 

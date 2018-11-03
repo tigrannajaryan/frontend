@@ -4,7 +4,7 @@ import { AlertController, Events, NavController } from 'ionic-angular';
 import { loading } from '~/shared/utils/loading';
 import { PreferredStylistModel } from '~/shared/api/stylists.models';
 
-import { EventTypes } from '~/core/event-types';
+import { ClientEventTypes } from '~/core/client-event-types';
 import { PageNames } from '~/core/page-names';
 import { PreferredStylistsData } from '~/core/api/preferred-stylists.data';
 
@@ -40,7 +40,7 @@ export class SelectStylistComponent {
       // Cannot proceed if no prefered bookable styllist is selected.
       // Redirecting to Stylists tab and showing a warning popup:
       await this.navCtrl.setRoot(PageNames.MainTabs);
-      this.events.publish(EventTypes.selectMainTab, TabIndex.Stylists, this.showNoSelectedStylistWarning);
+      this.events.publish(ClientEventTypes.selectMainTab, TabIndex.Stylists, this.showNoSelectedStylistWarning);
     }
   }
 

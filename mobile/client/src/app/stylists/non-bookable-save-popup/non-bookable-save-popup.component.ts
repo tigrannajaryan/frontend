@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { App, Events, NavParams, ViewController } from 'ionic-angular';
 
 import { StylistModel } from '~/shared/api/stylists.models';
-import { EventTypes } from '~/core/event-types';
+import { ClientEventTypes } from '~/core/client-event-types';
 import { Tabs } from '~/stylists/my-stylists.component';
 
 export interface NonBookableSavePopupParams {
@@ -38,6 +38,6 @@ export class NonBookableSavePopupComponent implements OnInit {
   async onRedirectToSavedStylists(): Promise<void> {
     this.onClose();
     await this.app.getRootNav().popToRoot();
-    this.events.publish(EventTypes.selectStylistTab, Tabs.savedStylists);
+    this.events.publish(ClientEventTypes.selectStylistTab, Tabs.savedStylists);
   }
 }

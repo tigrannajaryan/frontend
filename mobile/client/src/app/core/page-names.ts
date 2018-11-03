@@ -21,6 +21,7 @@ import { StylistsPageComponent } from '~/stylists/stylists-search/stylists-searc
 import { PrivacySettingsComponent } from '~/privacy-settings/privacy-settings.component';
 import { FollowersComponent } from '~/followers/followers.component';
 import { StylistComponent } from '~/stylists/stylist/stylist.component';
+import { PushPrimingScreenComponent } from '~/shared/components/push-priming-screen/push-priming-screen.component';
 
 /**
  * Define page names in one place to avoid typos if the names are used as
@@ -48,6 +49,7 @@ export const PageNames = {
   Privacy: PrivacySettingsComponent,
   ProfileEdit: ProfileEditComponent,
   ProfileSummary: ProfileSummaryComponent,
+  PushPrimingScreen: PushPrimingScreenComponent,
   SelectDate: SelectDateComponent,
   SelectStylist: SelectStylistComponent,
   SelectTime: SelectTimeComponent,
@@ -58,4 +60,3 @@ export const PageNames = {
 };
 
 export const UNAUTHORIZED_ROOT = PageNames.Auth;
-export const AUTHORIZED_ROOT = PageNames.MainTabs;

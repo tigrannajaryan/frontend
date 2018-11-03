@@ -7,7 +7,7 @@ import { deleteToken } from '~/shared/storage/token-utils';
 import { DataStore } from '~/shared/storage/data-store';
 import { DataModule } from '~/core/api/data.module';
 import { AppModule } from '~/app.module';
-import { EventTypes } from '~/core/event-types';
+import { SharedEventTypes } from '~/shared/events/shared-event-types';
 
 @Injectable()
 export class LogoutEffects {
@@ -16,6 +16,8 @@ export class LogoutEffects {
     .ofType(authActionTypes.USER_LOGOUT)
     .map(async (action: LogoutAction) => {
       try {
+        this.events.publish(SharedEventTypes.beforeLogout);
+
         // Remove token:
         await deleteToken();
         // Clear all DataStores to reset requests caches:
@@ -25,7 +27,7 @@ export class LogoutEffects {
           action.onSuccess();
         }
         // Let others know and handle logout event
-        this.events.publish(EventTypes.logout);
+        this.events.publish(SharedEventTypes.afterLogout);
       } catch (error) {
         this.errorHandler.handleError(error);
       }
