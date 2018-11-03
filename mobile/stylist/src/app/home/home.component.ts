@@ -14,7 +14,6 @@ import { Logger } from '~/shared/logger';
 import { GAWrapper } from '~/shared/google-analytics';
 import { PageNames } from '~/core/page-names';
 import { showAlert } from '~/shared/utils/alert';
-import { AppStorage } from '~/shared/storage/app-storage';
 import { StylistProfile } from '~/shared/stylist-api/stylist-models';
 import { Appointment, AppointmentStatuses, Home } from '~/shared/stylist-api/home.models';
 import { HomeService } from '~/shared/stylist-api/home.service';
@@ -24,6 +23,7 @@ import { ExternalAppService } from '~/shared/utils/external-app-service';
 import { formatNumber } from 'libphonenumber-js';
 import { NumberFormat } from '~/shared/directives/phone-input.directive';
 import { ApiResponse } from '~/shared/api/base.models';
+import { StylistAppStorage } from '~/core/stylist-app-storage';
 
 export enum AppointmentTag {
   NotCheckedOut = 'Not checked out',
@@ -99,7 +99,7 @@ export class HomeComponent {
     private ngZone: NgZone,
     private store: Store<ProfileState>,
     private actionSheetCtrl: ActionSheetController,
-    private appStorage: AppStorage,
+    private appStorage: StylistAppStorage,
     private logger: Logger,
     private ga: GAWrapper,
     private externalAppService: ExternalAppService
