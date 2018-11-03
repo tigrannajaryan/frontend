@@ -6,10 +6,10 @@ import { Observable } from 'rxjs/Observable';
 import { componentUnloaded } from '~/shared/component-unloaded';
 
 import { DayOffer } from '~/shared/api/price.models';
-import { ServiceItem, StylistProfile } from '~/shared/stylist-api/stylist-models';
+import { ServiceItem, StylistProfile } from '~/shared/api/stylist-app.models';
 import { StylistServicesDataStore } from '~/services/services-list/services.data';
-import { MyClientModel } from '~/shared/stylist-api/clients-api.models';
-import { ClientsApi } from '~/shared/stylist-api/clients-api';
+import { MyClientModel } from '~/core/api/clients-api.models';
+import { ClientsApi } from '~/core/api/clients-api';
 
 import { PageNames } from '~/core/page-names';
 import { loading } from '~/core/utils/loading';

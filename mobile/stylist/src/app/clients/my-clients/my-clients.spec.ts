@@ -7,8 +7,8 @@ import { TestUtils } from '~/../test';
 import { prepareSharedObjectsForTests } from '~/core/test-utils.spec';
 
 import { DataModule } from '~/core/data.module';
-import { ClientsApi } from '~/shared/stylist-api/clients-api';
-import { myClientsMock } from '~/shared/stylist-api/clients-api.mock';
+import { ClientsApi } from '~/core/api/clients-api';
+import { myClientsMock } from '~/core/api/clients-api.mock';
 
 import { MyClientsComponent } from './my-clients.component';
 

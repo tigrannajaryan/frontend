@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 
-import { Appointment } from '~/shared/stylist-api/home.models';
+import { Appointment } from '~/core/api/home.models';
 import { formatTimeInZone } from '~/shared/utils/string-utils';
 
 @Component({

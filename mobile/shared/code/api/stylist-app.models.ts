@@ -24,28 +24,6 @@ export interface StylistProfileStatus {
   has_invited_clients: boolean;
 }
 
-export interface ServiceInSummary {
-  name: string;
-  base_price: number;
-  duration_minutes: number;
-}
-
-export interface WorkdayInSummary {
-  weekday_iso: number; // 1..7
-  is_available: boolean;
-  work_start_at: string; // time of day formatted as hh:mm:ss
-  work_end_at: string;   // time of day formatted as hh:mm:ss
-  booked_appointments_count: number;
-}
-
-export interface StylistSummary {
-  profile: StylistProfile;
-  services: ServiceInSummary[];
-  services_count: number;
-  worktime: WorkdayInSummary[];
-  total_week_appointments_count: number;
-}
-
 // Weekday discounts
 
 export interface WeekdayDiscount {

@@ -4,7 +4,7 @@ import * as moment from 'moment';
 
 import { PageNames } from '~/core/page-names';
 import { DayOffer, ServiceModel } from '~/shared/api/price.models';
-import { StylistProfile } from '~/shared/stylist-api/stylist-models';
+import { StylistProfile } from '~/shared/api/stylist-app.models';
 import { ProfileDataStore } from '~/core/profile.data';
 
 // Some nice looking fake prices

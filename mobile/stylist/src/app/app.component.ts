@@ -8,6 +8,7 @@ import { async_all } from '~/shared/async-helpers';
 import { Logger } from '~/shared/logger';
 import { getBuildNumber, getCommitHash } from '~/shared/get-build-number';
 import { GAWrapper } from '~/shared/google-analytics';
+import { StylistProfileStatus } from '~/shared/api/stylist-app.models';
 import { PushNotification } from '~/shared/push-notification';
 
 import { PageNames } from '~/core/page-names';
@@ -17,7 +18,6 @@ import { ENV } from '~/environments/environment.default';
 import { AuthService } from './shared/api/auth.api';
 import { getToken } from './shared/storage/token-utils';
 import { AuthResponse } from './shared/api/auth.models';
-import { StylistProfileStatus } from '~/shared/stylist-api/stylist-models';
 import { StylistAppStorage } from './core/stylist-app-storage';
 
 @Component({

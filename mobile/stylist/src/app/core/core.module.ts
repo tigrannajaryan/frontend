@@ -9,7 +9,7 @@ import { UserContext } from '~/shared/user-context';
 import { GAWrapper } from '~/shared/google-analytics';
 import { HasErrorPipe } from '~/shared/pipes/has-error.pipe';
 import { PricePipe } from '~/shared/pipes/price.pipe';
-import { BaseService } from '~/shared/api/base-service';
+import { BaseService } from '~/shared/api/base.service';
 import { PriceCalendarComponent } from '~/shared/components/price-calendar/price-calendar.component';
 import { ServicesHeaderListComponent } from '~/shared/components/services-header-list/services-header-list';
 import { UserNamePhotoComponent } from '~/shared/components/user-name-photo/user-name-photo.component';

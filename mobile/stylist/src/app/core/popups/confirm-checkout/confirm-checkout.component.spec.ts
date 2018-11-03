@@ -5,7 +5,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { prepareSharedObjectsForTests } from 'app/core/test-utils.spec';
 import { ConfirmCheckoutComponent } from '~/core/popups/confirm-checkout/confirm-checkout.component';
 import { TestUtils } from '../../../../test';
-import { HomeService } from '~/shared/stylist-api/home.service';
+import { HomeService } from '~/core/api/home.service';
 
 let fixture: ComponentFixture<ConfirmCheckoutComponent>;
 let instance: ConfirmCheckoutComponent;

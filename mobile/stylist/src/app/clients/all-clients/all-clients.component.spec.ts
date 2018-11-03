@@ -5,7 +5,7 @@ import { TestUtils } from '~/../test';
 import { prepareSharedObjectsForTests } from '~/core/test-utils.spec';
 
 import { DataModule } from '~/core/data.module';
-import { allClientsMock } from '~/shared/stylist-api/clients-api.mock';
+import { allClientsMock } from '~/core/api/clients-api.mock';
 
 import { AllClientsComponent } from './all-clients.component';
 

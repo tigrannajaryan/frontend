@@ -1,8 +1,8 @@
 import { ModuleWithProviders, NgModule } from '@angular/core';
 import { IonicModule } from 'ionic-angular';
 
-import { ClientsApi } from '~/shared/stylist-api/clients-api';
-import { StylistServiceProvider } from '~/shared/stylist-api/stylist-service';
+import { ClientsApi } from '~/core/api/clients-api';
+import { StylistServiceProvider } from '~/core/api/stylist.service';
 import { DataStore } from '~/shared/storage/data-store';
 
 import { AllClientsDataStore } from '~/clients/all-clients/all-clients.data';

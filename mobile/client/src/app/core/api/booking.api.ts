@@ -9,7 +9,7 @@ import { Logger } from '~/shared/logger';
 import { ServerStatusTracker } from '~/shared/server-status-tracker';
 import { ServiceModel } from '~/shared/api/price.models';
 
-import { BaseService } from '~/shared/api/base-service';
+import { BaseService } from '~/shared/api/base.service';
 import { GetPricelistResponse } from '~/core/api/services.models';
 import { AppointmentModel } from '~/core/api/appointments.models';
 

@@ -89,10 +89,10 @@ import { AuthService } from '~/shared/api/auth.api';
 import { AuthServiceMock } from '~/shared/api/auth.api.mock';
 import { BookingApi } from '~/core/api/booking.api';
 import { BookingApiMock } from '~/core/api/booking.api.mock';
-import { ServicesService } from '~/core/api/services-service';
-import { ServicesServiceMock } from '~/core/api/services-service.mock';
-import { StylistsService } from '~/core/api/stylists-service';
-import { StylistsServiceMock } from '~/core/api/stylists-service.mock';
+import { ServicesService } from '~/core/api/services.service';
+import { ServicesServiceMock } from '~/core/api/services.service.mock';
+import { StylistsService } from '~/core/api/stylists.service';
+import { StylistsServiceMock } from '~/core/api/stylists.service.mock';
 import { ProfileApi } from '~/core/api/profile-api';
 import { ProfileApiMock } from '~/core/api/profile-api.mock';
 
@@ -110,7 +110,7 @@ import { AuthProcessState } from '~/shared/storage/auth-process-state';
 import { AuthProcessStateMock } from '~/shared/storage/auth-process-state.mock';
 
 import { DataModule } from '~/core/api/data.module';
-import { BaseService } from '~/shared/api/base-service';
+import { BaseService } from '~/shared/api/base.service';
 import { FollowersApiMock } from '~/core/api/followers.api.mock';
 import { FollowersApi } from '~/core/api/followers.api';
 

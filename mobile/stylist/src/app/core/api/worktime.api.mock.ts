@@ -3,7 +3,7 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 
 import { ApiResponse } from '~/shared/api/base.models';
-import { Worktime } from './worktime.models';
+import { Worktime } from '~/shared/api/worktime.models';
 
 /**
  * AuthServiceProviderMock provides authentication mocked with one

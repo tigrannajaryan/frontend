@@ -1,5 +1,9 @@
 import { LatLng } from '~/shared/utils/geolocation.service';
 
+/**
+ * Stylist models used in Client App API.
+ */
+
 export interface StylistUuidModel {
   uuid: string;
 }

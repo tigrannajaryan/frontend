@@ -4,9 +4,9 @@ import { Observable } from 'rxjs/Observable';
 
 import { Logger } from '~/shared/logger';
 import { ServerStatusTracker } from '~/shared/server-status-tracker';
-import { BaseService } from '~/shared/api/base-service';
+import { BaseService } from '~/shared/api/base.service';
 import { ApiResponse } from '~/shared/api/base.models';
-import { ClientDetailsModel } from '~/shared/stylist-api/clients-api.models';
+import { ClientDetailsModel } from '~/core/api/clients-api.models';
 
 /**
  * ClientDetailsApi allows getting details of the particular client of the stylist.

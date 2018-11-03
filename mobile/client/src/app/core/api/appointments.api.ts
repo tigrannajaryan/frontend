@@ -5,7 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import { ApiResponse } from '~/shared/api/base.models';
 import { Logger } from '~/shared/logger';
 import { ServerStatusTracker } from '~/shared/server-status-tracker';
-import { BaseService } from '~/shared/api/base-service';
+import { BaseService } from '~/shared/api/base.service';
 import {
   AppointmentModel,
   AppointmentsHistoryResponse,

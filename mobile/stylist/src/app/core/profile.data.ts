@@ -3,8 +3,8 @@ import * as moment from 'moment';
 
 import { DataStore } from '~/shared/storage/data-store';
 
-import { StylistProfile } from '~/shared/stylist-api/stylist-models';
-import { StylistServiceProvider } from '~/shared/stylist-api/stylist-service';
+import { StylistProfile } from '~/shared/api/stylist-app.models';
+import { StylistServiceProvider } from '~/core/api/stylist.service';
 import { ApiResponse } from '~/shared/api/base.models';
 import { DataCacheKey } from '~/core/data.module';
 

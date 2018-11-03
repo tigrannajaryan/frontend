@@ -6,8 +6,8 @@ import { AlertController, NavController } from 'ionic-angular';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { componentUnloaded } from '~/shared/component-unloaded';
-import { ServiceItem } from '~/shared/stylist-api/stylist-models';
-import { HomeService as AppointmentService } from '~/shared/stylist-api/home.service';
+import { ServiceItem } from '~/shared/api/stylist-app.models';
+import { HomeService as AppointmentService } from '~/core/api/home.service';
 
 import { loading } from '~/core/utils/loading';
 import { PageNames } from '~/core/page-names';

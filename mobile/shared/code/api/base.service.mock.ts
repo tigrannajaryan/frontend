@@ -3,7 +3,7 @@ import { Observable } from 'rxjs/Observable';
 import { HttpErrorResponse } from '@angular/common/http';
 
 import { ApiResponse } from '~/shared/api/base.models';
-import { BaseService } from '~/shared/api/base-service';
+import { BaseService } from '~/shared/api/base.service';
 import { ApiError, HttpStatus } from '~/shared/api-errors';
 
 @Injectable()

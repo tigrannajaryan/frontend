@@ -4,7 +4,7 @@ import { NavParams } from 'ionic-angular';
 import { prepareSharedObjectsForTests } from '~/core/test-utils.spec';
 import { TestUtils } from '~/../test';
 
-import { clientDetailsMock } from '~/shared/stylist-api/client-details.api.mock';
+import { clientDetailsMock } from '~/core/api/client-details.api.mock';
 
 import { ClientDetailsComponent } from './client-details.component';
 

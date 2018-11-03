@@ -2,7 +2,7 @@ import { async, TestBed } from '@angular/core/testing';
 import { HttpClientModule } from '@angular/common/http';
 import { IonicModule, NavController, NavParams, ViewController } from 'ionic-angular';
 import { CoreModule } from 'app/core/core.module';
-import { StylistServiceProvider } from '~/shared/stylist-api/stylist-service';
+import { StylistServiceProvider } from '~/core/api/stylist.service';
 import { NavMock } from '../../../services/services.component.spec';
 import { prepareSharedObjectsForTests } from 'app/core/test-utils.spec';
 import { ViewControllerMock } from 'app/shared/view-controller-mock';

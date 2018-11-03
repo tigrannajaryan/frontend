@@ -5,9 +5,9 @@ import { backdoorApi } from './shared-e2e/backdoor-api';
 import { phoneLoginPage } from './shared-e2e/phone-login-page';
 import { phoneCodePage } from './shared-e2e/phone-code-page';
 import { stylistApi } from './shared-e2e/stylist-api';
-import { ClientInvitation } from './shared-app/stylist-api/invitations.models';
-import { SetStylistServicesParams, StylistProfile } from './shared-app/stylist-api/stylist-models';
-import { Worktime } from './shared-app/stylist-api/worktime.models';
+import { ClientInvitation } from './shared-app/api/invitations.models';
+import { SetStylistServicesParams, StylistProfile } from './shared-app/api/stylist-app.models';
+import { Worktime } from './shared-app/api/worktime.models';
 import { getPhoneNumber } from './shared-app/utils/phone-numbers';
 import { EmailAuthCredentials } from './shared-app/api/auth.models';
 

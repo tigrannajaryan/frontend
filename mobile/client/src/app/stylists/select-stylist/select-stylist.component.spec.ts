@@ -4,8 +4,8 @@ import { of } from 'rxjs/observable/of';
 
 import { TestUtils } from '~/../test';
 
-import { StylistsService } from '~/core/api/stylists-service';
-import { stylistsMock } from '~/core/api/stylists-service.mock';
+import { StylistsService } from '~/core/api/stylists.service';
+import { stylistsMock } from '~/core/api/stylists.service.mock';
 import { EventTypes } from '~/core/event-types';
 
 import { TabIndex } from '~/main-tabs/main-tabs.component';

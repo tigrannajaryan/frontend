@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import { App, NavController, PopoverController } from 'ionic-angular';
 import { Store } from '@ngrx/store';
 
-import { StylistProfile } from '~/shared/stylist-api/stylist-models';
+import { StylistProfile } from '~/shared/api/stylist-app.models';
 import { PageNames } from '~/core/page-names';
 import { clearAllDataStores } from '~/core/data.module';
 import { LogoutAction } from '~/app.reducers';

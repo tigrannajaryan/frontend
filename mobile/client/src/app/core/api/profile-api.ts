@@ -5,7 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import { Logger } from '~/shared/logger';
 import { ServerStatusTracker } from '~/shared/server-status-tracker';
 import { ApiResponse } from '~/shared/api/base.models';
-import { BaseService } from '~/shared/api/base-service';
+import { BaseService } from '~/shared/api/base.service';
 import { ProfileModel } from '~/core/api/profile.models';
 
 @Injectable()
