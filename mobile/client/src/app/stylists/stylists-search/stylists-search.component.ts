@@ -8,7 +8,7 @@ import { RequestState } from '~/shared/api/request.models';
 import { StylistModel, StylistsSearchParams } from '~/shared/api/stylists.models';
 import { GeolocationService, LatLng } from '~/shared/utils/geolocation.service';
 
-import { EventTypes } from '~/core/event-types';
+import { ClientEventTypes } from '~/core/client-event-types';
 import { PageNames } from '~/core/page-names';
 import { PreferredStylistsData } from '~/core/api/preferred-stylists.data';
 import {
@@ -115,7 +115,7 @@ export class StylistsPageComponent {
     } else {
       // Common case for adding a stylist navigates back to my stylists:
       await this.navCtrl.popToRoot();
-      this.events.publish(EventTypes.selectStylistTab, Tabs.primeStylists);
+      this.events.publish(ClientEventTypes.selectStylistTab, Tabs.primeStylists);
     }
   }
 
