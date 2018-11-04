@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AlertController, Events, NavController } from 'ionic-angular';
+import { LaunchNavigator } from '@ionic-native/launch-navigator';
 
 import { StylistModel } from '~/shared/api/stylists.models';
 import { ExternalAppService } from '~/shared/utils/external-app-service';
@@ -26,6 +27,7 @@ export class StylistCardComponent implements OnInit {
   constructor(
     private events: Events,
     private externalAppService: ExternalAppService,
+    private launchNavigator: LaunchNavigator,
     private navCtrl: NavController,
     private alertCtrl: AlertController
   ) {
@@ -52,6 +54,10 @@ export class StylistCardComponent implements OnInit {
     if (this.isActive) {
       this.navCtrl.push(PageNames.Followers, { stylist: this.stylist });
     }
+  }
+
+  onAddressClick(): void {
+    this.externalAppService.openAddress(this.launchNavigator, this.stylist.salon_address);
   }
 
   onInstagramClick(): void {

@@ -122,14 +122,17 @@ export class ExternalAppService {
   async openAddress(launchNavigator: LaunchNavigator, address: string): Promise<void> {
     let appName;
 
+    if (!this.platform.is('cordova')) {
+      // Show an address on a google map in browser as a fallback:
+      this.openLink(`https://maps.google.com/?q=${address}`);
+      return;
+    }
+
+    // On devices:
     if (this.platform.is('ios')) {
       appName = MapsApp.APPLE_MAPS;
     } else if (this.platform.is('android')) {
       appName = MapsApp.GOOGLE_MAPS;
-    } else {
-      // Show an address on a google map in browser:
-      this.openLink(`https://maps.google.com/?q=${address}`);
-      return;
     }
 
     const options: LaunchNavigatorOptions = {

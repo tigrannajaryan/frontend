@@ -21,8 +21,8 @@
       <i class="mb-icon-heart-a"></i>&nbsp;<span><b>{{ stylist.followers_count }}</b> MADE Clients</span>
     </div>
 
-    <div class="StylistCard-info">
-      <i class="mb-icon-marker"></i>&nbsp;<span>{{ stylist.salon_address }}</span>
+    <div (click)="onAddressClick()" class="StylistCard-info">
+      <i class="mb-icon-marker"></i>&nbsp;<span class="Link">{{ stylist.salon_address }}</span>
     </div>
 
     <div class="StylistCard-links">
