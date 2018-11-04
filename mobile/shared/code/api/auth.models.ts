@@ -1,7 +1,10 @@
 import { StylistModel } from '~/shared/api/stylists.models';
 import { StylistProfile, StylistProfileStatus } from '~/shared/api/stylist-app.models';
 
-export type UserRole = 'stylist' | 'client';
+export enum UserRole {
+  stylist = 'stylist',
+  client = 'client'
+}
 
 export interface EmailAuthCredentials {
   email: string;

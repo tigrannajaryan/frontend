@@ -9,7 +9,7 @@ import { ClientInvitation } from './shared-app/api/invitations.models';
 import { SetStylistServicesParams, StylistProfile } from './shared-app/api/stylist-app.models';
 import { Worktime } from './shared-app/api/worktime.models';
 import { getPhoneNumber } from './shared-app/utils/phone-numbers';
-import { EmailAuthCredentials } from './shared-app/api/auth.models';
+import { EmailAuthCredentials, UserRole } from './shared-app/api/auth.models';
 import { pushPrimingPage } from './shared-e2e/push-priming-page';
 
 import { clientApp } from './client-app';
@@ -35,7 +35,7 @@ describe('First use flow for invited clients', () => {
     const stylistCredentials: EmailAuthCredentials = {
       email: getRandomEmail(),
       password: getRandomString(Math.floor(Math.random() * 20) + 1),
-      role: 'stylist'
+      role: UserRole.stylist
     };
     const authResponse = await stylistApi.registerByEmail(stylistCredentials);
     expect(authResponse.token).toBeDefined();

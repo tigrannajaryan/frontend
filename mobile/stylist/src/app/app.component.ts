@@ -6,7 +6,7 @@ import { ScreenOrientation } from '@ionic-native/screen-orientation';
 
 import { async_all } from '~/shared/async-helpers';
 import { Logger } from '~/shared/logger';
-import { getBuildNumber, getCommitHash } from '~/shared/get-build-number';
+import { getBuildNumber, getCommitHash } from '~/shared/get-build-info';
 import { GAWrapper } from '~/shared/google-analytics';
 import { StylistProfileStatus } from '~/shared/api/stylist-app.models';
 import { PushNotification } from '~/shared/push/push-notification';

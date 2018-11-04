@@ -4,7 +4,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { ScreenOrientation } from '@ionic-native/screen-orientation';
 
-import { getBuildNumber, getCommitHash } from '~/shared/get-build-number';
+import { getBuildNumber, getCommitHash } from '~/shared/get-build-info';
 import { GAWrapper } from '~/shared/google-analytics';
 import { Logger } from '~/shared/logger';
 import { ServerStatusTracker } from '~/shared/server-status-tracker';

@@ -83,6 +83,7 @@ import { UiKitPreviewComponent } from '~/ui-kit-preview/ui-kit-preview.component
 import { servicesReducer } from '~/appointment/appointment-services/services.reducer';
 import { ServicesEffects } from '~/appointment/appointment-services/services.effects';
 import { WorkHoursComponent } from '~/workhours/workhours.component';
+import { NotificationsApi } from './shared/push/notifications.api';
 
 initSentry();
 
@@ -229,6 +230,7 @@ const declarations = [
     WorktimeApi,
     InvitationsApi,
     ClientDetailsApi,
+    NotificationsApi,
 
     ExternalAppService,
 

@@ -1,14 +1,17 @@
 import { Injectable } from '@angular/core';
 import { NotificationEventResponse, Push, PushObject, PushOptions, RegistrationEventResponse } from '@ionic-native/push';
-import * as moment from 'moment';
-
-import { Logger } from '~/shared/logger';
-
-import { ENV } from '~/environments/environment.default';
 import { Page } from 'ionic-angular/navigation/nav-util';
 import { NavController } from 'ionic-angular/navigation/nav-controller';
 import { Events, Platform } from 'ionic-angular';
-import { AfterLoginEvent, SharedEventTypes } from '../events/shared-event-types';
+import * as moment from 'moment';
+
+import { Logger } from '~/shared/logger';
+import { AfterLoginEvent, SharedEventTypes } from '~/shared/events/shared-event-types';
+import { isDevelopmentBuild } from '~/shared/get-build-info';
+import { NotificationsApi, PushDeviceType, RegUnregDeviceRequest } from './notifications.api';
+
+import { ENV } from '~/environments/environment.default';
+import { appDefinitions } from '~/environments/app-def';
 
 /**
  * Expected params of priming screen. When you implement the actual priming screen
@@ -102,9 +105,12 @@ export class PushNotification {
   private persistentStorage: PersistentStorage;
   private persistentData: PushPersistentData;
 
+  private deviceType: PushDeviceType;
+
   constructor(
     private events: Events,
     private logger: Logger,
+    private api: NotificationsApi,
     private platform: Platform,
     private push: Push
   ) {
@@ -112,6 +118,8 @@ export class PushNotification {
       this.logger.info('Push: feature is not enabled.');
       return;
     }
+
+    this.deviceType = this.platform.is('android') ? 'fcm' : 'apns';
 
     // Set default state of persistent data. We will later read it from storage.
     this.persistentData = {
@@ -351,6 +359,15 @@ export class PushNotification {
     this.userUuid = undefined;
   }
 
+  private prepareRequest(): RegUnregDeviceRequest {
+    return {
+      device_registration_id: this.deviceRegistrationId,
+      device_type: this.deviceType,
+      is_development_build: isDevelopmentBuild(),
+      user_role: appDefinitions.userRole
+    };
+  }
+
   private associateUserWithDevice(): void {
     if (!this.deviceRegistrationId) {
       // Device is not yet known, nothing can be done.
@@ -358,6 +375,7 @@ export class PushNotification {
     }
 
     // Tell backend to associate device with the user
+    this.api.registerDevice(this.prepareRequest());
   }
 
   private unAssociateUserWithDevice(): void {
@@ -367,5 +385,6 @@ export class PushNotification {
     }
 
     // Tell backend to unassociate device from the user
+    this.api.unregisterDevice(this.prepareRequest());
   }
 }
