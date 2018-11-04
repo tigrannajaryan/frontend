@@ -12,6 +12,7 @@ import { NotificationsApi, PushDeviceType, RegUnregDeviceRequest } from './notif
 
 import { ENV } from '~/environments/environment.default';
 import { appDefinitions } from '~/environments/app-def';
+import { PlatforNames } from '../constants';
 
 /**
  * Expected params of priming screen. When you implement the actual priming screen
@@ -119,7 +120,7 @@ export class PushNotification {
       return;
     }
 
-    this.deviceType = this.platform.is('android') ? 'fcm' : 'apns';
+    this.deviceType = this.platform.is(PlatforNames.android) ? 'fcm' : 'apns';
 
     // Set default state of persistent data. We will later read it from storage.
     this.persistentData = {
@@ -154,12 +155,10 @@ export class PushNotification {
       this.persistentData = p;
     }
 
-    if (this.platform.is('android')) {
-      //   // Ask permission on android immediately, since it is granted automatically
-      //   this.askSystemPermission();
-    }
-
-    if (this.persistentData.isPermissionGranted) {
+    if (this.platform.is(PlatforNames.android)) {
+      // Ask permission on android immediately, since it is granted automatically
+      this.getSystemPermissionAndRegister();
+    } else if (this.persistentData.isPermissionGranted) {
       // Permission is already granted, go ahead and finish initialization of push system,
       // it is safe to do now, it will not trigger permission asking system dialog anymore.
       this.getSystemPermissionAndRegister();
@@ -211,11 +210,10 @@ export class PushNotification {
 
     this.logger.info('Push: showing permission priming screen');
 
-    /*if (this.platform.is('android')) {
-      // Ask permission on android immediately, since it is granted automatically
+    if (this.platform.is(PlatforNames.android)) {
+      // Permission screen is not needed on android
       return Promise.resolve(PermissionScreenResult.notNeeded);
-    } else */
-    {
+    } else {
       // On iOS we use priming screen first to reduce rejection rate
 
       return new Promise(async (resolve, reject) => {
