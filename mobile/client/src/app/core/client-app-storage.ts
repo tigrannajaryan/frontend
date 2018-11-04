@@ -10,7 +10,7 @@ import { PushPersistentData } from '~/shared/push/push-notification';
  * want to be able to store in persistent storage and access via ClientAppStorage class.
  */
 export interface ClientAppPersistentData {
-  push_notification_params: PushPersistentData;
+  pushNotificationParams: PushPersistentData;
 }
 
 /**
@@ -25,7 +25,7 @@ export class ClientAppStorage extends AppStorage<ClientAppPersistentData> {
     // Define default state of data if the storage does not exist, e.g
     // we run the app the first time or storage was deleted.
     const defaultData: ClientAppPersistentData = {
-      push_notification_params: {
+      pushNotificationParams: {
         isPermissionGranted: false,
         lastPrimingScreenShown: undefined
       }

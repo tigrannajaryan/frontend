@@ -1,15 +1,15 @@
 import { Component, ViewChild } from '@angular/core';
-import { Nav, Platform } from 'ionic-angular';
+import { App, Nav, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { ScreenOrientation } from '@ionic-native/screen-orientation';
 
-import { async_all, async_many } from '~/shared/async-helpers';
+import { async_all } from '~/shared/async-helpers';
 import { Logger } from '~/shared/logger';
 import { getBuildNumber, getCommitHash } from '~/shared/get-build-number';
 import { GAWrapper } from '~/shared/google-analytics';
 import { StylistProfileStatus } from '~/shared/api/stylist-app.models';
-import { PushNotification } from '~/shared/push-notification';
+import { PushNotification } from '~/shared/push/push-notification';
 
 import { PageNames } from '~/core/page-names';
 import { createNavHistoryList } from '~/core/functions';
@@ -27,6 +27,7 @@ export class MyAppComponent {
   @ViewChild(Nav) nav: Nav;
 
   constructor(
+    private app: App,
     public platform: Platform,
     public statusBar: StatusBar,
     public splashScreen: SplashScreen,
@@ -56,18 +57,12 @@ export class MyAppComponent {
     // Now that the platform is ready asynchronously initialize in parallel everything
     // that our app needs and wait until all initializations finish. Add here any other
     // initialization operation that must be done before the initial page is shown.
-
-    const initializers = [
+    await async_all([
       this.ga.init(ENV.gaTrackingId),
       this.storage.init()
-    ];
+    ]);
 
-    if (ENV.ffEnablePushNotifications) {
-      // Init the push notifications if the feature is enabled
-      initializers.push(this.pushNotification.init());
-    }
-
-    await async_many(initializers);
+    await this.pushNotification.init(this.app.getRootNav(), PageNames.PushPrimingScreen, this.storage);
 
     // Lock screen orientation to portrait if this is real device
     if (!(this.platform.is('core') || this.platform.is('mobileweb'))) {

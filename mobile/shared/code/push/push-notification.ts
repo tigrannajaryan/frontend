@@ -48,17 +48,43 @@ export interface PushPersistentData {
  * in the call to PushPersistent.init() method. get/set funuction
  * signatures are compatible with generic AppStorage class which makes
  * it trivial to satisfy the requirements of this interface by simply
- * declaring "push_notification_params: PushPersistentData" member in
+ * declaring "pushNotificationParams: PushPersistentData" member in
  * your app's persistent storage.
  */
 export interface PersistentStorage {
-  set(key: 'push_notification_params', value: PushPersistentData): Promise<void>;
-  get(key: 'push_notification_params'): PushPersistentData;
+  set(key: 'pushNotificationParams', value: PushPersistentData): Promise<void>;
+  get(key: 'pushNotificationParams'): PushPersistentData;
 }
 
 /**
  * Service that receives push notifications from backend.
- * See docs: https://ionicframework.com/docs/native/push/
+ * Uses Ionic Push plugin: https://ionicframework.com/docs/native/push/
+ *
+ * Intended usage:
+ * 1. When the app starts call PushNotification.init().
+ *    On Android this will perform all neccesarry initialization, will get system
+ *    permission for push notifications, will register the device with FCM and
+ *    will be ready to associate the device once the user becomes known.
+ *    On iOS this performs bare minimum of initialization because on iOS we
+ *    have to use more complex approach with permission priming screen (see below).
+ *
+ * 2. At some point in the app when the user is already engaged call
+ *    PushNotification.showPermissionScreen().
+ *    On iOS this will show the priming screen to the user (if neccessary,
+ *    see jsdoc of the function) and if the user agrees to move forward
+ *    will request the system push notification. If the system permission
+ *    is granted we will then proceed to register the device with APNS and
+ *    and will be ready to associate the device once the user becomes known.
+ *    On Android this normally does nothing since the permissions are
+ *    already granted by init() call.
+ *
+ * This class subscribes to Login/Logout events and tracks the current user uuid
+ * and associates/deassociates the current user with this device.
+ *
+ * If the user becomes known in the app but Login event is not generated it is your
+ * responsibility to call PushNotification.setUser manually. (this can happen if we
+ * are restoring previously stored authenticated session without peforming actual
+ * user-facing Login action).
  */
 @Injectable()
 export class PushNotification {
@@ -115,7 +141,7 @@ export class PushNotification {
     this.persistentStorage = persistentStorage;
 
     // Read our persistent data from storage
-    const p: PushPersistentData = await persistentStorage.get('push_notification_params');
+    const p: PushPersistentData = await persistentStorage.get('pushNotificationParams');
     if (p) {
       this.persistentData = p;
     }
@@ -132,8 +158,16 @@ export class PushNotification {
     }
   }
 
+  /**
+   * Call this method if current user changes in a way that does not trigger Login/Logout events.
+   */
   setUser(userUuid: string): void {
     this.userUuid = userUuid;
+    if (this.userUuid) {
+      this.associateUserWithDevice();
+    } else {
+      this.unAssociateUserWithDevice();
+    }
   }
 
   /**
@@ -227,6 +261,7 @@ export class PushNotification {
 
     this.logger.info('Push: getting system permission');
 
+    // Try to get system push notification permission
     try {
       if (!await this.push.hasPermission()) {
         this.logger.warn('Push: we do not have permission to send push notifications');
@@ -242,6 +277,7 @@ export class PushNotification {
     this.persistentData.isPermissionGranted = true;
     await this.savePersistentData();
 
+    // Initialize Push plugin
     const options: PushOptions = {
       android: {
         senderID: ENV.FCM_PUSH_SENDER_ID
@@ -272,11 +308,11 @@ export class PushNotification {
   }
 
   private savePersistentData(): Promise<void> {
-    return this.persistentStorage.set('push_notification_params', this.persistentData);
+    return this.persistentStorage.set('pushNotificationParams', this.persistentData);
   }
 
   /**
-   * Device registration handler. Called after the device is registered with Apple/Google.
+   * Device registration handler. Called after the device is registered with FCM/APNS.
    */
   private onDeviceRegistration(registration: RegistrationEventResponse): void {
     this.logger.info('Push: device registered:', registration.registrationId);
@@ -321,7 +357,7 @@ export class PushNotification {
       return;
     }
 
-    // Register device+user with backend
+    // Tell backend to associate device with the user
   }
 
   private unAssociateUserWithDevice(): void {
@@ -330,6 +366,6 @@ export class PushNotification {
       return;
     }
 
-    // Unregister device+user with backend
+    // Tell backend to unassociate device from the user
   }
 }

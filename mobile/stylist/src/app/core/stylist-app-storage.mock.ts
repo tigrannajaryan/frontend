@@ -10,7 +10,11 @@ import { StylistAppPersistentData } from './stylist-app-storage';
 export class StylistAppStorageMock extends AppStorageMock<StylistAppPersistentData> {
   constructor() {
     const initialMockData = {
-      showHomeScreenHelp: false
+      showHomeScreenHelp: false,
+      pushNotificationParams: {
+        isPermissionGranted: false,
+        lastPrimingScreenShown: undefined
+      }
     };
     super(initialMockData);
   }

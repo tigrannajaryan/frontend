@@ -19,9 +19,9 @@ import { ServicesCategoriesPageComponent } from '~/services-categories-page/serv
 import { MyStylistsComponent } from '~/stylists/my-stylists.component';
 import { StylistsPageComponent } from '~/stylists/stylists-search/stylists-search.component';
 import { PrivacySettingsComponent } from '~/privacy-settings/privacy-settings.component';
+import { PushPrimingScreenComponent } from '~/shared/components/push-priming-screen/push-priming-screen.component';
 import { FollowersComponent } from '~/followers/followers.component';
 import { StylistComponent } from '~/stylists/stylist/stylist.component';
-import { PushPrimingScreenComponent } from '~/shared/components/push-priming-screen/push-priming-screen.component';
 
 /**
  * Define page names in one place to avoid typos if the names are used as
