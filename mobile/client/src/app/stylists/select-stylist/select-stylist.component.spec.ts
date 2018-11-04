@@ -39,16 +39,18 @@ describe('Pages: Select Stylist', () => {
     await instance.ionViewWillEnter();
     fixture.detectChanges();
 
-    stylistsMock.forEach(stylist => {
-      expect(fixture.nativeElement.textContent)
-        .toContain(`${stylist.first_name} ${stylist.last_name}`);
-      expect(fixture.nativeElement.textContent)
-        .toContain(stylist.salon_name);
-      expect(fixture.nativeElement.textContent)
-        .toContain(stylist.salon_address);
-      expect(fixture.nativeElement.textContent)
-        .toContain(`${stylist.followers_count} MADE Clients`);
-    });
+    stylistsMock
+      .filter(stylist => stylist.is_profile_bookable)
+      .forEach(stylist => {
+        expect(fixture.nativeElement.textContent)
+          .toContain(`${stylist.first_name} ${stylist.last_name}`);
+        expect(fixture.nativeElement.textContent)
+          .toContain(stylist.salon_name);
+        expect(fixture.nativeElement.textContent)
+          .toContain(stylist.salon_address);
+        expect(fixture.nativeElement.textContent)
+          .toContain(`${stylist.followers_count} MADE Clients`);
+      });
 
     done();
   });
