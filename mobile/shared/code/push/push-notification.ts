@@ -65,6 +65,9 @@ export class PushNotification {
   private navCtrl: NavController;
   private primingScreenPage: Page;
 
+  // Is device registration successfully done?
+  private isRegistered = false;
+
   // Currently logged in user uuid
   private userUuid: string;
 
@@ -150,6 +153,12 @@ export class PushNotification {
       return Promise.resolve(PermissionScreenResult.notNeeded);
     }
 
+    if (this.persistentData.isPermissionGranted) {
+      // Permission is already granted, no need to show priming screen
+      return this.getSystemPermissionAndRegister().then(granted =>
+        granted ? PermissionScreenResult.permissionGranted : PermissionScreenResult.permissionNotGranted);
+    }
+
     if (this.persistentData.lastPrimingScreenShown &&
       this.persistentData.lastPrimingScreenShown.valueOf() + minTimeBetweenPrimingScreenDisplaysMilliseconds > new Date().valueOf()) {
       // Not enough time passed since we have shown the screen last time. Skip this time.
@@ -203,10 +212,17 @@ export class PushNotification {
    * Once permission is received get device registration id and associate the
    * device with currently logged in user (if any). From this moment we will begin
    * to receive push notifications via this.onNotification() method.
+   *
+   * After registration is successfull calling this function again is harmless,
+   * we just return true.
    */
   private async getSystemPermissionAndRegister(): Promise<boolean> {
     if (!ENV.ffEnablePushNotifications) {
       return false;
+    }
+
+    if (this.isRegistered) {
+      return true;
     }
 
     this.logger.info('Push: getting system permission');
@@ -249,6 +265,8 @@ export class PushNotification {
 
     // Log the errors
     pushObject.on('error').subscribe(error => this.logger.error('Push: error with Push plugin', error));
+
+    this.isRegistered = true;
 
     return true;
   }

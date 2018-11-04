@@ -6,4 +6,14 @@ push-priming-screen {
     color: color($colors, warmGrey);
     line-height: pxtovw(24px);
   }
+
+  .Button {
+    font-size: pxtovw(18px);
+    font-weight: map-get($fontWeights, semibold);
+    margin-bottom: pxtovw(27px);
+  }
+
+  .Link {
+    margin-bottom: pxtovw(39px);
+  }
 }

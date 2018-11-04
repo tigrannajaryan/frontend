@@ -6,12 +6,16 @@
 
 <ion-content padding>
   <div class="PushPrimingText">
-    For the best experience, we  would like to send you notifications about new bookings and other helpful reminders.
-    <br/><br/>
+    For the best experience, we would like to send you notifications about new bookings and other helpful reminders.
+    <br /><br />
     Don't worry, you can update your notifications at any time.
   </div>
 
-  <button ion-button class="Button" (click)="onAllowClick()">Allow Notifications</button>
+  <ion-footer class="Footer">
+    <button ion-button class="Button" (click)="onAllowClick()" data-test-id="allow">Allow Notifications</button>
 
-  <button ion-button class="Button" (click)="onNotNowClick()">Not Now</button>
+    <ion-row justify-content-center>
+      <span (click)="onNotNowClick()" class="Link" data-test-id="not-now">Not Now</span>
+    </ion-row>
+  </ion-footer>
 </ion-content>
