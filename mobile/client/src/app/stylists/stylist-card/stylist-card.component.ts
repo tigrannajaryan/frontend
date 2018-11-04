@@ -1,9 +1,10 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { AlertController, NavController } from 'ionic-angular';
+import { AlertController, Events, NavController } from 'ionic-angular';
 
 import { StylistModel } from '~/shared/api/stylists.models';
 import { ExternalAppService } from '~/shared/utils/external-app-service';
 
+import { EventTypes } from '~/core/event-types';
 import { PageNames } from '~/core/page-names';
 
 @Component({
@@ -23,6 +24,7 @@ export class StylistCardComponent implements OnInit {
   @Output() removeStylist = new EventEmitter<StylistModel>();
 
   constructor(
+    private events: Events,
     private externalAppService: ExternalAppService,
     private navCtrl: NavController,
     private alertCtrl: AlertController
@@ -80,5 +82,9 @@ export class StylistCardComponent implements OnInit {
       }]
     });
     popup.present();
+  }
+
+  onStartBooking(): void {
+    this.events.publish(EventTypes.startBooking, this.stylist.uuid);
   }
 }

@@ -9,7 +9,7 @@
   <i *ngIf="stylist.is_profile_bookable" class="StylistCard-bookable mb-icon-booking"></i>
 
 
-  <div class="StylistCard-photo" [style.backgroundImage]="'url(' + (stylist.profile_photo_url  || 'assets/icons/stylist-avatar.png') + ')'"></div>
+  <div (click)="isMyStylist && !isHearted && isActive && onStartBooking()" class="StylistCard-photo" [style.backgroundImage]="'url(' + (stylist.profile_photo_url  || 'assets/icons/stylist-avatar.png') + ')'"></div>
   <div *ngIf="isHearted && isActive" class="StylistCard-name">{{ stylist.first_name }}<br/>{{ stylist.last_name }}</div>
 
   <div class="StylistCard-body">
