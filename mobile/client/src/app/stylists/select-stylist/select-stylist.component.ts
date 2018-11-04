@@ -33,8 +33,12 @@ export class SelectStylistComponent {
   async ionViewWillEnter(): Promise<void> {
     this.stylists = await loading(this, this.preferredStylistsData.get());
 
-    if (!this.stylists || this.stylists.length === 0) {
-      // Cannot proceed if no prefered styllist is selected, redirecting:
+    // Show only bookable stylists:
+    this.stylists = this.stylists.filter(stylist => stylist.is_profile_bookable);
+
+    if (this.stylists.length === 0) {
+      // Cannot proceed if no prefered bookable styllist is selected.
+      // Redirecting to Stylists tab and showing a warning popup:
       await this.navCtrl.setRoot(PageNames.MainTabs);
       this.events.publish(EventTypes.selectMainTab, TabIndex.Stylists, this.showNoSelectedStylistWarning);
     }
@@ -47,6 +51,10 @@ export class SelectStylistComponent {
     this.navCtrl.push(PageNames.ServicesCategories, { params });
   }
 
+  /**
+   * If no preferred bookable stylist is selected we redirect a user to the Stylist tab and show a popup with a warning message.
+   * A user should select a stylist first to proceed with the booking.
+   */
   showNoSelectedStylistWarning = (): void => {
     const alert = this.alertCtrl.create({
       message: 'Choose your stylists to proceed with booking.',

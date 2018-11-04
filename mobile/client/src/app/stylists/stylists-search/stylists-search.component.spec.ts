@@ -54,10 +54,13 @@ describe('Pages: Stylists Search', () => {
       stylistsMock.forEach(stylist => {
         expect(textContent)
           .toContain(`${stylist.first_name} ${stylist.last_name}`);
-        expect(textContent)
-          .toContain(stylist.salon_name);
-        expect(textContent)
-          .toContain(stylist.salon_address);
+
+        if (stylist.is_profile_bookable) {
+          expect(textContent)
+            .toContain(stylist.salon_name);
+          expect(fixture.nativeElement.textContent)
+            .toContain(`${stylist.followers_count} MADE Clients`);
+        }
       });
 
       done();

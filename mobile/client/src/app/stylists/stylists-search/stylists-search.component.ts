@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { ModalController, NavController, NavParams } from 'ionic-angular';
+import { Events, ModalController, NavController, NavParams } from 'ionic-angular';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 
@@ -8,6 +8,7 @@ import { RequestState } from '~/shared/api/request.models';
 import { StylistModel, StylistsSearchParams } from '~/shared/api/stylists.models';
 import { GeolocationService, LatLng } from '~/shared/utils/geolocation.service';
 
+import { EventTypes } from '~/core/event-types';
 import { PageNames } from '~/core/page-names';
 import { PreferredStylistsData } from '~/core/api/preferred-stylists.data';
 import {
@@ -18,12 +19,13 @@ import {
   StylistState
 } from '~/core/reducers/stylists.reducer';
 
+import { Tabs } from '~/stylists/my-stylists.component';
 import {
   NonBookableSavePopupComponent,
   NonBookableSavePopupParams
 } from '~/stylists/non-bookable-save-popup/non-bookable-save-popup.component';
 
-interface StylistsPageParams {
+export interface StylistsPageParams {
   onboarding?: boolean;
 }
 
@@ -55,6 +57,7 @@ export class StylistsPageComponent {
   isLocationInputFocused = false;
 
   constructor(
+    private events: Events,
     private geolocationService: GeolocationService,
     private modalCtrl: ModalController,
     private navCtrl: NavController,
@@ -111,7 +114,8 @@ export class StylistsPageComponent {
 
     } else {
       // Common case for adding a stylist navigates back to my stylists:
-      this.navCtrl.popToRoot();
+      await this.navCtrl.popToRoot();
+      this.events.publish(EventTypes.selectStylistTab, Tabs.myStylists);
     }
   }
 

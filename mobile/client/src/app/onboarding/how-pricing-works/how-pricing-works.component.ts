@@ -4,7 +4,7 @@ import { NavController, NavParams } from 'ionic-angular';
 import { PageNames } from '~/core/page-names';
 import { PreferredStylistsData } from '~/core/api/preferred-stylists.data';
 
-import { StylistPageParams } from '~/stylists/stylist/stylist.component';
+import { StylistsPageParams } from '~/stylists/stylists-search/stylists-search.component';
 
 @Component({
   selector: 'page-how-pricing-works',
@@ -30,7 +30,7 @@ export class HowPricingWorksComponent {
   async onContinue(): Promise<void> {
     const preferredStylists = await this.preferredStylistsData.get();
     if (preferredStylists.length === 0) {
-      const data: StylistPageParams = { onboarding: true };
+      const data: StylistsPageParams = { onboarding: true };
       this.navCtrl.push(PageNames.Stylists, { data });
     } else {
       this.navCtrl.setRoot(PageNames.MainTabs);
