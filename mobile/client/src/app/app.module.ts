@@ -80,6 +80,7 @@ import { PrivacySettingsComponent } from '~/privacy-settings/privacy-settings.co
 import { FollowersComponent } from '~/followers/followers.component';
 import { StylistComponent } from '~/stylists/stylist/stylist.component';
 import { PushPrimingScreenComponent } from './shared/components/push-priming-screen/push-priming-screen.component';
+import { ClientAppStorage } from './core/client-app-storage';
 
 // Init sentry reporting (inits only if ENV.sentryDsn):
 initSentry();
@@ -197,6 +198,7 @@ const declarations = [
 
     Push,
     PushNotification,
+    ClientAppStorage,
 
     { // Add auth token to all requests
       provide: HTTP_INTERCEPTORS,

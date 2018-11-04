@@ -22,6 +22,7 @@ import { PushNotification } from './shared/push/push-notification';
 import { SharedEventTypes } from './shared/events/shared-event-types';
 import { AuthResponse } from './shared/api/auth.models';
 import { AuthService } from './shared/api/auth.api';
+import { ClientAppStorage } from './core/client-app-storage';
 
 @Component({
   templateUrl: 'app.component.html'
@@ -43,7 +44,8 @@ export class ClientAppComponent implements OnInit, OnDestroy {
     private screenOrientation: ScreenOrientation,
     private serverStatusTracker: ServerStatusTracker,
     private splashScreen: SplashScreen,
-    private statusBar: StatusBar
+    private statusBar: StatusBar,
+    private storage: ClientAppStorage
   ) {
   }
 
@@ -70,8 +72,10 @@ export class ClientAppComponent implements OnInit, OnDestroy {
     // initialization operation that must be done before the initial page is shown.
     await async_all([
       this.ga.init(ENV.gaTrackingId),
-      this.pushNotification.init(this.app.getRootNav(), PageNames.PushPrimingScreen)
+      this.storage.init()
     ]);
+
+    await this.pushNotification.init(this.app.getRootNav(), PageNames.PushPrimingScreen, this.storage);
 
     // Track all top-level screen changes
     this.nav.viewDidEnter.subscribe(view => this.ga.trackViewChange(view));

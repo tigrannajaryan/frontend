@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { NotificationEventResponse, Push, PushObject, PushOptions, RegistrationEventResponse } from '@ionic-native/push';
+import * as moment from 'moment';
 
 import { Logger } from '~/shared/logger';
 
@@ -9,26 +10,50 @@ import { NavController } from 'ionic-angular/navigation/nav-controller';
 import { Events, Platform } from 'ionic-angular';
 import { AfterLoginEvent, SharedEventTypes } from '../events/shared-event-types';
 
+/**
+ * Expected params of priming screen. When you implement the actual priming screen
+ * make sure to use this interface for "params" NavParam property.
+ */
 export interface PrimingScreenParams {
   onAllowClick: Function;
   onNotNowClick: Function;
   onBackClick: Function;
 }
 
-// interface PersistentData {
-//   device_registration_id: string;
-// }
-
+/**
+ * Resulting value returned by showPermissionScreen() method.
+ */
 export enum PermissionScreenResult {
-  notNeeded,
-  permissionGranted,
-  permissionNotGranted,
-  userWantsToGoBack
+  notNeeded,            // if there is no need to show the permission screen. This can be the
+  //                       case if permission is already granted or we are running on Android.
+
+  permissionGranted,    // push permission granted and device is now registered for push.
+  permissionNotGranted, // push permission not granted, we cannot receive notifications.
+  userWantsToGoBack     // back button was clicked (only possible if asRoot=false)
 }
 
+// Define minimum interval between bothering the user by priming screen
+const minTimeBetweenPrimingScreenDisplaysMilliseconds = moment.duration(14, 'day').asMilliseconds();
+
+/**
+ * Data that PushNotification class needs to store persistently.
+ */
+export interface PushPersistentData {
+  isPermissionGranted: boolean;
+  lastPrimingScreenShown: Date;
+}
+
+/**
+ * An interface that user of PushPersistent must implement and supply
+ * in the call to PushPersistent.init() method. get/set funuction
+ * signatures are compatible with generic AppStorage class which makes
+ * it trivial to satisfy the requirements of this interface by simply
+ * declaring "push_notification_params: PushPersistentData" member in
+ * your app's persistent storage.
+ */
 export interface PersistentStorage {
-  set(key: 'pushPermissionGranted', value: boolean): Promise<void>;
-  get(key: 'pushPermissionGranted'): Promise<boolean>;
+  set(key: 'push_notification_params', value: PushPersistentData): Promise<void>;
+  get(key: 'push_notification_params'): PushPersistentData;
 }
 
 /**
@@ -39,8 +64,14 @@ export interface PersistentStorage {
 export class PushNotification {
   private navCtrl: NavController;
   private primingScreenPage: Page;
+
+  // Currently logged in user uuid
   private userUuid: string;
+
   private deviceRegistrationId: string;
+
+  private persistentStorage: PersistentStorage;
+  private persistentData: PushPersistentData;
 
   constructor(
     private events: Events,
@@ -49,8 +80,15 @@ export class PushNotification {
     private push: Push
   ) {
     if (!ENV.ffEnablePushNotifications) {
+      this.logger.info('Push: feature is not enabled.');
       return;
     }
+
+    // Set default state of persistent data. We will later read it from storage.
+    this.persistentData = {
+      isPermissionGranted: false,
+      lastPrimingScreenShown: undefined
+    };
 
     this.events.subscribe(SharedEventTypes.afterLogin, (e: AfterLoginEvent) => this.onLogin(e));
     this.events.subscribe(SharedEventTypes.beforeLogout, () => this.onBeforeLogout());
@@ -62,9 +100,8 @@ export class PushNotification {
    * @param primingScreenPage the screen that will be shown before we ask
    *    for system push permissions on iOS (ignore on Android).
    */
-  async init(navCtrl: NavController, primingScreenPage: Page): Promise<void> {
+  async init(navCtrl: NavController, primingScreenPage: Page, persistentStorage: PersistentStorage): Promise<void> {
     if (!ENV.ffEnablePushNotifications) {
-      this.logger.info('Push: feature is not enabled.');
       return;
     }
 
@@ -72,10 +109,23 @@ export class PushNotification {
 
     this.navCtrl = navCtrl;
     this.primingScreenPage = primingScreenPage;
+    this.persistentStorage = persistentStorage;
+
+    // Read our persistent data from storage
+    const p: PushPersistentData = await persistentStorage.get('push_notification_params');
+    if (p) {
+      this.persistentData = p;
+    }
 
     if (this.platform.is('android')) {
-    //   // Ask permission on android immediately, since it is granted automatically
-    //   this.askSystemPermission();
+      //   // Ask permission on android immediately, since it is granted automatically
+      //   this.askSystemPermission();
+    }
+
+    if (this.persistentData.isPermissionGranted) {
+      // Permission is already granted, go ahead and finish initialization of push system,
+      // it is safe to do now, it will not trigger permission asking system dialog anymore.
+      this.getSystemPermissionAndRegister();
     }
   }
 
@@ -84,26 +134,31 @@ export class PushNotification {
   }
 
   /**
-   * Show a permission screen by pushig it to navigation stack.
-   * If the user grants permission then ask system push permission.
-   * If system permission is granted registers this device with
+   * Show a permission priming screen if needed. The screen is needed
+   * on iOS only and we only show it infrequently, so some executions
+   * of this method may return PermissionScreenResult.notNeeded result.
+   *
+   * If the screen is shown and the user grants permission then also get system
+   * push permission. If system permission is granted registers this device with
    * the backend to receive notifications.
    *
    * @param asRoot if true sets the permission screen as root otherwise
    *               pushes it to navigation stack (making "pop" possible).
-   *
-   * @returns
-   *    notNeeded - if there is no need to show the permission screen. This can be the
-   *                case if permission is already granted or we are running on Android.
-   *
-   *    userWantsToGoBack - if back button was clicked (only possible if asRoot=false)
    */
   showPermissionScreen(asRoot: boolean): Promise<PermissionScreenResult> {
     if (!ENV.ffEnablePushNotifications) {
       return Promise.resolve(PermissionScreenResult.notNeeded);
     }
 
-    this.logger.info('Push: asking permission');
+    if (this.persistentData.lastPrimingScreenShown &&
+      this.persistentData.lastPrimingScreenShown.valueOf() + minTimeBetweenPrimingScreenDisplaysMilliseconds > new Date().valueOf()) {
+      // Not enough time passed since we have shown the screen last time. Skip this time.
+      this.logger.info('Push: will not ask permission this time, too soon. Last asked at',
+        this.persistentData.lastPrimingScreenShown);
+      return Promise.resolve(PermissionScreenResult.notNeeded);
+    }
+
+    this.logger.info('Push: showing permission priming screen');
 
     /*if (this.platform.is('android')) {
       // Ask permission on android immediately, since it is granted automatically
@@ -116,7 +171,7 @@ export class PushNotification {
         const params: PrimingScreenParams = {
           onAllowClick: async () => {
             try {
-              const result = await this.askSystemPermission();
+              const result = await this.getSystemPermissionAndRegister();
               resolve(result ? PermissionScreenResult.permissionGranted : PermissionScreenResult.permissionNotGranted);
             } catch {
               reject();
@@ -126,19 +181,35 @@ export class PushNotification {
           onNotNowClick: () => resolve(PermissionScreenResult.permissionNotGranted),
           onBackClick: () => resolve(PermissionScreenResult.userWantsToGoBack)
         };
+
         if (asRoot) {
           this.navCtrl.setRoot(this.primingScreenPage, { params });
         } else {
           this.navCtrl.push(this.primingScreenPage, { params });
         }
+
+        // Remember that we displayed the screen
+        this.persistentData.lastPrimingScreenShown = new Date();
+        this.savePersistentData();
       });
     }
   }
 
-  async askSystemPermission(): Promise<boolean> {
+  /**
+   * Gets from system permission to receive push notifications (if does not already
+   * have that permission). On iOS this triggers a system modal dialog, on Android
+   * this permission is granted automatically without dialog.
+   *
+   * Once permission is received get device registration id and associate the
+   * device with currently logged in user (if any). From this moment we will begin
+   * to receive push notifications via this.onNotification() method.
+   */
+  private async getSystemPermissionAndRegister(): Promise<boolean> {
     if (!ENV.ffEnablePushNotifications) {
       return false;
     }
+
+    this.logger.info('Push: getting system permission');
 
     try {
       if (!await this.push.hasPermission()) {
@@ -151,6 +222,9 @@ export class PushNotification {
     }
 
     this.logger.info('Push: permission granted');
+
+    this.persistentData.isPermissionGranted = true;
+    await this.savePersistentData();
 
     const options: PushOptions = {
       android: {
@@ -173,10 +247,14 @@ export class PushNotification {
     // Prepare to receive notifications
     pushObject.on('notification').subscribe((notification: NotificationEventResponse) => this.onNotification(notification));
 
-    // Log push errors
+    // Log the errors
     pushObject.on('error').subscribe(error => this.logger.error('Push: error with Push plugin', error));
 
     return true;
+  }
+
+  private savePersistentData(): Promise<void> {
+    return this.persistentStorage.set('push_notification_params', this.persistentData);
   }
 
   /**
