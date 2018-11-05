@@ -1,12 +1,17 @@
 import { Component, ViewChild } from '@angular/core';
 import { Events, Refresher, Slides } from 'ionic-angular';
 
-import { PreferredStylistModel, PreferredStylistsListResponse, StylistModel } from '~/shared/api/stylists.models';
+import {
+  PreferredStylistModel,
+  PreferredStylistsListResponse,
+  StylistModel
+} from '~/shared/api/stylists.models';
 import { componentUnloaded } from '~/shared/component-unloaded';
 
 import { EventTypes } from '~/core/event-types';
 import { PageNames } from '~/core/page-names';
 import { PreferredStylistsData } from '~/core/api/preferred-stylists.data';
+import { ApiResponse } from '~/shared/api/base.models';
 
 export enum Tabs {
   myStylists = 0,
@@ -40,6 +45,7 @@ export class MyStylistsComponent {
   activeTab: TabNames;
 
   Tabs = Tabs;
+  totalStylistsCount: number;
   TabNames = TabNames;
   PageNames = PageNames;
 
@@ -59,7 +65,15 @@ export class MyStylistsComponent {
 
     this.preferredStylistsData.data.asObservable()
       .takeUntil(componentUnloaded(this))
-      .subscribe(apiResponse => this.splitStylistsList(apiResponse.response));
+      .subscribe((apiResponse: ApiResponse<PreferredStylistsListResponse>) => {
+        if (!apiResponse.response) {
+          return;
+        }
+
+        const stylists = apiResponse.response.stylists;
+        this.totalStylistsCount = stylists.length;
+        this.splitStylistsList(stylists);
+      });
   }
 
   ionViewWillEnter(): void {
@@ -109,15 +123,11 @@ export class MyStylistsComponent {
   /**
    * Split stylists list to two separate lists
    * and use it for different tabs
-   * @param res: response with stylists array
+   * @param stylists: stylists array
    */
-  splitStylistsList(res: PreferredStylistsListResponse): void {
-    if (!res) {
-      return;
-    }
-
+  splitStylistsList(stylists: PreferredStylistModel[]): void {
     // splitStylists = sorted array of two arrays
-    const splitStylists = res.stylists.reduce((tabsObj, cur) => {
+    const splitStylists = stylists.reduce((tabsObj, cur) => {
       const tab = cur.is_profile_bookable ? Tabs.myStylists : Tabs.savedStylists;
 
       if (!tabsObj[tab]) {

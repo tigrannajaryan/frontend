@@ -3,7 +3,7 @@
     <div class="Made-wp MyStylistsPage-headerMargin">
       <div class="Badge-H1 flexBetween">
         <div data-test-id="myStylistsTitle">
-          Stylists <span *ngIf="tabs[Tabs.myStylists].stylists?.length > 0" class="Badge">{{ tabs[Tabs.myStylists].stylists.length }}</span>
+          Stylists <span *ngIf="totalStylistsCount && totalStylistsCount > 0" class="Badge">{{ totalStylistsCount }}</span>
         </div>
 
         <button [madeLink]="[PageNames.Stylists]" [isRootNav]="true" class="Circle-add"></button>

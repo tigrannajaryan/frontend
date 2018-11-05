@@ -99,8 +99,10 @@ stylist-card {
   }
 
   i[class^=mb-icon] {
+    height: pxtovw(14px);
     margin-right: pxtovw(2px);
     font-size: pxtovw(14px);
+    line-height: pxtovw(15px);
     color: color($colors, orange);
     transition: all 150ms ease;
   }
