@@ -27,7 +27,7 @@ import {
   UpdateProfileSuccessAction
 } from '~/core/reducers/profile.reducer';
 import { authActionTypes, ConfirmCodeSuccessAction } from '~/shared/storage/auth.reducer';
-import { BaseService } from '~/shared/api/base-service';
+import { BaseService } from '~/shared/api/base.service';
 
 @Injectable()
 export class ProfileEffects {

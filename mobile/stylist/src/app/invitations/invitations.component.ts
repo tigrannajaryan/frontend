@@ -12,11 +12,11 @@ import { SMS } from '@ionic-native/sms';
 import * as Fuse from 'fuse.js/dist/fuse';
 
 import { normalizePhoneNumber } from '~/shared/utils/phone-numbers';
-import { Discounts } from '~/shared/stylist-api/discounts.models';
-import { DiscountsApi } from '~/shared/stylist-api/discounts.api';
-import { StylistProfile } from '~/shared/stylist-api/stylist-models';
-import { ClientInvitation, InvitationsResponse, InvitationStatus } from '~/shared/stylist-api/invitations.models';
-import { InvitationsApi } from '~/shared/stylist-api/invitations.api';
+import { Discounts } from '~/core/api/discounts.models';
+import { DiscountsApi } from '~/core/api/discounts.api';
+import { StylistProfile } from '~/shared/api/stylist-app.models';
+import { ClientInvitation, InvitationsResponse, InvitationStatus } from '~/shared/api/invitations.models';
+import { InvitationsApi } from '~/core/api/invitations.api';
 import { ApiResponse } from '~/shared/api/base.models';
 import { showAlert } from '~/shared/utils/alert';
 

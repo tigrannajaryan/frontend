@@ -26,7 +26,7 @@ import { Logger } from '~/shared/logger';
 import { initSentry } from '~/shared/sentry';
 import { SharedSingletonsModule } from '~/shared/shared-singletons.module';
 
-import { AuthInterceptor } from '~/shared/api/auth-interceptor';
+import { AuthInterceptor } from '~/shared/api/auth.interceptor';
 import { UnhandledErrorHandler } from '~/shared/unhandled-error-handler';
 
 import { ClientAppComponent } from '~/app.component';
@@ -41,7 +41,7 @@ import { ProfileEffects } from '~/core/effects/profile.effects';
 import { CoreModule } from '~/core/core.module';
 import { DataModule } from '~/core/api/data.module';
 
-import { BaseService } from '~/shared/api/base-service';
+import { BaseService } from '~/shared/api/base.service';
 import { ExternalAppService } from '~/shared/utils/external-app-service';
 import { GeolocationService } from '~/shared/utils/geolocation.service';
 import { ServerStatusTracker } from '~/shared/server-status-tracker';

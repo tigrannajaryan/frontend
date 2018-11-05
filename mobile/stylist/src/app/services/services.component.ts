@@ -3,8 +3,8 @@ import { NavController, NavParams } from 'ionic-angular';
 import { DomSanitizer } from '@angular/platform-browser';
 import { SafeStyle } from '@angular/platform-browser/src/security/dom_sanitization_service';
 
-import { StylistServiceProvider } from '~/shared/stylist-api/stylist-service';
-import { ServiceTemplateSetBase } from '~/shared/stylist-api/stylist-models';
+import { StylistServiceProvider } from '~/core/api/stylist.service';
+import { ServiceTemplateSetBase } from '~/shared/api/stylist-app.models';
 import { loading } from '~/shared/utils/loading';
 import { PageNames } from '~/core/page-names';
 

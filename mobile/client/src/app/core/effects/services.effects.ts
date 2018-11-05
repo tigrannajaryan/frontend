@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 
 import { LOADING_DELAY, RequestState } from '~/shared/api/request.models';
-import { ServicesService } from '~/core/api/services-service';
+import { ServicesService } from '~/core/api/services.service';
 import {
   GetStylistServicesAction,
   GetStylistServicesErrorAction,

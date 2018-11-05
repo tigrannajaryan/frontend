@@ -20,14 +20,13 @@ import { AuthEffects } from '~/shared/storage/auth.effects';
 import { ApiError, FieldErrorItem } from '~/shared/api-errors';
 import { AuthProcessState } from '~/shared/storage/auth-process-state';
 
-import { AppStorage } from '~/shared/storage/app-storage';
-
 import { PushNotification } from '~/shared/push-notification';
 import { CodeData, CodeInputComponent } from '~/shared/components/code-input/code-input.component';
 import { ENV } from '~/environments/environment.default';
 
 import { createNavHistoryList, isRegistrationComplete } from '~/core/functions';
 import { clearAllDataStores } from '~/core/data.module';
+import { StylistAppStorage } from '~/core/stylist-app-storage';
 
 @Component({
   selector: 'page-auth-confirm',
@@ -49,7 +48,7 @@ export class AuthConfirmPageComponent {
   invalidCodeError = new FieldErrorItem('code', { code: 'err_invalid_sms_code' });
 
   constructor(
-    private storage: AppStorage,
+    private storage: StylistAppStorage,
     private authEffects: AuthEffects,
     private authDataState: AuthProcessState,
     private navCtrl: NavController,

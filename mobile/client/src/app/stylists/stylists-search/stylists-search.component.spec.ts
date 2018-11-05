@@ -1,15 +1,13 @@
 import * as faker from 'faker';
 
 import { async, ComponentFixture } from '@angular/core/testing';
-import { NavController } from 'ionic-angular';
 import { of } from 'rxjs/observable/of';
 
 import { TestUtils } from '~/../test';
 
-import { PageNames } from '~/core/page-names';
 import { StylistsEffects } from '~/core/effects/stylists.effects';
-import { stylistsMock } from '~/core/api/stylists-service.mock';
-import { StylistsService } from '~/core/api/stylists-service';
+import { stylistsMock } from '~/core/api/stylists.service.mock';
+import { StylistsService } from '~/core/api/stylists.service';
 import { StylistsPageComponent } from '~/stylists/stylists-search/stylists-search.component';
 
 // Monkey patch SEARCHING_DELAY to 0 to avoid slowing down the tests:
@@ -56,10 +54,13 @@ describe('Pages: Stylists Search', () => {
       stylistsMock.forEach(stylist => {
         expect(textContent)
           .toContain(`${stylist.first_name} ${stylist.last_name}`);
-        expect(textContent)
-          .toContain(stylist.salon_name);
-        expect(textContent)
-          .toContain(stylist.salon_address);
+
+        if (stylist.is_profile_bookable) {
+          expect(textContent)
+            .toContain(stylist.salon_name);
+          expect(fixture.nativeElement.textContent)
+            .toContain(`${stylist.followers_count} MADE Clients`);
+        }
       });
 
       done();

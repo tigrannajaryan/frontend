@@ -1,9 +1,11 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { AlertController, NavController } from 'ionic-angular';
+import { AlertController, Events, NavController } from 'ionic-angular';
+import { LaunchNavigator } from '@ionic-native/launch-navigator';
 
 import { StylistModel } from '~/shared/api/stylists.models';
 import { ExternalAppService } from '~/shared/utils/external-app-service';
 
+import { EventTypes } from '~/core/event-types';
 import { PageNames } from '~/core/page-names';
 
 @Component({
@@ -23,7 +25,9 @@ export class StylistCardComponent implements OnInit {
   @Output() removeStylist = new EventEmitter<StylistModel>();
 
   constructor(
+    private events: Events,
     private externalAppService: ExternalAppService,
+    private launchNavigator: LaunchNavigator,
     private navCtrl: NavController,
     private alertCtrl: AlertController
   ) {
@@ -50,6 +54,10 @@ export class StylistCardComponent implements OnInit {
     if (this.isActive) {
       this.navCtrl.push(PageNames.Followers, { stylist: this.stylist });
     }
+  }
+
+  onAddressClick(): void {
+    this.externalAppService.openAddress(this.launchNavigator, this.stylist.salon_address);
   }
 
   onInstagramClick(): void {
@@ -80,5 +88,9 @@ export class StylistCardComponent implements OnInit {
       }]
     });
     popup.present();
+  }
+
+  onStartBooking(): void {
+    this.events.publish(EventTypes.startBooking, this.stylist.uuid);
   }
 }

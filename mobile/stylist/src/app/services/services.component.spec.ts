@@ -4,7 +4,7 @@ import { IonicModule, NavController, NavParams } from 'ionic-angular';
 import { HttpClient } from '@angular/common/http';
 
 import { CoreModule } from '~/core/core.module';
-import { StylistServiceProvider } from '~/shared/stylist-api/stylist-service';
+import { StylistServiceProvider } from '~/core/api/stylist.service';
 import { prepareSharedObjectsForTests } from '~/core/test-utils.spec';
 
 export class NavMock {

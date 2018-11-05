@@ -9,10 +9,10 @@ import { LoadProfileAction, ProfileState } from '~/core/components/user-header/p
 import { DataModule } from '~/core/data.module';
 import { prepareSharedObjectsForTests } from '~/core/test-utils.spec';
 
-import { ClientsApi } from '~/shared/stylist-api/clients-api';
-import { myClientsMock } from '~/shared/stylist-api/clients-api.mock';
-import { StylistServiceProvider } from '~/shared/stylist-api/stylist-service';
-import { categoryMock } from '~/shared/stylist-api/stylist-service-mock';
+import { ClientsApi } from '~/core/api/clients-api';
+import { myClientsMock } from '~/core/api/clients-api.mock';
+import { StylistServiceProvider } from '~/core/api/stylist.service';
+import { categoryMock } from '~/core/api/stylist.service.mock';
 
 import { ClientsCalendarComponent } from './clients-calendar.component';
 

@@ -5,6 +5,7 @@
 
 known_failures=(
   "Assertion failed: (0), function uv_close, file ../deps/uv/src/unix/core.c"
+  "Assertion failed: (!uv__is_closing(handle)), function uv_close, file ../deps/uv/src/unix/core.c, line 117."
   "ChromeHeadless have not captured in"
   "Disconnected, because no message in"
 )

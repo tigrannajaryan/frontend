@@ -2,9 +2,9 @@ import { async, ComponentFixture } from '@angular/core/testing';
 
 import { TestUtils } from '../../../test';
 import { AppointmentCheckoutComponent } from './appointment-checkout.component';
-import { HomeService } from '~/shared/stylist-api/home.service';
-import { HomeServiceMock } from '~/shared/stylist-api/home.service.mock';
-import { AppointmentPreviewRequest } from '~/shared/stylist-api/home.models';
+import { HomeService } from '~/core/api/home.service';
+import { HomeServiceMock } from '~/core/api/home.service.mock';
+import { AppointmentPreviewRequest } from '~/core/api/home.models';
 import { Haptic, NavParams } from 'ionic-angular';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { prepareSharedObjectsForTests } from '~/core/test-utils.spec';

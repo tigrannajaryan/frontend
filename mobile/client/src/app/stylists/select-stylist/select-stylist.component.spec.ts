@@ -4,8 +4,8 @@ import { of } from 'rxjs/observable/of';
 
 import { TestUtils } from '~/../test';
 
-import { StylistsService } from '~/core/api/stylists-service';
-import { stylistsMock } from '~/core/api/stylists-service.mock';
+import { StylistsService } from '~/core/api/stylists.service';
+import { stylistsMock } from '~/core/api/stylists.service.mock';
 import { EventTypes } from '~/core/event-types';
 
 import { TabIndex } from '~/main-tabs/main-tabs.component';
@@ -39,16 +39,18 @@ describe('Pages: Select Stylist', () => {
     await instance.ionViewWillEnter();
     fixture.detectChanges();
 
-    stylistsMock.forEach(stylist => {
-      expect(fixture.nativeElement.textContent)
-        .toContain(`${stylist.first_name} ${stylist.last_name}`);
-      expect(fixture.nativeElement.textContent)
-        .toContain(stylist.salon_name);
-      expect(fixture.nativeElement.textContent)
-        .toContain(stylist.salon_address);
-      expect(fixture.nativeElement.textContent)
-        .toContain(`${stylist.followers_count} MADE Clients`);
-    });
+    stylistsMock
+      .filter(stylist => stylist.is_profile_bookable)
+      .forEach(stylist => {
+        expect(fixture.nativeElement.textContent)
+          .toContain(`${stylist.first_name} ${stylist.last_name}`);
+        expect(fixture.nativeElement.textContent)
+          .toContain(stylist.salon_name);
+        expect(fixture.nativeElement.textContent)
+          .toContain(stylist.salon_address);
+        expect(fixture.nativeElement.textContent)
+          .toContain(`${stylist.followers_count} MADE Clients`);
+      });
 
     done();
   });

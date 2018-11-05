@@ -115,6 +115,10 @@ stylist-card {
     min-width: pxtovw(18px);
     color: color($colors, orange);
   }
+
+  .Link {
+    white-space: normal;
+  }
 }
 
 .StylistCard-links {

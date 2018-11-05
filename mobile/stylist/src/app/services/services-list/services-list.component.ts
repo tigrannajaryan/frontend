@@ -7,8 +7,8 @@ import {
 } from 'ionic-angular';
 
 import { loading } from '~/shared/utils/loading';
-import { ServiceTemplateSetResponse, StylistServiceProvider } from '~/shared/stylist-api/stylist-service';
-import { ServiceCategory, ServiceItem, ServiceTemplateItem, StylistServicesListResponse } from '~/shared/stylist-api/stylist-models';
+import { ServiceTemplateSetResponse, StylistServiceProvider } from '~/core/api/stylist.service';
+import { ServiceCategory, ServiceItem, ServiceTemplateItem, StylistServicesListResponse } from '~/shared/api/stylist-app.models';
 import { StylistServicesDataStore } from '~/services/services-list/services.data';
 
 import { showAlert } from '~/shared/utils/alert';

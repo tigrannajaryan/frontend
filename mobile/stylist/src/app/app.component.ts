@@ -8,17 +8,17 @@ import { async_all } from '~/shared/async-helpers';
 import { Logger } from '~/shared/logger';
 import { getBuildNumber, getCommitHash } from '~/shared/get-build-number';
 import { GAWrapper } from '~/shared/google-analytics';
+import { StylistProfileStatus } from '~/shared/api/stylist-app.models';
 import { PushNotification } from '~/shared/push-notification';
 
 import { PageNames } from '~/core/page-names';
 import { createNavHistoryList } from '~/core/functions';
-import { AppStorage } from '~/shared/storage/app-storage';
 import { ServerStatusTracker } from '~/shared/server-status-tracker';
 import { ENV } from '~/environments/environment.default';
 import { AuthService } from './shared/api/auth.api';
 import { getToken } from './shared/storage/token-utils';
 import { AuthResponse } from './shared/api/auth.models';
-import { StylistProfileStatus } from '~/shared/stylist-api/stylist-models';
+import { StylistAppStorage } from './core/stylist-app-storage';
 
 @Component({
   templateUrl: 'app.component.html'
@@ -35,7 +35,7 @@ export class MyAppComponent {
     private ga: GAWrapper,
     public pushNotification: PushNotification,
     private serverStatusTracker: ServerStatusTracker,
-    private storage: AppStorage,
+    private storage: StylistAppStorage,
     private screenOrientation: ScreenOrientation
   ) {
     this.logger.info('App: initializing...');

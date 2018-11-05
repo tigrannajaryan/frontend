@@ -5,14 +5,14 @@ import { Events } from 'ionic-angular';
 
 import { Logger } from '~/shared/logger';
 import { ServerStatusTracker } from '~/shared/server-status-tracker';
-import { BaseService } from '~/shared/api/base-service';
+import { BaseService } from '~/shared/api/base.service';
 import { SharedEventTypes } from '~/shared/events/event-types';
 import { ApiResponse } from '~/shared/api/base.models';
 
 import {
   ServiceItem, ServiceTemplateSet, ServiceTemplateSetBase,
-  SetStylistServicesParams, StylistProfile, StylistServicesListResponse, StylistSummary
-} from './stylist-models';
+  SetStylistServicesParams, StylistProfile, StylistServicesListResponse
+} from '~/shared/api/stylist-app.models';
 import { AppointmentDateOffer } from './home.models';
 
 export interface ServiceTemplateSetListResponse {
@@ -69,13 +69,6 @@ export class StylistServiceProvider extends BaseService {
         }
         return response;
       });
-  }
-
-  /**
-   * Get data for stylist settings screen. The stylist must be already authenticated as a user.
-   */
-  getStylistSummary(): Observable<ApiResponse<StylistSummary>> {
-    return this.get<StylistSummary>('stylist/settings');
   }
 
   /**

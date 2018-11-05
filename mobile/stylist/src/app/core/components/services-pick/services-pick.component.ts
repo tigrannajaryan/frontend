@@ -1,9 +1,9 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { AlertController, ModalController, NavController, NavParams } from 'ionic-angular';
 
-import { StylistServiceProvider } from '~/shared/stylist-api/stylist-service';
-import { ServiceCategory } from '~/shared/stylist-api/stylist-models';
-import { AppointmentService } from '~/shared/stylist-api/home.models';
+import { StylistServiceProvider } from '~/core/api/stylist.service';
+import { ServiceCategory } from '~/shared/api/stylist-app.models';
+import { AppointmentService } from '~/core/api/home.models';
 
 @Component({
   selector: 'services-pick',

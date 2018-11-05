@@ -4,9 +4,9 @@ import { Observable } from 'rxjs/Observable';
 
 import { Logger } from '~/shared/logger';
 import { ServerStatusTracker } from '~/shared/server-status-tracker';
-import { BaseService } from '~/shared/api/base-service';
+import { BaseService } from '~/shared/api/base.service';
 import { ApiResponse } from '~/shared/api/base.models';
-import { ClientInvitation, InvitationsResponse } from './invitations.models';
+import { ClientInvitation, InvitationsResponse } from '~/shared/api/invitations.models';
 
 /**
  * InvitationsApi Send invitation(s) to the client(s).

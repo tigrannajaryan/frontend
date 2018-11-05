@@ -6,13 +6,13 @@ import { Logger } from '~/shared/logger';
 import { ServerStatusTracker } from '~/shared/server-status-tracker';
 
 import { ApiResponse } from '~/shared/api/base.models';
-import { BaseService } from '~/shared/api/base-service';
+import { BaseService } from '~/shared/api/base.service';
 
 import {
   GetMyClientsResponse,
   GetNearbyClientsResponse,
   GetPricingResponse
-} from '~/shared/stylist-api/clients-api.models';
+} from '~/core/api/clients-api.models';
 
 @Injectable()
 export class ClientsApi extends BaseService {

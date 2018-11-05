@@ -15,10 +15,10 @@ import { OpenNativeSettings } from '@ionic-native/open-native-settings';
 import { SMS } from '@ionic-native/sms';
 import { HttpClient } from '@angular/common/http';
 
-import { StylistServiceProvider } from '~/shared/stylist-api/stylist-service';
-import { DiscountsApi } from '~/shared/stylist-api/discounts.api';
-import { InvitationsApi } from '~/shared/stylist-api/invitations.api';
-import { InvitationStatus } from '~/shared/stylist-api/invitations.models';
+import { StylistServiceProvider } from '~/core/api/stylist.service';
+import { DiscountsApi } from '~/core/api/discounts.api';
+import { InvitationsApi } from '~/core/api/invitations.api';
+import { InvitationStatus } from '~/shared/api/invitations.models';
 import { ProfileDataStore } from '~/core/profile.data';
 
 import { CoreModule } from '~/core/core.module';

@@ -145,3 +145,4 @@ after_script:
   - mobile/scripts/remove-apple-profile.sh
   - mobile/scripts/remove-apple-certificate.sh
   - rm -f mobile/android-cert/*
+

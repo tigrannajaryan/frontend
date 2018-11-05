@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
-import { WeekdayDiscount } from '~/shared/stylist-api/discounts.models';
+import { WeekdayDiscount } from '~/core/api/discounts.models';
 
 @Component({
   selector: 'discounts-revisit-short',

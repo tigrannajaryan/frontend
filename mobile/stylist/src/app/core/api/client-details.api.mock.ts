@@ -3,8 +3,8 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
 import { ApiResponse } from '~/shared/api/base.models';
-import { BaseServiceMock } from '~/shared/api/base-service.mock';
-import { ClientDetailsModel } from '~/shared/stylist-api/clients-api.models';
+import { BaseServiceMock } from '~/shared/api/base.service.mock';
+import { ClientDetailsModel } from '~/core/api/clients-api.models';
 
 export const clientDetailsMock: ClientDetailsModel = {
     uuid: faker.random.uuid(),

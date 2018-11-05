@@ -77,22 +77,22 @@ import { EffectsModule } from '@ngrx/effects';
 import { profileReducer, profileStatePath } from '~/core/components/user-header/profile.reducer';
 import { ProfileEffects } from '~/core/components/user-header/profile.effects';
 
-import { ClientsApi } from '~/shared/stylist-api/clients-api';
-import { ClientsApiMock } from '~/shared/stylist-api/clients-api.mock';
-import { ClientDetailsApi } from '~/shared/stylist-api/client-details.api';
-import { ClientDetailsApiMock } from '~/shared/stylist-api/client-details.api.mock';
-import { StylistServiceProvider } from '~/shared/stylist-api/stylist-service';
-import { StylistServiceMock } from '~/shared/stylist-api/stylist-service-mock';
-import { WorktimeApi } from '~/shared/stylist-api/worktime.api';
-import { WorktimeApiMock } from '~/shared/stylist-api/worktime.api.mock';
+import { ClientsApi } from '~/core/api/clients-api';
+import { ClientsApiMock } from '~/core/api/clients-api.mock';
+import { ClientDetailsApi } from '~/core/api/client-details.api';
+import { ClientDetailsApiMock } from '~/core/api/client-details.api.mock';
+import { StylistServiceProvider } from '~/core/api/stylist.service';
+import { StylistServiceMock } from '~/core/api/stylist.service.mock';
+import { WorktimeApi } from '~/core/api/worktime.api';
+import { WorktimeApiMock } from '~/core/api/worktime.api.mock';
 
 import { ExternalAppService } from '~/shared/utils/external-app-service';
 import { Logger } from '~/shared/logger';
 
-import { AppStorage } from '~/shared/storage/app-storage';
-import { AppStorageMock } from '~/shared/storage/app-storage-mock';
-import { HomeService } from '~/shared/stylist-api/home.service';
-import { HomeServiceMock } from '~/shared/stylist-api/home.service.mock';
+import { StylistAppStorage } from '~/core/stylist-app-storage';
+import { StylistAppStorageMock } from '~/core/stylist-app-storage.mock';
+import { HomeService } from '~/core/api/home.service';
+import { HomeServiceMock } from '~/core/api/home.service.mock';
 
 import { AppModule } from '~/app.module';
 
@@ -147,7 +147,7 @@ export class TestUtils {
         { provide: Events, useFactory: () => EventsMock.instance() },
         { provide: PopoverController, useClass: PopoverControllerMock },
         { provide: GoogleAnalytics, useClass: GoogleAnalyticsMock },
-        { provide: AppStorage, useClass: AppStorageMock },
+        { provide: StylistAppStorage, useClass: StylistAppStorageMock },
         ExternalAppService,
         {
           provide: InAppBrowser,

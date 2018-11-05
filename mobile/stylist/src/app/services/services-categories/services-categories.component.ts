@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NavParams, ViewController } from 'ionic-angular';
-import { ServiceCategory } from '~/shared/stylist-api/stylist-models';
+import { ServiceCategory } from '~/shared/api/stylist-app.models';
 
 export interface ServicesCategoriesListData {
   categories: ServiceCategory[];

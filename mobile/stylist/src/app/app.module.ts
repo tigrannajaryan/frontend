@@ -25,22 +25,21 @@ import { initSentry } from '~/shared/sentry';
 import { Logger } from '~/shared/logger';
 import { SharedSingletonsModule } from '~/shared/shared-singletons.module';
 import { ExternalAppService } from '~/shared/utils/external-app-service';
-
+import { AuthInterceptor } from './shared/api/auth.interceptor';
 import { AuthService } from '~/shared/api/auth.api';
 import { authPath, authReducer } from '~/shared/storage/auth.reducer';
 import { AuthEffects } from '~/shared/storage/auth.effects';
 import { MyAppComponent } from './app.component';
 import { getMetaReducers } from './app.reducers';
 import { ENV } from '~/environments/environment.default';
-import { AppStorage } from '~/shared/storage/app-storage';
 
 import { DataModule } from '~/core/data.module';
 
 import { AuthProcessState } from '~/shared/storage/auth-process-state';
-import { HomeService } from '~/shared/stylist-api/home.service';
-import { WorktimeApi } from '~/shared/stylist-api/worktime.api';
-import { InvitationsApi } from '~/shared/stylist-api/invitations.api';
-import { ClientDetailsApi } from '~/shared/stylist-api/client-details.api';
+import { HomeService } from '~/core/api/home.service';
+import { WorktimeApi } from '~/core/api/worktime.api';
+import { InvitationsApi } from '~/core/api/invitations.api';
+import { ClientDetailsApi } from '~/core/api/client-details.api';
 
 import { PushNotification } from '~/shared/push-notification';
 
@@ -82,7 +81,7 @@ import { UiKitPreviewComponent } from '~/ui-kit-preview/ui-kit-preview.component
 import { servicesReducer } from '~/appointment/appointment-services/services.reducer';
 import { ServicesEffects } from '~/appointment/appointment-services/services.effects';
 import { WorkHoursComponent } from '~/workhours/workhours.component';
-import { AuthInterceptor } from './shared/api/auth-interceptor';
+import { StylistAppStorage } from './core/stylist-app-storage';
 
 initSentry();
 
@@ -189,7 +188,7 @@ const declarations = [
     SplashScreen,
     AuthService,
     AppVersion,
-    AppStorage,
+    StylistAppStorage,
     ScreenOrientation,
     InAppBrowser,
     AppAvailability,

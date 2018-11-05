@@ -5,7 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import { composeRequest, loading, withRefresher } from '~/shared/utils/request-utils';
 
 import { ApiResponse } from '~/shared/api/base.models';
-import { ClientModel, GetMyClientsResponse } from '~/shared/stylist-api/clients-api.models';
+import { ClientModel, GetMyClientsResponse } from '~/core/api/clients-api.models';
 import { MyClientsDataStore } from '~/clients/my-clients/my-clients.data';
 
 import { PageNames } from '~/core/page-names';

@@ -3,7 +3,7 @@ import { Store } from '@ngrx/store';
 import { Actions, Effect } from '@ngrx/effects';
 import { Observable } from 'rxjs';
 
-import { StylistServiceProvider } from '~/shared/stylist-api/stylist-service';
+import { StylistServiceProvider } from '~/core/api/stylist.service';
 import { withLoader } from '~/core/utils/loading';
 import { showAlert } from '~/shared/utils/alert';
 import { Logger } from '~/shared/logger';

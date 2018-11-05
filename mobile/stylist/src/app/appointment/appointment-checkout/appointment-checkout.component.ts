@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 
-import { HomeService } from '~/shared/stylist-api/home.service';
+import { HomeService } from '~/core/api/home.service';
 import {
   Appointment,
   AppointmentChangeRequest,
@@ -10,8 +10,8 @@ import {
   AppointmentService,
   AppointmentStatuses,
   CheckOutService
-} from '~/shared/stylist-api/home.models';
-import { ServiceItem } from '~/shared/stylist-api/stylist-models';
+} from '~/core/api/home.models';
+import { ServiceItem } from '~/shared/api/stylist-app.models';
 
 import { PageNames } from '~/core/page-names';
 import { AddServicesComponentParams } from '~/core/popups/add-services/add-services.component';

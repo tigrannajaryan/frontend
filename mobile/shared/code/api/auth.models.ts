@@ -1,5 +1,5 @@
 import { StylistModel } from '~/shared/api/stylists.models';
-import { StylistProfile, StylistProfileStatus } from '~/shared/stylist-api/stylist-models';
+import { StylistProfile, StylistProfileStatus } from '~/shared/api/stylist-app.models';
 
 export type UserRole = 'stylist' | 'client';
 
