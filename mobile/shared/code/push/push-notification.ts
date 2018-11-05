@@ -245,6 +245,19 @@ export class PushNotification {
   }
 
   /**
+   * Device registration handler. Called after the device is registered with FCM/APNS.
+   * Note: this should not be called directly, it is public only to be used in unit tests.
+   */
+  onDeviceRegistration(registration: RegistrationEventResponse): void {
+    this.logger.info('Push: device registered:', registration.registrationId);
+    this.deviceRegistrationId = registration.registrationId;
+    if (this.userUuid) {
+      // We have both device id and user id, associate them now.
+      this.associateUserWithDevice();
+    }
+  }
+
+  /**
    * Gets from system permission to receive push notifications (if does not already
    * have that permission). On iOS this triggers a system modal dialog, on Android
    * this permission is granted automatically without dialog.
@@ -318,18 +331,6 @@ export class PushNotification {
   }
 
   /**
-   * Device registration handler. Called after the device is registered with FCM/APNS.
-   */
-  private onDeviceRegistration(registration: RegistrationEventResponse): void {
-    this.logger.info('Push: device registered:', registration.registrationId);
-    this.deviceRegistrationId = registration.registrationId;
-    if (this.userUuid) {
-      // We have both device id and user id, associate them now.
-      this.associateUserWithDevice();
-    }
-  }
-
-  /**
    * Push notification handler. Called when we have a new message pushed to us.
    */
   private onNotification(notification: NotificationEventResponse): void {
@@ -372,6 +373,8 @@ export class PushNotification {
       return;
     }
 
+    this.logger.info(`Push: registering device ${this.deviceRegistrationId} to user ${this.userUuid}`);
+
     // Tell backend to associate device with the user
     this.api.registerDevice(this.prepareRequest());
   }
@@ -381,6 +384,8 @@ export class PushNotification {
       // Device is not yet known, nothing can be done.
       return;
     }
+
+    this.logger.info(`Push: uregistering device ${this.deviceRegistrationId} from user ${this.userUuid}`);
 
     // Tell backend to unassociate device from the user
     this.api.unregisterDevice(this.prepareRequest());
