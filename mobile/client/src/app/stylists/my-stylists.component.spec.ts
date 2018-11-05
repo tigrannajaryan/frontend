@@ -47,7 +47,7 @@ describe('MyStylistsComponent', () => {
 
   it('should have stylists in both tabs', () => {
     const myStylistsTabList = fixture.nativeElement.querySelectorAll('[data-test-id=myStylistsTabList] stylist-card');
-    expect(myStylistsTabList.length).toBe(instance.tabs[Tabs.myStylists].stylists.length);
+    expect(myStylistsTabList.length).toBe(instance.tabs[Tabs.primeStylists].stylists.length);
     const savedStylistsTabList = fixture.nativeElement.querySelectorAll('[data-test-id=savedStylistsTabList] stylist-card');
     expect(savedStylistsTabList.length).toBe(instance.tabs[Tabs.savedStylists].stylists.length);
   });
@@ -58,7 +58,7 @@ describe('MyStylistsComponent', () => {
   });
 
   it('should show "There Is no preferred stylists yet"', () => {
-    instance.tabs[Tabs.myStylists].stylists = [];
+    instance.tabs[Tabs.primeStylists].stylists = [];
     fixture.detectChanges();
 
     const savedStylistsTabList = fixture.nativeElement.querySelector('[data-test-id=myStylistsTabList]');

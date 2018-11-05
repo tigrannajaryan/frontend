@@ -115,7 +115,7 @@ export class StylistsPageComponent {
     } else {
       // Common case for adding a stylist navigates back to my stylists:
       await this.navCtrl.popToRoot();
-      this.events.publish(EventTypes.selectStylistTab, Tabs.myStylists);
+      this.events.publish(EventTypes.selectStylistTab, Tabs.primeStylists);
     }
   }
 
