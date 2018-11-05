@@ -142,9 +142,12 @@ export class BookingData implements OnDestroy {
         this._timeslots.clear();
       }
 
+      // Save in closure:
+      const stylistUuid = this._stylist.uuid;
+
       // create an API-backed cached timeslots
       this._timeslots = new DataStore('booking_timeslots',
-        () => this.api.getTimeslots(this._stylist.uuid, date),
+        () => this.api.getTimeslots(stylistUuid, date),
         { cacheTtlMilliseconds: 1000 * 60 }); // TTL for timeslots cache is 1 min
     }
 

@@ -1,6 +1,7 @@
 <div *ngIf="stylist"
      [class.is-active]="isActive"
      [class.is-hearted]="isHearted"
+     [class.is-myStylist]="isMyStylist"
      (click)="onCardOpen()"
      class="StylistCard"
      data-test-id="StylistCard">
@@ -23,8 +24,8 @@
       <i class="mb-icon-heart-a"></i>&nbsp;<span><b>{{ stylist.followers_count }}</b> MADE Clients</span>
     </div>
 
-    <div (click)="onAddressClick()" class="StylistCard-info">
-      <i class="mb-icon-marker"></i>&nbsp;<span class="Link">{{ stylist.salon_address }}</span>
+    <div *ngIf="!isMyStylist || isActive" (click)="isActive && onAddressClick()" class="StylistCard-address">
+      <i class="mb-icon-marker"></i>&nbsp;<span>{{ stylist.salon_address }}</span>
     </div>
 
     <div class="StylistCard-links">
