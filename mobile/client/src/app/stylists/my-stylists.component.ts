@@ -14,12 +14,12 @@ import { PreferredStylistsData } from '~/core/api/preferred-stylists.data';
 import { ApiResponse } from '~/shared/api/base.models';
 
 export enum Tabs {
-  myStylists = 0,
+  primeStylists = 0,
   savedStylists = 1
 }
 
 export enum TabNames {
-  myStylists = 'My Stylists',
+  primeStylists = 'Prime Stylists',
   savedStylists = 'Saved'
 }
 
@@ -32,7 +32,7 @@ export class MyStylistsComponent {
   activeStylist?: StylistModel;
   tabs = [
     {
-      name: TabNames.myStylists,
+      name: TabNames.primeStylists,
       loaded: false,
       stylists: []
     },
@@ -61,7 +61,7 @@ export class MyStylistsComponent {
   }
 
   ionViewDidLoad(): void {
-    this.activeTab = this.tabs[Tabs.myStylists].name;
+    this.activeTab = this.tabs[Tabs.primeStylists].name;
 
     this.preferredStylistsData.data.asObservable()
       .takeUntil(componentUnloaded(this))
@@ -128,7 +128,7 @@ export class MyStylistsComponent {
   splitStylistsList(stylists: PreferredStylistModel[]): void {
     // splitStylists = sorted array of two arrays
     const splitStylists = stylists.reduce((tabsObj, cur) => {
-      const tab = cur.is_profile_bookable ? Tabs.myStylists : Tabs.savedStylists;
+      const tab = cur.is_profile_bookable ? Tabs.primeStylists : Tabs.savedStylists;
 
       if (!tabsObj[tab]) {
         tabsObj[tab] = [];
@@ -141,8 +141,8 @@ export class MyStylistsComponent {
     // replace old list with new one
     // we need replace it (not clear and set)
     // to prevent from blinking html
-    this.tabs[Tabs.myStylists].stylists = splitStylists[Tabs.myStylists];
-    this.tabs[Tabs.myStylists].loaded = true;
+    this.tabs[Tabs.primeStylists].stylists = splitStylists[Tabs.primeStylists];
+    this.tabs[Tabs.primeStylists].loaded = true;
     this.tabs[Tabs.savedStylists].stylists = splitStylists[Tabs.savedStylists];
     this.tabs[Tabs.savedStylists].loaded = true;
   }
