@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import * as moment from 'moment';
 
 import { DataStore } from '~/shared/storage/data-store';
 import { AppointmentsHistoryResponse, HomeResponse } from '~/core/api/appointments.models';
@@ -22,12 +21,10 @@ export class AppointmentsDataStore {
     }
     AppointmentsDataStore.guardInitilization = true;
 
-    const ttl1hour = moment.duration(1, 'hour').asMilliseconds();
-
     this.history = new DataStore('history', () => api.getHistory(),
-      { cacheTtlMilliseconds: ttl1hour });
+      { cacheTtlMilliseconds: 0 }); // 0 cache ttl for data that can be externally modified
 
     this.home = new DataStore('home', () => api.getHome(),
-      { cacheTtlMilliseconds: ttl1hour });
+      { cacheTtlMilliseconds: 0 });
   }
 }
