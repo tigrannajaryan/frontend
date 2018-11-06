@@ -8,7 +8,13 @@ import { getBuildNumber, getCommitHash } from '~/shared/get-build-info';
 import { GAWrapper } from '~/shared/google-analytics';
 import { Logger } from '~/shared/logger';
 import { ServerStatusTracker } from '~/shared/server-status-tracker';
-import { authResponseToTokenModel, deleteAuthLocalData, getAuthLocalData, saveAuthLocalData } from '~/shared/storage/token-utils';
+import {
+  AuthLocalData,
+  authResponseToTokenModel,
+  deleteAuthLocalData,
+  getAuthLocalData,
+  saveAuthLocalData
+} from '~/shared/storage/token-utils';
 
 import { PreferredStylistsData } from '~/core/api/preferred-stylists.data';
 import { ClientEventTypes } from '~/core/client-event-types';
@@ -55,7 +61,7 @@ export class ClientAppComponent implements OnInit, OnDestroy {
     this.logger.info('App initializing...');
     this.logger.info(`Build: ${getBuildNumber()} Commit: ${getCommitHash()}`);
 
-    // The call of `deleteToken` prevents weird error of allways navigating to the Auth page.
+    // The call of `deleteAuthLocalData` prevents weird error of allways navigating to the Auth page.
     this.serverStatusTracker.init(UNAUTHORIZED_ROOT, deleteAuthLocalData);
 
     // First initialize the platform. We cannot do anything else until the platform is
@@ -83,7 +89,7 @@ export class ClientAppComponent implements OnInit, OnDestroy {
     this.statusBar.styleDefault();
     this.splashScreen.hide();
 
-    const authToken = await getAuthLocalData(); // no expiration
+    const authToken: AuthLocalData = await getAuthLocalData(); // no expiration
 
     // Subscribe to some interesting global events
     this.events.subscribe(SharedEventTypes.afterLogout, () => this.onLogout());
@@ -102,19 +108,7 @@ export class ClientAppComponent implements OnInit, OnDestroy {
 
       if (!authToken.user_uuid) {
         // user_uuid previously didn't exist. It was added to the API recently. Refresh auth to make sure we have this field.
-
-        let authResponse: AuthResponse;
-        try {
-          authResponse = (await this.authApiService.refreshAuth(authToken.token).get()).response;
-        } catch (e) {
-          this.logger.error('App: Error when trying to refresh auth.', e);
-        }
-        if (authResponse) {
-          this.logger.info('App: Authentication refreshed.');
-          saveAuthLocalData(authResponseToTokenModel(authResponse));
-        } else {
-          this.logger.info('App: Cannot refresh authentication. Continue using saved session.');
-        }
+        this.refreshAuth(authToken);
       }
 
       // Let pushNotification know who is the current user
@@ -192,5 +186,20 @@ export class ClientAppComponent implements OnInit, OnDestroy {
   onStartRebooking(): void {
     // Begin booking process by showing date selection (since services are already known)
     this.nav.push(PageNames.SelectDate);
+  }
+
+  private async refreshAuth(authToken: AuthLocalData): Promise<void> {
+    let authResponse: AuthResponse;
+    try {
+      authResponse = (await this.authApiService.refreshAuth(authToken.token).get()).response;
+    } catch (e) {
+      this.logger.error('App: Error when trying to refresh auth.', e);
+    }
+    if (authResponse) {
+      this.logger.info('App: Authentication refreshed.');
+      saveAuthLocalData(authResponseToTokenModel(authResponse));
+    } else {
+      this.logger.info('App: Cannot refresh authentication. Continue using saved session.');
+    }
   }
 }
