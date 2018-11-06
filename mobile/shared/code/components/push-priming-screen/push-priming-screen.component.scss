@@ -1,19 +1,33 @@
 push-priming-screen {
   .PushPrimingText {
-    text-align: center;
-    margin: pxtovw(16px) pxtovw(24px) pxtovw(16px) pxtovw(24px);
+    margin: pxtovw(16px) pxtovw(24px) 0;
     font-size: pxtovw(18px);
-    color: color($colors, warmGrey);
     line-height: pxtovw(24px);
+    color: color($colors, warmGrey);
+    text-align: center;
+  }
+
+  .PushPrimingImg {
+    width: pxtovw(81px);
+    height: pxtovw(88px);
+    margin-top: pxtovw(24px);
+  }
+
+  .SharedH1 {
+    margin-top: 0;
   }
 
   .Button {
+    margin-bottom: pxtovw(27px);
     font-size: pxtovw(18px);
     font-weight: map-get($fontWeights, semibold);
-    margin-bottom: pxtovw(27px);
   }
 
   .Link {
     margin-bottom: pxtovw(39px);
+  }
+
+  .Footer {
+    padding-bottom: 0;
   }
 }
