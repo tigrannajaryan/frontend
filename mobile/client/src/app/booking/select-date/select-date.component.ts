@@ -9,6 +9,9 @@ import { componentIsActive } from '~/shared/utils/component-is-active';
 import { PageNames } from '~/core/page-names';
 import { BookingData } from '~/core/api/booking.data';
 import { ClientEventTypes } from '~/core/client-event-types';
+import { PreferredStylistsData } from '~/core/api/preferred-stylists.data';
+import { confirmMakeStylistPreferred } from '../booking-utils';
+import { PreferredStylistModel } from '~/shared/api/stylists.models';
 
 @Component({
   selector: 'select-date',
@@ -18,13 +21,15 @@ export class SelectDateComponent {
   @ViewChild(Content) content: Content;
   isLoading: boolean;
   prices: DayOffer[];
+  preferredStylists: Promise<PreferredStylistModel[]>;
 
   constructor(
     private alertCtrl: AlertController,
     protected bookingData: BookingData,
     private events: Events,
     private logger: Logger,
-    private navCtrl: NavController
+    private navCtrl: NavController,
+    private preferredStylistsData: PreferredStylistsData
   ) {
   }
 
@@ -52,10 +57,25 @@ export class SelectDateComponent {
           }
         }
       });
+
+    // Start getting preferredStylists list
+    this.preferredStylists = this.preferredStylistsData.get();
   }
 
-  onSelectOffer(offer: DayOffer): void {
+  async onSelectOffer(offer: DayOffer): Promise<void> {
     this.logger.info('onSelectOffer', offer);
+
+    // Check that selected stylist is preferred
+    const preferredStylists = await this.preferredStylists;
+    const stylistIsPreferred = preferredStylists && preferredStylists.some(preferred => preferred.uuid === this.bookingData.stylist.uuid);
+    if (!stylistIsPreferred) {
+      // Not preferred, so ask to make them preferred
+      const confirmed = await confirmMakeStylistPreferred(this.bookingData.stylist.first_name, this.bookingData.stylist.uuid);
+      if (!confirmed) {
+        return;
+      }
+    }
+
     this.bookingData.setOffer(offer);
     this.navCtrl.push(PageNames.SelectTime);
   }
