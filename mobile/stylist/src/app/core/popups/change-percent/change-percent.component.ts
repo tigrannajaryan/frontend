@@ -13,6 +13,8 @@ export interface PercentageSliderSettings {
   min?: number;
   max?: number;
   step?: number;
+  warning?: string;
+  prevDiscountPercent?: number;
 }
 
 @Component({

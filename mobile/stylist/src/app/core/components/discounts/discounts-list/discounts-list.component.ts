@@ -21,6 +21,7 @@ export class DiscountsListComponent implements OnInit {
     right: string
   };
   @Input() symbol: DiscountSymbol;
+  @Input() warning: string;
   @Output() discountChange = new EventEmitter();
   protected DiscountSymbol = DiscountSymbol;
 
@@ -40,10 +41,16 @@ export class DiscountsListComponent implements OnInit {
    * @param index - if array of list
    */
   onDiscountChange(index: number): void {
+    let prevDiscountPercent: number;
+    if (this.list[index - 1]) {
+      prevDiscountPercent = this.list[index - 1].discount_percent;
+    }
     const curWeekday: WeekdayDiscount = this.list[index];
     const data: PercentageSliderSettings = {
       label: curWeekday.weekday_verbose,
-      percentage: curWeekday.discount_percent
+      percentage: curWeekday.discount_percent,
+      warning: this.warning,
+      prevDiscountPercent
     };
 
     const modal = this.modalCtrl.create(PageNames.ChangePercent, { data });

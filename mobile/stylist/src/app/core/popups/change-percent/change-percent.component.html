@@ -1,16 +1,20 @@
-<div (click)="dismiss()" class="cp-close"></div>
-<div class="cp">
-  <div class="bb-wp-a">
-    <div *ngIf="data" class="cp-scroll">
-      <ion-grid class="cp-scroll-info">
-        <ion-row>
-          <ion-col col-6 text-left>{{ data.label }}</ion-col>
-          <ion-col *ngIf="data.symbol === ChangePercentSymbols.percent" col-6 text-right class="inactive">{{ percentage }}{{ data.symbol }}</ion-col>
-          <ion-col *ngIf="data.symbol === ChangePercentSymbols.usd" col-6 text-right class="inactive">{{ data.symbol }}{{ percentage }}</ion-col>
+<div (click)="dismiss()" class="changePercent-close"></div>
+<div [class.is-warning]="data?.prevDiscountPercent && data?.warning && percentage > data.prevDiscountPercent" class="changePercent">
+  <div class="Made-wp">
+    <div *ngIf="data" class="changePercent-scroll">
+      <div [style.opacity]="+(data?.prevDiscountPercent && data?.warning && percentage > data.prevDiscountPercent)" class="changePercent-warning">
+        {{ data.warning }}
+      </div>
+
+      <ion-grid class="changePercent-info" no-padding>
+        <ion-row no-padding>
+          <ion-col col-6 text-left no-padding>{{ data.label }}</ion-col>
+          <ion-col *ngIf="data.symbol === ChangePercentSymbols.percent" col-6 text-right no-padding class="inactive">{{ percentage }}{{ data.symbol }}</ion-col>
+          <ion-col *ngIf="data.symbol === ChangePercentSymbols.usd" col-6 text-right no-padding class="inactive">{{ data.symbol }}{{ percentage }}</ion-col>
         </ion-row>
       </ion-grid>
 
-      <ion-range [min]="data.min" [max]="data.max" [step]="data.step" [(ngModel)]="percentage" color="dark" class="ion-bb-range cp-scroll-range"></ion-range>
+      <ion-range [min]="data.min" [max]="data.max" [step]="data.step" [(ngModel)]="percentage" color="dark" class="ion-bb-range changePercent-range"></ion-range>
     </div>
 
 
@@ -21,7 +25,7 @@
         <ion-icon name="ios-checkmark-outline"></ion-icon>
       </button>
 
-      <a (click)="dismiss()" class="cp-cancel">Cancel</a>
+      <a (click)="dismiss()" class="changePercent-cancel">Cancel</a>
     </ion-row>
   </div>
 </div>
