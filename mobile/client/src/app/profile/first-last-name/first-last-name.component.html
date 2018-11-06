@@ -1,0 +1,40 @@
+<ion-header madeHeader [hideBackButton]="true"></ion-header>
+
+
+<ion-content no-padding>
+  <div class="contentSidePadding">
+    <div class="FirstLastLame-title">Hello. What’s <span>your name</span>?</div>
+
+    <ion-grid [formGroup]="form" no-padding>
+      <ion-row>
+        <ion-col>
+          <ion-item class="Input">
+            <ion-label floating>First name</ion-label>
+            <ion-input formControlName="first_name" type="text" data-test-id="first_name"></ion-input>
+            <div [class.is-active]="form.get('first_name').dirty && form.get('first_name').errors" class="InputError" item-end data-test-id="first_name_required_error">
+              <span *ngIf="form.get('first_name').errors?.required">This field is required</span>
+              <span *ngIf="form.get('first_name').errors?.maxlength">Maximal length {{ form.get('first_name').errors?.maxlength?.requiredLength }} symbols</span>
+            </div>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-item class="Input">
+            <ion-label floating>Last name</ion-label>
+            <ion-input formControlName="last_name" type="text" data-test-id="last_name"></ion-input>
+            <div [class.is-active]="form.get('last_name').dirty && form.get('last_name').errors" class="InputError" item-end>
+              <span *ngIf="form.get('last_name').errors?.required">This field is required</span>
+              <span *ngIf="form.get('last_name').errors?.maxlength">Maximal length {{ form.get('last_name').errors?.maxlength?.requiredLength }} symbols</span>
+            </div>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+</ion-content>
+
+
+<ion-footer class="Footer">
+  <button [disabled]="!form.valid" (click)="onContinue()" ion-button class="Button" data-test-id="onContinue">Continue</button>
+</ion-footer>

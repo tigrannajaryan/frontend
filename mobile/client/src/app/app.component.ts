@@ -15,6 +15,7 @@ import {
   getAuthLocalData,
   saveAuthLocalData
 } from '~/shared/storage/token-utils';
+import { PreferredStylistModel } from '~/shared/api/stylists.models';
 
 import { PreferredStylistsData } from '~/core/api/preferred-stylists.data';
 import { ClientEventTypes } from '~/core/client-event-types';
@@ -116,17 +117,7 @@ export class ClientAppComponent implements OnInit, OnDestroy {
 
       // See if user already has preferred stylists
       const preferredStylists = await this.preferredStylistsData.get();
-      if (preferredStylists.length === 0) {
-        // Haven’t completed onboarding, should restart:
-        this.rootPage = PageNames.HowMadeWorks;
-      } else {
-        // We are authenticated and almost ready to start using the app normally.
-        // One last thing: show push permission asking screen if needed and wait until the user makes a choice
-        await this.pushNotification.showPermissionScreen(true);
-
-        // All set now. Show the main screen.
-        this.rootPage = PageNames.MainTabs;
-      }
+      this.setNextRootPage(preferredStylists);
     }
   }
 
@@ -186,6 +177,20 @@ export class ClientAppComponent implements OnInit, OnDestroy {
   onStartRebooking(): void {
     // Begin booking process by showing date selection (since services are already known)
     this.nav.push(PageNames.SelectDate);
+  }
+
+  async setNextRootPage(preferredStylists: PreferredStylistModel[]): Promise<void> {
+    if (preferredStylists.length === 0) {
+      // Haven’t completed onboarding, should restart:
+      this.rootPage = PageNames.HowMadeWorks;
+    } else {
+      // We are authenticated and almost ready to start using the app normally.
+      // One last thing: show push permission asking screen if needed and wait until the user makes a choice
+      await this.pushNotification.showPermissionScreen(true);
+
+      // All set now. Show the main screen.
+      this.rootPage = PageNames.MainTabs;
+    }
   }
 
   private async refreshAuth(authToken: AuthLocalData): Promise<void> {
