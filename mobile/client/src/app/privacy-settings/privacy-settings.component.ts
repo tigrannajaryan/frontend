@@ -41,6 +41,10 @@ export class PrivacySettingsComponent {
 
   showWarningPopup(privacy: PrivacyMode): void {
     if (privacy === PrivacyMode.private) {
+      if (this.profile.privacy === PrivacyMode.private) {
+        return;
+      }
+
       const alert = this.alertCtrl.create({
         title: 'Are you sure you want to change your privacy settings?',
         subTitle: 'Changing your settings means you won\'t be able to view other MADE Clients.',
@@ -55,7 +59,11 @@ export class PrivacySettingsComponent {
         }]
       });
       alert.present();
-    } else {
+    } else if (privacy === PrivacyMode.public) {
+      if (this.profile.privacy === PrivacyMode.public) {
+        return;
+      }
+
       this.profileDataStore.update({ privacy });
     }
   }
