@@ -104,28 +104,47 @@ export class ClientAppComponent implements OnInit, OnDestroy {
     this.nav.setRoot(UNAUTHORIZED_ROOT);
   }
 
+  /**
+   * This method starts booking or re-booking process.
+   * There are 3 possible cases.
+   *
+   * 1. When stylist uuid is provided in event we should proceed with booking of the provided stylist.
+   * 2. When preferred stylist is an only one we should proceed with booking of this stylist.
+   * 3. When there are more then 1 preferred stylists we should show stylists selector first.
+   *
+   * NOTE 1: we are able to start booking only for (1) and (2). For the (3) we should start booking after a stylist is selected.
+   * NOTE 2: stylists selector page can handle empty preferred stylists case.
+   */
   async onStartBooking(stylistUuid: string): Promise<void> {
-    // Begin booking process
+    const params: ServicesCategoriesParams = { stylistUuid: undefined};
 
     if (stylistUuid) {
-      // Stylist is already selected (happens in re-booking with some services changed), proceed to services:
-      const params: ServicesCategoriesParams = { stylistUuid };
-      this.nav.push(PageNames.ServicesCategories, { params });
-      return;
+      // Stylist is already selected proceed to services.
+      // Happens in
+      // - booking on stylist card pic click,
+      // - re-booking with some services changed.
+      params.stylistUuid = stylistUuid;
     }
 
-    const preferredStylists = await this.preferredStylistsData.get();
+    // No stylist’s uuid provided, let’s use preferred ones.
+    let preferredStylists = await this.preferredStylistsData.get();
+    preferredStylists = preferredStylists.filter(stylist => stylist.is_profile_bookable);
+
     if (preferredStylists.length === 1) {
-      // We have only one stylist, no need to show stylist selector and we are able to start booking:
-      const { uuid } = preferredStylists[0];
-      await startBooking(uuid);
-      const params: ServicesCategoriesParams = { stylistUuid: uuid };
-      this.nav.push(PageNames.ServicesCategories, { params });
-      return;
+      // We have only one preferred stylist, no need to show stylist selector and we are able to start booking:
+      params.stylistUuid = preferredStylists[0].uuid;
     }
 
-    // Choose stylist first:
-    this.nav.push(PageNames.SelectStylist);
+    if (params.stylistUuid) {
+      // When stylist is choosen already:
+      await startBooking(params.stylistUuid);
+      this.nav.push(PageNames.ServicesCategories, { params });
+
+    } else {
+      // We need to choose one of many preferred stylists to continue. Show selector page.
+      // TODO: handle empty preferred stylist here, not inside PageNames.SelectStylist
+      this.nav.push(PageNames.SelectStylist);
+    }
   }
 
   onStartRebooking(): void {

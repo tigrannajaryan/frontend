@@ -6,7 +6,7 @@ import { StylistsServiceMock } from '~/core/api/stylists.service.mock';
 import { StylistsService } from '~/core/api/stylists.service';
 import { MyStylistsComponent, Tabs } from '~/stylists/my-stylists.component';
 import { ApiResponse } from '~/shared/api/base.models';
-import { PreferredStylistsListResponse } from '~/shared/api/stylists.models';
+import { PreferredStylistModel, PreferredStylistsListResponse } from '~/shared/api/stylists.models';
 
 let fixture: ComponentFixture<MyStylistsComponent>;
 let instance: MyStylistsComponent;
@@ -29,7 +29,8 @@ describe('MyStylistsComponent', () => {
           );
 
           stylistsServiceMock.getPreferredStylists().subscribe((apiRes: ApiResponse<PreferredStylistsListResponse>) => {
-            const stylists: PreferredStylistsListResponse = apiRes.response;
+            const stylists: PreferredStylistModel[] = apiRes.response.stylists;
+            instance.totalStylistsCount = stylists.length;
             instance.splitStylistsList(stylists);
             fixture.detectChanges();
           });
@@ -46,26 +47,23 @@ describe('MyStylistsComponent', () => {
 
   it('should have stylists in both tabs', () => {
     const myStylistsTabList = fixture.nativeElement.querySelectorAll('[data-test-id=myStylistsTabList] stylist-card');
-    expect(myStylistsTabList.length).toBe(instance.tabs[Tabs.myStylists].stylists.length);
+    expect(myStylistsTabList.length).toBe(instance.tabs[Tabs.primeStylists].stylists.length);
     const savedStylistsTabList = fixture.nativeElement.querySelectorAll('[data-test-id=savedStylistsTabList] stylist-card');
     expect(savedStylistsTabList.length).toBe(instance.tabs[Tabs.savedStylists].stylists.length);
   });
 
-  it('should have title with number of my stylist', () => {
+  it('should have title with number of all stylist', () => {
     const myStylistsTitle = fixture.nativeElement.querySelector('[data-test-id=myStylistsTitle]');
-    expect(myStylistsTitle.outerText).toContain(`Stylists ${instance.tabs[Tabs.myStylists].stylists.length}`);
+    expect(myStylistsTitle.outerText).toContain(`Stylists ${instance.totalStylistsCount}`);
   });
 
   it('should show "There Is no preferred stylists yet"', () => {
-    instance.tabs[Tabs.myStylists].stylists = [];
+    instance.tabs[Tabs.primeStylists].stylists = [];
     fixture.detectChanges();
 
     const savedStylistsTabList = fixture.nativeElement.querySelector('[data-test-id=myStylistsTabList]');
     expect(savedStylistsTabList.outerText.trim())
       .toContain('You did not select preferred stylists yet.');
-
-    const myStylistsTitle = fixture.nativeElement.querySelector('[data-test-id=myStylistsTitle]');
-    expect(myStylistsTitle.outerText).toBe('Stylists');
   });
 
   it('should show "There Is no saved stylists yet"', () => {

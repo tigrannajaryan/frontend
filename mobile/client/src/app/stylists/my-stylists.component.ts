@@ -1,20 +1,25 @@
 import { Component, ViewChild } from '@angular/core';
 import { Events, Refresher, Slides } from 'ionic-angular';
 
-import { PreferredStylistModel, PreferredStylistsListResponse, StylistModel } from '~/shared/api/stylists.models';
+import {
+  PreferredStylistModel,
+  PreferredStylistsListResponse,
+  StylistModel
+} from '~/shared/api/stylists.models';
 import { componentUnloaded } from '~/shared/component-unloaded';
 
 import { EventTypes } from '~/core/event-types';
 import { PageNames } from '~/core/page-names';
 import { PreferredStylistsData } from '~/core/api/preferred-stylists.data';
+import { ApiResponse } from '~/shared/api/base.models';
 
 export enum Tabs {
-  myStylists = 0,
+  primeStylists = 0,
   savedStylists = 1
 }
 
 export enum TabNames {
-  myStylists = 'My Stylists',
+  primeStylists = 'Prime Stylists',
   savedStylists = 'Saved'
 }
 
@@ -27,7 +32,7 @@ export class MyStylistsComponent {
   activeStylist?: StylistModel;
   tabs = [
     {
-      name: TabNames.myStylists,
+      name: TabNames.primeStylists,
       loaded: false,
       stylists: []
     },
@@ -40,6 +45,7 @@ export class MyStylistsComponent {
   activeTab: TabNames;
 
   Tabs = Tabs;
+  totalStylistsCount: number;
   TabNames = TabNames;
   PageNames = PageNames;
 
@@ -55,11 +61,19 @@ export class MyStylistsComponent {
   }
 
   ionViewDidLoad(): void {
-    this.activeTab = this.tabs[Tabs.myStylists].name;
+    this.activeTab = this.tabs[Tabs.primeStylists].name;
 
     this.preferredStylistsData.data.asObservable()
       .takeUntil(componentUnloaded(this))
-      .subscribe(apiResponse => this.splitStylistsList(apiResponse.response));
+      .subscribe((apiResponse: ApiResponse<PreferredStylistsListResponse>) => {
+        if (!apiResponse.response) {
+          return;
+        }
+
+        const stylists = apiResponse.response.stylists;
+        this.totalStylistsCount = stylists.length;
+        this.splitStylistsList(stylists);
+      });
   }
 
   ionViewWillEnter(): void {
@@ -109,16 +123,12 @@ export class MyStylistsComponent {
   /**
    * Split stylists list to two separate lists
    * and use it for different tabs
-   * @param res: response with stylists array
+   * @param stylists: stylists array
    */
-  splitStylistsList(res: PreferredStylistsListResponse): void {
-    if (!res) {
-      return;
-    }
-
+  splitStylistsList(stylists: PreferredStylistModel[]): void {
     // splitStylists = sorted array of two arrays
-    const splitStylists = res.stylists.reduce((tabsObj, cur) => {
-      const tab = cur.is_profile_bookable ? Tabs.myStylists : Tabs.savedStylists;
+    const splitStylists = stylists.reduce((tabsObj, cur) => {
+      const tab = cur.is_profile_bookable ? Tabs.primeStylists : Tabs.savedStylists;
 
       if (!tabsObj[tab]) {
         tabsObj[tab] = [];
@@ -131,8 +141,8 @@ export class MyStylistsComponent {
     // replace old list with new one
     // we need replace it (not clear and set)
     // to prevent from blinking html
-    this.tabs[Tabs.myStylists].stylists = splitStylists[Tabs.myStylists];
-    this.tabs[Tabs.myStylists].loaded = true;
+    this.tabs[Tabs.primeStylists].stylists = splitStylists[Tabs.primeStylists];
+    this.tabs[Tabs.primeStylists].loaded = true;
     this.tabs[Tabs.savedStylists].stylists = splitStylists[Tabs.savedStylists];
     this.tabs[Tabs.savedStylists].loaded = true;
   }

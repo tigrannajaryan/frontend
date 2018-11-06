@@ -1,3 +1,6 @@
+// Very fast animation could help to make it smoother:
+$animation-speed: 80ms;
+
 stylist-card {
   display: block;
   text-align: left;
@@ -14,7 +17,11 @@ stylist-card {
   border: pxtovw(2px) solid transparent;
   border-radius: pxtovw(16px);
   box-shadow: 0 pxtovw(7px) pxtovw(43px) 0 rgba(0, 0, 0, 0.08);
-  transition: all 150ms ease;
+  transition: all $animation-speed ease;
+
+  &:not(.is-myStylist) {
+    align-items: flex-start;
+  }
 }
 
 .StylistCard-heart {
@@ -25,7 +32,7 @@ stylist-card {
   color: color($colors, orange);
   pointer-events: none;
   opacity: 0;
-  transition: all 150ms ease;
+  transition: all $animation-speed ease;
 }
 
 .StylistCard-close {
@@ -36,7 +43,7 @@ stylist-card {
   font-size: pxtovw(16px);
   pointer-events: none;
   opacity: 0;
-  transition: all 150ms ease;
+  transition: all $animation-speed ease;
 }
 
 .StylistCard-bookable {
@@ -46,7 +53,11 @@ stylist-card {
   font-size: pxtovw(16px);
   color: color($colors, orange);
   opacity: 1;
-  transition: all 150ms ease;
+  transition: all $animation-speed ease;
+}
+
+.StylistCard-body {
+  flex: 1;
 }
 
 .StylistCard-photo {
@@ -58,7 +69,7 @@ stylist-card {
   background-position: center;
   background-size: cover;
   border-radius: 50%; // circle
-  transition: all 150ms ease;
+  transition: all $animation-speed ease;
 }
 
 .StylistCard-salon {
@@ -68,7 +79,7 @@ stylist-card {
   color: color($grayscale, 500);
   text-overflow: ellipsis;
   white-space: nowrap;
-  transition: all 150ms ease;
+  transition: all $animation-speed ease;
 }
 
 .StylistCard-name {
@@ -79,9 +90,10 @@ stylist-card {
   font-weight: 700;
   text-overflow: ellipsis;
   white-space: nowrap;
-  transition: all 150ms ease;
+  transition: all $animation-speed ease;
 }
 
+.StylistCard-address,
 .StylistCard-followers {
   display: flex;
   align-items: center;
@@ -90,19 +102,30 @@ stylist-card {
   font-size: pxtovw(15px);
   color: color($grayscale, 500);
   white-space: normal;
-  transition: all 150ms ease;
+  transition: all $animation-speed ease;
 
   .Link {
     // Add more contrast:
     color: color($colors, orange);
-    transition: all 150ms ease;
+    white-space: normal;
+    transition: all $animation-speed ease;
   }
 
   i[class^=mb-icon] {
+    height: pxtovw(14px);
     margin-right: pxtovw(2px);
     font-size: pxtovw(14px);
+    line-height: pxtovw(15px);
     color: color($colors, orange);
-    transition: all 150ms ease;
+    transition: all $animation-speed ease;
+  }
+}
+
+.StylistCard-address {
+  align-items: flex-start;
+
+  .mb-icon-marker {
+    margin: pxtovw(3px) pxtovw(4px) 0 pxtovw(1px);
   }
 }
 
@@ -212,6 +235,13 @@ stylist-card {
     color: color($colors, orange);
   }
 
+  .StylistCard-address {
+    display: inline-block;
+    margin-top: pxtovw(8px);
+    font-size: $t-h4;
+    color: color($colors, orange);
+  }
+
   .StylistCard-info {
     margin-top: 12px;
     font-size: $t-h4;
@@ -256,7 +286,6 @@ stylist-card {
   justify-content: center;
   padding: pxtovw(67px) pxtovw(22px) pxtovw(14px);
 
-
   .StylistCard-photo {
     width: pxtovw(64px);
     height: pxtovw(64px);
@@ -266,5 +295,14 @@ stylist-card {
   .StylistCard-name {
     width: auto;
     margin-top: pxtovw(2px);
+  }
+
+  .StylistCard-body {
+    // Put the body and links to the next line:
+    min-width: 100%;
+  }
+
+  .StylistCard-address {
+    margin-top: pxtovw(16px);
   }
 }

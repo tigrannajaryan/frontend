@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import * as moment from 'moment';
 
 import { ApiResponse } from '~/shared/api/base.models';
 import { DataStore, GetOptions } from '~/shared/storage/data-store';
@@ -25,11 +24,8 @@ export class PreferredStylistsData {
     }
     PreferredStylistsData.guardInitilization = true;
 
-    // Amazon requires to update an image URL after one hour.
-    const ttl1hour = moment.duration(1, 'hour').asMilliseconds();
-
     this.data = new DataStore('preferred-stylists', () => api.getPreferredStylists(),
-      { cacheTtlMilliseconds: ttl1hour });
+      { cacheTtlMilliseconds: 0 });  // 0 cache ttl for data that can be externally modified
   }
 
   /**

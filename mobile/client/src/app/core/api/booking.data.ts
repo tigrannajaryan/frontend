@@ -109,7 +109,7 @@ export class BookingData implements OnDestroy {
     // create an API-backed cached pricelist
     this._pricelist = new DataStore('booking_pricelist',
       options => this.api.getPricelist(this._selectedServices, options),
-      { cacheTtlMilliseconds: 1000 * 60 }); // TTL for pricelist cache is 1 min
+      { cacheTtlMilliseconds: 0 });  // 0 cache ttl for data that can be externally modified
 
     // Preload prices (don't show alerts on errors since this is just preloading)
     // We don't want to show alert during preloading if there is an API error.
@@ -142,10 +142,13 @@ export class BookingData implements OnDestroy {
         this._timeslots.clear();
       }
 
+      // Save in closure:
+      const stylistUuid = this._stylist.uuid;
+
       // create an API-backed cached timeslots
       this._timeslots = new DataStore('booking_timeslots',
-        () => this.api.getTimeslots(this._stylist.uuid, date),
-        { cacheTtlMilliseconds: 1000 * 60 }); // TTL for timeslots cache is 1 min
+        () => this.api.getTimeslots(stylistUuid, date),
+        { cacheTtlMilliseconds: 0 });  // 0 cache ttl for data that can be externally modified
     }
 
     this._offer = {
