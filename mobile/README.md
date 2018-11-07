@@ -176,7 +176,7 @@ echo PAGE_NAME | xargs -I % sh -c 'ionic generate page %; mv src/pages/% src/app
 # Icons font
 
 We use svg icons converted to font `mb-icon` via https://icomoon.io/app
-If you wannt to add some icont to both apps you need:
+If you wannt to add some icon to both apps you need:
 1) add `frontend/mobile/shared/assets/fonts/mb-icon/MADEicons.json` to https://icomoon.io/app and you will see all icons that we have
 2) add icon (use only svg and it sohuld be monocolored), you can simply drag it to all icons (better to add it to the end)
 3) rename icon/s that you add (you can use pencil button in toolbar or clicking by generating font in the footer)
