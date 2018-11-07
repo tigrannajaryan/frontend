@@ -29,6 +29,7 @@ import { ServicesComponent } from '~/services/services.component';
 import { ServicesListComponent } from '~/services/services-list/services-list.component';
 import { WelcomeToMadeComponent } from '~/discounts/welcome-to-made/welcome-to-made.component';
 import { WorkHoursComponent } from '~/workhours/workhours.component';
+import { HomeSlotsComponent } from '~/home-slots/home-slots.component';
 
 /**
  * Define page names in one place to avoid typos if the names are used as
@@ -61,6 +62,7 @@ export const PageNames = {
   DiscountsWeekday: DiscountsWeekdayComponent,
   FirstScreen: FirstScreenComponent,
   Home: HomeComponent,
+  HomeSlots: HomeSlotsComponent,
   Invitations: InvitationsComponent,
   MyClients: MyClientsComponent,
   PushPrimingScreen: PushPrimingScreenComponent,

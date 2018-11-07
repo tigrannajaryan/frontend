@@ -87,13 +87,19 @@ export interface AppointmentDateOffer {
   is_working_day?: boolean;
 }
 
-export interface Home {
+export interface HomeData {
   appointments: Appointment[];
   today_visits_count: number;
   upcoming_visits_count: number;
   followers: number;
   this_week_earning: number;
   today_slots: number;
+}
+
+export interface DayAppointments {
+  appointments: Appointment[];
+  // TODO: add the rest of fields when a new API is implemented,
+  // see https://madebeauty.atlassian.net/browse/BAC-326
 }
 
 export interface CheckoutRequest {

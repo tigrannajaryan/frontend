@@ -1,0 +1,21 @@
+<ion-content no-padding>
+
+  <ion-fab right bottom>
+    <button ion-fab [madeLink]="[PageNames.AppointmentAdd]">
+      <ion-icon name="add"></ion-icon>
+    </button>
+  </ion-fab>
+
+  <div (click)="onClickDateArea()">
+    <div class="HomeSlotsMonthName">{{ curMonthName }}</div>
+    <div class="HomeSlotsWeekAndDay">
+      <div class="HomeSlotsWeekdayName">{{ curWeekdayName }}</div>
+      <div class="HomeSlotsDayOfMonth">{{ curDayOfMonth }}</div>
+    </div>
+  </div>
+
+  <time-slots [appointments]="data?.appointments"
+    [showCurTimeIndicator]="showCurTimeIndicator()"
+    (clickFreeSlot)="onClickFreeSlot($event)" (clickAppointment)="onAppointmentClick($event)"></time-slots>
+
+</ion-content>

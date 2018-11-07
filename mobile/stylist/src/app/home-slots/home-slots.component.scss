@@ -1,0 +1,30 @@
+home-slots {
+  .HomeSlotsMonthName {
+    font-size: pxtovw(28px);
+    font-weight: map-get($fontWeights, semibold);
+    margin: pxtovw(9px) 0 pxtovw(8px) pxtovw(24px);
+  }
+
+  .HomeSlotsWeekAndDay {
+    display: flex;
+    margin-bottom: pxtovw(16px);
+  }
+
+  .HomeSlotsWeekdayName {
+    font-size: pxtovw(13px);
+    color: color($colors, lightSalmon);
+    margin: pxtovw(8px) pxtovw(8px) 0 pxtovw(24px);
+  }
+
+  .HomeSlotsDayOfMonth {
+    font-size: pxtovw(18px);
+    font-weight: map-get($fontWeights, semibold);
+    color: white;
+    background-color: color($colors, lightSalmon);
+    width: pxtovw(32px);
+    height: pxtovw(32px);
+    border-radius: pxtovw(16px);
+    line-height: pxtovw(32px);
+    text-align: center;
+  }
+}

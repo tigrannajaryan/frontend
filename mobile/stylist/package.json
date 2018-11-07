@@ -41,6 +41,7 @@
     "@ionic-native/clipboard": "4.15.0",
     "@ionic-native/contacts": "4.7.0",
     "@ionic-native/core": "4.6.0",
+    "@ionic-native/date-picker": "4.17.0",
     "@ionic-native/diagnostic": "4.15.0",
     "@ionic-native/email-composer": "4.15.0",
     "@ionic-native/geolocation": "4.15.0",
@@ -74,6 +75,7 @@
     "cordova-plugin-appavailability": "0.4.2",
     "cordova-plugin-camera": "4.0.3",
     "cordova-plugin-contacts": "3.0.1",
+    "cordova-plugin-datepicker": "0.9.3",
     "cordova-plugin-device": "2.0.2",
     "cordova-plugin-email-composer": "0.8.15",
     "cordova-plugin-geolocation": "4.0.1",
@@ -178,7 +180,8 @@
       },
       "cordova-android-play-services-gradle-release": {
         "PLAY_SERVICES_VERSION": "11.0.1"
-      }
+      },
+      "cordova-plugin-datepicker": {}
     },
     "platforms": [
       "android",

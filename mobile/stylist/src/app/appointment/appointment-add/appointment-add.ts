@@ -2,7 +2,7 @@ import * as moment from 'moment';
 
 import { Store } from '@ngrx/store';
 import { Component } from '@angular/core';
-import { AlertController, NavController } from 'ionic-angular';
+import { AlertController, NavController, NavParams } from 'ionic-angular';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { componentUnloaded } from '~/shared/component-unloaded';
@@ -20,12 +20,17 @@ import {
 
 import { ApiFieldAndNonFieldErrors, FieldErrorItem } from '~/shared/api-errors';
 import { FieldErrorCode } from '~/shared/api-error-codes';
+import { isoDateFormat } from '~/shared/api/base.models';
 
 function isOverridableError(errorCodeStr: FieldErrorCode): boolean {
   return errorCodeStr === 'err_appointment_in_the_past' ||
     errorCodeStr === 'err_appointment_outside_working_hours' ||
     errorCodeStr === 'err_appointment_non_working_day' ||
     errorCodeStr === 'err_appointment_intersection';
+}
+
+export interface AppointmentAddParams {
+  startTime?: moment.Moment;
 }
 
 @Component({
@@ -35,10 +40,13 @@ function isOverridableError(errorCodeStr: FieldErrorCode): boolean {
 export class AppointmentAddComponent {
   form: FormGroup;
   selectedService?: ServiceItem;
+  params: AppointmentAddParams;
 
-  defaultDate = moment(new Date()).format('YYYY-MM-DD');
+  defaultDate = moment(new Date()).format(isoDateFormat);
   defaultTime = '09:00';
-  nextYear = moment().add(1, 'years').format('YYYY-MM-DD');
+  startDate = '';
+  startTime = '';
+  nextYear = moment().add(1, 'years').format(isoDateFormat);
   minuteValues = Array(4).fill(undefined).map((_, idx) => idx * 15).toString(); // every 15 minutes
 
   constructor(
@@ -46,11 +54,18 @@ export class AppointmentAddComponent {
     private appointmentService: AppointmentService,
     private formBuilder: FormBuilder,
     private navCtrl: NavController,
+    private navParams: NavParams,
     private store: Store<ServicesState>
   ) {
+    this.params = this.navParams.get('params') || {};
   }
 
   ionViewWillLoad(): void {
+    if (this.params.startTime) {
+      this.defaultDate = this.startDate = this.params.startTime.format(isoDateFormat);
+      this.defaultTime = this.startTime = this.params.startTime.format('HH:mm');
+    }
+
     this.createForm();
 
     this.store
@@ -139,8 +154,8 @@ export class AppointmentAddComponent {
     this.form = this.formBuilder.group({
       client: ['', [Validators.required]],
       phone: [''],
-      date: ['', [Validators.required]],
-      time: ['', [Validators.required]]
+      date: [this.startDate, [Validators.required]],
+      time: [this.startTime, [Validators.required]]
     });
   }
 }

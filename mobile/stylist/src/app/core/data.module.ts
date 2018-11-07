@@ -10,12 +10,14 @@ import { MyClientsDataStore } from '~/clients/my-clients/my-clients.data';
 import { StylistServicesDataStore } from '~/services/services-list/services.data';
 import { ProfileDataStore } from '~/core/profile.data';
 import { AppModule } from '~/app.module';
+import { AppointmentsDataStore } from '~/home-slots/appointments.data';
 
 export enum DataCacheKey {
   allClients = 'allClients',
   myClients = 'myClients',
   profile = 'profile',
-  stylistServices = 'stylistServices'
+  stylistServices = 'stylistServices',
+  appointments = 'appointments'
 }
 
 /**
@@ -41,6 +43,7 @@ export class DataModule {
       // of singletons.
       providers: [
         AllClientsDataStore,
+        AppointmentsDataStore,
         MyClientsDataStore,
         ProfileDataStore,
         StylistServicesDataStore

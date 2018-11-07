@@ -15,7 +15,7 @@ import {
   AppointmentParams,
   AppointmentPreviewRequest,
   AppointmentPreviewResponse,
-  Home,
+  HomeData,
   NewAppointmentRequest
 } from './home.models';
 
@@ -33,8 +33,8 @@ export class HomeService extends BaseService {
   /**
    * Get home page data. The stylist must be already authenticated as a user.
    */
-  getHome(query: string): Observable<ApiResponse<Home>> {
-    return this.get<Home>(`stylist/home?query=${encodeURIComponent(query)}`);
+  getHome(query: string): Observable<ApiResponse<HomeData>> {
+    return this.get<HomeData>(`stylist/home?query=${encodeURIComponent(query)}`);
   }
 
   /**

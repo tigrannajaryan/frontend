@@ -6,7 +6,7 @@
     <author email="admin@madebeauty.com" href="https://www.madebeauty.com/">MadeBeauty Engineering Team</author>
     <content src="index.html" />
     <access origin="*" />
-    <access origin="tel:*" launch-external="yes" />
+    <access launch-external="yes" origin="tel:*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
     <allow-intent href="tel:*" />
@@ -129,4 +129,5 @@
     </edit-config>
     <engine name="android" spec="7.1.0" />
     <engine name="ios" spec="4.5.4" />
+    <plugin name="cordova-plugin-datepicker" spec="0.9.3" />
 </widget>

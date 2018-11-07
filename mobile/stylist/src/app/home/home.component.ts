@@ -15,7 +15,7 @@ import { GAWrapper } from '~/shared/google-analytics';
 import { PageNames } from '~/core/page-names';
 import { showAlert } from '~/shared/utils/alert';
 import { StylistProfile } from '~/shared/api/stylist-app.models';
-import { Appointment, AppointmentStatuses, Home } from '~/core/api/home.models';
+import { Appointment, AppointmentStatuses, HomeData } from '~/core/api/home.models';
 import { HomeService } from '~/core/api/home.service';
 import { AppointmentCheckoutParams } from '~/appointment/appointment-checkout/appointment-checkout.component';
 import { LoadProfileAction, ProfileState, selectProfile } from '~/core/components/made-menu-header/profile.reducer';
@@ -45,7 +45,7 @@ export enum TabNames {
   past = 'Past'
 }
 
-const helpText = `Congratulations! Your registration is complete.<br/><br/>
+export const helpText = `Congratulations! Your registration is complete.<br/><br/>
   This is your homescreen. Your appointments will show up here.<br/><br/>
   You can also edit your information from the tab bar listed below.<br/>Let's get started.`;
 
@@ -76,7 +76,7 @@ export class HomeComponent {
     }
   ];
   activeTab: TabNames;
-  home: Home;
+  home: HomeData;
   isLoading: boolean;
   @ViewChild(Slides) slides: Slides;
   @ViewChild(Content) content: Content;
@@ -310,7 +310,7 @@ export class HomeComponent {
       if (this.getHomeSubscription) {
         this.getHomeSubscription.unsubscribe();
       }
-      this.getHomeSubscription = this.homeService.getHome(query).subscribe(({ response }: ApiResponse<Home>) => {
+      this.getHomeSubscription = this.homeService.getHome(query).subscribe(({ response }: ApiResponse<HomeData>) => {
         if (!response) {
           return;
         }
@@ -329,7 +329,7 @@ export class HomeComponent {
    * Processes home's data received from the backend and creates
    * the tags for each appointment card.
    */
-  private processHomeData(home: Home): void {
+  private processHomeData(home: HomeData): void {
     if (!(home && home.appointments)) {
       return;
     }

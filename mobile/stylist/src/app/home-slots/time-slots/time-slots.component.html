@@ -1,0 +1,44 @@
+<ion-scroll scrollY="true" style="height: 100%">
+
+  <div class="TimeSlotsRoot">
+
+    <!-- Show time axis on the left -->
+    <div class="TimeAxis" [style.height]="'' + timeAxis.heightInVw + 'vw'">
+      <div *ngFor="let timeLabel of timeLabels; index as i" class="TimeAxisLabelArea" [style.top]="'' + timeLabel.posYInVw + 'vw'"
+        id="TimeAxisLabelArea{{ i }}">
+        <!-- the time label -->
+        <div class="TimeAxisLabel" id="TimeAxisLabel{{ i }}">{{ timeLabel.text }}</div>
+        <!-- and its tick -->
+        <div class="TimeAxisTick"></div>
+      </div>
+    </div>
+
+    <!-- show time slots on the right -->
+    <div class="TimeSlots">
+
+      <div *ngFor="let item of slotItems" class="TimeSlotItem" [style.top]="item.posYInVw+'vw'" [style.left]="item.leftInVw+'vw'"
+        [style.width]="item.widthInVw+'vw'" [style.height]="item.heightInVw+'vw'" (click)="onSlotItemClick(item)">
+        <div class="TimeSlotInner" [class.TimeSlotAppointment]="item.appointment">
+          <!-- show appointment slot -->
+          <div *ngIf="item.appointment">
+            <i *ngIf="item.appointment.client_uuid" [style.background-image]="'url(' + (item.appointment.client_profile_photo_url || 'assets/icons/stylist-avatar.png') + ')'"
+              class="TimeSlotPhoto"></i>
+            <div class="TimeSlotClientName">{{ formatClientName(item.appointment) }}</div>
+            <div class="TimeSlotServices">{{ formatServices(item.appointment) }}</div>
+          </div>
+
+          <!-- show free slot -->
+          <div *ngIf="item.freeSlotText" class="TimeSlotFree">{{ item.freeSlotText }}</div>
+        </div>
+      </div>
+
+      <!-- show current time indicator -->
+      <ng-template [ngIf]="showCurTimeIndicator">
+        <div class="TimeAxisCurTime" [style.top]="timeAxis.currentTimePosY + 'vw'"></div>
+        <div class="TimeAxisCurTimeLeftBlob" [style.top]="timeAxis.currentTimePosY + 'vw'"></div>
+      </ng-template>
+    </div>
+
+  </div>
+
+</ion-scroll>
