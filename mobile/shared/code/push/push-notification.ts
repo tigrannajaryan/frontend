@@ -12,7 +12,57 @@ import { NotificationsApi, PushDeviceType, RegUnregDeviceRequest } from './notif
 
 import { ENV } from '~/environments/environment.default';
 import { appDefinitions } from '~/environments/app-def';
-import { PlatforNames } from '../constants';
+import { PlatforNames } from '~/shared/constants';
+
+/**
+ * All the known codes we have inside the code prop in NotificationEventAdditionalData of the NotificationEventResponse.
+ */
+export enum PushNotificationCode { // (!) in alphabetical order
+  appeared_in_search = 'appeared_in_search',
+  appointment_reminder = 'appointment_reminder',
+  appointment_reminder_early = 'appointment_reminder_early',
+  cancelled_appointment = 'cancelled_appointment',
+  checkout_reminder = 'checkout_reminder',
+  client_saved_you = 'client_saved_you',
+  client_viewed_you = 'client_viewed_you',
+  hint_to_first_book = 'hint_to_first_book',
+  hint_to_rebook = 'hint_to_rebook',
+  hint_to_select_stylist = 'hint_to_select_stylist',
+  invitation_accepted = 'invitation_accepted',
+  low_price_hint = 'low_price_hint',
+  new_appointment = 'new_appointment',
+  new_stylists_available = 'new_stylists_available',
+  no_show_warning = 'no_show_warning',
+  prices_increasing = 'prices_increasing',
+  profile_incomplete = 'profile_incomplete',
+  registration_incomplete = 'registration_incomplete',
+  stylist_ready = 'stylist_ready',
+  today_appointments = 'today_appointments',
+  tomorrow_appointments = 'tomorrow_appointments',
+  visit_report = 'visit_report'
+}
+
+/**
+ * This event is published when notification happens:
+ * |  this.events.publish(PushNotificationEvent, new PushNotificationEventDetails(…));
+ *
+ * Observe it to handle notifications:
+ * |  this.events.subscribe(PushNotificationEvent, (details: PushNotificationEventDetails) => {…});
+ */
+export const pushNotificationEvent = 'pushNotificationEvent';
+export class PushNotificationEventDetails {
+  constructor(
+    // Indicates the notification received while the app is in the foreground or background:
+    public foreground: boolean,
+    // Coldstart is true when the application is started by clicking on the push notification:
+    public coldstart: boolean,
+    // Unique notification code we use in the backend:
+    public code: PushNotificationCode,
+    // A message from NotificationEventResponse:
+    public message: string
+  ) {
+  }
+}
 
 /**
  * Expected params of priming screen. When you implement the actual priming screen
@@ -29,7 +79,7 @@ export interface PrimingScreenParams {
  */
 export enum PermissionScreenResult {
   notNeeded,            // if there is no need to show the permission screen. This can be the
-  //                       case if permission is already granted or we are running on Android.
+                        // case if permission is already granted or we are running on Android.
 
   permissionGranted,    // push permission granted and device is now registered for push.
   permissionNotGranted, // push permission not granted, we cannot receive notifications.
@@ -49,7 +99,7 @@ export interface PushPersistentData {
 
 /**
  * An interface that user of PushPersistent must implement and supply
- * in the call to PushPersistent.init() method. get/set funuction
+ * in the call to PushPersistent.init() method. get/set function
  * signatures are compatible with generic AppStorage class which makes
  * it trivial to satisfy the requirements of this interface by simply
  * declaring "pushNotificationParams: PushPersistentData" member in
@@ -77,7 +127,7 @@ export interface PersistentStorage {
  *    On iOS this will show the priming screen to the user (if neccessary,
  *    see jsdoc of the function) and if the user agrees to move forward
  *    will request the system push notification. If the system permission
- *    is granted we will then proceed to register the device with APNS and
+ *    is granted we will then proceed to register the device with APNS
  *    and will be ready to associate the device once the user becomes known.
  *    On Android this normally does nothing since the permissions are
  *    already granted by init() call.
@@ -135,8 +185,7 @@ export class PushNotification {
   /**
    * Initialize push notification. Must be called at the start of the app.
    * @param navCtrl to be used for showing permission priming screen.
-   * @param primingScreenPage the screen that will be shown before we ask
-   *    for system push permissions on iOS (ignore on Android).
+   * @param primingScreenPage the screen that will be shown before we ask for system push permissions on iOS (ignored on Android).
    */
   async init(navCtrl: NavController, primingScreenPage: Page, persistentStorage: PersistentStorage): Promise<void> {
     if (!ENV.ffEnablePushNotifications) {
@@ -170,6 +219,7 @@ export class PushNotification {
    */
   setUser(userUuid: string): void {
     this.userUuid = userUuid;
+
     if (this.userUuid) {
       this.associateUserWithDevice();
     } else {
@@ -302,9 +352,9 @@ export class PushNotification {
         senderID: ENV.FCM_PUSH_SENDER_ID
       },
       ios: {
-        alert: 'true',
-        badge: false,
-        sound: 'true'
+        alert: true,
+        badge: true,
+        sound: true
       },
       windows: {}
     };
@@ -321,9 +371,7 @@ export class PushNotification {
     // Log the errors
     pushObject.on('error').subscribe(error => this.logger.error('Push: error with Push plugin', error));
 
-    this.isRegistered = true;
-
-    return true;
+    return this.isRegistered = true;
   }
 
   private savePersistentData(): Promise<void> {
@@ -334,16 +382,10 @@ export class PushNotification {
    * Push notification handler. Called when we have a new message pushed to us.
    */
   private onNotification(notification: NotificationEventResponse): void {
-    this.logger.info('Push: message received:', notification.message);
-    // if user using app and push notification comes
-    if (notification.additionalData.foreground) {
-      // TODO: if application is open show the notification somehow
-      this.logger.info('Push: notification received in foreground');
-    } else {
-      // if user NOT using app and push notification comes
-      // TODO: Your logic on click of push notification directly
-      this.logger.info('Push: notification received in background');
-    }
+    const { message, additionalData } = notification;
+    const { code, coldstart, foreground } = additionalData;
+    this.logger.info(`Push notification received in ${foreground ? 'foreground' : 'background'}:`, message);
+    this.events.publish(pushNotificationEvent, new PushNotificationEventDetails(foreground, coldstart, code, message));
   }
 
   private onLogin(e: AfterLoginEvent): void {
@@ -367,7 +409,7 @@ export class PushNotification {
     };
   }
 
-  private associateUserWithDevice(): void {
+  private async associateUserWithDevice(): Promise<void> {
     if (!this.deviceRegistrationId) {
       // Device is not yet known, nothing can be done.
       return;
@@ -376,10 +418,10 @@ export class PushNotification {
     this.logger.info(`Push: registering device ${this.deviceRegistrationId} to user ${this.userUuid}`);
 
     // Tell backend to associate device with the user
-    this.api.registerDevice(this.prepareRequest());
+    await this.api.registerDevice(this.prepareRequest()).toPromise();
   }
 
-  private unAssociateUserWithDevice(): void {
+  private async unAssociateUserWithDevice(): Promise<void> {
     if (!this.deviceRegistrationId) {
       // Device is not yet known, nothing can be done.
       return;
@@ -388,6 +430,6 @@ export class PushNotification {
     this.logger.info(`Push: uregistering device ${this.deviceRegistrationId} from user ${this.userUuid}`);
 
     // Tell backend to unassociate device from the user
-    this.api.unregisterDevice(this.prepareRequest());
+    await this.api.unregisterDevice(this.prepareRequest()).toPromise();
   }
 }
