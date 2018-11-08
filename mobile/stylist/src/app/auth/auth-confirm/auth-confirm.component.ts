@@ -85,9 +85,9 @@ export class AuthConfirmPageComponent {
 
         // true = This is a new user, enable help screens
         // false = Set it back to false for the case when we change user
-        this.storage.set('showHomeScreenHelp', !isRegistrationComplete(data.profileStatus));
+        this.storage.set('showHomeScreenHelp', !isRegistrationComplete(data.profile_status));
 
-        const requiredPages = createNavHistoryList(data.profileStatus);
+        const requiredPages = createNavHistoryList(data.profile_status);
         this.navCtrl.setPages(requiredPages);
 
         if (ENV.ffEnablePushNotifications) {
