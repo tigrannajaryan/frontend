@@ -47,7 +47,8 @@ export class PushNotificationToastService implements OnDestroy {
     private events: Events,
     private toastCtrl: ToastController
   ) {
-    this.events.subscribe(SharedEventTypes.pushNotification, this.handlePushNotificationEvent);
+    this.events.subscribe(SharedEventTypes.pushNotification,
+      (details: PushNotificationEventDetails) => this.handlePushNotificationEvent(details));
   }
 
   ngOnDestroy(): void {
