@@ -80,6 +80,10 @@ export class RegisterSalonComponent {
         Validators.minLength(5),
         Validators.maxLength(17)
       ]],
+      public_phone: ['', [
+        Validators.minLength(5),
+        Validators.maxLength(17)
+      ]],
       // tslint:disable-next-line:no-null-keyword
       profile_photo_id: null,
       instagram_url: ['', Validators.pattern(/([A-Za-z0-9_](?:(?:[A-Za-z0-9_]|(?:\\.(?!\\.))){0,28}(?:[A-Za-z0-9_]))?)/)],
@@ -109,6 +113,7 @@ export class RegisterSalonComponent {
       first_name,
       last_name,
       phone,
+      public_phone,
       salon_name,
       salon_address,
       profile_photo_id,
@@ -118,6 +123,7 @@ export class RegisterSalonComponent {
 
     this.rawPhone = phone;
     const formattedPhone = getPhoneNumber(phone);
+    const formattedPublicPhone = getPhoneNumber(public_phone);
 
     this.form.patchValue({
       // tslint:disable-next-line:no-null-keyword
@@ -125,6 +131,7 @@ export class RegisterSalonComponent {
       first_name,
       last_name,
       phone: formattedPhone,
+      public_phone: formattedPublicPhone,
       salon_name,
       salon_address,
       profile_photo_id,
