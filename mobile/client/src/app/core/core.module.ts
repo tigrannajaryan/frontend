@@ -3,6 +3,8 @@ import { IonicModule } from 'ionic-angular';
 import { GoogleAnalytics } from '@ionic-native/google-analytics';
 
 import { GAWrapper } from '~/shared/google-analytics';
+import { PushNotificationToastService } from '~/shared/push/push-notification-toast';
+import { UserContext } from '~/shared/user-context';
 
 import { HasErrorPipe } from '~/shared/pipes/has-error.pipe';
 import { PricePipe } from '~/shared/pipes/price.pipe';
@@ -32,8 +34,6 @@ import { InputNumberDirective } from '~/core/directives/input-number.directive';
 
 import { BookServicesHeaderComponent } from '~/booking/book-services-header/book-services-header';
 import { StylistCardComponent } from '~/stylists/stylist-card/stylist-card.component';
-
-import { UserContext } from '~/shared/user-context';
 
 export enum DefaultImage {
   User = 'assets/icons/stylist-avatar.png'
@@ -79,6 +79,7 @@ const declarations = [
   providers: [
     GoogleAnalytics,
     GAWrapper,
+    PushNotificationToastService,
     UserContext
   ]
 })

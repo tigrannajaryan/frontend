@@ -6,13 +6,17 @@ import { Events, Platform } from 'ionic-angular';
 import * as moment from 'moment';
 
 import { Logger } from '~/shared/logger';
-import { AfterLoginEvent, SharedEventTypes } from '~/shared/events/shared-event-types';
+import {
+  AfterLoginEvent,
+  PushNotificationEventDetails,
+  SharedEventTypes
+} from '~/shared/events/shared-event-types';
 import { isDevelopmentBuild } from '~/shared/get-build-info';
-import { NotificationsApi, PushDeviceType, RegUnregDeviceRequest } from './notifications.api';
+import { PlatforNames } from '~/shared/constants';
+import { NotificationsApi, PushDeviceType, RegUnregDeviceRequest } from '~/shared/push/notifications.api';
 
 import { ENV } from '~/environments/environment.default';
 import { appDefinitions } from '~/environments/app-def';
-import { PlatforNames } from '~/shared/constants';
 
 /**
  * All the known codes we have inside the code prop in NotificationEventAdditionalData of the NotificationEventResponse.
@@ -40,28 +44,6 @@ export enum PushNotificationCode { // (!) in alphabetical order
   today_appointments = 'today_appointments',
   tomorrow_appointments = 'tomorrow_appointments',
   visit_report = 'visit_report'
-}
-
-/**
- * This event is published when notification happens:
- * |  this.events.publish(PushNotificationEvent, new PushNotificationEventDetails(…));
- *
- * Observe it to handle notifications:
- * |  this.events.subscribe(PushNotificationEvent, (details: PushNotificationEventDetails) => {…});
- */
-export const pushNotificationEvent = 'pushNotificationEvent';
-export class PushNotificationEventDetails {
-  constructor(
-    // Indicates the notification received while the app is in the foreground or background:
-    public foreground: boolean,
-    // Coldstart is true when the application is started by clicking on the push notification:
-    public coldstart: boolean,
-    // Unique notification code we use in the backend:
-    public code: PushNotificationCode,
-    // A message from NotificationEventResponse:
-    public message: string
-  ) {
-  }
 }
 
 /**
@@ -385,7 +367,10 @@ export class PushNotification {
     const { message, additionalData } = notification;
     const { code, coldstart, foreground } = additionalData;
     this.logger.info(`Push notification received in ${foreground ? 'foreground' : 'background'}:`, message);
-    this.events.publish(pushNotificationEvent, new PushNotificationEventDetails(foreground, coldstart, code, message));
+    this.events.publish(
+      SharedEventTypes.pushNotification,
+      new PushNotificationEventDetails(foreground, coldstart, code, message)
+    );
   }
 
   private onLogin(e: AfterLoginEvent): void {
