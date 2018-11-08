@@ -9,3 +9,7 @@ declare const __COMMIT_HASH__: string;
 export function getCommitHash(): string {
   return __COMMIT_HASH__;
 }
+
+export function isDevelopmentBuild(): boolean {
+  return !process.env.TRAVIS_BUILD_NUMBER;
+}

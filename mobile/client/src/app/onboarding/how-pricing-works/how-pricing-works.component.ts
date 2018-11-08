@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 
+import { PermissionScreenResult, PushNotification } from '~/shared/push/push-notification';
 import { PageNames } from '~/core/page-names';
 import { PreferredStylistsData } from '~/core/api/preferred-stylists.data';
 
@@ -21,13 +22,20 @@ export class HowPricingWorksComponent {
 
   constructor(
     private navCtrl: NavController,
+    private navParams: NavParams,
     private preferredStylistsData: PreferredStylistsData,
-    private navParams: NavParams
+    private pushNotification: PushNotification
   ) {
     this.hideContinueButton = this.navParams.get('hideContinueButton') as boolean;
   }
 
   async onContinue(): Promise<void> {
+    // Show the permission asking screen if needed and wait until the user makes a choice
+    if (await this.pushNotification.showPermissionScreen(false) === PermissionScreenResult.userWantsToGoBack) {
+      // Back button was tapped on that screen. We are back to this screen, we should not continue.
+      return;
+    }
+
     const preferredStylists = await this.preferredStylistsData.get();
     if (preferredStylists.length === 0) {
       const data: StylistsPageParams = { onboarding: true };

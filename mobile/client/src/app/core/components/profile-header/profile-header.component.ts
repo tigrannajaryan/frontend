@@ -8,7 +8,7 @@ import { ProfileDataStore } from '~/profile/profile.data';
 import { ProfileCompleteness, ProfileModel } from '~/core/api/profile.models';
 import { checkProfileCompleteness } from '~/core/utils/user-utils';
 
-import { EventTypes } from '~/core/event-types';
+import { ClientEventTypes } from '~/core/client-event-types';
 import { TabIndex } from '~/main-tabs/main-tabs.component';
 
 @Component({
@@ -40,6 +40,6 @@ export class ProfileHeaderComponent implements OnDestroy {
   }
 
   onClick(): void {
-    this.events.publish(EventTypes.selectMainTab, TabIndex.Profile);
+    this.events.publish(ClientEventTypes.selectMainTab, TabIndex.Profile);
   }
 }

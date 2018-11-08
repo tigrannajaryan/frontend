@@ -26,6 +26,7 @@ import { AuthProcessState } from '~/shared/storage/auth-process-state';
 import { StylistPageParams } from '~/stylists/stylist/stylist.component';
 
 import { CodeData, CodeInputComponent } from '~/shared/components/code-input/code-input.component';
+import { PushNotification } from '~/shared/push/push-notification';
 
 @Component({
   selector: 'page-auth-confirm',
@@ -52,6 +53,7 @@ export class AuthConfirmPageComponent {
     private navCtrl: NavController,
     private navParams: NavParams,
     private preferredStylistsData: PreferredStylistsData,
+    private pushNotification: PushNotification,
     private store: Store<AuthState & StylistState>
   ) {
   }
@@ -67,18 +69,7 @@ export class AuthConfirmPageComponent {
       .takeWhile(componentIsActive(this))
       .filter(isTokenSaved => isTokenSaved)
       .withLatestFrom(this.store)
-      .subscribe(async ([isTokenSaved, state]) => {
-        const preferredStylists = await this.preferredStylistsData.get();
-        const invitation = selectInvitedByStylist(state);
-        if (preferredStylists.length > 0) {
-          this.navCtrl.setRoot(PageNames.MainTabs);
-        } else if (invitation) {
-          const data: StylistPageParams = { stylist: invitation };
-          this.navCtrl.setRoot(PageNames.Stylist, { data });
-        } else {
-          this.navCtrl.setRoot(PageNames.HowMadeWorks);
-        }
-      });
+      .subscribe(async ([isTokenSaved, state]) => this.onCodeConfirmed(state));
 
     // Handle code verification error
     this.error = this.store.select(selectConfirmCodeError);
@@ -107,6 +98,31 @@ export class AuthConfirmPageComponent {
     } else if (code.length === 0) {
       // if there was an error and the input had been cleared out
       this.store.dispatch(new ResetConfirmCodeErrorAction());
+    }
+  }
+
+  async onCodeConfirmed(state: AuthState & StylistState): Promise<void> {
+    // Get the list of preferred stylists
+    const preferredStylists = await this.preferredStylistsData.get();
+
+    // Also get the invitation (if any)
+    const invitation = selectInvitedByStylist(state);
+    if (preferredStylists.length > 0) {
+      // We already have a preferred stylist, we can go to main tabs screen.
+
+      // But first show push permission asking screen if needed and wait until the user makes a choice
+      await this.pushNotification.showPermissionScreen(true);
+
+      // All set, show main screen.
+      this.navCtrl.setRoot(PageNames.MainTabs);
+    } else if (invitation) {
+      // No preferred stylist, but we have an invitation from a stylist, show it.
+      const data: StylistPageParams = { stylist: invitation };
+      this.navCtrl.setRoot(PageNames.Stylist, { data });
+    } else {
+      // No preferred stylist, no invitation, brand new client. Start with
+      // educational screen.
+      this.navCtrl.setRoot(PageNames.HowMadeWorks);
     }
   }
 }

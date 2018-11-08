@@ -2,9 +2,6 @@ export const ENV = {
   apiUrl: 'https://admin.madebeauty.com/api/v1/',
   production: true,
 
-  // Feature flag to enable or disable incomplete features
-  ffEnableIncomplete: false,
-
   // Feature flag to enable push notifications
   ffEnablePushNotifications: false,
 

@@ -1,0 +1,18 @@
+.PushNotificationToast {
+  .toast-wrapper {
+    background: white;
+    box-shadow: 0 2px 16px rgba(black, 0.24);
+
+    .toast-message,
+    .toast-button {
+      color: black;
+    }
+
+    .toast-button {
+      height: pxtovw(36px);
+      margin: 0 pxtovw(8px);
+      background-color: color($colors, primary);
+      border-radius: pxtovw(10px);
+    }
+  }
+}

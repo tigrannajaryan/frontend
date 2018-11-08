@@ -3,6 +3,8 @@ import { IonicModule } from 'ionic-angular';
 import { GoogleAnalytics } from '@ionic-native/google-analytics';
 
 import { GAWrapper } from '~/shared/google-analytics';
+import { PushNotificationToastService } from '~/shared/push/push-notification-toast';
+import { UserContext } from '~/shared/user-context';
 
 import { HasErrorPipe } from '~/shared/pipes/has-error.pipe';
 import { PricePipe } from '~/shared/pipes/price.pipe';
@@ -26,13 +28,12 @@ import { PhoneInputDirective } from '~/shared/directives/phone-input.directive';
 import { AppointmentItemComponent } from '~/core/components/appointment-item/appointment-item.component';
 import { MadeHeaderComponent } from '~/core/components/made-header/made-header.component';
 import { ProfileHeaderComponent } from '~/core/components/profile-header/profile-header.component';
+import { PushNotificationsTrackerComponent } from '~/core/components/push-notifications-tracker/push-notifications-tracker.component';
 
 import { InputNumberDirective } from '~/core/directives/input-number.directive';
 
 import { BookServicesHeaderComponent } from '~/booking/book-services-header/book-services-header';
 import { StylistCardComponent } from '~/stylists/stylist-card/stylist-card.component';
-
-import { UserContext } from '~/shared/user-context';
 
 export enum DefaultImage {
   User = 'assets/icons/stylist-avatar.png'
@@ -58,6 +59,7 @@ const declarations = [
   PricePairComponent,
   PricePipe,
   ProfileHeaderComponent,
+  PushNotificationsTrackerComponent,
   ServerStatusComponent,
   ServicesHeaderListComponent,
   StylistCardComponent,
@@ -77,6 +79,7 @@ const declarations = [
   providers: [
     GoogleAnalytics,
     GAWrapper,
+    PushNotificationToastService,
     UserContext
   ]
 })

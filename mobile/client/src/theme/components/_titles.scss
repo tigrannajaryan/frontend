@@ -11,6 +11,10 @@
     color: color($grayscale, 500);
     text-align: center;
   }
+
+  > .toolbar-title {
+    font-size: inherit;
+  }
 }
 
 .H2 {

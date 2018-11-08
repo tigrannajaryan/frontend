@@ -9,7 +9,8 @@ import { ClientInvitation } from './shared-app/api/invitations.models';
 import { SetStylistServicesParams, StylistProfile } from './shared-app/api/stylist-app.models';
 import { Worktime } from './shared-app/api/worktime.models';
 import { getPhoneNumber } from './shared-app/utils/phone-numbers';
-import { EmailAuthCredentials } from './shared-app/api/auth.models';
+import { EmailAuthCredentials, UserRole } from './shared-app/api/auth.models';
+import { pushPrimingPage } from './shared-e2e/push-priming-page';
 
 import { clientApp } from './client-app';
 import { firstPage } from './pages/first-page';
@@ -19,7 +20,6 @@ import { howPricingWorksPage } from './pages/how-pricing-works-page';
 import { mainTabsPage } from './pages/main-tabs-page';
 import { profileSummaryPage } from './pages/profile-summary-page';
 import { homePage } from './pages/home-page';
-import { selectStylistPage } from './pages/select-stylist-page';
 import { selectCategoryPage } from './pages/select-category-page';
 import { selectServicePage } from './pages/select-service-page';
 import { selectDatePage } from './pages/select-date-page';
@@ -35,7 +35,7 @@ describe('First use flow for invited clients', () => {
     const stylistCredentials: EmailAuthCredentials = {
       email: getRandomEmail(),
       password: getRandomString(Math.floor(Math.random() * 20) + 1),
-      role: 'stylist'
+      role: UserRole.stylist
     };
     const authResponse = await stylistApi.registerByEmail(stylistCredentials);
     expect(authResponse.token).toBeDefined();
@@ -142,6 +142,7 @@ describe('First use flow for invited clients', () => {
   it('Can navigate through info screens', async () => {
     await howMadeWorksPage.continue();
     await howPricingWorksPage.continue();
+    await pushPrimingPage.allow();
   });
 
   it('Can see profile page', async () => {

@@ -4,7 +4,7 @@ import { AppVersion } from '@ionic-native/app-version';
 import { ViewController } from 'ionic-angular';
 import * as camelcase from 'camelcase';
 
-import { getBuildNumber } from '~/shared/get-build-number';
+import { getBuildNumber } from '~/shared/get-build-info';
 import { Logger } from '~/shared/logger';
 
 /**

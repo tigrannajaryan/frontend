@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { AppVersion } from '@ionic-native/app-version';
 
-import { getBuildNumber, getCommitHash } from '~/shared/get-build-number';
+import { getBuildNumber, getCommitHash } from '~/shared/get-build-info';
 import { ENV } from '~/environments/environment.default';
 import Licenses from '~/core/data/licenses.json';
 

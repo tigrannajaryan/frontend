@@ -38,6 +38,11 @@ $grayscale: (
   500: #999999,
   800: black,
 );
+
+$fontWeights: (
+  semibold: 600
+);
+
 // color name can be generated via http://chir.ag/projects/name-that-color/#6195ED
 $colors: (
   white:  white,
@@ -54,6 +59,7 @@ $colors: (
   violet: #D5B1FE,
   azureRadiance: #007AFF,
   darkSkyBlue: #358ED7,
+  warmGrey:   #999999,
 );
 
 

@@ -41,7 +41,8 @@ import { WorktimeApi } from '~/core/api/worktime.api';
 import { InvitationsApi } from '~/core/api/invitations.api';
 import { ClientDetailsApi } from '~/core/api/client-details.api';
 
-import { PushNotification } from '~/shared/push-notification';
+import { PushNotification } from '~/shared/push/push-notification';
+import { PushPrimingScreenComponent } from './shared/components/push-priming-screen/push-priming-screen.component';
 
 import { CoreModule } from '~/core/core.module';
 import { GoogleMapsConfig } from '~/core/google-maps-config';
@@ -50,6 +51,7 @@ import { ChangePercentComponent } from '~/core/popups/change-percent/change-perc
 import { ConfirmCheckoutComponent } from '~/core/popups/confirm-checkout/confirm-checkout.component';
 import { profileReducer, profileStatePath } from '~/core/components/user-header/profile.reducer';
 import { ProfileEffects } from '~/core/components/user-header/profile.effects';
+import { StylistAppStorage } from './core/stylist-app-storage';
 
 import { AboutComponent } from '~/about/about.component';
 import { AllClientsComponent } from '~/clients/all-clients/all-clients.component';
@@ -81,7 +83,7 @@ import { UiKitPreviewComponent } from '~/ui-kit-preview/ui-kit-preview.component
 import { servicesReducer } from '~/appointment/appointment-services/services.reducer';
 import { ServicesEffects } from '~/appointment/appointment-services/services.effects';
 import { WorkHoursComponent } from '~/workhours/workhours.component';
-import { StylistAppStorage } from './core/stylist-app-storage';
+import { NotificationsApi } from './shared/push/notifications.api';
 
 initSentry();
 
@@ -147,6 +149,7 @@ const declarations = [
   MyClientsComponent,
   ClientDetailsComponent,
   RegisterSalonComponent,
+  PushPrimingScreenComponent,
   ServicesComponent,
   ServicesCategoriesComponent,
   ServiceItemComponent,
@@ -227,6 +230,7 @@ const declarations = [
     WorktimeApi,
     InvitationsApi,
     ClientDetailsApi,
+    NotificationsApi,
 
     ExternalAppService,
 

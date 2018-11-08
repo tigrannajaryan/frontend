@@ -1,22 +1,22 @@
 import { Component, ViewChild } from '@angular/core';
-import { Nav, Platform } from 'ionic-angular';
+import { App, Nav, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { ScreenOrientation } from '@ionic-native/screen-orientation';
 
 import { async_all } from '~/shared/async-helpers';
 import { Logger } from '~/shared/logger';
-import { getBuildNumber, getCommitHash } from '~/shared/get-build-number';
+import { getBuildNumber, getCommitHash } from '~/shared/get-build-info';
 import { GAWrapper } from '~/shared/google-analytics';
 import { StylistProfileStatus } from '~/shared/api/stylist-app.models';
-import { PushNotification } from '~/shared/push-notification';
+import { PushNotification } from '~/shared/push/push-notification';
 
 import { PageNames } from '~/core/page-names';
 import { createNavHistoryList } from '~/core/functions';
 import { ServerStatusTracker } from '~/shared/server-status-tracker';
 import { ENV } from '~/environments/environment.default';
 import { AuthService } from './shared/api/auth.api';
-import { getToken } from './shared/storage/token-utils';
+import { getAuthLocalData } from './shared/storage/token-utils';
 import { AuthResponse } from './shared/api/auth.models';
 import { StylistAppStorage } from './core/stylist-app-storage';
 
@@ -27,13 +27,14 @@ export class MyAppComponent {
   @ViewChild(Nav) nav: Nav;
 
   constructor(
+    private app: App,
     public platform: Platform,
     public statusBar: StatusBar,
     public splashScreen: SplashScreen,
     private authApiService: AuthService,
     private logger: Logger,
     private ga: GAWrapper,
-    public pushNotification: PushNotification,
+    private pushNotification: PushNotification,
     private serverStatusTracker: ServerStatusTracker,
     private storage: StylistAppStorage,
     private screenOrientation: ScreenOrientation
@@ -60,6 +61,8 @@ export class MyAppComponent {
       this.ga.init(ENV.gaTrackingId),
       this.storage.init()
     ]);
+
+    await this.pushNotification.init(this.app.getRootNav(), PageNames.PushPrimingScreen, this.storage);
 
     // Lock screen orientation to portrait if this is real device
     if (!(this.platform.is('core') || this.platform.is('mobileweb'))) {
@@ -88,7 +91,7 @@ export class MyAppComponent {
   }
 
   async showInitialPage(): Promise<void> {
-    const token = await getToken(); // no expiration
+    const token = await getAuthLocalData(); // no expiration
     if (token) {
       this.logger.info('App: We have a stored authentication information. Attempting to restore.');
 
@@ -98,7 +101,7 @@ export class MyAppComponent {
       try {
         authResponse = (await this.authApiService.refreshAuth(token.token).get()).response;
       } catch (e) {
-        this.logger.error('App: Error when trying to refresh auth.');
+        this.logger.error('App: Error when trying to refresh auth.', e);
       }
       // Find out what page should be shown to the user and navigate to
       // it while also properly populating the navigation history
@@ -108,10 +111,6 @@ export class MyAppComponent {
 
         const requiredPages = createNavHistoryList(authResponse.profile_status as StylistProfileStatus);
         this.nav.setPages(requiredPages);
-        if (ENV.ffEnablePushNotifications) {
-          // We are now in the app, init the push notifications
-          this.pushNotification.init();
-        }
         return;
       }
     }

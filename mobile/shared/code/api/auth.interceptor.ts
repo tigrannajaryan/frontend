@@ -1,8 +1,7 @@
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { getToken } from '~/shared/storage/token-utils';
-import { AuthTokenModel } from '~/shared/api/auth.models';
+import { AuthLocalData, getAuthLocalData } from '~/shared/storage/token-utils';
 
 /**
  * AuthInterceptor gets the token from getToken() (token utils)
@@ -14,8 +13,8 @@ export class AuthInterceptor implements HttpInterceptor {
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     // Get the auth token from the service.
     return Observable
-      .from(getToken())
-      .switchMap((tokenModel: AuthTokenModel) => {
+      .from(getAuthLocalData())
+      .switchMap((tokenModel: AuthLocalData) => {
         // modify request headers
         const authReq = tokenModel ?
           req.clone({headers: req.headers.set('Authorization', `Token ${tokenModel.token}`)}) : req;

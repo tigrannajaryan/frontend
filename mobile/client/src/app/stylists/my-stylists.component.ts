@@ -8,7 +8,7 @@ import {
 } from '~/shared/api/stylists.models';
 import { componentUnloaded } from '~/shared/component-unloaded';
 
-import { EventTypes } from '~/core/event-types';
+import { ClientEventTypes } from '~/core/client-event-types';
 import { PageNames } from '~/core/page-names';
 import { PreferredStylistsData } from '~/core/api/preferred-stylists.data';
 import { ApiResponse } from '~/shared/api/base.models';
@@ -78,11 +78,11 @@ export class MyStylistsComponent {
 
   ionViewWillEnter(): void {
     // Subscribe to be able to activate tab from outside the component:
-    this.events.subscribe(EventTypes.selectStylistTab, (tabIndex: Tabs) => this.onTabChange(tabIndex));
+    this.events.subscribe(ClientEventTypes.selectStylistTab, (tabIndex: Tabs) => this.onTabChange(tabIndex));
   }
 
   ionViewWillLeave(): void {
-    this.events.unsubscribe(EventTypes.selectStylistTab);
+    this.events.unsubscribe(ClientEventTypes.selectStylistTab);
   }
 
   onTabChange(tabIndex: Tabs): void {

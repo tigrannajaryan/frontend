@@ -1,10 +1,28 @@
 import { Storage } from '@ionic/storage';
 import { AppModule } from '~/app.module';
-import { Logger } from '~/shared/logger';
-import { AuthTokenModel } from '~/shared/api/auth.models';
+import { AuthResponse } from '../api/auth.models';
 
 const TOKEN_KEY = 'token';
-const logger = new Logger();
+
+/**
+ * Locally stored data about current authenticated user.
+ */
+export interface AuthLocalData {
+  token: string;
+  user_uuid: string;
+  created_at?: number; // timestamp
+}
+
+/**
+ * Convert auth response received from API to a locally storable format.
+ */
+export function authResponseToTokenModel(response: AuthResponse): AuthLocalData {
+  return {
+    created_at: response.created_at,
+    token: response.token,
+    user_uuid: response.user_uuid
+  };
+}
 
 async function getStorage(): Promise<Storage> {
   const storage = AppModule.injector.get(Storage);
@@ -12,21 +30,28 @@ async function getStorage(): Promise<Storage> {
   return storage;
 }
 
-export async function saveToken(tokenData: AuthTokenModel): Promise<void> {
+/**
+ * Save authentication information in a persistent storage
+ */
+export async function saveAuthLocalData(authLocalData: AuthLocalData): Promise<void> {
   const storage = await getStorage();
-  logger.warn('SAVE TOKEN', tokenData);
-  return storage.set(TOKEN_KEY, JSON.stringify(tokenData));
+  return storage.set(TOKEN_KEY, JSON.stringify(authLocalData));
 }
 
-export async function getToken(): Promise<AuthTokenModel> {
+/**
+ * Get previously saved authentication information from persistent storage
+ */
+export async function getAuthLocalData(): Promise<AuthLocalData> {
   const storage = await getStorage();
   const token = await storage.get(TOKEN_KEY);
-  const tokenData = JSON.parse(token);
-  return tokenData;
+  const authLocalData = JSON.parse(token);
+  return authLocalData;
 }
 
-export async function deleteToken(): Promise<void> {
+/**
+ * Delete previously saved authentication information from persistent storage
+ */
+export async function deleteAuthLocalData(): Promise<void> {
   const storage = await getStorage();
-  logger.warn('REMOVE TOKEN');
   return storage.remove(TOKEN_KEY);
 }

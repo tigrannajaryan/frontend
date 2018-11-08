@@ -5,7 +5,7 @@ import { LaunchNavigator } from '@ionic-native/launch-navigator';
 import { StylistModel } from '~/shared/api/stylists.models';
 import { ExternalAppService } from '~/shared/utils/external-app-service';
 
-import { EventTypes } from '~/core/event-types';
+import { ClientEventTypes } from '~/core/client-event-types';
 import { PageNames } from '~/core/page-names';
 
 @Component({
@@ -91,6 +91,6 @@ export class StylistCardComponent implements OnInit {
   }
 
   onStartBooking(): void {
-    this.events.publish(EventTypes.startBooking, this.stylist.uuid);
+    this.events.publish(ClientEventTypes.startBooking, this.stylist.uuid);
   }
 }

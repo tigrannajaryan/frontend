@@ -14,6 +14,7 @@ import { PreferredStylistsData } from '~/core/api/preferred-stylists.data';
 import { ProfileApi } from '~/core/api/profile-api';
 import { ProfileDataStore } from '~/profile/profile.data';
 import { FollowersApi } from '~/core/api/followers.api';
+import { NotificationsApi } from '~/shared/push/notifications.api';
 
 /**
  * Common data module that includes singletons for the entire app.
@@ -33,7 +34,8 @@ import { FollowersApi } from '~/core/api/followers.api';
     ProfileApi,
     StylistsService,
     FollowersApi,
-    ServicesService
+    ServicesService,
+    NotificationsApi
   ]
 })
 export class DataModule {

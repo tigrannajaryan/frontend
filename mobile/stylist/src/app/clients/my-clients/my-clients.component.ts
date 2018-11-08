@@ -9,7 +9,7 @@ import { ClientModel, GetMyClientsResponse } from '~/core/api/clients-api.models
 import { MyClientsDataStore } from '~/clients/my-clients/my-clients.data';
 
 import { PageNames } from '~/core/page-names';
-import { EventTypes } from '~/core/event-types';
+import { StylistEventTypes } from '~/core/stylist-event-types';
 import { TabIndex } from '~/tabs/tabs.component';
 
 @Component({
@@ -40,7 +40,7 @@ export class MyClientsComponent {
 
   onInviteClick(): void {
     this.navCtrl.popToRoot();
-    this.events.publish(EventTypes.selectMainTab, TabIndex.Invite);
+    this.events.publish(StylistEventTypes.selectMainTab, TabIndex.Invite);
   }
 
   onClientClick(client: ClientModel): void {

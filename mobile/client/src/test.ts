@@ -58,6 +58,7 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { LaunchNavigator } from '@ionic-native/launch-navigator';
 import { StatusBar } from '@ionic-native/status-bar';
 import { Storage } from '@ionic/storage';
+import { Push } from '@ionic-native/push';
 
 import {
   AlertControllerMock,
@@ -74,7 +75,7 @@ import {
 import { ExternalAppService } from '~/shared/utils/external-app-service';
 import { GeolocationService } from '~/shared/utils/geolocation.service';
 import { GeolocationServiceMock } from '~/shared/utils/geolocation.service.mock';
-
+import { PushNotification } from '~/shared/push/push-notification';
 import { SharedSingletonsModule } from '~/shared/shared-singletons.module';
 import { CoreModule } from '~/core/core.module';
 
@@ -160,6 +161,7 @@ export class TestUtils {
         App, Form, Keyboard, DomController, Logger, MenuController, NavController,
         NavParams, GestureController, AlertControllerMock, LoadingControllerMock,
         Clipboard, EmailComposer, ProfileApiMock, ActionSheetController, BaseService,
+        PushNotification, Push,
         Camera,
         { provide: AlertController, useFactory: () => AlertControllerMock.instance() },
         { provide: ModalController, useFactory: () => ModalControllerMock.instance() },

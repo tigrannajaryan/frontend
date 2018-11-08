@@ -4,7 +4,7 @@ import { Page } from 'ionic-angular/navigation/nav-util';
 
 import { GAWrapper } from '~/shared/google-analytics';
 import { PageNames } from '~/core/page-names';
-import { EventTypes } from '~/core/event-types';
+import { StylistEventTypes } from '~/core/stylist-event-types';
 
 interface TabsObject {
   name: string;
@@ -65,13 +65,13 @@ export class TabsComponent {
   }
 
   ionViewWillEnter(): void {
-    this.events.subscribe(EventTypes.selectMainTab, (idx: TabIndex, callback?: (tab: Tab) => void) => {
+    this.events.subscribe(StylistEventTypes.selectMainTab, (idx: TabIndex, callback?: (tab: Tab) => void) => {
       this.onTabSelectedFromOutside(idx, callback);
     });
   }
 
   ionViewWillLeave(): void {
-    this.events.unsubscribe(EventTypes.selectMainTab);
+    this.events.unsubscribe(StylistEventTypes.selectMainTab);
   }
 
   onTabSelectedFromOutside(idx: TabIndex, callback?: (tab: Tab) => void): void {

@@ -1,0 +1,30 @@
+<ion-header class="madeHeader">
+  <ion-navbar class="Made-wp BackHeader-backBtn is-hiddenBackButton">
+    <ion-title>
+      <i class="mb-icon-logo"></i>
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-title class="SharedH1">Allow notifications</ion-title>
+
+  <div class="PushPrimingText">
+    For the best experience, we  would like to send you notifications about new deals and other helpful reminders.
+  </div>
+  <div class="PushPrimingText">
+    Don't worry, you can update your notifications at any time.
+  </div>
+
+  <ion-row justify-content-center>
+    <img class="PushPrimingImg" src="assets/icons/notifications@3x.png" />
+  </ion-row>
+
+  <ion-footer class="Footer">
+    <button ion-button (click)="onAllowClick()" class="Button" data-test-id="allowBtn">Allow Notifications</button>
+
+    <ion-row justify-content-center>
+      <span (click)="onNotNowClick()" class="Link" data-test-id="notNowBtn">Not Now</span>
+    </ion-row>
+  </ion-footer>
+</ion-content>

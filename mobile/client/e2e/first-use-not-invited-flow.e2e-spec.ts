@@ -7,6 +7,7 @@ import { howPricingWorksPage } from './pages/how-pricing-works-page';
 import { stylistsSearchPage } from './pages/stylists-search-page';
 import { phoneLoginPage } from './shared-e2e/phone-login-page';
 import { phoneCodePage } from './shared-e2e/phone-code-page';
+import { pushPrimingPage } from './shared-e2e/push-priming-page';
 import { clientApp } from './client-app';
 
 describe('First use flow for not invited clients', () => {
@@ -50,6 +51,7 @@ describe('First use flow for not invited clients', () => {
   it('Can navigate through info screens', async () => {
     await howMadeWorksPage.continue();
     await howPricingWorksPage.continue();
+    await pushPrimingPage.allow();
   });
 
   it('Can see stylists search page', async () => {
