@@ -66,7 +66,8 @@ export class ConfirmCodeSuccessAction implements Action {
     public phone: string,
     public token: AuthTokenModel,
     public invitedBy: StylistModel | undefined,
-    public profileStatus: UserProfileStatus | undefined,
+    // tslint:disable-next-line
+    public profile_status: UserProfileStatus | undefined,
     public profile: StylistProfile | undefined
   ) {}
 }
