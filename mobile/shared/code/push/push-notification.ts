@@ -364,12 +364,12 @@ export class PushNotification {
    * Push notification handler. Called when we have a new message pushed to us.
    */
   private onNotification(notification: NotificationEventResponse): void {
-    const { message, additionalData } = notification;
-    const { code, coldstart, foreground } = additionalData;
+    const { additionalData, message } = notification;
+    const { code, coldstart, foreground, uuid } = additionalData;
     this.logger.info(`Push notification received in ${foreground ? 'foreground' : 'background'}:`, message);
     this.events.publish(
       SharedEventTypes.pushNotification,
-      new PushNotificationEventDetails(foreground, coldstart, code, message)
+      new PushNotificationEventDetails(foreground, coldstart, uuid, code, message)
     );
   }
 

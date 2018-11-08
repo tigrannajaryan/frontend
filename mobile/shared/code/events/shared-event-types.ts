@@ -34,6 +34,8 @@ export class PushNotificationEventDetails {
     public foreground: boolean,
     // Coldstart is true when the application is started by clicking on the push notification:
     public coldstart: boolean,
+    // Notification uuid from the backend (used in notification acknowledged API call):
+    public uuid: string,
     // Unique notification code we use in the backend:
     public code: PushNotificationCode,
     // A message from NotificationEventResponse:
