@@ -7,4 +7,8 @@
   </div>
 </div>
 
-<discounts-list [list]="discounts" [header]="{ left: 'Revisit within', right: 'Discount'}" (discountChange)="onDiscountChange()"></discounts-list>
+<discounts-list
+  [list]="discounts"
+  [header]="{ left: 'Revisit within', right: 'Discount'}"
+  [errorMsg]="'We recommend you to set this discount lower than previous week discount.'"
+  (discountChange)="onDiscountChange()"></discounts-list>
