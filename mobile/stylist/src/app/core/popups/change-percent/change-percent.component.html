@@ -1,9 +1,9 @@
 <div (click)="dismiss()" class="changePercent-close"></div>
-<div [class.is-warning]="data?.prevDiscountPercent && data?.warning && percentage > data.prevDiscountPercent" class="changePercent">
+<div [class.is-errorMsg]="data?.errorMsg && percentage > data?.prevDiscountPercent" class="changePercent">
   <div class="Made-wp">
     <div *ngIf="data" class="changePercent-scroll">
-      <div [style.opacity]="+(data?.prevDiscountPercent && data?.warning && percentage > data.prevDiscountPercent)" class="changePercent-warning">
-        {{ data.warning }}
+      <div *ngIf="data.errorMsg" [style.opacity]="+(percentage > data?.prevDiscountPercent)" class="changePercent-errorMsg">
+        {{ data.errorMsg }}
       </div>
 
       <ion-grid class="changePercent-info" no-padding>

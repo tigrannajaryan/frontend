@@ -10,5 +10,5 @@
 <discounts-list
   [list]="discounts"
   [header]="{ left: 'Revisit within', right: 'Discount'}"
-  [warning]="'We recommend you to set this discount lower than previous week discount.'"
+  [errorMsg]="'We recommend you to set this discount lower than previous week discount.'"
   (discountChange)="onDiscountChange()"></discounts-list>

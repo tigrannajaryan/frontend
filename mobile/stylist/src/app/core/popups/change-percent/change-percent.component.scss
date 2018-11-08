@@ -10,14 +10,14 @@ change-percent {
     box-shadow: 0 0 pxtovw(40px) #E4E4E4;
     transition: all 100ms linear;
 
-    &.is-warning {
+    &.is-errorMsg {
       top: calc(100% - 280px);
       height: pxtovw(280px);
       padding: pxtovw(50px) 0 0;
     }
   }
 
-  .changePercent-warning {
+  .changePercent-errorMsg {
     position: absolute;
     top: -43px;
     font-size: pxtovw(15px);
