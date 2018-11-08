@@ -39,9 +39,9 @@ export class PushNotificationToastService implements OnDestroy {
     closeButtonText: 'Close'
   };
 
-  // Actually we use ngrx/redux-like reducers to retrieve additional params for the toast.
+  // We use it to retrieve additional params for the toast.
   // See handlePushNotificationEvent method below.
-  protected handlerParamsReducers = [];
+  protected handlerParamsSubscriptions = [];
 
   constructor(
     private events: Events,
@@ -56,20 +56,17 @@ export class PushNotificationToastService implements OnDestroy {
   }
 
   /**
-   * We just append our subscription (reducer) to the reducers array we have.
+   * We just append our subscription to the array we have.
    * NOTE: use binded functions () => …
    */
   subscribe(subscription: PushNotificationHandlerSubscription): void {
-    this.handlerParamsReducers.push(subscription);
+    this.handlerParamsSubscriptions.push(subscription);
   }
 
-  /**
-   * Removing from reducers.
-   */
   unsubscribe(subscription: PushNotificationHandlerSubscription): void {
-    const idx = this.handlerParamsReducers.indexOf(subscription);
+    const idx = this.handlerParamsSubscriptions.indexOf(subscription);
     if (idx !== -1) {
-      this.handlerParamsReducers.splice(idx, 1);
+      this.handlerParamsSubscriptions.splice(idx, 1);
     }
   }
 
@@ -83,13 +80,10 @@ export class PushNotificationToastService implements OnDestroy {
      * 2. We combine resulting PushNotificationHandlerParams returned from subscription call using Object.assign (spread operator).
      * 3. As a result we have an additional params provided by some of the subscriptions.
      *
-     * This is a known reducer technique introduced by functional programming and used in ngrx/redux.
-     * See https://gist.github.com/btroncone/a6e4347326749f938510#whats-a-reducer for more.
-     *
-     * NOTE: reducers are called one by one in the order of subscribing.
+     * NOTE: subscriptions are called one by one in the order of subscribing.
      */
     const handlerParams: PushNotificationHandlerParams =
-      this.handlerParamsReducers.reduce(
+      this.handlerParamsSubscriptions.reduce(
         (params: PushNotificationHandlerParams, subscription: PushNotificationHandlerSubscription) => {
           const newParams = subscription(details) || {};
           return { ...params, ...newParams };
