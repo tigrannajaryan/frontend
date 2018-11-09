@@ -23,6 +23,7 @@ export class StylistCardComponent implements OnInit {
 
   @Output() selectStylist = new EventEmitter<StylistModel>();
   @Output() removeStylist = new EventEmitter<StylistModel>();
+  @Output() showCalendar = new EventEmitter<StylistModel>();
 
   constructor(
     private events: Events,
@@ -66,6 +67,10 @@ export class StylistCardComponent implements OnInit {
 
   onWebsiteClick(): void {
     this.externalAppService.openWebPage(this.stylist.website_url);
+  }
+
+  onShowCalendar(): void {
+    this.showCalendar.emit(this.stylist);
   }
 
   onSelectStylist(): void {
