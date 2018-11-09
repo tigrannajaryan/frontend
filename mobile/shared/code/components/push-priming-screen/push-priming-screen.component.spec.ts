@@ -9,8 +9,7 @@ let fixture: ComponentFixture<PushPrimingScreenComponent>;
 let instance: PushPrimingScreenComponent;
 
 // These tests are disabled because they cause other tests to fail.
-// TODO: understand what's going on and fit it.
-xdescribe('PushPrimingScreenComponent', () => {
+describe('PushPrimingScreenComponent', () => {
   beforeEach(
     async(() =>
       TestUtils.beforeEachCompiler([PushPrimingScreenComponent])

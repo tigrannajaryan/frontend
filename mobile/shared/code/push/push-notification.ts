@@ -65,7 +65,9 @@ export enum PermissionScreenResult {
 
   permissionGranted,    // push permission granted and device is now registered for push.
   permissionNotGranted, // push permission not granted, we cannot receive notifications.
-  userWantsToGoBack     // back button was clicked (only possible if asRoot=false)
+  userWantsToGoBack,    // back button was clicked (only possible if asRoot=false)
+
+  notAvailable          // means platform is not supported
 }
 
 // Define minimum interval between bothering the user by priming screen
@@ -124,6 +126,19 @@ export interface PersistentStorage {
  */
 @Injectable()
 export class PushNotification {
+
+  static pushOptions: PushOptions = {
+    android: {
+      senderID: ENV.FCM_PUSH_SENDER_ID
+    },
+    ios: {
+      alert: true,
+      badge: true,
+      sound: true
+    },
+    windows: {}
+  };
+
   private navCtrl: NavController;
   private primingScreenPage: Page;
 
@@ -242,10 +257,7 @@ export class PushNotification {
 
     this.logger.info('Push: showing permission priming screen');
 
-    if (this.platform.is(PlatforNames.android)) {
-      // Permission screen is not needed on android
-      return Promise.resolve(PermissionScreenResult.notNeeded);
-    } else {
+    if (this.platform.is(PlatforNames.ios)) {
       // On iOS we use priming screen first to reduce rejection rate
 
       return new Promise(async (resolve, reject) => {
@@ -273,6 +285,15 @@ export class PushNotification {
         this.persistentData.lastPrimingScreenShown = new Date();
         this.savePersistentData();
       });
+
+    } else if (this.platform.is(PlatforNames.android)) {
+      // Permission screen is not needed on android
+      return Promise.resolve(PermissionScreenResult.notNeeded);
+
+    } else {
+      // No priming screen supported for the platform
+      this.logger.info('Push: priming screen not supported');
+      return Promise.resolve(PermissionScreenResult.notAvailable);
     }
   }
 
@@ -287,6 +308,20 @@ export class PushNotification {
       // We have both device id and user id, associate them now.
       this.associateUserWithDevice();
     }
+  }
+
+  /**
+   * Safe way to check if registered.
+   */
+  registered(): boolean {
+    return this.isRegistered;
+  }
+
+  /**
+   * Safe way to check when priming screen was last shown.
+   */
+  primingScreenLastSeen(): Date | undefined {
+    return this.persistentData.lastPrimingScreenShown;
   }
 
   /**
@@ -329,18 +364,7 @@ export class PushNotification {
     await this.savePersistentData();
 
     // Initialize Push plugin
-    const options: PushOptions = {
-      android: {
-        senderID: ENV.FCM_PUSH_SENDER_ID
-      },
-      ios: {
-        alert: true,
-        badge: true,
-        sound: true
-      },
-      windows: {}
-    };
-    const pushObject: PushObject = this.push.init(options);
+    const pushObject: PushObject = this.push.init(PushNotification.pushOptions);
 
     this.logger.info('Push: options set');
 

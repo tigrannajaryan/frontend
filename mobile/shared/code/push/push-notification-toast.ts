@@ -75,23 +75,9 @@ export class PushNotificationToastService implements OnDestroy {
   /**
    * This method shows a special push notification toast with some additional side effects provided by PushNotificationHandlerSubscription.
    */
-  protected handlePushNotificationEvent(details: PushNotificationEventDetails): void {
-    /**
-     * This is the place where all the magic happens.
-     * 1. We run subscriptions one by one providing PushNotificationEventDetails inside.
-     * 2. We combine resulting PushNotificationHandlerParams returned from subscription call using Object.assign (spread operator).
-     * 3. As a result we have an additional params provided by some of the subscriptions.
-     *
-     * NOTE: subscriptions are called one by one in the order of subscribing.
-     */
-    const handlerParams: PushNotificationHandlerParams =
-      this.handlerParamsSubscriptions.reduce(
-        (params: PushNotificationHandlerParams, subscription: PushNotificationHandlerSubscription) => {
-          const newParams = subscription(details) || {};
-          return { ...params, ...newParams };
-        },
-        {}
-      );
+  private handlePushNotificationEvent(details: PushNotificationEventDetails): void {
+    // Get additional notification-specific params:
+    const handlerParams: PushNotificationHandlerParams = this.getParamsFromNotificationDetails(details);
 
     if (details.foreground) {
       // Show a toast if the app is open allready:
@@ -116,5 +102,23 @@ export class PushNotificationToastService implements OnDestroy {
 
     // Tell the backend that user has seen the notification:
     this.api.ackNotification({ message_uuids: [details.uuid] }).toPromise();
+  }
+
+  /**
+   * Get additional params from PushNotificationEventDetails.
+   * 1. We run subscriptions one by one providing PushNotificationEventDetails inside.
+   * 2. We combine resulting PushNotificationHandlerParams returned from subscription call using Object.assign (spread operator).
+   * 3. As a result we have an additional params provided by some of the subscriptions.
+   *
+   * NOTE: subscriptions are called one by one in the order of subscribing.
+   */
+  private getParamsFromNotificationDetails(details: PushNotificationEventDetails): PushNotificationHandlerParams {
+    return this.handlerParamsSubscriptions.reduce(
+      (params: PushNotificationHandlerParams, subscription: PushNotificationHandlerSubscription) => {
+        const newParams = subscription(details) || {};
+        return { ...params, ...newParams };
+      },
+      {}
+    );
   }
 }

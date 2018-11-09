@@ -2,7 +2,6 @@ import { TestBed } from '@angular/core/testing';
 import { Events, Platform, NavController } from 'ionic-angular';
 import { PlatformMock, NavControllerMock } from 'ionic-mocks';
 import { Push, RegistrationEventResponse } from '@ionic-native/push';
-import { Page } from 'ionic-angular/navigation/nav-util';
 import * as faker from 'faker';
 
 import { Logger } from '~/shared/logger';
@@ -18,9 +17,18 @@ let instance: PushNotification;
 function FakePrimingScreen() {
 }
 
+class PushMock {
+  static pushObjectMock = jasmine.createSpyObj('push', {
+    on: jasmine.createSpyObj('on', {
+      subscribe: jasmine.createSpy('subscribe')
+    })
+  });
+  hasPermission = jasmine.createSpy('hasPermission').and.returnValue(Promise.resolve(true));
+  init = jasmine.createSpy('init').and.returnValue(PushMock.pushObjectMock);
+}
+
 // These tests are disabled because they cause other tests to fail.
-// TODO: understand what's going on and fit it.
-xdescribe('PushNotification', () => {
+describe('PushNotification', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       // provide the component-under-test and dependent service
@@ -30,7 +38,7 @@ xdescribe('PushNotification', () => {
         { provide: NavController, useFactory: () => NavControllerMock.instance() },
         { provide: NotificationsApi, useClass: NotificationsApiMock },
         { provide: Platform, useFactory: () => PlatformMock.instance() },
-        Push,
+        { provide: Push, useClass: PushMock },
         PushNotification
       ]
     });
@@ -42,7 +50,7 @@ xdescribe('PushNotification', () => {
     expect(instance).toBeTruthy();
   });
 
-  it('should register/unregister correctly', async () => {
+  it('should register/unregister correctly', () => {
     const api = TestBed.get(NotificationsApi);
     spyOn(api, 'registerDevice');
     spyOn(api, 'unregisterDevice');
@@ -78,12 +86,50 @@ xdescribe('PushNotification', () => {
     expect(api.unregisterDevice).toHaveBeenCalledWith(regRequest);
   });
 
-  it('should init correctly', async () => {
+  it('should init correctly', async done => {
     const navCtrl = TestBed.get(NavController);
+    const push = TestBed.get(Push);
     const storage = new AppStorageMock({});
     const fakePage = new FakePrimingScreen();
+
     await instance.init(navCtrl, fakePage, storage);
 
-    // TODO: verify initialization
+    expect(push.hasPermission)
+      .toHaveBeenCalled();
+    expect(push.init)
+      .toHaveBeenCalledWith(PushNotification.pushOptions);
+
+    expect(PushMock.pushObjectMock.on)
+      .toHaveBeenCalledWith('registration');
+    expect(PushMock.pushObjectMock.on)
+      .toHaveBeenCalledWith('notification');
+    expect(PushMock.pushObjectMock.on)
+      .toHaveBeenCalledWith('error');
+
+    expect(instance.registered())
+      .toBe(true);
+
+    done();
+  });
+
+  it('should show priming screen', async done => {
+    const navCtrl = TestBed.get(NavController);
+    const push = TestBed.get(Push);
+    const storage = new AppStorageMock({});
+    const fakePage = new FakePrimingScreen();
+
+    push.hasPermission = jasmine.createSpy('hasPermission').and.returnValue(Promise.resolve(false));
+
+    await instance.init(navCtrl, fakePage, storage);
+    instance.showPermissionScreen(true); // await will not resolve, using setTimeout
+
+    setTimeout(() => {
+      expect(navCtrl.setRoot)
+        .toHaveBeenCalled();
+      expect(instance.primingScreenLastSeen())
+        .toBeTruthy();
+
+      done();
+    });
   });
 });
