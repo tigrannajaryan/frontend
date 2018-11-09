@@ -7,6 +7,7 @@ import { BaseService } from '~/shared/api/base.service';
 import { ServerStatusTracker } from '~/shared/server-status-tracker';
 import { UserRole } from '~/shared/api/auth.models';
 import { ApiResponse } from '~/shared/api/base.models';
+import { ApiRequestOptions } from '~/shared/api-errors';
 
 export type PushDeviceType = 'apns' | 'fcm';
 
@@ -21,6 +22,10 @@ export interface AckNotificationRequest {
   message_uuids: string[];
 }
 
+// Hide errors returned by APIs. There is no point in showing them to the user since the
+// user cannot do anything about them.
+const options: ApiRequestOptions = { hideGenericAlertOnFieldAndNonFieldErrors: true };
+
 @Injectable()
 export class NotificationsApi extends BaseService {
 
@@ -33,14 +38,14 @@ export class NotificationsApi extends BaseService {
   }
 
   registerDevice(request: RegUnregDeviceRequest): Observable<ApiResponse<void>> {
-    return this.post<void>('common/register-device', request);
+    return this.post<void>('common/register-device', request, undefined, options);
   }
 
   unregisterDevice(request: RegUnregDeviceRequest): Observable<ApiResponse<void>> {
-    return this.post<void>('common/unregister-device', request);
+    return this.post<void>('common/unregister-device', request, undefined, options);
   }
 
   ackNotification(request: AckNotificationRequest): Observable<ApiResponse<void>> {
-    return this.post<void>('common/ack-push', request);
+    return this.post<void>('common/ack-push', request, undefined, options);
   }
 }
