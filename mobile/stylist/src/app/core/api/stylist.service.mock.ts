@@ -29,6 +29,7 @@ export const profileSummaryMock = {
     first_name: faker.name.firstName(),
     last_name: faker.name.lastName(),
     phone: faker.phone.phoneNumber(),
+    public_phone: faker.phone.phoneNumber(),
     salon_address: faker.fake('{{address.city}} {{address.streetAddress}}'),
     salon_name: faker.company.companyName(),
     instagram_url: faker.internet.url(),

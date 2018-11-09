@@ -5,6 +5,7 @@ export interface StylistProfile {
   first_name: string;
   last_name: string;
   phone: string;
+  public_phone: string;
   salon_name: string;
   salon_address: string;
   instagram_url: string;
