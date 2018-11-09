@@ -75,12 +75,26 @@
       <ion-row>
         <ion-col>
           <ion-item class="Input">
-            <ion-label floating>Phone number</ion-label>
+            <ion-label floating>Account phone</ion-label>
             <ion-input readonly formControlName="phone" type="tel"></ion-input>
             <div [class.is-active]="form.get('phone').dirty && form.get('phone').errors" class="InputError" item-end>
               <span *ngIf="form.get('phone').errors?.minlength">Minimal length {{ form.get('phone').errors?.minlength?.requiredLength }} digits</span>
               <span *ngIf="form.get('phone').errors?.maxlength">Maximal length {{ form.get('phone').errors?.maxlength?.requiredLength }} symbols</span>
               <span *ngIf="form.get('phone').errors?.required">This field is required</span>
+            </div>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col>
+          <ion-item class="Input">
+            <ion-label floating>Public profile phone</ion-label>
+            <ion-input formControlName="public_phone" type="tel"></ion-input>
+            <div [class.is-active]="form.get('public_phone').dirty && form.get('public_phone').errors" class="InputError" item-end>
+              <span *ngIf="form.get('public_phone').errors?.minlength">Minimal length {{ form.get('public_phone').errors?.minlength?.requiredLength }} digits</span>
+              <span *ngIf="form.get('public_phone').errors?.maxlength">Maximal length {{ form.get('public_phone').errors?.maxlength?.requiredLength }} symbols</span>
+              <span *ngIf="form.get('public_phone').errors?.required">This field is required</span>
             </div>
           </ion-item>
         </ion-col>

@@ -9,6 +9,10 @@ import { NumberFormat } from '~/shared/directives/phone-input.directive';
  *          depends of format param
  */
 export function getPhoneNumber(phone: string, format: NumberFormat = NumberFormat.National): string {
+  if (!phone) {
+    return;
+  }
+
   phone = formatNumber(phone, format);
 
   if (format === NumberFormat.International) {

@@ -45,6 +45,7 @@ describe('First use flow for invited clients', () => {
       first_name: faker.name.firstName(),
       last_name: faker.name.lastName(),
       phone: normalizePhoneNumber(await backdoorApi.getNewUnusedPhoneNumber()),
+      public_phone: normalizePhoneNumber(await backdoorApi.getNewUnusedPhoneNumber()),
       salon_name: faker.commerce.productName(),
       salon_address: faker.address.streetAddress(),
       instagram_url: faker.internet.url(),
