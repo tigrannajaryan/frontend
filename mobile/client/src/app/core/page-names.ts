@@ -22,6 +22,7 @@ import { PrivacySettingsComponent } from '~/privacy-settings/privacy-settings.co
 import { PushPrimingScreenComponent } from '~/shared/components/push-priming-screen/push-priming-screen.component';
 import { FollowersComponent } from '~/followers/followers.component';
 import { StylistComponent } from '~/stylists/stylist/stylist.component';
+import { FirstLastNameComponent } from '~/profile/first-last-name/first-last-name.component';
 
 /**
  * Define page names in one place to avoid typos if the names are used as
@@ -39,6 +40,7 @@ export const PageNames = {
   Auth: AuthPageComponent,
   AuthConfirm: AuthConfirmPageComponent,
   BookingComplete: BookingCompleteComponent,
+  FirstLastName: FirstLastNameComponent,
   FirstScreen: FirstScreenComponent,
   Followers: FollowersComponent,
   Home: HomePageComponent,

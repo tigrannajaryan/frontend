@@ -1,0 +1,11 @@
+first-last-name {
+  .FirstLastLame-title {
+    margin: pxtovw(33px) 0;
+    font-size: $t-h3;
+    font-weight: 700;
+
+    span {
+      color: color($colors, honey);
+    }
+  }
+}

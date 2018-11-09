@@ -27,10 +27,20 @@ export interface ConfirmCodeParams extends GetCodeParams {
   role: UserRole;
 }
 
-// tslint:disable-next-line:no-empty-interface
+export interface AuthTokenModel {
+  token: string;
+  created_at?: number; // timestamp
+  expires_in?: number;
+}
+
 export interface ClientProfileStatus {
-  // We currently do not send any client profile status in auth response.
-  // This will be added in the future.
+  has_name?: boolean;
+  has_zipcode?: boolean;
+  has_email?: boolean;
+  has_picture_set?: boolean;
+  has_preferred_stylist_set?: boolean;
+  has_booked_appointment?: boolean;
+  has_past_visit?: boolean;
 }
 
 export type UserProfileStatus = StylistProfileStatus | ClientProfileStatus;
