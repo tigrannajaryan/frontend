@@ -9,7 +9,7 @@ cd $TRAVIS_BUILD_DIR/mobile/$APP_TYPE
 # build application binary
 
 ./node_modules/ionic/bin/ionic cordova platform rm android
-./node_modules/ionic/bin/ionic cordova platform add android
+./node_modules/ionic/bin/ionic cordova platform add android@7.1.0
 
 ./node_modules/ionic/bin/ionic cordova build android --release --verbose --prod
 
