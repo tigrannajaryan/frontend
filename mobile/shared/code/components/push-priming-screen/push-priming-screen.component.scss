@@ -1,20 +1,16 @@
 push-priming-screen {
   .PushPrimingText {
-    margin: pxtovw(16px) pxtovw(24px) 0;
-    font-size: pxtovw(18px);
+    margin: pxtovw(8px) pxtovw(24px) 0;
+    font-size: pxtovw(21px);
+    font-weight: 500;
     line-height: pxtovw(24px);
-    color: color($colors, warmGrey);
     text-align: center;
   }
 
   .PushPrimingImg {
-    width: pxtovw(81px);
+    width: pxtovw(70px);
     height: pxtovw(88px);
-    margin-top: pxtovw(24px);
-  }
-
-  .SharedH1 {
-    margin-top: 0;
+    margin-top: pxtovw(120px);
   }
 
   .Button {
