@@ -47,6 +47,7 @@
         [isHearted]="!stylist.is_profile_bookable"
         (openCard)="onSetActiveStylist(stylist)"
         (closeCard)="onSetActiveStylist(undefined)"
+        (showCalendar)="onShowCalendar(stylist)"
         (selectStylist)="onContinueWithStylist(stylist)"></stylist-card>
 
       <div *ngIf="(stylists | async)?.length === 0">

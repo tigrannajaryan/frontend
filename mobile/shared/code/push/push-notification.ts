@@ -364,9 +364,16 @@ export class PushNotification {
    * Push notification handler. Called when we have a new message pushed to us.
    */
   private onNotification(notification: NotificationEventResponse): void {
+    let notificationStr;
+    try {
+      notificationStr = JSON.stringify(notification);
+    } catch {
+      // ignore errors
+    }
+    this.logger.info(`Push notification received ${notificationStr}`);
+
     const { additionalData, message } = notification;
     const { code, coldstart, foreground, uuid } = additionalData;
-    this.logger.info(`Push notification received in ${foreground ? 'foreground' : 'background'}:`, message);
     this.events.publish(
       SharedEventTypes.pushNotification,
       new PushNotificationEventDetails(foreground, coldstart, uuid, code, message)

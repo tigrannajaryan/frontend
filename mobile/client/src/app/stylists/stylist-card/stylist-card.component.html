@@ -31,8 +31,7 @@
     <div class="StylistCard-links">
       <i *ngIf="stylist.instagram_url" (click)="onInstagramClick()" class="mb-icon-instagram"></i>
       <i *ngIf="stylist.website_url" (click)="onWebsiteClick()" class="mb-icon-globe"></i>
-      <!-- Stylist’s calendar preview below. Uncomment when implementing calendar. -->
-      <!-- <i class="mb-icon-calendar"></i> -->
+      <i *ngIf="stylist.is_profile_bookable" class="mb-icon-calendar" (click)="onShowCalendar()"></i>
       <phone-link [phone]="stylist.phone" [iconForm]="true" icon="mb-icon-phone-a"></phone-link>
     </div>
 

@@ -24,6 +24,7 @@ import {
   NonBookableSavePopupComponent,
   NonBookableSavePopupParams
 } from '~/stylists/non-bookable-save-popup/non-bookable-save-popup.component';
+import { BookingData } from '~/core/api/booking.data';
 
 export interface StylistsPageParams {
   onboarding?: boolean;
@@ -57,6 +58,7 @@ export class StylistsPageComponent {
   isLocationInputFocused = false;
 
   constructor(
+    private bookingData: BookingData,
     private events: Events,
     private geolocationService: GeolocationService,
     private modalCtrl: ModalController,
@@ -96,6 +98,16 @@ export class StylistsPageComponent {
 
   onSetActiveStylist(stylist: StylistModel | undefined): void {
     this.activeStylist = stylist;
+  }
+
+  async onShowCalendar(stylist: StylistModel): Promise<void> {
+    this.bookingData.start(stylist);
+
+    // We want to show the price calendar of this stylist for the most popular service
+    const { response } = await this.bookingData.selectMostPopularService();
+    if (response) {
+      this.navCtrl.push(PageNames.SelectDate);
+    }
   }
 
   async onContinueWithStylist(stylist: StylistModel): Promise<void> {

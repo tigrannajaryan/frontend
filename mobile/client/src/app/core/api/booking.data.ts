@@ -9,6 +9,8 @@ import { StylistModel } from '~/shared/api/stylists.models';
 import { DataStore } from '~/shared/storage/data-store';
 import { BookingApi, TimeslotsResponse } from '~/core/api/booking.api';
 import { GetPricelistResponse } from '~/core/api/services.models';
+import { ApiResponse } from '~/shared/api/base.models';
+import { ServicesService } from './services.service';
 
 interface DayOfferWithTotalRegularPrice extends DayOffer {
   totalRegularPrice: number;
@@ -33,7 +35,10 @@ export class BookingData implements OnDestroy {
   private servicesSubject: BehaviorSubject<ServiceModel[]>;
   private servicesSubscription: Subscription;
 
-  constructor(private api: BookingApi) {
+  constructor(
+    private api: BookingApi,
+    private servicesApi: ServicesService
+  ) {
     if (BookingData.guardInitilization) {
       console.error('BookingData initialized twice. Only include it in providers array of DataModule.');
     }
@@ -96,8 +101,10 @@ export class BookingData implements OnDestroy {
 
   /**
    * Set the list of selected services for the new appointment. Called when the user chooses services.
+   * If services parameter is empty list then we will fetch the pricing for the most popular service.
+   * The most popular service uuid will be returned in the response in that case.
    */
-  setSelectedServices(services: ServiceModel[]): void {
+  setSelectedServices(services: ServiceModel[]): Promise<ApiResponse<GetPricelistResponse>> {
     // remember the list of services
     this._selectedServices = services;
     this.onServicesChange();
@@ -108,7 +115,7 @@ export class BookingData implements OnDestroy {
 
     // create an API-backed cached pricelist
     this._pricelist = new DataStore('booking_pricelist',
-      options => this.api.getPricelist(this._selectedServices, options),
+      options => this.api.getPricelist(this._selectedServices, this._stylist.uuid, options),
       { cacheTtlMilliseconds: 0 });  // 0 cache ttl for data that can be externally modified
 
     // Preload prices (don't show alerts on errors since this is just preloading)
@@ -119,7 +126,33 @@ export class BookingData implements OnDestroy {
     // is cached and thus we issue a second API call correctly which again
     // results in error and in alert). Setting hideGenericAlertOnFieldAndNonFieldErrors=true
     // prevents this double alerts on errors and is the best practice for preloading.
-    this._pricelist.get({ refresh: true, requestOptions: { hideGenericAlertOnFieldAndNonFieldErrors: true } });
+    return this._pricelist.get({ refresh: true, requestOptions: { hideGenericAlertOnFieldAndNonFieldErrors: true } });
+  }
+
+  /**
+   * Set the list of selected services to be the most popular service for this stylist.
+   */
+  async selectMostPopularService(): Promise<ApiResponse<GetPricelistResponse>> {
+    // When in the pricing request we do not specify services we expect the backend to
+    // find the most popular service and calculate the prices for it. In the API response
+    // we will also have the most popular service uuid.
+    const pricingApiResponse = await this.setSelectedServices([]);
+
+    if (pricingApiResponse.response) {
+      // The uuid of the service(s) that the backend returned is stored in
+      // pricingApiResponse.response.service_uuids array.
+      // Now we need to convert service uuids to full ServiceModel.
+      // We are making an extra request here, which is suboptimial. We could technically
+      // modify the getPricelist() to return full ServiceModel instead of just uuids but
+      // this is a rare case and we do not want to taylor the API to this rare case just to
+      // avoid one extra other API call.
+      this._selectedServices = await this.getServicesByUuids(pricingApiResponse.response.service_uuids);
+
+      // Let outside world know that we have a different list of services.
+      this.onServicesChange();
+    }
+
+    return pricingApiResponse;
   }
 
   hasSelectedService(service: ServiceModel): boolean {
@@ -188,5 +221,28 @@ export class BookingData implements OnDestroy {
   private onServicesChange(): void {
     // Tell subscribers to update services:
     this.servicesSubject.next(this._selectedServices);
+  }
+
+  /**
+   * Gets current stylist's services by the uuids
+   */
+  private async getServicesByUuids(serviceUuids: string[]): Promise<ServiceModel[]> {
+    // Get all services of the stylist
+    const stylistServicesResponse = await (this.servicesApi.getStylistServices({
+      stylist_uuid: this._stylist.uuid
+    })).get();
+
+    const stylistServices = stylistServicesResponse.response;
+    if (stylistServices) {
+      // Filter only the services that have the uuids that we need
+      const relevantServicesNested: ServiceModel[][] =
+        stylistServices.categories.map(category => category.services.filter(service => serviceUuids.indexOf(service.uuid) >= 0));
+
+      // Flaten the array of arrays of ServiceModels
+      const relevantServices: ServiceModel[] = [].concat(...relevantServicesNested);
+      return relevantServices;
+    }
+
+    return [];
   }
 }

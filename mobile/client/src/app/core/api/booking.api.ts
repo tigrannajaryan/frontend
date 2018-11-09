@@ -52,9 +52,10 @@ export class BookingApi extends BaseService {
     return this.post<TimeslotsResponse>('client/available-times', params);
   }
 
-  getPricelist(services: ServiceModel[], options?: ApiRequestOptions): Observable<ApiResponse<GetPricelistResponse>> {
+  getPricelist(services: ServiceModel[], stylistUuid: string, options?: ApiRequestOptions): Observable<ApiResponse<GetPricelistResponse>> {
     const data = {
-      service_uuids: services.map(service => service.uuid)
+      service_uuids: services.map(service => service.uuid),
+      stylist_uuid: stylistUuid
     };
     return this.post<GetPricelistResponse>('client/services/pricing', data, undefined, options);
   }

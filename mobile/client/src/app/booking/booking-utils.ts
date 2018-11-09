@@ -129,28 +129,19 @@ export async function startRebooking(appointment: AppointmentModel): Promise<voi
 }
 
 /**
- * When a stylist is not a preferred one of a client show a popup.
- * The Promise returned from the method indicates 2 situations:
- * - true means either stylist is a preferred one or confirmed to become,
- * - false means stylist is not a preferred one and not confirmed to become.
+ * Ask for confirmation to make the stylist a preferred one.
  */
-export function confirmRebook(appointment: AppointmentModel): Promise<boolean> {
+export function confirmMakeStylistPreferred(stylistFirstName: string, stylistUuid: string): Promise<boolean> {
   const alertCtrl = AppModule.injector.get(AlertController);
   const preferredStylistsData = AppModule.injector.get(PreferredStylistsData);
 
-  return new Promise(async (resolve, reject): Promise<void> => {
-    const preferedStylists = await preferredStylistsData.get();
-    if (preferedStylists.some(stylist => stylist.uuid === appointment.stylist_uuid)) {
-      // Allready preferred one, skip showing the popup:
-      return resolve(true);
-    }
-    // Not preferred, show warning popup:
+  return new Promise((resolve, reject) => {
     const alert = alertCtrl.create({
       title: 'Hold on a sec',
       message: `
-        <b>${appointment.stylist_first_name}</b> is required to be listed as your saved stylist to proceed with rebooking.
-        Would you like to add <b>${appointment.stylist_first_name}</b> to your saved list of stylists?
-      `.trim(),
+      <b>${stylistFirstName}</b> is required to be listed as your saved stylist to proceed with booking.
+      Would you like to add <b>${stylistFirstName}</b> to your saved list of stylists?
+    `.trim(),
       buttons: [
         {
           text: 'No, cancel',
@@ -162,7 +153,7 @@ export function confirmRebook(appointment: AppointmentModel): Promise<boolean> {
         {
           text: 'Yes, continue',
           handler: () => {
-            preferredStylistsData.addStylist({ uuid: appointment.stylist_uuid }).then(() => {
+            preferredStylistsData.addStylist({ uuid: stylistUuid }).then(() => {
               resolve(true);
             });
           }
@@ -170,5 +161,25 @@ export function confirmRebook(appointment: AppointmentModel): Promise<boolean> {
       ]
     });
     alert.present();
+  });
+}
+
+/**
+ * When a stylist is not a preferred one of a client show a popup.
+ * The Promise returned from the method indicates 2 situations:
+ * - true means either stylist is a preferred one or confirmed to become,
+ * - false means stylist is not a preferred one and not confirmed to become.
+ */
+export function confirmRebook(appointment: AppointmentModel): Promise<boolean> {
+  const preferredStylistsData = AppModule.injector.get(PreferredStylistsData);
+
+  return new Promise(async (resolve, reject): Promise<void> => {
+    const preferedStylists = await preferredStylistsData.get();
+    if (preferedStylists.some(stylist => stylist.uuid === appointment.stylist_uuid)) {
+      // Allready preferred one, skip showing the popup:
+      return resolve(true);
+    }
+    // Not preferred, show warning popup:
+    return resolve(confirmMakeStylistPreferred(appointment.stylist_first_name, appointment.stylist_uuid));
   });
 }
