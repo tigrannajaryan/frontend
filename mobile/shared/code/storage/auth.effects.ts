@@ -105,7 +105,7 @@ export class AuthEffects {
 
   @Effect({ dispatch: false }) saveToken = this.actions
     .ofType(authActionTypes.CONFIRM_CODE_SUCCESS)
-    .switchMap((action: ConfirmCodeSuccessAction): Observable<ConfirmCodeSuccessAction | boolean> =>
+    .switchMap((action: ConfirmCodeSuccessAction): Observable<void | ConfirmCodeSuccessAction> =>
       Observable.from(
         saveAuthLocalData(action.authLocalData)
           .then(() => {
@@ -120,7 +120,7 @@ export class AuthEffects {
           )
           .catch((error: Error) => {
             this.errorHandler.handleError(error);
-            return false;
+            return;
           })
       )
     )

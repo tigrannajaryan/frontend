@@ -81,6 +81,7 @@ import { FollowersComponent } from '~/followers/followers.component';
 import { StylistComponent } from '~/stylists/stylist/stylist.component';
 import { PushPrimingScreenComponent } from './shared/components/push-priming-screen/push-priming-screen.component';
 import { ClientAppStorage } from './core/client-app-storage';
+import { FirstLastNameComponent } from '~/profile/first-last-name/first-last-name.component';
 
 // Init sentry reporting (inits only if ENV.sentryDsn):
 initSentry();
@@ -98,6 +99,7 @@ const declarations = [
   AuthPageComponent,
   BookingCompleteComponent,
   ClientAppComponent,
+  FirstLastNameComponent,
   FirstScreenComponent,
   FollowersComponent,
   HomePageComponent,

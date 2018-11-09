@@ -1,9 +1,7 @@
 import { Component, OnDestroy } from '@angular/core';
 import { Events } from 'ionic-angular';
-import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 
-import { ApiResponse } from '~/shared/api/base.models';
 import { ProfileDataStore } from '~/profile/profile.data';
 import { ProfileCompleteness, ProfileModel } from '~/core/api/profile.models';
 import { checkProfileCompleteness } from '~/core/utils/user-utils';
@@ -16,7 +14,7 @@ import { TabIndex } from '~/main-tabs/main-tabs.component';
   templateUrl: 'profile-header.component.html'
 })
 export class ProfileHeaderComponent implements OnDestroy {
-  profileObservable: Observable<ApiResponse<ProfileModel>>;
+  profile: ProfileModel;
   profileCompleteness: ProfileCompleteness;
   private profileObservableSubscription: Subscription;
 
@@ -24,12 +22,10 @@ export class ProfileHeaderComponent implements OnDestroy {
     private events: Events,
     private profileDataStore: ProfileDataStore
   ) {
-    this.profileObservable = this.profileDataStore.asObservable();
 
-    this.profileDataStore.get();
-
-    this.profileObservableSubscription = this.profileObservable.subscribe(user => {
+    this.profileObservableSubscription = this.profileDataStore.asObservable().subscribe(user => {
       if (user.response) {
+        this.profile = user.response;
         this.profileCompleteness = checkProfileCompleteness(user.response);
       }
     });
