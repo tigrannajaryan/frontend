@@ -29,6 +29,7 @@ export class StylistAppStorage extends AppStorage<StylistAppPersistentData> {
       showHomeScreenHelp: false,
       pushNotificationParams: {
         isPermissionGranted: false,
+        isPermissionDenied: false,
         lastPrimingScreenShown: undefined
       }
     };
