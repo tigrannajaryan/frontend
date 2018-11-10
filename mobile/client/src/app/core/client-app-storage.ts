@@ -27,6 +27,7 @@ export class ClientAppStorage extends AppStorage<ClientAppPersistentData> {
     const defaultData: ClientAppPersistentData = {
       pushNotificationParams: {
         isPermissionGranted: false,
+        isPermissionDenied: false,
         lastPrimingScreenShown: undefined
       }
     };
