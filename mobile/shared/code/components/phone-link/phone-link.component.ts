@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActionSheetController } from 'ionic-angular';
 import { ActionSheetButton } from 'ionic-angular/components/action-sheet/action-sheet-options';
+import { formatNumber } from 'libphonenumber-js';
 
 import { ExternalAppService } from '~/shared/utils/external-app-service';
 import { getPhoneNumber } from '~/shared/utils/phone-numbers';
@@ -28,13 +29,13 @@ export class PhoneLinkComponent implements OnInit {
   ngOnInit(): void {
     this.buttons = [
       {
-        text: `Copy ${this.phone}`,
+        text: `Copy ${formatNumber(this.phone, NumberFormat.International)}`,
         handler: () => {
           this.externalAppService.copyToTheClipboard(this.phone);
         }
       },
       {
-        text: `Dial ${this.phone}`,
+        text: `Dial ${formatNumber(this.phone, NumberFormat.International)}`,
         handler: () => {
           this.externalAppService.doPhoneCall(this.phone);
         }
