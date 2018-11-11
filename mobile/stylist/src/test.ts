@@ -33,6 +33,7 @@ import {
 
 import {
   AlertController,
+  ActionSheetController,
   App,
   Config,
   DeepLinker,
@@ -135,7 +136,7 @@ export class TestUtils {
       providers: [
         App, Form, Keyboard, DomController, MenuController, NavController,
         NavParams, GestureController, AlertControllerMock, LoadingControllerMock,
-        Clipboard, EmailComposer, Logger,
+        Clipboard, EmailComposer, Logger, ActionSheetController,
         { provide: App, useClass: AppMock },
         { provide: Platform, useFactory: () => PlatformMock.instance() },
         { provide: StatusBar, useFactory: () => StatusBarMock.instance() },
