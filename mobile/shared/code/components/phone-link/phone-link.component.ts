@@ -3,7 +3,6 @@ import { ActionSheetController } from 'ionic-angular';
 import { ActionSheetButton } from 'ionic-angular/components/action-sheet/action-sheet-options';
 import { formatNumber } from 'libphonenumber-js';
 
-import { NumberFormat } from '~/shared/directives/phone-input.directive';
 import { ExternalAppService } from '~/shared/utils/external-app-service';
 import { getPhoneNumber } from '~/shared/utils/phone-numbers';
 import { NumberFormat } from '~/shared/directives/phone-input.directive';
