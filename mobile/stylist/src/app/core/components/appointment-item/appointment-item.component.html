@@ -34,9 +34,8 @@
 
 
     <div class="AppointmentItemFooter-cell">
-      <!--<i class="mb-icon-phone-a"></i>-->
       <span class="AppointmentItemFooter-text">
-        <phone-link [phone]="appointment.client_phone" [readonly]="true" icon="mb-icon-phone-a"></phone-link>
+        <phone-link *ngIf="appointment.client_phone" [phone]="appointment.client_phone" [readonly]="true" icon="mb-icon-phone-a"></phone-link>
       </span>
     </div>
   </div>
