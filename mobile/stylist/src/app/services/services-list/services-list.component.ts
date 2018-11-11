@@ -104,10 +104,11 @@ export class ServicesListComponent {
         service_time_gap_minutes: this.timeGap
       }).get();
 
-      if (response) {
-        // Refresh services list data
-        await this.servicesData.get({ refresh: true });
+      // Clear local cache since we modified the data directly via API
+      // TODO: move all modifications to StylistServicesDataStore
+      await this.servicesData.clear();
 
+      if (response) {
         this.navCtrl.push(PageNames.WorkHours);
       }
     }
@@ -134,13 +135,6 @@ export class ServicesListComponent {
       return;
     }
     return serviceList;
-  }
-
-  /**
-   * Reset the list of services to its initial state.
-   */
-  resetList(): void {
-    this.ionViewWillLoad();
   }
 
   deleteConfirm(category: ServiceCategory, idx: number): void {
@@ -170,19 +164,33 @@ export class ServicesListComponent {
         // put service back if error occurred
         category.services.splice(idx, 0, service);
       }
+      // Clear local cache since we modified the data directly via API
+      // TODO: move all modifications to StylistServicesDataStore
+      await this.servicesData.clear();
     }
 
     this.isEmptyCategories = ServicesListComponent.checkIfEmptyCategories(this.categories);
   }
 
-  saveRequest(): void {
+  async saveRequest(): Promise<void> {
     const categoriesServices = this.getFlatServiceList();
 
     if (categoriesServices) {
-      this.stylistService.setStylistServices({
+      const { response } = await this.stylistService.setStylistServices({
         services: categoriesServices,
         service_time_gap_minutes: this.timeGap
       }).get();
+
+      if (response) {
+        // Set local cache since we modified the data directly via API
+        // TODO: move all modifications to StylistServicesDataStore
+        await this.servicesData.set(response);
+        this.categories = response.categories;
+      } else {
+        // Clear local cache since we modified the data directly via API
+        // TODO: move all modifications to StylistServicesDataStore
+        await this.servicesData.clear();
+      }
     }
   }
 
