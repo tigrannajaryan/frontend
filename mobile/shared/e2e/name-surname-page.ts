@@ -7,9 +7,9 @@ import { waitForNot } from './utils';
  */
 class NameSurnamePage {
   // UI element declarations.
-  get firstNameInput() { return $('[data-test-id=first_name] input'); }
-  get lastNameInput() { return $('[data-test-id=last_name] input'); }
-  get submitBtn() { return $('[data-test-id=onContinue]'); }
+  get firstNameInput() { return $('first-last-name [data-test-id=first_name] input'); }
+  get lastNameInput() { return $('first-last-name [data-test-id=last_name] input'); }
+  get submitBtn() { return $('first-last-name [data-test-id=onContinue]'); }
 
   // Operations
   async fillIn(firstName, lastName) {

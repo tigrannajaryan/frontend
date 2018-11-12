@@ -30,6 +30,8 @@ describe('First use flow for invited clients', () => {
   let clientPhoneNumber;
   let stylistProfile: StylistProfile;
   const serviceNames = ['Myservice1', 'Myservice2'];
+  const firstName = faker.name.firstName();
+  const lastName = faker.name.lastName();
 
   beforeAll(async () => {
     // Register new stylist
@@ -133,7 +135,7 @@ describe('First use flow for invited clients', () => {
   });
 
   it('Can input name and surname', async () => {
-    await nameSurnamePage.fillIn(faker.name.firstName(), faker.name.lastName());
+    await nameSurnamePage.fillIn(firstName, lastName);
   });
 
   it('Can see invitation', async () => {
@@ -155,7 +157,8 @@ describe('First use flow for invited clients', () => {
     await mainTabsPage.profileTab.click();
     await waitFor(profileSummaryPage.phone);
     expect((await profileSummaryPage.phone.getText()).trim()).toEqual(getPhoneNumber(`+1 ${ clientPhoneNumber }`));
-    expect((await profileSummaryPage.profileCompletion.getText()).trim()).toEqual('Profile completion 17%');
+    expect((await profileSummaryPage.fullname.getText()).trim()).toEqual(`${firstName} ${lastName}`);
+    expect((await profileSummaryPage.profileCompletion.getText()).trim()).toEqual('Profile completion 50%');
   });
 
   it('Can start booking appointment', async () => {
