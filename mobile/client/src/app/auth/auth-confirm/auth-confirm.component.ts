@@ -10,6 +10,7 @@ import { RequestState } from '~/shared/api/request.models';
 import {
   AuthState,
   ConfirmCodeAction,
+  ConfirmCodeSuccessAction,
   RequestCodeAction,
   ResetConfirmCodeErrorAction,
   selectConfirmCodeError,
@@ -28,7 +29,7 @@ import { StylistPageParams } from '~/stylists/stylist/stylist.component';
 import { CodeData, CodeInputComponent } from '~/shared/components/code-input/code-input.component';
 import { PushNotification } from '~/shared/push/push-notification';
 import { PreferredStylistModel, StylistModel } from '~/shared/api/stylists.models';
-import { ClientProfileStatus, ConfirmCodeResponse } from '~/shared/api/auth.models';
+import { ClientProfileStatus } from '~/shared/api/auth.models';
 
 @Component({
   selector: 'page-auth-confirm',
@@ -102,10 +103,10 @@ export class AuthConfirmPageComponent {
     }
   }
 
-  async onCodeConfirmed(confirmCodeResponse: ConfirmCodeResponse, state: AuthState & StylistState): Promise<void> {
+  async onCodeConfirmed(confirmCodeResponse: ConfirmCodeSuccessAction, state: AuthState & StylistState): Promise<void> {
     // Get the list of preferred stylists
     const preferredStylists: PreferredStylistModel[] = await this.preferredStylistsData.get();
-    const profileStatus: ClientProfileStatus = confirmCodeResponse.profile_status;
+    const profileStatus: ClientProfileStatus = confirmCodeResponse.profileStatus;
     // Also get the invitation (if any)
     const invitation = selectInvitedByStylist(state);
 
