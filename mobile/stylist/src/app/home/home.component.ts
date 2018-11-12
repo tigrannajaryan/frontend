@@ -191,12 +191,20 @@ export class HomeComponent {
 
     if (appointment.client_phone) {
       // If the client phone number is know show "Call client" action
-      buttons.push({
-        text: `Call client: ${formatNumber(appointment.client_phone, NumberFormat.International)}`,
-        handler: () => {
-          this.externalAppService.doPhoneCall(appointment.client_phone);
+      buttons.push(
+        {
+          text: `Copy phone: ${formatNumber(appointment.client_phone, NumberFormat.International)}`,
+          handler: () => {
+            this.externalAppService.copyToTheClipboard(appointment.client_phone);
+          }
+        },
+        {
+          text: `Call client: ${formatNumber(appointment.client_phone, NumberFormat.International)}`,
+          handler: () => {
+            this.externalAppService.doPhoneCall(appointment.client_phone);
+          }
         }
-      });
+      );
     }
 
     // Add "Cancel appointment" and "Back" actions

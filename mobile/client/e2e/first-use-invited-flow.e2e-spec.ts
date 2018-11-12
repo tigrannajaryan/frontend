@@ -11,6 +11,7 @@ import { Worktime } from './shared-app/api/worktime.models';
 import { getPhoneNumber } from './shared-app/utils/phone-numbers';
 import { EmailAuthCredentials, UserRole } from './shared-app/api/auth.models';
 import { pushPrimingPage } from './shared-e2e/push-priming-page';
+import { nameSurnamePage } from './shared-e2e/name-surname-page';
 
 import { clientApp } from './client-app';
 import { firstPage } from './pages/first-page';
@@ -29,6 +30,8 @@ describe('First use flow for invited clients', () => {
   let clientPhoneNumber;
   let stylistProfile: StylistProfile;
   const serviceNames = ['Myservice1', 'Myservice2'];
+  const firstName = faker.name.firstName();
+  const lastName = faker.name.lastName();
 
   beforeAll(async () => {
     // Register new stylist
@@ -131,6 +134,10 @@ describe('First use flow for invited clients', () => {
     await waitForNot(phoneCodePage.codeInput);
   });
 
+  it('Can input name and surname', async () => {
+    await nameSurnamePage.fillIn(firstName, lastName);
+  });
+
   it('Can see invitation', async () => {
     expect(await stylistInvitationPage.salonName.getText()).toEqual(stylistProfile.salon_name);
     expect((await stylistInvitationPage.address.getText()).trim()).toEqual(stylistProfile.salon_address);
@@ -150,7 +157,8 @@ describe('First use flow for invited clients', () => {
     await mainTabsPage.profileTab.click();
     await waitFor(profileSummaryPage.phone);
     expect((await profileSummaryPage.phone.getText()).trim()).toEqual(getPhoneNumber(`+1 ${ clientPhoneNumber }`));
-    expect((await profileSummaryPage.profileCompletion.getText()).trim()).toEqual('Profile completion 17%');
+    expect((await profileSummaryPage.fullname.getText()).trim()).toEqual(`${firstName} ${lastName}`);
+    expect((await profileSummaryPage.profileCompletion.getText()).trim()).toEqual('Profile completion 50%');
   });
 
   it('Can start booking appointment', async () => {
