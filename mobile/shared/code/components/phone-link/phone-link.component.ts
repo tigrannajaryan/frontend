@@ -18,7 +18,7 @@ export class PhoneLinkComponent implements OnInit {
   @Input() iconForm = false;
   @Input() icon?: string;
 
-  private buttons: ActionSheetButton[];
+  private buttons: ActionSheetButton[] = [];
 
   constructor(
     private actionSheetCtrl: ActionSheetController,
@@ -27,24 +27,26 @@ export class PhoneLinkComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.buttons = [
-      {
-        text: `Copy ${formatNumber(this.phone, NumberFormat.International)}`,
-        handler: () => {
-          this.externalAppService.copyToTheClipboard(this.phone);
+    if (this.phone) {
+      this.buttons = [
+        {
+          text: `Copy ${formatNumber(this.phone, NumberFormat.International)}`,
+          handler: () => {
+            this.externalAppService.copyToTheClipboard(this.phone);
+          }
+        },
+        {
+          text: `Dial ${formatNumber(this.phone, NumberFormat.International)}`,
+          handler: () => {
+            this.externalAppService.doPhoneCall(this.phone);
+          }
+        },
+        {
+          text: 'Cancel',
+          role: 'cancel'
         }
-      },
-      {
-        text: `Dial ${formatNumber(this.phone, NumberFormat.International)}`,
-        handler: () => {
-          this.externalAppService.doPhoneCall(this.phone);
-        }
-      },
-      {
-        text: 'Cancel',
-        role: 'cancel'
-      }
-    ];
+      ];
+    }
   }
 
   async onClick(): Promise<void> {
