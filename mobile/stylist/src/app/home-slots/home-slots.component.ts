@@ -16,10 +16,16 @@ import { AppointmentCheckoutParams } from '~/appointment/appointment-checkout/ap
 import { PageNames } from '~/core/page-names';
 import { StylistAppStorage } from '~/core/stylist-app-storage';
 
-import { helpText } from '~/home/home.component';
+import { HomePageParams, Tabs } from '~/home/home.component';
 import { AppointmentAddParams } from '~/appointment/appointment-add/appointment-add';
-import { FreeSlot } from './time-slots/time-slots.component';
+import { FreeSlot, isBlockedTime } from './time-slots/time-slots.component';
 import { AppointmentsDataStore } from './appointments.data';
+import { formatNumber } from 'libphonenumber-js';
+import { NumberFormat } from '~/shared/directives/phone-input.directive';
+
+const helpText = `Congratulations! Your registration is complete.<br/><br/>
+  This is your homescreen. Your appointments will show up here.<br/><br/>
+  You can also edit your information from the tab bar listed below.<br/>Let's get started.`;
 
 // Default data that we display until the real data is being loaded
 const defaultData: DayAppointments = {
@@ -97,46 +103,72 @@ export class HomeSlotsComponent {
     // Build the list of action buttons to show
     const buttons = [];
 
-    // Show "View" or "Checkout" action
-    buttons.push({
-      text: appointment.status === AppointmentStatuses.checked_out ? 'View details' : 'Checkout client',
-      handler: () => {
-        this.checkOutAppointmentClick(appointment);
-      }
-    });
-
-    // and "no-show" action
-    buttons.push({
-      text: 'Client no-show',
-      handler: () => {
-        this.markNoShow(appointment);
-      }
-    });
-
-    if (appointment.client_phone) {
-      // If the client phone number is know show "Call client" action
+    if (!isBlockedTime(appointment)) {
+      // Show "Details" or "Checkout" action for real appointments
       buttons.push({
-        text: `Call client: ${getPhoneNumber(appointment.client_phone)}`,
+        text: appointment.status === AppointmentStatuses.checked_out ? 'Details' : 'Checkout client',
         handler: () => {
-          this.externalAppService.doPhoneCall(appointment.client_phone);
+          this.checkOutAppointmentClick(appointment);
         }
       });
+
+      if (moment(this.curDate).startOf('day').isSameOrBefore(moment())) {
+        // We are showing today or a past date. Add "no-show" action.
+        // We don't want to show it for future dates because it makes no sense
+        // to mark someone no-show if it is not yet time for the appointment.
+        buttons.push({
+          text: 'No Show',
+          handler: () => {
+            this.markNoShow(appointment);
+          }
+        });
+      }
+
+      // TODO: once Google Calendar integration is ready add "Add to Calendar" action here.
     }
 
-    // Add "Cancel appointment" and "Back" actions
-    buttons.splice(buttons.length, 0,
-      {
-        text: 'Cancel appointment',
+    if (appointment.client_phone) {
+      // If the phone number is known show "Call" and "Copy" actions
+      buttons.push(
+        {
+          text: `Call: ${getPhoneNumber(appointment.client_phone)}`,
+          handler: () => {
+            this.externalAppService.doPhoneCall(appointment.client_phone);
+          }
+        },
+        {
+          text: `Copy: ${formatNumber(appointment.client_phone, NumberFormat.International)}`,
+          handler: () => {
+            this.externalAppService.copyToTheClipboard(appointment.client_phone);
+          }
+        }
+      );
+    }
+
+    if (isBlockedTime(appointment)) {
+      // Add "Unblock" action for blocked slots
+      buttons.push(
+        {
+          text: 'Unblock Slot',
+          handler: () => {
+            this.cancelAppointment(appointment);
+          }
+        });
+    } else {
+      // Add "Cancel appointment" action for real appointments
+      buttons.push({
+        text: 'Cancel Appointment',
         role: 'destructive',
         handler: () => {
           this.cancelAppointment(appointment);
         }
-      },
-      {
-        text: 'Back',
-        role: 'cancel'
-      }
-    );
+      });
+    }
+
+    buttons.push({
+      text: 'Back',
+      role: 'cancel'
+    });
 
     const actionSheet = this.actionSheetCtrl.create({ buttons });
     actionSheet.present();
@@ -177,19 +209,30 @@ export class HomeSlotsComponent {
     }
   }
 
-  protected showCurTimeIndicator(): boolean {
+  protected isShowingToday(): boolean {
     // Show the current time line only if we are showing today
     return this.curDate && this.curDate.toDateString() === new Date().toDateString();
   }
 
-  protected onClickFreeSlot(freeSlot: FreeSlot): void {
+  protected onTodayNavigateClick(): void {
+    this.selectDate(new Date());
+  }
+
+  protected onFreeSlotClick(freeSlot: FreeSlot): void {
     // Show Appointment Add screen when clicked on a free slot.
     // Preset the date and time of appointment since we already know it.
-    const params: AppointmentAddParams = { startTime: freeSlot.startTime };
+    const params: AppointmentAddParams = { startDateTime: freeSlot.startTime };
     this.navCtrl.push(PageNames.AppointmentAdd, { params });
   }
 
-  protected onClickDateArea(): void {
+  protected onAddAppointmentClick(): void {
+    // Show Appointment Add screen when clicked on Add Appointment button.
+    // Preset the date of appointment since we already know it.
+    const params: AppointmentAddParams = { startDate: moment(this.curDate).startOf('day') };
+    this.navCtrl.push(PageNames.AppointmentAdd, { params });
+  }
+
+  protected onDateAreaClick(): void {
     this.datePicker.show({
       date: this.curDate, // Start with current date
       mode: 'date',
@@ -202,12 +245,22 @@ export class HomeSlotsComponent {
     );
   }
 
+  protected onUpcomingClick(): void {
+    const params: HomePageParams = { showTab: Tabs.upcoming };
+    this.navCtrl.push(PageNames.Home, { params });
+  }
+
+  protected onPastClick(): void {
+    const params: HomePageParams = { showTab: Tabs.past };
+    this.navCtrl.push(PageNames.Home, { params });
+  }
+
   /**
    * Set the date to show appointments for and load and display the appointments.
    */
   private selectDate(date: Date): void {
     this.curDate = date;
-    this.curMonthName = moment(date).format('MMMM');
+    this.curMonthName = moment(date).format('MMM');
     this.curWeekdayName = moment(date).format('dddd');
     this.curDayOfMonth = moment(date).format('D');
     this.loadAppointments();

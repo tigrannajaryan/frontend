@@ -3,7 +3,7 @@ import { Scroll } from 'ionic-angular';
 import * as moment from 'moment';
 
 import { getHoursSinceMidnight } from '~/shared/utils/datetime-utils';
-import { Appointment } from '~/core/api/home.models';
+import { Appointment, AppointmentStatuses } from '~/core/api/home.models';
 import { setIntervalOutsideNgZone } from '~/shared/utils/timer-utils';
 
 interface TimeLabel {
@@ -67,6 +67,17 @@ function compareAppointments(a: Appointment, b: Appointment): number {
   return ma.diff(mb);
 }
 
+/**
+ * Return true if the appointment is just a blocked time and not a real appointment.
+ */
+export function isBlockedTime(appointment: Appointment): boolean {
+  return !appointment.client_uuid &&
+    !appointment.client_first_name &&
+    !appointment.client_last_name &&
+    !appointment.client_phone;
+}
+
+
 // Define the total vertical size of the view in hours. Must be integer.
 const totalHoursInDay = 24;
 
@@ -80,6 +91,9 @@ export interface FreeSlot {
   templateUrl: 'time-slots.component.html'
 })
 export class TimeSlotsComponent implements AfterViewInit, OnDestroy {
+  AppointmentStatuses = AppointmentStatuses;
+  isBlockedTime = isBlockedTime;
+
   // List of appointments to show
   @Input() set appointments(value: Appointment[]) {
     this._appointments = value;
@@ -92,8 +106,18 @@ export class TimeSlotsComponent implements AfterViewInit, OnDestroy {
   // Start of the working day. We initially scroll vertically to this value. Must be integer.
   @Input() startHour = 9;
 
+  // End of the working day.
+  @Input() endHour = 17;
+
   // Show or not the current time indicator
-  @Input() showCurTimeIndicator: boolean;
+  @Input() set showCurTimeIndicator(value: boolean) {
+    this._showCurTimeIndicator = value;
+    this.updateScrollPos();
+  }
+
+  get showCurTimeIndicator(): boolean {
+    return this._showCurTimeIndicator;
+  }
 
   // Event fired when a free slot is clicked
   @Output() clickFreeSlot = new EventEmitter<FreeSlot>();
@@ -106,7 +130,9 @@ export class TimeSlotsComponent implements AfterViewInit, OnDestroy {
   // Rendering data for time axis
   protected timeAxis = {
     heightInVw: 0,
-    currentTimePosY: 0
+    currentTimePosY: 0,
+    morningNonWorkingInVw: 0,
+    eveningNonWorkingInVw: 0
   };
 
   // List of labels to show in time axis
@@ -115,8 +141,12 @@ export class TimeSlotsComponent implements AfterViewInit, OnDestroy {
   // The slot items to display
   protected slotItems: SlotItem[] = [];
 
+  protected selectedFreeSlot: SlotItem;
+
   // Appointments (this is our main input)
   private _appointments: Appointment[] = [];
+
+  private _showCurTimeIndicator: boolean;
 
   // Timer id for auto-refreshing the current time indicator
   private autoRefreshTimerId: any;
@@ -126,17 +156,11 @@ export class TimeSlotsComponent implements AfterViewInit, OnDestroy {
   }
 
   async ngAfterViewInit(): Promise<void> {
-    // Find the label for the starting hour
-    const label = this.timeLabels[this.startHour];
-    const elem: HTMLElement = document.getElementById(label.areaId);
-    const text: HTMLElement = document.getElementById(label.labelId);
-
-    // Scrol vertically to the top of the label text
-    this.scroll._scrollContent.nativeElement.scrollTop = elem.offsetTop - text.offsetHeight;
-
     // Update current time indicator once a minute
     const autoRefreshInterval = moment.duration(1, 'minute').asMilliseconds();
     this.autoRefreshTimerId = await setIntervalOutsideNgZone(this.ngZone, () => this.updateCurrentTime(), autoRefreshInterval);
+
+    this.updateScrollPos();
   }
 
   ngOnDestroy(): void {
@@ -170,6 +194,35 @@ export class TimeSlotsComponent implements AfterViewInit, OnDestroy {
     return appointment.services.map(s => s.service_name).join(', ');
   }
 
+  protected isAppointmentPendingCheckout(appointment: Appointment): boolean {
+    if (appointment.status === AppointmentStatuses.new) {
+      const start = moment(appointment.datetime_start_at);
+      const end = start.add(appointment.duration_minutes, 'minutes');
+      if (end.isBefore(moment())) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /**
+   * Returns the appropriate icon url for the appointment depending on the
+   * state of the appointment.
+   */
+  protected appointmentIconUrl(appointment: Appointment): string {
+    if (appointment.status === AppointmentStatuses.no_show) {
+      // TODO: add no-show icon to assets and return it
+      return 'assets/icons/stylist-avatar.png';
+    } else if (this.isAppointmentPendingCheckout(appointment)) {
+      // TODO: add pending status icon to assets and return it
+      return 'assets/icons/stylist-avatar.png';
+    } else if (appointment.client_profile_photo_url) {
+      return appointment.client_profile_photo_url;
+    } else {
+      return 'assets/icons/stylist-avatar.png';
+    }
+  }
+
   /**
    * Click handler for slots
    */
@@ -179,8 +232,17 @@ export class TimeSlotsComponent implements AfterViewInit, OnDestroy {
       this.clickAppointment.emit(slotItem.appointment);
     } else {
       // It is a free slot
-      const freeSlot: FreeSlot = { startTime: slotItem.startTime };
-      this.clickFreeSlot.emit(freeSlot);
+
+      // Show free slotselector
+      this.selectedFreeSlot = slotItem;
+
+      // Keep it visible for a while to allow the user to see it
+      const showFreeSlotSelectorForMs = moment.duration(0.2, 'second').asMilliseconds();
+      setTimeout(() => {
+        // Now fire the event to let others know free slot is selected
+        const freeSlot: FreeSlot = { startTime: slotItem.startTime };
+        this.clickFreeSlot.emit(freeSlot);
+      }, showFreeSlotSelectorForMs);
     }
   }
 
@@ -207,6 +269,9 @@ export class TimeSlotsComponent implements AfterViewInit, OnDestroy {
     // Time axis height is equal to the vertical position of the last label
     this.timeAxis.heightInVw = this.timeLabels[this.timeLabels.length - 1].posYInVw;
 
+    this.timeAxis.morningNonWorkingInVw = hourToYInVw(this.startHour);
+    this.timeAxis.eveningNonWorkingInVw = hourToYInVw(this.endHour);
+
     // Also render current time indicator if needed
     this.updateCurrentTime();
   }
@@ -214,7 +279,7 @@ export class TimeSlotsComponent implements AfterViewInit, OnDestroy {
   /**
    * Calculate current time indicator coordinates
    */
-  private updateCurrentTime(): void  {
+  private updateCurrentTime(): void {
     const curHour = getHoursSinceMidnight(moment());
     this.timeAxis.currentTimePosY = hourToYInVw(curHour);
   }
@@ -331,6 +396,24 @@ export class TimeSlotsComponent implements AfterViewInit, OnDestroy {
           column: SlotColumn.both
         });
       }
+    }
+  }
+
+  private updateScrollPos(): void {
+    const curHour = Math.trunc(getHoursSinceMidnight(moment()));
+
+    // If we are showing current time indicator then scroll to the beginning of its hours
+    // otherwise scroll to the beginning of working day.
+    const scrollToHour = this._showCurTimeIndicator ? curHour : this.startHour;
+
+    // Find the label for the starting hour
+    const label = this.timeLabels[scrollToHour];
+    const elem: HTMLElement = document.getElementById(label.areaId);
+    const text: HTMLElement = document.getElementById(label.labelId);
+
+    // Scrol vertically to the top of the label text
+    if (elem && text) {
+      this.scroll._scrollContent.nativeElement.scrollTop = elem.offsetTop - text.offsetHeight;
     }
   }
 }

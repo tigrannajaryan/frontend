@@ -35,7 +35,7 @@ export class AppointmentsDataStore {
     const params: AppointmentParams = {
       date_from: this.date,
       date_to: this.date,
-      include_cancelled: false
+      include_cancelled: true
     };
     return this.api.getAppointments(params);
   }

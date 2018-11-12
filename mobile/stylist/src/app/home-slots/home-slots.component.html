@@ -1,21 +1,34 @@
 <ion-content no-padding>
 
   <ion-fab right bottom>
-    <button ion-fab [madeLink]="[PageNames.AppointmentAdd]">
+    <button ion-fab (click)="onAddAppointmentClick()">
       <ion-icon name="add"></ion-icon>
     </button>
   </ion-fab>
 
-  <div (click)="onClickDateArea()">
-    <div class="HomeSlotsMonthName">{{ curMonthName }}</div>
-    <div class="HomeSlotsWeekAndDay">
+  <!-- TODO: add menu hamburger -->
+
+  <div class="HomeSlotsHeader">
+    Appointments
+    <!-- TODO: set correct icon -->
+    <ion-icon name="ios-calendar-outline" (click)="onTodayNavigateClick()"></ion-icon>
+  </div>
+
+  <div class="HomeSlotsSubheader">
+    <div class="HomeSlotsDateIndicator" (click)="onDateAreaClick()">
       <div class="HomeSlotsWeekdayName">{{ curWeekdayName }}</div>
-      <div class="HomeSlotsDayOfMonth">{{ curDayOfMonth }}</div>
+      <div class="HomeSlotsMonthAndDay">
+        <div class="HomeSlotsMonthName">{{ curMonthName }},&nbsp;</div>
+        <div class="HomeSlotsDayOfMonth">{{ curDayOfMonth }}</div>
+      </div>
+    </div>
+    <div class="HomeSlotsUpcomingAndPast">
+      <a (click)="onUpcomingClick()">Upcoming Visits</a>
+      <a (click)="onPastClick()">Past Visits</a>
     </div>
   </div>
 
-  <time-slots [appointments]="data?.appointments"
-    [showCurTimeIndicator]="showCurTimeIndicator()"
-    (clickFreeSlot)="onClickFreeSlot($event)" (clickAppointment)="onAppointmentClick($event)"></time-slots>
+  <time-slots [appointments]="data?.appointments" [showCurTimeIndicator]="isShowingToday()" (clickFreeSlot)="onFreeSlotClick($event)"
+    (clickAppointment)="onAppointmentClick($event)"></time-slots>
 
 </ion-content>

@@ -13,6 +13,13 @@ time-slots {
     position: relative;
   }
 
+  .TimeSlotsNonWorkingArea {
+    position: absolute; // This is actually relative to .TimeAxis
+    background-color: #E5E5E5;
+    opacity: 0.5;
+    width: pxtovw(375px);
+  }
+
   .TimeAxisLabelArea {
     position: absolute; // This is actually relative to .TimeAxis
     width: 100%;
@@ -61,38 +68,47 @@ time-slots {
 
   .TimeSlotItem {
     position: absolute; // This is actually relative to .TimeSlots
-    padding: 0 pxtovw(2px) pxtovw(2px) 0;
+    font-size: pxtovw(13px);
   }
 
   .TimeSlotInner {
-    border: pxtovw(2px) solid color($colors, secondary);
-    border-radius: pxtovw(4px);
     width: 100%;
     height: 100%;
     font-weight: map-get($fontWeights, semibold);
+    padding: 0 pxtovw(2px) pxtovw(2px) 0;
   }
 
   .TimeSlotFree {
-    color: color($colors, lightSalmon);
-    font-size: pxtovw(18px);
     width: 100%;
     height: 100%;
+  }
+
+  .TmeSlotFreeSelected {
+    height: 100%;
+    // TODO: need better border color and vertical alignment of text
+    border: pxtovw(2px) solid color($colors, medium-dark);
     text-align: center;
   }
 
-  .TimeSlotAppointment {
-    background: #FEE0D0;
+  .TimeSlotBlockedTime {
+    height: 100%;
+    background-color: #E5E5E5;
+    color: color($colors, warmGrey);
+    padding: pxtovw(4px);
+  }
 
+  .TimeSlotAppointment {
+    height: 100%;
+    border: pxtovw(1px) solid color($colors, secondary);
+    border-radius: pxtovw(2px);
   }
 
   .TimeSlotClientName {
     color: color($colors, warmGrey);
-    font-size: pxtovw(13px);
     margin-left: pxtovw(8px);
   }
 
   .TimeSlotServices {
-    font-size: pxtovw(13px);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -106,5 +122,10 @@ time-slots {
     background-size: contain;
     float: left;
     margin: pxtovw(2px) pxtovw(8px) pxtovw(2px) pxtovw(2px);
+  }
+
+  .TimeSlotCancelled {
+    // TODO: add proper styling for Cancelled appointments after the designer providers them
+    text-decoration: line-through;
   }
 }

@@ -30,7 +30,8 @@ function isOverridableError(errorCodeStr: FieldErrorCode): boolean {
 }
 
 export interface AppointmentAddParams {
-  startTime?: moment.Moment;
+  startDate?: moment.Moment; // If specified preselects this date
+  startDateTime?: moment.Moment; // If specified preselects this date and time
 }
 
 @Component({
@@ -61,9 +62,11 @@ export class AppointmentAddComponent {
   }
 
   ionViewWillLoad(): void {
-    if (this.params.startTime) {
-      this.defaultDate = this.startDate = this.params.startTime.format(isoDateFormat);
-      this.defaultTime = this.startTime = this.params.startTime.format('HH:mm');
+    if (this.params.startDateTime) {
+      this.defaultDate = this.startDate = this.params.startDateTime.format(isoDateFormat);
+      this.defaultTime = this.startTime = this.params.startDateTime.format('HH:mm');
+    } else if (this.params.startDate) {
+      this.defaultDate = this.startDate = this.params.startDate.format(isoDateFormat);
     }
 
     this.createForm();
@@ -84,7 +87,7 @@ export class AppointmentAddComponent {
     const { client, phone, date, time } = this.form.value;
     const dateYMD = moment(date).format('YYYY-MM-DD');
 
-    const [firstName, lastName] = client.trim().split(/(^[^\s]+)/).slice(-2);
+    const [firstName, lastName] = client ? client.trim().split(/(^[^\s]+)/).slice(-2) : ['', ''];
     const clientData = {
       client_phone: phone,
       client_first_name: firstName,
@@ -152,7 +155,7 @@ export class AppointmentAddComponent {
 
   private createForm(): void {
     this.form = this.formBuilder.group({
-      client: ['', [Validators.required]],
+      client: [''],
       phone: [''],
       date: [this.startDate, [Validators.required]],
       time: [this.startTime, [Validators.required]]

@@ -4,6 +4,7 @@ export enum AppointmentStatuses {
   new = 'new',
   no_show = 'no_show',
   cancelled_by_stylist = 'cancelled_by_stylist',
+  cancelled_by_client = 'cancelled_by_client',
   checked_out = 'checked_out'
 }
 

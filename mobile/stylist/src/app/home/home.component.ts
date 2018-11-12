@@ -13,7 +13,6 @@ import * as deepEqual from 'fast-deep-equal';
 import { Logger } from '~/shared/logger';
 import { GAWrapper } from '~/shared/google-analytics';
 import { PageNames } from '~/core/page-names';
-import { showAlert } from '~/shared/utils/alert';
 import { StylistProfile } from '~/shared/api/stylist-app.models';
 import { Appointment, AppointmentStatuses, HomeData } from '~/core/api/home.models';
 import { HomeService } from '~/core/api/home.service';
@@ -45,9 +44,9 @@ export enum TabNames {
   past = 'Past'
 }
 
-export const helpText = `Congratulations! Your registration is complete.<br/><br/>
-  This is your homescreen. Your appointments will show up here.<br/><br/>
-  You can also edit your information from the tab bar listed below.<br/>Let's get started.`;
+export interface HomePageParams {
+  showTab: Tabs;
+}
 
 @Component({
   selector: 'page-home',
@@ -114,7 +113,8 @@ export class HomeComponent {
   }
 
   ionViewDidLoad(): void {
-    this.activeTab = this.tabs[Tabs.today].name;
+    const params = this.navParams.get('params') as HomePageParams;
+    this.activeTab = this.tabs[params ? params.showTab : Tabs.today].name;
   }
 
   // we need ionViewWillEnter here because it fire each time when we go to this page
@@ -122,11 +122,6 @@ export class HomeComponent {
   // and ionViewDidLoad fire only once this is not what we need here
   ionViewWillEnter(): void {
     this.logger.info('HomeComponent: entering.');
-
-    if (this.appStorage.get('showHomeScreenHelp')) {
-      showAlert('', helpText);
-      this.appStorage.set('showHomeScreenHelp', false);
-    }
 
     // Load profile info
     this.profile = this.store.select(selectProfile);
