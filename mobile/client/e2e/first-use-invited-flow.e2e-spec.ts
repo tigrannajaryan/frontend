@@ -11,6 +11,7 @@ import { Worktime } from './shared-app/api/worktime.models';
 import { getPhoneNumber } from './shared-app/utils/phone-numbers';
 import { EmailAuthCredentials, UserRole } from './shared-app/api/auth.models';
 import { pushPrimingPage } from './shared-e2e/push-priming-page';
+import { nameSurnamePage } from './shared-e2e/name-surname-page';
 
 import { clientApp } from './client-app';
 import { firstPage } from './pages/first-page';
@@ -129,6 +130,10 @@ describe('First use flow for invited clients', () => {
     await phoneCodePage.codeInput.sendKeys(loginCode);
 
     await waitForNot(phoneCodePage.codeInput);
+  });
+
+  it('Can input name and surname', async () => {
+    await nameSurnamePage.fillIn(faker.name.firstName(), faker.name.lastName());
   });
 
   it('Can see invitation', async () => {

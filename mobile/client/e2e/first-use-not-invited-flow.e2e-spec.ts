@@ -1,3 +1,5 @@
+import * as faker from 'faker';
+
 import { waitFor, waitForNot } from './shared-e2e/utils';
 import { backdoorApi } from './shared-e2e/backdoor-api';
 
@@ -8,6 +10,7 @@ import { stylistsSearchPage } from './pages/stylists-search-page';
 import { phoneLoginPage } from './shared-e2e/phone-login-page';
 import { phoneCodePage } from './shared-e2e/phone-code-page';
 import { pushPrimingPage } from './shared-e2e/push-priming-page';
+import { nameSurnamePage } from './shared-e2e/name-surname-page';
 import { clientApp } from './client-app';
 
 describe('First use flow for not invited clients', () => {
@@ -15,7 +18,6 @@ describe('First use flow for not invited clients', () => {
   let phoneNumber;
 
   it('Can navigate to login screen', async () => {
-
     await clientApp.loadNew();
     await firstPage.getStarted();
     await waitFor(phoneLoginPage.phoneInput);
@@ -46,6 +48,10 @@ describe('First use flow for not invited clients', () => {
     await phoneCodePage.codeInput.sendKeys(loginCode);
 
     await waitForNot(phoneCodePage.codeInput);
+  });
+
+  it('Can input name and surname', async () => {
+    await nameSurnamePage.fillIn(faker.name.firstName(), faker.name.lastName());
   });
 
   it('Can navigate through info screens', async () => {
