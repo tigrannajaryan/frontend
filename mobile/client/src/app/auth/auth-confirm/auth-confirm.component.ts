@@ -71,7 +71,9 @@ export class AuthConfirmPageComponent {
     this.authEffects.saveToken
       .takeWhile(componentIsActive(this))
       .withLatestFrom(this.store)
-      .subscribe(async ([confirmCodeResponse, state]) => this.onCodeConfirmed(confirmCodeResponse, state));
+      .subscribe(async ([confirmCodeAction, state]: [ConfirmCodeSuccessAction, AuthState & StylistState]) => {
+        this.onCodeConfirmed(confirmCodeAction, state);
+      });
 
     // Handle code verification error
     this.error = this.store.select(selectConfirmCodeError);
