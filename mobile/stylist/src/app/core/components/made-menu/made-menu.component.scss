@@ -1,0 +1,153 @@
+made-menu {
+  $side-menu-header-height: 106px;
+
+  .sideMenu-header {
+    height: $side-menu-header-height;
+    padding-top: 12px;
+    padding-bottom: 5px;
+  }
+
+  .sideMenu-wp {
+    padding-right: 24px;
+    padding-left: 24px;
+  }
+
+  .sideMenu-user {
+    display: flex;
+    flex-flow: row;
+    flex-wrap: nowrap;
+    align-items: center;
+  }
+
+  .sideMenu-userAva {
+    display: inline-block;
+    width: pxtovw(64px);
+    height: pxtovw(64px);
+    margin-right: pxtovw(7px);
+    vertical-align: middle;
+    background: url('../assets/imgs/icons/avatar.png') no-repeat center;
+    background-size: cover !important;
+    border-radius: 50%;
+  }
+
+  .sideMenu-userSalon {
+    font-size: 18px;
+    line-height: 24px;
+    color: color($colors, warmGrey);
+  }
+
+  .sideMenu-userName {
+    font-size: 21px;
+    font-weight: 600;
+    line-height: 24px;
+    color: black;
+  }
+
+  .sideMenu-userClients {
+    font-size: 15px;
+    line-height: 16px;
+    color: color($colors, warmGrey);
+
+    i {
+      position: relative;
+      top: 1px;
+      display: inline-block;
+      font-size: 14px;
+      color: color($colors, lightSalmon);
+      vertical-align: top;
+    }
+  }
+
+  .sideMenu-headerLink {
+    margin: 9px 0 0;
+    font-size: 13px;
+    line-height: 16px;
+    color: color($colors, warmGrey);
+  }
+
+  .sideMenu-content {
+    display: flex;
+    flex-flow: column;
+    justify-content: space-between;
+    height: calc(100% - #{$side-menu-header-height});
+    padding-top: 17px;
+    padding-bottom: 17px;
+    overflow-y: scroll;
+    border-top: 2px solid color($colors, lightSalmon);
+  }
+
+  .sideMenu-link {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    min-height: 48px;
+    padding: 0 24px 0 64px;
+    font-size: 18px;
+    line-height: 24px;
+    text-align: left;
+    background: none;
+
+    &.is-active {
+      background: color($colors, warmGrey);
+    }
+
+    i {
+      position: absolute;
+      top: 50%;
+      left: 24px;
+      width: 36px;
+      color: color($colors, lightSalmon);
+      transform: translateY(-50%);
+    }
+
+    i[class^='mb-icon-home-a'] {
+      top: 46%;
+      left: 22px;
+      font-size: 24px;
+      vertical-align: middle;
+    }
+
+    i[class^='mb-icon-stylists-a'] {
+      left: 22px;
+      font-size: 16px;
+    }
+
+    i[class^='mb-icon-discounts'] {
+      left: 20px;
+      font-size: 24px;
+    }
+
+    i[class^='mb-icon-calendar-add'] {
+      font-size: 16px;
+    }
+
+    i[class^='mb-icon-clock-a'] {
+      font-size: 16px;
+    }
+
+    i[class^='mb-icon-conditioners-a'] {
+      left: 22px;
+      font-size: 18px;
+    }
+
+    i[class^='mb-icon-invite-a'] {
+      font-size: 21px;
+    }
+
+    &.is-version {
+      font-size: 15px;
+      line-height: 16px;
+
+      span {
+        color: color($colors, warmGrey);
+      }
+    }
+  }
+}
+
+// rewrite default ionic menu width
+.menu-inner {
+  width: 296px;
+}

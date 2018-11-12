@@ -13,7 +13,7 @@ import { ClientsApi } from '~/core/api/clients-api';
 
 import { PageNames } from '~/core/page-names';
 import { loading } from '~/core/utils/loading';
-import { ProfileState, selectProfile } from '~/core/components/user-header/profile.reducer';
+import { ProfileState, selectProfile } from '~/core/components/made-menu-header/profile.reducer';
 
 @Component({
   selector: 'page-clients-calendar',

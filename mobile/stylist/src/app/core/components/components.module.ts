@@ -15,7 +15,6 @@ import { MadeNavComponent } from './made-nav/made-nav.component';
 import { MadeTableComponent } from './made-table/made-table';
 import { DirectivesModule } from '~/core/directives/directive.module';
 import { IonicModule } from 'ionic-angular';
-import { UserHeaderMenuComponent } from '~/core/components/user-header/user-header-menu/user-header-menu.component';
 import { ServicesPickComponent } from '~/core/components/services-pick/services-pick.component';
 import { AppointmentItemComponent } from '~/core/components/appointment-item/appointment-item.component';
 import { DiscountsListComponent } from '~/core/components/discounts/discounts-list/discounts-list.component';
@@ -28,16 +27,15 @@ import {
   DiscountsMaximumShortComponent
 } from '~/core/components/discounts/discounts-maximum-short/discounts-maximum-short.component';
 import { BackHeaderComponent } from '~/core/components/back-header/back-header.component';
-import { UserHeaderComponent } from '~/core/components/user-header/user-header.component';
+import { MadeMenuHeaderComponent } from '~/core/components/made-menu-header/made-menu-header.component';
 import { PhoneLinkComponent } from '~/shared/components/phone-link/phone-link.component';
 import { ClientItemComponent } from '~/clients/client-item/client-item.component';
 
 const components = [
   MadeNavComponent,
   ServerStatusComponent,
-  UserHeaderComponent,
+  MadeMenuHeaderComponent,
   MadeTableComponent,
-  UserHeaderMenuComponent,
   ServicesPickComponent,
   AppointmentItemComponent,
   ContinueFooterComponent,
@@ -62,7 +60,6 @@ const components = [
     ...components
   ],
   entryComponents: [
-    UserHeaderMenuComponent,
     ServerStatusComponent,
     ServicesPickComponent
   ],

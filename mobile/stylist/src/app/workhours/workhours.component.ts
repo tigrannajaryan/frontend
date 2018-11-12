@@ -156,7 +156,7 @@ type HourRange = [string, string];
 })
 export class WorkHoursComponent {
   protected PageNames = PageNames;
-  isProfile?: Boolean;
+  isRootPage?: Boolean;
 
   cards: VisualWeekCard[] = [];
   isLoading = false;
@@ -193,7 +193,7 @@ export class WorkHoursComponent {
     private logger: Logger) { }
 
   async ionViewWillLoad(): Promise<void> {
-    this.isProfile = Boolean(this.navParams.get('isProfile'));
+    this.isRootPage = Boolean(this.navParams.get('isRootPage'));
     await this.loadInitialData();
   }
 
@@ -238,7 +238,7 @@ export class WorkHoursComponent {
   }
 
   onContinue(): void {
-    if (!this.isProfile) {
+    if (!this.isRootPage) {
       // Continue registration on the next page
       this.navCtrl.push(PageNames.DiscountsWeekday);
       this.autoSave();

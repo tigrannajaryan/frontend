@@ -1,9 +1,8 @@
-import { browser } from 'protractor';
+import { browser, protractor } from 'protractor';
 import * as faker from 'faker';
 
 import { clearIonicStorage, click, getRandomString, globals, waitFor, waitForNot } from './shared-e2e/utils';
 import { backdoorApi } from './shared-e2e/backdoor-api';
-import { howPricingWorksPage } from './shared-e2e/how-pricing-works-page';
 import { phoneLoginPage } from './shared-e2e/phone-login-page';
 import { phoneCodePage } from './shared-e2e/phone-code-page';
 
@@ -17,8 +16,8 @@ import { discountsRevisitPage } from './pages/discounts-revisit-page';
 import { discountsFirstVisitPage } from './pages/discounts-first-visit-page';
 import { invitationsPage } from './pages/invitations-page';
 import { selectServiceListPage } from './pages/select-service-list-page';
-import { mainTabsPage } from './pages/main-tabs-page';
 import { calendarExamplePage } from './pages/calendar-example-page';
+import { homePage } from './pages/home-page';
 
 describe('Registration Flow', () => {
 
@@ -145,6 +144,15 @@ describe('Registration Flow', () => {
     click(alertButton);
     waitForNot(alertButton);
 
-    waitFor(mainTabsPage.homeTab);
+    waitFor(homePage.homeTabs);
+  });
+
+  // TODO: check why we can't open a menu
+  xit('should have a menu button', async () => {
+    const EC = protractor.ExpectedConditions;
+    browser.wait(EC.visibilityOf(homePage.homeMenuToggleBtn), 20000);
+    expect(homePage.homeMenuToggleBtn.isPresent()).toBeTruthy();
+    homePage.homeMenuToggleBtn.click();
+    debugger;
   });
 });

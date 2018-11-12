@@ -1,16 +1,13 @@
-<ion-header class="ion-bb-header">
-  <ion-navbar>
-    <ion-title>About Made Pro</ion-title>
-  </ion-navbar>
+<ion-header madeMenuHeader>
+  <ion-title>
+    <div (click)="onNameClick()" class="Made-h1">About Made Pro</div>
+  </ion-title>
 </ion-header>
 
 
-<ion-content padding>
-
-  <ion-list>
-    <ion-item>
-      <h1><span (click)="onNameClick()">Made Pro</span></h1>
-      <h2>Version {{ appVersion }}, Build {{ getBuildNumber() }}</h2>
+<ion-content no-padding>
+  <div class="Made-wp Made-wpContent">
+    <ion-item no-padding>
       <h2 *ngIf="!getEnv().production">Commit hash:
         <a href="https://github.com/madebeauty/monorepo/commit/{{ commitHash() }}">
           {{ commitHash() }}
@@ -19,17 +16,16 @@
       <h2>Copyright &copy; MadeBeauty Inc.</h2>
     </ion-item>
 
-    <ion-item *ngIf="!getEnv().production">
+    <ion-item *ngIf="!getEnv().production" no-padding>
       <h1>Server</h1>
       <a href="{{ getEnv().apiUrl }}">{{ getEnv().apiUrl }}</a>
     </ion-item>
 
-    <ion-item>
+    <ion-item no-padding>
       <h1>Open Source Licenses</h1>
       <div *ngFor="let license of licenses">
         <a [href]="license.url">{{ license.title }}</a>
       </div>
     </ion-item>
-  </ion-list>
-
+  </div>
 </ion-content>

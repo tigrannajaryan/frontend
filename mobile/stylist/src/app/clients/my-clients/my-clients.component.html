@@ -1,16 +1,18 @@
-<ion-header madeBackHeader>
-  <ion-buttons end>
-    <button (click)="onAllClientsClick()" ion-button clear class="Link">All Clients</button>
-  </ion-buttons>
-  <ion-toolbar class="Made-wp Made-wpContent">
+<ion-header madeMenuHeader [hideBackButton]="true">
+  <ion-title>
     <div class="Made-h1">
       My Clients
       <span *ngIf="clients | async" class="MyClients-badge">
         {{ (clients | async)?.length }}
       </span>
     </div>
-  </ion-toolbar>
+  </ion-title>
+
+  <ion-buttons end>
+    <button (click)="onAllClientsClick()" ion-button clear class="Link">All Clients</button>
+  </ion-buttons>
 </ion-header>
+
 
 <ion-content no-padding class="MyClients">
   <ion-refresher (ionRefresh)="onRefresh()">
