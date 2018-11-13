@@ -16,7 +16,7 @@ import { AppointmentCheckoutParams } from '~/appointment/appointment-checkout/ap
 import { PageNames } from '~/core/page-names';
 import { StylistAppStorage } from '~/core/stylist-app-storage';
 
-import { HomePageParams, Tabs } from '~/home/home.component';
+import { Tabs, UpcomingAndPastPageParams } from '~/home/home.component';
 import { AppointmentAddParams } from '~/appointment/appointment-add/appointment-add';
 import { FreeSlot, isBlockedTime } from './time-slots/time-slots.component';
 import { AppointmentsDataStore } from './appointments.data';
@@ -246,12 +246,12 @@ export class HomeSlotsComponent {
   }
 
   protected onUpcomingClick(): void {
-    const params: HomePageParams = { showTab: Tabs.upcoming };
+    const params: UpcomingAndPastPageParams = { showTab: Tabs.upcoming };
     this.navCtrl.push(PageNames.Home, { params });
   }
 
   protected onPastClick(): void {
-    const params: HomePageParams = { showTab: Tabs.past };
+    const params: UpcomingAndPastPageParams = { showTab: Tabs.past };
     this.navCtrl.push(PageNames.Home, { params });
   }
 

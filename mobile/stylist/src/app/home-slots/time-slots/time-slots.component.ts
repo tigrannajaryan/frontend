@@ -77,7 +77,6 @@ export function isBlockedTime(appointment: Appointment): boolean {
     !appointment.client_phone;
 }
 
-
 // Define the total vertical size of the view in hours. Must be integer.
 const totalHoursInDay = 24;
 

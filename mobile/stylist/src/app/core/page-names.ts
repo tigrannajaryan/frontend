@@ -18,7 +18,7 @@ import { DiscountsFirstBookingComponent } from '~/discounts/discounts-first-book
 import { DiscountsRevisitComponent } from '~/discounts/discounts-revisit/discounts-revisit.component';
 import { DiscountsWeekdayComponent } from '~/discounts/discounts-weekday/discounts-weekday.component';
 import { FirstScreenComponent } from '~/first-screen/first-screen';
-import { HomeComponent } from '~/home/home.component';
+import { UpcomingAndPastComponent } from '~/home/home.component';
 import { InvitationsComponent } from '~/invitations/invitations.component';
 import { MyClientsComponent } from '~/clients/my-clients/my-clients.component';
 import { PushPrimingScreenComponent } from '~/shared/components/push-priming-screen/push-priming-screen.component';
@@ -61,7 +61,7 @@ export const PageNames = {
   DiscountsRevisit: DiscountsRevisitComponent,
   DiscountsWeekday: DiscountsWeekdayComponent,
   FirstScreen: FirstScreenComponent,
-  Home: HomeComponent,
+  Home: UpcomingAndPastComponent,
   HomeSlots: HomeSlotsComponent,
   Invitations: InvitationsComponent,
   MyClients: MyClientsComponent,

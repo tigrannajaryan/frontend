@@ -1,28 +1,22 @@
-import * as moment from 'moment';
 import { Component, NgZone, ViewChild } from '@angular/core';
 import {
   ActionSheetController,
   AlertController, Content,
   NavController, NavParams, Slides
 } from 'ionic-angular';
-import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import * as deepEqual from 'fast-deep-equal';
+import { formatNumber } from 'libphonenumber-js';
 
 import { Logger } from '~/shared/logger';
 import { GAWrapper } from '~/shared/google-analytics';
 import { PageNames } from '~/core/page-names';
-import { StylistProfile } from '~/shared/api/stylist-app.models';
 import { Appointment, AppointmentStatuses, HomeData } from '~/core/api/home.models';
 import { HomeService } from '~/core/api/home.service';
 import { AppointmentCheckoutParams } from '~/appointment/appointment-checkout/appointment-checkout.component';
-import { LoadProfileAction, ProfileState, selectProfile } from '~/core/components/made-menu-header/profile.reducer';
 import { ExternalAppService } from '~/shared/utils/external-app-service';
-import { formatNumber } from 'libphonenumber-js';
 import { NumberFormat } from '~/shared/directives/phone-input.directive';
 import { ApiResponse } from '~/shared/api/base.models';
-import { StylistAppStorage } from '~/core/stylist-app-storage';
 
 export enum AppointmentTag {
   NotCheckedOut = 'Not checked out',
@@ -33,36 +27,28 @@ export enum AppointmentTag {
 }
 
 export enum Tabs {
-  today = 0,
-  upcoming = 1,
-  past = 2
+  upcoming = 0,
+  past = 1
 }
 
 export enum TabNames {
-  today = 'Today',
   upcoming = 'Upcoming',
   past = 'Past'
 }
 
-export interface HomePageParams {
+export interface UpcomingAndPastPageParams {
   showTab: Tabs;
 }
 
 @Component({
-  selector: 'page-home',
+  selector: 'page-upcoming-and-past',
   templateUrl: 'home.component.html'
 })
-export class HomeComponent {
-  appointmentTags: AppointmentTag[];
+export class UpcomingAndPastComponent {
   AppointmentTag = AppointmentTag;
   PageNames = PageNames;
   Tabs = Tabs;
   tabs = [
-    {
-      name: TabNames.today,
-      loaded: false,
-      appointments: []
-    },
     {
       name: TabNames.upcoming,
       loaded: false,
@@ -80,13 +66,7 @@ export class HomeComponent {
   @ViewChild(Slides) slides: Slides;
   @ViewChild(Content) content: Content;
 
-  profile: Observable<StylistProfile>;
-
-  refresherEnabled = true;
-
   autoRefreshTimer: any;
-  followers: number;
-  todaySlots: number;
 
   getHomeSubscription: Subscription;
 
@@ -96,25 +76,16 @@ export class HomeComponent {
     public homeService: HomeService,
     public alertCtrl: AlertController,
     private ngZone: NgZone,
-    private store: Store<ProfileState>,
     private actionSheetCtrl: ActionSheetController,
-    private appStorage: StylistAppStorage,
     private logger: Logger,
     private ga: GAWrapper,
     private externalAppService: ExternalAppService
   ) {
   }
 
-  ionViewCanEnter(): Promise<boolean> {
-    this.logger.info('HomeComponent: ionViewCanEnter');
-
-    // Make sure appStorage is ready before we enter this page
-    return this.appStorage.ready().then(() => true);
-  }
-
   ionViewDidLoad(): void {
-    const params = this.navParams.get('params') as HomePageParams;
-    this.activeTab = this.tabs[params ? params.showTab : Tabs.today].name;
+    const params = this.navParams.get('params') as UpcomingAndPastPageParams;
+    this.activeTab = this.tabs[params ? params.showTab : Tabs.upcoming].name;
   }
 
   // we need ionViewWillEnter here because it fire each time when we go to this page
@@ -122,10 +93,6 @@ export class HomeComponent {
   // and ionViewDidLoad fire only once this is not what we need here
   ionViewWillEnter(): void {
     this.logger.info('HomeComponent: entering.');
-
-    // Load profile info
-    this.profile = this.store.select(selectProfile);
-    this.store.dispatch(new LoadProfileAction());
 
     this.loadAppointments(this.activeTab);
 
@@ -256,23 +223,6 @@ export class HomeComponent {
     }
   }
 
-  async onRefresh(refresher): Promise<void> {
-    try {
-      // Reload the profile information
-      this.store.dispatch(new LoadProfileAction());
-
-      // and reload the appointments list on active tab
-      await this.loadAppointments(this.activeTab);
-    } finally {
-
-      // When appointment reloading is done close the refresher. This is a bit hacky
-      // because it not wait for profile loading to compelte but is likely good enough
-      // since all we need is to indicate loading and in reality profile will be
-      // loaded faster that the list of appointments.
-      refresher.complete();
-    }
-  }
-
   // swipe action for tabs
   onSlideChange(): void {
     // if index more or equal to tabs length we got an error
@@ -284,16 +234,8 @@ export class HomeComponent {
     this.ga.trackView(`Home${this.activeTab}`);
   }
 
-  onEnableRefresher(isEnabled: boolean): void {
-    this.refresherEnabled = isEnabled;
-  }
-
-  onShowMyClients(): void {
-    this.navCtrl.push(PageNames.MyClients);
-  }
-
   private async loadAppointments(tabType: TabNames): Promise<void> {
-    this.activeTab = tabType || this.tabs[Tabs.today].name;
+    this.activeTab = tabType || this.tabs[Tabs.upcoming].name;
     const query = this.activeTab.toLowerCase();
 
     this.isLoading = true;
@@ -332,48 +274,6 @@ export class HomeComponent {
 
     this.tabs[index].appointments = home.appointments;
     this.tabs[index].loaded = true;
-
-    // appointmentTags for today tab
-    if (this.activeTab === this.tabs[Tabs.today].name) {
-      // Create tags for each appointment based on their start/end times
-      const appointmentTags: AppointmentTag[] = [];
-
-      let metNext = false;
-      for (const appointment of home.appointments) {
-        const startTime = moment(new Date(appointment.datetime_start_at));
-        const createdAt = moment(new Date(appointment.created_at));
-        const pastTime = moment(new Date()).subtract({ hours: 12 });
-
-        const endTime = startTime.clone();
-        endTime.add(appointment.duration_minutes, 'minutes');
-
-        const now = moment();
-
-        let tag: AppointmentTag;
-        if (appointment.status === AppointmentStatuses.no_show) {
-          tag = AppointmentTag.NoShow;
-        } else if (startTime < now) {
-          if (endTime > now) {
-            tag = AppointmentTag.Now;
-          } else {
-            tag = AppointmentTag.NotCheckedOut;
-          }
-        } else if (!metNext) {
-          tag = AppointmentTag.Next;
-          metNext = true;
-        } else if (createdAt >= pastTime) {
-          tag = AppointmentTag.New;
-        }
-        appointmentTags.push(tag);
-      }
-
-      if (!deepEqual(this.appointmentTags, appointmentTags)) {
-        this.appointmentTags = appointmentTags;
-      }
-
-      this.followers = home.followers;
-      this.todaySlots = home.today_slots;
-    }
 
     if (!deepEqual(this.home, home)) {
       this.home = home;

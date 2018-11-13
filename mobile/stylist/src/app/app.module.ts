@@ -71,7 +71,7 @@ import { DiscountsAlertComponent } from '~/discounts/discounts-alert/discounts-a
 import { DiscountsFirstBookingComponent } from '~/discounts/discounts-first-booking/discounts-first-booking.component';
 import { DiscountsRevisitComponent } from '~/discounts/discounts-revisit/discounts-revisit.component';
 import { DiscountsWeekdayComponent } from '~/discounts/discounts-weekday/discounts-weekday.component';
-import { HomeComponent } from '~/home/home.component';
+import { UpcomingAndPastComponent } from '~/home/home.component';
 import { FirstScreenComponent } from '~/first-screen/first-screen';
 import { InvitationsComponent } from '~/invitations/invitations.component';
 import { MyClientsComponent } from '~/clients/my-clients/my-clients.component';
@@ -150,7 +150,7 @@ const declarations = [
   DiscountsRevisitComponent,
   DiscountsWeekdayComponent,
   FirstScreenComponent,
-  HomeComponent,
+  UpcomingAndPastComponent,
   HomeSlotsComponent,
   InvitationsComponent,
   MadeMenuComponent,
