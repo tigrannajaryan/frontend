@@ -42,4 +42,3 @@ To build and run on Android emulator or connected Android device use command `io
 - on iPhone select Settings –> Safari –> Advanced –> enable JS
 - go to Safari, enable Dev tab
 - select your device and run debugger (the device should appear in dev tab)
-
