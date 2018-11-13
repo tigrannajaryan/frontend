@@ -204,10 +204,14 @@ export class TimeSlotsComponent implements AfterViewInit, OnDestroy {
     return appointment.services.map(s => s.service_name).join(', ');
   }
 
+  protected appointmentEndMoment(appointment: Appointment): moment.Moment {
+    const start = moment(appointment.datetime_start_at);
+    return start.add(appointment.duration_minutes, 'minutes');
+  }
+
   protected isAppointmentPendingCheckout(appointment: Appointment): boolean {
     if (appointment.status === AppointmentStatuses.new) {
-      const start = moment(appointment.datetime_start_at);
-      const end = start.add(appointment.duration_minutes, 'minutes');
+      const end = this.appointmentEndMoment(appointment);
       if (end.isBefore(moment())) {
         return true;
       }
@@ -224,13 +228,26 @@ export class TimeSlotsComponent implements AfterViewInit, OnDestroy {
       // TODO: add no-show icon to assets and return it
       return 'assets/icons/stylist-avatar.png';
     } else if (this.isAppointmentPendingCheckout(appointment)) {
-      // TODO: add pending status icon to assets and return it
+      // TODO: add pending status question mark icon to assets and return it
       return 'assets/icons/stylist-avatar.png';
     } else if (appointment.client_profile_photo_url) {
       return appointment.client_profile_photo_url;
     } else {
       return 'assets/icons/stylist-avatar.png';
     }
+  }
+
+  /**
+   * Returns an Object with keys as CSS class names in a way that is defind by ngClass
+   * Angular directive: https://angular.io/api/common/NgClass
+   * Used for styling appointment slots.
+   */
+  protected appointmentCssClasses(appointment: Appointment): Object {
+    const now = moment();
+    return {
+      TimeSlotCancelled: appointment.status === AppointmentStatuses.cancelled_by_client,
+      TimeSlotPast: this.appointmentEndMoment(appointment).isBefore(now)
+    };
   }
 
   /**

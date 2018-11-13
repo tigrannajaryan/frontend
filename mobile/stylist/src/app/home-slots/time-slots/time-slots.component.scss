@@ -58,6 +58,7 @@ time-slots {
     width: pxtovw(8px);
     border-radius: pxtovw(4px);
     margin-top: pxtovw(-4px);
+    margin-left: pxtovw(-4px);
     background-color: #E96D5C;
     left: 0; // right align the current time indicator
   }
@@ -101,6 +102,7 @@ time-slots {
     height: 100%;
     border: pxtovw(1px) solid color($colors, secondary);
     border-radius: pxtovw(2px);
+    background-color: white;
   }
 
   .TimeSlotClientName {
@@ -124,7 +126,12 @@ time-slots {
   }
 
   .TimeSlotCancelled {
-    // TODO: add proper styling for Cancelled appointments after the designer providers them
+    // TODO: add proper styling for Cancelled appointments after the designer provides them
+    // and remove the text-decoration below.
     text-decoration: line-through;
+  }
+
+  .TimeSlotPast {
+    // TODO: by design this must add 60% opactity div to timeslot
   }
 }
