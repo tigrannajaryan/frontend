@@ -10,7 +10,7 @@ import { ExternalAppService } from '~/shared/utils/external-app-service';
 import { setIntervalOutsideNgZone } from '~/shared/utils/timer-utils';
 import { getPhoneNumber } from '~/shared/utils/phone-numbers';
 
-import { Appointment, AppointmentStatuses, DayAppointments } from '~/core/api/home.models';
+import { Appointment, AppointmentStatuses, OneDayAppointmentsResponse } from '~/core/api/home.models';
 import { HomeService } from '~/core/api/home.service';
 import { AppointmentCheckoutParams } from '~/appointment/appointment-checkout/appointment-checkout.component';
 import { PageNames } from '~/core/page-names';
@@ -28,8 +28,14 @@ const helpText = `Congratulations! Your registration is complete.<br/><br/>
   You can also edit your information from the tab bar listed below.<br/>Let's get started.`;
 
 // Default data that we display until the real data is being loaded
-const defaultData: DayAppointments = {
-  appointments: []
+const defaultData: OneDayAppointmentsResponse = {
+  appointments: [],
+  first_slot_start_time: '9:00', // in hh:mm format in stylist timezone
+  service_time_gap_minutes: 30, // in minutes interval between slots
+  total_slot_count: 16,
+  work_start_at: '9:00', // in hh:mm working hours start
+  work_end_at: '17:00', // in hh:mm working hours end
+  is_day_available: true // is a working day
 };
 
 @Component({
@@ -40,7 +46,7 @@ export class HomeSlotsComponent {
   PageNames = PageNames;
 
   // Data received from API and used in HTML
-  data: DayAppointments = defaultData;
+  data: OneDayAppointmentsResponse = defaultData;
 
   // Data is currently loading
   @ViewChild(Content) content: Content;
@@ -48,7 +54,7 @@ export class HomeSlotsComponent {
   autoRefreshTimer: any;
 
   // Current displayed date
-  curDate: Date;
+  curDate: moment.Moment;
 
   // And its components as strings (used in HTML)
   curMonthName: string;
@@ -77,7 +83,7 @@ export class HomeSlotsComponent {
 
   async ionViewWillLoad(): Promise<void> {
     // Select and show today's date
-    this.selectDate(new Date(), false);
+    this.selectDate(moment().startOf('day'), false);
   }
 
   // we need ionViewWillEnter here because it fire each time when we go to this page
@@ -116,7 +122,7 @@ export class HomeSlotsComponent {
         }
       });
 
-      if (moment(this.curDate).startOf('day').isSameOrBefore(moment())) {
+      if (this.curDate.isSameOrBefore(moment())) {
         // We are showing today or a past date. Add "no-show" action.
         // We don't want to show it for future dates because it makes no sense
         // to mark someone no-show if it is not yet time for the appointment.
@@ -215,11 +221,11 @@ export class HomeSlotsComponent {
 
   protected isShowingToday(): boolean {
     // Show the current time line only if we are showing today
-    return this.curDate && this.curDate.toDateString() === new Date().toDateString();
+    return this.curDate && this.curDate.isSame(moment().startOf('day'));
   }
 
   protected onTodayNavigateClick(): void {
-    this.selectDate(new Date(), true);
+    this.selectDate(moment().startOf('day'), true);
   }
 
   protected onFreeSlotClick(freeSlot: FreeSlot): void {
@@ -238,11 +244,11 @@ export class HomeSlotsComponent {
 
   protected onDateAreaClick(): void {
     this.datePicker.show({
-      date: this.curDate, // Start with current date
+      date: this.curDate.toDate(), // Start with current date
       mode: 'date',
       androidTheme: this.datePicker.ANDROID_THEMES.THEME_DEVICE_DEFAULT_LIGHT
     }).then(
-      date => this.selectDate(date, true),
+      date => this.selectDate(moment(date), true),
       err => {
         // Nothing to do. Navigation cancelled.
       }
@@ -262,8 +268,8 @@ export class HomeSlotsComponent {
   /**
    * Set the date to show appointments for and load and display the appointments.
    */
-  private selectDate(date: Date, loadAppointments: boolean): void {
-    this.curDate = date;
+  private selectDate(date: moment.Moment, loadAppointments: boolean): void {
+    this.curDate = date.clone().startOf('day');
     this.curMonthName = moment(date).format('MMM');
     this.curWeekdayName = moment(date).format('dddd');
     this.curDayOfMonth = moment(date).format('D');
@@ -275,13 +281,13 @@ export class HomeSlotsComponent {
 
   private async loadAppointments(): Promise<void> {
     const data = await this.appointmentsDataStore.get(this.curDate);
-    this.processAppointments({ appointments: data.response });
+    this.processAppointments(data.response);
   }
 
   /**
    * Remembers data received from the backend and updates the view.
    */
-  private processAppointments(data: DayAppointments): void {
+  private processAppointments(data: OneDayAppointmentsResponse): void {
     if (!(data && data.appointments)) {
       return;
     }

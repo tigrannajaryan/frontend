@@ -5,6 +5,7 @@ import * as moment from 'moment';
 import { getHoursSinceMidnight } from '~/shared/utils/datetime-utils';
 import { Appointment, AppointmentStatuses } from '~/core/api/home.models';
 import { setIntervalOutsideNgZone } from '~/shared/utils/timer-utils';
+import { HHMMTime } from '~/shared/api/base.models';
 
 interface TimeLabel {
   text: string;
@@ -103,10 +104,16 @@ export class TimeSlotsComponent implements AfterViewInit, OnDestroy {
   @Input() slotIntervalInMin = 30;
 
   // Start of the working day. We initially scroll vertically to this value. Must be integer.
-  @Input() startHour = 9;
+  @Input() set startHour(value: HHMMTime) {
+    this._startHour = getHoursSinceMidnight(moment(value, 'HH:mm:ss'));
+    this.updateWorkingHours();
+  }
 
   // End of the working day.
-  @Input() endHour = 17;
+  @Input() set endHour(value: number) {
+    this._endHour = getHoursSinceMidnight(moment(value, 'HH:mm:ss'));
+    this.updateWorkingHours();
+  }
 
   // Show or not the current time indicator
   @Input() set showCurTimeIndicator(value: boolean) {
@@ -142,10 +149,10 @@ export class TimeSlotsComponent implements AfterViewInit, OnDestroy {
 
   protected selectedFreeSlot: SlotItem;
 
-  // Appointments (this is our main input)
   private _appointments: Appointment[] = [];
-
   private _showCurTimeIndicator: boolean;
+  private _startHour = 9;
+  private _endHour = 17;
 
   // Timer id for auto-refreshing the current time indicator
   private autoRefreshTimerId: any;
@@ -268,11 +275,16 @@ export class TimeSlotsComponent implements AfterViewInit, OnDestroy {
     // Time axis height is equal to the vertical position of the last label
     this.timeAxis.heightInVw = this.timeLabels[this.timeLabels.length - 1].posYInVw;
 
-    this.timeAxis.morningNonWorkingInVw = hourToYInVw(this.startHour);
-    this.timeAxis.eveningNonWorkingInVw = hourToYInVw(this.endHour);
+    // Show non-working hours
+    this.updateWorkingHours();
 
     // Also render current time indicator if needed
     this.updateCurrentTime();
+  }
+
+  private updateWorkingHours(): void {
+    this.timeAxis.morningNonWorkingInVw = hourToYInVw(this._startHour);
+    this.timeAxis.eveningNonWorkingInVw = hourToYInVw(this._endHour);
   }
 
   /**
@@ -403,7 +415,7 @@ export class TimeSlotsComponent implements AfterViewInit, OnDestroy {
 
     // If we are showing current time indicator then scroll to the beginning of its hours
     // otherwise scroll to the beginning of working day.
-    const scrollToHour = this._showCurTimeIndicator ? curHour : this.startHour;
+    const scrollToHour = this._showCurTimeIndicator ? curHour : Math.trunc(this._startHour);
 
     // Find the label for the starting hour
     const label = this.timeLabels[scrollToHour];

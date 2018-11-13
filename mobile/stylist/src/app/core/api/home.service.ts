@@ -16,7 +16,8 @@ import {
   AppointmentPreviewRequest,
   AppointmentPreviewResponse,
   HomeData,
-  NewAppointmentRequest
+  NewAppointmentRequest,
+  OneDayAppointmentsResponse
 } from './home.models';
 
 @Injectable()
@@ -54,6 +55,15 @@ export class HomeService extends BaseService {
       });
     }
     return this.get<Appointment[]>('stylist/appointments', params);
+  }
+
+  /**
+   * Get all appointments. The stylist must be already authenticated as a user.
+   */
+  getOneDayAppointments(date: moment.Moment): Observable<ApiResponse<OneDayAppointmentsResponse>> {
+    let params = new HttpParams();
+    params = params.append('date', date.clone().startOf('day').format('YYYY-MM-DD'));
+    return this.get<OneDayAppointmentsResponse>('stylist/appointments/oneday', params);
   }
 
   /**

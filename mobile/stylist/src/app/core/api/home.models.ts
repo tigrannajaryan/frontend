@@ -1,4 +1,4 @@
-import { ISODateTime } from '~/shared/api/base.models';
+import { HHMMTime, ISODateTime } from '~/shared/api/base.models';
 
 export enum AppointmentStatuses {
   new = 'new',
@@ -97,11 +97,11 @@ export interface HomeData {
   today_slots: number;
 }
 
-export interface DayAppointments {
-  appointments: Appointment[];
-  // TODO: add the rest of fields when a new API is implemented,
-  // see https://madebeauty.atlassian.net/browse/BAC-326
-}
+// export interface DayAppointments {
+//   appointments: Appointment[];
+//   // TODO: add the rest of fields when a new API is implemented,
+//   // see https://madebeauty.atlassian.net/browse/BAC-326
+// }
 
 export interface CheckoutRequest {
   status: AppointmentStatuses;
@@ -112,4 +112,14 @@ export interface CheckoutRequest {
 
 export interface CheckOutService {
   service_uuid: string;
+}
+
+export interface OneDayAppointmentsResponse {
+  appointments: Appointment[];
+  first_slot_start_time: HHMMTime; // in hh:mm format in stylist timezone
+  service_time_gap_minutes: number; // in minutes interval between slots
+  total_slot_count: number;
+  work_start_at: HHMMTime; // in hh:mm working hours start
+  work_end_at: HHMMTime; // in hh:mm working hours end
+  is_day_available: boolean; // is a working day
 }

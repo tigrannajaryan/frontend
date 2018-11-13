@@ -39,7 +39,7 @@
 
                 <!-- appointment details -->
                 <div class="TimeSlotClientName">{{ formatClientName(item.appointment) }}</div>
-                <div class="TimeSlotServices">{{ formatServices(item.appointment) }}</div>
+                <div class="TimeSlotServices">${{ item.appointment.grand_total }} &#8226; {{ formatServices(item.appointment) }}</div>
               </div>
             </ng-template>
           </ng-template>
