@@ -95,8 +95,7 @@
     "sw-toolbox": "3.6.0",
     "uk.co.workingedge.phonegap.plugin.launchnavigator": "4.2.2",
     "xml2js": "0.4.19",
-    "zone.js": "0.8.20",
-    "cordova-plugin-contacts": "3.0.1"
+    "zone.js": "0.8.20"
   },
   "devDependencies": {
     "@angular/cli": "1.7.4",
@@ -170,8 +169,7 @@
       },
       "cordova-android-play-services-gradle-release": {
         "PLAY_SERVICES_VERSION": "11.0.1"
-      },
-      "cordova-plugin-contacts": {}
+      }
     },
     "platforms": [
       "android",
