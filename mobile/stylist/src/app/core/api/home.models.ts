@@ -1,4 +1,4 @@
-import { HHMMTime, ISODateTime } from '~/shared/api/base.models';
+import { ISODateTime, ISOTimeOnly } from '~/shared/api/base.models';
 
 export enum AppointmentStatuses {
   new = 'new',
@@ -116,10 +116,10 @@ export interface CheckOutService {
 
 export interface OneDayAppointmentsResponse {
   appointments: Appointment[];
-  first_slot_start_time: HHMMTime; // in hh:mm format in stylist timezone
+  first_slot_start_time: ISOTimeOnly; // in hh:mm format in stylist timezone
   service_time_gap_minutes: number; // in minutes interval between slots
   total_slot_count: number;
-  work_start_at: HHMMTime; // in hh:mm working hours start
-  work_end_at: HHMMTime; // in hh:mm working hours end
+  work_start_at: ISOTimeOnly; // in hh:mm working hours start
+  work_end_at: ISOTimeOnly; // in hh:mm working hours end
   is_day_available: boolean; // is a working day
 }

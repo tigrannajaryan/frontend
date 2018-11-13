@@ -5,7 +5,7 @@ import * as moment from 'moment';
 import { getHoursSinceMidnight } from '~/shared/utils/datetime-utils';
 import { Appointment, AppointmentStatuses } from '~/core/api/home.models';
 import { setIntervalOutsideNgZone } from '~/shared/utils/timer-utils';
-import { HHMMTime } from '~/shared/api/base.models';
+import { ISOTimeOnly, isoTimeOnlyFormat } from '~/shared/api/base.models';
 
 interface TimeLabel {
   text: string;
@@ -101,17 +101,20 @@ export class TimeSlotsComponent implements AfterViewInit, OnDestroy {
   }
 
   // Interval between slots in minutes
-  @Input() slotIntervalInMin = 30;
+  @Input() set slotIntervalInMin(value: number) {
+    this._slotIntervalInMin = value;
+    this.updateAppointments();
+  }
 
   // Start of the working day. We initially scroll vertically to this value. Must be integer.
-  @Input() set startHour(value: HHMMTime) {
-    this._startHour = getHoursSinceMidnight(moment(value, 'HH:mm:ss'));
+  @Input() set startHour(value: ISOTimeOnly) {
+    this._startHour = getHoursSinceMidnight(moment(value, isoTimeOnlyFormat));
     this.updateWorkingHours();
   }
 
   // End of the working day.
   @Input() set endHour(value: number) {
-    this._endHour = getHoursSinceMidnight(moment(value, 'HH:mm:ss'));
+    this._endHour = getHoursSinceMidnight(moment(value, isoTimeOnlyFormat));
     this.updateWorkingHours();
   }
 
@@ -153,6 +156,7 @@ export class TimeSlotsComponent implements AfterViewInit, OnDestroy {
   private _showCurTimeIndicator: boolean;
   private _startHour = 9;
   private _endHour = 17;
+  private _slotIntervalInMin = 30;
 
   // Timer id for auto-refreshing the current time indicator
   private autoRefreshTimerId: any;
@@ -299,14 +303,14 @@ export class TimeSlotsComponent implements AfterViewInit, OnDestroy {
    * Convert hours since midnight to the slot index. Works with fraction numbers too.
    */
   private hourToSlotIndex(hour: number): number {
-    return hour * 60 / this.slotIntervalInMin;
+    return hour * 60 / this._slotIntervalInMin;
   }
 
   /**
    * Convert slot index to hours since midnight. Works with fraction numbers too.
    */
   private slotIndexToHour(slotIndex: number): number {
-    return slotIndex * this.slotIntervalInMin / 60;
+    return slotIndex * this._slotIntervalInMin / 60;
   }
 
   /**
@@ -317,7 +321,7 @@ export class TimeSlotsComponent implements AfterViewInit, OnDestroy {
     this.slotItems = [];
 
     // Create free slots for entire day initially
-    const freeSlots = new Array(totalHoursInDay * 60 / this.slotIntervalInMin).fill(true);
+    const freeSlots = new Array(totalHoursInDay * 60 / this._slotIntervalInMin).fill(true);
 
     // Make sure _appointments are ordered by start time
     this._appointments = this._appointments.sort((a, b) => compareAppointments(a, b));
@@ -388,7 +392,7 @@ export class TimeSlotsComponent implements AfterViewInit, OnDestroy {
     }
 
     // Free slot height is equal to the interval
-    const freeSlotHeightInVw = hourToYInVw(this.slotIntervalInMin / 60);
+    const freeSlotHeightInVw = hourToYInVw(this._slotIntervalInMin / 60);
 
     // Now create free slot items for everything that actually remains free from appointments
     for (let slotIndex = 0; slotIndex <= freeSlots.length; slotIndex++) {
