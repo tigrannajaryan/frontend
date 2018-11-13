@@ -15,7 +15,6 @@ home-slots {
   }
 
   .HomeSlotsSubheader {
-    width: pxtovw(120px);
   }
 
   .HomeSlotsWeekdayName {
@@ -26,9 +25,6 @@ home-slots {
     display: flex;
     color: color($colors, warmGrey);
     font-size: pxtovw(13px);
-  }
-
-  .HomeSlotsMonthName {
   }
 
   .HomeSlotsDayOfMonth {

@@ -75,6 +75,11 @@ export class HomeSlotsComponent {
     return this.appStorage.ready().then(() => true);
   }
 
+  async ionViewWillLoad(): Promise<void> {
+    // Select and show today's date
+    this.selectDate(new Date(), false);
+  }
+
   // we need ionViewWillEnter here because it fire each time when we go to this page
   // for example form adding appointment using nav.pop
   // and ionViewDidLoad fire only once this is not what we need here
@@ -86,8 +91,7 @@ export class HomeSlotsComponent {
       this.appStorage.set('showHomeScreenHelp', false);
     }
 
-    // Select and show today's date
-    this.selectDate(new Date());
+    this.loadAppointments();
 
     // Autorefresh the view once every 10 mins. This is a temporary solution until
     // we implement push notifications.
@@ -215,7 +219,7 @@ export class HomeSlotsComponent {
   }
 
   protected onTodayNavigateClick(): void {
-    this.selectDate(new Date());
+    this.selectDate(new Date(), true);
   }
 
   protected onFreeSlotClick(freeSlot: FreeSlot): void {
@@ -238,7 +242,7 @@ export class HomeSlotsComponent {
       mode: 'date',
       androidTheme: this.datePicker.ANDROID_THEMES.THEME_DEVICE_DEFAULT_LIGHT
     }).then(
-      date => this.selectDate(date),
+      date => this.selectDate(date, true),
       err => {
         // Nothing to do. Navigation cancelled.
       }
@@ -258,12 +262,15 @@ export class HomeSlotsComponent {
   /**
    * Set the date to show appointments for and load and display the appointments.
    */
-  private selectDate(date: Date): void {
+  private selectDate(date: Date, loadAppointments: boolean): void {
     this.curDate = date;
     this.curMonthName = moment(date).format('MMM');
     this.curWeekdayName = moment(date).format('dddd');
     this.curDayOfMonth = moment(date).format('D');
-    this.loadAppointments();
+
+    if (loadAppointments) {
+      this.loadAppointments();
+    }
   }
 
   private async loadAppointments(): Promise<void> {
