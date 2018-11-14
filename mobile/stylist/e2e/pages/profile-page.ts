@@ -31,8 +31,8 @@ class ProfilePage {
   async submitForm() {
     try {
       await click(profilePage.continueButton);
-    } catch {
-      console.warn('Cannot click on Continue button in profile page.');
+    } catch (e) {
+      console.warn('Cannot click on Continue button in profile page.', e);
       console.warn(await this.firstNameInput.getText());
       console.warn(await this.lastNameInput.getText());
       console.warn(await this.salonNameInput.getText());
