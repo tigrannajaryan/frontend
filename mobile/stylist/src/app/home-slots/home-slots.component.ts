@@ -10,7 +10,7 @@ import { ExternalAppService } from '~/shared/utils/external-app-service';
 import { setIntervalOutsideNgZone } from '~/shared/utils/timer-utils';
 import { getPhoneNumber } from '~/shared/utils/phone-numbers';
 
-import { Appointment, AppointmentStatuses, OneDayAppointmentsResponse } from '~/core/api/home.models';
+import { Appointment, AppointmentStatuses, DayAppointmentsResponse } from '~/core/api/home.models';
 import { HomeService } from '~/core/api/home.service';
 import { AppointmentCheckoutParams } from '~/appointment/appointment-checkout/appointment-checkout.component';
 import { PageNames } from '~/core/page-names';
@@ -20,15 +20,13 @@ import { Tabs, UpcomingAndPastPageParams } from '~/home/home.component';
 import { AppointmentAddParams } from '~/appointment/appointment-add/appointment-add';
 import { FreeSlot, isBlockedTime } from './time-slots/time-slots.component';
 import { AppointmentsDataStore } from './appointments.data';
-import { formatNumber } from 'libphonenumber-js';
-import { NumberFormat } from '~/shared/directives/phone-input.directive';
 
 const helpText = `Congratulations! Your registration is complete.<br/><br/>
-  This is your homescreen. Your appointments will show up here.<br/><br/>
-  You can also edit your information from the tab bar listed below.<br/>Let's get started.`;
+  This is your home screen. Your appointments will show up here.<br/><br/>
+  Let's get started.`;
 
 // Default data that we display until the real data is being loaded
-const defaultData: OneDayAppointmentsResponse = {
+const defaultData: DayAppointmentsResponse = {
   appointments: [],
   first_slot_start_time: '9:00', // in hh:mm format in stylist timezone
   service_time_gap_minutes: 30, // in minutes interval between slots
@@ -46,44 +44,37 @@ export class HomeSlotsComponent {
   PageNames = PageNames;
 
   // Data received from API and used in HTML
-  data: OneDayAppointmentsResponse = defaultData;
+  data: DayAppointmentsResponse = defaultData;
 
   // Data is currently loading
   @ViewChild(Content) content: Content;
 
   autoRefreshTimer: any;
 
-  // Current displayed date
-  curDate: moment.Moment;
+  // Current selected date
+  selectedDate: moment.Moment;
 
   // And its components as strings (used in HTML)
-  curMonthName: string;
-  curWeekdayName: string;
-  curDayOfMonth: string;
+  selectedMonthName: string;
+  selectedWeekdayName: string;
+  selectedDayOfMonth: string;
 
   constructor(
     private actionSheetCtrl: ActionSheetController,
     private appointmentsDataStore: AppointmentsDataStore,
     private appStorage: StylistAppStorage,
     private datePicker: DatePicker,
-    private navCtrl: NavController,
+    private externalAppService: ExternalAppService,
     private homeService: HomeService,
-    private ngZone: NgZone,
     private logger: Logger,
-    private externalAppService: ExternalAppService
+    private navCtrl: NavController,
+    private ngZone: NgZone
   ) {
-  }
-
-  ionViewCanEnter(): Promise<boolean> {
-    this.logger.info('HomeSlotsComponent: ionViewCanEnter');
-
-    // Make sure appStorage is ready before we enter this page
-    return this.appStorage.ready().then(() => true);
   }
 
   async ionViewWillLoad(): Promise<void> {
     // Select and show today's date
-    this.selectDate(moment().startOf('day'), false);
+    this.selectDate(moment().startOf('day'));
   }
 
   // we need ionViewWillEnter here because it fire each time when we go to this page
@@ -92,11 +83,13 @@ export class HomeSlotsComponent {
   async ionViewWillEnter(): Promise<void> {
     this.logger.info('HomeSlotsComponent: entering.');
 
+    await this.appStorage.ready();
     if (this.appStorage.get('showHomeScreenHelp')) {
       showAlert('', helpText);
       this.appStorage.set('showHomeScreenHelp', false);
     }
 
+    // Load and show appointments for selected date
     this.loadAppointments();
 
     // Autorefresh the view once every 10 mins. This is a temporary solution until
@@ -106,6 +99,7 @@ export class HomeSlotsComponent {
   }
 
   ionViewWillLeave(): void {
+    // Stop autorefresh
     clearInterval(this.autoRefreshTimer);
   }
 
@@ -116,13 +110,13 @@ export class HomeSlotsComponent {
     if (!isBlockedTime(appointment)) {
       // Show "Details" or "Checkout" action for real appointments
       buttons.push({
-        text: appointment.status === AppointmentStatuses.checked_out ? 'Details' : 'Checkout client',
+        text: appointment.status === AppointmentStatuses.checked_out ? 'Details' : 'Check Out',
         handler: () => {
           this.checkOutAppointmentClick(appointment);
         }
       });
 
-      if (this.curDate.isSameOrBefore(moment())) {
+      if (this.selectedDate.isSameOrBefore(moment())) {
         // We are showing today or a past date. Add "no-show" action.
         // We don't want to show it for future dates because it makes no sense
         // to mark someone no-show if it is not yet time for the appointment.
@@ -139,17 +133,18 @@ export class HomeSlotsComponent {
 
     if (appointment.client_phone) {
       // If the phone number is known show "Call" and "Copy" actions
+      const formattedPhoneNum = getPhoneNumber(appointment.client_phone);
       buttons.push(
         {
-          text: `Call: ${getPhoneNumber(appointment.client_phone)}`,
+          text: `Call: ${formattedPhoneNum}`,
           handler: () => {
-            this.externalAppService.doPhoneCall(appointment.client_phone);
+            this.externalAppService.doPhoneCall(formattedPhoneNum);
           }
         },
         {
-          text: `Copy: ${formatNumber(appointment.client_phone, NumberFormat.International)}`,
+          text: `Copy: ${formattedPhoneNum}`,
           handler: () => {
-            this.externalAppService.copyToTheClipboard(appointment.client_phone);
+            this.externalAppService.copyToTheClipboard(formattedPhoneNum);
           }
         }
       );
@@ -221,11 +216,11 @@ export class HomeSlotsComponent {
 
   protected isShowingToday(): boolean {
     // Show the current time line only if we are showing today
-    return this.curDate && this.curDate.isSame(moment().startOf('day'));
+    return this.selectedDate && this.selectedDate.isSame(moment().startOf('day'));
   }
 
   protected onTodayNavigateClick(): void {
-    this.selectDate(moment().startOf('day'), true);
+    this.selectDateAndLoadAppointments(moment().startOf('day'));
   }
 
   protected onFreeSlotClick(freeSlot: FreeSlot): void {
@@ -238,56 +233,62 @@ export class HomeSlotsComponent {
   protected onAddAppointmentClick(): void {
     // Show Appointment Add screen when clicked on Add Appointment button.
     // Preset the date of appointment since we already know it.
-    const params: AppointmentAddParams = { startDate: moment(this.curDate).startOf('day') };
+    const params: AppointmentAddParams = { startDate: moment(this.selectedDate).startOf('day') };
     this.navCtrl.push(PageNames.AppointmentAdd, { params });
   }
 
   protected onDateAreaClick(): void {
+    // Show date picker and let the user choose a date, then load appointments
+    // for selected date.
     this.datePicker.show({
-      date: this.curDate.toDate(), // Start with current date
+      date: this.selectedDate.toDate(), // Start with current date
       mode: 'date',
       androidTheme: this.datePicker.ANDROID_THEMES.THEME_DEVICE_DEFAULT_LIGHT
     }).then(
-      date => this.selectDate(moment(date), true),
+      date => this.selectDateAndLoadAppointments(moment(date)),
       err => {
         // Nothing to do. Navigation cancelled.
       }
     );
   }
 
-  protected onUpcomingClick(): void {
+  protected onUpcomingVisitsClick(): void {
     const params: UpcomingAndPastPageParams = { showTab: Tabs.upcoming };
     this.navCtrl.push(PageNames.Home, { params });
   }
 
-  protected onPastClick(): void {
+  protected onPastVisitsClick(): void {
     const params: UpcomingAndPastPageParams = { showTab: Tabs.past };
     this.navCtrl.push(PageNames.Home, { params });
   }
 
   /**
+   * Set the date to show appointments for.
+   */
+  private selectDate(date: moment.Moment): void {
+    this.selectedDate = date.clone().startOf('day');
+    this.selectedMonthName = moment(date).format('MMM');
+    this.selectedWeekdayName = moment(date).format('dddd');
+    this.selectedDayOfMonth = moment(date).format('D');
+  }
+
+  /**
    * Set the date to show appointments for and load and display the appointments.
    */
-  private selectDate(date: moment.Moment, loadAppointments: boolean): void {
-    this.curDate = date.clone().startOf('day');
-    this.curMonthName = moment(date).format('MMM');
-    this.curWeekdayName = moment(date).format('dddd');
-    this.curDayOfMonth = moment(date).format('D');
-
-    if (loadAppointments) {
-      this.loadAppointments();
-    }
+  private selectDateAndLoadAppointments(date: moment.Moment): void {
+    this.selectDate(date);
+    this.loadAppointments();
   }
 
   private async loadAppointments(): Promise<void> {
-    const data = await this.appointmentsDataStore.get(this.curDate);
+    const data = await this.appointmentsDataStore.get(this.selectedDate);
     this.processAppointments(data.response);
   }
 
   /**
    * Remembers data received from the backend and updates the view.
    */
-  private processAppointments(data: OneDayAppointmentsResponse): void {
+  private processAppointments(data: DayAppointmentsResponse): void {
     if (!(data && data.appointments)) {
       return;
     }

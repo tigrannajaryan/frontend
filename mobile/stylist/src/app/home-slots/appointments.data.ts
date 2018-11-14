@@ -4,14 +4,14 @@ import { Observable } from 'rxjs/Observable';
 import { ApiResponse } from '~/shared/api/base.models';
 import { DataStore } from '~/shared/storage/data-store';
 import { DataCacheKey } from '~/core/data.module';
-import { OneDayAppointmentsResponse } from '~/core/api/home.models';
+import { DayAppointmentsResponse } from '~/core/api/home.models';
 import { HomeService } from '~/core/api/home.service';
 import { Moment } from 'moment';
 
 @Injectable()
 export class AppointmentsDataStore {
   private static guardInitilization = false;
-  private dataStore: DataStore<OneDayAppointmentsResponse>;
+  private dataStore: DataStore<DayAppointmentsResponse>;
   private date: Moment;
 
   constructor(private api: HomeService) {
@@ -24,7 +24,7 @@ export class AppointmentsDataStore {
       () => this.getAppointments(), { cacheTtlMilliseconds: 0 });
   }
 
-  get(date: Moment): Promise<ApiResponse<OneDayAppointmentsResponse>> {
+  get(date: Moment): Promise<ApiResponse<DayAppointmentsResponse>> {
     if (!this.date || !this.date.isSame(date)) {
       this.date = date;
       this.dataStore.clear();
@@ -32,7 +32,7 @@ export class AppointmentsDataStore {
     return this.dataStore.get();
   }
 
-  private getAppointments(): Observable<ApiResponse<OneDayAppointmentsResponse>> {
-    return this.api.getOneDayAppointments(this.date);
+  private getAppointments(): Observable<ApiResponse<DayAppointmentsResponse>> {
+    return this.api.getDayAppointments(this.date);
   }
 }

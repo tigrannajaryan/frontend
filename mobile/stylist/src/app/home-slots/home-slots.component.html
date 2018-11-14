@@ -9,15 +9,15 @@
 
     <div class="HomeSlotsSubheader">
       <div class="HomeSlotsDateIndicator" (click)="onDateAreaClick()">
-        <div class="HomeSlotsWeekdayName">{{ curWeekdayName }}</div>
+        <div class="HomeSlotsWeekdayName">{{ selectedWeekdayName }}</div>
         <div class="HomeSlotsMonthAndDay">
-          <div>{{ curMonthName }},&nbsp;</div>
-          <div class="HomeSlotsDayOfMonth">{{ curDayOfMonth }}</div>
+          <div>{{ selectedMonthName }},&nbsp;</div>
+          <div class="HomeSlotsDayOfMonth">{{ selectedDayOfMonth }}</div>
         </div>
       </div>
       <div class="HomeSlotsUpcomingAndPast">
-        <a (click)="onUpcomingClick()">Upcoming Visits</a>
-        <a (click)="onPastClick()">Past Visits</a>
+        <a (click)="onUpcomingVisitsClick()">Upcoming Visits</a>
+        <a (click)="onPastVisitsClick()">Past Visits</a>
       </div>
     </div>
 
@@ -31,7 +31,8 @@
     </button>
   </ion-fab>
 
-  <time-slots [appointments]="data?.appointments" [showCurTimeIndicator]="isShowingToday()" (clickFreeSlot)="onFreeSlotClick($event)"
-    (clickAppointment)="onAppointmentClick($event)" [startHour]="data.work_start_at" [endHour]="data.work_end_at"></time-slots>
+  <!-- TODO: set [slotIntervalInMin] parameter of time-slots -->
+  <time-slots [appointments]="data?.appointments" [showCurTimeIndicator]="isShowingToday()" (freeSlotClick)="onFreeSlotClick($event)"
+    (appointmentClick)="onAppointmentClick($event)" [startHour]="data.work_start_at" [endHour]="data.work_end_at"></time-slots>
 
 </ion-content>

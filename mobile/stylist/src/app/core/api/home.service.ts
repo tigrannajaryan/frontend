@@ -7,7 +7,7 @@ import { Logger } from '~/shared/logger';
 import { ApiRequestOptions } from '~/shared/api-errors';
 import { ServerStatusTracker } from '~/shared/server-status-tracker';
 import { BaseService } from '~/shared/api/base.service';
-import { ApiResponse } from '~/shared/api/base.models';
+import { ApiResponse, isoDateFormat } from '~/shared/api/base.models';
 
 import {
   Appointment,
@@ -15,9 +15,9 @@ import {
   AppointmentParams,
   AppointmentPreviewRequest,
   AppointmentPreviewResponse,
+  DayAppointmentsResponse,
   HomeData,
-  NewAppointmentRequest,
-  OneDayAppointmentsResponse
+  NewAppointmentRequest
 } from './home.models';
 
 @Injectable()
@@ -48,7 +48,7 @@ export class HomeService extends BaseService {
         const param = appointmentParams[key];
 
         if (param instanceof Date) {
-          params = params.append(key, moment(param).format('YYYY-MM-DD'));
+          params = params.append(key, moment(param).format(isoDateFormat));
         } else {
           params = params.append(key, param);
         }
@@ -58,12 +58,12 @@ export class HomeService extends BaseService {
   }
 
   /**
-   * Get all appointments. The stylist must be already authenticated as a user.
+   * Get appointments for one day.
    */
-  getOneDayAppointments(date: moment.Moment): Observable<ApiResponse<OneDayAppointmentsResponse>> {
+  getDayAppointments(date: moment.Moment): Observable<ApiResponse<DayAppointmentsResponse>> {
     let params = new HttpParams();
-    params = params.append('date', date.clone().startOf('day').format('YYYY-MM-DD'));
-    return this.get<OneDayAppointmentsResponse>('stylist/appointments/oneday', params);
+    params = params.append('date', date.clone().startOf('day').format(isoDateFormat));
+    return this.get<DayAppointmentsResponse>('stylist/appointments/oneday', params);
   }
 
   /**

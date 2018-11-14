@@ -114,7 +114,7 @@ export interface CheckOutService {
   service_uuid: string;
 }
 
-export interface OneDayAppointmentsResponse {
+export interface DayAppointmentsResponse {
   appointments: Appointment[];
   first_slot_start_time: ISOTimeOnly; // in hh:mm format in stylist timezone
   service_time_gap_minutes: number; // in minutes interval between slots

@@ -1,3 +1,6 @@
+// TODO: rename this file to upcoming-and-past.component.ts (I want to do it in separate PR
+// to avoid complicated Github review).
+
 import { Component, NgZone, ViewChild } from '@angular/core';
 import {
   ActionSheetController,
@@ -10,13 +13,14 @@ import { formatNumber } from 'libphonenumber-js';
 
 import { Logger } from '~/shared/logger';
 import { GAWrapper } from '~/shared/google-analytics';
+import { ExternalAppService } from '~/shared/utils/external-app-service';
+import { NumberFormat } from '~/shared/directives/phone-input.directive';
+import { ApiResponse } from '~/shared/api/base.models';
+
 import { PageNames } from '~/core/page-names';
 import { Appointment, AppointmentStatuses, HomeData } from '~/core/api/home.models';
 import { HomeService } from '~/core/api/home.service';
 import { AppointmentCheckoutParams } from '~/appointment/appointment-checkout/appointment-checkout.component';
-import { ExternalAppService } from '~/shared/utils/external-app-service';
-import { NumberFormat } from '~/shared/directives/phone-input.directive';
-import { ApiResponse } from '~/shared/api/base.models';
 
 export enum AppointmentTag {
   NotCheckedOut = 'Not checked out',

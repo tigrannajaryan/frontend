@@ -129,10 +129,10 @@ export class TimeSlotsComponent implements AfterViewInit, OnDestroy {
   }
 
   // Event fired when a free slot is clicked
-  @Output() clickFreeSlot = new EventEmitter<FreeSlot>();
+  @Output() freeSlotClick = new EventEmitter<FreeSlot>();
 
   // Event fired when a slot with appointment is clicked
-  @Output() clickAppointment = new EventEmitter<Appointment>();
+  @Output() ppointmentClick = new EventEmitter<Appointment>();
 
   @ViewChild(Scroll) scroll: Scroll;
 
@@ -181,14 +181,14 @@ export class TimeSlotsComponent implements AfterViewInit, OnDestroy {
    * Format client name and return as string. Will use first/last if it is known
    * otherwise will return phone instead of the name.
    */
-  protected formatClientName(appointment: Appointment): string {
+  formatClientName(appointment: Appointment): string {
     let str = appointment.client_first_name.trim();
     if (appointment.client_last_name.trim()) {
       // Add last name if it is known
       if (str.length) {
         str = `${str} `;
       }
-      str = `${str} ${appointment.client_last_name.trim()}`;
+      str = `${str}${appointment.client_last_name.trim()}`;
     }
     if (!str && appointment.client_phone.trim()) {
       // Use phone number if name is missing
@@ -200,16 +200,19 @@ export class TimeSlotsComponent implements AfterViewInit, OnDestroy {
   /**
    * Format a list of services as a comman separated string
    */
-  protected formatServices(appointment: Appointment): string {
+  formatServices(appointment: Appointment): string {
     return appointment.services.map(s => s.service_name).join(', ');
   }
 
-  protected appointmentEndMoment(appointment: Appointment): moment.Moment {
+  /**
+   * Calculate and return end time of the appointment
+   */
+  appointmentEndMoment(appointment: Appointment): moment.Moment {
     const start = moment(appointment.datetime_start_at);
     return start.add(appointment.duration_minutes, 'minutes');
   }
 
-  protected isAppointmentPendingCheckout(appointment: Appointment): boolean {
+  isAppointmentPendingCheckout(appointment: Appointment): boolean {
     if (appointment.status === AppointmentStatuses.new) {
       const end = this.appointmentEndMoment(appointment);
       if (end.isBefore(moment())) {
@@ -256,7 +259,7 @@ export class TimeSlotsComponent implements AfterViewInit, OnDestroy {
   protected onSlotItemClick(slotItem: SlotItem): void {
     if (slotItem.appointment) {
       // It is an appointment slot
-      this.clickAppointment.emit(slotItem.appointment);
+      this.ppointmentClick.emit(slotItem.appointment);
     } else {
       // It is a free slot
 
@@ -268,7 +271,7 @@ export class TimeSlotsComponent implements AfterViewInit, OnDestroy {
       setTimeout(() => {
         // Now fire the event to let others know free slot is selected
         const freeSlot: FreeSlot = { startTime: slotItem.startTime };
-        this.clickFreeSlot.emit(freeSlot);
+        this.freeSlotClick.emit(freeSlot);
       }, showFreeSlotSelectorForMs);
     }
   }
