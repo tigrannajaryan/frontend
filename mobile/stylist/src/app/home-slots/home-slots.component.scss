@@ -5,6 +5,11 @@ home-slots {
     margin: pxtovw(8px) 0 pxtovw(8px) pxtovw(72px);
   }
 
+  .HomeSlotsTodayNavigateIcon {
+    float: right;
+    margin-right: pxtovw(24px);
+  }
+
   .HomeSlotsSubheader {
     display: flex;
     align-items: center;
@@ -15,6 +20,8 @@ home-slots {
   }
 
   .HomeSlotsSubheader {
+    padding-bottom: pxtovw(8px);
+    border-bottom: 1px solid #E5E5E5;
   }
 
   .HomeSlotsWeekdayName {
@@ -25,6 +32,7 @@ home-slots {
     display: flex;
     color: color($colors, warmGrey);
     font-size: pxtovw(13px);
+    text-align: center;
   }
 
   .HomeSlotsDayOfMonth {
@@ -34,9 +42,13 @@ home-slots {
   .HomeSlotsUpcomingAndPast {
     display: flex;
     flex-grow: 1;
+    float: right;
+    margin-right: pxtovw(24px);
   }
 
   .HomeSlotsUpcomingAndPast a {
+    display: block;
+    justify-content: flex-end;
     color: color($colors, lightSalmon);
     font-size: pxtovw(18px);
     white-space: nowrap;

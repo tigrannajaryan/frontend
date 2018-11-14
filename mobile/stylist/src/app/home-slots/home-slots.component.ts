@@ -29,7 +29,7 @@ const helpText = `Congratulations! Your registration is complete.<br/><br/>
 const defaultData: DayAppointmentsResponse = {
   appointments: [],
   first_slot_start_time: '9:00', // in hh:mm format in stylist timezone
-  service_time_gap_minutes: 30, // in minutes interval between slots
+  service_time_gap_in_minutes: 30, // in minutes interval between slots
   total_slot_count: 16,
   work_start_at: '9:00', // in hh:mm working hours start
   work_end_at: '17:00', // in hh:mm working hours end
@@ -268,7 +268,7 @@ export class HomeSlotsComponent {
   private selectDate(date: moment.Moment): void {
     this.selectedDate = date.clone().startOf('day');
     this.selectedMonthName = moment(date).format('MMM');
-    this.selectedWeekdayName = moment(date).format('dddd');
+    this.selectedWeekdayName = moment(date).format('ddd');
     this.selectedDayOfMonth = moment(date).format('D');
   }
 

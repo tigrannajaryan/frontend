@@ -4,15 +4,15 @@
   <div class="HomeSlotsHeader">
       Appointments
       <!-- TODO: set correct icon -->
-      <ion-icon name="ios-calendar-outline" (click)="onTodayNavigateClick()"></ion-icon>
+      <ion-icon name="ios-calendar-outline" class="HomeSlotsTodayNavigateIcon" (click)="onTodayNavigateClick()"></ion-icon>
     </div>
 
     <div class="HomeSlotsSubheader">
       <div class="HomeSlotsDateIndicator" (click)="onDateAreaClick()">
         <div class="HomeSlotsWeekdayName">{{ selectedWeekdayName }}</div>
         <div class="HomeSlotsMonthAndDay">
-          <div>{{ selectedMonthName }},&nbsp;</div>
-          <div class="HomeSlotsDayOfMonth">{{ selectedDayOfMonth }}</div>
+          <span>{{ selectedMonthName }},&nbsp;</span>
+          <span class="HomeSlotsDayOfMonth">{{ selectedDayOfMonth }}</span>
         </div>
       </div>
       <div class="HomeSlotsUpcomingAndPast">
@@ -31,8 +31,8 @@
     </button>
   </ion-fab>
 
-  <!-- TODO: set [slotIntervalInMin] parameter of time-slots -->
   <time-slots [appointments]="data?.appointments" [showCurTimeIndicator]="isShowingToday()" (freeSlotClick)="onFreeSlotClick($event)"
-    (appointmentClick)="onAppointmentClick($event)" [startHour]="data.work_start_at" [endHour]="data.work_end_at"></time-slots>
+    (appointmentClick)="onAppointmentClick($event)" [startHour]="data.work_start_at" [endHour]="data.work_end_at"
+    [slotIntervalInMin]="data.service_time_gap_in_minutes"></time-slots>
 
 </ion-content>

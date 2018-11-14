@@ -7,7 +7,7 @@ import { Appointment, AppointmentStatuses } from '~/core/api/home.models';
 import { setIntervalOutsideNgZone } from '~/shared/utils/timer-utils';
 import { ISOTimeOnly, isoTimeOnlyFormat } from '~/shared/api/base.models';
 
-interface TimeLabel {
+export interface TimeSlotLabel {
   text: string;
   posYInVw: number;
   areaId: string;
@@ -15,16 +15,16 @@ interface TimeLabel {
 }
 
 // Position of the slot for displaying purposes. We support one or two columns.
-enum SlotColumn {
+export enum TimeSlotColumn {
   both, // slot occupies entire available width
   left, // slot occupies left half of available area
   right // slot occupies right half of available area
 }
 
 // Slot item to dispaly (either free slot or appointment)
-interface SlotItem {
+export interface TimeSlotItem {
   startTime: moment.Moment;
-  column: SlotColumn;
+  column: TimeSlotColumn;
 
   // Coordinates as numbers. Unit is vw.
   posYInVw: number;
@@ -33,9 +33,6 @@ interface SlotItem {
   widthInVw: number;
 
   appointment?: Appointment;
-
-  // Text of free slot
-  freeSlotText?: string;
 }
 
 /**
@@ -57,7 +54,7 @@ function hourToYInVw(hoursSinceMidnight: number): number {
 }
 
 // Based on design https://app.zeplin.io/project/5b4505174703426f52928575/screen/5be090972434c361a3b501ea
-const fullSlotWidthInPx = 304;
+export const fullSlotWidthInVw = pxtovw(304);
 
 /**
  * Comparison function to sort appointments by start time
@@ -132,7 +129,7 @@ export class TimeSlotsComponent implements AfterViewInit, OnDestroy {
   @Output() freeSlotClick = new EventEmitter<FreeSlot>();
 
   // Event fired when a slot with appointment is clicked
-  @Output() ppointmentClick = new EventEmitter<Appointment>();
+  @Output() appointmentClick = new EventEmitter<Appointment>();
 
   @ViewChild(Scroll) scroll: Scroll;
 
@@ -145,12 +142,12 @@ export class TimeSlotsComponent implements AfterViewInit, OnDestroy {
   };
 
   // List of labels to show in time axis
-  protected timeLabels: TimeLabel[] = [];
+  timeLabels: TimeSlotLabel[] = [];
 
   // The slot items to display
-  protected slotItems: SlotItem[] = [];
+  slotItems: TimeSlotItem[] = [];
 
-  protected selectedFreeSlot: SlotItem;
+  protected selectedFreeSlot: TimeSlotItem;
 
   private _appointments: Appointment[] = [];
   private _showCurTimeIndicator: boolean;
@@ -256,10 +253,10 @@ export class TimeSlotsComponent implements AfterViewInit, OnDestroy {
   /**
    * Click handler for slots
    */
-  protected onSlotItemClick(slotItem: SlotItem): void {
+  protected onSlotItemClick(slotItem: TimeSlotItem): void {
     if (slotItem.appointment) {
       // It is an appointment slot
-      this.ppointmentClick.emit(slotItem.appointment);
+      this.appointmentClick.emit(slotItem.appointment);
     } else {
       // It is a free slot
 
@@ -353,14 +350,14 @@ export class TimeSlotsComponent implements AfterViewInit, OnDestroy {
       const startHourOfDay = getHoursSinceMidnight(startTime);
 
       // Create slot item
-      const slotItem: SlotItem = {
+      const slotItem: TimeSlotItem = {
         startTime,
         posYInVw: hourToYInVw(startHourOfDay),
         heightInVw: hourToYInVw(appointment.duration_minutes / 60),
         leftInVw: 0,
-        widthInVw: pxtovw(fullSlotWidthInPx),
+        widthInVw: fullSlotWidthInVw,
         appointment,
-        column: SlotColumn.both
+        column: TimeSlotColumn.both
       };
 
       if (prevSlotItem) {
@@ -368,12 +365,12 @@ export class TimeSlotsComponent implements AfterViewInit, OnDestroy {
         if (prevSlotItem.posYInVw + prevSlotItem.heightInVw > slotItem.posYInVw) {
           // Yes. We need to use 2 columns.
 
-          if (prevSlotItem.column === SlotColumn.both) {
+          if (prevSlotItem.column === TimeSlotColumn.both) {
             // Previous item occupies both columns. Narrow it.
-            prevSlotItem.column = SlotColumn.left;
+            prevSlotItem.column = TimeSlotColumn.left;
           }
           // This slot should occupy the slot that is in opposite column to previous slot
-          slotItem.column = prevSlotItem.column === SlotColumn.left ? SlotColumn.right : SlotColumn.left;
+          slotItem.column = prevSlotItem.column === TimeSlotColumn.left ? TimeSlotColumn.right : TimeSlotColumn.left;
         }
       }
 
@@ -398,12 +395,12 @@ export class TimeSlotsComponent implements AfterViewInit, OnDestroy {
     // Based on column choice set correct horizontal coordinates of slots
     for (const slotItem of this.slotItems) {
       switch (slotItem.column) {
-        case SlotColumn.right:
+        case TimeSlotColumn.right:
           slotItem.leftInVw = slotItem.widthInVw / 2;
           slotItem.widthInVw = slotItem.widthInVw / 2;
           break;
 
-        case SlotColumn.left:
+        case TimeSlotColumn.left:
           slotItem.widthInVw = slotItem.widthInVw / 2;
           break;
         default:
@@ -425,10 +422,9 @@ export class TimeSlotsComponent implements AfterViewInit, OnDestroy {
           posYInVw: hourToYInVw(startHourOfDay),
           leftInVw: 0,
           heightInVw: freeSlotHeightInVw,
-          widthInVw: pxtovw(fullSlotWidthInPx),
+          widthInVw: fullSlotWidthInVw,
           appointment: undefined,
-          freeSlotText: `${startTime.format('h:mm A')}M`,
-          column: SlotColumn.both
+          column: TimeSlotColumn.both
         });
       }
     }

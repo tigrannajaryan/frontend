@@ -97,12 +97,6 @@ export interface HomeData {
   today_slots: number;
 }
 
-// export interface DayAppointments {
-//   appointments: Appointment[];
-//   // TODO: add the rest of fields when a new API is implemented,
-//   // see https://madebeauty.atlassian.net/browse/BAC-326
-// }
-
 export interface CheckoutRequest {
   status: AppointmentStatuses;
   services: CheckOutService[];
@@ -117,7 +111,7 @@ export interface CheckOutService {
 export interface DayAppointmentsResponse {
   appointments: Appointment[];
   first_slot_start_time: ISOTimeOnly; // in hh:mm format in stylist timezone
-  service_time_gap_minutes: number; // in minutes interval between slots
+  service_time_gap_in_minutes: number; // in minutes interval between slots
   total_slot_count: number;
   work_start_at: ISOTimeOnly; // in hh:mm working hours start
   work_end_at: ISOTimeOnly; // in hh:mm working hours end
