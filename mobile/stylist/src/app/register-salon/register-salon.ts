@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, NgZone } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Camera, CameraOptions } from '@ionic-native/camera';
@@ -51,6 +51,7 @@ export class RegisterSalonComponent {
     private actionSheetCtrl: ActionSheetController,
     private logger: Logger,
     private mapsAPILoader: MapsAPILoader,
+    private ngZone: NgZone,
     private profileData: ProfileDataStore
   ) {
     this.form = this.formBuilder.group({
@@ -166,16 +167,30 @@ export class RegisterSalonComponent {
   }
 
   bindAutocompleteToInput(): void {
-    const newYorkBiasBounds = new google.maps.LatLngBounds(new google.maps.LatLng(40.730610, -73.935242));
-    google.maps.event.clearInstanceListeners(this.autocompleteInput);
-    this.autocomplete = new google.maps.places.Autocomplete(this.autocompleteInput, {
-      bounds: newYorkBiasBounds,
-      types: ['address'] // 'address' instructs the Places service to return only geocoding results with a precise address.
-    });
+    this.ngZone.runOutsideAngular(() => {
+      // Run this outside angular zone. It seems Google Maps JS code does some strange things, possibly
+      // running code from timer continously. I haven't been able to confirm this in debugger however
+      // based on the fact that this breaks our E2E Protractor tests it seems to be true. The E2E tests
+      // fail with script timeout errors which normally happens when you run never-ending code via timer.
+      // This is because Protractor tries to be clever and waits for any asynchronous operations like
+      // setInternval or network calls to finish before it proceeds to next steps. And so because whateve
+      // this code is doing never finishes, Protractor keeps waiting and eventually fails with timeout.
+      //
+      // Moving this block of code outside angular zone cures the problem so most likely this is true
+      // diagnosis of the problem, although I didn't confirm it fully since I don't want to spend hours
+      // debugging Google's JS.
 
-    this.autocomplete.addListener('place_changed', () => {
-      const place = this.autocomplete.getPlace();
-      this.form.get('salon_address').patchValue(place.formatted_address);
+      const newYorkBiasBounds = new google.maps.LatLngBounds(new google.maps.LatLng(40.730610, -73.935242));
+      google.maps.event.clearInstanceListeners(this.autocompleteInput);
+      this.autocomplete = new google.maps.places.Autocomplete(this.autocompleteInput, {
+        bounds: newYorkBiasBounds,
+        types: ['address'] // 'address' instructs the Places service to return only geocoding results with a precise address.
+      });
+
+      this.autocomplete.addListener('place_changed', () => {
+        const place = this.autocomplete.getPlace();
+        this.form.get('salon_address').patchValue(place.formatted_address);
+      });
     });
   }
 
