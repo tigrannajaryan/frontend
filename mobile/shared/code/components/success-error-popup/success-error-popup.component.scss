@@ -1,0 +1,48 @@
+success-error-popup {
+  .SuccessErrorPopup-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    padding: 0 pxtovw(24px);
+    background: white;
+  }
+
+  .SuccessErrorPopup-img {
+    $img-size: pxtovw(64px);
+
+    width: $img-size;
+    height: $img-size;
+    margin-bottom: pxtovw(16px);
+  }
+
+  .SuccessErrorPopup-title {
+    margin-bottom: pxtovw(16px);
+    font-size: pxtovw(21px);
+    font-weight: 500;
+    line-height: pxtovw(24px);
+    color: black;
+    text-align: center;
+  }
+
+  .SuccessErrorPopup-msg {
+    font-size: pxtovw(18px);
+    line-height: pxtovw(24px);
+    color: color($colors, warmGrey);
+    text-align: center;
+  }
+
+  .SuccessErrorPopup-space {
+    flex: 1;
+  }
+
+  .SuccessErrorPopup-dismiss {
+    margin: 42px 0;
+    font-size: pxtovw(18px);
+    font-weight: 500;
+    line-height: pxtovw(24px);
+    color: color($colors, lightSalmon);
+    text-align: center;
+  }
+}

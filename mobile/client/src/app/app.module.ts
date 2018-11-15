@@ -82,6 +82,7 @@ import { StylistComponent } from '~/stylists/stylist/stylist.component';
 import { PushPrimingScreenComponent } from './shared/components/push-priming-screen/push-priming-screen.component';
 import { ClientAppStorage } from './core/client-app-storage';
 import { FirstLastNameComponent } from '~/profile/first-last-name/first-last-name.component';
+import { SuccessErrorPopupComponent } from '~/shared/components/success-error-popup/success-error-popup.component';
 
 // Init sentry reporting (inits only if ENV.sentryDsn):
 initSentry();
@@ -119,6 +120,7 @@ const declarations = [
   ServicesPageComponent,
   StylistComponent,
   StylistsPageComponent,
+  SuccessErrorPopupComponent,
   UiKitPreviewComponent
 ];
 

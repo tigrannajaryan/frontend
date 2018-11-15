@@ -1,0 +1,8 @@
+<div class="SuccessErrorPopup-content">
+  <div class="SuccessErrorPopup-space"></div>
+  <img [src]="params.isSuccess ? 'assets/icons/check@3x.png' : 'assets/icons/fail@3x.png'" class="SuccessErrorPopup-img" />
+  <div *ngIf="params.title" class="SuccessErrorPopup-title">{{ params.title }}</div>
+  <div class="SuccessErrorPopup-msg">{{ params.message }}</div>
+  <div class="SuccessErrorPopup-space"></div>
+  <div (click)="onDismiss()" class="SuccessErrorPopup-dismiss">{{ params.dismissText }}</div>
+</div>

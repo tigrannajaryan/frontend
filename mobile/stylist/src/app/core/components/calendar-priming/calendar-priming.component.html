@@ -1,0 +1,23 @@
+<ion-header class="madeBackHeader">
+  <ion-navbar class="Made-wp BackHeader-backBtn"></ion-navbar>
+</ion-header>
+
+<ion-content padding class="CalendarPriming">
+  <ion-row justify-content-center>
+    <i class="mb-icon-calendar CalendarPriming-icon"></i>
+  </ion-row>
+
+  <div class="CalendarPriming-text">
+    Do you want us to add all appointments to your Google Calendar?
+  </div>
+
+  <ion-footer class="Footer">
+    <ion-row justify-content-center>
+      <button (click)="onEnableCalendarAccess()" ion-button class="Button" data-test-id="allowBtn">Enable Calendar Access</button>
+    </ion-row>
+
+    <ion-row justify-content-center>
+      <span (click)="onBack()" class="Link" data-test-id="notNowBtn">Not Now</span>
+    </ion-row>
+  </ion-footer>
+</ion-content>
