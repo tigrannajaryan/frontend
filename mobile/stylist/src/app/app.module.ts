@@ -29,9 +29,14 @@ import { AuthInterceptor } from './shared/api/auth.interceptor';
 import { AuthService } from '~/shared/api/auth.api';
 import { authPath, authReducer } from '~/shared/storage/auth.reducer';
 import { AuthEffects } from '~/shared/storage/auth.effects';
+import { PushNotification } from '~/shared/push/push-notification';
+import { PushPrimingScreenComponent } from '~/shared/components/push-priming-screen/push-priming-screen.component';
+import { SuccessErrorPopupComponent } from '~/shared/components/success-error-popup/success-error-popup.component';
+
+import { ENV } from '~/environments/environment.default';
+
 import { MyAppComponent } from './app.component';
 import { getMetaReducers } from './app.reducers';
-import { ENV } from '~/environments/environment.default';
 
 import { DataModule } from '~/core/data.module';
 
@@ -40,9 +45,6 @@ import { HomeService } from '~/core/api/home.service';
 import { WorktimeApi } from '~/core/api/worktime.api';
 import { InvitationsApi } from '~/core/api/invitations.api';
 import { ClientDetailsApi } from '~/core/api/client-details.api';
-
-import { PushNotification } from '~/shared/push/push-notification';
-import { PushPrimingScreenComponent } from './shared/components/push-priming-screen/push-priming-screen.component';
 
 import { CoreModule } from '~/core/core.module';
 import { GoogleMapsConfig } from '~/core/google-maps-config';
@@ -61,6 +63,7 @@ import { AppointmentServicesComponent } from '~/appointment/appointment-services
 import { AuthPageComponent } from '~/auth/auth-start/auth-start.component';
 import { AuthConfirmPageComponent } from '~/auth/auth-confirm/auth-confirm.component';
 import { CalendarExampleComponent } from '~/register-salon/calendar-example/calendar-example.component';
+import { CalendarPrimingComponent } from '~/core/components/calendar-priming/calendar-priming.component';
 import { ClientsCalendarComponent } from '~/calendar/clients-calendar/clients-calendar.component';
 import { DiscountsComponent } from '~/discounts/discounts.component';
 import { DiscountsAlertComponent } from '~/discounts/discounts-alert/discounts-alert.component';
@@ -134,6 +137,7 @@ const declarations = [
   AuthConfirmPageComponent,
   AuthPageComponent,
   CalendarExampleComponent,
+  CalendarPrimingComponent,
   ChangePercentComponent,
   ClientDetailsComponent,
   ClientsCalendarComponent,
@@ -155,6 +159,7 @@ const declarations = [
   ServicesCategoriesComponent,
   ServicesComponent,
   ServicesListComponent,
+  SuccessErrorPopupComponent,
   UiKitPreviewComponent,
   WelcomeToMadeComponent,
   WorkHoursComponent
