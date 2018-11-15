@@ -10,6 +10,7 @@ import { RequestState } from '~/shared/api/request.models';
 import {
   AuthState,
   ConfirmCodeAction,
+  ConfirmCodeSuccessAction,
   RequestCodeAction,
   ResetConfirmCodeErrorAction,
   selectConfirmCodeError,
@@ -27,6 +28,8 @@ import { StylistPageParams } from '~/stylists/stylist/stylist.component';
 
 import { CodeData, CodeInputComponent } from '~/shared/components/code-input/code-input.component';
 import { PushNotification } from '~/shared/push/push-notification';
+import { PreferredStylistModel, StylistModel } from '~/shared/api/stylists.models';
+import { ClientProfileStatus } from '~/shared/api/auth.models';
 
 @Component({
   selector: 'page-auth-confirm',
@@ -67,9 +70,10 @@ export class AuthConfirmPageComponent {
     // Navigate next on token saved
     this.authEffects.saveToken
       .takeWhile(componentIsActive(this))
-      .filter(isTokenSaved => isTokenSaved)
       .withLatestFrom(this.store)
-      .subscribe(async ([isTokenSaved, state]) => this.onCodeConfirmed(state));
+      .subscribe(async ([confirmCodeAction, state]: [ConfirmCodeSuccessAction, AuthState & StylistState]) => {
+        this.onCodeConfirmed(confirmCodeAction, state);
+      });
 
     // Handle code verification error
     this.error = this.store.select(selectConfirmCodeError);
@@ -101,12 +105,27 @@ export class AuthConfirmPageComponent {
     }
   }
 
-  async onCodeConfirmed(state: AuthState & StylistState): Promise<void> {
+  async onCodeConfirmed(confirmCodeResponse: ConfirmCodeSuccessAction, state: AuthState & StylistState): Promise<void> {
     // Get the list of preferred stylists
-    const preferredStylists = await this.preferredStylistsData.get();
-
+    const preferredStylists: PreferredStylistModel[] = await this.preferredStylistsData.get();
+    const profileStatus: ClientProfileStatus = confirmCodeResponse.profileStatus;
     // Also get the invitation (if any)
     const invitation = selectInvitedByStylist(state);
+
+    // if we have no user first and last name (has_name) - redirect it to inputs page
+    if (profileStatus && !(profileStatus.has_name)) {
+      this.navCtrl.setRoot(PageNames.FirstLastName, { data: {
+          onContinue: () => {
+            this.setNextRootPage(preferredStylists, invitation);
+          }
+        }});
+      return;
+    }
+
+    this.setNextRootPage(preferredStylists, invitation);
+  }
+
+  async setNextRootPage(preferredStylists: PreferredStylistModel[], invitation: StylistModel): Promise<void> {
     if (preferredStylists.length > 0) {
       // We already have a preferred stylist, we can go to main tabs screen.
 

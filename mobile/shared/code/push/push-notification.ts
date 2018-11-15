@@ -61,7 +61,7 @@ export interface PrimingScreenParams {
  */
 export enum PermissionScreenResult {
   notNeeded,            // if there is no need to show the permission screen. This can be the
-                        // case if permission is already granted or we are running on Android.
+  // case if permission is already granted or we are running on Android.
 
   permissionGranted,    // push permission granted and device is now registered for push.
   permissionNotGranted, // push permission not granted, we cannot receive notifications.
@@ -76,6 +76,7 @@ const minTimeBetweenPrimingScreenDisplaysMilliseconds = moment.duration(14, 'day
  */
 export interface PushPersistentData {
   isPermissionGranted: boolean;
+  isPermissionDenied: boolean;
   lastPrimingScreenShown: Date;
 }
 
@@ -157,6 +158,7 @@ export class PushNotification {
     // Set default state of persistent data. We will later read it from storage.
     this.persistentData = {
       isPermissionGranted: false,
+      isPermissionDenied: false,
       lastPrimingScreenShown: undefined
     };
 
@@ -227,9 +229,18 @@ export class PushNotification {
     }
 
     if (this.persistentData.isPermissionGranted) {
+      this.logger.info('Push: permission is granted in the past');
       // Permission is already granted, no need to show priming screen
       return this.getSystemPermissionAndRegister().then(granted =>
         granted ? PermissionScreenResult.permissionGranted : PermissionScreenResult.permissionNotGranted);
+    }
+
+    if (this.persistentData.isPermissionDenied) {
+      // We tried to obtain persmission in the past and were rejected. Showing this
+      // screen again is useless, we cannot obtain permission anymore (the rejections
+      // are permanent under iOS).
+      this.logger.info('Push: permission is denied in the past');
+      return Promise.resolve(PermissionScreenResult.permissionNotGranted);
     }
 
     if (this.persistentData.lastPrimingScreenShown &&
@@ -244,6 +255,7 @@ export class PushNotification {
 
     if (this.platform.is(PlatforNames.android)) {
       // Permission screen is not needed on android
+      this.logger.info('Push: running on Android. Permission is granted automatically.');
       return Promise.resolve(PermissionScreenResult.notNeeded);
     } else {
       // On iOS we use priming screen first to reduce rejection rate
@@ -313,13 +325,20 @@ export class PushNotification {
     this.logger.info('Push: getting system permission');
 
     // Try to get system push notification permission
+    let permissionDenied = false;
     try {
       if (!await this.push.hasPermission()) {
         this.logger.warn('Push: we do not have permission to send push notifications');
-        return false;
+        permissionDenied = true;
       }
     } catch (e) {
       this.logger.error('Push: cannot get push notification permission:', e);
+      permissionDenied = true;
+    }
+
+    if (permissionDenied) {
+      this.persistentData.isPermissionDenied = true;
+      await this.savePersistentData();
       return false;
     }
 
@@ -364,9 +383,16 @@ export class PushNotification {
    * Push notification handler. Called when we have a new message pushed to us.
    */
   private onNotification(notification: NotificationEventResponse): void {
+    let notificationStr;
+    try {
+      notificationStr = JSON.stringify(notification);
+    } catch {
+      // ignore errors
+    }
+    this.logger.info(`Push notification received ${notificationStr}`);
+
     const { additionalData, message } = notification;
     const { code, coldstart, foreground, uuid } = additionalData;
-    this.logger.info(`Push notification received in ${foreground ? 'foreground' : 'background'}:`, message);
     this.events.publish(
       SharedEventTypes.pushNotification,
       new PushNotificationEventDetails(foreground, coldstart, uuid, code, message)

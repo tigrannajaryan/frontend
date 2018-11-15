@@ -1,4 +1,4 @@
-<ion-header class="ion-bb-header" madeUserHeader [profile]="profile | async">
+<ion-header madeMenuHeader [hideBackButton]="true">
   <ion-toolbar no-padding>
     <div class="Made-wp Made-wpContent">
       <div class="HomeClients" (click)="onShowMyClients()">
@@ -55,7 +55,7 @@
     <ion-spinner></ion-spinner>
   </ion-refresher>
 
-  <div class="Made-wpContent Home-main">
+  <div class="Made-wpContent Home-main" data-test-id="homeTabs">
     <ion-slides (ionSlideDrag)="onEnableRefresher(false)" (touchend)="onEnableRefresher(true)" (ionSlideDidChange)="onSlideChange()" no-padding>
       <ion-slide class="Home-items Home-wp">
         <div *ngIf="!tabs[Tabs.today].loaded || tabs[Tabs.today].name !== activeTab"><ion-spinner></ion-spinner></div>

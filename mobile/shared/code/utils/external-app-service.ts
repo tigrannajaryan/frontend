@@ -147,12 +147,7 @@ export class ExternalAppService {
     }
   }
 
-  private openLink(link: string): void {
-    const options: string[] = this.platform.is('android') ? this.pageOptionsAndroid : [];
-    this.browser.create(link, ...options);
-  }
-
-  private copyToTheClipboard(whatCopied: string): void {
+  copyToTheClipboard(whatCopied: string): void {
     this.clipboard.copy(whatCopied);
     const alert = this.alertCtrl.create({
       title: `${whatCopied} copied`,
@@ -160,5 +155,10 @@ export class ExternalAppService {
       buttons: [{ text: 'Dismiss', role: 'cancel' }]
     });
     alert.present();
+  }
+
+  private openLink(link: string): void {
+    const options: string[] = this.platform.is('android') ? this.pageOptionsAndroid : [];
+    this.browser.create(link, ...options);
   }
 }

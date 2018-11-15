@@ -18,7 +18,7 @@ import { StylistProfile } from '~/shared/api/stylist-app.models';
 import { Appointment, AppointmentStatuses, Home } from '~/core/api/home.models';
 import { HomeService } from '~/core/api/home.service';
 import { AppointmentCheckoutParams } from '~/appointment/appointment-checkout/appointment-checkout.component';
-import { LoadProfileAction, ProfileState, selectProfile } from '~/core/components/user-header/profile.reducer';
+import { LoadProfileAction, ProfileState, selectProfile } from '~/core/components/made-menu-header/profile.reducer';
 import { ExternalAppService } from '~/shared/utils/external-app-service';
 import { formatNumber } from 'libphonenumber-js';
 import { NumberFormat } from '~/shared/directives/phone-input.directive';
@@ -191,12 +191,20 @@ export class HomeComponent {
 
     if (appointment.client_phone) {
       // If the client phone number is know show "Call client" action
-      buttons.push({
-        text: `Call client: ${formatNumber(appointment.client_phone, NumberFormat.International)}`,
-        handler: () => {
-          this.externalAppService.doPhoneCall(appointment.client_phone);
+      buttons.push(
+        {
+          text: `Copy phone: ${formatNumber(appointment.client_phone, NumberFormat.International)}`,
+          handler: () => {
+            this.externalAppService.copyToTheClipboard(appointment.client_phone);
+          }
+        },
+        {
+          text: `Call client: ${formatNumber(appointment.client_phone, NumberFormat.International)}`,
+          handler: () => {
+            this.externalAppService.doPhoneCall(appointment.client_phone);
+          }
         }
-      });
+      );
     }
 
     // Add "Cancel appointment" and "Back" actions

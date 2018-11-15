@@ -13,6 +13,7 @@ export class StylistAppStorageMock extends AppStorageMock<StylistAppPersistentDa
       showHomeScreenHelp: false,
       pushNotificationParams: {
         isPermissionGranted: false,
+        isPermissionDenied: false,
         lastPrimingScreenShown: undefined
       }
     };

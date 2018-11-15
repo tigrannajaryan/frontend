@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { Events, Refresher, Slides } from 'ionic-angular';
+import { Events, NavController, Refresher, Slides } from 'ionic-angular';
 
 import {
   PreferredStylistModel,
@@ -12,6 +12,7 @@ import { ClientEventTypes } from '~/core/client-event-types';
 import { PageNames } from '~/core/page-names';
 import { PreferredStylistsData } from '~/core/api/preferred-stylists.data';
 import { ApiResponse } from '~/shared/api/base.models';
+import { BookingData } from '~/core/api/booking.data';
 
 export enum Tabs {
   primeStylists = 0,
@@ -55,7 +56,9 @@ export class MyStylistsComponent {
   onboarding = false;
 
   constructor(
+    private bookingData: BookingData,
     private events: Events,
+    private navCtrl: NavController,
     private preferredStylistsData: PreferredStylistsData
   ) {
   }
@@ -108,6 +111,16 @@ export class MyStylistsComponent {
 
   onRemoveStylist(stylist: PreferredStylistModel): void {
     this.preferredStylistsData.removeStylist(stylist.preference_uuid);
+  }
+
+  async onShowCalendar(stylist: StylistModel): Promise<void> {
+    this.bookingData.start(stylist);
+
+    // We want to show the price calendar of this stylist for the most popular service
+    const { response } = await this.bookingData.selectMostPopularService();
+    if (response) {
+      this.navCtrl.push(PageNames.SelectDate);
+    }
   }
 
   onRefresh(refresher: Refresher): void {

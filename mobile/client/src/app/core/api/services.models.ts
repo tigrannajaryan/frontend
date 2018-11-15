@@ -22,6 +22,6 @@ export interface GetPricelistParams {
 
 export interface GetPricelistResponse {
   stylist_uuid: string;
-  service_uuid: string;
   prices: DayOffer[];
+  service_uuids?: string[];
 }

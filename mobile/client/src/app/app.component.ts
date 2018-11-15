@@ -13,6 +13,7 @@ import {
   authResponseToTokenModel,
   deleteAuthLocalData,
   getAuthLocalData,
+  isAuthLocalDataComplete,
   saveAuthLocalData
 } from '~/shared/storage/token-utils';
 
@@ -26,7 +27,7 @@ import { ServicesCategoriesParams } from '~/services-categories-page/services-ca
 import { async_all } from './shared/async-helpers';
 import { PushNotification } from './shared/push/push-notification';
 import { SharedEventTypes } from './shared/events/shared-event-types';
-import { AuthResponse } from './shared/api/auth.models';
+import { AuthResponse, ClientProfileStatus } from './shared/api/auth.models';
 import { AuthService } from './shared/api/auth.api';
 import { ClientAppStorage } from './core/client-app-storage';
 
@@ -89,7 +90,13 @@ export class ClientAppComponent implements OnInit, OnDestroy {
     this.statusBar.styleDefault();
     this.splashScreen.hide();
 
-    const authToken: AuthLocalData = await getAuthLocalData(); // no expiration
+    // Get locally saved auth data
+    let authLocalData: AuthLocalData = await getAuthLocalData();
+    if (authLocalData && !isAuthLocalDataComplete(authLocalData)) {
+      // The format of AuthLocalData changed over time. We may have an old incomplete data stored in
+      // persistent storage. Refresh auth to make sure we have a fresh data.
+      authLocalData = await this.refreshAuth(authLocalData);
+    }
 
     // Subscribe to some interesting global events
     this.events.subscribe(SharedEventTypes.afterLogout, () => this.onLogout());
@@ -102,31 +109,14 @@ export class ClientAppComponent implements OnInit, OnDestroy {
 
     this.ga.trackTiming('Loading', loadTime, 'AppInitialization', 'FirstLoad');
 
-    if (!authToken) {
+    if (!authLocalData) {
       this.rootPage = PageNames.FirstScreen;
     } else {
-
-      if (!authToken.user_uuid) {
-        // user_uuid previously didn't exist. It was added to the API recently. Refresh auth to make sure we have this field.
-        this.refreshAuth(authToken);
-      }
-
       // Let pushNotification know who is the current user
-      this.pushNotification.setUser(authToken.user_uuid);
+      this.pushNotification.setUser(authLocalData.userUuid);
 
       // See if user already has preferred stylists
-      const preferredStylists = await this.preferredStylistsData.get();
-      if (preferredStylists.length === 0) {
-        // Haven’t completed onboarding, should restart:
-        this.rootPage = PageNames.HowMadeWorks;
-      } else {
-        // We are authenticated and almost ready to start using the app normally.
-        // One last thing: show push permission asking screen if needed and wait until the user makes a choice
-        await this.pushNotification.showPermissionScreen(true);
-
-        // All set now. Show the main screen.
-        this.rootPage = PageNames.MainTabs;
-      }
+      this.showRootPage(authLocalData.profileStatus);
     }
   }
 
@@ -188,18 +178,38 @@ export class ClientAppComponent implements OnInit, OnDestroy {
     this.nav.push(PageNames.SelectDate);
   }
 
-  private async refreshAuth(authToken: AuthLocalData): Promise<void> {
+  /**
+   * Make a decision about what page to show first and show it.
+   */
+  async showRootPage(profileStatus: ClientProfileStatus): Promise<void> {
+    if (!profileStatus.has_preferred_stylist_set) {
+      // Haven’t completed onboarding, should restart
+      this.rootPage = PageNames.HowMadeWorks;
+    } else {
+      // We are authenticated and almost ready to start using the app normally.
+      // One last thing: show push permission asking screen if needed and wait until the user makes a choice
+      await this.pushNotification.showPermissionScreen(true);
+
+      // All set now. Show the main screen.
+      this.rootPage = PageNames.MainTabs;
+    }
+  }
+
+  private async refreshAuth(authLocalData: AuthLocalData): Promise<AuthLocalData> {
     let authResponse: AuthResponse;
+    let result: AuthLocalData = authLocalData;
     try {
-      authResponse = (await this.authApiService.refreshAuth(authToken.token).get()).response;
+      authResponse = (await this.authApiService.refreshAuth(authLocalData.token).get()).response;
     } catch (e) {
       this.logger.error('App: Error when trying to refresh auth.', e);
     }
     if (authResponse) {
       this.logger.info('App: Authentication refreshed.');
-      saveAuthLocalData(authResponseToTokenModel(authResponse));
+      result = authResponseToTokenModel(authResponse);
+      await saveAuthLocalData(result);
     } else {
       this.logger.info('App: Cannot refresh authentication. Continue using saved session.');
     }
+    return result;
   }
 }

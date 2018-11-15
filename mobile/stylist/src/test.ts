@@ -33,6 +33,7 @@ import {
 
 import {
   AlertController,
+  ActionSheetController,
   App,
   Config,
   DeepLinker,
@@ -74,8 +75,8 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 
-import { profileReducer, profileStatePath } from '~/core/components/user-header/profile.reducer';
-import { ProfileEffects } from '~/core/components/user-header/profile.effects';
+import { profileReducer, profileStatePath } from '~/core/components/made-menu-header/profile.reducer';
+import { ProfileEffects } from '~/core/components/made-menu-header/profile.effects';
 
 import { ClientsApi } from '~/core/api/clients-api';
 import { ClientsApiMock } from '~/core/api/clients-api.mock';
@@ -135,7 +136,7 @@ export class TestUtils {
       providers: [
         App, Form, Keyboard, DomController, MenuController, NavController,
         NavParams, GestureController, AlertControllerMock, LoadingControllerMock,
-        Clipboard, EmailComposer, Logger,
+        Clipboard, EmailComposer, Logger, ActionSheetController,
         { provide: App, useClass: AppMock },
         { provide: Platform, useFactory: () => PlatformMock.instance() },
         { provide: StatusBar, useFactory: () => StatusBarMock.instance() },

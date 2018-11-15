@@ -1,0 +1,81 @@
+[madeMenuHeader],
+.madeMenuHeader {
+  .title {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100% !important;
+    padding: 0 pxtovw(72px);
+  }
+
+  .toolbar {
+    min-height: pxtovw(44px);
+
+    &-title {
+      padding: 0;
+      color: color($grayscale, 800);
+    }
+
+    &-background {
+      background: none;
+      border-color: transparent;
+    }
+  }
+
+  &:after {
+    display: none;
+  }
+
+  .BackHeader-backBtn {
+    .back-button {
+      position: absolute;
+      z-index: 1;
+      display: block;
+      min-width: auto;
+      padding: 0;
+      margin: 0;
+
+      ion-icon {
+        font-size: pxtovw(18px);
+      }
+    }
+
+    &.is-hiddenBackButton {
+      .back-button {
+        display: none;
+      }
+    }
+  }
+
+  .madeMenuHeader-menuBtn {
+    left: 0;
+    z-index: 1;
+    display: block;
+    min-width: auto;
+    padding: 0;
+    margin: 0;
+    background: none;
+
+    ion-icon {
+      height: pxtovw(26px);
+      font-size: pxtovw(27px);
+      font-weight: 500;
+      line-height: 28px;
+    }
+  }
+
+  .Made-h1 {
+    margin: 0;
+  }
+
+  .RightButton {
+    margin: 0;
+    font-size: pxtovw(18px);
+    font-weight: 400;
+    color: black;
+    text-transform: initial;
+    background: 0;
+    box-shadow: none;
+  }
+}

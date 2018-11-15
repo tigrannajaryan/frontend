@@ -55,7 +55,7 @@ export class FollowersComponent {
   showFollowersPopup(follower: FollowersModel): void {
     if (follower.booking_count > 2) {
       const alert = this.alertCtrl.create({
-        title: '<i class="mb-icon-wash-and-style"></i>',
+        title: '<i class="mb-icon-conditioners-a"></i>',
         subTitle: 'This client has booked 3 or more<br/>times with this stylist',
         cssClass: 'mb-popup-orange',
         buttons: [{

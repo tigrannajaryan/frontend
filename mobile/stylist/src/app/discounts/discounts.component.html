@@ -1,7 +1,7 @@
-<ion-header madeBackHeader [hasBackButton]="isProfile">
-  <ion-buttons end>
-    <button (click)="onMyCalendarClick()" ion-button clear class="Link">My Calendar</button>
-  </ion-buttons>
+<ion-header madeMenuHeader [hideBackButton]="isRootPage">
+  <ion-title *ngIf="isRootPage">
+    <div class="Made-h1">Discounts</div>
+  </ion-title>
 </ion-header>
 
 
@@ -12,9 +12,6 @@
 
 
   <div class="Made-wp Made-wpContent">
-    <div [class.DiscountsSettings-title]="!isProfile" class="Made-h1">Discounts <img src="assets/imgs/icons/discount_w.png" alt="" class="DiscountsSettings-icon"></div>
-
-
     <div class="Tabs-box DiscountsSettings-tabs">
       <div class="Tabs-wp">
         <button (click)="changeTab(DiscountTabNames.weekday)" [class.active]="DiscountTabNames.weekday === activeTab" ion-button clear color="dark" class="Tabs-btn active">

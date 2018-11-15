@@ -1,6 +1,6 @@
 import { Storage } from '@ionic/storage';
 import { AppModule } from '~/app.module';
-import { AuthResponse } from '../api/auth.models';
+import { AuthResponse, UserProfileStatus } from '../api/auth.models';
 
 const TOKEN_KEY = 'token';
 
@@ -9,8 +9,20 @@ const TOKEN_KEY = 'token';
  */
 export interface AuthLocalData {
   token: string;
-  user_uuid: string;
-  created_at?: number; // timestamp
+  userUuid: string;
+  profileStatus: UserProfileStatus;
+}
+
+/**
+ * Returns true if AuthLocalData has all fields that previously did not exist
+ * and now are required. This may be possible if we read AuthLocalData from
+ * persistent storage.
+ */
+export function isAuthLocalDataComplete(authLocalData: AuthLocalData): boolean {
+  return authLocalData !== undefined &&
+    authLocalData.token !== undefined &&
+    authLocalData.profileStatus !== undefined &&
+    authLocalData.userUuid !== undefined;
 }
 
 /**
@@ -18,9 +30,9 @@ export interface AuthLocalData {
  */
 export function authResponseToTokenModel(response: AuthResponse): AuthLocalData {
   return {
-    created_at: response.created_at,
     token: response.token,
-    user_uuid: response.user_uuid
+    userUuid: response.user_uuid,
+    profileStatus: response.profile_status
   };
 }
 

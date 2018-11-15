@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { Content, NavController, NavParams, Slides } from 'ionic-angular';
+import { Content, NavParams, Slides } from 'ionic-angular';
 
 import { DiscountsApi } from '~/core/api/discounts.api';
 import { MaximumDiscounts, MaximumDiscountsWithVars, WeekdayDiscount } from '~/core/api/discounts.models';
@@ -41,13 +41,12 @@ export class DiscountsComponent {
     { name: 'Maximum' }
   ];
   activeTab: DiscountTabNames;
-  isProfile: Boolean;
+  isRootPage: Boolean;
   @ViewChild(Slides) slides: Slides;
   @ViewChild(Content) content: Content;
 
   constructor(
     public navParams: NavParams,
-    private navCtrl: NavController,
     private discountsApi: DiscountsApi
   ) {
   }
@@ -57,7 +56,7 @@ export class DiscountsComponent {
   }
 
   ionViewWillEnter(): void {
-    this.isProfile = Boolean(this.navParams.get('isProfile'));
+    this.isRootPage = Boolean(this.navParams.get('isRootPage'));
     this.loadInitialData();
   }
 
@@ -125,9 +124,5 @@ export class DiscountsComponent {
       maximum_discount: this.maximumDiscounts.maximum_discount,
       is_maximum_discount_enabled: this.maximumDiscounts.is_maximum_discount_enabled
     }).get();
-  }
-
-  onMyCalendarClick(): void {
-    this.navCtrl.push(PageNames.ClientsCalendar);
   }
 }

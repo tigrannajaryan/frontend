@@ -105,13 +105,13 @@ export class AuthEffects {
 
   @Effect({ dispatch: false }) saveToken = this.actions
     .ofType(authActionTypes.CONFIRM_CODE_SUCCESS)
-    .switchMap((action: ConfirmCodeSuccessAction): Observable<ConfirmCodeSuccessAction | boolean> =>
+    .switchMap((action: ConfirmCodeSuccessAction): Observable<void | ConfirmCodeSuccessAction> =>
       Observable.from(
         saveAuthLocalData(action.authLocalData)
           .then(() => {
             // Notify everyone that we are logged in
             const loginEvent: AfterLoginEvent = {
-              userUuid: action.authLocalData.user_uuid
+              userUuid: action.authLocalData.userUuid
             };
             this.events.publish(SharedEventTypes.afterLogin, loginEvent);
 
@@ -120,7 +120,7 @@ export class AuthEffects {
           )
           .catch((error: Error) => {
             this.errorHandler.handleError(error);
-            return false;
+            return;
           })
       )
     )
