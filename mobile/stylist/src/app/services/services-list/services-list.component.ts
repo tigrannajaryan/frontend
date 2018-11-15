@@ -24,7 +24,7 @@ export class ServicesListComponent {
   protected PageNames = PageNames;
   protected categories: ServiceCategory[] = [];
   protected isEmptyCategories = false;
-  protected isProfile?: Boolean;
+  protected isRootPage?: Boolean;
   protected timeGap = 30;
   isLoading = false;
 
@@ -52,7 +52,7 @@ export class ServicesListComponent {
   }
 
   async ionViewWillLoad(): Promise<void> {
-    this.isProfile = Boolean(this.navParams.get('isProfile'));
+    this.isRootPage = Boolean(this.navParams.get('isRootPage'));
     this.loadInitialData();
   }
 

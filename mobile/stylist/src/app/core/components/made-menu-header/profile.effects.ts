@@ -10,7 +10,7 @@ import {
   LoadProfileErrorAction,
   LoadProfileSuccessAction,
   profileActionTypes
-} from '~/core/components/user-header/profile.reducer';
+} from '~/core/components/made-menu-header/profile.reducer';
 
 @Injectable()
 export class ProfileEffects {

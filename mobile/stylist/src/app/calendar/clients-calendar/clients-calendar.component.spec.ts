@@ -5,7 +5,7 @@ import { of } from 'rxjs/observable/of';
 
 import { TestUtils } from '~/../test';
 
-import { LoadProfileAction, ProfileState } from '~/core/components/user-header/profile.reducer';
+import { LoadProfileAction, ProfileState } from '~/core/components/made-menu-header/profile.reducer';
 import { DataModule } from '~/core/data.module';
 import { prepareSharedObjectsForTests } from '~/core/test-utils.spec';
 

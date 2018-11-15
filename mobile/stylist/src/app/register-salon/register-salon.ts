@@ -34,7 +34,7 @@ declare var window: any;
 })
 export class RegisterSalonComponent {
   PageNames = PageNames;
-  isMainScreen?: Boolean;
+  isRootPage?: Boolean;
   form: FormGroup;
   autocomplete: Autocomplete;
   autocompleteInput: HTMLInputElement;
@@ -93,7 +93,7 @@ export class RegisterSalonComponent {
   }
 
   async ionViewWillEnter(): Promise<void> {
-    this.isMainScreen = Boolean(this.navParams.get('isMainScreen'));
+    this.isRootPage = Boolean(this.navParams.get('isRootPage'));
 
     // loadFormInitialData must be called and finished before initAutocomplete because
     // initAutocomplete uses the apiKey that we get in loadFormInitialData.
@@ -223,7 +223,7 @@ export class RegisterSalonComponent {
   }
 
   nextRoute(): void {
-    if (this.isMainScreen) {
+    if (this.isRootPage) {
       this.navCtrl.pop();
       return;
     }

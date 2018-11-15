@@ -27,7 +27,7 @@ describe('Shared functions: profileStatusToPage', () => {
     };
 
     expect(createNavHistoryList(profileStatus))
-      .toEqual([{ page: PageNames.Tabs }]);
+      .toEqual([{ page: PageNames.Home }]);
   }));
 
   it('should correctly map half complete profile to the correct list', async(() => {

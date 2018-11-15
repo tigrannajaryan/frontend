@@ -1,12 +1,16 @@
-<ion-header madeBackHeader [hasBackButton]="isProfile"></ion-header>
+<ion-header madeMenuHeader [hideBackButton]="isRootPage">
+  <ion-title *ngIf="isRootPage">
+    <div class="Made-h1">My Hours</div>
+  </ion-title>
+</ion-header>
 
 
 <ion-content no-padding>
-  <made-nav *ngIf="!isProfile" [activePage]="PageNames.WorkHours"></made-nav>
+  <made-nav *ngIf="!isRootPage" [activePage]="PageNames.WorkHours"></made-nav>
 
 
   <div class="Made-wp Made-wpContent">
-    <div class="Made-h1">My Hours</div>
+    <div *ngIf="!isRootPage" class="Made-h1">My Hours</div>
 
     <!-- Show spinner if loading is in progress -->
     <div class="Spinner">
@@ -61,4 +65,4 @@
 </ion-content>
 
 
-<ion-footer *ngIf="!isProfile" (continue)="onContinue()" madeContinueFooter></ion-footer>
+<ion-footer *ngIf="!isRootPage" (continue)="onContinue()" madeContinueFooter></ion-footer>

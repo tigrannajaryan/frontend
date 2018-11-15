@@ -1,0 +1,49 @@
+<ion-menu [content]="content" type="overlay">
+  <div
+    (click)="setPage(PageNames.RegisterSalon, { isRootPage: true }, false)"
+    data-test-id="menuProfileLink"
+    menuClose class="sideMenu-header sideMenu-wp">
+    <div *ngIf="profile" class="sideMenu-user">
+      <div [style.background-image]="profile.profile_photo_url ? 'url(' + profile.profile_photo_url + ')' : null" class="sideMenu-userAva"></div>
+
+      <div>
+        <div data-test-id="menuProfileSalon" class="sideMenu-userSalon">{{ profile.salon_name }}</div>
+        <div data-test-id="menuProfileName" class="sideMenu-userName">{{ profile.first_name + ' ' + profile.last_name }}</div>
+        <div *ngIf="profile.followers_count" data-test-id="menuProfileFollowers" class="sideMenu-userClients"><i class="mb-icon-heart-a"></i> {{ profile.followers_count }} MADE Clients</div>
+      </div>
+    </div>
+    <div data-test-id="menuProfileTitle" class="sideMenu-headerLink">View and edit profile</div>
+  </div>
+
+  <div class="sideMenu-content">
+    <div>
+      <button
+        *ngFor="let item of menuItems; let index = index"
+        (click)="setPage(item.redirectToPage, item.redirectParams)"
+        [class.is-active]=""
+        [attr.data-test-id]="'menuItem' + index"
+        class="sideMenu-link"
+        menuClose>
+        <i class="mb-icon-{{ item.icon }}"></i>
+        {{ item.title }}
+      </button>
+
+      <button
+        (click)="setPage(PageNames.About, {}, false)"
+        data-test-id="menuLegalLink"
+        class="sideMenu-link is-version"
+        menuClose>
+        Legal <span>Version {{ appVersion }} ({{ appBuildNumber }})</span>
+      </button>
+    </div>
+
+    <button
+      (click)="onLogoutClick()"
+      data-test-id="menuLogoutLink"
+      class="sideMenu-link"
+      menuClose>
+      <i class="mb-icon-logout"></i>
+      Logout
+    </button>
+  </div>
+</ion-menu>

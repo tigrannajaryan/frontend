@@ -84,7 +84,7 @@ export class InvitationsComponent {
   InvitationStatus = InvitationStatus;
 
   // Indicates that this page is opened from the Main screen.
-  isMainScreen: boolean;
+  isRootPage: boolean;
 
   // The flag that indicates if we can read local contacts successfully.
   canReadPhoneContacts: boolean;
@@ -250,7 +250,7 @@ export class InvitationsComponent {
   }
 
   protected ionViewWillEnter(): void {
-    this.isMainScreen = Boolean(this.navParams.get('isMainScreen'));
+    this.isRootPage = Boolean(this.navParams.get('isRootPage'));
     this.loadContacts();
 
     // Preload stylist profile and discounts that we will need later
@@ -654,7 +654,7 @@ export class InvitationsComponent {
    * Event handler for 'Skip' click.
    */
   protected onSkip(): void {
-    this.navCtrl.push(PageNames.Tabs);
+    this.navCtrl.push(PageNames.Home);
 
     // Send empty invitations list to backend to make sure the profile's
     // has_invited_clients is marked true and we do not bother the user
@@ -666,13 +666,13 @@ export class InvitationsComponent {
    * Action to perform when sending invitation is finished (successfully or not).
    */
   private sendingFinished(): void {
-    if (this.isMainScreen) {
+    if (this.isRootPage) {
       // Do nothing if this is a regular view from Main screen.
       return;
     }
 
     // This is during registation.
-    this.navCtrl.push(PageNames.Tabs);
+    this.navCtrl.push(PageNames.Home);
   }
 
   private async composeInvitationText(): Promise<string> {
