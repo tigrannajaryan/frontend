@@ -8,7 +8,7 @@ exports.config = {
   capabilities: {
     'browserName': 'chrome',
     chromeOptions: {
-      args: process.env.TEST_HEADLESS ? ["--headless", "--disable-gpu", "--window-size=800,600"] : ['--no-sandbox'],
+      args: process.env.TEST_HEADLESS ? ["--headless", "--disable-gpu", "--window-size=800,600", "--incognito"] : ['--no-sandbox'],
       mobileEmulation: {
         deviceName: 'iPhone 7'
       }
