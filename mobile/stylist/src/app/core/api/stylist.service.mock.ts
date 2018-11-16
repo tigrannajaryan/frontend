@@ -33,7 +33,8 @@ export const profileSummaryMock = {
     salon_address: faker.fake('{{address.city}} {{address.streetAddress}}'),
     salon_name: faker.company.companyName(),
     instagram_url: faker.internet.url(),
-    website_url: faker.internet.url()
+    website_url: faker.internet.url(),
+    followers_count: faker.random.number()
   },
   services: [
     { name: faker.commerce.productName(), base_price: Number(faker.commerce.price()), duration_minutes: 40 },

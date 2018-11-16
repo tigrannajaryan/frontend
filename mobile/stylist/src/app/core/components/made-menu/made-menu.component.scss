@@ -1,15 +1,13 @@
 made-menu {
-  $side-menu-header-height: 106px;
-
   .sideMenu-header {
-    height: $side-menu-header-height;
-    padding-top: 12px;
-    padding-bottom: 5px;
+    height: pxtovw(106px);
+    padding-top: pxtovw(12px);
+    padding-bottom: pxtovw(5px);
   }
 
   .sideMenu-wp {
-    padding-right: 24px;
-    padding-left: 24px;
+    padding-right: pxtovw(24px);
+    padding-left: pxtovw(24px);
   }
 
   .sideMenu-user {
@@ -31,37 +29,37 @@ made-menu {
   }
 
   .sideMenu-userSalon {
-    font-size: 18px;
-    line-height: 24px;
+    font-size: pxtovw(18px);
+    line-height: pxtovw(24px);
     color: color($colors, warmGrey);
   }
 
   .sideMenu-userName {
-    font-size: 21px;
+    font-size: pxtovw(21px);
     font-weight: 600;
-    line-height: 24px;
+    line-height: pxtovw(24px);
     color: black;
   }
 
   .sideMenu-userClients {
-    font-size: 15px;
-    line-height: 16px;
+    font-size: pxtovw(15px);
+    line-height: pxtovw(16px);
     color: color($colors, warmGrey);
 
     i {
       position: relative;
-      top: 1px;
+      top: pxtovw(1px);
       display: inline-block;
-      font-size: 14px;
+      font-size: pxtovw(14px);
       color: color($colors, lightSalmon);
       vertical-align: top;
     }
   }
 
   .sideMenu-headerLink {
-    margin: 9px 0 0;
-    font-size: 13px;
-    line-height: 16px;
+    margin: pxtovw(9px) 0 0;
+    font-size: pxtovw(13px);
+    line-height: pxtovw(16px);
     color: color($colors, warmGrey);
   }
 
@@ -69,11 +67,11 @@ made-menu {
     display: flex;
     flex-flow: column;
     justify-content: space-between;
-    height: calc(100% - #{$side-menu-header-height});
-    padding-top: 17px;
-    padding-bottom: 17px;
+    height: calc(100% - 106px);
+    padding-top: pxtovw(17px);
+    padding-bottom: pxtovw(17px);
     overflow-y: scroll;
-    border-top: 2px solid color($colors, lightSalmon);
+    border-top: pxtovw(2px) solid color($colors, lightSalmon);
   }
 
   .sideMenu-link {
@@ -82,10 +80,10 @@ made-menu {
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    min-height: 48px;
-    padding: 0 24px 0 64px;
-    font-size: 18px;
-    line-height: 24px;
+    min-height: pxtovw(48px);
+    padding: 0 pxtovw(24px) 0 pxtovw(64px);
+    font-size: pxtovw(18px);
+    line-height: pxtovw(24px);
     text-align: left;
     background: none;
 
@@ -96,49 +94,49 @@ made-menu {
     i {
       position: absolute;
       top: 50%;
-      left: 24px;
-      width: 36px;
+      left: pxtovw(24px);
+      width: pxtovw(36px);
       color: color($colors, lightSalmon);
       transform: translateY(-50%);
     }
 
     i[class^='mb-icon-home-a'] {
       top: 46%;
-      left: 22px;
-      font-size: 24px;
+      left: pxtovw(22px);
+      font-size: pxtovw(24px);
       vertical-align: middle;
     }
 
     i[class^='mb-icon-stylists-a'] {
-      left: 22px;
-      font-size: 16px;
+      left: pxtovw(22px);
+      font-size: pxtovw(16px);
     }
 
     i[class^='mb-icon-discounts'] {
-      left: 20px;
-      font-size: 24px;
+      left: pxtovw(20px);
+      font-size: pxtovw(24px);
     }
 
     i[class^='mb-icon-calendar-add'] {
-      font-size: 16px;
+      font-size: pxtovw(16px);
     }
 
     i[class^='mb-icon-clock-a'] {
-      font-size: 16px;
+      font-size: pxtovw(16px);
     }
 
     i[class^='mb-icon-conditioners-a'] {
-      left: 22px;
-      font-size: 18px;
+      left: pxtovw(22px);
+      font-size: pxtovw(18px);
     }
 
     i[class^='mb-icon-invite-a'] {
-      font-size: 21px;
+      font-size: pxtovw(21px);
     }
 
     &.is-version {
-      font-size: 15px;
-      line-height: 16px;
+      font-size: pxtovw(15px);
+      line-height: pxtovw(16px);
 
       span {
         color: color($colors, warmGrey);
@@ -149,5 +147,14 @@ made-menu {
 
 // rewrite default ionic menu width
 .menu-inner {
-  width: 296px;
+  width: pxtovw(296px);
+}
+
+// set bigger header for ios devices
+.platform-ios made-menu .sideMenu-header {
+  height: pxtovw((106px + 10px));
+  padding-top: pxtovw((12px + 10px));
+}
+.platform-ios made-menu .sideMenu-content {
+  height: calc(100% - pxtovw((106px + 10px)));
 }
