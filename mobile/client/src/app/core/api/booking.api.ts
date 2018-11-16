@@ -46,7 +46,7 @@ export class BookingApi extends BaseService {
 
   getTimeslots(stylistUuid: string, date: moment.Moment): Observable<ApiResponse<TimeslotsResponse>> {
     const params = {
-      date: date.format(isoDateFormat),
+      date: date.format('YYYY-MM-DD'),
       stylist_uuid: stylistUuid
     };
     return this.post<TimeslotsResponse>('client/available-times', params);
