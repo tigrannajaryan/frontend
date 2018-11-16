@@ -111,7 +111,7 @@ export class AuthEffects {
           .then(() => {
             // Notify everyone that we are logged in
             const loginEvent: AfterLoginEvent = {
-              userUuid: action.authLocalData.user_uuid
+              userUuid: action.authLocalData.userUuid
             };
             this.events.publish(SharedEventTypes.afterLogin, loginEvent);
 

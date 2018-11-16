@@ -1,0 +1,28 @@
+.CalendarPriming {
+  .CalendarPriming-icon {
+    margin: pxtovw(150px) 0 pxtovw(22px);
+    font-size: pxtovw(53px);
+    color: color($colors, lightSalmon);
+  }
+
+  .CalendarPriming-text {
+    font-size: pxtovw(18px);
+    font-weight: 500;
+    line-height: pxtovw(24px);
+    color: black;
+    text-align: center;
+  }
+
+  .Button {
+    min-width: 100%;
+    margin-bottom: pxtovw(27px);
+    font-size: pxtovw(18px);
+    font-weight: 500;
+    background-color: color($colors, secondary);
+    border-radius: pxtovw(10px);
+  }
+
+  .Footer {
+    padding: pxtovw(24px) pxtovw(25px) pxtovw(39px);
+  }
+}

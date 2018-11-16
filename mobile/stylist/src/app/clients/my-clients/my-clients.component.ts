@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { Events, NavController, Refresher } from 'ionic-angular';
+import { NavController, Refresher } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
 
 import { composeRequest, loading, withRefresher } from '~/shared/utils/request-utils';
@@ -9,8 +9,6 @@ import { ClientModel, GetMyClientsResponse } from '~/core/api/clients-api.models
 import { MyClientsDataStore } from '~/clients/my-clients/my-clients.data';
 
 import { PageNames } from '~/core/page-names';
-import { StylistEventTypes } from '~/core/stylist-event-types';
-import { TabIndex } from '~/tabs/tabs.component';
 
 @Component({
   selector: 'page-my-clients',
@@ -24,7 +22,6 @@ export class MyClientsComponent {
 
   constructor(
     private clientsData: MyClientsDataStore,
-    private events: Events,
     private navCtrl: NavController
   ) {
   }
@@ -39,8 +36,7 @@ export class MyClientsComponent {
   }
 
   onInviteClick(): void {
-    this.navCtrl.popToRoot();
-    this.events.publish(StylistEventTypes.selectMainTab, TabIndex.Invite);
+    this.navCtrl.setRoot(PageNames.Invitations, {isRootPage: true});
   }
 
   onClientClick(client: ClientModel): void {

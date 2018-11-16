@@ -7,6 +7,7 @@ import { AppointmentServicesComponent } from '~/appointment/appointment-services
 import { AuthConfirmPageComponent } from '~/auth/auth-confirm/auth-confirm.component';
 import { AuthPageComponent } from '~/auth/auth-start/auth-start.component';
 import { CalendarExampleComponent } from '~/register-salon/calendar-example/calendar-example.component';
+import { CalendarPrimingComponent } from '~/core/components/calendar-priming/calendar-priming.component';
 import { ChangePercentComponent } from '~/core/popups/change-percent/change-percent.component';
 import { ClientDetailsComponent } from '~/clients/client-details/client-details.component';
 import { ClientsCalendarComponent } from '~/calendar/clients-calendar/clients-calendar.component';
@@ -26,7 +27,6 @@ import { ServiceItemComponent } from '~/services/services-item/services-item.com
 import { ServicesCategoriesComponent } from '~/services/services-categories/services-categories.component';
 import { ServicesComponent } from '~/services/services.component';
 import { ServicesListComponent } from '~/services/services-list/services-list.component';
-import { TabsComponent } from '~/tabs/tabs.component';
 import { WelcomeToMadeComponent } from '~/discounts/welcome-to-made/welcome-to-made.component';
 import { WorkHoursComponent } from '~/workhours/workhours.component';
 
@@ -49,6 +49,7 @@ export const PageNames = {
   Auth: AuthPageComponent,
   AuthConfirm: AuthConfirmPageComponent,
   CalendarExample: CalendarExampleComponent,
+  CalendarPriming: CalendarPrimingComponent,
   ChangePercent: ChangePercentComponent,
   ClientDetails: ClientDetailsComponent,
   ClientsCalendar: ClientsCalendarComponent,
@@ -68,7 +69,6 @@ export const PageNames = {
   ServicesCategories: ServicesCategoriesComponent,
   ServicesItem: ServiceItemComponent,
   ServicesList: ServicesListComponent,
-  Tabs: TabsComponent,
   WelcomeToMade: WelcomeToMadeComponent,
   WorkHours: WorkHoursComponent
 };

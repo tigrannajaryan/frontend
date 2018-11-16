@@ -1,19 +1,19 @@
-<ion-header class="madeBackHeader">
-  <ion-navbar [class.is-hiddenBackButton]="isMainScreen" class="Made-wp BackHeader-backBtn">
-    <ion-buttons [hidden]="isMainScreen" end>
-      <button ion-button icon-only (click)="onSkip()" data-test-id="skipBtn">
-        <span class="skip-link">Skip</span>
-      </button>
-    </ion-buttons>
-  </ion-navbar>
+<ion-header madeMenuHeader [hideBackButton]="isRootPage">
+  <ion-title *ngIf="isRootPage">
+    <div class="Made-h1">Invite Clients</div>
+  </ion-title>
+
+  <ion-buttons *ngIf="!isRootPage" end>
+    <button (click)="onSkip()" ion-button clear data-test-id="skipBtn" class="Link RightButton">Skip</button>
+  </ion-buttons>
 </ion-header>
 
+
 <ion-content no-padding>
-  <made-nav *ngIf="!isMainScreen" [activePage]="PageNames.Invitations"></made-nav>
+  <made-nav *ngIf="!isRootPage" [activePage]="PageNames.Invitations"></made-nav>
 
   <div class="Made-wp Made-wpContent">
-    <div class="Made-h1">Invite clients</div>
-
+    <div *ngIf="!isRootPage" class="Made-h1">Invite Clients</div>
     <!-- This is shown if we do not have persmissions to read phone contacts -->
     <div *ngIf="!canReadPhoneContacts && !loadingContacts" class="Made-text">
       <div class="Made-textItem">

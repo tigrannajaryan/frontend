@@ -1,0 +1,11 @@
+<ion-navbar [class.is-hiddenBackButton]="hideBackButton" class="Made-wp BackHeader-backBtn">
+  <ion-buttons left>
+    <button class="madeMenuHeader-menuBtn" data-test-id="menuToggleBtn" menuToggle><ion-icon ios="ios-menu" md="md-menu"></ion-icon></button>
+  </ion-buttons>
+
+  <ng-content select="ion-title"></ng-content>
+
+  <ng-content select="ion-buttons[end]"></ng-content>
+</ion-navbar>
+<ng-content select="ion-toolbar"></ng-content>
+

@@ -10,6 +10,7 @@ export interface StylistProfile {
   salon_address: string;
   instagram_url: string;
   website_url: string;
+  followers_count: number;
   profile_photo_id?: string;
   profile_photo_url?: string;
   google_api_key?: string;

@@ -13,7 +13,7 @@ import { ClientsApi } from '~/core/api/clients-api';
 
 import { PageNames } from '~/core/page-names';
 import { loading } from '~/core/utils/loading';
-import { ProfileState, selectProfile } from '~/core/components/user-header/profile.reducer';
+import { ProfileState, selectProfile } from '~/core/components/made-menu-header/profile.reducer';
 
 @Component({
   selector: 'page-clients-calendar',
@@ -22,6 +22,7 @@ import { ProfileState, selectProfile } from '~/core/components/user-header/profi
 export class ClientsCalendarComponent {
   @ViewChild(Content) content: Content;
   client?: MyClientModel;
+  isRootPage?: Boolean;
 
   profile: Observable<StylistProfile>;
   prices: DayOffer[] = [];
@@ -37,6 +38,7 @@ export class ClientsCalendarComponent {
   }
 
   ionViewWillLoad(): Promise<void> {
+    this.isRootPage = Boolean(this.navParams.get('isRootPage'));
     this.client = this.navParams.get('client') as MyClientModel;
     this.profile = this.store.select(selectProfile);
     return this.getPricing();

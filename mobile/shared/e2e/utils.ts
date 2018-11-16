@@ -107,6 +107,15 @@ export async function clearIonicStorage(): Promise<{}> {
   return browser.executeScript(deleteDBScript);
 }
 
+/**
+ * Clear all session data. Should be combined with await browser.restart();
+ */
+export async function clearSessionData(): Promise<any> {
+  await browser.executeScript('window.localStorage.clear();');
+  await browser.executeScript('window.sessionStorage.clear();');
+  await browser.driver.manage().deleteAllCookies();
+}
+
 class Globals {
   get alertSubtitle() { return $('ion-alert .alert-sub-title'); }
   alertButton(buttonText: string) { return element(by.cssContainingText('ion-alert button span', buttonText)); }

@@ -1,8 +1,8 @@
 $icomoon-font-family: "mb-icon" !default;
 $icomoon-font-path: "../assets/fonts/mb-icon" !default;
 
-$mb-icon-wash-and-style: "\e94f";
-$mb-icon-wash-and-style-a: "\e94e";
+$mb-icon-conditioners: "\e94f";
+$mb-icon-conditioners-a: "\e94e";
 $mb-icon-clock: "\e930";
 $mb-icon-clock-a: "\e94c";
 $mb-icon-invite: "\e92d";
@@ -39,13 +39,13 @@ $mb-icon-chain-a: "\e90f";
 $mb-icon-dollar: "\e928";
 $mb-icon-heart: "\e90d";
 $mb-icon-calendar-add: "\e900";
-$mb-icon-hair: "\e90a";
+$mb-icon-wash-and-style: "\e90a";
 $mb-icon-treatments: "\e90b";
 $mb-icon-color: "\e914";
 $mb-icon-cuts: "\e901";
-$mb-icon-extensions: "\e909";
 $mb-icon-check: "\e921";
-$mb-icon-conditioners: "\e91a";
+$mb-icon-hair-a: "\e909";
+$mb-icon-hairs: "\e91a";
 $mb-icon-search: "\e923";
 $mb-icon-cross: "\e924";
 $mb-icon-arrow-left: "\e925";
@@ -63,6 +63,7 @@ $mb-icon-profile: "\e91c";
 $mb-icon-profile-a: "\e91f";
 $mb-icon-heart-a: "\e92a";
 $mb-icon-booking: "\e932";
+$mb-icon-logout: "\e933";
 
 @font-face {
   font-family: '#{$icomoon-font-family}';
@@ -88,499 +89,449 @@ $mb-icon-booking: "\e932";
   -moz-osx-font-smoothing: grayscale;
 }
 
-
-.mb-icon-wash-and-style {
+.mb-icon-conditioners {
   @extend %mb-icon;
-
   &:before {
-    content: $mb-icon-wash-and-style;
+    content: "\e94f";
   }
 }
 
-.mb-icon-wash-and-style-a {
+.mb-icon-conditioners-a {
   @extend %mb-icon;
-
   &:before {
-    content: $mb-icon-wash-and-style-a;
+    content: "\e94e";
   }
 }
 
 .mb-icon-clock {
   @extend %mb-icon;
-
   &:before {
-    content: $mb-icon-clock;
+    content: "\e930";
   }
 }
 
 .mb-icon-clock-a {
   @extend %mb-icon;
-
   &:before {
-    content: $mb-icon-clock-a;
+    content: "\e94c";
   }
 }
 
 .mb-icon-invite {
   @extend %mb-icon;
-
   &:before {
-    content: $mb-icon-invite;
+    content: "\e92d";
   }
 }
 
 .mb-icon-invite-a {
   @extend %mb-icon;
-
   &:before {
-    content: $mb-icon-invite-a;
+    content: "\e92e";
   }
 }
 
 .mb-icon-stylists {
   @extend %mb-icon;
-
   &:before {
-    content: $mb-icon-stylists;
+    content: "\e941";
   }
 }
 
 .mb-icon-stylists-a {
   @extend %mb-icon;
-
   &:before {
-    content: $mb-icon-stylists-a;
+    content: "\e944";
   }
 }
 
 .mb-icon-plus {
   @extend %mb-icon;
-
   &:before {
-    content: $mb-icon-plus;
+    content: "\e92f";
   }
 }
 
 .mb-icon-timer {
   @extend %mb-icon;
-
   &:before {
-    content: $mb-icon-timer;
+    content: "\e93f";
   }
 }
 
 .mb-icon-discounts {
   @extend %mb-icon;
-
   &:before {
-    content: $mb-icon-discounts;
+    content: "\e931";
   }
 }
 
 .mb-icon-braids-and-locs {
   @extend %mb-icon;
-
   &:before {
-    content: $mb-icon-braids-and-locs;
+    content: "\e93b";
   }
 }
 
 .mb-icon-special-occassions {
   @extend %mb-icon;
-
   &:before {
-    content: $mb-icon-special-occassions;
+    content: "\e943";
   }
 }
 
 .mb-icon-home {
   @extend %mb-icon;
-
   &:before {
-    content: $mb-icon-home;
+    content: "\e948";
   }
 }
 
 .mb-icon-home-a {
   @extend %mb-icon;
-
   &:before {
-    content: $mb-icon-home-a;
+    content: "\e947";
   }
 }
 
 .mb-icon-home-b {
   @extend %mb-icon;
-
   &:before {
-    content: $mb-icon-home-b;
+    content: "\e942";
   }
 }
 
 .mb-icon-discounts-c {
   @extend %mb-icon;
-
   &:before {
-    content: $mb-icon-discounts-c;
+    content: "\e90e";
   }
 }
 
 .mb-icon-discounts-a {
   @extend %mb-icon;
-
   &:before {
-    content: $mb-icon-discounts-a;
+    content: "\e916";
   }
 }
 
 .mb-icon-discounts-b {
   @extend %mb-icon;
-
   &:before {
-    content: $mb-icon-discounts-b;
+    content: "\e915";
   }
 }
 
 .mb-icon-right-arrow {
   @extend %mb-icon;
-
   &:before {
-    content: $mb-icon-right-arrow;
+    content: "\e917";
   }
 }
 
 .mb-icon-circle-check {
   @extend %mb-icon;
-
   &:before {
-    content: $mb-icon-circle-check;
+    content: "\e918";
   }
 }
 
 .mb-icon-triangle-down {
   @extend %mb-icon;
-
   &:before {
-    content: $mb-icon-triangle-down;
+    content: "\e91d";
   }
 }
 
 .mb-icon-send {
   @extend %mb-icon;
-
   &:before {
-    content: $mb-icon-send;
+    content: "\e91e";
   }
 }
 
 .mb-icon-camera {
   @extend %mb-icon;
-
   &:before {
-    content: $mb-icon-camera;
+    content: "\e92b";
   }
 }
 
 .mb-icon-calendar {
   @extend %mb-icon;
-
   &:before {
-    content: $mb-icon-calendar;
+    content: "\e92c";
   }
 }
 
 .mb-icon-logo {
   @extend %mb-icon;
-
   &:before {
-    content: $mb-icon-logo;
+    content: "\e920";
   }
 }
 
 .mb-icon-trash {
   @extend %mb-icon;
-
   &:before {
-    content: $mb-icon-trash;
+    content: "\e902";
   }
 }
 
 .mb-icon-phone {
   @extend %mb-icon;
-
   &:before {
-    content: $mb-icon-phone;
+    content: "\e903";
   }
 }
 
 .mb-icon-clock-b {
   @extend %mb-icon;
-
   &:before {
-    content: $mb-icon-clock-b;
+    content: "\e904";
   }
 }
 
 .mb-icon-circle {
   @extend %mb-icon;
-
   &:before {
-    content: $mb-icon-circle;
+    content: "\e905";
   }
 }
 
 .mb-icon-faq {
   @extend %mb-icon;
-
   &:before {
-    content: $mb-icon-faq;
+    content: "\e922";
   }
 }
 
 .mb-icon-dots {
   @extend %mb-icon;
-
   &:before {
-    content: $mb-icon-dots;
+    content: "\e913";
   }
 }
 
 .mb-icon-chain {
   @extend %mb-icon;
-
   &:before {
-    content: $mb-icon-chain;
+    content: "\e911";
   }
 }
 
 .mb-icon-mail {
   @extend %mb-icon;
-
   &:before {
-    content: $mb-icon-mail;
+    content: "\e910";
   }
 }
 
 .mb-icon-chain-a {
   @extend %mb-icon;
-
   &:before {
-    content: $mb-icon-chain-a;
+    content: "\e90f";
   }
 }
 
 .mb-icon-dollar {
   @extend %mb-icon;
-
   &:before {
-    content: $mb-icon-dollar;
+    content: "\e928";
   }
 }
 
 .mb-icon-heart {
   @extend %mb-icon;
-
   &:before {
-    content: $mb-icon-heart;
+    content: "\e90d";
   }
 }
 
 .mb-icon-calendar-add {
   @extend %mb-icon;
-
   &:before {
-    content: $mb-icon-calendar-add;
+    content: "\e900";
   }
 }
 
-.mb-icon-hair {
+.mb-icon-wash-and-style {
   @extend %mb-icon;
-
   &:before {
-    content: $mb-icon-hair;
+    content: "\e90a";
   }
 }
 
 .mb-icon-treatments {
   @extend %mb-icon;
-
   &:before {
-    content: $mb-icon-treatments;
+    content: "\e90b";
   }
 }
 
 .mb-icon-color {
   @extend %mb-icon;
-
   &:before {
-    content: $mb-icon-color;
+    content: "\e914";
   }
 }
 
 .mb-icon-cuts {
   @extend %mb-icon;
-
   &:before {
-    content: $mb-icon-cuts;
-  }
-}
-
-.mb-icon-extensions {
-  @extend %mb-icon;
-
-  &:before {
-    content: $mb-icon-extensions;
+    content: "\e901";
   }
 }
 
 .mb-icon-check {
   @extend %mb-icon;
-
   &:before {
-    content: $mb-icon-check;
+    content: "\e921";
   }
 }
 
-.mb-icon-conditioners {
+.mb-icon-hair-a {
   @extend %mb-icon;
-
   &:before {
-    content: $mb-icon-conditioners;
+    content: "\e909";
+  }
+}
+
+.mb-icon-hairs {
+  @extend %mb-icon;
+  &:before {
+    content: "\e91a";
   }
 }
 
 .mb-icon-search {
   @extend %mb-icon;
-
   &:before {
-    content: $mb-icon-search;
+    content: "\e923";
   }
 }
 
 .mb-icon-cross {
   @extend %mb-icon;
-
   &:before {
-    content: $mb-icon-cross;
+    content: "\e924";
   }
 }
 
 .mb-icon-arrow-left {
   @extend %mb-icon;
-
   &:before {
-    content: $mb-icon-arrow-left;
+    content: "\e925";
   }
 }
 
 .mb-icon-circle-add {
   @extend %mb-icon;
-
   &:before {
-    content: $mb-icon-circle-add;
+    content: "\e906";
   }
 }
 
 .mb-icon-woman {
   @extend %mb-icon;
-
   &:before {
-    content: $mb-icon-woman;
+    content: "\e907";
   }
 }
 
 .mb-icon-marker {
   @extend %mb-icon;
-
   &:before {
-    content: $mb-icon-marker;
+    content: "\e926";
   }
 }
 
 .mb-icon-badge {
   @extend %mb-icon;
-
   &:before {
-    content: $mb-icon-badge;
+    content: "\e91b";
   }
 }
 
 .mb-icon-phone-a {
   @extend %mb-icon;
-
   &:before {
-    content: $mb-icon-phone-a;
+    content: "\e927";
   }
 }
 
 .mb-icon-instagram {
   @extend %mb-icon;
-
   &:before {
-    content: $mb-icon-instagram;
+    content: "\e929";
   }
 }
 
 .mb-icon-money {
   @extend %mb-icon;
-
   &:before {
-    content: $mb-icon-money;
+    content: "\e908";
   }
 }
 
 .mb-icon-globe {
   @extend %mb-icon;
-
   &:before {
-    content: $mb-icon-globe;
+    content: "\e90c";
   }
 }
 
 .mb-icon-lock {
   @extend %mb-icon;
-
   &:before {
-    content: $mb-icon-lock;
+    content: "\e912";
   }
 }
 
 .mb-icon-users {
   @extend %mb-icon;
-
   &:before {
-    content: $mb-icon-users;
+    content: "\e919";
   }
 }
 
 .mb-icon-profile {
   @extend %mb-icon;
-
   &:before {
-    content: $mb-icon-profile;
+    content: "\e91c";
   }
 }
 
 .mb-icon-profile-a {
   @extend %mb-icon;
-
   &:before {
-    content: $mb-icon-profile-a;
+    content: "\e91f";
   }
 }
 
 .mb-icon-heart-a {
   @extend %mb-icon;
-
   &:before {
-    content: $mb-icon-heart-a;
+    content: "\e92a";
   }
 }
 
 .mb-icon-booking {
   @extend %mb-icon;
-
   &:before {
-    content: $mb-icon-booking;
+    content: "\e932";
   }
 }
+
+.mb-icon-logout {
+  @extend %mb-icon;
+  &:before {
+    content: "\e933";
+  }
+}
+
+
+
+
+
+

@@ -1,16 +1,18 @@
-<ion-header class="madeBackHeader">
-  <ion-navbar class="Made-wp BackHeader-backBtn">
-    <ion-buttons *ngIf="isMainScreen" end>
-      <button [disabled]="form.invalid" (click)="onContinue()" ion-button icon-only color="dark" class="RightButton">
-        Done
-      </button>
-    </ion-buttons>
-  </ion-navbar>
+<ion-header madeMenuHeader [hideBackButton]="!isRootPage">
+  <ion-title *ngIf="isRootPage">
+    <div class="Made-h1">My Profile</div>
+  </ion-title>
+
+  <ion-buttons *ngIf="isRootPage" end>
+    <button [disabled]="form.invalid" (click)="onContinue()" ion-button icon-only color="dark" class="RightButton">
+      Done
+    </button>
+  </ion-buttons>
 </ion-header>
 
 
 <ion-content no-padding>
-  <made-nav *ngIf="!isMainScreen" [activePage]="PageNames.RegisterSalon"></made-nav>
+  <made-nav *ngIf="!isRootPage" [activePage]="PageNames.RegisterSalon"></made-nav>
 
   <form [formGroup]="form" class="Made-wp Made-wpContent">
     <div class="Salon-circle">
@@ -122,7 +124,7 @@
       </ion-row>
     </ion-grid>
   </form>
-  <div *ngIf="!isMainScreen" class="Salon-submit Made-wp">
+  <div *ngIf="!isRootPage" class="Salon-submit Made-wp">
     <button (click)="onContinue()" [disabled]="form.invalid" class="Discounts-btn" ion-button data-test-id="submitProfileBtn">{{ title || 'Continue' }}</button>
   </div>
 </ion-content>
