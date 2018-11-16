@@ -1,57 +1,46 @@
 home-slots {
-  .HomeSlotsHeader {
-    font-size: pxtovw(28px);
-    font-weight: map-get($fontWeights, semibold);
-    margin: pxtovw(8px) 0 pxtovw(8px) pxtovw(72px);
+  .HomeSlots-icon {
+    position: relative;
+    top: 3px; // compensate offset
+    font-size: pxtovw(16px);
+    color: color($colors, lightSalmon);
   }
 
-  .HomeSlotsTodayNavigateIcon {
-    float: right;
-    margin-right: pxtovw(24px);
-  }
-
-  .HomeSlotsSubheader {
+  .HomeSlots-subheader {
     display: flex;
     align-items: center;
-  }
-
-  .HomeSlotsDateIndicator {
-    margin-left: pxtovw(36px);
-  }
-
-  .HomeSlotsSubheader {
     padding-bottom: pxtovw(8px);
-    border-bottom: 1px solid #E5E5E5;
   }
 
-  .HomeSlotsWeekdayName {
+  .HomeSlots-dateIndicator {
+    margin-left: pxtovw(24px);
+  }
+
+  .HomeSlots-weekday {
+    margin-bottom: pxtovw(2px);
     font-size: pxtovw(18px);
   }
 
-  .HomeSlotsMonthAndDay {
-    display: flex;
-    color: color($colors, warmGrey);
+  .HomeSlots-date {
     font-size: pxtovw(13px);
+    color: color($colors, warmGrey);
     text-align: center;
+
+    b { font-weight: 500; }
   }
 
-  .HomeSlotsDayOfMonth {
-    font-weight: map-get($fontWeights, semibold);
+  .HomeSlots-space {
+    flex: 1;
   }
 
-  .HomeSlotsUpcomingAndPast {
-    display: flex;
-    flex-grow: 1;
-    float: right;
-    margin-right: pxtovw(24px);
-  }
-
-  .HomeSlotsUpcomingAndPast a {
-    display: block;
-    justify-content: flex-end;
-    color: color($colors, lightSalmon);
+  .HomeSlots-link {
+    margin-left: pxtovw(24px);
     font-size: pxtovw(18px);
+    color: color($colors, lightSalmon);
     white-space: nowrap;
-    margin-left: pxtovw(16px);
+
+    &:last-child {
+      margin-right: pxtovw(24px);
+    }
   }
 }

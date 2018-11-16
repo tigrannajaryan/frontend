@@ -1,26 +1,25 @@
-<ion-header>
-  <!-- TODO: add menu hamburger -->
+<ion-header madeMenuHeader [hideBackButton]="true">
+  <ion-title>
+    <div class="Made-h1">Appointments</div>
+  </ion-title>
 
-  <div class="HomeSlotsHeader">
-      Appointments
-      <!-- TODO: set correct icon -->
-      <ion-icon name="ios-calendar-outline" class="HomeSlotsTodayNavigateIcon" (click)="onTodayNavigateClick()"></ion-icon>
-    </div>
+  <ion-buttons end>
+    <i (click)="onTodayNavigateClick()" class="mb-icon-calendar HomeSlots-icon"></i>
+  </ion-buttons>
 
-    <div class="HomeSlotsSubheader">
-      <div class="HomeSlotsDateIndicator" (click)="onDateAreaClick()">
-        <div class="HomeSlotsWeekdayName">{{ selectedWeekdayName }}</div>
-        <div class="HomeSlotsMonthAndDay">
-          <span>{{ selectedMonthName }},&nbsp;</span>
-          <span class="HomeSlotsDayOfMonth">{{ selectedDayOfMonth }}</span>
+  <ion-toolbar>
+    <div class="HomeSlots-subheader">
+      <div class="HomeSlots-dateIndicator" (click)="onDateAreaClick()">
+        <div class="HomeSlots-weekday">{{ selectedWeekdayName }}</div>
+        <div class="HomeSlots-date">
+          <span>{{ selectedMonthName }},&nbsp;</span><b>{{ selectedDayOfMonth }}</b>
         </div>
       </div>
-      <div class="HomeSlotsUpcomingAndPast">
-        <a (click)="onUpcomingVisitsClick()">Upcoming Visits</a>
-        <a (click)="onPastVisitsClick()">Past Visits</a>
-      </div>
+      <div class="HomeSlots-space"></div>
+      <div (click)="onUpcomingVisitsClick()" class="HomeSlots-link">Upcoming Visits</div>
+      <div (click)="onPastVisitsClick()" class="HomeSlots-link">Past Visits</div>
     </div>
-
+  </ion-toolbar>
 </ion-header>
 
 <ion-content no-padding>

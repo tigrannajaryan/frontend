@@ -268,7 +268,7 @@ export class HomeSlotsComponent {
   private selectDate(date: moment.Moment): void {
     this.selectedDate = date.clone().startOf('day');
     this.selectedMonthName = moment(date).format('MMM');
-    this.selectedWeekdayName = moment(date).format('ddd');
+    this.selectedWeekdayName = moment(date).format('dddd');
     this.selectedDayOfMonth = moment(date).format('D');
   }
 
