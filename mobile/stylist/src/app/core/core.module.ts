@@ -16,13 +16,15 @@ import { UserNamePhotoComponent } from '~/shared/components/user-name-photo/user
 
 import { DirectivesModule } from '~/core/directives/directive.module';
 import { ComponentsModule } from './components/components.module';
+import { TimeSlotsComponent } from '~/home-slots/time-slots/time-slots.component';
 
 const declarations = [
   HasErrorPipe,
   PriceCalendarComponent,
   PricePipe,
   ServicesHeaderListComponent,
-  UserNamePhotoComponent
+  UserNamePhotoComponent,
+  TimeSlotsComponent
 ];
 
 @NgModule({

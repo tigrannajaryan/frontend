@@ -1,0 +1,37 @@
+<ion-header madeMenuHeader [hideBackButton]="true">
+  <ion-title>
+    <div class="Made-h1">Appointments</div>
+  </ion-title>
+
+  <ion-buttons end>
+    <i (click)="onTodayNavigateClick()" class="mb-icon-today HomeSlots-icon"></i>
+  </ion-buttons>
+
+  <ion-toolbar>
+    <div class="HomeSlots-subheader">
+      <div class="HomeSlots-dateIndicator" (click)="onDateAreaClick()">
+        <div class="HomeSlots-weekday">{{ selectedWeekdayName }}</div>
+        <div class="HomeSlots-date">
+          <span>{{ selectedMonthName }},&nbsp;</span><b>{{ selectedDayOfMonth }}</b>
+        </div>
+      </div>
+      <div class="HomeSlots-space"></div>
+      <div (click)="onUpcomingVisitsClick()" class="HomeSlots-link">Upcoming Visits</div>
+      <div (click)="onPastVisitsClick()" class="HomeSlots-link">Past Visits</div>
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content no-padding>
+
+  <ion-fab right bottom>
+    <button ion-fab (click)="onAddAppointmentClick()">
+      <ion-icon name="add"></ion-icon>
+    </button>
+  </ion-fab>
+
+  <time-slots [appointments]="data?.appointments" [showCurTimeIndicator]="isShowingToday()" (freeSlotClick)="onFreeSlotClick($event)"
+    (appointmentClick)="onAppointmentClick($event)" [startHour]="data.work_start_at" [endHour]="data.work_end_at"
+    [slotIntervalInMin]="data.service_time_gap_minutes"></time-slots>
+
+</ion-content>

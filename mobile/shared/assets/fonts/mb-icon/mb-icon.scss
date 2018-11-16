@@ -530,8 +530,9 @@ $mb-icon-logout: "\e933";
   }
 }
 
-
-
-
-
-
+.mb-icon-today {
+  @extend %mb-icon;
+  &:before {
+    content: "\e934";
+  }
+}

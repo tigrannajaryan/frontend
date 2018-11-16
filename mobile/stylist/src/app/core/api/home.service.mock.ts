@@ -12,7 +12,7 @@ import {
   AppointmentPreviewRequest,
   AppointmentPreviewResponse,
   AppointmentStatuses,
-  Home,
+  HomeData,
   NewAppointmentRequest
 } from './home.models';
 
@@ -22,7 +22,7 @@ export class HomeServiceMock {
   /**
    * Get home page data. The stylist must be already authenticated as a user.
    */
-  getHome(query: string): Observable<ApiResponse<Home>> {
+  getHome(query: string): Observable<ApiResponse<HomeData>> {
     return Observable.of({
       response: {
         appointments: [],

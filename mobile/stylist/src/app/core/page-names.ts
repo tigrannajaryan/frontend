@@ -18,7 +18,7 @@ import { DiscountsFirstBookingComponent } from '~/discounts/discounts-first-book
 import { DiscountsRevisitComponent } from '~/discounts/discounts-revisit/discounts-revisit.component';
 import { DiscountsWeekdayComponent } from '~/discounts/discounts-weekday/discounts-weekday.component';
 import { FirstScreenComponent } from '~/first-screen/first-screen';
-import { HomeComponent } from '~/home/home.component';
+import { HomeSlotsComponent } from '~/home-slots/home-slots.component';
 import { InvitationsComponent } from '~/invitations/invitations.component';
 import { MyClientsComponent } from '~/clients/my-clients/my-clients.component';
 import { PushPrimingScreenComponent } from '~/shared/components/push-priming-screen/push-priming-screen.component';
@@ -27,6 +27,7 @@ import { ServiceItemComponent } from '~/services/services-item/services-item.com
 import { ServicesCategoriesComponent } from '~/services/services-categories/services-categories.component';
 import { ServicesComponent } from '~/services/services.component';
 import { ServicesListComponent } from '~/services/services-list/services-list.component';
+import { UpcomingAndPastComponent } from '~/home/home.component';
 import { WelcomeToMadeComponent } from '~/discounts/welcome-to-made/welcome-to-made.component';
 import { WorkHoursComponent } from '~/workhours/workhours.component';
 
@@ -60,7 +61,8 @@ export const PageNames = {
   DiscountsRevisit: DiscountsRevisitComponent,
   DiscountsWeekday: DiscountsWeekdayComponent,
   FirstScreen: FirstScreenComponent,
-  Home: HomeComponent,
+  Home: UpcomingAndPastComponent,
+  HomeSlots: HomeSlotsComponent,
   Invitations: InvitationsComponent,
   MyClients: MyClientsComponent,
   PushPrimingScreen: PushPrimingScreenComponent,

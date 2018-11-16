@@ -16,3 +16,7 @@ export interface ApiResponse<ReponseType> {
 
 export type ISODate = string; // ISO 8601: YYYY-MM-DD
 export type ISODateTime = string; // ISO 8601: YYYY-MM-DDTHH:mm:ss
+export type ISOTimeOnly = string; // Time in HH:mm:ss format
+
+export const isoDateFormat = 'YYYY-MM-DD';
+export const isoTimeOnlyFormat = 'HH:mm:ss';
