@@ -15,6 +15,10 @@
 
       .text-input {
         padding-left: $input-offset;
+
+        &::placeholder {
+          color: color($grayscale, 500);
+        }
       }
     }
 

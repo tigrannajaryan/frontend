@@ -14,9 +14,9 @@
       </ion-item>
     </div>
 
-    <ion-row class="H2 StylistsPage-title" align-items-center justify-content-between>
-      <div class="Badge-H2">
-        Search stylists
+    <ion-row class="H1 StylistsPage-title" align-items-center justify-content-between>
+      <div class="Badge-H1">
+        Search Stylists
         <span *ngIf="(stylists | async)?.length > 0" class="Badge">{{ (stylists | async)?.length }}<span *ngIf="moreStylistsAvailable | async">+</span></span>
       </div>
       <div *ngIf="(requestState | async) === RequestState.Loading && (stylists | async) !== undefined" class="StylistsPage-loader">searching…</div>
