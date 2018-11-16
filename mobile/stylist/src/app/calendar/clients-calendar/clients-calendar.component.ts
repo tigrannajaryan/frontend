@@ -22,6 +22,7 @@ import { ProfileState, selectProfile } from '~/core/components/made-menu-header/
 export class ClientsCalendarComponent {
   @ViewChild(Content) content: Content;
   client?: MyClientModel;
+  isRootPage?: Boolean;
 
   profile: Observable<StylistProfile>;
   prices: DayOffer[] = [];
@@ -37,6 +38,7 @@ export class ClientsCalendarComponent {
   }
 
   ionViewWillLoad(): Promise<void> {
+    this.isRootPage = Boolean(this.navParams.get('isRootPage'));
     this.client = this.navParams.get('client') as MyClientModel;
     this.profile = this.store.select(selectProfile);
     return this.getPricing();

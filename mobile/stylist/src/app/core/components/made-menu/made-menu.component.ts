@@ -38,14 +38,13 @@ export class MadeMenuComponent implements OnInit {
     public profileData: ProfileDataStore,
     private authApiService: AuthService,
     private store: Store<AuthState>,
-    verProvider: AppVersion
+    private verProvider: AppVersion
   ) {
-    this.init(verProvider);
     this.menuItems = [
       { title: 'Appointments', redirectToPage: PageNames.HomeSlots, redirectParams: {}, icon: 'home-a' },
       { title: 'Clients', redirectToPage: PageNames.MyClients, redirectParams: {}, icon: 'stylists-a' },
       { title: 'Discounts', redirectToPage: PageNames.Discounts, redirectParams: {isRootPage: true}, icon: 'discounts' },
-      { title: 'Calendar', redirectToPage: PageNames.ClientsCalendar, redirectParams: {}, icon: 'calendar-add' },
+      { title: 'Calendar', redirectToPage: PageNames.ClientsCalendar, redirectParams: {isRootPage: true}, icon: 'calendar-add' },
       { title: 'Hours', redirectToPage: PageNames.WorkHours, redirectParams: {isRootPage: true}, icon: 'clock-a' },
       { title: 'Services', redirectToPage: PageNames.ServicesList, redirectParams: {isRootPage: true}, icon: 'conditioners-a' },
       { title: 'Invite Clients', redirectToPage: PageNames.Invitations, redirectParams: {isRootPage: true}, icon: 'invite-a' }
@@ -58,6 +57,8 @@ export class MadeMenuComponent implements OnInit {
     if (response) {
       this.profile = response;
     }
+
+    this.init(this.verProvider);
   }
 
   async init(verProvider: AppVersion): Promise<void> {

@@ -52,7 +52,8 @@ describe('First use flow for invited clients', () => {
       salon_name: faker.commerce.productName(),
       salon_address: faker.address.streetAddress(),
       instagram_url: faker.internet.url(),
-      website_url: faker.internet.url()
+      website_url: faker.internet.url(),
+      followers_count: faker.random.number()
     };
     const profileResponse = await stylistApi.setProfile(stylistProfile);
     expect(profileResponse.uuid).toBeDefined();
