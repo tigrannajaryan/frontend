@@ -19,6 +19,7 @@ import { Camera } from '@ionic-native/camera';
 import { Clipboard } from '@ionic-native/clipboard';
 import { EmailComposer } from '@ionic-native/email-composer';
 import { Push } from '@ionic-native/push';
+import { DatePicker } from '@ionic-native/date-picker';
 
 import { UnhandledErrorHandler } from '~/shared/unhandled-error-handler';
 import { initSentry } from '~/shared/sentry';
@@ -70,7 +71,7 @@ import { DiscountsAlertComponent } from '~/discounts/discounts-alert/discounts-a
 import { DiscountsFirstBookingComponent } from '~/discounts/discounts-first-booking/discounts-first-booking.component';
 import { DiscountsRevisitComponent } from '~/discounts/discounts-revisit/discounts-revisit.component';
 import { DiscountsWeekdayComponent } from '~/discounts/discounts-weekday/discounts-weekday.component';
-import { HomeComponent } from '~/home/home.component';
+import { UpcomingAndPastComponent } from '~/home/home.component';
 import { FirstScreenComponent } from '~/first-screen/first-screen';
 import { InvitationsComponent } from '~/invitations/invitations.component';
 import { MyClientsComponent } from '~/clients/my-clients/my-clients.component';
@@ -87,6 +88,7 @@ import { ServicesEffects } from '~/appointment/appointment-services/services.eff
 import { WorkHoursComponent } from '~/workhours/workhours.component';
 import { NotificationsApi } from './shared/push/notifications.api';
 import { MadeMenuComponent } from '~/core/components/made-menu/made-menu.component';
+import { HomeSlotsComponent } from './home-slots/home-slots.component';
 
 initSentry();
 
@@ -148,7 +150,8 @@ const declarations = [
   DiscountsRevisitComponent,
   DiscountsWeekdayComponent,
   FirstScreenComponent,
-  HomeComponent,
+  UpcomingAndPastComponent,
+  HomeSlotsComponent,
   InvitationsComponent,
   MadeMenuComponent,
   MyAppComponent,
@@ -242,7 +245,8 @@ const declarations = [
     Contacts,
     OpenNativeSettings,
     SMS,
-    Camera
+    Camera,
+    DatePicker
   ]
 })
 export class AppModule {

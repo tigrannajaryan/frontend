@@ -1,9 +1,10 @@
-import { ISODateTime } from '~/shared/api/base.models';
+import { ISODateTime, ISOTimeOnly } from '~/shared/api/base.models';
 
 export enum AppointmentStatuses {
   new = 'new',
   no_show = 'no_show',
   cancelled_by_stylist = 'cancelled_by_stylist',
+  cancelled_by_client = 'cancelled_by_client',
   checked_out = 'checked_out'
 }
 
@@ -87,7 +88,7 @@ export interface AppointmentDateOffer {
   is_working_day?: boolean;
 }
 
-export interface Home {
+export interface HomeData {
   appointments: Appointment[];
   today_visits_count: number;
   upcoming_visits_count: number;
@@ -105,4 +106,14 @@ export interface CheckoutRequest {
 
 export interface CheckOutService {
   service_uuid: string;
+}
+
+export interface DayAppointmentsResponse {
+  appointments: Appointment[];
+  first_slot_start_time: ISOTimeOnly; // in hh:mm format in stylist timezone
+  service_time_gap_minutes: number; // in minutes interval between slots
+  total_slot_count: number;
+  work_start_at: ISOTimeOnly; // in hh:mm working hours start
+  work_end_at: ISOTimeOnly; // in hh:mm working hours end
+  is_day_available: boolean; // is a working day
 }

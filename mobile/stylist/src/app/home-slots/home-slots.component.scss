@@ -1,0 +1,46 @@
+home-slots {
+  .HomeSlots-icon {
+    position: relative;
+    top: 3px; // compensate offset
+    font-size: pxtovw(16px);
+    color: color($colors, lightSalmon);
+  }
+
+  .HomeSlots-subheader {
+    display: flex;
+    align-items: center;
+    padding-bottom: pxtovw(8px);
+  }
+
+  .HomeSlots-dateIndicator {
+    margin-left: pxtovw(24px);
+  }
+
+  .HomeSlots-weekday {
+    margin-bottom: pxtovw(2px);
+    font-size: pxtovw(18px);
+  }
+
+  .HomeSlots-date {
+    font-size: pxtovw(13px);
+    color: color($colors, warmGrey);
+    text-align: center;
+
+    b { font-weight: 500; }
+  }
+
+  .HomeSlots-space {
+    flex: 1;
+  }
+
+  .HomeSlots-link {
+    margin-left: pxtovw(24px);
+    font-size: pxtovw(18px);
+    color: color($colors, lightSalmon);
+    white-space: nowrap;
+
+    &:last-child {
+      margin-right: pxtovw(24px);
+    }
+  }
+}

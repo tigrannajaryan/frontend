@@ -1,0 +1,138 @@
+time-slots {
+
+  $border-color: #E5E5E5;
+
+  .TimeSlotsRoot {
+    display: flex;
+    flex-direction: row; // TimeAxis, then TimeSlots, horizontally
+  }
+
+  .TimeAxis {
+    position: relative;
+    width: pxtovw(72px);
+    border-right: pxtovw(1px) solid $border-color;
+  }
+
+  .TimeSlotsNonWorkingArea {
+    position: absolute; // This is actually relative to .TimeAxis
+    width: pxtovw(375px);
+    background-color: #E5E5E5;
+    opacity: 0.5;
+  }
+
+  .TimeAxisLabelArea {
+    position: absolute; // This is actually relative to .TimeAxis
+    width: 100%;
+  }
+
+  .TimeAxisLabel {
+    margin-top: -0.5em; // center align label vertically to its parent's top
+    margin-right: pxtovw(16px);
+    font-size: pxtovw(13px);
+    color: color($colors, warmGrey);
+    text-align: right;
+  }
+
+  .TimeAxisTick {
+    position: absolute; // This is actually relative to .TimeAxisLabelArea
+    top: 0;
+    right: pxtovw(-304px); // right align the tick
+    width: pxtovw(311px);
+    height: 1px;
+    margin-top: pxtovw(-0.5px);
+    border-top: pxtovw(1px) solid $border-color;
+  }
+
+  .TimeAxisCurTime {
+    position: absolute; // This is actually relative to .TimeAxisLabelArea
+    left: pxtovw(4px); // right align the current time indicator
+    width: pxtovw(304px);
+    height: pxtovw(2px);
+    margin-top: pxtovw(-1px);
+    background-color: #E96D5C;
+  }
+
+  .TimeAxisCurTimeLeftBlob {
+    position: absolute; // This is actually relative to .TimeAxisLabelArea
+    left: 0; // right align the current time indicator
+    width: pxtovw(8px);
+    height: pxtovw(8px);
+    margin-top: pxtovw(-4px);
+    margin-left: pxtovw(-4px);
+    background-color: #E96D5C;
+    border-radius: pxtovw(4px);
+  }
+
+  .TimeSlots {
+    position: relative;
+  }
+
+  .TimeSlotItem {
+    position: absolute; // This is actually relative to .TimeSlots
+    font-size: pxtovw(13px);
+  }
+
+  .TimeSlotInner {
+    width: 100%;
+    height: 100%;
+    padding: 0 pxtovw(2px) pxtovw(2px) 0;
+    font-weight: map-get($fontWeights, semibold);
+  }
+
+  .TimeSlotFree {
+    width: 100%;
+    height: 100%;
+  }
+
+  .TmeSlotFreeSelected {
+    height: 100%;
+    text-align: center;
+    // TODO: need better border color and vertical alignment of text
+    border: pxtovw(2px) solid color($colors, medium-dark);
+  }
+
+  .TimeSlotBlockedTime {
+    height: 100%;
+    padding: pxtovw(4px);
+    color: color($colors, warmGrey);
+    background-color: #E5E5E5;
+  }
+
+  .TimeSlotAppointment {
+    height: 100%;
+    background-color: white;
+    border: pxtovw(1px) solid color($colors, secondary);
+    border-radius: pxtovw(2px);
+  }
+
+  .TimeSlotClientName {
+    margin-top: pxtovw(4px);
+    margin-left: pxtovw(8px);
+    color: color($colors, warmGrey);
+  }
+
+  .TimeSlotServices {
+    margin-left: pxtovw(8px);
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  .TimeSlotPhoto {
+    float: left;
+    width: pxtovw(32px);
+    height: pxtovw(32px);
+    margin: pxtovw(2px) pxtovw(8px) pxtovw(2px) pxtovw(2px);
+    background-size: contain;
+    border-radius: pxtovw(16px);
+  }
+
+  .TimeSlotCancelled {
+    // TODO: add proper styling for Cancelled appointments after the designer provides them
+    // and remove the text-decoration below.
+    text-decoration: line-through;
+  }
+
+  .TimeSlotPast {
+    // TODO: by design this must add 60% opactity div to timeslot
+  }
+}
