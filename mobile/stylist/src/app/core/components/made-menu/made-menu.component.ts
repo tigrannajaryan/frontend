@@ -42,7 +42,7 @@ export class MadeMenuComponent implements OnInit {
   ) {
     this.init(verProvider);
     this.menuItems = [
-      { title: 'Appointments', redirectToPage: PageNames.Home, redirectParams: {}, icon: 'home-a' },
+      { title: 'Appointments', redirectToPage: PageNames.HomeSlots, redirectParams: {}, icon: 'home-a' },
       { title: 'Clients', redirectToPage: PageNames.MyClients, redirectParams: {}, icon: 'stylists-a' },
       { title: 'Discounts', redirectToPage: PageNames.Discounts, redirectParams: {isRootPage: true}, icon: 'discounts' },
       { title: 'Calendar', redirectToPage: PageNames.ClientsCalendar, redirectParams: {}, icon: 'calendar-add' },

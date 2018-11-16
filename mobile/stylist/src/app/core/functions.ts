@@ -56,7 +56,7 @@ export function createNavHistoryList(profileStatus: StylistProfileStatus): PageD
 
   // Everything is complete, go to Home screen. We are return a single page here,
   // there will be no navigation history.
-  return [{ page: PageNames.Home }];
+  return [{ page: PageNames.HomeSlots }];
 }
 
 /**
