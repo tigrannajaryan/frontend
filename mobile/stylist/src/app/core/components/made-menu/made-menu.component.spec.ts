@@ -47,13 +47,16 @@ describe('Component: menu', () => {
     expect(instance.setPage).toHaveBeenCalledWith(PageNames.RegisterSalon, { isRootPage: true }, false);
 
     const menuProfileSalon = fixture.nativeElement.querySelector('[data-test-id=menuProfileSalon]');
-    expect(menuProfileSalon.innerText).toBeDefined(instance.profile.salon_name);
+    expect(menuProfileSalon.innerText).toContain(instance.profile.salon_name);
 
     const menuProfileName = fixture.nativeElement.querySelector('[data-test-id=menuProfileName]');
-    expect(menuProfileName.innerText).toBeDefined(`${instance.profile.first_name} ${instance.profile.last_name}`);
+    expect(menuProfileName.innerText).toContain(`${instance.profile.first_name} ${instance.profile.last_name}`);
+
+    const menuProfileFollowers = fixture.nativeElement.querySelector('[data-test-id=menuProfileFollowers]');
+    expect(menuProfileFollowers.innerText).toContain(instance.profile.followers_count);
 
     const menuProfileTitle = fixture.nativeElement.querySelector('[data-test-id=menuProfileTitle]');
-    expect(menuProfileTitle.innerText).toBeDefined('View and edit profile');
+    expect(menuProfileTitle.innerText).toContain('View and edit profile');
   });
 
   it('should have menu list', () => {

@@ -27,6 +27,14 @@
     display: none;
   }
 
+  &.header-ios {
+    padding-top: pxtovw(10px);
+
+    .toolbar {
+      min-height: pxtovw(54px);
+    }
+  }
+
   .BackHeader-backBtn {
     .back-button {
       position: absolute;

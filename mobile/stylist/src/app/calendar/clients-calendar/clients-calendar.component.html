@@ -1,4 +1,4 @@
-<ion-header madeMenuHeader [hideBackButton]="true">
+<ion-header madeMenuHeader [hideBackButton]="isRootPage">
   <ion-title>
     <div class="Made-h1 ClientsCalendar-title">
       <ng-container *ngIf="client; else noClient">{{ this.getNamePossessiveForm(client) }}Calendar Preview</ng-container>
@@ -8,7 +8,7 @@
 
   <ion-toolbar class="Made-wp Made-wpContent ClientsCalendar-header">
     <ion-row justify-content-between>
-      <div *ngIf="!client" class="ClientsCalendar-small">Calendar view of a new client</div>
+      <div class="ClientsCalendar-small"><span *ngIf="!client">Calendar view of a new client</span></div>
       <ng-container *ngIf="(profile | async) as profileData">
         <user-name-photo [firstName]="profileData?.first_name" [lastName]="profileData?.last_name" [photoUrl]="profileData?.profile_photo_url"></user-name-photo>
       </ng-container>
