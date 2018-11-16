@@ -215,7 +215,6 @@ export class HomeSlotsComponent {
   }
 
   protected isShowingToday(): boolean {
-    // Show the current time line only if we are showing today
     return this.selectedDate && this.selectedDate.isSame(moment().startOf('day'));
   }
 
