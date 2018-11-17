@@ -122,7 +122,9 @@ time-slots {
     width: pxtovw(32px);
     height: pxtovw(32px);
     margin: pxtovw(2px) pxtovw(8px) pxtovw(2px) pxtovw(2px);
-    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
     border-radius: pxtovw(16px);
   }
 
