@@ -349,7 +349,7 @@ export class TimeSlotsComponent implements AfterViewInit, OnDestroy {
     // Create slot items for appointments
     let prevSlotItem;
     for (const appointment of this._appointments) {
-      const startTime = moment(appointment.datetime_start_at);
+      const startTime = moment.parseZone(appointment.datetime_start_at);
       const startHourOfDay = getHoursSinceMidnight(startTime);
 
       // Create slot item
