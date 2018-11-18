@@ -10,27 +10,33 @@
 
 
 <ion-content padding class="Appointment-content">
-  <div class="title"> Create appointment or block time</div>
+  <div class="title"> Create appointment</div>
 
   <form [formGroup]="form" class="Appointment-form">
-    <ion-item>
+    <ion-row align-items-center class="Appointment-row">
+      <ion-col no-padding col-8 class="Appointment-label">Block Slot</ion-col>
+      <ion-col no-padding col-4 text-right>
+        <ion-toggle formControlName="isBlocked" no-padding class="ion-bb-toggle"></ion-toggle>
+      </ion-col>
+    </ion-row>
+
+    <ion-item *ngIf="!form.value.isBlocked">
       <ion-label fixed>
-        <ion-icon name="person" item-start></ion-icon>
+        <i class="mb-icon-woman"></i>
       </ion-label>
       <ion-input type="text" placeholder="Client name" formControlName="client"></ion-input>
-
     </ion-item>
 
-    <ion-item>
+    <ion-item *ngIf="!form.value.isBlocked">
       <ion-label fixed>
-        <ion-icon name="call" item-start></ion-icon>
+        <i class="mb-icon-phone-a"></i>
       </ion-label>
       <ion-input type="tel" placeholder="Add phone (optional)" formControlName="phone"></ion-input>
     </ion-item>
 
     <ion-item (click)="datePicker.open()">
       <ion-label fixed>
-        <ion-icon name="calendar" item-start itemscope></ion-icon>
+        <i class="mb-icon-calendar-add"></i>
       </ion-label>
       <ion-datetime #datePicker displayFormat="DDD, MMM D, YYYY" pickerFormat="MMM D YYYY" placeholder="Select date" formControlName="date"
         initialValue="{{ defaultDate }}" max="{{ nextYear }}"></ion-datetime>
@@ -39,16 +45,16 @@
 
     <ion-item (click)="timePicker.open()">
       <ion-label fixed>
-        <ion-icon name="time" item-start></ion-icon>
+        <i class="mb-icon-clock-a"></i>
       </ion-label>
       <ion-datetime #timePicker displayFormat="h:mm a" pickerFormat="h mm A" placeholder="Select time" formControlName="time" [minuteValues]="minuteValues"
         initialValue="{{ defaultTime }}"></ion-datetime>
       <ion-icon name="md-arrow-dropdown" item-end></ion-icon>
     </ion-item>
 
-    <ion-item (click)="selectService()">
+    <ion-item *ngIf="!form.value.isBlocked" (click)="selectService()">
       <ion-label fixed>
-        <ion-icon name="cut" item-start></ion-icon>
+        <i class="mb-icon-conditioners-a"></i>
       </ion-label>
       <ion-label id='selectedService' class="service-select">{{ selectedService ? selectedService.name : 'Select service (optional)' }}</ion-label>
       <ion-icon name="ios-arrow-forward" item-end></ion-icon>

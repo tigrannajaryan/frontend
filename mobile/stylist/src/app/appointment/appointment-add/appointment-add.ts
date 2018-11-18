@@ -83,22 +83,32 @@ export class AppointmentAddComponent {
     this.navCtrl.push(PageNames.AppointmentServices);
   }
 
-  protected onSubmit(forced = false): void {
-    const { client, phone, date, time } = this.form.value;
+  onSubmit(forced = false): void {
+    const { client, date, isBlocked, phone, time } = this.form.value;
     const dateYMD = moment(date).format('YYYY-MM-DD');
 
-    const [firstName, lastName] = client ? client.trim().split(/(^[^\s]+)/).slice(-2) : ['', ''];
-    const clientData = {
-      client_phone: phone,
-      client_first_name: firstName,
-      client_last_name: lastName.trim()
+    // TODO: fix types
+    let data: any = {
+      client_phone: '',
+      client_first_name: '',
+      client_last_name: '',
+      datetime_start_at: `${dateYMD}T${time}:00`,
+      services: []
     };
 
-    const data = {
-      ...clientData,
-      services: this.selectedService ? [{ service_uuid: this.selectedService.uuid }] : [],
-      datetime_start_at: `${dateYMD}T${time}:00`
-    };
+    if (!isBlocked) {
+      const [firstName, lastName] = client ? client.trim().split(/(^[^\s]+)/).slice(-2) : ['', ''];
+      const clientData = {
+        client_phone: phone,
+        client_first_name: firstName,
+        client_last_name: lastName.trim()
+      };
+
+      data = {
+        ...clientData,
+        services: this.selectedService ? [{ service_uuid: this.selectedService.uuid }] : []
+      };
+    }
 
     this.createAppointment(data, forced);
   }
@@ -155,6 +165,7 @@ export class AppointmentAddComponent {
 
   private createForm(): void {
     this.form = this.formBuilder.group({
+      isBlocked: false,
       client: [''],
       phone: [''],
       date: [this.startDate, [Validators.required]],

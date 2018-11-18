@@ -43,7 +43,12 @@ page-appointment-add {
       margin: 0;
     }
 
-    .item-inner > ion-icon {
+    .item-inner [class^="mb-icon"] {
+      font-size: $t-h3;
+      color: color($colors, lightSalmon);
+    }
+
+    .item-inner .mb-icon-woman {
       font-size: $t-h2;
     }
 
@@ -51,5 +56,14 @@ page-appointment-add {
     .datetime-md {
       padding-left: 8px;
     }
+  }
+
+  .Appointment-row {
+    padding: pxtoem(12) pxtoem(10);
+    border-bottom: 0.55px solid #C8C7CC;
+  }
+
+  .Appointment-label {
+    font-size: 1.7rem;
   }
 }
