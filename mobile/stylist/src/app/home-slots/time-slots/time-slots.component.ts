@@ -225,11 +225,9 @@ export class TimeSlotsComponent implements AfterViewInit, OnDestroy {
    */
   protected appointmentIconUrl(appointment: Appointment): string {
     if (appointment.status === AppointmentStatuses.no_show) {
-      // TODO: add no-show icon to assets and return it
-      return 'assets/icons/stylist-avatar.png';
+      return 'assets/icons/appointment/no-show@3x.png';
     } else if (this.isAppointmentPendingCheckout(appointment)) {
-      // TODO: add pending status question mark icon to assets and return it
-      return 'assets/icons/stylist-avatar.png';
+      return 'assets/icons/appointment/pending-checkout@3x.png';
     } else if (appointment.client_profile_photo_url) {
       return appointment.client_profile_photo_url;
     } else {
@@ -245,6 +243,7 @@ export class TimeSlotsComponent implements AfterViewInit, OnDestroy {
   protected appointmentCssClasses(appointment: Appointment): Object {
     const now = moment();
     return {
+      TimeSlotNew: appointment.status === AppointmentStatuses.new,
       TimeSlotCancelled: appointment.status === AppointmentStatuses.cancelled_by_client,
       TimeSlotPast: this.appointmentEndMoment(appointment).isBefore(now)
     };

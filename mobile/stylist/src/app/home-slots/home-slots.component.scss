@@ -1,4 +1,12 @@
 home-slots {
+  ion-toolbar.toolbar {
+    padding: 0;
+  }
+
+  .HomeSlots-menuBtn {
+    margin-right: -1 * pxtovw(16px);
+  }
+
   .HomeSlots-icon {
     position: relative;
     top: 3px; // compensate offset
