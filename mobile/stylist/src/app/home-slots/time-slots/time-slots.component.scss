@@ -76,7 +76,6 @@ time-slots {
     width: 100%;
     height: 100%;
     padding: 0 pxtovw(2px) pxtovw(2px) 0;
-    font-weight: map-get($fontWeights, semibold);
   }
 
   .TimeSlotFree {
@@ -85,10 +84,12 @@ time-slots {
   }
 
   .TmeSlotFreeSelected {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     height: 100%;
     text-align: center;
-    // TODO: need better border color and vertical alignment of text
-    border: pxtovw(2px) solid color($colors, medium-dark);
+    background: color($colors, secondary);
   }
 
   .TimeSlotBlockedTime {
@@ -122,17 +123,25 @@ time-slots {
     width: pxtovw(32px);
     height: pxtovw(32px);
     margin: pxtovw(2px) pxtovw(8px) pxtovw(2px) pxtovw(2px);
-    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
     border-radius: pxtovw(16px);
   }
 
   .TimeSlotCancelled {
-    // TODO: add proper styling for Cancelled appointments after the designer provides them
-    // and remove the text-decoration below.
-    text-decoration: line-through;
+    > * {
+      text-decoration: line-through;
+    }
+  }
+
+  .TimeSlotNew:not(.TimeSlotPast) {
+    > * {
+      font-weight: 500;
+    }
   }
 
   .TimeSlotPast {
-    // TODO: by design this must add 60% opactity div to timeslot
+    opacity: 0.75;
   }
 }
