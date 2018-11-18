@@ -144,7 +144,7 @@ describe('Registration Flow', () => {
     click(alertButton);
     waitForNot(alertButton);
 
-    waitFor(homePage.homeTabs);
+    waitFor(homePage.home);
   });
 
   // TODO: check why we can't open a menu
