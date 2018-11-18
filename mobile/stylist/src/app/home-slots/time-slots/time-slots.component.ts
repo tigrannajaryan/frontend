@@ -8,11 +8,7 @@ import { setIntervalOutsideNgZone } from '~/shared/utils/timer-utils';
 
 import { Appointment, AppointmentStatuses } from '~/core/api/home.models';
 
-import {
-  FreeTimeSlot,
-  hourToYInVw,
-  TimeSlot
-} from '~/home-slots/time-slot/time-slot.component';
+import { FreeTimeSlot, hourToYInVw, TimeSlot } from '~/home-slots/time-slot/time-slot.component';
 
 export interface TimeSlotLabel {
   text: string;
@@ -231,6 +227,7 @@ export class TimeSlotsComponent implements AfterViewInit, OnDestroy {
     // to place it in the same row or to the next one.
     //
     this._appointments.reduce((sameRowSlots: TimeSlot[], appointment: Appointment) => {
+      // NOTE: ignores appointment timezone
       const startTime = moment.parseZone(appointment.datetime_start_at);
 
       const timeSlot: TimeSlot = { appointment, startTime };
@@ -253,12 +250,12 @@ export class TimeSlotsComponent implements AfterViewInit, OnDestroy {
 
       // Is it in the same row with previous slot(s)?
       const isInSameRow = sameRowSlots.some((slot: TimeSlot) => {
-        return startTime.diff(slot.startTime, 'minutes') < 60;
+        return startTime.diff(slot.startTime, 'minutes') < this._slotIntervalInMin;
       });
 
       if (isInSameRow) {
         // If yes, set the right column value and return new slots in the same row
-        const newSameRowSlots = [...sameRowSlots, timeSlot];
+        const newSameRowSlots = [timeSlot, ...sameRowSlots];
 
         newSameRowSlots.forEach((slot: TimeSlot, idx: number) => {
           slot.idx = idx;

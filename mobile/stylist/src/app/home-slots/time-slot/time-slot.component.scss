@@ -1,0 +1,77 @@
+.TimeSlotItem {
+  position: absolute; // This is actually relative to .TimeSlots
+  font-size: pxtovw(13px);
+}
+
+.TimeSlotInner {
+  width: 100%;
+  height: 100%;
+  padding: 0 pxtovw(2px) pxtovw(2px) 0;
+}
+
+.TimeSlotFree {
+  width: 100%;
+  height: 100%;
+}
+
+.TimeSlotFreeSelected {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  text-align: center;
+  background: color($colors, secondary);
+}
+
+.TimeSlotBlockedTime {
+  height: 100%;
+  padding: pxtovw(4px);
+  color: color($colors, warmGrey);
+  background-color: #E5E5E5;
+}
+
+.TimeSlotAppointment {
+  height: 100%;
+  background-color: white;
+  border: pxtovw(1px) solid color($colors, secondary);
+  border-radius: pxtovw(2px);
+}
+
+.TimeSlotClientName {
+  margin-top: pxtovw(4px);
+  margin-left: pxtovw(8px);
+  color: color($colors, warmGrey);
+}
+
+.TimeSlotServices {
+  margin: 0 0 pxtovw(4px) pxtovw(8px);
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.TimeSlotPhoto {
+  float: left;
+  width: pxtovw(32px);
+  height: pxtovw(32px);
+  margin: pxtovw(2px) pxtovw(8px) pxtovw(2px) pxtovw(2px);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  border-radius: pxtovw(16px);
+}
+
+.TimeSlotCancelled {
+  > * {
+    text-decoration: line-through;
+  }
+}
+
+.TimeSlotNew:not(.TimeSlotPast) {
+  > * {
+    font-weight: 500;
+  }
+}
+
+.TimeSlotPast {
+  opacity: 0.75;
+}

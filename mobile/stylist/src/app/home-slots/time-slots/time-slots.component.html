@@ -23,7 +23,11 @@
     <!-- show time slots on the right -->
     <div class="TimeSlots">
 
-      <time-slot *ngFor="let timeSlot of slotItems" [timeSlot]="timeSlot" (timeSlotClick)="onSlotItemClick(timeSlot)"></time-slot>
+      <time-slot
+        *ngFor="let timeSlot of slotItems"
+        [isSelected]="timeSlot === selectedFreeSlot"
+        [timeSlot]="timeSlot"
+        (timeSlotClick)="onSlotItemClick(timeSlot)"></time-slot>
 
       <!-- show current time indicator -->
       <ng-template [ngIf]="showCurTimeIndicator">

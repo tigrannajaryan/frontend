@@ -5,20 +5,6 @@ import { getHoursSinceMidnight } from '~/shared/utils/datetime-utils';
 
 import { Appointment, AppointmentStatuses } from '~/core/api/home.models';
 
-// Possible states of a time-slot
-export interface TimeSlotState {
-  // If haven’t yet seen the appointment it is shown with bold font face.
-  NotSeen: boolean;
-  // If not yet checked out in the last 24h (?) is shown instead of a photo.
-  Checkouted: boolean;
-  // If marked as no-show (!) is shown instead of a photo.
-  NoShow: boolean;
-  // If past appointment set opacity 60%.
-  Past: boolean;
-  // If canceled by the client all texts of the appointment is having strikethrough style.
-  Canceled: boolean;
-}
-
 // Position and dimensions of
 export interface TimeSlotBoundaries {
   top: number;
@@ -79,6 +65,24 @@ export function isBlockedTime(appointment: Appointment): boolean {
 // Based on design https://app.zeplin.io/project/5b4505174703426f52928575/screen/5be090972434c361a3b501ea
 export const fullSlotWidthInVw = pxtovw(304);
 
+/**
+ * This is a time-slot component. It is used to show 3 types of time-slots.
+ * - Appointment slot: a real appointment scheduled by the client or stylist.
+ * - Blocked slot: a special time-slot to indicate that the stylist is busy.
+ * - Free slot: a time-slot which stylist can choose to add appointment.
+ *
+ * An appointment time-slot can have one or more states from the list below.
+ * - Not seen: the appointment hasn’t seen/checked by the stylist. (TODO: add after enabling new API endpoint)
+ *   It is shown with bold font face.
+ * - Pending checkout: the appointment hasn’t yet ben checked out in the last 24h.
+ *   It is shown with (?) icon instead of a photo.
+ * - No show: the appointment has been marked as ”no show”.
+ *   It is shown with (!) icon instead of a photo.
+ * - Past: the appointment time is in the past (ended, finished).
+ *   It is shown with lower opacity.
+ * - Canceled: the appointment has been canceled by the client.
+ *   All texts of the appointment is showing with strikethrough style.
+ */
 @Component({
   selector: 'time-slot',
   templateUrl: 'time-slot.component.html'
@@ -160,11 +164,9 @@ export class TimeSlotComponent {
    */
   appointmentIconUrl(appointment: Appointment): string {
     if (appointment.status === AppointmentStatuses.no_show) {
-      // TODO: add no-show icon to assets and return it
-      return 'assets/icons/stylist-avatar.png';
+      return 'assets/icons/appointment/no-show@3x.png';
     } else if (this.isAppointmentPendingCheckout(appointment)) {
-      // TODO: add pending status question mark icon to assets and return it
-      return 'assets/icons/stylist-avatar.png';
+      return 'assets/icons/appointment/pending-checkout@3x.png';
     } else if (appointment.client_profile_photo_url) {
       return appointment.client_profile_photo_url;
     } else {
@@ -184,9 +186,10 @@ export class TimeSlotComponent {
 
   /**
    * Calculate and return end time of the appointment
+   * NOTE: ignores appointment timezone
    */
   appointmentEndMoment(appointment: Appointment): moment.Moment {
-    const start = moment(appointment.datetime_start_at);
+    const start = moment(moment.parseZone(appointment.datetime_start_at).format('YYYY-MM-DDTHH:mm:ss'));
     return start.add(appointment.duration_minutes, 'minutes');
   }
 
@@ -198,6 +201,7 @@ export class TimeSlotComponent {
   appointmentCssClasses(appointment: Appointment): Object {
     const now = moment();
     return {
+      TimeSlotNew: appointment.status === AppointmentStatuses.new,
       TimeSlotCancelled: appointment.status === AppointmentStatuses.cancelled_by_client,
       TimeSlotPast: this.appointmentEndMoment(appointment).isBefore(now)
     };
