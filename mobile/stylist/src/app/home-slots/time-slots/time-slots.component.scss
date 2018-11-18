@@ -76,7 +76,6 @@ time-slots {
     width: 100%;
     height: 100%;
     padding: 0 pxtovw(2px) pxtovw(2px) 0;
-    font-weight: map-get($fontWeights, semibold);
   }
 
   .TimeSlotFree {
@@ -112,7 +111,7 @@ time-slots {
   }
 
   .TimeSlotServices {
-    margin-left: pxtovw(8px);
+    margin: 0 0 pxtovw(4px) pxtovw(8px);
     overflow: hidden;
     white-space: nowrap;
   }

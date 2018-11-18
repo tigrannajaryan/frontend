@@ -31,6 +31,8 @@ import { MadeMenuHeaderComponent } from '~/core/components/made-menu-header/made
 import { PhoneLinkComponent } from '~/shared/components/phone-link/phone-link.component';
 import { ClientItemComponent } from '~/clients/client-item/client-item.component';
 
+import { TimeSlotComponent } from '~/home-slots/time-slot/time-slot.component';
+
 const components = [
   MadeNavComponent,
   ServerStatusComponent,
@@ -52,7 +54,8 @@ const components = [
   PhoneLinkComponent,
   CodeInputComponent,
   ClientItemComponent,
-  PricePairComponent
+  PricePairComponent,
+  TimeSlotComponent
 ];
 
 @NgModule({

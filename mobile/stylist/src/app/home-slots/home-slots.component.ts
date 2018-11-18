@@ -18,7 +18,8 @@ import { StylistAppStorage } from '~/core/stylist-app-storage';
 
 import { Tabs, UpcomingAndPastPageParams } from '~/home/home.component';
 import { AppointmentAddParams } from '~/appointment/appointment-add/appointment-add';
-import { FreeSlot, isBlockedTime } from './time-slots/time-slots.component';
+import { FreeSlot } from './time-slots/time-slots.component';
+import { isBlockedTime } from './time-slot/time-slot.component';
 import { AppointmentsDataStore } from './appointments.data';
 
 const helpText = `Congratulations! Your registration is complete.<br/><br/>

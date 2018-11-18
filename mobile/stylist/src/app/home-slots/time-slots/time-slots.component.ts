@@ -2,10 +2,17 @@ import { AfterViewInit, Component, EventEmitter, Input, NgZone, OnDestroy, Outpu
 import { Scroll } from 'ionic-angular';
 import * as moment from 'moment';
 
-import { getHoursSinceMidnight } from '~/shared/utils/datetime-utils';
-import { Appointment, AppointmentStatuses } from '~/core/api/home.models';
-import { setIntervalOutsideNgZone } from '~/shared/utils/timer-utils';
 import { ISOTimeOnly, isoTimeOnlyFormat } from '~/shared/api/base.models';
+import { getHoursSinceMidnight } from '~/shared/utils/datetime-utils';
+import { setIntervalOutsideNgZone } from '~/shared/utils/timer-utils';
+
+import { Appointment, AppointmentStatuses } from '~/core/api/home.models';
+
+import {
+  FreeTimeSlot,
+  hourToYInVw,
+  TimeSlot
+} from '~/home-slots/time-slot/time-slot.component';
 
 export interface TimeSlotLabel {
   text: string;
@@ -14,48 +21,6 @@ export interface TimeSlotLabel {
   labelId: string;
 }
 
-// Position of the slot for displaying purposes. We support one or two columns.
-export enum TimeSlotColumn {
-  both, // slot occupies entire available width
-  left, // slot occupies left half of available area
-  right // slot occupies right half of available area
-}
-
-// Slot item to dispaly (either free slot or appointment)
-export interface TimeSlotItem {
-  startTime: moment.Moment;
-  column: TimeSlotColumn;
-
-  // Coordinates as numbers. Unit is vw.
-  posYInVw: number;
-  heightInVw: number;
-  leftInVw: number;
-  widthInVw: number;
-
-  appointment?: Appointment;
-}
-
-/**
- * Convert a coordinate in pixels to a coordinate in vw units.
- */
-function pxtovw(px: number): number {
-  const srcLayoutWidth = 375;
-  const vw = srcLayoutWidth * 0.01;
-  return px / vw;
-}
-
-/**
- * Convert hours since midnight to a vertical Y coordinate in vw units
- */
-function hourToYInVw(hoursSinceMidnight: number): number {
-  // 22.4% = 84px / 375px (84px is vertical spacing of hours by design
-  // https://app.zeplin.io/project/5b4505174703426f52928575/screen/5be090972434c361a3b501ea)
-  return hoursSinceMidnight * 22.4;
-}
-
-// Based on design https://app.zeplin.io/project/5b4505174703426f52928575/screen/5be090972434c361a3b501ea
-export const fullSlotWidthInVw = pxtovw(304);
-
 /**
  * Comparison function to sort appointments by start time
  */
@@ -63,16 +28,6 @@ function compareAppointments(a: Appointment, b: Appointment): number {
   const ma = moment(a.datetime_start_at);
   const mb = moment(b.datetime_start_at);
   return ma.diff(mb);
-}
-
-/**
- * Return true if the appointment is just a blocked time and not a real appointment.
- */
-export function isBlockedTime(appointment: Appointment): boolean {
-  return !appointment.client_uuid &&
-    !appointment.client_first_name &&
-    !appointment.client_last_name &&
-    !appointment.client_phone;
 }
 
 // Define the total vertical size of the view in hours. Must be integer.
@@ -89,7 +44,6 @@ export interface FreeSlot {
 })
 export class TimeSlotsComponent implements AfterViewInit, OnDestroy {
   AppointmentStatuses = AppointmentStatuses;
-  isBlockedTime = isBlockedTime;
 
   // List of appointments to show
   @Input() set appointments(value: Appointment[]) {
@@ -145,9 +99,9 @@ export class TimeSlotsComponent implements AfterViewInit, OnDestroy {
   timeLabels: TimeSlotLabel[] = [];
 
   // The slot items to display
-  slotItems: TimeSlotItem[] = [];
+  slotItems: Array<TimeSlot | FreeTimeSlot> = [];
 
-  protected selectedFreeSlot: TimeSlotItem;
+  protected selectedFreeSlot: TimeSlot;
 
   private _appointments: Appointment[] = [];
   private _showCurTimeIndicator: boolean;
@@ -175,85 +129,9 @@ export class TimeSlotsComponent implements AfterViewInit, OnDestroy {
   }
 
   /**
-   * Format client name and return as string. Will use first/last if it is known
-   * otherwise will return phone instead of the name.
-   */
-  formatClientName(appointment: Appointment): string {
-    let str = appointment.client_first_name.trim();
-    if (appointment.client_last_name.trim()) {
-      // Add last name if it is known
-      if (str.length) {
-        str = `${str} `;
-      }
-      str = `${str}${appointment.client_last_name.trim()}`;
-    }
-    if (!str && appointment.client_phone.trim()) {
-      // Use phone number if name is missing
-      str = appointment.client_phone.trim();
-    }
-    return str;
-  }
-
-  /**
-   * Format a list of services as a comman separated string
-   */
-  formatServices(appointment: Appointment): string {
-    return appointment.services.map(s => s.service_name).join(', ');
-  }
-
-  /**
-   * Calculate and return end time of the appointment
-   */
-  appointmentEndMoment(appointment: Appointment): moment.Moment {
-    const start = moment(appointment.datetime_start_at);
-    return start.add(appointment.duration_minutes, 'minutes');
-  }
-
-  isAppointmentPendingCheckout(appointment: Appointment): boolean {
-    if (appointment.status === AppointmentStatuses.new) {
-      const end = this.appointmentEndMoment(appointment);
-      if (end.isBefore(moment())) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  /**
-   * Returns the appropriate icon url for the appointment depending on the
-   * state of the appointment.
-   */
-  protected appointmentIconUrl(appointment: Appointment): string {
-    if (appointment.status === AppointmentStatuses.no_show) {
-      // TODO: add no-show icon to assets and return it
-      return 'assets/icons/stylist-avatar.png';
-    } else if (this.isAppointmentPendingCheckout(appointment)) {
-      // TODO: add pending status question mark icon to assets and return it
-      return 'assets/icons/stylist-avatar.png';
-    } else if (appointment.client_profile_photo_url) {
-      return appointment.client_profile_photo_url;
-    } else {
-      return 'assets/icons/stylist-avatar.png';
-    }
-  }
-
-  /**
-   * Returns an Object with keys as CSS class names in a way that is defind by ngClass
-   * Angular directive: https://angular.io/api/common/NgClass
-   * Used for styling appointment slots.
-   */
-  protected appointmentCssClasses(appointment: Appointment): Object {
-    const now = moment();
-    return {
-      TimeSlotCancelled: appointment.status === AppointmentStatuses.cancelled_by_client,
-      TimeSlotPast: this.appointmentEndMoment(appointment).isBefore(now)
-    };
-  }
-
-  /**
    * Click handler for slots
    */
-  protected onSlotItemClick(slotItem: TimeSlotItem): void {
+  protected onSlotItemClick(slotItem: TimeSlot & FreeTimeSlot): void {
     if (slotItem.appointment) {
       // It is an appointment slot
       this.appointmentClick.emit(slotItem.appointment);
@@ -346,44 +224,23 @@ export class TimeSlotsComponent implements AfterViewInit, OnDestroy {
     // Make sure _appointments are ordered by start time
     this._appointments = this._appointments.sort((a, b) => compareAppointments(a, b));
 
-    // Create slot items for appointments
-    let prevSlotItem;
-    for (const appointment of this._appointments) {
+    // Convert every appointment to a slot.
+    //
+    // Reduce is used to return all previous slots in a row. When new slot
+    // is created compare to the previous slots in a row and decide whether
+    // to place it in the same row or to the next one.
+    //
+    this._appointments.reduce((sameRowSlots: TimeSlot[], appointment: Appointment) => {
       const startTime = moment.parseZone(appointment.datetime_start_at);
-      const startHourOfDay = getHoursSinceMidnight(startTime);
 
-      // Create slot item
-      const slotItem: TimeSlotItem = {
-        startTime,
-        posYInVw: hourToYInVw(startHourOfDay),
-        heightInVw: hourToYInVw(appointment.duration_minutes / 60),
-        leftInVw: 0,
-        widthInVw: fullSlotWidthInVw,
-        appointment,
-        column: TimeSlotColumn.both
-      };
-
-      if (prevSlotItem) {
-        // Does this slot item overlap with previous slot item
-        if (prevSlotItem.posYInVw + prevSlotItem.heightInVw > slotItem.posYInVw) {
-          // Yes. We need to use 2 columns.
-
-          if (prevSlotItem.column === TimeSlotColumn.both) {
-            // Previous item occupies both columns. Narrow it.
-            prevSlotItem.column = TimeSlotColumn.left;
-          }
-          // This slot should occupy the slot that is in opposite column to previous slot
-          slotItem.column = prevSlotItem.column === TimeSlotColumn.left ? TimeSlotColumn.right : TimeSlotColumn.left;
-        }
-      }
-
-      this.slotItems.push(slotItem);
-      prevSlotItem = slotItem;
+      const timeSlot: TimeSlot = { appointment, startTime };
+      this.slotItems.push(timeSlot);
 
       // Mark all free slots which are covered by this appointment as non-free
       const durationHours = appointment.duration_minutes / 60;
 
       // Find the first slot that is covered. Use trunc() to properly account for partially covered slots.
+      const startHourOfDay = getHoursSinceMidnight(startTime);
       const startSlotIndex = Math.trunc(this.hourToSlotIndex(startHourOfDay));
 
       // Find the last slot that is covered. Use ceil() to properly account for partially covered slots.
@@ -393,26 +250,26 @@ export class TimeSlotsComponent implements AfterViewInit, OnDestroy {
       for (let slotIndex = startSlotIndex; slotIndex < endSlotIndex; slotIndex++) {
         freeSlots[slotIndex] = false;
       }
-    }
 
-    // Based on column choice set correct horizontal coordinates of slots
-    for (const slotItem of this.slotItems) {
-      switch (slotItem.column) {
-        case TimeSlotColumn.right:
-          slotItem.leftInVw = slotItem.widthInVw / 2;
-          slotItem.widthInVw = slotItem.widthInVw / 2;
-          break;
+      // Is it in the same row with previous slot(s)?
+      const isInSameRow = sameRowSlots.some((slot: TimeSlot) => {
+        return startTime.diff(slot.startTime, 'minutes') < 60;
+      });
 
-        case TimeSlotColumn.left:
-          slotItem.widthInVw = slotItem.widthInVw / 2;
-          break;
-        default:
-          break;
+      if (isInSameRow) {
+        // If yes, set the right column value and return new slots in the same row
+        const newSameRowSlots = [...sameRowSlots, timeSlot];
+
+        newSameRowSlots.forEach((slot: TimeSlot, idx: number) => {
+          slot.idx = idx;
+          slot.column = newSameRowSlots.length;
+        });
+        return newSameRowSlots;
       }
-    }
 
-    // Free slot height is equal to the interval
-    const freeSlotHeightInVw = hourToYInVw(this._slotIntervalInMin / 60);
+      // Only one in a row
+      return [timeSlot];
+    }, []);
 
     // Now create free slot items for everything that actually remains free from appointments
     for (let slotIndex = 0; slotIndex <= freeSlots.length; slotIndex++) {
@@ -420,15 +277,9 @@ export class TimeSlotsComponent implements AfterViewInit, OnDestroy {
         const startHourOfDay = this.slotIndexToHour(slotIndex);
         const startTime = moment().startOf('day').add(startHourOfDay, 'hours');
 
-        this.slotItems.push({
-          startTime,
-          posYInVw: hourToYInVw(startHourOfDay),
-          leftInVw: 0,
-          heightInVw: freeSlotHeightInVw,
-          widthInVw: fullSlotWidthInVw,
-          appointment: undefined,
-          column: TimeSlotColumn.both
-        });
+        const freeTimeSlot: FreeTimeSlot = { startTime, slotIntervalInMin: this._slotIntervalInMin };
+
+        this.slotItems.push(freeTimeSlot);
       }
     }
   }
