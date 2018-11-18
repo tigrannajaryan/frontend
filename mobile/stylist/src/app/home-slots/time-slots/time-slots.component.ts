@@ -95,7 +95,7 @@ export class TimeSlotsComponent implements AfterViewInit, OnDestroy {
   timeLabels: TimeSlotLabel[] = [];
 
   // The slot items to display
-  slotItems: Array<TimeSlot | FreeTimeSlot> = [];
+  slotItems: Array<TimeSlot & FreeTimeSlot> = [];
 
   protected selectedFreeSlot: TimeSlot;
 
@@ -230,7 +230,7 @@ export class TimeSlotsComponent implements AfterViewInit, OnDestroy {
       // NOTE: ignores appointment timezone
       const startTime = moment.parseZone(appointment.datetime_start_at);
 
-      const timeSlot: TimeSlot = { appointment, startTime };
+      const timeSlot: TimeSlot = { appointment, column: 1, startTime };
       this.slotItems.push(timeSlot);
 
       // Mark all free slots which are covered by this appointment as non-free
@@ -255,7 +255,7 @@ export class TimeSlotsComponent implements AfterViewInit, OnDestroy {
 
       if (isInSameRow) {
         // If yes, set the right column value and return new slots in the same row
-        const newSameRowSlots = [timeSlot, ...sameRowSlots];
+        const newSameRowSlots = [...sameRowSlots, timeSlot];
 
         newSameRowSlots.forEach((slot: TimeSlot, idx: number) => {
           slot.idx = idx;

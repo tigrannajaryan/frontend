@@ -28,7 +28,7 @@ export interface TimeSlot {
 export interface FreeTimeSlot {
   startTime: moment.Moment;
   // Interval between slots in minutes. Free slot height is equal to the interval.
-  slotIntervalInMin: number;
+  slotIntervalInMin?: number;
 }
 
 /**
@@ -94,7 +94,7 @@ export class TimeSlotComponent {
   @Input() isSelected = false;
 
   @Input() set timeSlot(timeSlot: TimeSlot & FreeTimeSlot) {
-    const { appointment, column = 1, idx = 0, slotIntervalInMin, startTime } = timeSlot;
+    const { appointment, column = 1, idx = 0, slotIntervalInMin = 30, startTime } = timeSlot;
 
     this.appointment = appointment;
     this.startTime = startTime;

@@ -12,11 +12,15 @@
     <ng-container *ngIf="appointment; else freeSlotTpl">
 
       <!-- show not real appointment used to just block time-slot -->
-      <div *ngIf="isBlockedTime(appointment); else clientAppointmentSlot" [style.minHeight]="boundaries.height + 'vw'" class="TimeSlotBlockedTime">Blocked Slot</div>
+      <div
+        *ngIf="isBlockedTime(appointment); else clientAppointmentSlot"
+        [style.minHeight]="boundaries.height + 'vw'"
+        data-test-id="timeSlot-blocked"
+        class="TimeSlotBlockedTime">Blocked Slot</div>
 
       <!-- show real client appointment -->
       <ng-template #clientAppointmentSlot>
-        <div class="TimeSlotAppointment" [ngClass]="appointmentCssClasses(appointment)">
+        <div class="TimeSlotAppointment" [ngClass]="appointmentCssClasses(appointment)" [attr.data-test-id]="'timeSlot-' + appointment.uuid">
 
           <!-- show client photo or icon -->
           <i *ngIf="appointment.client_uuid" [style.background-image]="'url(' + appointmentIconUrl(appointment) + ')'" class="TimeSlotPhoto"></i>
@@ -31,7 +35,11 @@
 
     <!-- show free slot selector -->
     <ng-template #freeSlotTpl>
-      <div *ngIf="isSelected" [style.minHeight]="boundaries.height + 'vw'" class="TimeSlotFreeSelected">+</div>
+      <div
+        *ngIf="isSelected"
+        [style.minHeight]="boundaries.height + 'vw'"
+        data-test-id="timeSlot-free"
+        class="TimeSlotFreeSelected">+</div>
     </ng-template>
 
 </div>
