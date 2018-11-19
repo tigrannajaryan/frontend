@@ -13,7 +13,6 @@ import {
   authResponseToTokenModel,
   deleteAuthLocalData,
   getAuthLocalData,
-  isAuthLocalDataComplete,
   saveAuthLocalData
 } from '~/shared/storage/token-utils';
 
@@ -92,10 +91,13 @@ export class ClientAppComponent implements OnInit, OnDestroy {
 
     // Get locally saved auth data
     let authLocalData: AuthLocalData = await getAuthLocalData();
-    if (authLocalData && !isAuthLocalDataComplete(authLocalData)) {
-      // The format of AuthLocalData changed over time. We may have an old incomplete data stored in
-      // persistent storage. Refresh auth to make sure we have a fresh data.
+    if (authLocalData) {
+      // We have an existing saved auth. Refresh it to validate that the account is still valid
+      // and to make sure we have a fresh data (profile status).
+      this.logger.info('App: found saved local auth data. Will refresh.');
       authLocalData = await this.refreshAuth(authLocalData);
+    } else {
+      this.logger.info('App: did not find saved local auth data.');
     }
 
     // Subscribe to some interesting global events
@@ -110,6 +112,7 @@ export class ClientAppComponent implements OnInit, OnDestroy {
     this.ga.trackTiming('Loading', loadTime, 'AppInitialization', 'FirstLoad');
 
     if (!authLocalData) {
+      this.logger.info('App: will show FirstScreen');
       this.rootPage = PageNames.FirstScreen;
     } else {
       // Let pushNotification know who is the current user
@@ -184,13 +187,17 @@ export class ClientAppComponent implements OnInit, OnDestroy {
   async showRootPage(profileStatus: ClientProfileStatus): Promise<void> {
     if (!profileStatus.has_preferred_stylist_set) {
       // Haven’t completed onboarding, should restart
+      this.logger.info('App: no preferred stylist. Will show HowMadeWorks screen.');
       this.rootPage = PageNames.HowMadeWorks;
     } else {
+      this.logger.info('App: we are authenticated. Check if need to show Push permission screen.');
+
       // We are authenticated and almost ready to start using the app normally.
       // One last thing: show push permission asking screen if needed and wait until the user makes a choice
       await this.pushNotification.showPermissionScreen(true);
 
       // All set now. Show the main screen.
+      this.logger.info('App: show MainTabs screen.');
       this.rootPage = PageNames.MainTabs;
     }
   }
