@@ -53,6 +53,7 @@ describe('First use flow for invited clients', () => {
       salon_address: faker.address.streetAddress(),
       instagram_url: faker.internet.url(),
       website_url: faker.internet.url(),
+      profile_photo_url: faker.random.image(),
       followers_count: faker.random.number()
     };
     const profileResponse = await stylistApi.setProfile(stylistProfile);
@@ -159,7 +160,7 @@ describe('First use flow for invited clients', () => {
     await waitFor(profileSummaryPage.phone);
     expect((await profileSummaryPage.phone.getText()).trim()).toEqual(getPhoneNumber(`+1 ${ clientPhoneNumber }`));
     expect((await profileSummaryPage.fullname.getText()).trim()).toEqual(`${firstName} ${lastName}`);
-    expect((await profileSummaryPage.profileCompletion.getText()).trim()).toEqual('Profile completion 50%');
+    expect((await profileSummaryPage.profileCompletion.getText()).trim()).toEqual('Profile completion 40%');
   });
 
   it('Can start booking appointment', async () => {

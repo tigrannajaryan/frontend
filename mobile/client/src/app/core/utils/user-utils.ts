@@ -1,16 +1,16 @@
 import { ProfileCompleteness, ProfileModel } from '~/core/api/profile.models';
 
 export function checkProfileCompleteness(fields: ProfileModel): ProfileCompleteness {
-  const { birthday, city, privacy, state, ...profileCompleteness } = fields;
+  const { first_name, last_name, zip_code, email, profile_photo_url } = fields;
+  const profileCompleteness = [first_name, last_name, zip_code, email, profile_photo_url];
 
-  const fieldsValuesArray = Object.keys(profileCompleteness).map(key => fields[key]);
-  const complete = fieldsValuesArray.reduce((previousValue, currentValue, index, array) => {
+  const complete = Number(profileCompleteness.reduce((previousValue: number, currentValue) => {
     return !!currentValue ? ++previousValue : previousValue;
-  }, 0);
-  const completenessPercent = getPercentageChange(fieldsValuesArray.length, complete);
+  }, 0));
+  const completenessPercent = getPercentageChange(profileCompleteness.length, complete);
 
   return {
-    isProfileComplete: fieldsValuesArray.every(item => !!item),
+    isProfileComplete: profileCompleteness.every(item => !!item),
     completenessPercent: +completenessPercent.toFixed()
   };
 }
