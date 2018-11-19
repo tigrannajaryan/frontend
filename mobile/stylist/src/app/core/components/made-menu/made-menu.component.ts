@@ -1,13 +1,16 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Page } from 'ionic-angular/navigation/nav-util';
 import { AppVersion } from '@ionic-native/app-version';
 import { Content, Nav } from 'ionic-angular';
 import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
 
 import { AuthService } from '~/shared/api/auth.api';
 import { StylistProfile } from '~/shared/api/stylist-app.models';
 import { getBuildNumber } from '~/shared/get-build-info';
 import { AuthState, LogoutAction } from '~/shared/storage/auth.reducer';
+import { ApiResponse } from '~/shared/api/base.models';
 
 import { PageNames } from '~/core/page-names';
 import { clearAllDataStores } from '~/core/data.module';
@@ -24,7 +27,7 @@ interface MenuItem {
   selector: 'made-menu',
   templateUrl: 'made-menu.component.html'
 })
-export class MadeMenuComponent implements OnInit {
+export class MadeMenuComponent implements OnInit, OnDestroy {
   @Input() content: Content;
   @Input() nav: Nav;
 
@@ -33,6 +36,9 @@ export class MadeMenuComponent implements OnInit {
   appVersion: string;
   appBuildNumber = getBuildNumber();
   PageNames = PageNames;
+
+  profileObservable: Observable<ApiResponse<StylistProfile>>;
+  private profileObservableSubscription: Subscription;
 
   constructor(
     public profileData: ProfileDataStore,
@@ -52,13 +58,22 @@ export class MadeMenuComponent implements OnInit {
   }
 
   async ngOnInit(): Promise<void> {
-    const { response } = await this.profileData.get();
+    this.profileObservable = this.profileData.asObservable();
 
-    if (response) {
-      this.profile = response;
-    }
+    // Initiate fetching profile data
+    this.profileData.refresh();
+
+    this.profileObservableSubscription = this.profileObservable.subscribe((profileResponse: ApiResponse<StylistProfile>) => {
+      if (profileResponse.response) {
+        this.profile = profileResponse.response;
+      }
+    });
 
     this.init(this.verProvider);
+  }
+
+  ngOnDestroy(): void {
+    this.profileObservableSubscription.unsubscribe();
   }
 
   async init(verProvider: AppVersion): Promise<void> {
