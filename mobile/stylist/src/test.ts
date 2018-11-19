@@ -32,8 +32,8 @@ import {
 } from '@angular/platform-browser-dynamic/testing';
 
 import {
-  AlertController,
   ActionSheetController,
+  AlertController,
   App,
   Config,
   DeepLinker,
@@ -41,6 +41,7 @@ import {
   Events,
   Form,
   GestureController,
+  Haptic,
   IonicModule,
   Keyboard,
   LoadingController,
@@ -58,6 +59,7 @@ import {
   ConfigMock,
   EventsMock,
   GoogleAnalyticsMock,
+  HapticMock,
   LoadingControllerMock,
   NavControllerMock,
   PlatformMock,
@@ -146,6 +148,7 @@ export class TestUtils {
         { provide: LoadingController, useFactory: () => LoadingControllerMock.instance() },
         { provide: NavController, useFactory: () => NavControllerMock.instance() },
         { provide: Events, useFactory: () => EventsMock.instance() },
+        { provide: Haptic, useFactory: () => HapticMock.instance() },
         { provide: PopoverController, useClass: PopoverControllerMock },
         { provide: GoogleAnalytics, useClass: GoogleAnalyticsMock },
         { provide: StylistAppStorage, useClass: StylistAppStorageMock },

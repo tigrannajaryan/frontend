@@ -13,6 +13,16 @@ import { ServiceItem } from '~/shared/api/stylist-app.models';
 import { SelectServiceAction, servicesReducer, ServicesState } from '~/appointment/appointment-services/services.reducer';
 import { AppointmentAddComponent } from './appointment-add';
 
+const nextWeek = moment().add(7, 'days');
+
+const client = {
+  first_name: 'Hello',
+  last_name: 'World',
+  phone: '+1234567890'
+};
+
+const forced = false;
+
 let fixture: ComponentFixture<AppointmentAddComponent>;
 let instance: AppointmentAddComponent;
 let store: Store<ServicesState>;
@@ -73,14 +83,6 @@ describe('Pages: Add Appointment', () => {
 
     fixture.detectChanges();
 
-    const nextWeek = moment().add(7, 'days');
-
-    const client = {
-      first_name: 'Hello',
-      last_name: 'World',
-      phone: '+1234567890'
-    };
-
     // add missed values
     instance.form.patchValue({
       client: `${client.first_name} ${client.last_name}`,
@@ -91,13 +93,47 @@ describe('Pages: Add Appointment', () => {
 
     // transform to request data
     const data = {
+      client_phone: client.phone,
       client_first_name: client.first_name,
       client_last_name: client.last_name,
-      client_phone: client.phone,
       services: [{ service_uuid: fakeService.uuid }],
       datetime_start_at: nextWeek.format('YYYY-MM-DDTHH:mm:00')
     };
-    const forced = false;
+
+    const appointmentsService = fixture.debugElement.injector.get(AppointmentService);
+    spyOn(appointmentsService, 'createAppointment').and.returnValue(Observable.of(true));
+
+    // enables submit
+    fixture.detectChanges();
+
+    fixture.nativeElement.querySelector('[id="submitBtn"]').click();
+
+    const options = { hideGenericAlertOnFieldAndNonFieldErrors: true };
+    expect(appointmentsService.createAppointment)
+      .toHaveBeenCalledWith(data, forced, options);
+  }));
+
+  it('should submit empty data for blocked slot', async(() => {
+    store.dispatch(new SelectServiceAction(fakeService));
+
+    fixture.detectChanges();
+
+    instance.form.patchValue({
+      isBlocked: true, // indicates is just a blocked slot
+      client: `${client.first_name} ${client.last_name}`,
+      phone: client.phone,
+      date: nextWeek.format('YYYY-MM-DD'),
+      time: nextWeek.format('HH:mm')
+    });
+
+    // transform to request data
+    const data = {
+      client_first_name: '',
+      client_last_name: '',
+      client_phone: '',
+      services: [],
+      datetime_start_at: nextWeek.format('YYYY-MM-DDTHH:mm:00')
+    };
 
     const appointmentsService = fixture.debugElement.injector.get(AppointmentService);
     spyOn(appointmentsService, 'createAppointment').and.returnValue(Observable.of(true));
