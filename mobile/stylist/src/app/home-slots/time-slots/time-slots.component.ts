@@ -372,7 +372,9 @@ export class TimeSlotsComponent implements AfterViewInit, OnDestroy {
 
       if (prevSlotItem) {
         // Does this slot item overlap with previous slot item
-        if (prevSlotItem.posYInVw + prevSlotItem.heightInVw > slotItem.posYInVw) {
+        const prevLastsMinutes = prevSlotItem.appointment ? prevSlotItem.appointment.duration_minutes : this._slotIntervalInMin;
+
+        if (slotItem.startTime.diff(prevSlotItem.startTime, 'minutes') <= prevLastsMinutes) {
           // Yes. We need to use 2 columns.
 
           if (prevSlotItem.column === TimeSlotColumn.both) {
