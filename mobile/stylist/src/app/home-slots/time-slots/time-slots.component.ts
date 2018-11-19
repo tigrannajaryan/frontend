@@ -451,6 +451,12 @@ export class TimeSlotsComponent implements AfterViewInit, OnDestroy {
 
     // Find the label for the starting hour
     const label = this.timeLabels[scrollToHour];
+
+    if (!label) {
+      // When next day
+      return;
+    }
+
     const elem: HTMLElement = document.getElementById(label.areaId);
     const text: HTMLElement = document.getElementById(label.labelId);
 
