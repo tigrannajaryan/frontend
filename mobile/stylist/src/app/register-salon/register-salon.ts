@@ -306,22 +306,26 @@ export class RegisterSalonComponent {
       return;
     }
 
-    // imageData is either a base64 encoded string or a file URI
-    // If it's base64:
-    const originalBase64Image = `data:image/jpeg;base64,${imageData}`;
+    try {
+      // imageData is either a base64 encoded string or a file URI
+      // If it's base64:
+      const originalBase64Image = `data:image/jpeg;base64,${imageData}`;
 
-    const downscaledBase64Image = await downscalePhoto(originalBase64Image);
+      const downscaledBase64Image = await downscalePhoto(originalBase64Image);
 
-    // set image preview
-    this.form.get('vars.image')
-      .setValue(this.domSanitizer.bypassSecurityTrustStyle(`url(${downscaledBase64Image})`));
+      // set image preview
+      this.form.get('vars.image')
+        .setValue(this.domSanitizer.bypassSecurityTrustStyle(`url(${downscaledBase64Image})`));
 
-    // convert base64 to File after to formData and send it to server
-    const file = await urlToFile(downscaledBase64Image, 'file.png');
-    const formData = new FormData();
-    formData.append('file', file);
+      // convert base64 to File after to formData and send it to server
+      const file = await urlToFile(downscaledBase64Image, 'file.png');
+      const formData = new FormData();
+      formData.append('file', file);
 
-    const response: any = await this.baseService.uploadFile(formData);
-    this.form.get('profile_photo_id').setValue(response.uuid);
+      const response: any = await this.baseService.uploadFile(formData);
+      this.form.get('profile_photo_id').setValue(response.uuid);
+    } catch (e) {
+      showAlert('Saving photo failed', 'We are working on fixing it, please, retry later.');
+    }
   }
 }

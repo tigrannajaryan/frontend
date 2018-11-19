@@ -109,7 +109,7 @@ export class BaseService {
     return this.http.post<ResponseType>(url, formData)
       .toPromise()
       .catch(e => {
-        this.logger.error('API request failed:', JSON.stringify(e));
+        this.logger.error('File upload failed, HttpErrorResponse:', JSON.stringify(e));
         throw e;
       });
   }

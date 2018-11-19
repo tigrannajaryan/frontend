@@ -163,7 +163,6 @@ export class ProfileEditComponent {
 
     } catch (e) {
       showAlert('Saving photo failed', 'We are working on fixing it, please, retry later.');
-      return;
     }
   }
 }
