@@ -10,12 +10,12 @@ import {
   ApiError,
   ApiFieldAndNonFieldErrors,
   HttpStatus,
+  NonFieldErrorItem,
   ServerInternalError,
   ServerUnknownError,
   ServerUnreachableError
 } from '~/shared/api-errors';
 import { showAlert } from '~/shared/utils/alert';
-import { ApiFieldAndNonFieldErrors, NonFieldErrorItem } from '~/shared/api-errors';
 import { LogoutAction } from '~/shared/storage/auth.reducer';
 
 const toastDurationMs = 3000;
@@ -33,7 +33,7 @@ export class ServerStatusComponent implements OnInit, OnDestroy {
   // These errors resulted in logout:
   static tokenExpiredErrors: ApiFieldAndNonFieldErrors[] = [
     new ApiFieldAndNonFieldErrors([new NonFieldErrorItem({ code: 'err_signature_expired' })]),
-    new ApiFieldAndNonFieldErrors([new NonFieldErrorItem({ code: 'err_refresh_expired' })]),
+    new ApiFieldAndNonFieldErrors([new NonFieldErrorItem({ code: 'err_refresh_expired' })])
   ];
 
   subscription: Subscription;
