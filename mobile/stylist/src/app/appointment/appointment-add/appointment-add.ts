@@ -105,6 +105,7 @@ export class AppointmentAddComponent {
       };
 
       data = {
+        ...data,
         ...clientData,
         services: this.selectedService ? [{ service_uuid: this.selectedService.uuid }] : []
       };

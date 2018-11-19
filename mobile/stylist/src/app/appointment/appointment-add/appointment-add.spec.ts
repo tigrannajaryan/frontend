@@ -93,9 +93,9 @@ describe('Pages: Add Appointment', () => {
 
     // transform to request data
     const data = {
+      client_phone: client.phone,
       client_first_name: client.first_name,
       client_last_name: client.last_name,
-      client_phone: client.phone,
       services: [{ service_uuid: fakeService.uuid }],
       datetime_start_at: nextWeek.format('YYYY-MM-DDTHH:mm:00')
     };
