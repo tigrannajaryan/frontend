@@ -336,8 +336,16 @@ export class TimeSlotsComponent implements AfterViewInit, OnDestroy {
   private updateAppointments(): void {
     this.slotItems = [];
 
-    // Free slots count should be 0 if interval (time gap) is 0 or undefined
-    const freeSlotsCount = totalHoursInDay * 60 / this._slotIntervalInMin || 0;
+    let freeSlotsCount = totalHoursInDay * 60 / this._slotIntervalInMin;
+
+    // Ensure freeSlotsCount is a valid number:
+    if (isNaN(freeSlotsCount)) {
+      // When interval (time gap) is 0 or undefined free slots become NaN, set it to 0:
+      freeSlotsCount = 0;
+    } else if (freeSlotsCount % 1 !== 0) {
+      // Also, interval might be float and Math.ceil should be used to convert it to int value:
+      freeSlotsCount = Math.ceil(freeSlotsCount);
+    }
 
     // Create free slots for entire day initially
     const freeSlots = new Array(freeSlotsCount).fill(true);
