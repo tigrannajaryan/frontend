@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ToastController } from 'ionic-angular';
+import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs/Subscription';
 
 import { ServerStatusTracker } from '~/shared/server-status-tracker';
@@ -14,6 +15,8 @@ import {
   ServerUnreachableError
 } from '~/shared/api-errors';
 import { showAlert } from '~/shared/utils/alert';
+import { ApiFieldAndNonFieldErrors, NonFieldErrorItem } from '~/shared/api-errors';
+import { LogoutAction } from '~/shared/storage/auth.reducer';
 
 const toastDurationMs = 3000;
 
@@ -27,12 +30,19 @@ const toastDurationMs = 3000;
 })
 export class ServerStatusComponent implements OnInit, OnDestroy {
 
+  // These errors resulted in logout:
+  static tokenExpiredErrors: ApiFieldAndNonFieldErrors[] = [
+    new ApiFieldAndNonFieldErrors([new NonFieldErrorItem({ code: 'err_signature_expired' })]),
+    new ApiFieldAndNonFieldErrors([new NonFieldErrorItem({ code: 'err_refresh_expired' })]),
+  ];
+
   subscription: Subscription;
   currentVisibleError: string;
 
   constructor(
     private logger: Logger,
     private serverStatus: ServerStatusTracker,
+    private store: Store<{}>,
     private toastCtrl: ToastController) { }
 
   ngOnInit(): void {
@@ -57,6 +67,12 @@ export class ServerStatusComponent implements OnInit, OnDestroy {
     this.logger.info('ServerStatusComponent.handleServiceError', error);
 
     if (error instanceof ApiFieldAndNonFieldErrors) {
+
+      // Some errors should result in logout:
+      if (ServerStatusComponent.tokenExpiredErrors.some(e => error.isLike(e))) {
+        this.store.dispatch(new LogoutAction());
+      }
+
       // Show alert for ApiFieldAndNonFieldErrors
       let alertMsg = error.getMessage();
       alertMsg = alertMsg.replace(/\n/gm, '<br/>');
