@@ -65,11 +65,18 @@
     margin: 0;
     background: none;
 
-    ion-icon {
-      height: pxtovw(26px);
-      font-size: pxtovw(27px);
-      font-weight: 500;
-      line-height: 28px;
+    .mb-icon-menu {
+      font-size: pxtovw(18px);
+    }
+  }
+
+  // Due to:
+  // | .hide, [hidden], template { display: none !important; }
+  // the menu button might appear with hidden attribute on the screen.
+  // We have to use !important to deal with this strange ionic bug.
+  .is-hiddenBackButton .back-button + ion-buttons[left] {
+    .madeMenuHeader-menuBtn {
+      display: block !important;
     }
   }
 

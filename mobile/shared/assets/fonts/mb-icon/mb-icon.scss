@@ -64,6 +64,8 @@ $mb-icon-profile-a: "\e91f";
 $mb-icon-heart-a: "\e92a";
 $mb-icon-booking: "\e932";
 $mb-icon-logout: "\e933";
+$mb-icon-today: "\e934";
+$mb-icon-menu: "\e935";
 
 @font-face {
   font-family: '#{$icomoon-font-family}';
@@ -534,5 +536,12 @@ $mb-icon-logout: "\e933";
   @extend %mb-icon;
   &:before {
     content: "\e934";
+  }
+}
+
+.mb-icon-menu {
+  @extend %mb-icon;
+  &:before {
+    content: "\e935";
   }
 }

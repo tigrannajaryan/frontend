@@ -6,4 +6,5 @@ import { Component, Input } from '@angular/core';
 })
 export class MadeMenuHeaderComponent {
   @Input() hideBackButton;
+  @Input() hideMenuButton;
 }
