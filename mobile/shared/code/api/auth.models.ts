@@ -48,7 +48,6 @@ export type UserProfileStatus = StylistProfileStatus | ClientProfileStatus;
 export interface AuthResponse {
   token: string;
   user_uuid: string;
-  created_at?: number; // timestamp
   profile_status?: UserProfileStatus;
 }
 
