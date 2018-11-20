@@ -311,6 +311,12 @@ export class TimeSlotsComponent implements AfterViewInit, OnDestroy {
   private updateWorkingHours(): void {
     this.timeAxis.morningNonWorkingInVw = hourToYInVw(this._startHour);
     this.timeAxis.eveningNonWorkingInVw = hourToYInVw(this._endHour);
+
+    if (isNaN(this.timeAxis.morningNonWorkingInVw)) {
+      // Non-working day, cover all slots with morning non-working hours:
+      this.timeAxis.morningNonWorkingInVw = this.timeAxis.heightInVw;
+      this.timeAxis.eveningNonWorkingInVw = this.timeAxis.heightInVw;
+    }
   }
 
   /**
