@@ -1,14 +1,14 @@
 .ClientsCalendar-header {
   padding-bottom: 0;
   background: white;
-  box-shadow: 0 12px 20px white;
+  box-shadow: 0 pxtovw(12px) pxtovw(20px) white;
 
   .ClientsCalendar-title {
     flex: 1;
   }
 
   .Pricing {
-    margin: 16px 0 4px;
+    margin: pxtovw(16px) 0 pxtovw(4px);
   }
 
   .ClientsCalendar-small {
@@ -17,4 +17,9 @@
     font-weight: normal;
     color: color($grayscale, 500);
   }
+}
+
+[madeMenuHeader] .ClientsCalendar-header .ClientsCalendar-title {
+  flex: 1;
+  margin: pxtovw(-5px) 0 0;
 }

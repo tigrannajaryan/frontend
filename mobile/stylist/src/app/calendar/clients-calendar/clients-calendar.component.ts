@@ -1,6 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
 import { Content, NavController, NavParams } from 'ionic-angular';
-import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 
 import { componentUnloaded } from '~/shared/component-unloaded';
@@ -13,7 +12,7 @@ import { ClientsApi } from '~/core/api/clients-api';
 
 import { PageNames } from '~/core/page-names';
 import { loading } from '~/core/utils/loading';
-import { ProfileState, selectProfile } from '~/core/components/made-menu-header/profile.reducer';
+import { ProfileDataStore } from '~/core/profile.data';
 
 @Component({
   selector: 'page-clients-calendar',
@@ -24,24 +23,29 @@ export class ClientsCalendarComponent {
   client?: MyClientModel;
   isRootPage?: Boolean;
 
-  profile: Observable<StylistProfile>;
+  profile: StylistProfile;
   prices: DayOffer[] = [];
   services: ServiceItem[] = [];
 
   constructor(
+    public profileData: ProfileDataStore,
     private clientsApi: ClientsApi,
     private navCtrl: NavController,
     private navParams: NavParams,
-    private servicesData: StylistServicesDataStore,
-    private store: Store<ProfileState>
+    private servicesData: StylistServicesDataStore
   ) {
   }
 
-  ionViewWillLoad(): Promise<void> {
+  async ionViewWillLoad(): Promise<void> {
     this.isRootPage = Boolean(this.navParams.get('isRootPage'));
     this.client = this.navParams.get('client') as MyClientModel;
-    this.profile = this.store.select(selectProfile);
-    return this.getPricing();
+
+    const { response } = await this.profileData.get();
+    if (response) {
+      this.profile = response;
+    }
+
+    this.getPricing();
   }
 
   /**
