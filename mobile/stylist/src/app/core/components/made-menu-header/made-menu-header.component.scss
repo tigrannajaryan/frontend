@@ -59,7 +59,11 @@
   .madeMenuHeader-menuBtn {
     left: 0;
     z-index: 1;
-    display: block;
+    // Due to:
+    // | .hide, [hidden], template { display: none !important; }
+    // this button might appear with hidden attribute on the screen.
+    // We have to use !important to deal with this strange ionic bug.
+    display: block !important;
     min-width: auto;
     padding: 0;
     margin: 0;
