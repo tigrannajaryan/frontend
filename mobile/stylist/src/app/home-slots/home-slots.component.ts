@@ -109,14 +109,24 @@ export class HomeSlotsComponent {
 
     if (!isBlockedTime(appointment)) {
       // Show "Details" or "Checkout" action for real appointments
-      buttons.push({
-        text: appointment.status === AppointmentStatuses.checked_out ? 'Details' : 'Check Out',
-        handler: () => {
-          this.checkOutAppointmentClick(appointment);
-        }
-      });
 
-      if (this.selectedDate.isSameOrBefore(moment())) {
+      if (appointment.status === AppointmentStatuses.checked_out) {
+        buttons.push({
+          text: 'Details',
+          handler: () => {
+            this.checkOutAppointmentClick(appointment);
+          }
+        });
+      } else if (appointment.status !== AppointmentStatuses.cancelled_by_client) {
+        buttons.push({
+          text: 'Check Out',
+          handler: () => {
+            this.checkOutAppointmentClick(appointment);
+          }
+        });
+      }
+
+      if (this.selectedDate.isSameOrBefore(moment()) && appointment.status !== AppointmentStatuses.no_show) {
         // We are showing today or a past date. Add "no-show" action.
         // We don't want to show it for future dates because it makes no sense
         // to mark someone no-show if it is not yet time for the appointment.
