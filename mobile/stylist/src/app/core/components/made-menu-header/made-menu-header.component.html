@@ -1,5 +1,5 @@
 <ion-navbar [class.is-hiddenBackButton]="hideBackButton" class="Made-wp BackHeader-backBtn">
-  <ion-buttons left>
+  <ion-buttons *ngIf="!hideMenuButton" left>
     <button class="madeMenuHeader-menuBtn" data-test-id="menuToggleBtn" menuToggle>
       <i class="mb-icon-menu"></i>
     </button>

@@ -1,4 +1,5 @@
-<ion-header madeMenuHeader [hideBackButton]="!isRootPage">
+<!-- Use [hideMenuButton]="true" to hide it even during onboarding -->
+<ion-header madeMenuHeader [hideBackButton]="!isRootPage" [hideMenuButton]="true">
   <ion-title *ngIf="isRootPage">
     <div class="Made-h1">My Profile</div>
   </ion-title>
