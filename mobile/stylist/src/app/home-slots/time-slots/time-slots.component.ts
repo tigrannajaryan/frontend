@@ -139,7 +139,7 @@ export class TimeSlotsComponent implements AfterViewInit, OnDestroy {
   @ViewChild(Scroll) scroll: Scroll;
 
   // Rendering data for time axis
-  protected timeAxis = {
+  timeAxis = {
     heightInVw: 0,
     currentTimePosY: 0,
     morningNonWorkingInVw: 0,
@@ -312,7 +312,7 @@ export class TimeSlotsComponent implements AfterViewInit, OnDestroy {
     this.timeAxis.morningNonWorkingInVw = hourToYInVw(this._startHour);
     this.timeAxis.eveningNonWorkingInVw = hourToYInVw(this._endHour);
 
-    if (this._startHour === null) {
+    if (isNaN(this._startHour)) {
       // Non-working day, cover all slots with morning non-working hours:
       this.timeAxis.morningNonWorkingInVw = this.timeAxis.heightInVw;
       this.timeAxis.eveningNonWorkingInVw = this.timeAxis.heightInVw;

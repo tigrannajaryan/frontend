@@ -24,6 +24,8 @@ import 'rxjs/add/operator/takeWhile';
 import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/operator/withLatestFrom';
 
+import * as moment from 'moment';
+
 import { getTestBed, TestBed } from '@angular/core/testing';
 
 import {
@@ -73,6 +75,7 @@ import { AppAvailability } from '@ionic-native/app-availability';
 import { Clipboard } from '@ionic-native/clipboard';
 import { EmailComposer } from '@ionic-native/email-composer';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
+import { DatePicker } from '@ionic-native/date-picker';
 
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
@@ -165,6 +168,14 @@ export class TestUtils {
           provide: AppAvailability,
           useClass: class AppAvailabilityMock {
             check = jasmine.createSpy('check').and.returnValue(Promise.resolve(true));
+          }
+        },
+        {
+          provide: DatePicker,
+          useClass: class DatePickerMock {
+            show = jasmine.createSpy('show').and.returnValue(
+              Promise.resolve(moment().format())
+            );
           }
         },
         // the API

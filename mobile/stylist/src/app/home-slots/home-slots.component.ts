@@ -1,5 +1,6 @@
 import { Component, NgZone, ViewChild } from '@angular/core';
 import { ActionSheetController, Content, NavController } from 'ionic-angular';
+import { ActionSheetButton } from 'ionic-angular/components/action-sheet/action-sheet-options';
 import { DatePicker } from '@ionic-native/date-picker';
 import * as moment from 'moment';
 import * as deepEqual from 'fast-deep-equal';
@@ -104,79 +105,7 @@ export class HomeSlotsComponent {
   }
 
   onAppointmentClick(appointment: Appointment): void {
-    // Build the list of action buttons to show
-    const buttons = [];
-
-    if (!isBlockedTime(appointment)) {
-      // Show "Details" or "Checkout" action for real appointments
-      if (appointment.status !== AppointmentStatuses.cancelled_by_client) {
-        buttons.push({
-          text: appointment.status === AppointmentStatuses.checked_out ? 'Details' : 'Check Out',
-          handler: () => {
-            this.checkOutAppointmentClick(appointment);
-          }
-        });
-      }
-
-      if (this.selectedDate.isSameOrBefore(moment()) && appointment.status !== AppointmentStatuses.no_show) {
-        // We are showing today or a past date. Add "no-show" action.
-        // We don't want to show it for future dates because it makes no sense
-        // to mark someone no-show if it is not yet time for the appointment.
-        buttons.push({
-          text: 'No Show',
-          handler: () => {
-            this.markNoShow(appointment);
-          }
-        });
-      }
-
-      // TODO: once Google Calendar integration is ready add "Add to Calendar" action here.
-    }
-
-    if (appointment.client_phone) {
-      // If the phone number is known show "Call" and "Copy" actions
-      const formattedPhoneNum = getPhoneNumber(appointment.client_phone);
-      buttons.push(
-        {
-          text: `Call: ${formattedPhoneNum}`,
-          handler: () => {
-            this.externalAppService.doPhoneCall(formattedPhoneNum);
-          }
-        },
-        {
-          text: `Copy: ${formattedPhoneNum}`,
-          handler: () => {
-            this.externalAppService.copyToTheClipboard(formattedPhoneNum);
-          }
-        }
-      );
-    }
-
-    if (isBlockedTime(appointment)) {
-      // Add "Unblock" action for blocked slots
-      buttons.push(
-        {
-          text: 'Unblock Slot',
-          handler: () => {
-            this.cancelAppointment(appointment);
-          }
-        });
-    } else {
-      // Add "Cancel appointment" action for real appointments
-      buttons.push({
-        text: 'Cancel Appointment',
-        role: 'destructive',
-        handler: () => {
-          this.cancelAppointment(appointment);
-        }
-      });
-    }
-
-    buttons.push({
-      text: 'Back',
-      role: 'cancel'
-    });
-
+    const buttons = this.getAppointmentActionSheetOptions(appointment);
     const actionSheet = this.actionSheetCtrl.create({ buttons });
     actionSheet.present();
   }
@@ -261,6 +190,86 @@ export class HomeSlotsComponent {
   protected onPastVisitsClick(): void {
     const params: UpcomingAndPastPageParams = { showTab: Tabs.past };
     this.navCtrl.push(PageNames.Home, { params });
+  }
+
+  /**
+   * Get action sheet buttons for an appointment
+   */
+  private getAppointmentActionSheetOptions(appointment: Appointment): ActionSheetButton[] {
+    // Build the list of action buttons to show
+    const buttons: ActionSheetButton[] = [];
+
+    if (!isBlockedTime(appointment)) {
+      // Show "Details" or "Checkout" action for real appointments
+      if (appointment.status !== AppointmentStatuses.cancelled_by_client) {
+        buttons.push({
+          text: appointment.status === AppointmentStatuses.checked_out ? 'Details' : 'Check Out',
+          handler: () => {
+            this.checkOutAppointmentClick(appointment);
+          }
+        });
+      }
+
+      if (this.selectedDate.isSameOrBefore(moment()) && appointment.status !== AppointmentStatuses.no_show) {
+        // We are showing today or a past date. Add "no-show" action.
+        // We don't want to show it for future dates because it makes no sense
+        // to mark someone no-show if it is not yet time for the appointment.
+        buttons.push({
+          text: 'No Show',
+          handler: () => {
+            this.markNoShow(appointment);
+          }
+        });
+      }
+
+      // TODO: once Google Calendar integration is ready add "Add to Calendar" action here.
+    }
+
+    if (appointment.client_phone) {
+      // If the phone number is known show "Call" and "Copy" actions
+      const formattedPhoneNum = getPhoneNumber(appointment.client_phone);
+      buttons.push(
+        {
+          text: `Call: ${formattedPhoneNum}`,
+          handler: () => {
+            this.externalAppService.doPhoneCall(formattedPhoneNum);
+          }
+        },
+        {
+          text: `Copy: ${formattedPhoneNum}`,
+          handler: () => {
+            this.externalAppService.copyToTheClipboard(formattedPhoneNum);
+          }
+        }
+      );
+    }
+
+    if (isBlockedTime(appointment)) {
+      // Add "Unblock" action for blocked slots
+      buttons.push(
+        {
+          text: 'Unblock Slot',
+          handler: () => {
+            this.cancelAppointment(appointment);
+          }
+        });
+    } else {
+      // Add "Cancel appointment" action for real appointments
+      buttons.push({
+        text: 'Cancel Appointment',
+        role: 'destructive',
+        handler: () => {
+          this.cancelAppointment(appointment);
+        }
+      });
+    }
+
+    buttons.push({
+      text: 'Back',
+      role: 'cancel'
+    });
+
+    return buttons;
   }
 
   /**
