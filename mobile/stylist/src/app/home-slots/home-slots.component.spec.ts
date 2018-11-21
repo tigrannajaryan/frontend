@@ -1,5 +1,6 @@
 import { async, ComponentFixture } from '@angular/core/testing';
 import { ActionSheetButton } from 'ionic-angular/components/action-sheet/action-sheet-options';
+import * as faker from 'faker';
 import * as moment from 'moment';
 
 import { getPhoneNumber } from '~/shared/utils/phone-numbers';
@@ -45,6 +46,8 @@ describe('Pages: HomeSlotsComponent', () => {
   });
 
   it('should add proper buttons to appointments', () => {
+    const startOfToday = moment().startOf('day').format();
+
     let appointment: Appointment;
     let buttons: ActionSheetButton[];
 
@@ -53,10 +56,11 @@ describe('Pages: HomeSlotsComponent', () => {
       (instance as any).getAppointmentActionSheetOptions.bind(instance);
 
     // For today
-    instance.selectedDate = moment();
+    instance.selectedDate = moment().endOf('day');
 
     // New appointment
     appointment = createAppointment();
+    appointment.datetime_start_at = startOfToday;
     appointment.status = AppointmentStatuses.new;
     buttons = removeHandlers(
       getAppointmentActionSheetOptions(appointment)
@@ -73,6 +77,7 @@ describe('Pages: HomeSlotsComponent', () => {
 
     // New appointment without phone number
     appointment = createAppointment();
+    appointment.datetime_start_at = startOfToday;
     appointment.status = AppointmentStatuses.new;
     appointment.client_phone = '';
     buttons = removeHandlers(
@@ -91,6 +96,7 @@ describe('Pages: HomeSlotsComponent', () => {
 
     // No Show appointment
     appointment = createAppointment();
+    appointment.datetime_start_at = startOfToday;
     appointment.status = AppointmentStatuses.no_show;
     buttons = removeHandlers(
       getAppointmentActionSheetOptions(appointment)
@@ -108,6 +114,7 @@ describe('Pages: HomeSlotsComponent', () => {
 
     // Canceled by client appointment
     appointment = createAppointment();
+    appointment.datetime_start_at = startOfToday;
     appointment.status = AppointmentStatuses.cancelled_by_client;
     buttons = removeHandlers(
       getAppointmentActionSheetOptions(appointment)
@@ -126,6 +133,7 @@ describe('Pages: HomeSlotsComponent', () => {
 
     // Checked out appointment
     appointment = createAppointment();
+    appointment.datetime_start_at = startOfToday;
     appointment.status = AppointmentStatuses.checked_out;
     buttons = removeHandlers(
       getAppointmentActionSheetOptions(appointment)
@@ -158,10 +166,11 @@ describe('Pages: HomeSlotsComponent', () => {
       ]);
 
     // For tomorrow
-    instance.selectedDate = moment().add(1, 'day');
+    instance.selectedDate = moment().add(1, 'day').startOf('day');
 
     // New appointment
     appointment = createAppointment();
+    appointment.datetime_start_at = moment().add(1, 'day').format();
     appointment.status = AppointmentStatuses.new;
     buttons = removeHandlers(
       getAppointmentActionSheetOptions(appointment)
