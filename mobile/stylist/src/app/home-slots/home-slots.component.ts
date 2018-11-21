@@ -223,37 +223,26 @@ export class HomeSlotsComponent {
       }
 
       // TODO: once Google Calendar integration is ready add "Add to Calendar" action here.
-    }
 
-    if (appointment.client_phone) {
-      // If the phone number is known show "Call" and "Copy" actions
-      const formattedPhoneNum = getPhoneNumber(appointment.client_phone);
-      buttons.push(
-        {
-          text: `Call: ${formattedPhoneNum}`,
-          handler: () => {
-            this.externalAppService.doPhoneCall(formattedPhoneNum);
+      if (appointment.client_phone) {
+        // If the phone number is known show "Call" and "Copy" actions
+        const formattedPhoneNum = getPhoneNumber(appointment.client_phone);
+        buttons.push(
+          {
+            text: `Call: ${formattedPhoneNum}`,
+            handler: () => {
+              this.externalAppService.doPhoneCall(formattedPhoneNum);
+            }
+          },
+          {
+            text: `Copy: ${formattedPhoneNum}`,
+            handler: () => {
+              this.externalAppService.copyToTheClipboard(formattedPhoneNum);
+            }
           }
-        },
-        {
-          text: `Copy: ${formattedPhoneNum}`,
-          handler: () => {
-            this.externalAppService.copyToTheClipboard(formattedPhoneNum);
-          }
-        }
-      );
-    }
+        );
+      }
 
-    if (isBlockedTime(appointment)) {
-      // Add "Unblock" action for blocked slots
-      buttons.push(
-        {
-          text: 'Unblock Slot',
-          handler: () => {
-            this.cancelAppointment(appointment);
-          }
-        });
-    } else {
       // Add "Cancel appointment" action for real appointments
       buttons.push({
         text: 'Cancel Appointment',
@@ -262,6 +251,16 @@ export class HomeSlotsComponent {
           this.cancelAppointment(appointment);
         }
       });
+
+    } else { // if isBlockedTime(appointment)
+      // Add only "Unblock" action for blocked slots
+      buttons.push(
+        {
+          text: 'Unblock Slot',
+          handler: () => {
+            this.cancelAppointment(appointment);
+          }
+        });
     }
 
     buttons.push({
