@@ -210,7 +210,9 @@ export class HomeSlotsComponent {
         });
       }
 
-      if (this.selectedDate.isSameOrBefore(moment()) && appointment.status !== AppointmentStatuses.no_show) {
+      const appointmentEndTime = moment(appointment.datetime_start_at).add(appointment.duration_minutes, 'minutes');
+
+      if (appointmentEndTime.isSameOrBefore(moment()) && appointment.status !== AppointmentStatuses.no_show) {
         // We are showing today or a past date. Add "no-show" action.
         // We don't want to show it for future dates because it makes no sense
         // to mark someone no-show if it is not yet time for the appointment.
