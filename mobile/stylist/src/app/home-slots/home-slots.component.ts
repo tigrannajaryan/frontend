@@ -53,7 +53,7 @@ export class HomeSlotsComponent {
   autoRefreshTimer: any;
 
   // Current selected date
-  selectedDate: moment.Moment;
+  selectedDate: moment.Moment = moment().startOf('day');
 
   // And its components as strings (used in HTML)
   selectedMonthName: string;
@@ -146,7 +146,7 @@ export class HomeSlotsComponent {
   }
 
   protected isShowingToday(): boolean {
-    return this.selectedDate && this.selectedDate.isSame(moment().startOf('day'));
+    return this.selectedDate && this.selectedDate.isSame(moment(), 'day');
   }
 
   protected onTodayNavigateClick(): void {
