@@ -4,8 +4,8 @@ import { firstPage } from './pages/first-page';
 
 describe('First Page', () => {
 
-  beforeAll(() => {
-    browser.get('');
+  beforeAll(async () => {
+    await browser.get('');
   });
 
   it('should have a Log in button and Register link', () => {
