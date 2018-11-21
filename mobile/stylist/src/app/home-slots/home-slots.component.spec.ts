@@ -54,9 +54,8 @@ describe('Pages: HomeSlotsComponent', () => {
     const getAppointmentActionSheetOptions =
       (instance as any).getAppointmentActionSheetOptions.bind(instance);
 
-    // We use end of today in selected date while all appointments we test will use start of today.
-    // This ensures all appointments are before instance.selectedDate.
-    instance.selectedDate = moment().endOf('day');
+    // For today
+    instance.selectedDate = moment();
 
     // New appointment
     appointment = createAppointment();
@@ -165,8 +164,8 @@ describe('Pages: HomeSlotsComponent', () => {
         { text: 'Back', role: 'cancel' }
       ]);
 
-    // For tomorrow. We use start of tomorrow to be sure all appointments are after.
-    instance.selectedDate = moment().add(1, 'day').startOf('day');
+    // For tomorrow
+    instance.selectedDate = moment().add(1, 'day');
 
     // New appointment
     appointment = createAppointment();
