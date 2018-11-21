@@ -97,6 +97,11 @@ export class TimeSlotsComponent implements AfterViewInit, OnDestroy {
     this.updateAppointments();
   }
 
+  @Input() set selectedDate(value: moment.Moment) {
+    this._selectedDate = value;
+    this.updateAppointments();
+  }
+
   // Interval between slots in minutes
   @Input() set slotIntervalInMin(value: number) {
     this._slotIntervalInMin = value;
@@ -134,7 +139,7 @@ export class TimeSlotsComponent implements AfterViewInit, OnDestroy {
   @ViewChild(Scroll) scroll: Scroll;
 
   // Rendering data for time axis
-  protected timeAxis = {
+  timeAxis = {
     heightInVw: 0,
     currentTimePosY: 0,
     morningNonWorkingInVw: 0,
@@ -150,6 +155,7 @@ export class TimeSlotsComponent implements AfterViewInit, OnDestroy {
   protected selectedFreeSlot: TimeSlotItem;
 
   private _appointments: Appointment[] = [];
+  private _selectedDate: moment.Moment = moment(); // defaults to today
   private _showCurTimeIndicator: boolean;
   private _startHour = 9;
   private _endHour = 17;
@@ -305,6 +311,12 @@ export class TimeSlotsComponent implements AfterViewInit, OnDestroy {
   private updateWorkingHours(): void {
     this.timeAxis.morningNonWorkingInVw = hourToYInVw(this._startHour);
     this.timeAxis.eveningNonWorkingInVw = hourToYInVw(this._endHour);
+
+    if (isNaN(this._startHour)) {
+      // Non-working day, cover all slots with morning non-working hours:
+      this.timeAxis.morningNonWorkingInVw = this.timeAxis.heightInVw;
+      this.timeAxis.eveningNonWorkingInVw = this.timeAxis.heightInVw;
+    }
   }
 
   /**
@@ -427,7 +439,7 @@ export class TimeSlotsComponent implements AfterViewInit, OnDestroy {
     for (let slotIndex = 0; slotIndex <= freeSlots.length; slotIndex++) {
       if (freeSlots[slotIndex]) {
         const startHourOfDay = this.slotIndexToHour(slotIndex);
-        const startTime = moment().startOf('day').add(startHourOfDay, 'hours');
+        const startTime = this._selectedDate.startOf('day').add(startHourOfDay, 'hours');
 
         this.slotItems.push({
           startTime,

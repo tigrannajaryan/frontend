@@ -34,6 +34,6 @@
 
   <time-slots [appointments]="data?.appointments" [showCurTimeIndicator]="isShowingToday()" (freeSlotClick)="onFreeSlotClick($event)"
     (appointmentClick)="onAppointmentClick($event)" [startHour]="data.work_start_at" [endHour]="data.work_end_at"
-    [slotIntervalInMin]="data.service_time_gap_minutes"></time-slots>
+    [slotIntervalInMin]="data.service_time_gap_minutes" [selectedDate]="selectedDate"></time-slots>
 
 </ion-content>

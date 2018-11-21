@@ -6,7 +6,7 @@ import { prepareSharedObjectsForTests } from '../../core/test-utils.spec';
 import { Appointment, AppointmentService, AppointmentStatuses } from '../../core/api/home.models';
 import { fullSlotWidthInVw, TimeSlotColumn, TimeSlotItem, TimeSlotLabel, TimeSlotsComponent } from './time-slots.component';
 
-function createAppointment(): Appointment {
+export function createAppointment(): Appointment {
   return {
     uuid: faker.random.uuid(),
     client_uuid: faker.random.uuid(),
@@ -370,5 +370,28 @@ describe('Pages: TimeSlotsComponent', () => {
     expect(isLeftSlot(slot3)).toBeTruthy();
     expect(slot3.posYInVw).toBeGreaterThan(slot2.posYInVw);
     expect(slot3.heightInVw).toBeGreaterThan(slot2.heightInVw);
+  });
+
+  it('should correctly set free time slots date', () => {
+    const today = moment();
+    const tomorrow = moment().add(1, 'day');
+    component.selectedDate = tomorrow;
+    expect(component.slotItems.every(slot => slot.startTime.diff(today, 'days') === 1))
+      .toBeTruthy();
+  });
+
+  it('should cover all day with grey overlay when non-working day', () => {
+    // tslint:disable-next-line
+    component.startHour = null; // API returns work_start_at null for non-working day
+    // tslint:disable-next-line
+    component.endHour = null; // API returns work_end_at null for non-working day
+
+    // Height of morning non-working hours equals full height:
+    expect(component.timeAxis.morningNonWorkingInVw)
+      .toEqual(component.timeAxis.heightInVw);
+
+    // Position top of evening non-working hours equals full height (means it hidden):
+    expect(component.timeAxis.eveningNonWorkingInVw)
+      .toEqual(component.timeAxis.heightInVw);
   });
 });
