@@ -119,7 +119,8 @@ describe('Pages: HomeSlotsComponent', () => {
         { text: 'No Show' },
         { text: `Call: ${getPhoneNumber(appointment.client_phone)}`},
         { text: `Copy: ${getPhoneNumber(appointment.client_phone)}`},
-        { text: 'Cancel Appointment', role: 'destructive' },
+        // 'Cancel Appointment' replaced with 'Delete Appointment' in this case
+        { text: 'Delete Appointment', role: 'destructive' },
         { text: 'Back', role: 'cancel' }
       ]);
 

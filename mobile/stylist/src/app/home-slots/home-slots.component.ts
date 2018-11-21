@@ -245,7 +245,7 @@ export class HomeSlotsComponent {
 
       // Add "Cancel appointment" action for real appointments
       buttons.push({
-        text: 'Cancel Appointment',
+        text: appointment.status === AppointmentStatuses.cancelled_by_client ? 'Delete Appointment' : 'Cancel Appointment',
         role: 'destructive',
         handler: () => {
           this.cancelAppointment(appointment);
