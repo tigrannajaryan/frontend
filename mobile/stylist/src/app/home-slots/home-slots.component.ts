@@ -53,7 +53,7 @@ export class HomeSlotsComponent {
   autoRefreshTimer: any;
 
   // Current selected date
-  selectedDate: moment.Moment;
+  selectedDate: moment.Moment = moment().startOf('day');
 
   // And its components as strings (used in HTML)
   selectedMonthName: string;
@@ -146,7 +146,7 @@ export class HomeSlotsComponent {
   }
 
   protected isShowingToday(): boolean {
-    return this.selectedDate && this.selectedDate.isSame(moment().startOf('day'));
+    return this.selectedDate && this.selectedDate.isSame(moment(), 'day');
   }
 
   protected onTodayNavigateClick(): void {
@@ -210,7 +210,9 @@ export class HomeSlotsComponent {
         });
       }
 
-      if (this.selectedDate.isSameOrBefore(moment()) && appointment.status !== AppointmentStatuses.no_show) {
+      const appointmentEndTime = moment(appointment.datetime_start_at).add(appointment.duration_minutes, 'minutes');
+
+      if (appointmentEndTime.isSameOrBefore(moment()) && appointment.status !== AppointmentStatuses.no_show) {
         // We are showing today or a past date. Add "no-show" action.
         // We don't want to show it for future dates because it makes no sense
         // to mark someone no-show if it is not yet time for the appointment.

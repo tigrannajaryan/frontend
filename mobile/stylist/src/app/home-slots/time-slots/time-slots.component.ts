@@ -98,7 +98,7 @@ export class TimeSlotsComponent implements AfterViewInit, OnDestroy {
   }
 
   @Input() set selectedDate(value: moment.Moment) {
-    this._selectedDate = value;
+    this._selectedDate = value.startOf('day');
     this.updateAppointments();
   }
 
@@ -155,7 +155,7 @@ export class TimeSlotsComponent implements AfterViewInit, OnDestroy {
   protected selectedFreeSlot: TimeSlotItem;
 
   private _appointments: Appointment[] = [];
-  private _selectedDate: moment.Moment = moment(); // defaults to today
+  private _selectedDate: moment.Moment = moment().startOf('day');
   private _showCurTimeIndicator: boolean;
   private _startHour = 9;
   private _endHour = 17;
@@ -439,7 +439,7 @@ export class TimeSlotsComponent implements AfterViewInit, OnDestroy {
     for (let slotIndex = 0; slotIndex <= freeSlots.length; slotIndex++) {
       if (freeSlots[slotIndex]) {
         const startHourOfDay = this.slotIndexToHour(slotIndex);
-        const startTime = this._selectedDate.startOf('day').add(startHourOfDay, 'hours');
+        const startTime = moment(this._selectedDate).add(startHourOfDay, 'hours');
 
         this.slotItems.push({
           startTime,
