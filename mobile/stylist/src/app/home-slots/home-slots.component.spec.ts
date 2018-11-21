@@ -1,6 +1,5 @@
 import { async, ComponentFixture } from '@angular/core/testing';
 import { ActionSheetButton } from 'ionic-angular/components/action-sheet/action-sheet-options';
-import * as faker from 'faker';
 import * as moment from 'moment';
 
 import { getPhoneNumber } from '~/shared/utils/phone-numbers';
