@@ -13,6 +13,7 @@ import {
   authResponseToTokenModel,
   deleteAuthLocalData,
   getAuthLocalData,
+  isAuthLocalDataComplete,
   saveAuthLocalData
 } from '~/shared/storage/token-utils';
 
@@ -145,7 +146,7 @@ export class ClientAppComponent implements OnInit, OnDestroy {
    * NOTE 2: stylists selector page can handle empty preferred stylists case.
    */
   async onStartBooking(stylistUuid: string): Promise<void> {
-    const params: ServicesCategoriesParams = { stylistUuid: undefined};
+    const params: ServicesCategoriesParams = { stylistUuid: undefined };
 
     if (stylistUuid) {
       // Stylist is already selected proceed to services.
@@ -185,7 +186,7 @@ export class ClientAppComponent implements OnInit, OnDestroy {
    * Make a decision about what page to show first and show it.
    */
   async showRootPage(profileStatus: ClientProfileStatus): Promise<void> {
-    if (!profileStatus.has_preferred_stylist_set) {
+    if (!profileStatus || !profileStatus.has_preferred_stylist_set) {
       // Haven’t completed onboarding, should restart
       this.logger.info('App: no preferred stylist. Will show HowMadeWorks screen.');
       this.rootPage = PageNames.HowMadeWorks;
@@ -214,8 +215,13 @@ export class ClientAppComponent implements OnInit, OnDestroy {
       this.logger.info('App: Authentication refreshed.');
       result = authResponseToTokenModel(authResponse);
       await saveAuthLocalData(result);
-    } else {
+    } else if (isAuthLocalDataComplete(authLocalData)) {
       this.logger.info('App: Cannot refresh authentication. Continue using saved session.');
+    } else {
+      this.logger.info('App: Cannot refresh authentication. Locally saved session is incomplete. ' +
+        'Deleting saved data, will need to relogin.');
+      await deleteAuthLocalData();
+      return undefined;
     }
     return result;
   }
