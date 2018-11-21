@@ -11,6 +11,7 @@ import { StylistProfile } from '~/shared/api/stylist-app.models';
 import { getBuildNumber } from '~/shared/get-build-info';
 import { AuthState, LogoutAction } from '~/shared/storage/auth.reducer';
 import { ApiResponse } from '~/shared/api/base.models';
+import { deleteAuthLocalData } from '~/shared/storage/token-utils';
 
 import { PageNames } from '~/core/page-names';
 import { clearAllDataStores } from '~/core/data.module';
@@ -104,6 +105,9 @@ export class MadeMenuComponent implements OnInit, OnDestroy {
 
     // Clear cached data
     clearAllDataStores();
+
+    // Delete auth stored data
+    deleteAuthLocalData();
 
     // Erase all previous navigation history and make FirstScreen the root
     this.nav.setRoot(PageNames.FirstScreen);
