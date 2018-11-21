@@ -43,7 +43,7 @@ export class AuthService extends BaseService {
   }
 
   refreshAuth(authToken: string): Observable<ApiResponse<AuthResponse>> {
-    const request = { token: authToken };
+    const request = { token: authToken, role: AuthService.role };
     return this.processAuthResponse(
       () => this.post<AuthResponse>('auth/refresh-token', request));
   }
