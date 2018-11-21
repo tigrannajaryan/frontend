@@ -109,17 +109,9 @@ export class HomeSlotsComponent {
 
     if (!isBlockedTime(appointment)) {
       // Show "Details" or "Checkout" action for real appointments
-
-      if (appointment.status === AppointmentStatuses.checked_out) {
+      if (appointment.status !== AppointmentStatuses.cancelled_by_client) {
         buttons.push({
-          text: 'Details',
-          handler: () => {
-            this.checkOutAppointmentClick(appointment);
-          }
-        });
-      } else if (appointment.status !== AppointmentStatuses.cancelled_by_client) {
-        buttons.push({
-          text: 'Check Out',
+          text: appointment.status === AppointmentStatuses.checked_out ? 'Details' : 'Check Out',
           handler: () => {
             this.checkOutAppointmentClick(appointment);
           }
