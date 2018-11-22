@@ -1,14 +1,12 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Page } from 'ionic-angular/navigation/nav-util';
-import { AppVersion } from '@ionic-native/app-version';
-import { Content, Nav } from 'ionic-angular';
+import { Content, Events, Nav, ViewController } from 'ionic-angular';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 
 import { AuthService } from '~/shared/api/auth.api';
 import { StylistProfile } from '~/shared/api/stylist-app.models';
-import { getBuildNumber } from '~/shared/get-build-info';
+import { getAppVersionNumber, getBuildNumber } from '~/shared/get-build-info';
 import { AuthState, LogoutAction } from '~/shared/storage/auth.reducer';
 import { ApiResponse } from '~/shared/api/base.models';
 import { deleteAuthLocalData } from '~/shared/storage/token-utils';
@@ -16,6 +14,7 @@ import { deleteAuthLocalData } from '~/shared/storage/token-utils';
 import { PageNames } from '~/core/page-names';
 import { clearAllDataStores } from '~/core/data.module';
 import { ProfileDataStore } from '~/core/profile.data';
+import { StylistEventTypes } from '~/core/stylist-event-types';
 
 interface MenuItem {
   title: string;
@@ -28,24 +27,31 @@ interface MenuItem {
   selector: 'made-menu',
   templateUrl: 'made-menu.component.html'
 })
-export class MadeMenuComponent implements OnInit, OnDestroy {
+export class MadeMenuComponent implements OnInit {
   @Input() content: Content;
   @Input() nav: Nav;
 
   profile: StylistProfile;
   menuItems: MenuItem[];
-  appVersion: string;
+  swipeEnabled: boolean;
+
   appBuildNumber = getBuildNumber();
+  appVersion = getAppVersionNumber();
   PageNames = PageNames;
 
-  profileObservable: Observable<ApiResponse<StylistProfile>>;
-  private profileObservableSubscription: Subscription;
+  private profileSubscription: Subscription;
+
+  private pagesWithoutMenu: Page[] = [
+    PageNames.FirstScreen,
+    PageNames.Auth,
+    PageNames.AuthConfirm
+  ];
 
   constructor(
     public profileData: ProfileDataStore,
     private authApiService: AuthService,
-    private store: Store<AuthState>,
-    private verProvider: AppVersion
+    private events: Events,
+    private store: Store<AuthState>
   ) {
     this.menuItems = [
       { title: 'Appointments', redirectToPage: PageNames.HomeSlots, redirectParams: {}, icon: 'home-a' },
@@ -58,32 +64,23 @@ export class MadeMenuComponent implements OnInit, OnDestroy {
     ];
   }
 
+  /**
+   * NOTE: this component is never destroyed
+   */
   async ngOnInit(): Promise<void> {
-    this.profileObservable = this.profileData.asObservable();
+    this.subscribe();
 
-    // Initiate fetching profile data
-    this.profileData.refresh();
-
-    this.profileObservableSubscription = this.profileObservable.subscribe((profileResponse: ApiResponse<StylistProfile>) => {
-      if (profileResponse.response) {
-        this.profile = profileResponse.response;
+    this.events.subscribe(
+      StylistEventTypes.menuUpdateProfileSubscription,
+      () => {
+        this.resubscribe();
       }
+    );
+
+    // Track all top-level screen changes
+    this.nav.viewDidEnter.subscribe(view => {
+      this.swipeEnabled = this.hasMenu(view);
     });
-
-    this.init(this.verProvider);
-  }
-
-  ngOnDestroy(): void {
-    this.profileObservableSubscription.unsubscribe();
-  }
-
-  async init(verProvider: AppVersion): Promise<void> {
-    try {
-      this.appVersion = await verProvider.getVersionNumber();
-    } catch (e) {
-      // Most likely running in browser so Cordova is not available. Ignore.
-      this.appVersion = 'Unknown';
-    }
   }
 
   setPage(redirectToPage: Page, redirectParams: any, isRootPage = true): void {
@@ -96,7 +93,7 @@ export class MadeMenuComponent implements OnInit, OnDestroy {
     }
   }
 
-  onLogoutClick(): void {
+  async onLogoutClick(): Promise<void> {
     // Logout from backend
     this.authApiService.logout();
 
@@ -104,12 +101,37 @@ export class MadeMenuComponent implements OnInit, OnDestroy {
     this.store.dispatch(new LogoutAction());
 
     // Clear cached data
-    clearAllDataStores();
+    await clearAllDataStores();
 
     // Delete auth stored data
-    deleteAuthLocalData();
+    await deleteAuthLocalData();
 
     // Erase all previous navigation history and make FirstScreen the root
     this.nav.setRoot(PageNames.FirstScreen);
+  }
+
+  hasMenu(currentPage: ViewController): boolean {
+    for (const page of this.pagesWithoutMenu) {
+      // page and currentPage.component will be uglified by AOT compiler in production build.
+      // but class name will be equal if we tried to compare (example - eo === eo)
+      // and in this particular case it will be enough
+      if (page === currentPage.component) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  private subscribe(): void {
+    this.profileSubscription = this.profileData.subscribe((profileResponse: ApiResponse<StylistProfile>) => {
+      this.profile = profileResponse.response;
+    });
+    this.profileData.get();
+  }
+
+  private resubscribe(): void {
+    this.profileSubscription.unsubscribe();
+    this.subscribe();
   }
 }
