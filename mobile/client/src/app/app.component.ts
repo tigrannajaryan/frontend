@@ -32,6 +32,7 @@ import { AuthService } from './shared/api/auth.api';
 import { ClientAppStorage } from './core/client-app-storage';
 import { ClientStartupNavigation } from './core/client-startup-navigation';
 import { StylistModel } from './shared/api/stylists.models';
+import { ApiClientError, ApiFieldAndNonFieldErrors } from './shared/api-errors';
 
 interface RefreshAuthResult {
   authLocalData: AuthLocalData;
@@ -198,10 +199,25 @@ export class ClientAppComponent implements OnInit, OnDestroy {
     const result: RefreshAuthResult = { authLocalData };
 
     try {
-      authResponse = (await this.authApiService.refreshAuth(authLocalData.token).get()).response;
+      const { response, error } = await this.authApiService.refreshAuth(authLocalData.token).get();
+      authResponse = response;
+
+      if (error) {
+        this.logger.error('App: ApiError when trying to refresh auth.', error);
+        if (error instanceof ApiClientError || error instanceof ApiFieldAndNonFieldErrors) {
+          // Server says it is our fault, so let's discard the token
+          this.logger.error('App: discarding saved token, API did not like it');
+          await deleteAuthLocalData();
+          result.authLocalData = undefined;
+          result.pendingInvitation = undefined;
+          return result;
+        } else {
+          // Something else happened that is not our fault (e.g. no connection to server). We will keep our token.
+        }
+      }
 
       // Remember pending invitation if any
-      result.pendingInvitation = authResponse.stylist_invitation && authResponse.stylist_invitation.length > 0 ?
+      result.pendingInvitation = authResponse && authResponse.stylist_invitation && authResponse.stylist_invitation.length > 0 ?
         authResponse.stylist_invitation[0] : undefined;
 
     } catch (e) {
