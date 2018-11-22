@@ -72,7 +72,7 @@ import { SelectTimeComponent } from '~/booking/select-time/select-time.component
 import { ServicesPageComponent } from '~/services-page/services-page.component';
 import { ServicesCategoriesPageComponent } from '~/services-categories-page/services-categories-page.component';
 import { SelectStylistComponent } from '~/stylists/select-stylist/select-stylist.component';
-import { StylistsPageComponent } from '~/stylists/stylists-search/stylists-search.component';
+import { StylistSearchComponent } from '~/stylists/stylists-search/stylists-search.component';
 import { UiKitPreviewComponent } from '~/ui-kit-preview/ui-kit-preview.component';
 
 import { ENV } from '~/environments/environment.default';
@@ -83,6 +83,7 @@ import { PushPrimingScreenComponent } from './shared/components/push-priming-scr
 import { ClientAppStorage } from './core/client-app-storage';
 import { FirstLastNameComponent } from '~/profile/first-last-name/first-last-name.component';
 import { SuccessErrorPopupComponent } from '~/shared/components/success-error-popup/success-error-popup.component';
+import { ClientStartupNavigation } from './core/client-startup-navigation';
 
 // Init sentry reporting (inits only if ENV.sentryDsn):
 initSentry();
@@ -119,7 +120,7 @@ const declarations = [
   ServicesCategoriesPageComponent,
   ServicesPageComponent,
   StylistComponent,
-  StylistsPageComponent,
+  StylistSearchComponent,
   SuccessErrorPopupComponent,
   UiKitPreviewComponent
 ];
@@ -202,7 +203,9 @@ const declarations = [
 
     Push,
     PushNotification,
+
     ClientAppStorage,
+    ClientStartupNavigation,
 
     { // Add auth token to all requests
       provide: HTTP_INTERCEPTORS,

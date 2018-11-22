@@ -17,7 +17,7 @@ import { SelectTimeComponent } from '~/booking/select-time/select-time.component
 import { ServicesPageComponent } from '~/services-page/services-page.component';
 import { ServicesCategoriesPageComponent } from '~/services-categories-page/services-categories-page.component';
 import { MyStylistsComponent } from '~/stylists/my-stylists.component';
-import { StylistsPageComponent } from '~/stylists/stylists-search/stylists-search.component';
+import { StylistSearchComponent } from '~/stylists/stylists-search/stylists-search.component';
 import { PrivacySettingsComponent } from '~/privacy-settings/privacy-settings.component';
 import { PushPrimingScreenComponent } from '~/shared/components/push-priming-screen/push-priming-screen.component';
 import { FollowersComponent } from '~/followers/followers.component';
@@ -57,8 +57,8 @@ export const PageNames = {
   SelectTime: SelectTimeComponent,
   Services: ServicesPageComponent,
   ServicesCategories: ServicesCategoriesPageComponent,
-  Stylist: StylistComponent,
-  Stylists: StylistsPageComponent
+  StylistInvitation: StylistComponent,
+  StylistSearch: StylistSearchComponent
 };
 
 export const UNAUTHORIZED_ROOT = PageNames.Auth;
