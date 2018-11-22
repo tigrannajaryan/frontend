@@ -72,7 +72,7 @@ export class AppointmentCheckoutComponent {
         if (this.appointment) {
           this.selectedServices = this.appointment.services.map(el => ({ service_uuid: el.service_uuid }));
           // Enable tax by default for new booked appointment if it's not `isAlreadyCheckedOut`
-          this.hasTaxIncluded = this.params.isAlreadyCheckedOut ? this.appointment.has_tax_included : true;
+          this.hasTaxIncluded = this.params.isAlreadyCheckedOut ? this.appointment.has_tax_included : false;
           this.hasCardFeeIncluded = this.appointment.has_card_fee_included;
         }
       }
