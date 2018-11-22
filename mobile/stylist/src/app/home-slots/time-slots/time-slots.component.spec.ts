@@ -376,7 +376,7 @@ describe('Pages: TimeSlotsComponent', () => {
     const today = moment();
     const tomorrow = moment().add(1, 'day');
     component.selectedDate = tomorrow;
-    expect(component.slotItems.every(slot => slot.startTime.diff(today, 'days') === 1))
+    expect(component.slotItems.every(slot => slot.startTime.isSame(tomorrow, 'day')))
       .toBeTruthy();
   });
 
