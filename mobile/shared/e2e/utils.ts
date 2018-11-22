@@ -1,4 +1,4 @@
-import { $, browser, element, ElementFinder, ExpectedConditions, Locator, by } from 'protractor';
+import { $, browser, by, element, ElementFinder, ExpectedConditions, Locator } from 'protractor';
 import { formatNumber, parseNumber } from 'libphonenumber-js';
 
 const waitTimeout = 10000; // ms
@@ -9,8 +9,20 @@ const waitTimeout = 10000; // ms
  * @param finder of the element
  */
 export async function click(finder: ElementFinder): Promise<any> {
-  await waitForClickable(finder);
-  return finder.click();
+  const clickable = await waitForClickable(finder);
+  console.log(`${finder.locator().toString()} is clickable ${clickable}`);
+
+  // protractor/WebDriver is unreliable. Sometimes it fails to click on elements and
+  // produces internal errors in itself (it has its own bugs). I could not find any
+  // other way to reliably click.
+  for (let i = 0; i < 5; i++) {
+    try {
+      await finder.click();
+      break;
+    } catch (e) {
+      console.log(`Cannot click on ${finder.locator().toString()}`, e);
+    }
+  }
 }
 
 /**
@@ -118,7 +130,7 @@ export async function clearSessionData(): Promise<any> {
 
 class Globals {
   get alertSubtitle() { return $('ion-alert .alert-sub-title'); }
-  alertButton(buttonText: string) { return element(by.cssContainingText('ion-alert button span', buttonText)); }
+  alertButton(buttonText: string) { return firstVisible(by.cssContainingText('ion-alert button span', buttonText)); }
 
   get ionLoading() { return $('ion-loading'); }
 }

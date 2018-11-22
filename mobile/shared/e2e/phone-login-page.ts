@@ -1,6 +1,6 @@
 import { $ } from 'protractor';
 
-import { waitForNot } from './utils';
+import { waitForNot, waitFor } from './utils';
 
 /**
  * LoginRegister page definition
@@ -12,6 +12,7 @@ class PhoneLoginPage {
 
   // Operations
   async login(phone) {
+    await waitFor(this.phoneInput);
     await this.phoneInput.sendKeys(phone);
     await this.continueBtn.click();
     await waitForNot(this.phoneInput);

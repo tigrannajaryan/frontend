@@ -1,5 +1,4 @@
 import { async, ComponentFixture } from '@angular/core/testing';
-import { NavParams } from 'ionic-angular';
 
 import { TestUtils } from '~/../test';
 
@@ -16,10 +15,6 @@ describe('Pages: First Last Name', () => {
           // Common setup:
           fixture = compiled.fixture;
           instance = compiled.instance;
-
-          const navParams = fixture.debugElement.injector.get(NavParams);
-          navParams.data.onContinue = () => {};
-          instance.ionViewWillLoad();
         })
     )
   );

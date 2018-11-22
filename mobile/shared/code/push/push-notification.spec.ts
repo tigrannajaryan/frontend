@@ -2,7 +2,6 @@ import { TestBed } from '@angular/core/testing';
 import { Events, Platform, NavController } from 'ionic-angular';
 import { PlatformMock, NavControllerMock } from 'ionic-mocks';
 import { Push, RegistrationEventResponse } from '@ionic-native/push';
-import { Page } from 'ionic-angular/navigation/nav-util';
 import * as faker from 'faker';
 
 import { Logger } from '~/shared/logger';
@@ -79,10 +78,8 @@ xdescribe('PushNotification', () => {
   });
 
   it('should init correctly', async () => {
-    const navCtrl = TestBed.get(NavController);
     const storage = new AppStorageMock({});
-    const fakePage = new FakePrimingScreen();
-    await instance.init(navCtrl, fakePage, storage);
+    await instance.init(storage);
 
     // TODO: verify initialization
   });

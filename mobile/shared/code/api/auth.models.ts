@@ -41,6 +41,7 @@ export interface ClientProfileStatus {
   has_preferred_stylist_set?: boolean;
   has_booked_appointment?: boolean;
   has_past_visit?: boolean;
+  has_invitation?: boolean;
 }
 
 export type UserProfileStatus = StylistProfileStatus | ClientProfileStatus;
@@ -49,9 +50,9 @@ export interface AuthResponse {
   token: string;
   user_uuid: string;
   profile_status?: UserProfileStatus;
+  stylist_invitation?: StylistModel[]; // This field is set only for responses to Client auth
 }
 
 export interface ConfirmCodeResponse extends AuthResponse {
-  stylist_invitation?: StylistModel;
   profile?: StylistProfile;
 }

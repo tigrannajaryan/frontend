@@ -25,8 +25,9 @@ import {
   NonBookableSavePopupParams
 } from '~/stylists/non-bookable-save-popup/non-bookable-save-popup.component';
 import { BookingData } from '~/core/api/booking.data';
+import { ClientStartupNavigation } from '~/core/client-startup-navigation';
 
-export interface StylistsPageParams {
+export interface StylistSearchParams {
   onboarding?: boolean;
 }
 
@@ -34,7 +35,7 @@ export interface StylistsPageParams {
   selector: 'page-stylists-search',
   templateUrl: 'stylists-search.component.html'
 })
-export class StylistsPageComponent {
+export class StylistSearchComponent {
   static MIN_QUERY_LENGTH = 2;
 
   PageNames = PageNames;
@@ -59,6 +60,7 @@ export class StylistsPageComponent {
 
   constructor(
     private bookingData: BookingData,
+    private clientNavigation: ClientStartupNavigation,
     private events: Events,
     private geolocationService: GeolocationService,
     private modalCtrl: ModalController,
@@ -70,7 +72,7 @@ export class StylistsPageComponent {
   }
 
   async ionViewWillLoad(): Promise<void> {
-    const params = (this.navParams.get('data') || {}) as StylistsPageParams;
+    const params = (this.navParams.get('data') || {}) as StylistSearchParams;
 
     this.onboarding = params.onboarding;
 
@@ -117,8 +119,8 @@ export class StylistsPageComponent {
     }
 
     if (this.onboarding) {
-      // In case of onboarding we just redirect to Home:
-      await this.navCtrl.setRoot(PageNames.MainTabs);
+      // Show the next appropriate screen based on profile status
+      this.clientNavigation.showNextByProfileStatus(this.navCtrl);
 
     } else if (!stylist.is_profile_bookable) {
       // If stylist is not bookable show a popup:

@@ -1,7 +1,8 @@
 import { Component, ViewChild } from '@angular/core';
-import { Navbar, NavParams } from 'ionic-angular';
+import { Events, Navbar } from 'ionic-angular';
 
-import { PrimingScreenParams } from '~/shared/push/push-notification';
+import { PushNotification } from '~/shared/push/push-notification';
+import { SharedEventTypes } from '~/shared/events/shared-event-types';
 
 @Component({
   selector: 'push-priming-screen',
@@ -11,25 +12,21 @@ export class PushPrimingScreenComponent {
 
   @ViewChild(Navbar) navBar: Navbar;
 
-  params: PrimingScreenParams;
-
-  constructor(navParams: NavParams) {
-    this.params = navParams.get('params');
-  }
+  constructor(
+    private events: Events,
+    private pushNotification: PushNotification
+  ) {}
 
   ionViewDidLoad(): void {
-    const oldBackHandler = this.navBar.backButtonClick;
-    this.navBar.backButtonClick = (e: UIEvent) => {
-      oldBackHandler.call(this.navBar, e);
-      this.params.onBackClick();
-    };
+    this.pushNotification.refreshLastPrimingScreenShowTime();
   }
 
-  onAllowClick(): void {
-    this.params.onAllowClick();
+  async onAllowClick(): Promise<void> {
+    await this.pushNotification.getSystemPermissionAndRegister();
+    this.events.publish(SharedEventTypes.continueAfterPushPriming);
   }
 
   onNotNowClick(): void {
-    this.params.onNotNowClick();
+    this.events.publish(SharedEventTypes.continueAfterPushPriming);
   }
 }

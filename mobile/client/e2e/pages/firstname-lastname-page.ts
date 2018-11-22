@@ -1,11 +1,11 @@
 import { $ } from 'protractor';
 
-import { waitForNot } from './utils';
+import { waitForNot } from '../shared-e2e/utils';
 
 /**
  * A page that is shown after login for inputting first and last name
  */
-class NameSurnamePage {
+class FirstNameLastNamePage {
   // UI element declarations.
   get firstNameInput() { return $('first-last-name [data-test-id=first_name] input'); }
   get lastNameInput() { return $('first-last-name [data-test-id=last_name] input'); }
@@ -20,4 +20,4 @@ class NameSurnamePage {
   }
 }
 
-export const nameSurnamePage = new NameSurnamePage();
+export const firstNameLastNamePage = new FirstNameLastNamePage();
