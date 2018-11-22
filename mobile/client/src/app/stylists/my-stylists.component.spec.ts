@@ -80,4 +80,12 @@ describe('MyStylistsComponent', () => {
     expect(stylistFollowers.className)
       .toContain('is-notBookable');
   });
+
+  it('should not be able to remove last primeStylists', () => {
+    instance.tabs[Tabs.primeStylists].stylists.length = 1;
+    fixture.detectChanges();
+
+    const savedStylistsTabList = fixture.nativeElement.querySelector('[data-test-id=removeStylist]');
+    expect(savedStylistsTabList).toBeNull();
+  });
 });
