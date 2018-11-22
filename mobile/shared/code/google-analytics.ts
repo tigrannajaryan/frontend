@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 import { GoogleAnalytics } from '@ionic-native/google-analytics';
-import { AppVersion } from '@ionic-native/app-version';
 import { ViewController } from 'ionic-angular';
 import * as camelcase from 'camelcase';
 
-import { getBuildNumber } from '~/shared/get-build-info';
+import { getAppVersionNumber, getBuildNumber } from '~/shared/get-build-info';
 import { Logger } from '~/shared/logger';
 
 /**
@@ -20,7 +19,6 @@ export class GAWrapper {
 
   constructor(
     private ga: GoogleAnalytics,
-    private verProvider: AppVersion,
     private logger: Logger
   ) {
   }
@@ -89,15 +87,7 @@ export class GAWrapper {
   }
 
   private async initAppVer(): Promise<void> {
-    let appVersion: string;
-    try {
-      appVersion = await this.verProvider.getVersionNumber();
-    } catch (e) {
-      // Most likely running in browser so Cordova is not available. Ignore the error.
-      appVersion = 'Unknown';
-    }
-
-    const fullVer = `${appVersion}.${getBuildNumber()}`;
+    const fullVer = `${getAppVersionNumber()}.${getBuildNumber()}`;
     this.ga.setAppVersion(fullVer);
   }
 

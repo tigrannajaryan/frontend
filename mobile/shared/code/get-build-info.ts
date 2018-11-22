@@ -13,3 +13,7 @@ export function getCommitHash(): string {
 export function isDevelopmentBuild(): boolean {
   return !process.env.TRAVIS_BUILD_NUMBER;
 }
+
+export function getAppVersionNumber(): string {
+    return process.env.APP_VERSION_NUMBER || '0.0.0';
+}

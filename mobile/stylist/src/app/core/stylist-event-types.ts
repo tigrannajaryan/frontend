@@ -3,5 +3,5 @@
  * part of the code.
  */
 export enum StylistEventTypes {
-  selectMainTab = 'selectMainTab'
+  menuUpdateProfileSubscription = 'menuUpdateProfileSubscription'
 }

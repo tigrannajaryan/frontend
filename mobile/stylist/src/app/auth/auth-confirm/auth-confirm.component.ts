@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { Events, NavController, NavParams } from 'ionic-angular';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 
@@ -25,6 +25,7 @@ import { CodeData, CodeInputComponent } from '~/shared/components/code-input/cod
 import { createNavHistoryList, isRegistrationComplete } from '~/core/functions';
 import { clearAllDataStores } from '~/core/data.module';
 import { StylistAppStorage } from '~/core/stylist-app-storage';
+import { StylistEventTypes } from '~/core/stylist-event-types';
 
 @Component({
   selector: 'page-auth-confirm',
@@ -49,6 +50,7 @@ export class AuthConfirmPageComponent {
     private storage: StylistAppStorage,
     private authEffects: AuthEffects,
     private authDataState: AuthProcessState,
+    private events: Events,
     private navCtrl: NavController,
     private navParams: NavParams,
     private store: Store<AuthState>
@@ -78,7 +80,10 @@ export class AuthConfirmPageComponent {
         // cached data if we login using a different user. We also clear cache during
         // logout, but it may not be enough since it is possible to be forcedly logged
         // out without performing logout user action (e.g. on token expiration).
-        clearAllDataStores();
+        await clearAllDataStores();
+
+        // Resubscrube to profile DataStore is needed in menu after storage was cleared out:
+        this.events.publish(StylistEventTypes.menuUpdateProfileSubscription);
 
         // true = This is a new user, enable help screens
         // false = Set it back to false for the case when we change user

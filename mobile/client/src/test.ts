@@ -116,6 +116,7 @@ import { DataModule } from '~/core/api/data.module';
 import { BaseService } from '~/shared/api/base.service';
 import { FollowersApiMock } from '~/core/api/followers.api.mock';
 import { FollowersApi } from '~/core/api/followers.api';
+import { ClientStartupNavigation } from '~/core/client-startup-navigation';
 
 declare const require: any;
 
@@ -161,7 +162,7 @@ export class TestUtils {
         App, Form, Keyboard, DomController, Logger, MenuController, NavController,
         NavParams, GestureController, AlertControllerMock, LoadingControllerMock,
         Clipboard, EmailComposer, ProfileApiMock, ActionSheetController, BaseService,
-        PushNotification, Push,
+        PushNotification, Push, ClientStartupNavigation,
         Camera,
         { provide: AlertController, useFactory: () => AlertControllerMock.instance() },
         { provide: ModalController, useFactory: () => ModalControllerMock.instance() },

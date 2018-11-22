@@ -6,7 +6,7 @@ import { StylistModel } from '~/shared/api/stylists.models';
 import { PageNames } from '~/core/page-names';
 import { PreferredStylistsData } from '~/core/api/preferred-stylists.data';
 
-export interface StylistPageParams {
+export interface StylistInvitationParams {
   stylist?: StylistModel;
 }
 
@@ -28,7 +28,7 @@ export class StylistComponent {
   }
 
   async ionViewWillEnter(): Promise<void> {
-    const params = (this.navParams.get('data') || {}) as StylistPageParams;
+    const params = (this.navParams.get('data') || {}) as StylistInvitationParams;
     this.stylist = params.stylist;
   }
 
@@ -44,7 +44,7 @@ export class StylistComponent {
    * Proceed without saving. After informational screens a user will be redirected
    * to the stylists search to select a preferred stylist.
    */
-  onProceedToStylists(): void {
+  onNotMyStylist(): void {
     this.navCtrl.push(PageNames.HowMadeWorks);
   }
 }

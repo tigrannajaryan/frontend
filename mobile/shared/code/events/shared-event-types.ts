@@ -25,7 +25,9 @@ export enum SharedEventTypes {
    * Observe it to handle notifications:
    * |  this.events.subscribe(PushNotificationEvent, (details: PushNotificationEventDetails) => {…});
    */
-  pushNotification = 'pushNotification'
+  pushNotification = 'pushNotification',
+
+  continueAfterPushPriming = 'continueAfterPushPriming'
 }
 
 export class PushNotificationEventDetails {

@@ -1,11 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 
-import { PermissionScreenResult, PushNotification } from '~/shared/push/push-notification';
-import { PageNames } from '~/core/page-names';
-import { PreferredStylistsData } from '~/core/api/preferred-stylists.data';
-
-import { StylistsPageParams } from '~/stylists/stylists-search/stylists-search.component';
+import { ClientStartupNavigation } from '~/core/client-startup-navigation';
 
 @Component({
   selector: 'page-how-pricing-works',
@@ -21,27 +17,14 @@ export class HowPricingWorksComponent {
   ];
 
   constructor(
+    private clientNavigation: ClientStartupNavigation,
     private navCtrl: NavController,
-    private navParams: NavParams,
-    private preferredStylistsData: PreferredStylistsData,
-    private pushNotification: PushNotification
+    private navParams: NavParams
   ) {
     this.hideContinueButton = this.navParams.get('hideContinueButton') as boolean;
   }
 
   async onContinue(): Promise<void> {
-    // Show the permission asking screen if needed and wait until the user makes a choice
-    if (await this.pushNotification.showPermissionScreen(false) === PermissionScreenResult.userWantsToGoBack) {
-      // Back button was tapped on that screen. We are back to this screen, we should not continue.
-      return;
-    }
-
-    const preferredStylists = await this.preferredStylistsData.get();
-    if (preferredStylists.length === 0) {
-      const data: StylistsPageParams = { onboarding: true };
-      this.navCtrl.push(PageNames.Stylists, { data });
-    } else {
-      this.navCtrl.setRoot(PageNames.MainTabs);
-    }
+    await this.clientNavigation.showAfterHowPricingWorks(this.navCtrl);
   }
 }
