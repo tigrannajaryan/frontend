@@ -80,7 +80,7 @@ preinstall-dir: $(INSTALLDIR)/src/app/shared $(INSTALLDIR)/e2e/shared-e2e $(INST
 
 preinstall-assets:
 	$(L)echo Copying $(INSTALLDIR) assets...
-	$(call RMDIR $(INSTALLDIR)/src/assets)
+	$(call RMDIR,$(INSTALLDIR)/src/assets)
 	$(call COPYDIR,shared/assets,$(INSTALLDIR)/src/assets)
 	$(L)echo Copied $(INSTALLDIR) assets.
 

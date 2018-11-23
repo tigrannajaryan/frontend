@@ -16,7 +16,7 @@ import { createNavHistoryList } from '~/core/functions';
 import { ServerStatusTracker } from '~/shared/server-status-tracker';
 import { ENV } from '~/environments/environment.default';
 import { AuthService } from './shared/api/auth.api';
-import { getAuthLocalData } from './shared/storage/token-utils';
+import { deleteAuthLocalData, getAuthLocalData } from './shared/storage/token-utils';
 import { AuthResponse } from './shared/api/auth.models';
 import { StylistAppStorage } from './core/stylist-app-storage';
 
@@ -47,7 +47,8 @@ export class MyAppComponent {
   async initializeApp(): Promise<void> {
     const startTime = Date.now();
 
-    this.serverStatusTracker.init(PageNames.FirstScreen);
+    // The call of `deleteAuthLocalData` prevents weird error of allways navigating to the Auth page.
+    this.serverStatusTracker.init(PageNames.FirstScreen, deleteAuthLocalData);
 
     // First initialize the platform. We cannot do anything else until the platform is
     // ready and the plugins are available.

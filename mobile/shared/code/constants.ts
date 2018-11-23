@@ -3,7 +3,7 @@ export enum PhotoSourceType {
   camera = 1
 }
 
-export enum PlatforNames {
+export enum PlatformNames {
   android = 'android',
   ios = 'ios'
 }

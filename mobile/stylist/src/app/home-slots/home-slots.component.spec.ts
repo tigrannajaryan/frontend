@@ -1,18 +1,18 @@
-import { async, ComponentFixture } from '@angular/core/testing';
+import { async } from '@angular/core/testing';
 import { ActionSheetButton } from 'ionic-angular/components/action-sheet/action-sheet-options';
 import * as moment from 'moment';
 
-import { getPhoneNumber } from '~/shared/utils/phone-numbers';
+import { getPhoneNumber } from '../shared/utils/phone-numbers';
 
-import { Appointment, AppointmentStatuses } from '~/core/api/home.models';
-import { prepareSharedObjectsForTests } from '~/core/test-utils.spec';
+import { Appointment, AppointmentStatuses } from '../core/api/home.models';
+import { prepareSharedObjectsForTests } from '../core/test-utils.spec';
 
 import { TestUtils } from '../../test';
 import { AppointmentsDataStore } from './appointments.data';
+import { ProfileDataStore } from '../core/profile.data';
 import { HomeSlotsComponent } from './home-slots.component';
 import { createAppointment } from './time-slots/time-slots.component.spec';
 
-// let fixture: ComponentFixture<HomeSlotsComponent>;
 let instance: HomeSlotsComponent;
 
 interface ActionSheetButtonNoHandler extends ActionSheetButton {
@@ -33,9 +33,8 @@ describe('Pages: HomeSlotsComponent', () => {
   prepareSharedObjectsForTests();
 
   beforeEach(async(() =>
-    TestUtils.beforeEachCompiler([HomeSlotsComponent], [AppointmentsDataStore])
+    TestUtils.beforeEachCompiler([HomeSlotsComponent], [AppointmentsDataStore, ProfileDataStore])
       .then(compiled => {
-        // fixture = compiled.fixture;
         instance = compiled.instance;
       })
   ));
@@ -44,15 +43,11 @@ describe('Pages: HomeSlotsComponent', () => {
     expect(instance).toBeTruthy();
   });
 
-  it('should add proper buttons to appointments', () => {
+  it('should add proper buttons to appointments', async () => {
     const startOfToday = moment().startOf('day').format();
 
     let appointment: Appointment;
     let buttons: ActionSheetButton[];
-
-    // Use private method getAppointmentActionSheetOptions publicly:
-    const getAppointmentActionSheetOptions =
-      (instance as any).getAppointmentActionSheetOptions.bind(instance);
 
     // For today
     instance.selectedDate = moment();
@@ -62,12 +57,13 @@ describe('Pages: HomeSlotsComponent', () => {
     appointment.datetime_start_at = startOfToday;
     appointment.status = AppointmentStatuses.new;
     buttons = removeHandlers(
-      getAppointmentActionSheetOptions(appointment)
+      await instance.getAppointmentActionSheetOptions(appointment)
     );
     expect(buttons)
       .toEqual([
         { text: 'Check Out' },
         { text: 'No Show' },
+        { text: 'Add to Calendar' },
         { text: `Call: ${getPhoneNumber(appointment.client_phone)}`},
         { text: `Copy: ${getPhoneNumber(appointment.client_phone)}`},
         { text: 'Cancel Appointment', role: 'destructive' },
@@ -80,12 +76,13 @@ describe('Pages: HomeSlotsComponent', () => {
     appointment.status = AppointmentStatuses.new;
     appointment.client_phone = '';
     buttons = removeHandlers(
-      getAppointmentActionSheetOptions(appointment)
+      await instance.getAppointmentActionSheetOptions(appointment)
     );
     expect(buttons)
       .toEqual([
         { text: 'Check Out' },
         { text: 'No Show' },
+        { text: 'Add to Calendar' },
         // Call and copy unavailable in this case
         // { text: `Call: ${getPhoneNumber(appointment.client_phone)}`},
         // { text: `Copy: ${getPhoneNumber(appointment.client_phone)}`},
@@ -98,13 +95,14 @@ describe('Pages: HomeSlotsComponent', () => {
     appointment.datetime_start_at = startOfToday;
     appointment.status = AppointmentStatuses.no_show;
     buttons = removeHandlers(
-      getAppointmentActionSheetOptions(appointment)
+      await instance.getAppointmentActionSheetOptions(appointment)
     );
     expect(buttons)
       .toEqual([
         { text: 'Check Out' },
         // 'No Show' removed in this case
         // { text: 'No Show' },
+        { text: 'Add to Calendar' },
         { text: `Call: ${getPhoneNumber(appointment.client_phone)}`},
         { text: `Copy: ${getPhoneNumber(appointment.client_phone)}`},
         { text: 'Cancel Appointment', role: 'destructive' },
@@ -116,13 +114,14 @@ describe('Pages: HomeSlotsComponent', () => {
     appointment.datetime_start_at = startOfToday;
     appointment.status = AppointmentStatuses.cancelled_by_client;
     buttons = removeHandlers(
-      getAppointmentActionSheetOptions(appointment)
+      await instance.getAppointmentActionSheetOptions(appointment)
     );
     expect(buttons)
       .toEqual([
         // 'Check Out' removed in this case
         // { text: 'Check Out' },
         { text: 'No Show' },
+        { text: 'Add to Calendar' },
         { text: `Call: ${getPhoneNumber(appointment.client_phone)}`},
         { text: `Copy: ${getPhoneNumber(appointment.client_phone)}`},
         // 'Cancel Appointment' replaced with 'Delete Appointment' in this case
@@ -135,13 +134,14 @@ describe('Pages: HomeSlotsComponent', () => {
     appointment.datetime_start_at = startOfToday;
     appointment.status = AppointmentStatuses.checked_out;
     buttons = removeHandlers(
-      getAppointmentActionSheetOptions(appointment)
+      await instance.getAppointmentActionSheetOptions(appointment)
     );
     expect(buttons)
       .toEqual([
         // 'Check Out' replaced with 'Details' in this case
         { text: 'Details' },
         { text: 'No Show' },
+        { text: 'Add to Calendar' },
         { text: `Call: ${getPhoneNumber(appointment.client_phone)}`},
         { text: `Copy: ${getPhoneNumber(appointment.client_phone)}`},
         { text: 'Cancel Appointment', role: 'destructive' },
@@ -156,7 +156,7 @@ describe('Pages: HomeSlotsComponent', () => {
     appointment.client_last_name = '';
     appointment.client_phone = '';
     buttons = removeHandlers(
-      getAppointmentActionSheetOptions(appointment)
+      await instance.getAppointmentActionSheetOptions(appointment)
     );
     expect(buttons)
       .toEqual([
@@ -172,13 +172,14 @@ describe('Pages: HomeSlotsComponent', () => {
     appointment.datetime_start_at = moment().add(1, 'day').format();
     appointment.status = AppointmentStatuses.new;
     buttons = removeHandlers(
-      getAppointmentActionSheetOptions(appointment)
+      await instance.getAppointmentActionSheetOptions(appointment)
     );
     expect(buttons)
       .toEqual([
         { text: 'Check Out' },
         // 'No Show' removed in this case
         // { text: 'No Show' },
+        { text: 'Add to Calendar' },
         { text: `Call: ${getPhoneNumber(appointment.client_phone)}`},
         { text: `Copy: ${getPhoneNumber(appointment.client_phone)}`},
         { text: 'Cancel Appointment', role: 'destructive' },

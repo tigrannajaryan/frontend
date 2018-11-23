@@ -20,6 +20,7 @@ import { Clipboard } from '@ionic-native/clipboard';
 import { EmailComposer } from '@ionic-native/email-composer';
 import { Push } from '@ionic-native/push';
 import { DatePicker } from '@ionic-native/date-picker';
+import { GooglePlus } from '@ionic-native/google-plus';
 
 import { UnhandledErrorHandler } from '~/shared/unhandled-error-handler';
 import { initSentry } from '~/shared/sentry';
@@ -33,6 +34,9 @@ import { AuthEffects } from '~/shared/storage/auth.effects';
 import { PushNotification } from '~/shared/push/push-notification';
 import { PushPrimingScreenComponent } from '~/shared/components/push-priming-screen/push-priming-screen.component';
 import { SuccessErrorPopupComponent } from '~/shared/components/success-error-popup/success-error-popup.component';
+import { CalendarPrimingComponent } from '~/shared/components/calendar-priming/calendar-priming.component';
+import { GoogleSignin } from './shared/google-signin';
+import { IntegrationsApi } from './shared/api/integrations.api';
 
 import { ENV } from '~/environments/environment.default';
 
@@ -64,7 +68,6 @@ import { AppointmentServicesComponent } from '~/appointment/appointment-services
 import { AuthPageComponent } from '~/auth/auth-start/auth-start.component';
 import { AuthConfirmPageComponent } from '~/auth/auth-confirm/auth-confirm.component';
 import { CalendarExampleComponent } from '~/register-salon/calendar-example/calendar-example.component';
-import { CalendarPrimingComponent } from '~/core/components/calendar-priming/calendar-priming.component';
 import { ClientsCalendarComponent } from '~/calendar/clients-calendar/clients-calendar.component';
 import { DiscountsComponent } from '~/discounts/discounts.component';
 import { DiscountsAlertComponent } from '~/discounts/discounts-alert/discounts-alert.component';
@@ -206,6 +209,9 @@ const declarations = [
     Clipboard,
     EmailComposer,
 
+    GooglePlus,
+    GoogleSignin,
+
     Push,
     PushNotification,
 
@@ -239,6 +245,7 @@ const declarations = [
     InvitationsApi,
     ClientDetailsApi,
     NotificationsApi,
+    IntegrationsApi,
 
     ExternalAppService,
 
