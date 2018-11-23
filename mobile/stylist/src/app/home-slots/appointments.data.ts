@@ -27,7 +27,7 @@ export class AppointmentsDataStore {
   get(date: Moment): Promise<ApiResponse<DayAppointmentsResponse>> {
     if (!this.date || !this.date.isSame(date)) {
       this.date = date;
-      this.dataStore.clear();
+      this.dataStore.deleteCache();
     }
     return this.dataStore.get();
   }

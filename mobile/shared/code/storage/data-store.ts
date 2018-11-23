@@ -168,11 +168,41 @@ export class DataStore<T> {
   }
 
   /**
-   * Method to clear the store’s state (e.g. on logout).
+   * Method to clear the store’s cached state.
+   * This ensures that when we call get() next time the DataStore will call the
+   * API endpoint to fetch fresh data.
+   *
+   * Also this ensures that the cached state is deleted from persistent storage.
+   * This is usesfull when performing operations like app-wide Logout which must
+   * guarantee that next logged in person does not see the cache of previous user
+   * (this is important because usually cache is persisted per data store type,
+   * it is not per user).
+   *
+   * Observers that are currently subscribed to this store will remain subscribed
+   * and will receive future updates when the data changes.
    */
-  clear(): Promise<void> {
+  async deleteCache(): Promise<void> {
+    // Wait for ongoing operations to finish because it may be using the cache storage.
+    await this.promise;
+
+    // Now clear the storage.
     const storage = AppModule.injector.get(Storage);
-    return storage.remove(this.storageKey).then(() => {
+    return storage.remove(this.storageKey);
+  }
+
+  /**
+   *
+   * Observers that are currently subscribed to this store will loose the subscription
+   * and will not receive future updates when the data changes. You will need to
+   * resubscribe them. This is usually only useful when you destroying the data
+   * store and want to make sure the data is cleaned and observers dont't receive
+   * any more updates.
+   *
+   * If you only need to clear the local cache while keeping the DataStore active
+   * and current subsriptions valid use deleteCache() instead.
+   */
+  reinit(): Promise<void> {
+    return this.deleteCache().then(() => {
       this.init();
     });
   }

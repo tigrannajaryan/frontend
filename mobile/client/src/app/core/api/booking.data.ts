@@ -76,10 +76,10 @@ export class BookingData implements OnDestroy {
 
     // clear previous booking information
     if (this._pricelist) {
-      this._pricelist.clear();
+      this._pricelist.deleteCache();
     }
     if (this._timeslots) {
-      this._timeslots.clear();
+      this._timeslots.deleteCache();
     }
 
     this._selectedServices = undefined;
@@ -110,7 +110,7 @@ export class BookingData implements OnDestroy {
     this.onServicesChange();
 
     if (this._pricelist) {
-      this._pricelist.clear();
+      this._pricelist.deleteCache();
     }
 
     // create an API-backed cached pricelist
@@ -172,7 +172,7 @@ export class BookingData implements OnDestroy {
       this._date = date;
 
       if (this._timeslots) {
-        this._timeslots.clear();
+        this._timeslots.deleteCache();
       }
 
       // Save in closure:
