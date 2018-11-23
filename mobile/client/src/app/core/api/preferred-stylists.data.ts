@@ -9,12 +9,26 @@ import {
   PreferredStylistsListResponse,
   StylistUuidModel
 } from '~/shared/api/stylists.models';
+import { getAuthLocalData, saveAuthLocalData } from '~/shared/storage/token-utils';
+import { ClientProfileStatus } from '~/shared/api/auth.models';
 
 @Injectable()
 export class PreferredStylistsData {
   private static guardInitilization = false;
 
   data: DataStore<PreferredStylistsListResponse>;
+
+  /**
+   * Update local profile status according to the selected stylists.
+   * When we save preferred stylists we also update local profile status
+   * to match it. This ensures the profile status is always up to date.
+   */
+  static async updateLocalProfileStatus(preferredStylists: PreferredStylistModel[]): Promise<void> {
+    const authLocalData = await getAuthLocalData();
+    const profileStatus: ClientProfileStatus = authLocalData.profileStatus;
+    profileStatus.has_preferred_stylist_set = preferredStylists.length > 0;
+    await saveAuthLocalData(authLocalData);
+  }
 
   constructor(
     private api: StylistsService
@@ -43,7 +57,8 @@ export class PreferredStylistsData {
    */
   async addStylist(newStylist: StylistUuidModel): Promise<ApiResponse<AddPreferredStylistResponse>> {
     const { response: addResponse } = await this.api.addPreferredStylist(newStylist.uuid).get();
-    await this.get({ refresh: true });
+    const stylists = await this.get({ refresh: true });
+    await PreferredStylistsData.updateLocalProfileStatus(stylists);
 
     return { response: addResponse };
   }
@@ -61,7 +76,8 @@ export class PreferredStylistsData {
    */
   async removeStylist(stylistUuid: string): Promise<void> {
     await this.api.deletePreferredStylist(stylistUuid).get();
-    await this.get({ refresh: true });
+    const stylists = await this.get({ refresh: true });
+    await PreferredStylistsData.updateLocalProfileStatus(stylists);
   }
 
   /**

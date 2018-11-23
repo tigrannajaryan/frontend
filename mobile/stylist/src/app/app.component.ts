@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { App, Nav, Platform } from 'ionic-angular';
+import { Nav, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { ScreenOrientation } from '@ionic-native/screen-orientation';
@@ -27,7 +27,6 @@ export class MyAppComponent {
   @ViewChild(Nav) nav: Nav;
 
   constructor(
-    private app: App,
     public platform: Platform,
     public statusBar: StatusBar,
     public splashScreen: SplashScreen,
@@ -62,7 +61,7 @@ export class MyAppComponent {
       this.storage.init()
     ]);
 
-    await this.pushNotification.init(this.app.getRootNav(), PageNames.PushPrimingScreen, this.storage);
+    await this.pushNotification.init(this.storage);
 
     // Lock screen orientation to portrait if this is real device
     if (!(this.platform.is('core') || this.platform.is('mobileweb'))) {

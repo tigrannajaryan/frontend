@@ -1,17 +1,12 @@
 import * as faker from 'faker';
 
-import { getRandomEmail, getRandomString, normalizePhoneNumber, waitFor, waitForNot } from './shared-e2e/utils';
+import { waitFor, waitForNot } from './shared-e2e/utils';
 import { backdoorApi } from './shared-e2e/backdoor-api';
 import { phoneLoginPage } from './shared-e2e/phone-login-page';
 import { phoneCodePage } from './shared-e2e/phone-code-page';
-import { stylistApi } from './shared-e2e/stylist-api';
-import { ClientInvitation } from './shared-app/api/invitations.models';
-import { SetStylistServicesParams, StylistProfile } from './shared-app/api/stylist-app.models';
-import { Worktime } from './shared-app/api/worktime.models';
+import { StylistProfile } from './shared-app/api/stylist-app.models';
 import { getPhoneNumber } from './shared-app/utils/phone-numbers';
-import { EmailAuthCredentials, UserRole } from './shared-app/api/auth.models';
 import { pushPrimingPage } from './shared-e2e/push-priming-page';
-import { nameSurnamePage } from './shared-e2e/name-surname-page';
 
 import { clientApp } from './client-app';
 import { firstPage } from './pages/first-page';
@@ -24,6 +19,8 @@ import { homePage } from './pages/home-page';
 import { selectCategoryPage } from './pages/select-category-page';
 import { selectServicePage } from './pages/select-service-page';
 import { selectDatePage } from './pages/select-date-page';
+import { createTestStylist, performLogin } from './test-utils';
+import { firstNameLastNamePage } from './pages/firstname-lastname-page';
 
 describe('First use flow for invited clients', () => {
 
@@ -34,84 +31,9 @@ describe('First use flow for invited clients', () => {
   const lastName = faker.name.lastName();
 
   beforeAll(async () => {
-    // Register new stylist
-    const stylistCredentials: EmailAuthCredentials = {
-      email: getRandomEmail(),
-      password: getRandomString(Math.floor(Math.random() * 20) + 1),
-      role: UserRole.stylist
-    };
-    const authResponse = await stylistApi.registerByEmail(stylistCredentials);
-    expect(authResponse.token).toBeDefined();
-
-    // Complete stylist profile
-    stylistProfile = {
-      first_name: faker.name.firstName(),
-      last_name: faker.name.lastName(),
-      phone: normalizePhoneNumber(await backdoorApi.getNewUnusedPhoneNumber()),
-      public_phone: normalizePhoneNumber(await backdoorApi.getNewUnusedPhoneNumber()),
-      salon_name: faker.commerce.productName(),
-      salon_address: faker.address.streetAddress(),
-      instagram_url: faker.internet.url(),
-      website_url: faker.internet.url(),
-      profile_photo_url: faker.random.image(),
-      followers_count: faker.random.number()
-    };
-    const profileResponse = await stylistApi.setProfile(stylistProfile);
-    expect(profileResponse.uuid).toBeDefined();
-
     // Create a new phone number for client
     clientPhoneNumber = await backdoorApi.getNewUnusedPhoneNumber();
-
-    // Create invitation for the client
-    const invitation: ClientInvitation = {
-      phone: clientPhoneNumber
-    };
-    const inviteResponse = await stylistApi.createInvitations([invitation]);
-    expect(inviteResponse.invitations.length).toEqual(1);
-
-    // Create services
-    const categorizeServices = await stylistApi.getStylistServices();
-    const colorCategory = categorizeServices.categories.find(c => c.category_code === 'color');
-
-    const services = [{
-      name: serviceNames[0],
-      description: '',
-      base_price: 123,
-      category_name: colorCategory.name,
-      category_uuid: colorCategory.uuid,
-      is_enabled: true,
-      photo_samples: []
-    },
-    {
-      name: serviceNames[1],
-      description: '',
-      base_price: 234,
-      category_name: colorCategory.name,
-      category_uuid: colorCategory.uuid,
-      is_enabled: true,
-      photo_samples: []
-    }];
-
-    const request: SetStylistServicesParams = {
-      services,
-      service_time_gap_minutes: 30
-    };
-    const savedServices = await stylistApi.setStylistServices(request);
-
-    // Set working time
-    const worktime: Worktime = {
-      weekdays: []
-    };
-    for (let i = 1; i < 7; i++) {
-      worktime.weekdays.push({
-        label: '',
-        weekday_iso: i,
-        is_available: true,
-        work_start_at: '00:09:00',
-        work_end_at: '00:17:00'
-      });
-    }
-    await stylistApi.setWorktime(worktime);
+    stylistProfile = await createTestStylist(serviceNames, clientPhoneNumber);
   });
 
   it('Can navigate to login screen', async () => {
@@ -121,30 +43,18 @@ describe('First use flow for invited clients', () => {
   });
 
   it('Can login with new phone number', async () => {
-    // Enter phone number
-    await phoneLoginPage.login(clientPhoneNumber);
-
-    // and code input is visible
-    await waitFor(phoneCodePage.codeInput);
-
-    const loginCode = await backdoorApi.getCode(`+1${clientPhoneNumber}`);
-
-    // Enter the correct code
-    await phoneCodePage.codeInput.clear();
-    await phoneCodePage.codeInput.sendKeys(loginCode);
-
-    await waitForNot(phoneCodePage.codeInput);
+    await performLogin(clientPhoneNumber);
   });
 
   it('Can input name and surname', async () => {
-    await nameSurnamePage.fillIn(firstName, lastName);
+    await firstNameLastNamePage.fillIn(firstName, lastName);
   });
 
   it('Can see invitation', async () => {
     expect(await stylistInvitationPage.salonName.getText()).toEqual(stylistProfile.salon_name);
     expect((await stylistInvitationPage.address.getText()).trim()).toEqual(stylistProfile.salon_address);
     expect(await stylistInvitationPage.stylistName.getText()).toEqual(`${stylistProfile.first_name} ${stylistProfile.last_name}`);
-    expect((await stylistInvitationPage.stylistPhone.getText()).trim()).toEqual(getPhoneNumber(`+1 ${ stylistProfile.phone }`));
+    expect((await stylistInvitationPage.stylistPhone.getText()).trim()).toEqual(getPhoneNumber(`+1 ${stylistProfile.phone}`));
 
     await stylistInvitationPage.getStarted();
   });
@@ -158,7 +68,7 @@ describe('First use flow for invited clients', () => {
   it('Can see profile page', async () => {
     await mainTabsPage.profileTab.click();
     await waitFor(profileSummaryPage.phone);
-    expect((await profileSummaryPage.phone.getText()).trim()).toEqual(getPhoneNumber(`+1 ${ clientPhoneNumber }`));
+    expect((await profileSummaryPage.phone.getText()).trim()).toEqual(getPhoneNumber(`+1 ${clientPhoneNumber}`));
     expect((await profileSummaryPage.fullname.getText()).trim()).toEqual(`${firstName} ${lastName}`);
     expect((await profileSummaryPage.profileCompletion.getText()).trim()).toEqual('Profile completion 40%');
   });
@@ -190,9 +100,4 @@ describe('First use flow for invited clients', () => {
     expect(selectDatePage.serviceItemName(0).getText()).toEqual(serviceNames[0]);
     expect(selectDatePage.serviceItemName(1).getText()).toEqual(serviceNames[1]);
   });
-
-  // it('Can remove service', async () => {
-  //   await selectDatePage.deleteService(0);
-  //   expect(selectDatePage.serviceItemName(0).getText()).toEqual(serviceNames[1]);
-  // });
 });

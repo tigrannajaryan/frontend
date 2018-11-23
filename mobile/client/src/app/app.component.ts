@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { App, Events, Nav, Platform } from 'ionic-angular';
+import { Events, Nav, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { ScreenOrientation } from '@ionic-native/screen-orientation';
@@ -27,9 +27,16 @@ import { ServicesCategoriesParams } from '~/services-categories-page/services-ca
 import { async_all } from './shared/async-helpers';
 import { PushNotification } from './shared/push/push-notification';
 import { SharedEventTypes } from './shared/events/shared-event-types';
-import { AuthResponse, ClientProfileStatus } from './shared/api/auth.models';
+import { AuthResponse } from './shared/api/auth.models';
 import { AuthService } from './shared/api/auth.api';
 import { ClientAppStorage } from './core/client-app-storage';
+import { ClientStartupNavigation } from './core/client-startup-navigation';
+import { StylistModel } from './shared/api/stylists.models';
+
+interface RefreshAuthResult {
+  authLocalData: AuthLocalData;
+  pendingInvitation?: StylistModel;
+}
 
 @Component({
   templateUrl: 'app.component.html'
@@ -40,8 +47,8 @@ export class ClientAppComponent implements OnInit, OnDestroy {
   rootPage: any;
 
   constructor(
-    private app: App,
     private authApiService: AuthService,
+    private clientNavigation: ClientStartupNavigation,
     private events: Events,
     private ga: GAWrapper,
     private logger: Logger,
@@ -82,7 +89,7 @@ export class ClientAppComponent implements OnInit, OnDestroy {
       this.storage.init()
     ]);
 
-    await this.pushNotification.init(this.app.getRootNav(), PageNames.PushPrimingScreen, this.storage);
+    await this.pushNotification.init(this.storage);
 
     // Track all top-level screen changes
     this.nav.viewDidEnter.subscribe(view => this.ga.trackViewChange(view));
@@ -92,11 +99,13 @@ export class ClientAppComponent implements OnInit, OnDestroy {
 
     // Get locally saved auth data
     let authLocalData: AuthLocalData = await getAuthLocalData();
+    let refreshAuthResult: RefreshAuthResult;
     if (authLocalData) {
       // We have an existing saved auth. Refresh it to validate that the account is still valid
       // and to make sure we have a fresh data (profile status).
       this.logger.info('App: found saved local auth data. Will refresh.');
-      authLocalData = await this.refreshAuth(authLocalData);
+      refreshAuthResult = await this.refreshAuth(authLocalData);
+      authLocalData = refreshAuthResult.authLocalData;
     } else {
       this.logger.info('App: did not find saved local auth data.');
     }
@@ -119,8 +128,10 @@ export class ClientAppComponent implements OnInit, OnDestroy {
       // Let pushNotification know who is the current user
       this.pushNotification.setUser(authLocalData.userUuid);
 
-      // See if user already has preferred stylists
-      this.showRootPage(authLocalData.profileStatus);
+      // Show the appropriate page
+      const pendingInvitation = refreshAuthResult ? refreshAuthResult.pendingInvitation : undefined;
+      const pageDescr = await this.clientNavigation.nextToShowByProfileStatus(pendingInvitation);
+      this.nav.setRoot(pageDescr.page, pageDescr.params);
     }
   }
 
@@ -182,46 +193,43 @@ export class ClientAppComponent implements OnInit, OnDestroy {
     this.nav.push(PageNames.SelectDate);
   }
 
-  /**
-   * Make a decision about what page to show first and show it.
-   */
-  async showRootPage(profileStatus: ClientProfileStatus): Promise<void> {
-    if (!profileStatus || !profileStatus.has_preferred_stylist_set) {
-      // Haven’t completed onboarding, should restart
-      this.logger.info('App: no preferred stylist. Will show HowMadeWorks screen.');
-      this.rootPage = PageNames.HowMadeWorks;
-    } else {
-      this.logger.info('App: we are authenticated. Check if need to show Push permission screen.');
-
-      // We are authenticated and almost ready to start using the app normally.
-      // One last thing: show push permission asking screen if needed and wait until the user makes a choice
-      await this.pushNotification.showPermissionScreen(true);
-
-      // All set now. Show the main screen.
-      this.logger.info('App: show MainTabs screen.');
-      this.rootPage = PageNames.MainTabs;
-    }
-  }
-
-  private async refreshAuth(authLocalData: AuthLocalData): Promise<AuthLocalData> {
+  private async refreshAuth(authLocalData: AuthLocalData): Promise<RefreshAuthResult> {
     let authResponse: AuthResponse;
-    let result: AuthLocalData = authLocalData;
+    const result: RefreshAuthResult = { authLocalData };
+
     try {
       authResponse = (await this.authApiService.refreshAuth(authLocalData.token).get()).response;
+
+      // Remember pending invitation if any
+      result.pendingInvitation = authResponse.stylist_invitation && authResponse.stylist_invitation.length > 0 ?
+        authResponse.stylist_invitation[0] : undefined;
+
     } catch (e) {
       this.logger.error('App: Error when trying to refresh auth.', e);
     }
+
     if (authResponse) {
+
+      // Successful. Save everything and return the result.
       this.logger.info('App: Authentication refreshed.');
-      result = authResponseToTokenModel(authResponse);
-      await saveAuthLocalData(result);
+      const newLocalData = authResponseToTokenModel(authResponse);
+      result.authLocalData = newLocalData;
+      await saveAuthLocalData(newLocalData);
+
     } else if (isAuthLocalDataComplete(authLocalData)) {
+
+      // Could not refresh but local data is good, continue using it.
       this.logger.info('App: Cannot refresh authentication. Continue using saved session.');
+
     } else {
+
+      // Worst case, could not refresh and local data is bad, so discard everything.
       this.logger.info('App: Cannot refresh authentication. Locally saved session is incomplete. ' +
         'Deleting saved data, will need to relogin.');
       await deleteAuthLocalData();
-      return undefined;
+      result.authLocalData = undefined;
+      result.pendingInvitation = undefined;
+
     }
     return result;
   }

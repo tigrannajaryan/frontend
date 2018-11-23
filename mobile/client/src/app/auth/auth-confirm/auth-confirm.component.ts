@@ -5,7 +5,6 @@ import { Observable } from 'rxjs/Observable';
 
 import { componentIsActive } from '~/shared/utils/component-is-active';
 
-import { PageNames } from '~/core/page-names';
 import { RequestState } from '~/shared/api/request.models';
 import {
   AuthState,
@@ -18,18 +17,13 @@ import {
   selectRequestCodeState
 } from '~/shared/storage/auth.reducer';
 import { selectInvitedByStylist, StylistState } from '~/core/reducers/stylists.reducer';
-import { PreferredStylistsData } from '~/core/api/preferred-stylists.data';
 import { AuthEffects } from '~/shared/storage/auth.effects';
 
 import { ApiError, FieldErrorItem } from '~/shared/api-errors';
 import { AuthProcessState } from '~/shared/storage/auth-process-state';
 
-import { StylistPageParams } from '~/stylists/stylist/stylist.component';
-
 import { CodeData, CodeInputComponent } from '~/shared/components/code-input/code-input.component';
-import { PushNotification } from '~/shared/push/push-notification';
-import { PreferredStylistModel, StylistModel } from '~/shared/api/stylists.models';
-import { ClientProfileStatus } from '~/shared/api/auth.models';
+import { ClientStartupNavigation } from '~/core/client-startup-navigation';
 
 @Component({
   selector: 'page-auth-confirm',
@@ -53,10 +47,9 @@ export class AuthConfirmPageComponent {
   constructor(
     private authEffects: AuthEffects,
     private authDataState: AuthProcessState,
+    private clientNavigation: ClientStartupNavigation,
     private navCtrl: NavController,
     private navParams: NavParams,
-    private preferredStylistsData: PreferredStylistsData,
-    private pushNotification: PushNotification,
     private store: Store<AuthState & StylistState>
   ) {
   }
@@ -72,7 +65,7 @@ export class AuthConfirmPageComponent {
       .takeWhile(componentIsActive(this))
       .withLatestFrom(this.store)
       .subscribe(async ([confirmCodeAction, state]: [ConfirmCodeSuccessAction, AuthState & StylistState]) => {
-        this.onCodeConfirmed(confirmCodeAction, state);
+        this.onCodeConfirmed(state);
       });
 
     // Handle code verification error
@@ -105,43 +98,14 @@ export class AuthConfirmPageComponent {
     }
   }
 
-  async onCodeConfirmed(confirmCodeResponse: ConfirmCodeSuccessAction, state: AuthState & StylistState): Promise<void> {
-    // Get the list of preferred stylists
-    const preferredStylists: PreferredStylistModel[] = await this.preferredStylistsData.get();
-    const profileStatus: ClientProfileStatus = confirmCodeResponse.profileStatus;
-    // Also get the invitation (if any)
+  async onCodeConfirmed(state: AuthState & StylistState): Promise<void> {
+    // Get the pending invitation (if any)
     const invitation = selectInvitedByStylist(state);
 
-    // if we have no user first and last name (has_name) - redirect it to inputs page
-    if (profileStatus && !(profileStatus.has_name)) {
-      this.navCtrl.setRoot(PageNames.FirstLastName, { data: {
-          onContinue: () => {
-            this.setNextRootPage(preferredStylists, invitation);
-          }
-        }});
-      return;
-    }
-
-    this.setNextRootPage(preferredStylists, invitation);
-  }
-
-  async setNextRootPage(preferredStylists: PreferredStylistModel[], invitation: StylistModel): Promise<void> {
-    if (preferredStylists.length > 0) {
-      // We already have a preferred stylist, we can go to main tabs screen.
-
-      // But first show push permission asking screen if needed and wait until the user makes a choice
-      await this.pushNotification.showPermissionScreen(true);
-
-      // All set, show main screen.
-      this.navCtrl.setRoot(PageNames.MainTabs);
-    } else if (invitation) {
-      // No preferred stylist, but we have an invitation from a stylist, show it.
-      const data: StylistPageParams = { stylist: invitation };
-      this.navCtrl.setRoot(PageNames.Stylist, { data });
-    } else {
-      // No preferred stylist, no invitation, brand new client. Start with
-      // educational screen.
-      this.navCtrl.setRoot(PageNames.HowMadeWorks);
-    }
+    // Show the correct next page based on current status of the profile.
+    const showPage = await this.clientNavigation.nextToShowByProfileStatus(invitation);
+    // We are using setPages() instead of push() because it is not allowed to go back
+    // to the current page (the AuthConfirm).
+    this.navCtrl.setPages([showPage]);
   }
 }

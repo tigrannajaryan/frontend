@@ -66,6 +66,8 @@ export class MyStylistsComponent {
   ionViewDidLoad(): void {
     this.activeTab = this.tabs[Tabs.primeStylists].name;
 
+    this.preferredStylistsData.get();
+
     this.preferredStylistsData.data.asObservable()
       .takeUntil(componentUnloaded(this))
       .subscribe((apiResponse: ApiResponse<PreferredStylistsListResponse>) => {
