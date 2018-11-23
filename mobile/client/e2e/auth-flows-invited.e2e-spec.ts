@@ -15,7 +15,7 @@ import { stylistInvitationPage } from './pages/stylist-invitation-page';
 import { mainTabsPage } from './pages/main-tabs-page';
 import { pushPrimingPage } from './shared-e2e/push-priming-page';
 
-describe('Authentication flows with app reloads', () => {
+describe('Authentication flows for invited client with app reloads', () => {
 
   let clientPhoneNumber;
   const firstName = faker.name.firstName();
