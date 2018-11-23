@@ -44,7 +44,6 @@
         *ngFor="let stylist of stylists | async"
         [stylist]="stylist"
         [isActive]="stylist.uuid === activeStylist?.uuid"
-        [isHearted]="!stylist.is_profile_bookable"
         (openCard)="onSetActiveStylist(stylist)"
         (closeCard)="onSetActiveStylist(undefined)"
         (showCalendar)="onShowCalendar(stylist)"
