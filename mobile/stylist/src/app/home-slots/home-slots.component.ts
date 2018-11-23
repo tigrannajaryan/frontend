@@ -1,7 +1,6 @@
 import { Component, NgZone, ViewChild } from '@angular/core';
 import { ActionSheetController, Content, NavController } from 'ionic-angular';
 import { ActionSheetButton } from 'ionic-angular/components/action-sheet/action-sheet-options';
-import { DatePicker } from '@ionic-native/date-picker';
 import * as moment from 'moment';
 import * as deepEqual from 'fast-deep-equal';
 
@@ -10,16 +9,19 @@ import { showAlert } from '~/shared/utils/alert';
 import { ExternalAppService } from '~/shared/utils/external-app-service';
 import { setIntervalOutsideNgZone } from '~/shared/utils/timer-utils';
 import { getPhoneNumber } from '~/shared/utils/phone-numbers';
+import { Workday } from '~/shared/api/worktime.models';
 
 import { Appointment, AppointmentStatuses, DayAppointmentsResponse } from '~/core/api/home.models';
 import { HomeService } from '~/core/api/home.service';
+import { WorktimeApi } from '~/core/api/worktime.api';
 import { AppointmentCheckoutParams } from '~/appointment/appointment-checkout/appointment-checkout.component';
 import { PageNames } from '~/core/page-names';
 import { StylistAppStorage } from '~/core/stylist-app-storage';
 import { ProfileDataStore } from '~/core/profile.data';
 
-import { Tabs, UpcomingAndPastPageParams } from '~/home/home.component';
 import { AppointmentAddParams } from '~/appointment/appointment-add/appointment-add';
+import { DisabledWeekday } from '~/calendar/horizontal-calendar/horizontal-calendar.component';
+
 import { FreeSlot, isBlockedTime } from './time-slots/time-slots.component';
 import { AppointmentsDataStore } from './appointments.data';
 
@@ -58,6 +60,9 @@ export class HomeSlotsComponent {
   // Current selected date
   selectedDate: moment.Moment = moment().startOf('day');
 
+  // Non-working weekdays
+  disabledWeekdays: DisabledWeekday[] = [];
+
   // And its components as strings (used in HTML)
   selectedMonthName: string;
   selectedWeekdayName: string;
@@ -67,17 +72,20 @@ export class HomeSlotsComponent {
     private actionSheetCtrl: ActionSheetController,
     private appointmentsDataStore: AppointmentsDataStore,
     private appStorage: StylistAppStorage,
-    private datePicker: DatePicker,
     private externalAppService: ExternalAppService,
     private homeService: HomeService,
     private logger: Logger,
     private navCtrl: NavController,
     private ngZone: NgZone,
-    private profileDataStore: ProfileDataStore
+    private profileDataStore: ProfileDataStore,
+    private worktimeApi: WorktimeApi
   ) {
   }
 
   async ionViewWillLoad(): Promise<void> {
+    // Set disabled days for horizontal calendar
+    await this.setNonWorkingDays();
+
     // Select and show today's date
     this.selectDate(moment().startOf('day'));
   }
@@ -109,6 +117,16 @@ export class HomeSlotsComponent {
   ionViewWillLeave(): void {
     // Stop autorefresh
     clearInterval(this.autoRefreshTimer);
+  }
+
+  async setNonWorkingDays(): Promise<void> {
+    const { response } = await this.worktimeApi.getWorktime().get();
+    if (response) {
+      this.disabledWeekdays =
+        response.weekdays
+          .filter((weekday: Workday): boolean => !weekday.work_start_at) // null for non-working
+          .map((weekday: Workday): DisabledWeekday => ({ weekday_iso: weekday.weekday_iso }));
+    }
   }
 
   async onAppointmentClick(appointment: Appointment): Promise<void> {
@@ -150,6 +168,32 @@ export class HomeSlotsComponent {
     if (response) {
       this.loadAppointments();
     }
+  }
+
+  isShowingToday(): boolean {
+    return this.selectedDate && this.selectedDate.isSame(moment(), 'day');
+  }
+
+  onTodayNavigateClick(): void {
+    this.selectDateAndLoadAppointments(moment().startOf('day'));
+  }
+
+  onSelectedDateChange(date: moment.Moment): void {
+    this.selectDateAndLoadAppointments(date);
+  }
+
+  onFreeSlotClick(freeSlot: FreeSlot): void {
+    // Show Appointment Add screen when clicked on a free slot.
+    // Preset the date and time of appointment since we already know it.
+    const params: AppointmentAddParams = { startDateTime: freeSlot.startTime };
+    this.navCtrl.push(PageNames.AppointmentAdd, { params });
+  }
+
+  onAddAppointmentClick(): void {
+    // Show Appointment Add screen when clicked on Add Appointment button.
+    // Preset the date of appointment since we already know it.
+    const params: AppointmentAddParams = { startDate: moment(this.selectedDate).startOf('day') };
+    this.navCtrl.push(PageNames.AppointmentAdd, { params });
   }
 
   /**
@@ -241,53 +285,6 @@ export class HomeSlotsComponent {
     });
 
     return buttons;
-  }
-
-  protected isShowingToday(): boolean {
-    return this.selectedDate && this.selectedDate.isSame(moment(), 'day');
-  }
-
-  protected onTodayNavigateClick(): void {
-    this.selectDateAndLoadAppointments(moment().startOf('day'));
-  }
-
-  protected onFreeSlotClick(freeSlot: FreeSlot): void {
-    // Show Appointment Add screen when clicked on a free slot.
-    // Preset the date and time of appointment since we already know it.
-    const params: AppointmentAddParams = { startDateTime: freeSlot.startTime };
-    this.navCtrl.push(PageNames.AppointmentAdd, { params });
-  }
-
-  protected onAddAppointmentClick(): void {
-    // Show Appointment Add screen when clicked on Add Appointment button.
-    // Preset the date of appointment since we already know it.
-    const params: AppointmentAddParams = { startDate: moment(this.selectedDate).startOf('day') };
-    this.navCtrl.push(PageNames.AppointmentAdd, { params });
-  }
-
-  protected onDateAreaClick(): void {
-    // Show date picker and let the user choose a date, then load appointments
-    // for selected date.
-    this.datePicker.show({
-      date: this.selectedDate.toDate(), // Start with current date
-      mode: 'date',
-      androidTheme: this.datePicker.ANDROID_THEMES.THEME_DEVICE_DEFAULT_LIGHT
-    }).then(
-      date => this.selectDateAndLoadAppointments(moment(date)),
-      err => {
-        // Nothing to do. Navigation cancelled.
-      }
-    );
-  }
-
-  protected onUpcomingVisitsClick(): void {
-    const params: UpcomingAndPastPageParams = { showTab: Tabs.upcoming };
-    this.navCtrl.push(PageNames.Home, { params });
-  }
-
-  protected onPastVisitsClick(): void {
-    const params: UpcomingAndPastPageParams = { showTab: Tabs.past };
-    this.navCtrl.push(PageNames.Home, { params });
   }
 
   /**

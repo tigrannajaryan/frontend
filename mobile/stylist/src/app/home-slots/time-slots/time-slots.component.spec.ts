@@ -69,7 +69,7 @@ function isRightSlot(slot: TimeSlotItem): boolean {
     slot.heightInVw > 0;
 }
 
-describe('Pages: TimeSlotsComponent', () => {
+describe('TimeSlotsComponent', () => {
   let fixture;
   let component: TimeSlotsComponent;
 

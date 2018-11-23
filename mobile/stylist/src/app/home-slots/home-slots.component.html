@@ -10,18 +10,12 @@
   </ion-buttons>
 
   <ion-toolbar>
-    <div class="HomeSlots-subheader">
-      <div class="HomeSlots-dateIndicator" (click)="onDateAreaClick()">
-        <div class="HomeSlots-weekday">{{ selectedWeekdayName }}</div>
-        <div class="HomeSlots-date">
-          <span>{{ selectedMonthName }},&nbsp;</span><b>{{ selectedDayOfMonth }}</b>
-        </div>
-      </div>
-      <div class="HomeSlots-space"></div>
-      <div (click)="onUpcomingVisitsClick()" class="HomeSlots-link">Upcoming Visits</div>
-      <div (click)="onPastVisitsClick()" class="HomeSlots-link">Past Visits</div>
-    </div>
+    <horizontal-calendar
+      [selectedDate]="selectedDate"
+      [disabledWeekdays]="disabledWeekdays"
+      (changeDate)="onSelectedDateChange($event)"></horizontal-calendar>
   </ion-toolbar>
+
 </ion-header>
 
 <ion-content no-padding>
