@@ -14,9 +14,9 @@ import {
   ResetConfirmCodeErrorAction,
   selectConfirmCodeError,
   selectConfirmCodeState,
+  selectInvitedByStylist,
   selectRequestCodeState
 } from '~/shared/storage/auth.reducer';
-import { selectInvitedByStylist, StylistState } from '~/core/reducers/stylists.reducer';
 import { AuthEffects } from '~/shared/storage/auth.effects';
 
 import { ApiError, FieldErrorItem } from '~/shared/api-errors';
@@ -50,7 +50,7 @@ export class AuthConfirmPageComponent {
     private clientNavigation: ClientStartupNavigation,
     private navCtrl: NavController,
     private navParams: NavParams,
-    private store: Store<AuthState & StylistState>
+    private store: Store<AuthState>
   ) {
   }
 
@@ -64,7 +64,7 @@ export class AuthConfirmPageComponent {
     this.authEffects.saveToken
       .takeWhile(componentIsActive(this))
       .withLatestFrom(this.store)
-      .subscribe(async ([confirmCodeAction, state]: [ConfirmCodeSuccessAction, AuthState & StylistState]) => {
+      .subscribe(async ([confirmCodeAction, state]: [ConfirmCodeSuccessAction, AuthState]) => {
         this.onCodeConfirmed(state);
       });
 
@@ -98,7 +98,7 @@ export class AuthConfirmPageComponent {
     }
   }
 
-  async onCodeConfirmed(state: AuthState & StylistState): Promise<void> {
+  async onCodeConfirmed(state: AuthState): Promise<void> {
     // Get the pending invitation (if any)
     const invitation = selectInvitedByStylist(state);
 

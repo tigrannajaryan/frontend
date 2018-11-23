@@ -5,8 +5,10 @@
      (click)="onCardOpen()"
      class="StylistCard"
      data-test-id="StylistCard">
-  <i *ngIf="isMyStylist && !stylist.is_profile_bookable" (click)="onRemoveStylist()" class="StylistCard-heart mb-icon-heart-a"></i>
-  <i *ngIf="!isMyStylist && !stylist.is_profile_bookable" (click)="onSelectStylist()" class="StylistCard-heart mb-icon-heart"></i>
+  <ng-container *ngIf="!stylist.is_profile_bookable">
+    <i *ngIf="stylist.is_profile_preferred" (click)="onRemoveStylist()" class="StylistCard-heart mb-icon-heart-a"></i>
+    <i *ngIf="!stylist.is_profile_preferred" (click)="onSelectStylist()" class="StylistCard-heart mb-icon-heart"></i>
+  </ng-container>
 
   <i (click)="onCardClose($event)" class="StylistCard-close mb-icon-cross"></i>
   <i *ngIf="stylist.is_profile_bookable" class="StylistCard-bookable mb-icon-booking"></i>

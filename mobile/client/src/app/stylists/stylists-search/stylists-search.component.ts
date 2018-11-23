@@ -1,31 +1,28 @@
 import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Events, ModalController, NavController, NavParams } from 'ionic-angular';
-import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs/Observable';
 
-import { RequestState } from '~/shared/api/request.models';
-import { StylistModel, StylistsSearchParams } from '~/shared/api/stylists.models';
+import {
+  PreferredStylistModel,
+  StylistModel,
+  StylistsSearchParams,
+  StylistUuidModel
+} from '~/shared/api/stylists.models';
+import { loading } from '~/shared/utils/loading';
 import { GeolocationService, LatLng } from '~/shared/utils/geolocation.service';
 
-import { ClientEventTypes } from '~/core/client-event-types';
-import { PageNames } from '~/core/page-names';
+import { BookingData } from '~/core/api/booking.data';
 import { PreferredStylistsData } from '~/core/api/preferred-stylists.data';
-import {
-  SearchStylistsAction,
-  selectIsMoreStylistsAvailable,
-  selectStylists,
-  selectStylistsRequestState,
-  StylistState
-} from '~/core/reducers/stylists.reducer';
+import { StylistsService } from '~/core/api/stylists.service';
+import { ClientEventTypes } from '~/core/client-event-types';
+import { ClientStartupNavigation } from '~/core/client-startup-navigation';
+import { PageNames } from '~/core/page-names';
 
 import { Tabs } from '~/stylists/my-stylists.component';
 import {
   NonBookableSavePopupComponent,
   NonBookableSavePopupParams
 } from '~/stylists/non-bookable-save-popup/non-bookable-save-popup.component';
-import { BookingData } from '~/core/api/booking.data';
-import { ClientStartupNavigation } from '~/core/client-startup-navigation';
 
 export interface StylistSearchParams {
   onboarding?: boolean;
@@ -37,6 +34,7 @@ export interface StylistSearchParams {
 })
 export class StylistSearchComponent {
   static MIN_QUERY_LENGTH = 2;
+  static SEARCHING_DELAY = 250;
 
   PageNames = PageNames;
   onboarding = false;
@@ -47,13 +45,13 @@ export class StylistSearchComponent {
 
   loadingStylists = Array(2).fill(undefined);
 
-  stylists: Observable<StylistModel[]>;
-  moreStylistsAvailable: Observable<boolean>;
+  stylists: StylistModel[];
+  moreStylistsAvailable = false;
+  isLoading = false;
+
+  preferredStylists: PreferredStylistModel[] = [];
 
   activeStylist?: StylistModel;
-
-  RequestState = RequestState; // expose to view
-  requestState?: Observable<RequestState>;
 
   isGeolocationInProcess = false;
   isLocationInputFocused = false;
@@ -67,31 +65,47 @@ export class StylistSearchComponent {
     private navCtrl: NavController,
     private navParams: NavParams,
     private preferredStylistsData: PreferredStylistsData,
-    private store: Store<StylistState>
+    private stylistsService: StylistsService
   ) {
   }
 
   async ionViewWillLoad(): Promise<void> {
     const params = (this.navParams.get('data') || {}) as StylistSearchParams;
 
+    // Diff redirects for onboarding:
     this.onboarding = params.onboarding;
 
-    this.stylists = this.store.select(selectStylists);
-    this.moreStylistsAvailable = this.store.select(selectIsMoreStylistsAvailable);
-    this.requestState = this.store.select(selectStylistsRequestState);
+    // Save preferred stylsits to identify preferred ones in search:
+    this.preferredStylists = await this.preferredStylistsData.get();
 
+    // Ask to provide device location:
     await this.requestGeolocation();
 
-    this.onSearchStylists();
+    // Start searching:
+    await this.onSearchStylists();
   }
 
-  onSearchStylists(): void {
+  async onSearchStylists(): Promise<void> {
     const params: StylistsSearchParams = {
       search_like: this.query.value,
       search_location: this.locationQuery.value,
       geolocation: this.coords
     };
-    this.store.dispatch(new SearchStylistsAction(params));
+    const { response } = await loading(this, this.stylistsService.search(params).get());
+
+    if (response) {
+      this.stylists = response.stylists;
+      this.moreStylistsAvailable = response.more_results_available;
+    }
+
+    // Mark stlylists as preferred.
+    // TODO: remove this solution when is_profile_preferred returned from the backend
+    this.preferredStylists.map(({ uuid }) => {
+      const stylist = this.stylists.find(s => s.uuid === uuid);
+      if (stylist) {
+        stylist.is_profile_preferred = true;
+      }
+    });
   }
 
   setLocationInputFocused(isFocused: boolean): void {
@@ -113,9 +127,18 @@ export class StylistSearchComponent {
   }
 
   async onContinueWithStylist(stylist: StylistModel): Promise<void> {
-    const stylistAlreadyPreferred = await this.preferredStylistsData.hasStylist(stylist);
-    if (!stylistAlreadyPreferred) {
-      await this.preferredStylistsData.addStylist(stylist);
+    const preferredStylist = this.getPreferredStylist(stylist);
+
+    stylist.is_profile_preferred = true;
+
+    if (!preferredStylist) {
+      const { response } = await this.preferredStylistsData.addStylist(stylist);
+
+      if (response) {
+        await this.updatePreferredStylists();
+      } else { // roll back
+        stylist.is_profile_preferred = false;
+      }
     }
 
     if (this.onboarding) {
@@ -131,6 +154,30 @@ export class StylistSearchComponent {
       await this.navCtrl.popToRoot();
       this.events.publish(ClientEventTypes.selectStylistTab, Tabs.primeStylists);
     }
+  }
+
+  async onRemoveStylist(stylist: PreferredStylistModel): Promise<void> {
+    const preferredStylist = this.getPreferredStylist(stylist);
+    if (!preferredStylist) {
+      return;
+    }
+
+    stylist.is_profile_preferred = false;
+
+    const isRemoved = await this.preferredStylistsData.removeStylist(preferredStylist.preference_uuid);
+    if (!isRemoved) { // roll back
+      stylist.is_profile_preferred = true;
+    }
+
+    await this.updatePreferredStylists();
+  }
+
+  private getPreferredStylist(stylist: StylistModel): PreferredStylistModel {
+    return this.preferredStylists.find((preferred: StylistUuidModel) => preferred.uuid === stylist.uuid);
+  }
+
+  private async updatePreferredStylists(): Promise<void> {
+    this.preferredStylists = await this.preferredStylistsData.get();
   }
 
   private showNonBookableStylistSavedPopup(stylist: StylistModel): void {

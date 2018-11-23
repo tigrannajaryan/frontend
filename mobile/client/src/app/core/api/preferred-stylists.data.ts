@@ -74,10 +74,15 @@ export class PreferredStylistsData {
   /**
    * Remove Preferred stylist
    */
-  async removeStylist(stylistUuid: string): Promise<void> {
-    await this.api.deletePreferredStylist(stylistUuid).get();
-    const stylists = await this.get({ refresh: true });
-    await PreferredStylistsData.updateLocalProfileStatus(stylists);
+  async removeStylist(stylistUuid: string): Promise<boolean> {
+    try {
+      await this.api.deletePreferredStylist(stylistUuid).get();
+      const stylists = await this.get({ refresh: true });
+      await PreferredStylistsData.updateLocalProfileStatus(stylists);
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 
   /**

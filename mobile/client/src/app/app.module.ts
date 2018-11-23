@@ -36,7 +36,6 @@ import { getMetaReducers } from '~/app.reducers';
 import { AuthEffects } from '~/shared/storage/auth.effects';
 import { LogoutEffects } from '~/core/effects/logout.effects';
 import { ServicesEffects } from '~/core/effects/services.effects';
-import { StylistsEffects } from '~/core/effects/stylists.effects';
 import { ProfileEffects } from '~/core/effects/profile.effects';
 
 import { CoreModule } from '~/core/core.module';
@@ -51,7 +50,6 @@ import { authPath, authReducer } from '~/shared/storage/auth.reducer';
 import { SuccessErrorPopupComponent } from '~/shared/components/success-error-popup/success-error-popup.component';
 import { CalendarPrimingComponent } from './shared/components/calendar-priming/calendar-priming.component';
 import { profilePath, profileReducer } from '~/core/reducers/profile.reducer';
-import { stylistsPath, stylistsReducer } from '~/core/reducers/stylists.reducer';
 import { servicesPath, servicesReducer } from '~/core/reducers/services.reducer';
 
 import { AboutComponent } from '~/about/about.component';
@@ -157,7 +155,6 @@ const declarations = [
     StoreModule.forRoot({}),
     StoreModule.forFeature(authPath, authReducer),
     StoreModule.forFeature(profilePath, profileReducer),
-    StoreModule.forFeature(stylistsPath, stylistsReducer),
     StoreModule.forFeature(servicesPath, servicesReducer),
     EffectsModule.forFeature([ProfileEffects]),
 
@@ -172,8 +169,7 @@ const declarations = [
       LogoutEffects,
 
       AuthEffects,
-      ServicesEffects,
-      StylistsEffects
+      ServicesEffects
     ])
   ],
 

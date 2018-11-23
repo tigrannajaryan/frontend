@@ -94,6 +94,8 @@ export interface AuthState {
 
   confirmCodeRequestState: RequestState;
   confirmCodeRequestError?: ApiError;
+
+  invitedBy?: StylistModel;
 }
 
 const initialState: AuthState = {
@@ -153,7 +155,8 @@ export function authReducer(state: AuthState = initialState, action: Actions): A
     case authActionTypes.CONFIRM_CODE_SUCCESS:
       return {
         ...state,
-        confirmCodeRequestState: RequestState.Succeeded
+        confirmCodeRequestState: RequestState.Succeeded,
+        invitedBy: action.invitedBy
       };
 
     case authActionTypes.RESET_CONFIRM_CODE_ERROR:
@@ -184,6 +187,11 @@ export const selectConfirmCodeState = createSelector(
 export const selectConfirmCodeError = createSelector(
   selectAuthFromState,
   (state: AuthState): any => state.confirmCodeRequestError
+);
+
+export const selectInvitedByStylist = createSelector(
+  selectAuthFromState,
+  (state: AuthState): StylistModel | undefined => state.invitedBy
 );
 
 // Next action and reducer used in app.reducer.ts

@@ -17,9 +17,9 @@
     <ion-row class="H1 StylistsPage-title" align-items-center justify-content-between>
       <div class="Badge-H1">
         Search Stylists
-        <span *ngIf="(stylists | async)?.length > 0" class="Badge">{{ (stylists | async)?.length }}<span *ngIf="moreStylistsAvailable | async">+</span></span>
+        <span *ngIf="stylists?.length > 0" class="Badge">{{ stylists.length }}<span *ngIf="moreStylistsAvailable">+</span></span>
       </div>
-      <div *ngIf="(requestState | async) === RequestState.Loading && (stylists | async) !== undefined" class="StylistsPage-loader" data-test-id="searchingIndicator">searching…</div>
+      <div *ngIf="isLoading" class="StylistsPage-loader" data-test-id="searchingIndicator">searching…</div>
       <div *ngIf="isGeolocationInProcess" class="StylistsPage-loader">checking location…</div>
     </ion-row>
 
@@ -30,7 +30,7 @@
   <div class="contentSidePadding StylistsPage-content">
 
     <!-- Showing loading cards -->
-    <div *ngIf="(requestState | async) === RequestState.Loading && (stylists | async) === undefined" class="StylistsPage-stylists">
+    <div *ngIf="isLoading" class="StylistsPage-stylists">
       <div *ngFor="let stylist of loadingStylists" class="SharedCard is-loading">
         <div class="StylistsPage-cardSubtitle">&nbsp;</div>
         <div class="StylistsPage-cardTitle">&nbsp;</div>
@@ -39,17 +39,18 @@
     </div>
 
     <!-- Showing stylists -->
-    <div *ngIf="stylists | async" class="StylistsPage-stylists">
+    <div *ngIf="!isLoading && stylists" class="StylistsPage-stylists">
       <stylist-card
-        *ngFor="let stylist of stylists | async"
+        *ngFor="let stylist of stylists"
         [stylist]="stylist"
         [isActive]="stylist.uuid === activeStylist?.uuid"
         (openCard)="onSetActiveStylist(stylist)"
         (closeCard)="onSetActiveStylist(undefined)"
         (showCalendar)="onShowCalendar(stylist)"
-        (selectStylist)="onContinueWithStylist(stylist)"></stylist-card>
+        (selectStylist)="onContinueWithStylist(stylist)"
+        (removeStylist)="onRemoveStylist(stylist)"></stylist-card>
 
-      <div *ngIf="(stylists | async)?.length === 0">
+      <div *ngIf="stylists.length === 0">
         <ng-container *ngIf="!query.value; else notFound">I'm sorry there are no stylists in your area yet. But check back often we're adding new stylists every day!</ng-container>
         <ng-template #notFound>No stylists found</ng-template>
       </div>

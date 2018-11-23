@@ -20,6 +20,9 @@ export interface StylistModel extends StylistUuidModel {
   instagram_url?: string;
   website_url?: string;
   profile_photo_url?: string;
+
+  is_profile_preferred?: boolean;
+  preference_uuid?: string;
 }
 
 export interface PreferredStylistModel extends StylistModel {
