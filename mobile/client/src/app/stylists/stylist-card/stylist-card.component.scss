@@ -10,7 +10,7 @@ stylist-card {
   position: relative;
   display: flex;
   flex-flow: row;
-  align-items: center;
+  align-items: flex-start;
   padding: pxtovw(16px) pxtovw(22px);
   margin-bottom: pxtovw(16px);
   background: white;
@@ -239,6 +239,7 @@ stylist-card {
     justify-content: center;
     margin-top: 8px;
     font-size: $t-h4;
+    color: color($colors, orange);
 
     &:not(.is-notBookable) {
       color: color($colors, orange);
@@ -276,5 +277,33 @@ stylist-card {
 
   .StylistCard-bookable {
     opacity: 0;
+  }
+}
+
+.StylistCard.is-search-card {
+  background: color($colors, primary);
+  border-color: transparent;
+
+  i[class*=mb-icon] {
+    color: color($colors, burntSienna);
+  }
+}
+
+.StylistCard.is-active.is-search-card {
+  .StylistCard-salon {
+    color: black;
+  }
+
+  .StylistCard-followers,
+  .StylistCard-speciality,
+  .StylistCard-address {
+    color: color($colors, burntSienna);
+  }
+
+  .StylistCard-submit {
+    font-size: pxtovw(18px);
+    font-weight: 600;
+    background: white;
+    box-shadow: 0 7px 43px 0 rgba(0, 0, 0, 0.08);
   }
 }
