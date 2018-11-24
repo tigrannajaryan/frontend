@@ -16,7 +16,6 @@ export class StylistCardComponent implements OnInit {
   @Input() stylist: StylistModel;
   @Input() isActive = false;
   @Input() isMyStylist = false;
-  @Input() isHearted = false;
 
   @Output() openCard = new EventEmitter<StylistModel>();
   @Output() closeCard = new EventEmitter<StylistModel>();

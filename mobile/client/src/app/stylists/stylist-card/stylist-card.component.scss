@@ -239,7 +239,10 @@ stylist-card {
     justify-content: center;
     margin-top: 8px;
     font-size: $t-h4;
-    color: color($colors, orange);
+
+    &:not(.is-notBookable) {
+      color: color($colors, orange);
+    }
   }
 
   .StylistCard-address {
@@ -273,43 +276,5 @@ stylist-card {
 
   .StylistCard-bookable {
     opacity: 0;
-  }
-}
-
-.StylistCard.is-hearted {
-  .StylistCard-name {
-    text-align: left;
-  }
-
-  .StylistCard-close {
-    top: pxtovw(19px);
-    right: pxtovw(22px);
-  }
-}
-
-.StylistCard.is-active.is-hearted {
-  flex-flow: row;
-  flex-wrap: wrap;
-  justify-content: center;
-  padding: pxtovw(67px) pxtovw(22px) pxtovw(14px);
-
-  .StylistCard-photo {
-    width: pxtovw(64px);
-    height: pxtovw(64px);
-    margin-right: pxtovw(16px);
-  }
-
-  .StylistCard-name {
-    width: auto;
-    margin-top: pxtovw(2px);
-  }
-
-  .StylistCard-body {
-    // Put the body and links to the next line:
-    min-width: 100%;
-  }
-
-  .StylistCard-address {
-    margin-top: pxtovw(16px);
   }
 }
