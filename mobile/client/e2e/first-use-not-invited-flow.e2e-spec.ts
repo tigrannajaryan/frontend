@@ -14,6 +14,7 @@ import { firstNameLastNamePage } from './pages/firstname-lastname-page';
 import { clientApp } from './client-app';
 import { pushPrimingPage } from './shared-e2e/push-priming-page';
 import { mainTabsPage } from './pages/main-tabs-page';
+import { performLogout } from './test-utils';
 
 describe('First use flow for not invited client', () => {
 
@@ -68,5 +69,9 @@ describe('First use flow for not invited client', () => {
   it('Can navigate to mainTabs', async () => {
     await pushPrimingPage.allow();
     await waitFor(mainTabsPage.homeTab);
+  });
+
+  it('Can logout', async () => {
+    await performLogout();
   });
 });

@@ -10,7 +10,7 @@ import { clientApp } from './client-app';
 import { firstPage } from './pages/first-page';
 import { howMadeWorksPage } from './pages/how-made-works-page';
 import { howPricingWorksPage } from './pages/how-pricing-works-page';
-import { performLogin } from './test-utils';
+import { performLogin, performLogout } from './test-utils';
 import { stylistsSearchPage } from './pages/stylists-search-page';
 import { mainTabsPage } from './pages/main-tabs-page';
 import { pushPrimingPage } from './shared-e2e/push-priming-page';
@@ -36,6 +36,10 @@ describe('Authentication flows for non-invited client with app reloads', () => {
     await stylistsSearchPage.addFirstStylist();
     await pushPrimingPage.allow();
     await waitFor(mainTabsPage.homeTab);
+  });
+
+  it('Can logout', async () => {
+    await performLogout();
   });
 
   it('Can start with non invited client', async () => {
@@ -82,5 +86,9 @@ describe('Authentication flows for non-invited client with app reloads', () => {
   it('Can restore auth on reload to mainTabsPage', async () => {
     await browser.get('');
     await waitFor(mainTabsPage.homeTab);
+  });
+
+  it('Can logout', async () => {
+    await performLogout();
   });
 });
