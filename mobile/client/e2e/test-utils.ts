@@ -1,14 +1,16 @@
 import * as faker from 'faker';
 
+import { SetStylistServicesParams, StylistProfile } from './shared-app/api/stylist-app.models';
 import { EmailAuthCredentials, UserRole } from './shared-app/api/auth.models';
-import { getRandomEmail, getRandomString, normalizePhoneNumber, waitFor, waitForNot } from './shared-e2e/utils';
 import { stylistApi } from './shared-e2e/stylist-api';
 import { backdoorApi } from './shared-e2e/backdoor-api';
 import { ClientInvitation } from './shared-app/api/invitations.models';
-import { SetStylistServicesParams, StylistProfile } from './shared-app/api/stylist-app.models';
+import { click, getRandomEmail, getRandomString, normalizePhoneNumber, waitFor, waitForNot } from './shared-e2e/utils';
 import { Worktime } from './shared-app/api/worktime.models';
 import { phoneLoginPage } from './shared-e2e/phone-login-page';
 import { phoneCodePage } from './shared-e2e/phone-code-page';
+import { mainTabsPage } from './pages/main-tabs-page';
+import { profileSummaryPage } from './pages/profile-summary-page';
 
 export async function createTestStylist(serviceNames: string[], clientPhoneNumberToInvite: string): Promise<StylistProfile> {
   // Register new stylist
@@ -104,4 +106,11 @@ export async function performLogin(phoneNumber: string) {
     await phoneCodePage.codeInput.sendKeys(loginCode);
 
     await waitForNot(phoneCodePage.codeInput);
+}
+
+export async function performLogout() {
+  await click(mainTabsPage.profileTab);
+  await profileSummaryPage.logout();
+  await waitForNot(mainTabsPage.profileTab);
+  await waitFor(phoneLoginPage.phoneInput);
 }

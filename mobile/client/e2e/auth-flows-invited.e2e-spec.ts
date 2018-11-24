@@ -10,7 +10,7 @@ import { clientApp } from './client-app';
 import { firstPage } from './pages/first-page';
 import { howMadeWorksPage } from './pages/how-made-works-page';
 import { howPricingWorksPage } from './pages/how-pricing-works-page';
-import { createTestStylist, performLogin } from './test-utils';
+import { createTestStylist, performLogin, performLogout } from './test-utils';
 import { stylistInvitationPage } from './pages/stylist-invitation-page';
 import { mainTabsPage } from './pages/main-tabs-page';
 import { pushPrimingPage } from './shared-e2e/push-priming-page';
@@ -62,5 +62,9 @@ describe('Authentication flows for invited client with app reloads', () => {
   it('Can restore auth on reload to mainTabsPage', async () => {
     await browser.get('');
     await waitFor(mainTabsPage.homeTab);
+  });
+
+  it('Can logout', async () => {
+    await performLogout();
   });
 });
