@@ -13,6 +13,7 @@ export interface StylistModel extends StylistUuidModel {
   last_name: string;
   salon_name: string;
   salon_address: string;
+  specialities: string[];
   phone: string;
   followers_count: number;
   is_profile_bookable: boolean;

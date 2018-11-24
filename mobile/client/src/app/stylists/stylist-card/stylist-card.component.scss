@@ -144,6 +144,13 @@ stylist-card {
   }
 }
 
+.StylistCard-speciality {
+  display: block;
+  margin-top: pxtovw(8px);
+  font-size: $t-h4;
+  color: color($grayscale, 500);
+}
+
 .StylistCard-links {
   $icon-size: pxtovw(24px);
 
