@@ -28,6 +28,10 @@
       <i class="mb-icon-marker"></i>&nbsp;<span>{{ stylist.salon_address }}</span>
     </div>
 
+    <b *ngIf="isActive && stylist.specialities.length > 0" class="StylistCard-speciality">
+      Specialty: <span *ngFor="let speciality of stylist.specialities; let last = last">{{ speciality }}{{ last ? '' : ', ' }}</span>
+    </b>
+
     <div class="StylistCard-links">
       <i *ngIf="stylist.instagram_url" (click)="onInstagramClick()" class="mb-icon-instagram"></i>
       <i *ngIf="stylist.website_url" (click)="onWebsiteClick()" class="mb-icon-globe"></i>
@@ -41,7 +45,7 @@
       class="Button StylistCard-submit"
       data-test-id="addStylist"
       ion-button small>
-      {{ continueText || ("Add " + stylist.first_name +"!") }}
+      Add {{ stylist.first_name }}!
     </button>
 
     <button
