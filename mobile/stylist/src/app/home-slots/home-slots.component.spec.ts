@@ -3,6 +3,7 @@ import { ActionSheetButton } from 'ionic-angular/components/action-sheet/action-
 import * as moment from 'moment';
 
 import { getPhoneNumber } from '../shared/utils/phone-numbers';
+import { WeekdayIso } from '../shared/weekday';
 
 import { Appointment, AppointmentStatuses } from '../core/api/home.models';
 import { prepareSharedObjectsForTests } from '../core/test-utils.spec';
@@ -58,7 +59,7 @@ describe('Pages: HomeSlotsComponent', () => {
     let disabledDate: moment.Moment;
 
     // Check all weekdays present:
-    for (let i = 1; i <= 7; i++) {
+    for (let i = WeekdayIso.Mon; i <= WeekdayIso.Sun; i++) {
       const date = moment(startOfWeek).add(i - 1, 'days');
 
       expect(fixture.nativeElement.textContent)

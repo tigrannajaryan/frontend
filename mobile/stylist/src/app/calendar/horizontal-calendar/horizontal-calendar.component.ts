@@ -1,8 +1,10 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import * as moment from 'moment';
 
+import { WeekdayIso } from '~/shared/weekday';
+
 export interface DisabledWeekday {
-  weekday_iso: number; // 1..7
+  weekdayIso: WeekdayIso;
 }
 
 /**
@@ -46,7 +48,7 @@ export class HorizontalCalendarComponent {
     const weekdayIso = date.isoWeekday();
     return (
       this.disabledWeekdays &&
-      this.disabledWeekdays.some(weekday => weekday.weekday_iso === weekdayIso)
+      this.disabledWeekdays.some(weekday => weekday.weekdayIso === weekdayIso)
     );
   }
 

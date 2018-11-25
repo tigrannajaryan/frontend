@@ -1,6 +1,7 @@
 import { Component, NgZone, ViewChild } from '@angular/core';
 import { ActionSheetController, Content, NavController } from 'ionic-angular';
 import { ActionSheetButton } from 'ionic-angular/components/action-sheet/action-sheet-options';
+import { DatePicker } from '@ionic-native/date-picker';
 import * as moment from 'moment';
 import * as deepEqual from 'fast-deep-equal';
 
@@ -72,6 +73,7 @@ export class HomeSlotsComponent {
     private actionSheetCtrl: ActionSheetController,
     private appointmentsDataStore: AppointmentsDataStore,
     private appStorage: StylistAppStorage,
+    private datePicker: DatePicker,
     private externalAppService: ExternalAppService,
     private homeService: HomeService,
     private logger: Logger,
@@ -125,7 +127,7 @@ export class HomeSlotsComponent {
       this.disabledWeekdays =
         response.weekdays
           .filter((weekday: Workday): boolean => !weekday.work_start_at) // null for non-working
-          .map((weekday: Workday): DisabledWeekday => ({ weekday_iso: weekday.weekday_iso }));
+          .map((weekday: Workday): DisabledWeekday => ({ weekdayIso: weekday.weekday_iso }));
     }
   }
 
@@ -188,6 +190,22 @@ export class HomeSlotsComponent {
     const params: AppointmentAddParams = { startDateTime: freeSlot.startTime };
     this.navCtrl.push(PageNames.AppointmentAdd, { params });
   }
+
+  onDateAreaClick(): void {
+    // Show date picker and let the user choose a date, then load appointments
+    // for selected date.
+    this.datePicker.show({
+      date: this.selectedDate.toDate(), // Start with current date
+      mode: 'date',
+      androidTheme: this.datePicker.ANDROID_THEMES.THEME_DEVICE_DEFAULT_LIGHT
+    }).then(
+      date => this.selectDateAndLoadAppointments(moment(date)),
+      err => {
+        // Nothing to do. Navigation cancelled.
+      }
+    );
+  }
+
 
   onAddAppointmentClick(): void {
     // Show Appointment Add screen when clicked on Add Appointment button.

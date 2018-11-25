@@ -3,6 +3,16 @@ home-slots {
     padding: 0;
   }
 
+  .Made-h1 {
+    ion-icon {
+      position: relative;
+      top: pxtovw(2px);
+      margin: 0 pxtovw(8px);
+      font-size: pxtovw(21px);
+      color: color($colors, warmGrey);
+    }
+  }
+
   .HomeSlots-menuBtn {
     margin-right: -1 * pxtovw(16px);
   }
