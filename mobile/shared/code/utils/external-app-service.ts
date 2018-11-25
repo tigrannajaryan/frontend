@@ -147,6 +147,9 @@ export class ExternalAppService {
     }
   }
 
+  /**
+   * Copy some text to the device’s clipboard
+   */
   copyToTheClipboard(whatCopied: string): void {
     this.clipboard.copy(whatCopied);
     const alert = this.alertCtrl.create({

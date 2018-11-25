@@ -4,6 +4,7 @@ export const ENV = {
 
   // Feature flag to enable push notifications
   ffEnablePushNotifications: true,
+  ffEnableGoogleCalendarIntegration: true,
 
   // Disable Sentry reporting by default.
   sentryDsn: undefined,

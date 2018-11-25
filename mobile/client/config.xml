@@ -1,6 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget android-packageName="com.madebeauty.client.staging.android" id="madebeauty.client.mobile" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <hook src="../scripts/patch_config_xml.js" type="before_platform_rm" />
+    <hook src="../scripts/cordova-after-platform-add.js" type="after_platform_add" />
     <name>MadeBeauty Dev</name>
     <description>This is set in .travis.yml, see IOS_APP_DESCRIPTION</description>
     <author email="admin@madebeauty.com" href="http://madebeauty.com/">MadeBeauty, Inc.</author>
@@ -44,7 +45,6 @@
         <splash density="port-xhdpi" src="resources/android/splash/drawable-port-xhdpi-screen.png" />
         <splash density="port-xxhdpi" src="resources/android/splash/drawable-port-xxhdpi-screen.png" />
         <splash density="port-xxxhdpi" src="resources/android/splash/drawable-port-xxxhdpi-screen.png" />
-        <hook src="../scripts/cordova-after-platform-add.js" type="after_platform_add" />
         <resource-file src="google-services-staging.json" target="app/google-services.json" />
     </platform>
     <platform name="ios">
@@ -127,6 +127,11 @@
     <edit-config file="*-Info.plist" mode="merge" target="NSLocationWhenInUseUsageDescription">
         <string>We use your location to allow searching for stylists nearby.</string>
     </edit-config>
+    <plugin name="cordova-plugin-googleplus" spec="5.3.2">
+        <variable name="PLAY_SERVICES_VERSION" value="11.0.1" />
+        <variable name="REVERSED_CLIENT_ID" value="com.googleusercontent.apps.17636556416-t0lgrp86ovlpk8669ap5tean9tc4aaa2" />
+        <variable name="WEB_APPLICATION_CLIENT_ID" value="17636556416-l518l3bkc3pev82sl9d2dq6vrd1th7hc.apps.googleusercontent.com" />
+    </plugin>
+    <engine name="ios" spec="4.5.5" />
     <engine name="android" spec="7.1.0" />
-    <engine name="ios" spec="4.5.4" />
 </widget>

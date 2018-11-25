@@ -1,3 +1,82 @@
+var xml2js;
+try {
+  xml2js = require('../client/node_modules/xml2js');
+} catch (err) {
+  xml2js = require('../stylist/node_modules/xml2js');
+}
+
+function patchConfigXml(fs, path, projectRootPath, platforms) {
+  // Values in webclientid-config.json are from
+  // https://console.developers.google.com/apis/credentials?project=made-prod&organizationId=1065847735654
+
+  var webclientidConfigFname = path.join(projectRootPath, '../support/config/webclientid-config.json');
+  var webclientidJson = fs.readFileSync(webclientidConfigFname, 'utf-8');
+  var googlePlusProductionWebAppClientId = JSON.parse(webclientidJson);
+
+  // Reversed client id is only needed for iOS
+  var googlePlusProductionReversedClientId = {
+    staging: {
+      ios: "apps.googleusercontent.com.17636556416-l518l3bkc3pev82sl9d2dq6vrd1th7hc",
+      android: ""
+    },
+    prod: {
+      ios: "apps.googleusercontent.com.833238145213-h0usauchlokkr7ubaijs8pnm76co14to",
+      android: ""
+    }
+  };
+
+  var fname = path.join(projectRootPath, 'config.xml');
+  var data = fs.readFileSync(fname, 'utf-8');
+  console.log('Going to patch', fname);
+  var platform = platforms[0];
+  console.log('Platform is', platform);
+
+
+  var envName = (process.env.MB_ENV || '').trim();
+  if (envName !== 'prod') {
+    // Use staging configuration by for all environments except prod
+    envName = 'staging';
+  }
+
+  if (envName) {
+    var googleServicesFile = 'google-services-' + envName + '.json';
+  }
+
+  console.log('Using configuration for environment', envName);
+
+  xml2js.parseString(data, function (err, result) {
+    if (err) {
+      return console.error(err);
+    }
+    // Get JS Obj
+    var obj = result;
+
+    // Patche Google Plus plugin parameters
+    var googlePlusPlugin = obj['widget']['plugin'].find(e => e['$']['name'] === 'cordova-plugin-googleplus');
+
+    var WEB_APPLICATION_CLIENT_ID = googlePlusPlugin['variable'].find(e => e['$']['name'] === 'WEB_APPLICATION_CLIENT_ID');
+    WEB_APPLICATION_CLIENT_ID['$']['value'] = googlePlusProductionWebAppClientId[envName][platform];
+
+    var REVERSED_CLIENT_ID = googlePlusPlugin['variable'].find(e => e['$']['name'] === 'REVERSED_CLIENT_ID');
+    REVERSED_CLIENT_ID['$']['value'] = googlePlusProductionReversedClientId[envName][platform];
+
+    if (googleServicesFile) {
+      // Patch google-services.json file name
+      var androidPlatform = obj['widget']['platform'].find(e => e['$']['name'] === 'android');
+      var googleServicesResourceFile = androidPlatform['resource-file'].find(e => e['$']['target'] === 'app/google-services.json');
+
+      googleServicesResourceFile['$']['src'] = googleServicesFile;
+    }
+
+    // Build XML from JS Obj
+    var builder = new xml2js.Builder();
+    var xml = builder.buildObject(obj);
+
+    fs.writeFileSync(fname, xml, 'utf-8');
+    console.log('cordova-after-platform-add.js: patching complete');
+  });
+}
+
 function patchBuildGradle(fs, fname) {
 
   console.log('cordova-after-platform-add.js: patching', fname);
@@ -17,20 +96,39 @@ function patchBuildGradle(fs, fname) {
   console.log('cordova-after-platform-add.js: patching complete');
 }
 
+function patchProjectProperties(fs, fname) {
+
+  console.log('cordova-after-platform-add.js: patching', fname);
+
+  var data = fs.readFileSync(fname, 'utf-8');
+
+  // We need to use version 11.0.1 for Google Services otherwise we get Java lib version conflicts
+  var re = /(com.google.android.gms:play-services-.*:)(.*)/gim;
+
+  var newValue = data.replace(re, '$1' + '11.0.1');
+
+  fs.writeFileSync(fname, newValue, 'utf-8');
+
+  console.log('cordova-after-platform-add.js: patching complete');
+}
+
 module.exports = function (ctx) {
   console.log('cordova-after-platform-add.js hook starting');
 
-  // make sure android platform is part of build
-  if (ctx.opts.platforms.indexOf('android') < 0) {
-    return;
-  }
   var fs = ctx.requireCordovaModule('fs'),
     path = ctx.requireCordovaModule('path'),
     deferral = ctx.requireCordovaModule('q').defer();
 
-  var buildGradle = path.join(ctx.opts.projectRoot, 'platforms/android/build.gradle');
+  if (ctx.opts.platforms.indexOf('android') >= 0) {
+    // Patches for Android builds
+    var buildGradle = path.join(ctx.opts.projectRoot, 'platforms/android/build.gradle');
+    patchBuildGradle(fs, buildGradle);
 
-  patchBuildGradle(fs, buildGradle);
+    var projProp = path.join(ctx.opts.projectRoot, 'platforms/android/project.properties');
+    patchProjectProperties(fs, projProp);
+  }
+
+  patchConfigXml(fs, path, ctx.opts.projectRoot, ctx.opts.platforms);
 
   return deferral.promise;
 };

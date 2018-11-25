@@ -7,7 +7,7 @@ import { AppointmentServicesComponent } from '~/appointment/appointment-services
 import { AuthConfirmPageComponent } from '~/auth/auth-confirm/auth-confirm.component';
 import { AuthPageComponent } from '~/auth/auth-start/auth-start.component';
 import { CalendarExampleComponent } from '~/register-salon/calendar-example/calendar-example.component';
-import { CalendarPrimingComponent } from '~/core/components/calendar-priming/calendar-priming.component';
+import { CalendarPrimingComponent } from '~/shared/components/calendar-priming/calendar-priming.component';
 import { ChangePercentComponent } from '~/core/popups/change-percent/change-percent.component';
 import { ClientDetailsComponent } from '~/clients/client-details/client-details.component';
 import { ClientsCalendarComponent } from '~/calendar/clients-calendar/clients-calendar.component';
