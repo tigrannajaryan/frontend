@@ -28,9 +28,15 @@ function patchConfigXml(fs, path, projectRootPath, platforms) {
   var fname = path.join(projectRootPath, 'config.xml');
   var data = fs.readFileSync(fname, 'utf-8');
   console.log('Going to patch', fname);
-  var platform = platforms[0];
+  var platform = platforms[0];  
   console.log('Platform is', platform);
 
+  // Remove part of platform that comes after @ if present
+  const indexAt = platform.indexOf('@');
+  if (indexAt >= 0) {
+    platform = platform.substring(0, indexAt);
+    console.log('Platform is', platform);
+  }
 
   var envName = (process.env.MB_ENV || '').trim();
   if (envName !== 'prod') {
@@ -44,33 +50,51 @@ function patchConfigXml(fs, path, projectRootPath, platforms) {
 
   console.log('Using configuration for environment', envName);
 
+  console.log('config.xml is', data);
+
   xml2js.parseString(data, function (err, result) {
     if (err) {
       return console.error(err);
     }
+
+    console.log('Parsed ', fname);
+
     // Get JS Obj
-    var obj = result;
+    var obj = result;    
 
     // Patche Google Plus plugin parameters
     var googlePlusPlugin = obj['widget']['plugin'].find(e => e['$']['name'] === 'cordova-plugin-googleplus');
 
+    console.log('googlePlusPlugin is', googlePlusPlugin);
+
     var WEB_APPLICATION_CLIENT_ID = googlePlusPlugin['variable'].find(e => e['$']['name'] === 'WEB_APPLICATION_CLIENT_ID');
+    console.log('WEB_APPLICATION_CLIENT_ID is', WEB_APPLICATION_CLIENT_ID);
     WEB_APPLICATION_CLIENT_ID['$']['value'] = googlePlusProductionWebAppClientId[envName][platform];
+    console.log('Updated WEB_APPLICATION_CLIENT_ID to', googlePlusProductionWebAppClientId[envName][platform]);
 
     var REVERSED_CLIENT_ID = googlePlusPlugin['variable'].find(e => e['$']['name'] === 'REVERSED_CLIENT_ID');
+    console.log('REVERSED_CLIENT_ID is', REVERSED_CLIENT_ID);
     REVERSED_CLIENT_ID['$']['value'] = googlePlusProductionReversedClientId[envName][platform];
+    console.log('Updated REVERSED_CLIENT_ID to', googlePlusProductionReversedClientId[envName][platform]);
 
     if (googleServicesFile) {
       // Patch google-services.json file name
       var androidPlatform = obj['widget']['platform'].find(e => e['$']['name'] === 'android');
+      console.log('androidPlatform is', androidPlatform);
       var googleServicesResourceFile = androidPlatform['resource-file'].find(e => e['$']['target'] === 'app/google-services.json');
+      console.log('googleServicesResourceFile is', googleServicesResourceFile);
 
       googleServicesResourceFile['$']['src'] = googleServicesFile;
+      console.log('Updated googleServicesResourceFile to', googleServicesFile);
     }
+
+    console.log('Building XML from json');
 
     // Build XML from JS Obj
     var builder = new xml2js.Builder();
     var xml = builder.buildObject(obj);
+
+    console.log('Saving', fname);
 
     fs.writeFileSync(fname, xml, 'utf-8');
     console.log('cordova-after-platform-add.js: patching complete');
