@@ -44,6 +44,7 @@
         *ngFor="let stylist of stylists"
         [stylist]="stylist"
         [isActive]="stylist.uuid === activeStylist?.uuid"
+        [isSearchCard]="true"
         (openCard)="onSetActiveStylist(stylist)"
         (closeCard)="onSetActiveStylist(undefined)"
         (showCalendar)="onShowCalendar(stylist)"
