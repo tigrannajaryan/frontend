@@ -83,6 +83,7 @@ describe('Pages: Client’s Calendar ', () => {
       response.response.service_uuids = categoryMock.services.map(service => service.uuid);
       return response;
     });
+    instance.services = categoryMock.services;
 
     spyOn(clientsApi, 'getPricing').and.returnValue(pricingResponseWithTheSameServices);
 
