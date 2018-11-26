@@ -66,13 +66,13 @@ export async function clearAllDataStores(): Promise<void> {
     const store = AppModule.injector.get(storeClass);
     if (store instanceof DataStore) {
       // Just calling DataStore.prototype.clear:
-      await store.clear();
+      await store.deleteCache();
     } else {
       // Search for DataStore as a prop and call DataStore.prototype.clear on it:
       for (const propName of Object.getOwnPropertyNames(store)) {
         const prop = store[propName];
         if (prop instanceof DataStore) {
-          await prop.clear();
+          await prop.deleteCache();
         }
       }
     }

@@ -106,7 +106,7 @@ export class ServicesListComponent {
 
       // Clear local cache since we modified the data directly via API
       // TODO: move all modifications to StylistServicesDataStore
-      await this.servicesData.clear();
+      await this.servicesData.deleteCache();
 
       if (response) {
         this.navCtrl.push(PageNames.WorkHours);
@@ -166,7 +166,7 @@ export class ServicesListComponent {
       }
       // Clear local cache since we modified the data directly via API
       // TODO: move all modifications to StylistServicesDataStore
-      await this.servicesData.clear();
+      await this.servicesData.deleteCache();
     }
 
     this.isEmptyCategories = ServicesListComponent.checkIfEmptyCategories(this.categories);
@@ -189,7 +189,7 @@ export class ServicesListComponent {
       } else {
         // Clear local cache since we modified the data directly via API
         // TODO: move all modifications to StylistServicesDataStore
-        await this.servicesData.clear();
+        await this.servicesData.deleteCache();
       }
     }
   }
