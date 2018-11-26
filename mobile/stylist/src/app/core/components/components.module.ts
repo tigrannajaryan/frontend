@@ -30,6 +30,7 @@ import { BackHeaderComponent } from '~/core/components/back-header/back-header.c
 import { MadeMenuHeaderComponent } from '~/core/components/made-menu-header/made-menu-header.component';
 import { PhoneLinkComponent } from '~/shared/components/phone-link/phone-link.component';
 import { ClientItemComponent } from '~/clients/client-item/client-item.component';
+import { HorizontalCalendarComponent } from '~/calendar/horizontal-calendar/horizontal-calendar.component';
 
 const components = [
   MadeNavComponent,
@@ -52,7 +53,8 @@ const components = [
   PhoneLinkComponent,
   CodeInputComponent,
   ClientItemComponent,
-  PricePairComponent
+  PricePairComponent,
+  HorizontalCalendarComponent
 ];
 
 @NgModule({
