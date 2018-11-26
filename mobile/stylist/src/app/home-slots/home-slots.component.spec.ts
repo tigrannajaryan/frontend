@@ -49,7 +49,7 @@ describe('Pages: HomeSlotsComponent', () => {
   it('should show weekdays selector', () => {
     const today = moment();
     const startOfWeek = moment(today).startOf('week');
-    const disabled = { weekday_iso: 5 }; // TGI Friday
+    const disabled = { weekday_iso: WeekdayIso.Fri }; // TGI Friday
 
     instance.selectedDate = today;
     instance.disabledWeekdays = [disabled];
