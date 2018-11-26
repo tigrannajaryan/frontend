@@ -54,6 +54,7 @@
           [stylist]="stylist"
           [isActive]="stylist.uuid === activeStylist?.uuid"
           [isMyStylist]="true"
+          [enableRemove]="tabs[Tabs.primeStylists].stylists.length === 1"
           (openCard)="onSetActiveStylist(stylist)"
           (closeCard)="onSetActiveStylist(undefined)"
           (showCalendar)="onShowCalendar(stylist)"

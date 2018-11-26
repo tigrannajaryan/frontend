@@ -112,6 +112,11 @@ export class MyStylistsComponent {
   }
 
   onRemoveStylist(stylist: PreferredStylistModel): void {
+    // do not remove last primeStylists, at least one is required
+    if (this.tabs[Tabs.primeStylists].stylists.length === 1) {
+      return;
+    }
+
     this.preferredStylistsData.removeStylist(stylist.preference_uuid);
   }
 
