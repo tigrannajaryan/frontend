@@ -130,8 +130,8 @@
     </edit-config>
     <plugin name="cordova-plugin-googleplus" spec="5.3.2">
         <variable name="PLAY_SERVICES_VERSION" value="11.0.1" />
-        <variable name="REVERSED_CLIENT_ID" value="com.googleusercontent.apps.833238145213-h0usauchlokkr7ubaijs8pnm76co14to" />
-        <variable name="WEB_APPLICATION_CLIENT_ID" value="833238145213-h0usauchlokkr7ubaijs8pnm76co14to.apps.googleusercontent.com" />
+        <variable name="REVERSED_CLIENT_ID" value="com.googleusercontent.apps.17636556416-t0lgrp86ovlpk8669ap5tean9tc4aaa2" />
+        <variable name="WEB_APPLICATION_CLIENT_ID" value="17636556416-l518l3bkc3pev82sl9d2dq6vrd1th7hc.apps.googleusercontent.com" />
     </plugin>
     <plugin name="cordova-plugin-datepicker" spec="0.9.3" />
     <engine name="android" spec="7.1.0" />
