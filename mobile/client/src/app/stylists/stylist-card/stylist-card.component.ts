@@ -15,6 +15,7 @@ import { PageNames } from '~/core/page-names';
 export class StylistCardComponent implements OnInit {
   @Input() stylist: StylistModel;
   @Input() isActive = false;
+  @Input() isSearchCard = false;
   @Input() isMyStylist = false;
   @Input() enableRemove = false;
 
