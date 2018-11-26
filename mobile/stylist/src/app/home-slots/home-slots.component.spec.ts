@@ -49,7 +49,7 @@ describe('Pages: HomeSlotsComponent', () => {
   it('should show weekdays selector', () => {
     const today = moment();
     const startOfWeek = moment(today).startOf('week');
-    const disabled = { weekday_iso: WeekdayIso.Fri }; // TGI Friday
+    const disabled = { weekdayIso: WeekdayIso.Fri }; // TGI Friday
 
     instance.selectedDate = today;
     instance.disabledWeekdays = [disabled];
@@ -67,7 +67,7 @@ describe('Pages: HomeSlotsComponent', () => {
       expect(fixture.nativeElement.textContent)
         .toContain(date.format('D'));
 
-      if (date.isoWeekday() === disabled.weekday_iso) {
+      if (date.isoWeekday() === disabled.weekdayIso) {
         disabledDate = date;
       }
     }
