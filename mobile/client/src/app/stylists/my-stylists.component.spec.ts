@@ -74,4 +74,10 @@ describe('MyStylistsComponent', () => {
     expect(savedStylistsTabList.outerText.trim())
       .toContain('You did not save any stylists yet.');
   });
+
+  it('should not be able to open stylist clients page if this is not-bookable profile', () => {
+    const stylistFollowers = fixture.nativeElement.querySelector('[data-test-id=savedStylistsTabList] stylist-card [data-test-id=stylistFollowers]');
+    expect(stylistFollowers.className)
+      .toContain('is-notBookable');
+  });
 });

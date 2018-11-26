@@ -101,6 +101,11 @@ https://marketplace.visualstudio.com/items?itemName=vsmobile.cordova-tools
 To see the logs while running on the device use `adb logcat chromium:V *:S` where adb
 is normally located in `/platform-tools` directory of Android SDK.
 
+### Running signed debug version
+
+By default, Cordova uses it’s own debug keystore, but it’s easy to customise your project to use a keystore of your choice when creating debug builds. See https://www.webniraj.com/2016/11/21/cordova-changing-the-default-debug-keystore-for-android-applications/
+This is needed if you want to run debug version on the phone and debug Google Signin features (Google Calendar integration).
+
 ## iOS App
 
 ### Prerequisites
@@ -155,7 +160,7 @@ also inspect browser elements. This makes it much easier to diagnose test failur
 You can also run a single test file by providing "--specs" flag (see launch.json for example).
 Diagnosing E2E test failures in headless browser mode without breakpoints is more difficult.
 
-If you want to run the E2E tests against a local backend make sure to 
+If you want to run the E2E tests against a local backend make sure to
 set the `apiUrl` in enviornment.local.ts to http://localhost/api/v1/ and build the
 app using MB_ENV=local setting (e.g. `MB_ENV=local npm run build`), then run
 run the tests with same environment variable, i.e. `MV_ENV=local npm run e2e-test`.
@@ -184,4 +189,4 @@ If you wannt to add some icon to both apps you need:
 5) rename downloaded font to `mb-icon` and replcase it with `frontend/mobile/shared/assets/fonts/mb-icon`
 (also each time when you add some icons do not forgot to download JSON from icomoon app and also add it in same folder, we need to do this because we use free version)
 6) add styles for new icons to `frontend/mobile/shared/assets/fonts/mb-icon/mb-icon.scss`
-and here `frontend/mobile/shared/code/components/mb-icons/mb-icons.component.html` 
+and here `frontend/mobile/shared/code/components/mb-icons/mb-icons.component.html`

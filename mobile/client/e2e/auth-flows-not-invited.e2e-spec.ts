@@ -10,12 +10,12 @@ import { clientApp } from './client-app';
 import { firstPage } from './pages/first-page';
 import { howMadeWorksPage } from './pages/how-made-works-page';
 import { howPricingWorksPage } from './pages/how-pricing-works-page';
-import { performLogin } from './test-utils';
+import { performLogin, performLogout } from './test-utils';
 import { stylistsSearchPage } from './pages/stylists-search-page';
 import { mainTabsPage } from './pages/main-tabs-page';
 import { pushPrimingPage } from './shared-e2e/push-priming-page';
 
-describe('Authentication flows with app reloads', () => {
+describe('Authentication flows for non-invited client with app reloads', () => {
 
   let clientPhoneNumber;
   const firstName = faker.name.firstName();
@@ -33,12 +33,13 @@ describe('Authentication flows with app reloads', () => {
     await firstNameLastNamePage.fillIn(firstName, lastName);
     await howMadeWorksPage.continue();
     await howPricingWorksPage.continue();
-    await waitFor(stylistsSearchPage.searchInput);
-    await click(stylistsSearchPage.card);
-    await click(stylistsSearchPage.addStylist);
-    browser.sleep(1000); // VERY BAD: I need to figure out what to wait on instead of sleeping. Will do after merging this PR.
+    await stylistsSearchPage.addFirstStylist();
     await pushPrimingPage.allow();
     await waitFor(mainTabsPage.homeTab);
+  });
+
+  it('Can logout', async () => {
+    await performLogout();
   });
 
   it('Can start with non invited client', async () => {
@@ -74,14 +75,10 @@ describe('Authentication flows with app reloads', () => {
     await browser.get('');
     await howMadeWorksPage.continue();
     await howPricingWorksPage.continue();
-    await waitFor(stylistsSearchPage.searchInput);
   });
 
   it('Can land on mainTabsPage', async () => {
-    await click(stylistsSearchPage.card);
-    await click(stylistsSearchPage.addStylist);
-    await waitForNot(stylistsSearchPage.addStylist);
-    browser.sleep(1000); // VERY BAD: I need to figure out what to wait on instead of sleeping. Will do after merging this PR.
+    await stylistsSearchPage.addFirstStylist();
     await pushPrimingPage.allow();
     await waitFor(mainTabsPage.homeTab);
   });
@@ -89,5 +86,9 @@ describe('Authentication flows with app reloads', () => {
   it('Can restore auth on reload to mainTabsPage', async () => {
     await browser.get('');
     await waitFor(mainTabsPage.homeTab);
+  });
+
+  it('Can logout', async () => {
+    await performLogout();
   });
 });

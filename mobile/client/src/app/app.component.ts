@@ -32,6 +32,8 @@ import { AuthService } from './shared/api/auth.api';
 import { ClientAppStorage } from './core/client-app-storage';
 import { ClientStartupNavigation } from './core/client-startup-navigation';
 import { StylistModel } from './shared/api/stylists.models';
+import { ApiClientError, ApiFieldAndNonFieldErrors } from './shared/api-errors';
+import { clearAllDataStores } from './core/api/data.module';
 
 interface RefreshAuthResult {
   authLocalData: AuthLocalData;
@@ -69,8 +71,8 @@ export class ClientAppComponent implements OnInit, OnDestroy {
     this.logger.info('App initializing...');
     this.logger.info(`Build: ${getBuildNumber()} Commit: ${getCommitHash()}`);
 
-    // The call of `deleteAuthLocalData` prevents weird error of allways navigating to the Auth page.
-    this.serverStatusTracker.init(UNAUTHORIZED_ROOT, deleteAuthLocalData);
+    // The call of doLogout() prevents weird error of allways navigating to the Auth page.
+    this.serverStatusTracker.init(UNAUTHORIZED_ROOT, () => this.doLogout());
 
     // First initialize the platform. We cannot do anything else until the platform is
     // ready and the plugins are available.
@@ -103,7 +105,7 @@ export class ClientAppComponent implements OnInit, OnDestroy {
     if (authLocalData) {
       // We have an existing saved auth. Refresh it to validate that the account is still valid
       // and to make sure we have a fresh data (profile status).
-      this.logger.info('App: found saved local auth data. Will refresh.');
+      this.logger.info('App: found saved local auth data. Will refresh. token=', authLocalData.token);
       refreshAuthResult = await this.refreshAuth(authLocalData);
       authLocalData = refreshAuthResult.authLocalData;
     } else {
@@ -111,7 +113,7 @@ export class ClientAppComponent implements OnInit, OnDestroy {
     }
 
     // Subscribe to some interesting global events
-    this.events.subscribe(SharedEventTypes.afterLogout, () => this.onLogout());
+    this.events.subscribe(SharedEventTypes.afterLogout, () => this.onAfterLogout());
     this.events.subscribe(ClientEventTypes.startBooking, (stylistUuid?: string) => this.onStartBooking(stylistUuid));
     this.events.subscribe(ClientEventTypes.startRebooking, () => this.onStartRebooking());
 
@@ -141,7 +143,7 @@ export class ClientAppComponent implements OnInit, OnDestroy {
     this.events.unsubscribe(ClientEventTypes.startRebooking);
   }
 
-  onLogout(): void {
+  onAfterLogout(): void {
     this.nav.setRoot(UNAUTHORIZED_ROOT);
   }
 
@@ -198,10 +200,25 @@ export class ClientAppComponent implements OnInit, OnDestroy {
     const result: RefreshAuthResult = { authLocalData };
 
     try {
-      authResponse = (await this.authApiService.refreshAuth(authLocalData.token).get()).response;
+      const { response, error } = await this.authApiService.refreshAuth(authLocalData.token).get();
+      authResponse = response;
+
+      if (error) {
+        this.logger.error('App: ApiError when trying to refresh auth.', error);
+        if (error instanceof ApiClientError || error instanceof ApiFieldAndNonFieldErrors) {
+          // Server says it is our fault, so let's discard the token
+          this.logger.error('App: discarding saved token, API did not like it');
+          await this.doLogout();
+          result.authLocalData = undefined;
+          result.pendingInvitation = undefined;
+          return result;
+        } else {
+          // Something else happened that is not our fault (e.g. no connection to server). We will keep our token.
+        }
+      }
 
       // Remember pending invitation if any
-      result.pendingInvitation = authResponse.stylist_invitation && authResponse.stylist_invitation.length > 0 ?
+      result.pendingInvitation = authResponse && authResponse.stylist_invitation && authResponse.stylist_invitation.length > 0 ?
         authResponse.stylist_invitation[0] : undefined;
 
     } catch (e) {
@@ -226,11 +243,17 @@ export class ClientAppComponent implements OnInit, OnDestroy {
       // Worst case, could not refresh and local data is bad, so discard everything.
       this.logger.info('App: Cannot refresh authentication. Locally saved session is incomplete. ' +
         'Deleting saved data, will need to relogin.');
-      await deleteAuthLocalData();
+      await this.doLogout();
       result.authLocalData = undefined;
       result.pendingInvitation = undefined;
 
     }
     return result;
+  }
+
+  private async doLogout(): Promise<void> {
+    this.logger.info('App: logging out and deleting local auth data and all data stores');
+    await deleteAuthLocalData();
+    await clearAllDataStores();
   }
 }

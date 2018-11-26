@@ -22,7 +22,7 @@ import { selectDatePage } from './pages/select-date-page';
 import { createTestStylist, performLogin } from './test-utils';
 import { firstNameLastNamePage } from './pages/firstname-lastname-page';
 
-describe('First use flow for invited clients', () => {
+describe('First use flow for invited client', () => {
 
   let clientPhoneNumber;
   let stylistProfile: StylistProfile;

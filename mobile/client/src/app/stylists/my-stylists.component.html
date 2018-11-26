@@ -75,7 +75,6 @@
           [stylist]="stylist"
           [isActive]="stylist.uuid === activeStylist?.uuid"
           [isMyStylist]="true"
-          [isHearted]="true"
           (openCard)="onSetActiveStylist(stylist)"
           (closeCard)="onSetActiveStylist(undefined)"
           (removeStylist)="onRemoveStylist(stylist)"></stylist-card>

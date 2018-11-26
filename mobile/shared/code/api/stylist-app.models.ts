@@ -14,6 +14,7 @@ export interface StylistProfile {
   profile_photo_id?: string;
   profile_photo_url?: string;
   google_api_key?: string;
+  google_calendar_integrated?: boolean;
 }
 
 export interface StylistProfileStatus {

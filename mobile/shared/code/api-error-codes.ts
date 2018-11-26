@@ -46,7 +46,11 @@ export type FieldErrorCode =
   'err_stylist_is_already_in_preference' |
   'err_invalid_stylist_uuid' |
   'err_invalid_sms_code' |
-  'err_unique_client_email';
+  'err_unique_client_email' |
+  'err_duplicate_push_token' |
+  'err_notification_not_found' |
+  'err_bad_notification_type' |
+  'err_bad_integration_type';
 
 // Mapping of all field error codes to human readable messages
 export const fieldErrorMsgs = new Map<FieldErrorCode, string>([
@@ -83,7 +87,11 @@ export const fieldErrorMsgs = new Map<FieldErrorCode, string>([
   ['err_stylist_is_already_in_preference', 'The stylist is already a preference.'],
   ['err_invalid_stylist_uuid', 'Invalid Stylist UUID'],
   ['err_invalid_sms_code', 'The code is incorrect.'],
-  ['err_unique_client_email', 'The email is registered to another client. Contact us if you have any questions.']
+  ['err_unique_client_email', 'The email is registered to another client. Contact us if you have any questions.'],
+  ['err_duplicate_push_token', 'Device with this APNS token already registered for different user or app type.'],
+  ['err_notification_not_found', 'Notification with this UUID is either not found or doesn\'t belong to the user.'],
+  ['err_bad_notification_type', 'Notification with this UUID is not a PUSH notification.'],
+  ['err_bad_integration_type', 'Passed integration type is not (yet) supported']
 ]);
 
 /**
@@ -104,7 +112,10 @@ export type NonFieldErrorCode =
   'err_stylist_location_unavailable' |
   'err_stylist_does_not_exist' |
   'err_privacy_setting_private' |
-  'err_cannot_modify_appointment';
+  'err_cannot_modify_appointment' |
+  'err_invalid_phone_number' |
+  'err_device_not_found' |
+  'err_failure_to_setup_oauth';
 
 // Mapping of all non-field error codes to human readable messages
 export const nonFieldErrorMsgs = new Map<NonFieldErrorCode, string>([
@@ -122,7 +133,10 @@ export const nonFieldErrorMsgs = new Map<NonFieldErrorCode, string>([
   ],
   ['err_stylist_does_not_exist', 'This stylist account no longer exist.'],
   ['err_privacy_setting_private', 'You can\'t see followers of this stylist because of privacy setting.'],
-  ['err_cannot_modify_appointment', 'Cannot modify the appointment.']
+  ['err_cannot_modify_appointment', 'Cannot modify the appointment.'],
+  ['err_invalid_phone_number', 'Phone number is not valid.'],
+  ['err_device_not_found', 'Device with given registration_id not found for give user and application type.'],
+  ['err_failure_to_setup_oauth', 'General problem with setting up oauth credentials.']
 ]);
 
 /**

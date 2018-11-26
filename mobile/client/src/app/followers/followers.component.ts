@@ -36,6 +36,8 @@ export class FollowersComponent {
   }
 
   async ionViewWillEnter(): Promise<void> {
+    this.profileDataStore.get();
+
     this.profileDataStore.asObservable()
       .takeUntil(componentUnloaded(this))
       .subscribe(async (apiRes: ApiResponse<ProfileModel>) => {

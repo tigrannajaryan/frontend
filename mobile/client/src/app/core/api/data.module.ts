@@ -15,6 +15,8 @@ import { ProfileApi } from '~/core/api/profile-api';
 import { ProfileDataStore } from '~/profile/profile.data';
 import { FollowersApi } from '~/core/api/followers.api';
 import { NotificationsApi } from '~/shared/push/notifications.api';
+import { AppModule } from '~/app.module';
+import { DataStore } from '~/shared/storage/data-store';
 
 /**
  * Common data module that includes singletons for the entire app.
@@ -53,5 +55,26 @@ export class DataModule {
         BookingData
       ]
     };
+  }
+}
+
+export async function clearAllDataStores(): Promise<void> {
+  // Get all data store classes:
+  const dataStores = DataModule.forRoot().providers;
+  // Require one by one and clear it’s data:
+  for (const storeClass of dataStores) {
+    const store = AppModule.injector.get(storeClass);
+    if (store instanceof DataStore) {
+      // Just calling DataStore.prototype.clear:
+      await store.deleteCache();
+    } else {
+      // Search for DataStore as a prop and call DataStore.prototype.clear on it:
+      for (const propName of Object.getOwnPropertyNames(store)) {
+        const prop = store[propName];
+        if (prop instanceof DataStore) {
+          await prop.deleteCache();
+        }
+      }
+    }
   }
 }

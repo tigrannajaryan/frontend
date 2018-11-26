@@ -19,8 +19,6 @@ var appDescription = (process.env.IOS_APP_DESCRIPTION || '').trim();
 var iosAppBundleId = (process.env.IOS_APP_BUNDLE_ID || '').trim();
 var androidAppBundleId = (process.env.ANDROID_APP_BUNDLE_ID || '').trim();
 
-var envName = (process.env.MB_ENV || '').trim();
-
 // Read config.xml
 fs.readFile('config.xml', 'utf8', function(err, data) {
   console.log('Going to patch config.xml\n--------------------------\n');
@@ -34,10 +32,6 @@ fs.readFile('config.xml', 'utf8', function(err, data) {
 
   if(err) {
     return console.log(err);
-  }
-
-  if (envName) {
-    var googleServicesFile = 'google-services-' + envName + '.json';
   }
 
   // Get XML
@@ -72,14 +66,6 @@ fs.readFile('config.xml', 'utf8', function(err, data) {
     // set name and descripition
     obj['widget']['name'] = appName;
     obj['widget']['description'] = appDescription;
-
-    if (googleServicesFile) {
-      var androidPlatform = obj['widget']['platform'].find(e => e['$']['name'] === 'android');
-      var googleServicesResourceFile = androidPlatform['resource-file'].find(e => e['$']['target'] === 'app/google-services.json');
-
-      // patch file name
-      googleServicesResourceFile['$']['src'] = googleServicesFile;
-    }
 
     // Build XML from JS Obj
     var builder = new xml2js.Builder();

@@ -4,9 +4,7 @@ import { Actions, Effect } from '@ngrx/effects';
 
 import { authActionTypes, LogoutAction } from '~/shared/storage/auth.reducer';
 import { deleteAuthLocalData } from '~/shared/storage/token-utils';
-import { DataStore } from '~/shared/storage/data-store';
-import { DataModule } from '~/core/api/data.module';
-import { AppModule } from '~/app.module';
+import { clearAllDataStores } from '~/core/api/data.module';
 import { SharedEventTypes } from '~/shared/events/shared-event-types';
 
 @Injectable()
@@ -21,7 +19,7 @@ export class LogoutEffects {
         // Remove token:
         await deleteAuthLocalData();
         // Clear all DataStores to reset requests caches:
-        await this.clearAllDataStores();
+        await clearAllDataStores();
         // Call success callback if exists:
         if (action.onSuccess) {
           action.onSuccess();
@@ -39,25 +37,4 @@ export class LogoutEffects {
     private events: Events
   ) {
   }
-
-  private clearAllDataStores = async (): Promise<void> => {
-    // Get all data store classes:
-    const dataStores = DataModule.forRoot().providers;
-    // Require one by one and clear it’s data:
-    for (const storeClass of dataStores) {
-      const store = AppModule.injector.get(storeClass);
-      if (store instanceof DataStore) {
-        // Just calling DataStore.prototype.clear:
-        await store.clear();
-      } else {
-        // Search for DataStore as a prop and call DataStore.prototype.clear on it:
-        for (const propName of Object.getOwnPropertyNames(store)) {
-          const prop = store[propName];
-          if (prop instanceof DataStore) {
-            await prop.clear();
-          }
-        }
-      }
-    }
-  };
 }

@@ -95,6 +95,8 @@ import { WorktimeApiMock } from '~/core/api/worktime.api.mock';
 import { ExternalAppService } from '~/shared/utils/external-app-service';
 import { Logger } from '~/shared/logger';
 
+import { GoogleSignin } from '~/shared/google-signin';
+
 import { StylistAppStorage } from '~/core/stylist-app-storage';
 import { StylistAppStorageMock } from '~/core/stylist-app-storage.mock';
 import { HomeService } from '~/core/api/home.service';
@@ -155,7 +157,7 @@ export class TestUtils {
         { provide: PopoverController, useClass: PopoverControllerMock },
         { provide: GoogleAnalytics, useClass: GoogleAnalyticsMock },
         { provide: StylistAppStorage, useClass: StylistAppStorageMock },
-        ExternalAppService,
+        ExternalAppService, GoogleSignin,
         {
           provide: InAppBrowser,
           useClass: class InAppBrowserMock {

@@ -14,8 +14,9 @@ import { firstNameLastNamePage } from './pages/firstname-lastname-page';
 import { clientApp } from './client-app';
 import { pushPrimingPage } from './shared-e2e/push-priming-page';
 import { mainTabsPage } from './pages/main-tabs-page';
+import { performLogout } from './test-utils';
 
-describe('First use flow for not invited clients', () => {
+describe('First use flow for not invited client', () => {
 
   let phoneNumber;
 
@@ -62,14 +63,15 @@ describe('First use flow for not invited clients', () => {
   });
 
   it('Can see stylists search page and add stylist', async () => {
-    await waitFor(stylistsSearchPage.searchInput);
-    await click(stylistsSearchPage.card);
-    await click(stylistsSearchPage.addStylist);
+    await stylistsSearchPage.addFirstStylist();
   });
 
   it('Can navigate to mainTabs', async () => {
-    browser.sleep(1000); // VERY BAD: I need to figure out what to wait on instead of sleeping. Will do after merging this PR.
     await pushPrimingPage.allow();
     await waitFor(mainTabsPage.homeTab);
+  });
+
+  it('Can logout', async () => {
+    await performLogout();
   });
 });

@@ -83,6 +83,13 @@ export class BaseService {
     return this.request<ResponseType>('get', apiPath, { queryParams }, options);
   }
 
+  protected put<ResponseType>(
+    apiPath: string, data: any, queryParams?: HttpParams,
+    options?: ApiRequestOptions): Observable<ApiResponse<ResponseType>> {
+
+    return this.request<ResponseType>('put', apiPath, { data, queryParams }, options);
+  }
+
   protected post<ResponseType>(
     apiPath: string, data: any, queryParams?: HttpParams,
     options?: ApiRequestOptions): Observable<ApiResponse<ResponseType>> {

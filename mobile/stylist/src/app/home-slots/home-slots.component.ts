@@ -16,11 +16,14 @@ import { HomeService } from '~/core/api/home.service';
 import { AppointmentCheckoutParams } from '~/appointment/appointment-checkout/appointment-checkout.component';
 import { PageNames } from '~/core/page-names';
 import { StylistAppStorage } from '~/core/stylist-app-storage';
+import { ProfileDataStore } from '~/core/profile.data';
 
 import { Tabs, UpcomingAndPastPageParams } from '~/home/home.component';
 import { AppointmentAddParams } from '~/appointment/appointment-add/appointment-add';
 import { FreeSlot, isBlockedTime } from './time-slots/time-slots.component';
 import { AppointmentsDataStore } from './appointments.data';
+
+import { ENV } from '~/environments/environment.default';
 
 const helpText = `Congratulations! Your registration is complete.<br/><br/>
   This is your home screen. Your appointments will show up here.<br/><br/>
@@ -69,7 +72,8 @@ export class HomeSlotsComponent {
     private homeService: HomeService,
     private logger: Logger,
     private navCtrl: NavController,
-    private ngZone: NgZone
+    private ngZone: NgZone,
+    private profileDataStore: ProfileDataStore
   ) {
   }
 
@@ -97,6 +101,9 @@ export class HomeSlotsComponent {
     // we implement push notifications.
     const autoRefreshInterval = moment.duration(10, 'minute').asMilliseconds();
     this.autoRefreshTimer = await setIntervalOutsideNgZone(this.ngZone, () => this.loadAppointments(), autoRefreshInterval);
+
+    // Preload data
+    this.profileDataStore.get();
   }
 
   ionViewWillLeave(): void {
@@ -104,8 +111,8 @@ export class HomeSlotsComponent {
     clearInterval(this.autoRefreshTimer);
   }
 
-  onAppointmentClick(appointment: Appointment): void {
-    const buttons = this.getAppointmentActionSheetOptions(appointment);
+  async onAppointmentClick(appointment: Appointment): Promise<void> {
+    const buttons = await this.getAppointmentActionSheetOptions(appointment);
     const actionSheet = this.actionSheetCtrl.create({ buttons });
     actionSheet.present();
   }
@@ -143,6 +150,97 @@ export class HomeSlotsComponent {
     if (response) {
       this.loadAppointments();
     }
+  }
+
+  /**
+   * Get action sheet buttons for an appointment
+   */
+  async getAppointmentActionSheetOptions(appointment: Appointment): Promise<ActionSheetButton[]> {
+    // Build the list of action buttons to show
+    const buttons: ActionSheetButton[] = [];
+
+    if (!isBlockedTime(appointment)) {
+      // Show "Details" or "Checkout" action for real appointments
+      if (appointment.status !== AppointmentStatuses.cancelled_by_client) {
+        buttons.push({
+          text: appointment.status === AppointmentStatuses.checked_out ? 'Details' : 'Check Out',
+          handler: () => {
+            this.checkOutAppointmentClick(appointment);
+          }
+        });
+      }
+
+      const appointmentEndTime = moment(appointment.datetime_start_at).add(appointment.duration_minutes, 'minutes');
+
+      if (appointmentEndTime.isSameOrBefore(moment()) && appointment.status !== AppointmentStatuses.no_show) {
+        // We are showing today or a past date. Add "no-show" action.
+        // We don't want to show it for future dates because it makes no sense
+        // to mark someone no-show if it is not yet time for the appointment.
+        buttons.push({
+          text: 'No Show',
+          handler: () => {
+            this.markNoShow(appointment);
+          }
+        });
+      }
+
+      // TODO: once Google Calendar integration is ready add "Add to Calendar" action here.
+      if (ENV.ffEnableGoogleCalendarIntegration) {
+        const profile = (await this.profileDataStore.get()).response;
+        if (profile && !profile.google_calendar_integrated) {
+          // Google Calendar is not integrated, show action to do it.
+          buttons.push({
+            text: 'Add to Calendar',
+            handler: () => { this.navCtrl.push(PageNames.CalendarPriming); }
+          });
+        }
+      }
+
+      if (appointment.client_phone) {
+        // If the phone number is known show "Call" and "Copy" actions
+        const formattedPhoneNum = getPhoneNumber(appointment.client_phone);
+        buttons.push(
+          {
+            text: `Call: ${formattedPhoneNum}`,
+            handler: () => {
+              this.externalAppService.doPhoneCall(formattedPhoneNum);
+            }
+          },
+          {
+            text: `Copy: ${formattedPhoneNum}`,
+            handler: () => {
+              this.externalAppService.copyToTheClipboard(formattedPhoneNum);
+            }
+          }
+        );
+      }
+
+      // Add "Cancel appointment" action for real appointments
+      buttons.push({
+        text: appointment.status === AppointmentStatuses.cancelled_by_client ? 'Delete Appointment' : 'Cancel Appointment',
+        role: 'destructive',
+        handler: () => {
+          this.cancelAppointment(appointment);
+        }
+      });
+
+    } else { // if isBlockedTime(appointment)
+      // Add only "Unblock" action for blocked slots
+      buttons.push(
+        {
+          text: 'Unblock Slot',
+          handler: () => {
+            this.cancelAppointment(appointment);
+          }
+        });
+    }
+
+    buttons.push({
+      text: 'Back',
+      role: 'cancel'
+    });
+
+    return buttons;
   }
 
   protected isShowingToday(): boolean {
@@ -190,87 +288,6 @@ export class HomeSlotsComponent {
   protected onPastVisitsClick(): void {
     const params: UpcomingAndPastPageParams = { showTab: Tabs.past };
     this.navCtrl.push(PageNames.Home, { params });
-  }
-
-  /**
-   * Get action sheet buttons for an appointment
-   */
-  private getAppointmentActionSheetOptions(appointment: Appointment): ActionSheetButton[] {
-    // Build the list of action buttons to show
-    const buttons: ActionSheetButton[] = [];
-
-    if (!isBlockedTime(appointment)) {
-      // Show "Details" or "Checkout" action for real appointments
-      if (appointment.status !== AppointmentStatuses.cancelled_by_client) {
-        buttons.push({
-          text: appointment.status === AppointmentStatuses.checked_out ? 'Details' : 'Check Out',
-          handler: () => {
-            this.checkOutAppointmentClick(appointment);
-          }
-        });
-      }
-
-      const appointmentEndTime = moment(appointment.datetime_start_at).add(appointment.duration_minutes, 'minutes');
-
-      if (appointmentEndTime.isSameOrBefore(moment()) && appointment.status !== AppointmentStatuses.no_show) {
-        // We are showing today or a past date. Add "no-show" action.
-        // We don't want to show it for future dates because it makes no sense
-        // to mark someone no-show if it is not yet time for the appointment.
-        buttons.push({
-          text: 'No Show',
-          handler: () => {
-            this.markNoShow(appointment);
-          }
-        });
-      }
-
-      // TODO: once Google Calendar integration is ready add "Add to Calendar" action here.
-
-      if (appointment.client_phone) {
-        // If the phone number is known show "Call" and "Copy" actions
-        const formattedPhoneNum = getPhoneNumber(appointment.client_phone);
-        buttons.push(
-          {
-            text: `Call: ${formattedPhoneNum}`,
-            handler: () => {
-              this.externalAppService.doPhoneCall(formattedPhoneNum);
-            }
-          },
-          {
-            text: `Copy: ${formattedPhoneNum}`,
-            handler: () => {
-              this.externalAppService.copyToTheClipboard(formattedPhoneNum);
-            }
-          }
-        );
-      }
-
-      // Add "Cancel appointment" action for real appointments
-      buttons.push({
-        text: appointment.status === AppointmentStatuses.cancelled_by_client ? 'Delete Appointment' : 'Cancel Appointment',
-        role: 'destructive',
-        handler: () => {
-          this.cancelAppointment(appointment);
-        }
-      });
-
-    } else { // if isBlockedTime(appointment)
-      // Add only "Unblock" action for blocked slots
-      buttons.push(
-        {
-          text: 'Unblock Slot',
-          handler: () => {
-            this.cancelAppointment(appointment);
-          }
-        });
-    }
-
-    buttons.push({
-      text: 'Back',
-      role: 'cancel'
-    });
-
-    return buttons;
   }
 
   /**

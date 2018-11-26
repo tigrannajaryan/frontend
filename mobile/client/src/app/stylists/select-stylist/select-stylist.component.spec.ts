@@ -47,8 +47,6 @@ describe('Pages: Select Stylist', () => {
         expect(fixture.nativeElement.textContent)
           .toContain(stylist.salon_name);
         expect(fixture.nativeElement.textContent)
-          .toContain(stylist.salon_address);
-        expect(fixture.nativeElement.textContent)
           .toContain(`${stylist.followers_count} MADE Clients`);
       });
 

@@ -10,7 +10,7 @@ import {
   SharedEventTypes
 } from '~/shared/events/shared-event-types';
 import { isDevelopmentBuild } from '~/shared/get-build-info';
-import { PlatforNames } from '~/shared/constants';
+import { PlatformNames } from '~/shared/constants';
 import { NotificationsApi, PushDeviceType, RegUnregDeviceRequest } from '~/shared/push/notifications.api';
 
 import { ENV } from '~/environments/environment.default';
@@ -139,7 +139,7 @@ export class PushNotification {
       return;
     }
 
-    this.deviceType = this.platform.is(PlatforNames.android) ? 'fcm' : 'apns';
+    this.deviceType = this.platform.is(PlatformNames.android) ? 'fcm' : 'apns';
 
     // Set default state of persistent data. We will later read it from storage.
     this.persistentData = {
@@ -172,7 +172,7 @@ export class PushNotification {
       this.persistentData = p;
     }
 
-    if (this.platform.is(PlatforNames.android)) {
+    if (this.platform.is(PlatformNames.android)) {
       // Ask permission on android immediately, since it is granted automatically
       this.getSystemPermissionAndRegister();
     } else if (this.persistentData.isPermissionGranted) {
@@ -227,7 +227,7 @@ export class PushNotification {
       return false;
     }
 
-    if (this.platform.is(PlatforNames.android)) {
+    if (this.platform.is(PlatformNames.android)) {
       // Permission screen is not needed on android
       this.logger.info('Push: running on Android. Permission is granted automatically.');
       return false;

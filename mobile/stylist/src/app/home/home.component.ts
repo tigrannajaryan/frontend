@@ -21,6 +21,8 @@ import { PageNames } from '~/core/page-names';
 import { Appointment, AppointmentStatuses, HomeData } from '~/core/api/home.models';
 import { HomeService } from '~/core/api/home.service';
 import { AppointmentCheckoutParams } from '~/appointment/appointment-checkout/appointment-checkout.component';
+import { ProfileDataStore } from '~/core/profile.data';
+import { ENV } from '~/environments/environment.default';
 
 export enum AppointmentTag {
   NotCheckedOut = 'Not checked out',
@@ -83,7 +85,8 @@ export class UpcomingAndPastComponent {
     private actionSheetCtrl: ActionSheetController,
     private logger: Logger,
     private ga: GAWrapper,
-    private externalAppService: ExternalAppService
+    private externalAppService: ExternalAppService,
+    private profileDataStore: ProfileDataStore
   ) {
   }
 
@@ -127,7 +130,7 @@ export class UpcomingAndPastComponent {
     }
   }
 
-  onAppointmentClick(appointment: Appointment): void {
+  async onAppointmentClick(appointment: Appointment): Promise<void> {
     // if this is past tab => open checkout page immediately
     if (this.activeTab === this.tabs[Tabs.past].name) {
       this.checkOutAppointmentClick(appointment);
@@ -171,6 +174,17 @@ export class UpcomingAndPastComponent {
           }
         }
       );
+    }
+
+    if (ENV.ffEnableGoogleCalendarIntegration) {
+      const profile = (await this.profileDataStore.get()).response;
+      if (profile && !profile.google_calendar_integrated) {
+        // Google Calendar is not integrated, show action to do it.
+        buttons.push({
+          text: 'Add to Calendar',
+          handler: () => this.navCtrl.push(PageNames.CalendarPriming)
+        });
+      }
     }
 
     // Add "Cancel appointment" and "Back" actions

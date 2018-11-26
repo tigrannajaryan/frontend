@@ -48,6 +48,8 @@ import { GeolocationService } from '~/shared/utils/geolocation.service';
 import { ServerStatusTracker } from '~/shared/server-status-tracker';
 import { PushNotification } from './shared/push/push-notification';
 import { authPath, authReducer } from '~/shared/storage/auth.reducer';
+import { SuccessErrorPopupComponent } from '~/shared/components/success-error-popup/success-error-popup.component';
+import { CalendarPrimingComponent } from './shared/components/calendar-priming/calendar-priming.component';
 import { profilePath, profileReducer } from '~/core/reducers/profile.reducer';
 import { stylistsPath, stylistsReducer } from '~/core/reducers/stylists.reducer';
 import { servicesPath, servicesReducer } from '~/core/reducers/services.reducer';
@@ -82,7 +84,6 @@ import { StylistComponent } from '~/stylists/stylist/stylist.component';
 import { PushPrimingScreenComponent } from './shared/components/push-priming-screen/push-priming-screen.component';
 import { ClientAppStorage } from './core/client-app-storage';
 import { FirstLastNameComponent } from '~/profile/first-last-name/first-last-name.component';
-import { SuccessErrorPopupComponent } from '~/shared/components/success-error-popup/success-error-popup.component';
 import { ClientStartupNavigation } from './core/client-startup-navigation';
 
 // Init sentry reporting (inits only if ENV.sentryDsn):
@@ -100,6 +101,7 @@ const declarations = [
   AuthConfirmPageComponent,
   AuthPageComponent,
   BookingCompleteComponent,
+  CalendarPrimingComponent,
   ClientAppComponent,
   FirstLastNameComponent,
   FirstScreenComponent,
