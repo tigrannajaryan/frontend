@@ -20,7 +20,7 @@ function patchConfigXml(fs, path, projectRootPath, platforms) {
       android: ""
     },
     prod: {
-      ios: "apps.googleusercontent.com.833238145213-h0usauchlokkr7ubaijs8pnm76co14to",
+      ios: "com.googleusercontent.apps.833238145213-u4lbuebvh1voqude6fo0qa3poc4aru75",
       android: ""
     }
   };
