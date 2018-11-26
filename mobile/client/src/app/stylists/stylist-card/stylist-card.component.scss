@@ -304,6 +304,6 @@ stylist-card {
     font-size: pxtovw(18px);
     font-weight: 600;
     background: white;
-    box-shadow: 0 7px 43px 0 rgba(0, 0, 0, 0.08);
+    box-shadow: 0 pxtovw(7px) pxtovw(43px) 0 rgba(0, 0, 0, 0.08);
   }
 }
