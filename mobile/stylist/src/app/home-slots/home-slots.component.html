@@ -1,8 +1,10 @@
 <ion-header madeMenuHeader [hideBackButton]="true">
   <ion-title>
-    <div click="onDateAreaClick()" class="Made-h1">
-      {{ selectedDate.format('MMMM') }}
-      <ion-icon name="ios-arrow-down"></ion-icon>
+    <div class="Made-h1">
+      <span (click)="onDateAreaClick()" class="Made-h1" data-test-id="selectDate">
+        {{ selectedDate.format('MMMM') }}
+        <ion-icon (click)="onDateAreaClick()" name="ios-arrow-down"></ion-icon>
+      </span>
     </div>
   </ion-title>
 
