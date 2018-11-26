@@ -206,7 +206,6 @@ export class HomeSlotsComponent {
     );
   }
 
-
   onAddAppointmentClick(): void {
     // Show Appointment Add screen when clicked on Add Appointment button.
     // Preset the date of appointment since we already know it.
