@@ -5,13 +5,12 @@ import { of } from 'rxjs/observable/of';
 
 import { TestUtils } from '~/../test';
 
-import { StylistsEffects } from '~/core/effects/stylists.effects';
 import { stylistsMock } from '~/core/api/stylists.service.mock';
 import { StylistsService } from '~/core/api/stylists.service';
 import { StylistSearchComponent } from '~/stylists/stylists-search/stylists-search.component';
 
 // Monkey patch SEARCHING_DELAY to 0 to avoid slowing down the tests:
-StylistsEffects.SEARCHING_DELAY = 0;
+StylistSearchComponent.SEARCHING_DELAY = 0;
 
 const emptyStylistsResponseMock = {
   response: {

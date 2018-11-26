@@ -71,6 +71,7 @@ export class StylistCardComponent implements OnInit {
   }
 
   onShowCalendar(): void {
+    this.stylist.is_profile_preferred = true;
     this.showCalendar.emit(this.stylist);
   }
 
