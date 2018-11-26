@@ -16,11 +16,11 @@ function patchConfigXml(fs, path, projectRootPath, platforms) {
   // Reversed client id is only needed for iOS
   var googlePlusProductionReversedClientId = {
     staging: {
-      ios: "com.googleusercontent.apps.17636556416-l518l3bkc3pev82sl9d2dq6vrd1th7hc",
+      ios: "apps.googleusercontent.com.17636556416-l518l3bkc3pev82sl9d2dq6vrd1th7hc",
       android: ""
     },
     prod: {
-      ios: "com.googleusercontent.apps.833238145213-h0usauchlokkr7ubaijs8pnm76co14to",
+      ios: "apps.googleusercontent.com.833238145213-h0usauchlokkr7ubaijs8pnm76co14to",
       android: ""
     }
   };
