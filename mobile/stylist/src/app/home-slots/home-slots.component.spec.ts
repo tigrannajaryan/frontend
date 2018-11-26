@@ -1,8 +1,10 @@
-import { async } from '@angular/core/testing';
+import { async, ComponentFixture } from '@angular/core/testing';
 import { ActionSheetButton } from 'ionic-angular/components/action-sheet/action-sheet-options';
+import { DatePicker } from '@ionic-native/date-picker';
 import * as moment from 'moment';
 
 import { getPhoneNumber } from '../shared/utils/phone-numbers';
+import { WeekdayIso } from '../shared/weekday';
 
 import { Appointment, AppointmentStatuses } from '../core/api/home.models';
 import { prepareSharedObjectsForTests } from '../core/test-utils.spec';
@@ -13,6 +15,7 @@ import { ProfileDataStore } from '../core/profile.data';
 import { HomeSlotsComponent } from './home-slots.component';
 import { createAppointment } from './time-slots/time-slots.component.spec';
 
+let fixture: ComponentFixture<HomeSlotsComponent>;
 let instance: HomeSlotsComponent;
 
 interface ActionSheetButtonNoHandler extends ActionSheetButton {
@@ -35,12 +38,75 @@ describe('Pages: HomeSlotsComponent', () => {
   beforeEach(async(() =>
     TestUtils.beforeEachCompiler([HomeSlotsComponent], [AppointmentsDataStore, ProfileDataStore])
       .then(compiled => {
+        fixture = compiled.fixture;
         instance = compiled.instance;
       })
   ));
 
   it('should create the page', () => {
     expect(instance).toBeTruthy();
+  });
+
+  it('should select date on month name click', () => {
+    const datePicker = fixture.debugElement.injector.get(DatePicker);
+
+    fixture.nativeElement.querySelector('[data-test-id=selectDate]').click();
+
+    expect(datePicker.show)
+      .toHaveBeenCalledWith({
+        date: instance.selectedDate.toDate(),
+        mode: 'date',
+        androidTheme: datePicker.ANDROID_THEMES.THEME_DEVICE_DEFAULT_LIGHT
+      });
+  });
+
+  it('should show weekdays selector', () => {
+    const today = moment();
+    const startOfWeek = moment(today).startOf('week');
+    const disabled = { weekdayIso: WeekdayIso.Fri }; // TGI Friday
+
+    instance.selectedDate = today;
+    instance.disabledWeekdays = [disabled];
+
+    fixture.detectChanges();
+
+    let disabledDate: moment.Moment;
+
+    // Check all weekdays present:
+    for (let i = WeekdayIso.Mon; i <= WeekdayIso.Sun; i++) {
+      const date = moment(startOfWeek).add(i - 1, 'days');
+
+      expect(fixture.nativeElement.textContent)
+        .toContain(date.format('ddd'));
+      expect(fixture.nativeElement.textContent)
+        .toContain(date.format('D'));
+
+      if (date.isoWeekday() === disabled.weekdayIso) {
+        disabledDate = date;
+      }
+    }
+
+    // WARNING: template-dependant selector
+    const disabledEl: HTMLElement = fixture.nativeElement.querySelector('.HCalendar-date.is-disabled');
+
+    // Check Friday is disabled:
+    expect(disabledEl)
+      .toBeTruthy();
+    expect(disabledEl.textContent)
+      .toContain(disabledDate.format('ddd'));
+    expect(disabledEl.textContent)
+      .toContain(disabledDate.format('D'));
+
+    // WARNING: template-dependant selector
+    const selected: HTMLElement = fixture.nativeElement.querySelector('.HCalendar-date.is-selected');
+
+    // Check selected day is selected:
+    expect(selected)
+      .toBeTruthy();
+    expect(selected.textContent)
+      .toContain(today.format('ddd'));
+    expect(selected.textContent)
+      .toContain(today.format('D'));
   });
 
   it('should add proper buttons to appointments', async () => {

@@ -79,9 +79,9 @@ function patchConfigXml(fs, path, projectRootPath, platforms) {
 
     if (googleServicesFile) {
       // Patch google-services.json file name
-      var androidPlatform = obj['widget']['platform'].find(e => e['$']['name'] === 'android');
-      console.log('androidPlatform is', androidPlatform);
-      var googleServicesResourceFile = androidPlatform['resource-file'].find(e => e['$']['target'] === 'app/google-services.json');
+      var currentPlatform = obj['widget']['platform'].find(e => e['$']['name'] === platform);
+      console.log('currentPlatform is', currentPlatform);
+      var googleServicesResourceFile = currentPlatform['resource-file'].find(e => e['$']['target'] === 'app/google-services.json');
       console.log('googleServicesResourceFile is', googleServicesResourceFile);
 
       googleServicesResourceFile['$']['src'] = googleServicesFile;

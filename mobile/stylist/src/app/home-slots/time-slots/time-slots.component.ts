@@ -106,12 +106,14 @@ export class TimeSlotsComponent implements AfterViewInit, OnDestroy {
   @Input() set slotIntervalInMin(value: number) {
     this._slotIntervalInMin = value;
     this.updateAppointments();
+    this.updateScrollPos();
   }
 
   // Start of the working day. We initially scroll vertically to this value. Must be integer.
   @Input() set startHour(value: ISOTimeOnly) {
     this._startHour = getHoursSinceMidnight(moment(value, isoTimeOnlyFormat));
     this.updateWorkingHours();
+    this.updateScrollPos();
   }
 
   // End of the working day.
@@ -455,17 +457,26 @@ export class TimeSlotsComponent implements AfterViewInit, OnDestroy {
   }
 
   private updateScrollPos(): void {
-    const curHour = Math.trunc(getHoursSinceMidnight(moment()));
+    const now = moment();
 
     // If we are showing current time indicator then scroll to the beginning of its hours
     // otherwise scroll to the beginning of working day.
-    const scrollToHour = this._showCurTimeIndicator ? curHour : Math.trunc(this._startHour);
+    let scrollToHour: number;
+
+    if (this._selectedDate.isSame(now, 'day') && this._showCurTimeIndicator) {
+      scrollToHour = Math.trunc(getHoursSinceMidnight(now));
+    } else if (this._startHour) {
+      scrollToHour = Math.trunc(this._startHour);
+    } else {
+      scrollToHour = 0;
+    }
 
     // Find the label for the starting hour
     const label = this.timeLabels[scrollToHour];
 
     if (!label) {
-      // When next day
+      // When almost next day
+      // TODO: ideally we should scroll to the position of possible label
       return;
     }
 
@@ -475,6 +486,8 @@ export class TimeSlotsComponent implements AfterViewInit, OnDestroy {
     // Scrol vertically to the top of the label text
     if (elem && text) {
       this.scroll._scrollContent.nativeElement.scrollTop = elem.offsetTop - text.offsetHeight;
+    } else {
+      this.scroll._scrollContent.nativeElement.scrollTop = 0;
     }
   }
 }
