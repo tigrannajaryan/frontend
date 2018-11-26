@@ -11,6 +11,14 @@ profile-edit {
 }
 
 .ProfilePage {
+  .ProfilePage-editWp {
+    padding-top: pxtovw(13px);
+  }
+
+  .ProfilePage-h1 {
+    margin-bottom: 22px;
+  }
+
   .ProfilePage-pic {
     $image-size: pxtovw(120px);
 
@@ -22,29 +30,37 @@ profile-edit {
     background-repeat: no-repeat;
     background-size: cover;
     border-radius: 50%; // circle
+
+
+    &.is-profile {
+      $image-size: pxtovw(96px);
+
+      width: $image-size;
+      height: $image-size;
+      margin: 0 0 pxtovw(14px);
+    }
   }
 
   .ProfilePage-add {
-    $add-btn-size: pxtovw(48px);
-    $add-btn-opacity: 0.7;
+    $add-btn-size: pxtovw(32px);
 
     position: absolute;
     top: 100%;
-    left: 100%;
+    left: 0;
     z-index: 1;
     display: flex;
     align-items: center;
     justify-content: center;
     width: $add-btn-size;
     height: $add-btn-size;
-    margin: (-1 * $add-btn-size) 0 0 (-1 * $add-btn-size); // shift top left
+    margin: (-1 * $add-btn-size) 0 0 0;
     color: white;
-    background: rgba(color($colors, orange), $add-btn-opacity);
+    background: color($colors, orange);
     border: pxtovw(1px) solid rgba(white, 1);
     border-radius: 50%; // circle
 
     ion-icon {
-      margin: pxtovw(2px) 0 0 pxtovw(2px); // fix centered align
+      margin: pxtovw(-1px) 0 0; // fix centered align
       font-size: $t-h3;
     }
   }
