@@ -53,9 +53,10 @@
     </button>
 
     <button
-      *ngIf="isMyStylist && stylist.is_profile_bookable"
+      *ngIf="isMyStylist && !enableRemove && stylist.is_profile_bookable"
       (click)="onRemoveStylist()"
-      class="StylistCard-action">
+      class="StylistCard-action"
+      data-test-id="removeStylist">
       Remove Stylist
     </button>
   </div>
