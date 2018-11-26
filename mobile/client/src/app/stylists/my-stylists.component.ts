@@ -154,10 +154,6 @@ export class MyStylistsComponent {
         tabsObj[tab] = [];
       }
 
-      if (tab === Tabs.savedStylists) {
-        cur.is_profile_preferred = true;
-      }
-
       tabsObj[tab].push(cur);
       return tabsObj;
     }, []);
