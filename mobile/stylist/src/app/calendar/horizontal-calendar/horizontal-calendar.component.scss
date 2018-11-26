@@ -1,0 +1,68 @@
+.HCalendar {
+  display: flex;
+  flex-direction: row;
+
+
+  .HCalendar-weekday {
+    font-size: pxtovw(13px);
+  }
+
+
+  .HCalendar-day {
+    position: relative;
+    margin-top: pxtovw(4px);
+    font-size: pxtovw(18px);
+    font-weight: 500;
+  }
+
+
+  .HCalendar-date {
+    $days-to-show: 7;
+
+    min-width: 100% / $days-to-show;
+    margin-bottom: pxtovw(6px); // bottom offset of selected cicrle
+    text-align: center;
+
+    &.is-today {
+      color: color($colors, lightSalmon);
+    }
+
+    &.is-disabled {
+      color: color($colors, warmGrey);
+
+      .HCalendar-day {
+        font-weight: normal;
+      }
+    }
+
+
+    // Selected state
+
+    &.is-selected .HCalendar-day {
+      color: white;
+
+      &:before {
+        $circle-size: pxtovw(32px);
+
+        position: absolute;
+        top: 50%;
+        right: 50%;
+        z-index: -1;
+        width: $circle-size;
+        height: $circle-size;
+        margin: (-1 * $circle-size / 2) (-1 * $circle-size / 2) 0 0;
+        content: ''; // displays it
+        background-color: black;
+        border-radius: $circle-size;
+      }
+    }
+
+    &.is-selected.is-today .HCalendar-day:before {
+      background-color: color($colors, lightSalmon);
+    }
+
+    &.is-selected.is-disabled .HCalendar-day:before {
+      background-color: color($colors, warmGrey);
+    }
+  }
+}
