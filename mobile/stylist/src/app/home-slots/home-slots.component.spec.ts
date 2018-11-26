@@ -1,5 +1,6 @@
 import { async, ComponentFixture } from '@angular/core/testing';
 import { ActionSheetButton } from 'ionic-angular/components/action-sheet/action-sheet-options';
+import { DatePicker } from '@ionic-native/date-picker';
 import * as moment from 'moment';
 
 import { getPhoneNumber } from '../shared/utils/phone-numbers';
@@ -44,6 +45,19 @@ describe('Pages: HomeSlotsComponent', () => {
 
   it('should create the page', () => {
     expect(instance).toBeTruthy();
+  });
+
+  it('should select date on month name click', () => {
+    const datePicker = fixture.debugElement.injector.get(DatePicker);
+
+    fixture.nativeElement.querySelector('[data-test-id=selectDate]').click();
+
+    expect(datePicker.show)
+      .toHaveBeenCalledWith({
+        date: instance.selectedDate.toDate(),
+        mode: 'date',
+        androidTheme: datePicker.ANDROID_THEMES.THEME_DEVICE_DEFAULT_LIGHT
+      });
   });
 
   it('should show weekdays selector', () => {

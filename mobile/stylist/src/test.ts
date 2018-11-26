@@ -175,6 +175,14 @@ export class TestUtils {
         {
           provide: DatePicker,
           useClass: class DatePickerMock {
+            // https://stackoverflow.com/questions/36267237/how-to-correctly-set-androidtheme-in-cordova-plugin-datepicker-plugin
+            ANDROID_THEMES = {
+              THEME_TRADITIONAL: 1,
+              THEME_HOLO_DARK: 2,
+              THEME_HOLO_LIGHT: 3,
+              THEME_DEVICE_DEFAULT_DARK: 4,
+              THEME_DEVICE_DEFAULT_LIGHT: 5
+            };
             show = jasmine.createSpy('show').and.returnValue(
               Promise.resolve(moment().format())
             );
