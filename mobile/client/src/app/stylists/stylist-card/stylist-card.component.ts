@@ -99,7 +99,7 @@ export class StylistCardComponent implements OnInit {
 
   onStartBooking(): void {
     // defensive check
-    if (this.canStartBooking()) {
+    if (!this.canStartBooking()) {
       return;
     }
 
