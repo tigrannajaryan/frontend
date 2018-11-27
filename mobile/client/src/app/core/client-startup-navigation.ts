@@ -53,7 +53,7 @@ export interface PageDescr {
 export class ClientStartupNavigation {
 
   private static showPage(navCtrl: NavController, pageDescr: PageDescr): void {
-    if (pageDescr.params === PageNames.MainTabs) {
+    if (pageDescr.page === PageNames.MainTabs) {
       // MainTabs is the last screen in onboarding and we make it the root
       // since there is no need to allow having a navigation history and ability to go back
       navCtrl.setRoot(pageDescr.page, pageDescr.params);
