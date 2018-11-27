@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Events, NavController, NavParams } from 'ionic-angular';
 
 import { ConfirmCodeResponse } from '~/shared/api/auth.models';
+import { StylistProfileStatus } from '~/shared/api/stylist-app.models';
 import { AbstractAuthConfirmComponent } from '~/shared/components/auth/abstract-auth-confirm.component';
 import { AuthDataStore } from '~/shared/storage/auth.data';
 import { AuthProcessState } from '~/shared/storage/auth-process-state';
@@ -38,11 +39,13 @@ export class AuthConfirmPageComponent extends AbstractAuthConfirmComponent {
     // Resubscrube to profile DataStore is needed in menu after storage was cleared out:
     this.events.publish(StylistEventTypes.menuUpdateProfileSubscription);
 
+    const profileStatus = response.profile_status as StylistProfileStatus;
+
     // true = This is a new user, enable help screens
     // false = Set it back to false for the case when we change user
-    this.storage.set('showHomeScreenHelp', !isRegistrationComplete(response.profile_status));
+    this.storage.set('showHomeScreenHelp', !isRegistrationComplete(profileStatus));
 
-    const requiredPages = createNavHistoryList(response.profile_status);
+    const requiredPages = createNavHistoryList(profileStatus);
     this.navCtrl.setPages(requiredPages);
   }
 }
