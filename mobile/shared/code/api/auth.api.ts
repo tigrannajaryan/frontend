@@ -33,11 +33,11 @@ export class AuthService extends BaseService {
     super(http, logger, serverStatus);
   }
 
-  getCode(data: GetCodeParams, options: ApiRequestOptions): Observable<ApiResponse<GetCodeResponse>> {
+  getCode(data: GetCodeParams, options: ApiRequestOptions = {}): Observable<ApiResponse<GetCodeResponse>> {
     return this.post<GetCodeResponse>('auth/get-code', { ...data, role: AuthService.role }, undefined, options);
   }
 
-  confirmCode(data: ConfirmCodeParams, options: ApiRequestOptions): Observable<ApiResponse<ConfirmCodeResponse>> {
+  confirmCode(data: ConfirmCodeParams, options: ApiRequestOptions = {}): Observable<ApiResponse<ConfirmCodeResponse>> {
     return this.processAuthResponse(
       () => this.post<ConfirmCodeResponse>('auth/code/confirm', { ...data, role: AuthService.role }, undefined, options));
   }

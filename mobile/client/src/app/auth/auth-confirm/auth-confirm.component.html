@@ -14,22 +14,26 @@
       <span><phone-link [phone]="phone" [readonly]="true" [shortForm]="false"></phone-link>&nbsp;</span><span class="Link is-fszInherited" (click)="navCtrl.pop()" data-test-id="editPhoneLink">Edit</span>
     </ion-row>
     <ion-row>
-      <code-input [isDisabled]="(confirmCodeState | async) === RequestState.Loading" [hasError]="error | async | hasError:invalidCodeError" (codeChange)="onCodeChange($event)"></code-input>
+      <code-input [isDisabled]="isVerifyingCode" [hasError]="hasCodeInvalidError" (codeChange)="onCodeChange($event)"></code-input>
     </ion-row>
     <ion-row justify-content-center>
-      <span *ngIf="(confirmCodeState | async) === RequestState.Loading">
-        Verifying the code…
-      </span>
-      <span *ngIf="(confirmCodeState | async) !== RequestState.Loading">
-        <span *ngIf="(resendCodeCountdown | async) > 0">
-          You can send a&nbsp;new code in&nbsp;{{ resendCodeCountdown | async }}
-        </span>
-        <span *ngIf="(resendCodeCountdown | async) === 0">
-          Didn’t get a&nbsp;code? <span class="Link is-fszInherited" (click)="onResendCode()" data-test-id="sendNewCode">Send a&nbsp;new one</span>
-        </span>
-        <span *ngIf="(requestCodeState | async) === RequestState.Loading">
-          Sending a&nbsp;new code…
-        </span>
+      <span>
+        <ng-container *ngIf="isVerifyingCode; else notVerifyingTpl">
+          Verifying the code…
+        </ng-container>
+        <ng-template #notVerifyingTpl>
+          <ng-container *ngIf="isRequestingNewCode; else notRequestingNewCodeTpl">
+            Sending a&nbsp;new code…
+          </ng-container>
+          <ng-template #notRequestingNewCodeTpl>
+            <ng-container *ngIf="(resendCodeCountdown | async) > 0; else countdownOverTpl">
+              You can send a&nbsp;new code in&nbsp;{{ resendCodeCountdown | async }}
+            </ng-container>
+            <ng-template #countdownOverTpl>
+              Didn’t get a&nbsp;code? <span class="Link is-fszInherited" (click)="onResendCode()" data-test-id="sendNewCode">Send a&nbsp;new one</span>
+            </ng-template>
+          </ng-template>
+        </ng-template>
       </span>
     </ion-row>
   </ion-grid>

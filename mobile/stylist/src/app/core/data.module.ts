@@ -1,6 +1,7 @@
 import { ModuleWithProviders, NgModule } from '@angular/core';
 import { IonicModule } from 'ionic-angular';
 
+import { AuthDataStore } from '~/shared/storage/auth.data';
 import { ClientsApi } from '~/core/api/clients-api';
 import { StylistServiceProvider } from '~/core/api/stylist.service';
 import { DataStore } from '~/shared/storage/data-store';
@@ -42,6 +43,7 @@ export class DataModule {
       // 'providers' property of any other module, otherwise you will have duplicate objects instead
       // of singletons.
       providers: [
+        AuthDataStore,
         AllClientsDataStore,
         AppointmentsDataStore,
         MyClientsDataStore,

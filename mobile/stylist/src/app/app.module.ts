@@ -29,8 +29,6 @@ import { SharedSingletonsModule } from '~/shared/shared-singletons.module';
 import { ExternalAppService } from '~/shared/utils/external-app-service';
 import { AuthInterceptor } from './shared/api/auth.interceptor';
 import { AuthService } from '~/shared/api/auth.api';
-import { authPath, authReducer } from '~/shared/storage/auth.reducer';
-import { AuthEffects } from '~/shared/storage/auth.effects';
 import { PushNotification } from '~/shared/push/push-notification';
 import { PushPrimingScreenComponent } from '~/shared/components/push-priming-screen/push-priming-screen.component';
 import { SuccessErrorPopupComponent } from '~/shared/components/success-error-popup/success-error-popup.component';
@@ -110,7 +108,6 @@ const imports = [
    * based application.
    */
   StoreModule.forRoot({}),
-  StoreModule.forFeature(authPath, authReducer),
 
   /**
    * EffectsModule.forRoot() is imported once in the root module and
@@ -119,9 +116,7 @@ const imports = [
    *
    * See: https://github.com/ngrx/platform/blob/master/docs/effects/api.md#forroot
    */
-  EffectsModule.forRoot([
-    AuthEffects
-  ])
+  EffectsModule.forRoot([])
 ];
 
 if (!ENV.production) {

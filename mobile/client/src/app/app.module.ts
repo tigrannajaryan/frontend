@@ -33,7 +33,6 @@ import { UnhandledErrorHandler } from '~/shared/unhandled-error-handler';
 import { ClientAppComponent } from '~/app.component';
 import { getMetaReducers } from '~/app.reducers';
 
-import { AuthEffects } from '~/shared/storage/auth.effects';
 import { LogoutEffects } from '~/core/effects/logout.effects';
 import { ServicesEffects } from '~/core/effects/services.effects';
 import { ProfileEffects } from '~/core/effects/profile.effects';
@@ -46,7 +45,6 @@ import { ExternalAppService } from '~/shared/utils/external-app-service';
 import { GeolocationService } from '~/shared/utils/geolocation.service';
 import { ServerStatusTracker } from '~/shared/server-status-tracker';
 import { PushNotification } from './shared/push/push-notification';
-import { authPath, authReducer } from '~/shared/storage/auth.reducer';
 import { SuccessErrorPopupComponent } from '~/shared/components/success-error-popup/success-error-popup.component';
 import { CalendarPrimingComponent } from './shared/components/calendar-priming/calendar-priming.component';
 import { profilePath, profileReducer } from '~/core/reducers/profile.reducer';
@@ -153,7 +151,6 @@ const declarations = [
      * - https://forum.ionicframework.com/t/ngrx-state-does-not-work-in-production-build/107226/3
      */
     StoreModule.forRoot({}),
-    StoreModule.forFeature(authPath, authReducer),
     StoreModule.forFeature(profilePath, profileReducer),
     StoreModule.forFeature(servicesPath, servicesReducer),
     EffectsModule.forFeature([ProfileEffects]),
@@ -167,8 +164,6 @@ const declarations = [
      */
     EffectsModule.forRoot([
       LogoutEffects,
-
-      AuthEffects,
       ServicesEffects
     ])
   ],

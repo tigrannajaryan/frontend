@@ -14,7 +14,9 @@ export interface EmailAuthCredentials {
 
 export interface GetCodeParams {
   phone: string;
-  role: UserRole;
+  // We keep the role optional here just FYI.
+  // In fact the role is added by auth service on request.
+  role?: UserRole;
 }
 
 // tslint:disable-next-line:no-empty-interface
@@ -24,7 +26,9 @@ export interface GetCodeResponse {
 export interface ConfirmCodeParams extends GetCodeParams {
   phone: string;
   code: string;
-  role: UserRole;
+  // We keep the role optional here just FYI.
+  // In fact the role is added by auth service on request.
+  role?: UserRole;
 }
 
 export interface AuthTokenModel {
@@ -44,13 +48,14 @@ export interface ClientProfileStatus {
   has_invitation?: boolean;
 }
 
-export type UserProfileStatus = StylistProfileStatus | ClientProfileStatus;
+export type UserProfileStatus = StylistProfileStatus & ClientProfileStatus;
 
 export interface AuthResponse {
   token: string;
   user_uuid: string;
   profile_status?: UserProfileStatus;
-  stylist_invitation?: StylistModel[]; // This field is set only for responses to Client auth
+  // The next field is set only for responses to Client auth:
+  stylist_invitation?: StylistModel[];
 }
 
 export interface ConfirmCodeResponse extends AuthResponse {
