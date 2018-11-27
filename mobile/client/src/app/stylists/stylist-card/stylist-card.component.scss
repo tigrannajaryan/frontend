@@ -239,7 +239,6 @@ stylist-card {
     justify-content: center;
     margin-top: 8px;
     font-size: $t-h4;
-    color: color($colors, orange);
 
     &:not(.is-notBookable) {
       color: color($colors, orange);
