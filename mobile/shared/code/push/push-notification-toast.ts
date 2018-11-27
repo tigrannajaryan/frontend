@@ -117,6 +117,7 @@ export class PushNotificationToastService implements OnDestroy {
 
       const toast = this.toastCtrl.create(toastOptions);
       if (handlerParams.onClick) {
+        // tslint:disable-next-line:no-null-keyword
         toast.onDidDismiss((uselessAlwaysNull: null, dismissedBy: ToastDismissedBy) => {
           if (dismissedBy === ToastDismissedBy.CloseClick) {
             // If user clicked toast’s CTA-btn we should call the handler:
