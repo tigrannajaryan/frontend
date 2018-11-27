@@ -25,10 +25,10 @@ export abstract class AbstractAuthConfirmComponent {
 
   resendCodeCountdown: Observable<number>;
 
-  protected abstract auth: AuthDataStore;
-  protected abstract authDataState: AuthProcessState;
-  protected abstract events: Events;
-  protected abstract navParams: NavParams;
+  protected auth: AuthDataStore;
+  protected authDataState: AuthProcessState;
+  protected events: Events;
+  protected navParams: NavParams;
 
   ionViewWillEnter(): void {
     const { phone } = this.navParams.get('params') as AuthConfirmParams;

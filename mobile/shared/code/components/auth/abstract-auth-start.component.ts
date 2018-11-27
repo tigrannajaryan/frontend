@@ -14,8 +14,8 @@ export abstract class AbstractAuthStartComponent {
   isLoading = false;
   isDisabled = true;
 
-  protected abstract auth: AuthDataStore;
-  protected abstract navCtrl: NavController;
+  protected auth: AuthDataStore;
+  protected navCtrl: NavController;
 
   onPhoneChange(phoneData: PhoneData): void {
     const { phone, valid } = phoneData;
