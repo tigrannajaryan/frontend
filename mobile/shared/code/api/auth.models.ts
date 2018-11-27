@@ -48,7 +48,7 @@ export interface ClientProfileStatus {
   has_invitation?: boolean;
 }
 
-export type UserProfileStatus = StylistProfileStatus & ClientProfileStatus;
+export type UserProfileStatus = StylistProfileStatus | ClientProfileStatus;
 
 export interface AuthResponse {
   token: string;
