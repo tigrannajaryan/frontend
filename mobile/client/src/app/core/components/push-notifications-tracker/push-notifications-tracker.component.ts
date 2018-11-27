@@ -50,6 +50,17 @@ export class PushNotificationsTrackerComponent implements OnInit, OnDestroy {
           }
         };
 
+      case PushNotificationCode.hint_to_select_stylist:
+        return {
+          duration: 7000, // quite long text requires more time
+          buttonText: 'Search',
+          onClick: async (): Promise<void> => {
+            await this.nav.setRoot(PageNames.MainTabs);
+            this.events.publish(ClientEventTypes.selectMainTab, TabIndex.Stylists);
+            await this.nav.push(PageNames.StylistSearch);
+          }
+        };
+
       default:
         return;
     }

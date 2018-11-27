@@ -10,6 +10,7 @@ import { NotificationsApi } from '~/shared/push/notifications.api';
  */
 export interface PushNotificationHandlerParams {
   buttonText?: string;
+  duration?: number; // ms
   onClick?(): void | Promise<void>;
 }
 
@@ -34,7 +35,7 @@ export type PushNotificationHandlerSubscription =
 export class PushNotificationToastService implements OnDestroy {
   static defaultToastParams = {
     cssClass: 'PushNotificationToast',
-    duration: 5000,
+    duration: 5000, // ms
     position: 'top',
     showCloseButton: true,
     closeButtonText: 'Close'
@@ -94,10 +95,11 @@ export class PushNotificationToastService implements OnDestroy {
       );
 
     if (details.foreground) {
-      // Show a toast if the app is open allready:
+      // Show a toast if the app is open allready (it‘s called foreground):
       const toastOptions: ToastOptions = {
         ...PushNotificationToastService.defaultToastParams,
         closeButtonText: handlerParams.buttonText || PushNotificationToastService.defaultToastParams.closeButtonText,
+        duration: handlerParams.duration || PushNotificationToastService.defaultToastParams.duration,
         message: details.message
       };
 
