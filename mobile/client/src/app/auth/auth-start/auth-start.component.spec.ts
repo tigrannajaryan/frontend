@@ -8,7 +8,6 @@ import { PageNames } from '~/core/page-names';
 
 import { PhoneInputComponent } from '~/shared/components/phone-input/phone-input.component';
 
-import { AuthEffects } from '~/shared/storage/auth.effects';
 import { AuthService } from '~/shared/api/auth.api';
 import { AuthPageComponent } from './auth-start.component';
 
@@ -104,10 +103,7 @@ describe('Pages: Auth Phone', () => {
     const navCtrl = fixture.debugElement.injector.get(NavController);
 
     instance.phone = testPhone;
-    instance.submit();
-
-    const authEffects = fixture.debugElement.injector.get(AuthEffects);
-    await authEffects.getCodeRequest.get();
+    await instance.submit();
 
     expect(navCtrl.push)
       .toHaveBeenCalledWith(PageNames.AuthConfirm, { phone: testPhone });

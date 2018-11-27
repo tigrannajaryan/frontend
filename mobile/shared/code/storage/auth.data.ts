@@ -39,12 +39,12 @@ export class AuthDataStore {
     return { response, error };
   }
 
-  async confirmCode(phone: string, code: string): Promise<ApiResponse<ConfirmCodeResponse>> {
+  confirmCode(phone: string, code: string): Promise<ApiResponse<ConfirmCodeResponse>> {
     const params: ConfirmCodeParams = { phone, code };
     const options: ApiRequestOptions = {
       // The invalidConfirmCodeError is handled customly by the component, skip common handling:
       hideGenericAlertOnErrorsLike: [AuthDataStore.invalidConfirmCodeError]
     };
-    return await this.authService.confirmCode(params, options).toPromise();
+    return this.authService.confirmCode(params, options).toPromise();
   }
 }
