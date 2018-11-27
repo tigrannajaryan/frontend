@@ -17,7 +17,7 @@
 
 
   <div
-    (click)="isActive && !isSearchCard && stylist.is_profile_bookable && onStartBooking()"
+    (click)="canStartBooking() && onStartBooking()"
     class="StylistCard-photo"
     [style.backgroundImage]="'url(' + (stylist.profile_photo_url  || 'assets/icons/stylist-avatar.png') + ')'"></div>
 

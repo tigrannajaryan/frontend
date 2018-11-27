@@ -98,6 +98,18 @@ export class StylistCardComponent implements OnInit {
   }
 
   onStartBooking(): void {
+    // defensive check
+    if (this.canStartBooking()) {
+      return;
+    }
+
     this.events.publish(ClientEventTypes.startBooking, this.stylist.uuid);
+  }
+
+  /**
+   * We can start booking process on avatar click only on my stylists tab and if a prime stylist
+   **/
+  canStartBooking(): boolean {
+    return this.isActive && !this.isSearchCard && this.stylist.is_profile_bookable;
   }
 }
