@@ -16,7 +16,10 @@
   <i *ngIf="stylist.is_profile_bookable && isSearchCard" class="StylistCard-bookable mb-icon-calendar"></i>
 
 
-  <div (click)="isActive && onStartBooking()" class="StylistCard-photo" [style.backgroundImage]="'url(' + (stylist.profile_photo_url  || 'assets/icons/stylist-avatar.png') + ')'"></div>
+  <div
+    (click)="isActive && !isSearchCard && stylist.is_profile_bookable && onStartBooking()"
+    class="StylistCard-photo"
+    [style.backgroundImage]="'url(' + (stylist.profile_photo_url  || 'assets/icons/stylist-avatar.png') + ')'"></div>
 
   <div class="StylistCard-body">
     <div class="StylistCard-salon">{{ stylist.salon_name }}</div>
