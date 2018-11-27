@@ -22,6 +22,18 @@ export type PushNotificationHandlerSubscription =
   (details: PushNotificationEventDetails) => PushNotificationHandlerParams | void;
 
 /**
+ * This is just a missing part of toast.onDidDismiss.
+ * Second param of onDidDismiss will either receive ”backdrop” or ”close”.
+ * For more –> https://github.com/ionic-team/ionic/issues/11512
+ */
+enum ToastDismissedBy {
+  // Dismissed on running out of time to show the toast:
+  Timeout = 'backdrop',
+  // Dismissed when user manually clicked dismiss btn:
+  CloseClick = 'close'
+}
+
+/**
  * A place where basic notifications handling happens:
  * 1. subscribe to push notification event,
  * 2. (foreground only!) show a toast when notification happens,
@@ -105,7 +117,12 @@ export class PushNotificationToastService implements OnDestroy {
 
       const toast = this.toastCtrl.create(toastOptions);
       if (handlerParams.onClick) {
-        toast.onDidDismiss(handlerParams.onClick);
+        toast.onDidDismiss((uselessAlwaysNull: null, dismissedBy: ToastDismissedBy) => {
+          if (dismissedBy === ToastDismissedBy.CloseClick) {
+            // If user clicked toast’s CTA-btn we should call the handler:
+            handlerParams.onClick();
+          }
+        });
       }
       toast.present();
 
