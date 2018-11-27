@@ -23,6 +23,7 @@ export type Extension<T> = (...args: any[]) => (request: Request<T>) => Request<
  *   );
  * ```
  */
+// TODO: rename to enhance request, because compose should be applied from bottom to top
 export function composeRequest<T>(...extensions): Promise<ApiResponse<T>> {
   // The last argument is a request itself:
   let [request] = extensions.splice(-1);
