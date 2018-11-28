@@ -1,5 +1,4 @@
-// TODO: rename this file to upcoming-and-past.component.ts (I want to do it in separate PR
-// to avoid complicated Github review).
+// TODO: Remove this component, it is not used anywhere.
 
 import { Component, NgZone, ViewChild } from '@angular/core';
 import {
@@ -22,7 +21,6 @@ import { Appointment, AppointmentStatuses, HomeData } from '~/core/api/home.mode
 import { HomeService } from '~/core/api/home.service';
 import { AppointmentCheckoutParams } from '~/appointment/appointment-checkout/appointment-checkout.component';
 import { ProfileDataStore } from '~/core/profile.data';
-import { ENV } from '~/environments/environment.default';
 
 export enum AppointmentTag {
   NotCheckedOut = 'Not checked out',
@@ -176,15 +174,13 @@ export class UpcomingAndPastComponent {
       );
     }
 
-    if (ENV.ffEnableGoogleCalendarIntegration) {
-      const profile = (await this.profileDataStore.get()).response;
-      if (profile && !profile.google_calendar_integrated) {
-        // Google Calendar is not integrated, show action to do it.
-        buttons.push({
-          text: 'Add to Calendar',
-          handler: () => this.navCtrl.push(PageNames.CalendarPriming)
-        });
-      }
+    const profile = (await this.profileDataStore.get()).response;
+    if (profile && !profile.google_calendar_integrated) {
+      // Google Calendar is not integrated, show action to do it.
+      buttons.push({
+        text: 'Add to Calendar',
+        handler: () => this.navCtrl.push(PageNames.CalendarPriming)
+      });
     }
 
     // Add "Cancel appointment" and "Back" actions

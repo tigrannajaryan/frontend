@@ -27,7 +27,6 @@ import { ServiceItemComponent } from '~/services/services-item/services-item.com
 import { ServicesCategoriesComponent } from '~/services/services-categories/services-categories.component';
 import { ServicesComponent } from '~/services/services.component';
 import { ServicesListComponent } from '~/services/services-list/services-list.component';
-import { UpcomingAndPastComponent } from '~/home/home.component';
 import { WelcomeToMadeComponent } from '~/discounts/welcome-to-made/welcome-to-made.component';
 import { WorkHoursComponent } from '~/workhours/workhours.component';
 
@@ -61,7 +60,6 @@ export const PageNames = {
   DiscountsRevisit: DiscountsRevisitComponent,
   DiscountsWeekday: DiscountsWeekdayComponent,
   FirstScreen: FirstScreenComponent,
-  Home: UpcomingAndPastComponent,
   HomeSlots: HomeSlotsComponent,
   Invitations: InvitationsComponent,
   MyClients: MyClientsComponent,
