@@ -2,14 +2,13 @@ import { async, ComponentFixture } from '@angular/core/testing';
 import { NavController } from 'ionic-angular';
 
 import { TestUtils } from '~/../test';
+
+import { AuthService } from '~/shared/api/auth.api';
+import { PhoneInputComponent } from '~/shared/components/phone-input/phone-input.component';
 import { randomPhone, replaceNbspWithSpaces } from '~/shared/utils/test-utils';
 
 import { PageNames } from '~/core/page-names';
 
-import { PhoneInputComponent } from '~/shared/components/phone-input/phone-input.component';
-
-import { AuthEffects } from '~/shared/storage/auth.effects';
-import { AuthService } from '~/shared/api/auth.api';
 import { AuthPageComponent } from './auth-start.component';
 
 const countriesMock = [
@@ -34,6 +33,7 @@ const countriesMock = [
 ];
 
 const testPhone = randomPhone();
+const testPhoneNoCode = testPhone.slice(2);
 
 let fixture: ComponentFixture<AuthPageComponent>;
 let instance: AuthPageComponent;
@@ -76,41 +76,35 @@ describe('Pages: Auth Phone', () => {
       .toContain('Continue');
   });
 
-  // TODO: test next 2 in phone-input.spec
+  it('should have country data', () => {
+    expect(fixture.nativeElement.querySelector('[data-test-id=countrySelect] .select-text').textContent)
+      .toContain('+1');
+  });
 
-  // it('should have country data', () => {
-  //   expect(instance.countries)
-  //     .toBeTruthy();
+  it('should type and format phone code', () => {
+    instance.phoneInput.phone.patchValue(testPhoneNoCode);
 
-  //   expect(fixture.nativeElement.querySelector('[data-test-id=countrySelect] .select-text').textContent)
-  //     .toContain('+1');
-  // });
+    // Perform formatting:
+    const blurEvent = new Event('ionBlur');
+    const phoneInput = fixture.nativeElement.querySelector('[data-test-id=phoneInput]');
+    phoneInput.dispatchEvent(blurEvent);
 
-  // it('should type and format phone code', () => {
-  //   instance.phone.patchValue(testPhone);
+    expect(phoneInput.querySelector('input').value)
+      .toEqual(`${testPhoneNoCode.slice(0, 3)} ${testPhoneNoCode.slice(3, 6)}-${testPhoneNoCode.slice(6, 10)}`);
 
-  //   // Perform formatting:
-  //   const blurEvent = new Event('ionBlur');
-  //   const phoneInput = fixture.nativeElement.querySelector('[data-test-id=phoneInput]');
-  //   phoneInput.dispatchEvent(blurEvent);
-
-  //   expect(phoneInput.querySelector('input').value)
-  //     .toEqual(`${testPhone.slice(0, 3)} ${testPhone.slice(3, 6)}-${testPhone.slice(6, 10)}`);
-
-  //   fixture.detectChanges();
-  // });
+    fixture.detectChanges();
+  });
 
   it('should submit the phone', async done => {
     const navCtrl = fixture.debugElement.injector.get(NavController);
 
-    instance.phone = testPhone;
-    instance.submit();
+    instance.phoneInput.phone.patchValue(testPhoneNoCode);
+    instance.phoneInput.onChange(); // notify page
 
-    const authEffects = fixture.debugElement.injector.get(AuthEffects);
-    await authEffects.getCodeRequest.get();
+    await instance.submit();
 
     expect(navCtrl.push)
-      .toHaveBeenCalledWith(PageNames.AuthConfirm, { phone: testPhone });
+      .toHaveBeenCalledWith(PageNames.AuthConfirm, { params: { phone: testPhone } });
 
     done();
   });
@@ -124,6 +118,6 @@ describe('Pages: Auth Phone', () => {
     instance.submit();
 
     expect(authService.getCode)
-      .toHaveBeenCalledWith({ phone: testPhone }, { hideGenericAlertOnFieldAndNonFieldErrors: true });
+      .toHaveBeenCalledWith(testPhone);
   });
 });

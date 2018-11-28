@@ -29,6 +29,9 @@ function dataSourceToPromise<T>(dataSource: AsyncDataSource<T>): Promise<T> {
   if (dataSource instanceof Observable) {
     dataSource = dataSource.toPromise();
   }
+  if (!(dataSource instanceof Promise)) {
+    throw new Error(`dataSource should be a Promise, ${typeof dataSource} instead`);
+  }
   return dataSource;
 }
 

@@ -2,16 +2,17 @@ import { ErrorHandler, Injectable } from '@angular/core';
 import { Events } from 'ionic-angular';
 import { Actions, Effect } from '@ngrx/effects';
 
-import { authActionTypes, LogoutAction } from '~/shared/storage/auth.reducer';
 import { deleteAuthLocalData } from '~/shared/storage/token-utils';
 import { clearAllDataStores } from '~/core/api/data.module';
 import { SharedEventTypes } from '~/shared/events/shared-event-types';
+
+import { LogoutAction, USER_LOGOUT } from '~/app.reducers';
 
 @Injectable()
 export class LogoutEffects {
 
   @Effect({ dispatch: false }) onLogout = this.actions
-    .ofType(authActionTypes.USER_LOGOUT)
+    .ofType(USER_LOGOUT)
     .map(async (action: LogoutAction) => {
       try {
         this.events.publish(SharedEventTypes.beforeLogout);

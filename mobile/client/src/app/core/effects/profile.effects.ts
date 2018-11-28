@@ -18,7 +18,6 @@ import {
   profileActionTypes,
   selectProfile,
   selectProfileRequestState,
-  SetPhoneAction,
   UpdateImage,
   UpdateImageError,
   UpdateImageSuccess,
@@ -26,7 +25,6 @@ import {
   UpdateProfileErrorAction,
   UpdateProfileSuccessAction
 } from '~/core/reducers/profile.reducer';
-import { authActionTypes, ConfirmCodeSuccessAction } from '~/shared/storage/auth.reducer';
 import { BaseService } from '~/shared/api/base.service';
 
 @Injectable()
@@ -77,10 +75,6 @@ export class ProfileEffects {
           catchError(error => Observable.of(new UpdateImageError(error)))
         )
     );
-
-  @Effect() setProfilePhone = this.actions
-    .ofType(authActionTypes.CONFIRM_CODE_SUCCESS)
-    .map((action: ConfirmCodeSuccessAction) => new SetPhoneAction(action.phone));
 
   constructor(
     protected actions: Actions,

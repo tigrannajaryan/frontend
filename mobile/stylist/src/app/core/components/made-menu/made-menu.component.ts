@@ -7,10 +7,10 @@ import { Subscription } from 'rxjs/Subscription';
 import { AuthService } from '~/shared/api/auth.api';
 import { StylistProfile } from '~/shared/api/stylist-app.models';
 import { getAppVersionNumber, getBuildNumber } from '~/shared/get-build-info';
-import { AuthState, LogoutAction } from '~/shared/storage/auth.reducer';
 import { ApiResponse } from '~/shared/api/base.models';
 import { deleteAuthLocalData } from '~/shared/storage/token-utils';
 
+import { LogoutAction } from '~/app.reducers';
 import { PageNames } from '~/core/page-names';
 import { clearAllDataStores } from '~/core/data.module';
 import { ProfileDataStore } from '~/core/profile.data';
@@ -51,7 +51,7 @@ export class MadeMenuComponent implements OnInit {
     public profileData: ProfileDataStore,
     private authApiService: AuthService,
     private events: Events,
-    private store: Store<AuthState>
+    private store: Store<{}>
   ) {
     this.menuItems = [
       { title: 'Appointments', redirectToPage: PageNames.HomeSlots, redirectParams: {}, icon: 'home-a' },

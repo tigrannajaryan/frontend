@@ -1,10 +1,12 @@
 import { async, ComponentFixture } from '@angular/core/testing';
 import { NavController, NavParams } from 'ionic-angular';
+import { of } from 'rxjs/observable/of';
 
 import { TestUtils } from '~/../test';
 import { randomPhone, replaceNbspWithSpaces } from '~/shared/utils/test-utils';
 
 import { AuthService } from '~/shared/api/auth.api';
+import { AuthConfirmParams } from '~/shared/components/auth/abstract-auth-confirm.component';
 
 import { AuthConfirmPageComponent } from './auth-confirm.component';
 
@@ -27,7 +29,9 @@ describe('Pages: Auth Confirm', () => {
         .then(() => {
           // Current spec setup:
           const navParams = fixture.debugElement.injector.get(NavParams);
-          navParams.data.phone = testPhone;
+          const params: AuthConfirmParams = { phone: testPhone };
+
+          navParams.data.params = params;
 
           instance.ionViewWillEnter();
           fixture.detectChanges();
@@ -68,11 +72,11 @@ describe('Pages: Auth Confirm', () => {
   it('should send a new code on re-send code link click', () => {
     const authService = fixture.debugElement.injector.get(AuthService);
 
-    spyOn(authService, 'getCode');
+    spyOn(authService, 'getCode').and.returnValue(of({}));
 
     fixture.nativeElement.querySelector('[data-test-id=sendNewCode]').click();
 
     expect(authService.getCode)
-      .toHaveBeenCalledWith({ phone: testPhone }, { hideGenericAlertOnFieldAndNonFieldErrors: true });
+      .toHaveBeenCalledWith(testPhone);
   });
 });

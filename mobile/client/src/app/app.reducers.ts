@@ -1,9 +1,7 @@
-import { ActionReducer, MetaReducer } from '@ngrx/store';
+import { Action, ActionReducer, MetaReducer, State } from '@ngrx/store';
 import { storeLogger } from 'ngrx-store-logger';
 
 import { ENV } from '~/environments/environment.default';
-
-import { resetOnLogoutReducer } from '~/shared/storage/auth.reducer';
 
 /**
  * storeFreeze prevents state from being mutated. When mutation occurs, an
@@ -36,8 +34,25 @@ export interface State {
 /**
  * Use meta reducer to log all actions.
  */
-export function logger(actionReducer: ActionReducer<State>): ActionReducer<State> {
+export function logger(actionReducer: ActionReducer<State<{}>>): ActionReducer<State<{}>> {
   return storeLogger()(actionReducer);
+}
+
+export const USER_LOGOUT = 'APP_USER_LOGOUT';
+
+// Next action and reducer used to reset state completely when user logs out
+export class LogoutAction implements Action {
+  readonly type = USER_LOGOUT;
+  constructor(public onSuccess?: (...args: any[]) => any) {}
+}
+
+export function resetOnLogoutReducer(reducer: ActionReducer<State<{}>>): ActionReducer<State<{}>> {
+  return (state: State<any>, action: any) => {
+    if (action.type === USER_LOGOUT) {
+      state = undefined;
+    }
+    return reducer(state, action);
+  };
 }
 
 /**
@@ -45,8 +60,8 @@ export function logger(actionReducer: ActionReducer<State>): ActionReducer<State
  * the root meta-reducer. To add more meta-reducers, provide an array of meta-reducers
  * that will be composed to form the root meta-reducer.
  */
-export function getMetaReducers(): Array<MetaReducer<State>> {
-  const metaReducers: Array<MetaReducer<State>> = [];
+export function getMetaReducers(): Array<MetaReducer<State<{}>>> {
+  const metaReducers: Array<MetaReducer<State<{}>>> = [];
 
   if (!ENV.production) { // development and staging
     metaReducers.push(

@@ -99,12 +99,10 @@ import { StylistsServiceMock } from '~/core/api/stylists.service.mock';
 import { ProfileApi } from '~/core/api/profile-api';
 import { ProfileApiMock } from '~/core/api/profile-api.mock';
 
-import { authPath, authReducer } from '~/shared/storage/auth.reducer';
 import { profilePath, profileReducer } from '~/core/reducers/profile.reducer';
 import { servicesPath, servicesReducer } from '~/core/reducers/services.reducer';
 
 import { LogoutEffects } from '~/core/effects/logout.effects';
-import { AuthEffects } from '~/shared/storage/auth.effects';
 import { ServicesEffects } from '~/core/effects/services.effects';
 
 import { AuthProcessState } from '~/shared/storage/auth-process-state';
@@ -210,13 +208,11 @@ export class TestUtils {
         DataModule.forRoot(),
         // Store
         StoreModule.forRoot({}),
-        StoreModule.forFeature(authPath, authReducer),
         StoreModule.forFeature(profilePath, profileReducer),
         StoreModule.forFeature(servicesPath, servicesReducer),
         EffectsModule.forRoot([]),
         EffectsModule.forFeature([
           LogoutEffects,
-          AuthEffects,
           ServicesEffects
         ]),
         ...imports

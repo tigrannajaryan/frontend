@@ -5,7 +5,6 @@ import { Store } from '@ngrx/store';
 
 import { componentUnloaded } from '~/shared/component-unloaded';
 import { ExternalAppService } from '~/shared/utils/external-app-service';
-import { LogoutAction } from '~/shared/storage/auth.reducer';
 import { ApiResponse } from '~/shared/api/base.models';
 
 import { PageNames } from '~/core/page-names';
@@ -14,6 +13,7 @@ import { DefaultImage } from '~/core/core.module';
 import { ProfileCompleteness, ProfileModel } from '~/core/api/profile.models';
 import { checkProfileCompleteness } from '~/core/utils/user-utils';
 
+import { LogoutAction } from '~/app.reducers';
 import { ProfileDataStore } from '~/profile/profile.data';
 
 @Component({
