@@ -18,17 +18,18 @@ import AuthErrors from '~/core/data/auth.errors.json';
 @Injectable()
 export class AuthServiceMock extends BaseServiceMock {
 
-  getCode(params: GetCodeParams): Observable<ApiResponse<GetCodeResponse>> {
+  getCode(phone: string): Observable<ApiResponse<GetCodeResponse>> {
     return this.mockRequest<ConfirmCodeResponse>(
       Observable.create(observer => {
         setTimeout(() => {
           observer.next({});
+          observer.complete();
         }, 500);
       })
     );
   }
 
-  confirmCode(params: ConfirmCodeParams): Observable<ApiResponse<ConfirmCodeResponse>> {
+  confirmCode(phone: string, code: string): Observable<ApiResponse<ConfirmCodeResponse>> {
     return this.mockRequest<ConfirmCodeResponse>(
       Observable.create(observer => {
         setTimeout(() => {
@@ -46,6 +47,7 @@ export class AuthServiceMock extends BaseServiceMock {
               instagram_url: faker.helpers.slugify(`${name}${lastName}`)
             }]
           });
+          observer.complete();
          }, 500);
       })
     );

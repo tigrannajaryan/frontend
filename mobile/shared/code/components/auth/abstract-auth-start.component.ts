@@ -1,7 +1,8 @@
+import { ViewChild } from '@angular/core';
 import { NavController } from 'ionic-angular';
 
 import { AuthService } from '~/shared/api/auth.api';
-import { PhoneData } from '~/shared/components/phone-input/phone-input.component';
+import { PhoneData, PhoneInputComponent } from '~/shared/components/phone-input/phone-input.component';
 import { loading } from '~/shared/utils/loading';
 
 import { PageNames } from '~/core/page-names'; // resolved relatively
@@ -16,6 +17,8 @@ export abstract class AbstractAuthStartComponent {
 
   protected auth: AuthService;
   protected navCtrl: NavController;
+
+  @ViewChild(PhoneInputComponent) phoneInput: PhoneInputComponent;
 
   onPhoneChange(phoneData: PhoneData): void {
     const { phone, valid } = phoneData;
