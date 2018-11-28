@@ -254,7 +254,7 @@ export class HomeSlotsComponent {
           onSuccess: () => this.profileDataStore.refresh()
         };
         buttons.push({
-          text: 'Add to Calendar',
+          text: 'Add to Google Calendar',
           handler: () => { this.navCtrl.push(PageNames.CalendarPriming, { params }); }
         });
       }

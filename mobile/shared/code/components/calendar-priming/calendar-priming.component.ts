@@ -87,7 +87,7 @@ export class CalendarPrimingComponent {
     const params: SuccessErrorPopupParams = {
       isSuccess: true,
       title: 'Success',
-      message: `This and future appointments will appear in ${calendarUserEmail} Google Calendar.`,
+      message: `This and future appointments will appear in ${calendarUserEmail} Google Calendar within 15 mins after a new booking.`,
       dismissText: 'Continue'
     };
     const popup = this.modalCtrl.create(SuccessErrorPopupComponent, { params });
