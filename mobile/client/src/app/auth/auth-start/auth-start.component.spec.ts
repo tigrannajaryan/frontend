@@ -118,6 +118,6 @@ describe('Pages: Auth Phone', () => {
     instance.submit();
 
     expect(authService.getCode)
-      .toHaveBeenCalledWith({ phone: testPhone }, { hideGenericAlertOnFieldAndNonFieldErrors: true });
+      .toHaveBeenCalledWith(testPhone);
   });
 });
