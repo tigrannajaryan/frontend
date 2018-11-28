@@ -9,7 +9,6 @@ import { BaseServiceMock } from '~/shared/api/base.service.mock';
 import {
   ConfirmCodeParams,
   ConfirmCodeResponse,
-  GetCodeParams,
   GetCodeResponse
 } from '~/shared/api/auth.models';
 
