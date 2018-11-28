@@ -74,20 +74,21 @@
           </ion-row>
 
           <ion-row>
-              <ion-col col-7></ion-col>
-            <ion-col col-5 class="AppointmentPage-cardAppTip">Tip not included</ion-col>
+            <ion-col col-7></ion-col>
+            <ion-col *ngIf="!params.appointment.has_tax_included" col-5 class="AppointmentPage-cardAppTip">Tax and tip not included</ion-col>
+            <ion-col *ngIf="params.appointment.has_tax_included" col-5 class="AppointmentPage-cardAppTip">Tip not included</ion-col>
           </ion-row>
         </ion-grid>
       </div>
 
       <div class="AppointmentPage-actions">
-        <button ion-button class="Button" *ngIf="params.onConfirmClick" (click)="onConfirmClick()">Confirm booking</button>
+        <button ion-button class="Button" *ngIf="params.onConfirmClick" (click)="onConfirmClick()">Confirm Booking</button>
 
         <!-- rebooking link -->
-        <div class="AppointmentPage-reBook" *ngIf="params.hasRebook" (click)="onRebookClick()">Re-book appointment</div>
+        <div class="AppointmentPage-reBook" *ngIf="params.hasRebook" (click)="onRebookClick()">Re-book Appointment</div>
 
         <!-- cancelation link -->
-        <a class="AppointmentPage-cancelBooking" *ngIf="params.onCancel" (click)="onCancelClick()">Cancel booking</a>
+        <a class="AppointmentPage-cancelBooking" *ngIf="params.onCancel" (click)="onCancelClick()">Cancel Booking</a>
       </div>
     </ng-template>
   </div>
