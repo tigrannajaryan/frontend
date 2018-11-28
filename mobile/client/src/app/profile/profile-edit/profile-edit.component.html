@@ -12,16 +12,18 @@
 </ion-header>
 
 <ion-content no-padding class="ProfilePage">
-  <div class="contentSidePadding">
-    <div (click)="onProcessPhoto()" [style.backgroundImage]="'url(' + (this.form.value.profile_photo_url || DEFAULT_IMAGE) + ')'" class="ProfilePage-pic" data-test-id="profile_photo">
+  <div class="contentSidePadding ProfilePage-editWp">
+    <div class="Made-h1 ProfilePage-h1">Edit Profile</div>
+
+    <div (click)="onProcessPhoto()" [style.backgroundImage]="'url(' + (this.form.value.profile_photo_url || DEFAULT_IMAGE) + ')'" class="ProfilePage-pic is-profile" data-test-id="profile_photo">
       <div class="ProfilePage-add">
-        <ion-icon name="md-camera"></ion-icon>
+        <ion-icon name="md-create"></ion-icon>
       </div>
     </div>
     <form [formGroup]="form">
       <ion-grid class="defGrid">
         <ion-row>
-          <ion-col col-6>
+          <ion-col>
             <ion-item class="Input">
               <ion-label floating>First name</ion-label>
               <ion-input formControlName="first_name" type="text" data-test-id="first_name"></ion-input>
@@ -31,7 +33,10 @@
               </div>
             </ion-item>
           </ion-col>
-          <ion-col col-6>
+        </ion-row>
+
+        <ion-row>
+          <ion-col>
             <ion-item class="Input">
               <ion-label floating>Last name</ion-label>
               <ion-input formControlName="last_name" type="text" data-test-id="last_name"></ion-input>
