@@ -17,7 +17,7 @@
 
     <div (click)="onProcessPhoto()" [style.backgroundImage]="'url(' + (this.form.value.profile_photo_url || DEFAULT_IMAGE) + ')'" class="ProfilePage-pic is-profile" data-test-id="profile_photo">
       <div class="ProfilePage-add">
-        <ion-icon name="md-create"></ion-icon>
+        <i class="mb-icon-pencil"></i>
       </div>
     </div>
     <form [formGroup]="form">

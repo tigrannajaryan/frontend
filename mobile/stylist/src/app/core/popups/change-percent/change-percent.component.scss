@@ -7,7 +7,7 @@ change-percent {
     overflow-y: scroll;
     text-align: center;
     background: color($colors, white);
-    box-shadow: 0 0 pxtovw(40px) #E4E4E4;
+    box-shadow: 0 0 pxtovw(40px) color($colors, lightGrey);
     transition: all 100ms linear;
 
     &.is-errorMsg {

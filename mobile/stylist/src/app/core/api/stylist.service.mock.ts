@@ -7,6 +7,7 @@ import { ApiResponse } from '~/shared/api/base.models';
 import {
   ServiceCategory,
   ServiceItem,
+  SetStylistServicesParams,
   StylistProfile,
   StylistServicesListResponse
 } from '~/shared/api/stylist-app.models';
@@ -92,5 +93,34 @@ export class StylistServiceMock {
         }]
       }
     });
+  }
+
+  setStylistServices(data: SetStylistServicesParams): Observable<ApiResponse<StylistServicesListResponse>> {
+    return Observable.of({
+      response: {
+        categories: [{
+          uuid: faker.random.uuid(),
+          name: faker.commerce.productName(),
+          services: serviceItemsMock
+        }],
+        service_time_gap_minutes: 60
+      }
+    });
+  }
+
+  /**
+   * Converts groupped services from this.categores into a flat
+   * array of ServiceItem.
+   */
+  getFlatServiceList(categories: ServiceCategory[]): ServiceItem[] | undefined {
+    return categories.reduce((services, category) => (
+      services.concat(
+        category.services.map(service => ({
+          ...service,
+          is_enabled: true,
+          category_uuid: category.uuid
+        }))
+      )
+    ), []);
   }
 }

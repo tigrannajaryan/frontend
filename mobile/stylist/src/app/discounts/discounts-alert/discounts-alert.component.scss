@@ -7,7 +7,7 @@ discounts-alert {
     overflow-y: scroll;
     text-align: center;
     background: color($colors, bb_pink);
-    box-shadow: 0 0 40px #E4E4E4;
+    box-shadow: 0 0 pxtovw(40px) color($colors, lightGrey);
 
     &-close {
       position: absolute;
