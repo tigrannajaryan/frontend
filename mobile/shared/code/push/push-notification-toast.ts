@@ -26,7 +26,7 @@ export type PushNotificationHandlerSubscription =
  * Second param of onDidDismiss will either receive ”backdrop” or ”close”.
  * For more –> https://github.com/ionic-team/ionic/issues/11512
  */
-enum ToastDismissedBy {
+export enum ToastDismissedBy {
   // Dismissed on running out of time to show the toast:
   Timeout = 'backdrop',
   // Dismissed when user manually clicked dismiss btn:
@@ -88,32 +88,12 @@ export class PushNotificationToastService implements OnDestroy {
   /**
    * This method shows a special push notification toast with some additional side effects provided by PushNotificationHandlerSubscription.
    */
-  protected handlePushNotificationEvent(details: PushNotificationEventDetails): void {
-    /**
-     * This is the place where all the magic happens.
-     * 1. We run subscriptions one by one providing PushNotificationEventDetails inside.
-     * 2. We combine resulting PushNotificationHandlerParams returned from subscription call using Object.assign (spread operator).
-     * 3. As a result we have an additional params provided by some of the subscriptions.
-     *
-     * NOTE: subscriptions are called one by one in the order of subscribing.
-     */
-    const handlerParams: PushNotificationHandlerParams =
-      this.handlerParamsSubscriptions.reduce(
-        (params: PushNotificationHandlerParams, subscription: PushNotificationHandlerSubscription) => {
-          const newParams = subscription(details) || {};
-          return { ...params, ...newParams };
-        },
-        {}
-      );
+  protected async handlePushNotificationEvent(details: PushNotificationEventDetails): Promise<void> {
+    const handlerParams: PushNotificationHandlerParams = this.getNotificationParams(details);
 
     if (details.foreground) {
       // Show a toast if the app is open allready (it‘s called foreground):
-      const toastOptions: ToastOptions = {
-        ...PushNotificationToastService.defaultToastParams,
-        closeButtonText: handlerParams.buttonText || PushNotificationToastService.defaultToastParams.closeButtonText,
-        duration: handlerParams.duration || PushNotificationToastService.defaultToastParams.duration,
-        message: details.message
-      };
+      const toastOptions: ToastOptions = this.getToastOptions(details, handlerParams);
 
       const toast = this.toastCtrl.create(toastOptions);
       if (handlerParams.onClick) {
@@ -135,6 +115,33 @@ export class PushNotificationToastService implements OnDestroy {
     }
 
     // Tell the backend that user has seen the notification:
-    this.api.ackNotification({ message_uuids: [details.uuid] }).toPromise();
+    await this.api.ackNotification({ message_uuids: [details.uuid] }).toPromise();
+  }
+
+  protected getNotificationParams(details: PushNotificationEventDetails): PushNotificationHandlerParams {
+    /**
+     * This is the place where all the magic happens.
+     * 1. We run subscriptions one by one providing PushNotificationEventDetails inside.
+     * 2. We combine resulting PushNotificationHandlerParams returned from subscription call using Object.assign (spread operator).
+     * 3. As a result we have an additional params provided by some of the subscriptions.
+     *
+     * NOTE: subscriptions are called one by one in the order of subscribing.
+     */
+    return this.handlerParamsSubscriptions.reduce(
+      (params: PushNotificationHandlerParams, subscription: PushNotificationHandlerSubscription) => {
+        const newParams = subscription(details) || {};
+        return { ...params, ...newParams };
+      },
+      {}
+    );
+  }
+
+  protected getToastOptions(details: PushNotificationEventDetails, params: PushNotificationHandlerParams): ToastOptions {
+    return {
+      ...PushNotificationToastService.defaultToastParams,
+      closeButtonText: params.buttonText || PushNotificationToastService.defaultToastParams.closeButtonText,
+      duration: params.duration || PushNotificationToastService.defaultToastParams.duration,
+      message: details.message
+    };
   }
 }
