@@ -126,5 +126,9 @@
   {
     "url": "https://github.com/sindresorhus/camelcase/blob/master/license",
     "title": "camelcase (MIT License)"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/jeduan/cordova-plugin-facebook4/master/LICENSE",
+    "title": "cordova-plugin-facebook4 (Apache License)"
   }
 ]

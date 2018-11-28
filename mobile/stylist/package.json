@@ -44,6 +44,7 @@
     "@ionic-native/date-picker": "4.17.0",
     "@ionic-native/diagnostic": "4.15.0",
     "@ionic-native/email-composer": "4.15.0",
+    "@ionic-native/facebook": "4.7.0",
     "@ionic-native/geolocation": "4.15.0",
     "@ionic-native/google-analytics": "4.7.0",
     "@ionic-native/google-plus": "4.17.0",
@@ -79,6 +80,7 @@
     "cordova-plugin-datepicker": "0.9.3",
     "cordova-plugin-device": "2.0.2",
     "cordova-plugin-email-composer": "0.8.15",
+    "cordova-plugin-facebook4": "3.2.0",
     "cordova-plugin-geolocation": "4.0.1",
     "cordova-plugin-google-analytics": "1.8.6",
     "cordova-plugin-googleplus": "5.3.2",
@@ -190,6 +192,10 @@
         "REVERSED_CLIENT_ID": "com.googleusercontent.apps.833238145213-u4lbuebvh1voqude6fo0qa3poc4aru75",
         "WEB_APPLICATION_CLIENT_ID": "17636556416-l518l3bkc3pev82sl9d2dq6vrd1th7hc.apps.googleusercontent.com",
         "PLAY_SERVICES_VERSION": "11.0.1"
+      },
+      "cordova-plugin-facebook4": {
+        "APP_ID": "123456789",
+        "APP_NAME": "Made Pro"
       }
     },
     "platforms": [

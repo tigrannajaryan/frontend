@@ -10,5 +10,7 @@
 			"path": "shared"
 		}
 	],
-  "settings": {}
+	"settings": {
+		"editor.tabSize": 2
+	}
 }

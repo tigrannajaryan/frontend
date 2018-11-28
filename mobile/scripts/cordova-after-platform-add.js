@@ -5,102 +5,6 @@ try {
   xml2js = require('../stylist/node_modules/xml2js');
 }
 
-function patchConfigXml(fs, path, projectRootPath, platforms) {
-  // Values in webclientid-config.json are from
-  // https://console.developers.google.com/apis/credentials?project=made-prod&organizationId=1065847735654
-
-  var webclientidConfigFname = path.join(projectRootPath, '../support/config/webclientid-config.json');
-  var webclientidJson = fs.readFileSync(webclientidConfigFname, 'utf-8');
-  var googlePlusProductionWebAppClientId = JSON.parse(webclientidJson);
-
-  // Reversed client id is only needed for iOS
-  var googlePlusProductionReversedClientId = {
-    staging: {
-      ios: "apps.googleusercontent.com.17636556416-l518l3bkc3pev82sl9d2dq6vrd1th7hc",
-      android: ""
-    },
-    prod: {
-      ios: "com.googleusercontent.apps.833238145213-u4lbuebvh1voqude6fo0qa3poc4aru75",
-      android: ""
-    }
-  };
-
-  var fname = path.join(projectRootPath, 'config.xml');
-  var data = fs.readFileSync(fname, 'utf-8');
-  console.log('Going to patch', fname);
-  var platform = platforms[0];  
-  console.log('Platform is', platform);
-
-  // Remove part of platform that comes after @ if present
-  const indexAt = platform.indexOf('@');
-  if (indexAt >= 0) {
-    platform = platform.substring(0, indexAt);
-    console.log('Platform is', platform);
-  }
-
-  var envName = (process.env.MB_ENV || '').trim();
-  if (envName !== 'prod') {
-    // Use staging configuration by for all environments except prod
-    envName = 'staging';
-  }
-
-  if (envName) {
-    var googleServicesFile = 'google-services-' + envName + '.json';
-  }
-
-  console.log('Using configuration for environment', envName);
-
-  console.log('config.xml is', data);
-
-  xml2js.parseString(data, function (err, result) {
-    if (err) {
-      return console.error(err);
-    }
-
-    console.log('Parsed ', fname);
-
-    // Get JS Obj
-    var obj = result;    
-
-    // Patche Google Plus plugin parameters
-    var googlePlusPlugin = obj['widget']['plugin'].find(e => e['$']['name'] === 'cordova-plugin-googleplus');
-
-    console.log('googlePlusPlugin is', googlePlusPlugin);
-
-    var WEB_APPLICATION_CLIENT_ID = googlePlusPlugin['variable'].find(e => e['$']['name'] === 'WEB_APPLICATION_CLIENT_ID');
-    console.log('WEB_APPLICATION_CLIENT_ID is', WEB_APPLICATION_CLIENT_ID);
-    WEB_APPLICATION_CLIENT_ID['$']['value'] = googlePlusProductionWebAppClientId[envName][platform];
-    console.log('Updated WEB_APPLICATION_CLIENT_ID to', googlePlusProductionWebAppClientId[envName][platform]);
-
-    var REVERSED_CLIENT_ID = googlePlusPlugin['variable'].find(e => e['$']['name'] === 'REVERSED_CLIENT_ID');
-    console.log('REVERSED_CLIENT_ID is', REVERSED_CLIENT_ID);
-    REVERSED_CLIENT_ID['$']['value'] = googlePlusProductionReversedClientId[envName][platform];
-    console.log('Updated REVERSED_CLIENT_ID to', googlePlusProductionReversedClientId[envName][platform]);
-
-    if (googleServicesFile) {
-      // Patch google-services.json file name
-      var currentPlatform = obj['widget']['platform'].find(e => e['$']['name'] === platform);
-      console.log('currentPlatform is', currentPlatform);
-      var googleServicesResourceFile = currentPlatform['resource-file'].find(e => e['$']['target'] === 'app/google-services.json');
-      console.log('googleServicesResourceFile is', googleServicesResourceFile);
-
-      googleServicesResourceFile['$']['src'] = googleServicesFile;
-      console.log('Updated googleServicesResourceFile to', googleServicesFile);
-    }
-
-    console.log('Building XML from json');
-
-    // Build XML from JS Obj
-    var builder = new xml2js.Builder();
-    var xml = builder.buildObject(obj);
-
-    console.log('Saving', fname);
-
-    fs.writeFileSync(fname, xml, 'utf-8');
-    console.log('cordova-after-platform-add.js: patching complete');
-  });
-}
-
 function patchBuildGradle(fs, fname) {
 
   console.log('cordova-after-platform-add.js: patching', fname);
@@ -151,8 +55,6 @@ module.exports = function (ctx) {
     var projProp = path.join(ctx.opts.projectRoot, 'platforms/android/project.properties');
     patchProjectProperties(fs, projProp);
   }
-
-  patchConfigXml(fs, path, ctx.opts.projectRoot, ctx.opts.platforms);
 
   return deferral.promise;
 };
