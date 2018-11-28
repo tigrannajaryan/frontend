@@ -178,7 +178,7 @@ export class UpcomingAndPastComponent {
     if (profile && !profile.google_calendar_integrated) {
       // Google Calendar is not integrated, show action to do it.
       buttons.push({
-        text: 'Add to Calendar',
+        text: 'Add to Google Calendar',
         handler: () => this.navCtrl.push(PageNames.CalendarPriming)
       });
     }

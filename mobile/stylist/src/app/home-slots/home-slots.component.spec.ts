@@ -129,7 +129,7 @@ describe('Pages: HomeSlotsComponent', () => {
       .toEqual([
         { text: 'Check Out' },
         { text: 'No Show' },
-        { text: 'Add to Calendar' },
+        { text: 'Add to Google Calendar' },
         { text: `Call: ${getPhoneNumber(appointment.client_phone)}`},
         { text: `Copy: ${getPhoneNumber(appointment.client_phone)}`},
         { text: 'Cancel Appointment', role: 'destructive' },
@@ -148,7 +148,7 @@ describe('Pages: HomeSlotsComponent', () => {
       .toEqual([
         { text: 'Check Out' },
         { text: 'No Show' },
-        { text: 'Add to Calendar' },
+        { text: 'Add to Google Calendar' },
         // Call and copy unavailable in this case
         // { text: `Call: ${getPhoneNumber(appointment.client_phone)}`},
         // { text: `Copy: ${getPhoneNumber(appointment.client_phone)}`},
@@ -168,7 +168,7 @@ describe('Pages: HomeSlotsComponent', () => {
         { text: 'Check Out' },
         // 'No Show' removed in this case
         // { text: 'No Show' },
-        { text: 'Add to Calendar' },
+        { text: 'Add to Google Calendar' },
         { text: `Call: ${getPhoneNumber(appointment.client_phone)}`},
         { text: `Copy: ${getPhoneNumber(appointment.client_phone)}`},
         { text: 'Cancel Appointment', role: 'destructive' },
@@ -187,7 +187,7 @@ describe('Pages: HomeSlotsComponent', () => {
         // 'Check Out' removed in this case
         // { text: 'Check Out' },
         { text: 'No Show' },
-        { text: 'Add to Calendar' },
+        { text: 'Add to Google Calendar' },
         { text: `Call: ${getPhoneNumber(appointment.client_phone)}`},
         { text: `Copy: ${getPhoneNumber(appointment.client_phone)}`},
         // 'Cancel Appointment' replaced with 'Delete Appointment' in this case
@@ -207,7 +207,7 @@ describe('Pages: HomeSlotsComponent', () => {
         // 'Check Out' replaced with 'Details' in this case
         { text: 'Details' },
         { text: 'No Show' },
-        { text: 'Add to Calendar' },
+        { text: 'Add to Google Calendar' },
         { text: `Call: ${getPhoneNumber(appointment.client_phone)}`},
         { text: `Copy: ${getPhoneNumber(appointment.client_phone)}`},
         { text: 'Cancel Appointment', role: 'destructive' },
@@ -245,7 +245,7 @@ describe('Pages: HomeSlotsComponent', () => {
         { text: 'Check Out' },
         // 'No Show' removed in this case
         // { text: 'No Show' },
-        { text: 'Add to Calendar' },
+        { text: 'Add to Google Calendar' },
         { text: `Call: ${getPhoneNumber(appointment.client_phone)}`},
         { text: `Copy: ${getPhoneNumber(appointment.client_phone)}`},
         { text: 'Cancel Appointment', role: 'destructive' },

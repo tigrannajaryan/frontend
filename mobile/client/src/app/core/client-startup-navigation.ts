@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { App, Events, NavController } from 'ionic-angular';
+import { App, NavController } from 'ionic-angular';
 import { Page } from 'ionic-angular/navigation/nav-util';
 
 import { PageNames } from './page-names';
@@ -10,7 +10,7 @@ import { PushNotification } from '~/shared/push/push-notification';
 import { getAuthLocalData } from '~/shared/storage/token-utils';
 import { StylistSearchParams } from '~/stylists/stylists-search/stylists-search.component';
 import { FirstLastNamePageParams } from '~/profile/first-last-name/first-last-name.component';
-import { SharedEventTypes } from '~/shared/events/shared-event-types';
+import { PushPrimingScreenParams } from '~/shared/components/push-priming-screen/push-priming-screen.component';
 
 export interface PageDescr {
   page: Page;
@@ -65,11 +65,8 @@ export class ClientStartupNavigation {
 
   constructor(
     private app: App,
-    private events: Events,
     private pushNotification: PushNotification
   ) {
-    this.events.subscribe(SharedEventTypes.continueAfterPushPriming,
-      () => this.showNextByProfileStatus(this.app.getRootNav()));
   }
 
   /**
@@ -140,9 +137,15 @@ export class ClientStartupNavigation {
   }
 
   private async nextToShowForCompleteProfile(): Promise<PageDescr> {
-    // The only remaining optional screen is push priming screen. Check it.
+    // The only remaining optional screen is push priming screen. Check if need to show it.
     if ((await this.pushNotification.needToShowPermissionScreen())) {
-      return { page: PageNames.PushPrimingScreen };
+      // Yes, we need to show it. Do it.
+
+      const params: PushPrimingScreenParams = {
+        // Show next appropriate screen after PushPrimingScreen
+        onContinue: () => this.showNextByProfileStatus(this.app.getRootNav())
+      };
+      return { page: PageNames.PushPrimingScreen, params: { params } };
     }
 
     // If in the future we have any other pages that we want to show to users with completed
