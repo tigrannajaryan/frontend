@@ -2,10 +2,10 @@ import { ViewChild } from '@angular/core';
 import { Events, NavParams } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
 
+import { AuthService } from '~/shared/api/auth.api';
 import { ConfirmCodeResponse, GetCodeResponse } from '~/shared/api/auth.models';
 import { CodeData, CodeInputComponent } from '~/shared/components/code-input/code-input.component';
 import { AfterLoginEvent, SharedEventTypes } from '~/shared/events/shared-event-types';
-import { AuthDataStore } from '~/shared/storage/auth.data';
 import { AuthProcessState } from '~/shared/storage/auth-process-state';
 import { AuthLocalData, authResponseToTokenModel, saveAuthLocalData } from '~/shared/storage/token-utils';
 import { composeRequest, loading } from '~/shared/utils/request-utils';
@@ -25,7 +25,7 @@ export abstract class AbstractAuthConfirmComponent {
 
   resendCodeCountdown: Observable<number>;
 
-  protected auth: AuthDataStore;
+  protected auth: AuthService;
   protected authDataState: AuthProcessState;
   protected events: Events;
   protected navParams: NavParams;

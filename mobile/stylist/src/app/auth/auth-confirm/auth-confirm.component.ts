@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import { Events, NavController, NavParams } from 'ionic-angular';
 
+import { AuthService } from '~/shared/api/auth.api';
 import { ConfirmCodeResponse } from '~/shared/api/auth.models';
 import { StylistProfileStatus } from '~/shared/api/stylist-app.models';
 import { AbstractAuthConfirmComponent } from '~/shared/components/auth/abstract-auth-confirm.component';
-import { AuthDataStore } from '~/shared/storage/auth.data';
 import { AuthProcessState } from '~/shared/storage/auth-process-state';
 
 import { clearAllDataStores } from '~/core/data.module';
@@ -19,7 +19,7 @@ import { StylistEventTypes } from '~/core/stylist-event-types';
 export class AuthConfirmPageComponent extends AbstractAuthConfirmComponent {
 
   constructor(
-    protected auth: AuthDataStore,
+    protected auth: AuthService,
     protected authDataState: AuthProcessState,
     protected events: Events,
     protected navCtrl: NavController,

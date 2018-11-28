@@ -1,6 +1,6 @@
 import { NavController } from 'ionic-angular';
 
-import { AuthDataStore } from '~/shared/storage/auth.data';
+import { AuthService } from '~/shared/api/auth.api';
 import { PhoneData } from '~/shared/components/phone-input/phone-input.component';
 import { loading } from '~/shared/utils/loading';
 
@@ -14,7 +14,7 @@ export abstract class AbstractAuthStartComponent {
   isLoading = false;
   isDisabled = true;
 
-  protected auth: AuthDataStore;
+  protected auth: AuthService;
   protected navCtrl: NavController;
 
   onPhoneChange(phoneData: PhoneData): void {

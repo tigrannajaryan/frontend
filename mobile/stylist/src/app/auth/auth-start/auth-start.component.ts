@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 
+import { AuthService } from '~/shared/api/auth.api';
 import { AbstractAuthStartComponent } from '~/shared/components/auth/abstract-auth-start.component';
-import { AuthDataStore } from '~/shared/storage/auth.data';
 
 @Component({
   selector: 'page-auth-start',
@@ -11,7 +11,7 @@ import { AuthDataStore } from '~/shared/storage/auth.data';
 export class AuthPageComponent extends AbstractAuthStartComponent {
 
   constructor(
-    protected auth: AuthDataStore,
+    protected auth: AuthService,
     protected navCtrl: NavController
   ) {
     super();

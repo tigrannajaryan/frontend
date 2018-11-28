@@ -2,10 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 
-import { ApiRequestOptions } from '~/shared/api-errors';
 import { ApiResponse } from '~/shared/api/base.models';
-import { Logger } from '~/shared/logger';
-import { ServerStatusTracker } from '~/shared/server-status-tracker';
 import { BaseService } from '~/shared/api/base.service';
 import {
   AuthResponse,
@@ -15,14 +12,27 @@ import {
   GetCodeResponse,
   UserRole
 } from '~/shared/api/auth.models';
+import { ApiFieldAndNonFieldErrors, ApiRequestOptions, FieldErrorItem, NonFieldErrorItem } from '~/shared/api-errors';
+import { Logger } from '~/shared/logger';
+import { ServerStatusTracker } from '~/shared/server-status-tracker';
+import { UserContext } from '~/shared/user-context';
 
 import config from '~/auth/config.json';
-import { UserContext } from '~/shared/user-context';
 
 @Injectable()
 export class AuthService extends BaseService {
 
   static role: UserRole = (config && config.role) || 'client';
+
+  static waitNewCodeError =
+    new ApiFieldAndNonFieldErrors(
+      [new NonFieldErrorItem({ code: 'err_wait_to_rerequest_new_code' })]
+    );
+
+  static invalidConfirmCodeError =
+    new ApiFieldAndNonFieldErrors(
+      [new FieldErrorItem('code', { code: 'err_invalid_sms_code' })]
+    );
 
   constructor(
     protected userContext: UserContext,
@@ -33,13 +43,29 @@ export class AuthService extends BaseService {
     super(http, logger, serverStatus);
   }
 
-  getCode(data: GetCodeParams, options: ApiRequestOptions = {}): Observable<ApiResponse<GetCodeResponse>> {
-    const params: GetCodeParams = { ...data, role: AuthService.role };
-    return this.post<GetCodeResponse>('auth/get-code', params, undefined, options);
+  getCode(phone: string): Observable<ApiResponse<GetCodeResponse>> {
+    const params: GetCodeParams = { phone, role: AuthService.role };
+    const options: ApiRequestOptions = {
+      hideGenericAlertOnErrorsLike: [AuthService.waitNewCodeError]
+    };
+    return (
+      this.post<GetCodeResponse>('auth/get-code', params, undefined, options)
+        .map(({ response, error }) => {
+          if (error && AuthService.waitNewCodeError.isLike(error)) {
+            // Return no error on code re-request timeout error:
+            return { response: {}, error: undefined };
+          }
+          return { response, error };
+        })
+    );
   }
 
-  confirmCode(data: ConfirmCodeParams, options: ApiRequestOptions = {}): Observable<ApiResponse<ConfirmCodeResponse>> {
-    const params: ConfirmCodeParams = { ...data, role: AuthService.role };
+  confirmCode(phone: string, code: string): Observable<ApiResponse<ConfirmCodeResponse>> {
+    const params: ConfirmCodeParams = { phone, code, role: AuthService.role };
+    const options: ApiRequestOptions = {
+      // The invalidConfirmCodeError is handled customly by the AuthConfirm component, skip common handling:
+      hideGenericAlertOnErrorsLike: [AuthService.invalidConfirmCodeError]
+    };
     return this.processAuthResponse(
       () => this.post<ConfirmCodeResponse>('auth/code/confirm', params, undefined, options));
   }

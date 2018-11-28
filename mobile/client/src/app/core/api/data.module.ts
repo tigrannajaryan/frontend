@@ -3,7 +3,6 @@ import { IonicModule } from 'ionic-angular';
 
 import { AppointmentsApi } from '~/core/api/appointments.api';
 import { AppointmentsDataStore } from '~/core/api/appointments.datastore';
-import { AuthDataStore } from '~/shared/storage/auth.data';
 import { AuthProcessState } from '~/shared/storage/auth-process-state';
 import { AuthService } from '~/shared/api/auth.api';
 import { BookingData } from '~/core/api/booking.data';
@@ -50,7 +49,6 @@ export class DataModule {
       // of singletons.
       providers: [
         AppointmentsDataStore,
-        AuthDataStore,
         AuthProcessState,
         PreferredStylistsData,
         ProfileDataStore,
