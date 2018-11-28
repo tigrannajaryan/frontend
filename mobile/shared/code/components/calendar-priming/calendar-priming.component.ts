@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ModalController, NavController, Platform } from 'ionic-angular';
+import { LoadingController, ModalController, NavController, NavParams, Platform } from 'ionic-angular';
 
 import { SuccessErrorPopupComponent, SuccessErrorPopupParams } from '~/shared/components/success-error-popup/success-error-popup.component';
 
@@ -11,44 +11,72 @@ import { ENV } from '~/environments/environment.default';
 
 import webClientIdMap from '~/../../../support/config/webclientid-config.json';
 
+export interface CalendarPrimingParams {
+  onSuccess?: Function;
+}
+
 @Component({
   selector: 'page-calendar-priming',
   templateUrl: 'calendar-priming.component.html'
 })
 export class CalendarPrimingComponent {
 
+  private params: CalendarPrimingParams;
+
   constructor(
     private gs: GoogleSignin,
     private integrationsApi: IntegrationsApi,
+    private loadingCtrl: LoadingController,
     private modalCtrl: ModalController,
     private navCtrl: NavController,
+    private navParams: NavParams,
     private platform: Platform
   ) {
+    this.params = this.navParams.get('params') || {};
   }
 
   async onEnableCalendarAccess(): Promise<void> {
-    const platformName = this.platform.is(PlatformNames.ios) ? PlatformNames.ios : PlatformNames.android;
-    const envName = ENV.production ? 'prod' : 'staging'; // Not type safe, carefull, we read this from json
-    const webClientId = webClientIdMap[envName][platformName];
+    // Show loader
+    const loading = this.loadingCtrl.create({
+      content: 'Please wait...'
+    });
+    loading.present();
 
-    // Ask user to login to their Google account and give us access to their calendar
-    const response = await this.gs.login(webClientId, [GoogleOAuthScope.CalendarEvents]);
-    if (!response) {
-      this.showError();
-      return;
+    // Start Google Signin process
+    let loginResponse;
+    try {
+      const platformName = this.platform.is(PlatformNames.ios) ? PlatformNames.ios : PlatformNames.android;
+      const envName = ENV.production ? 'prod' : 'staging'; // Not type safe, carefull, we read this from json
+      const webClientId = webClientIdMap[envName][platformName];
+
+        // Ask user to login to their Google account and give us access to their calendar
+      loginResponse = await this.gs.login(webClientId, [GoogleOAuthScope.CalendarEvents]);
+      if (!loginResponse) {
+        this.showError();
+        return;
+      }
+
+      // User gave consent. Remember consent on the backend.
+      const request: AddIntegrationRequest = {
+        server_auth_code: loginResponse.serverAuthCode,
+        integration_type: IntegrationTypes.google_calendar
+      };
+      const { error } = await this.integrationsApi.addIntegration(request).toPromise();
+      if (error) {
+        this.showError();
+        return;
+      }
+    } finally {
+      loading.dismiss();
     }
 
-    // User gave consent. Remember consent on the backend.
-    const request: AddIntegrationRequest = {
-      server_auth_code: response.serverAuthCode,
-      integration_type: IntegrationTypes.google_calendar
-    };
-    const { error } = await this.integrationsApi.addIntegration(request).toPromise();
-    if (error) {
-      this.showError();
-      return;
+    // All done, signin was successful.
+
+    if (this.params.onSuccess) {
+      this.params.onSuccess();
     }
-    this.showSuccess(response.email);
+
+    this.showSuccess(loginResponse.email);
   }
 
   onBack(): void {

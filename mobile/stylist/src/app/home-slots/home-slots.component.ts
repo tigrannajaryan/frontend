@@ -26,7 +26,7 @@ import { DisabledWeekday } from '~/calendar/horizontal-calendar/horizontal-calen
 import { FreeSlot, isBlockedTime } from './time-slots/time-slots.component';
 import { AppointmentsDataStore } from './appointments.data';
 
-import { ENV } from '~/environments/environment.default';
+import { CalendarPrimingParams } from '~/shared/components/calendar-priming/calendar-priming.component';
 
 const helpText = `Congratulations! Your registration is complete.<br/><br/>
   This is your home screen. Your appointments will show up here.<br/><br/>
@@ -245,16 +245,18 @@ export class HomeSlotsComponent {
         });
       }
 
-      // TODO: once Google Calendar integration is ready add "Add to Calendar" action here.
-      if (ENV.ffEnableGoogleCalendarIntegration) {
-        const profile = (await this.profileDataStore.get()).response;
-        if (profile && !profile.google_calendar_integrated) {
-          // Google Calendar is not integrated, show action to do it.
-          buttons.push({
-            text: 'Add to Calendar',
-            handler: () => { this.navCtrl.push(PageNames.CalendarPriming); }
-          });
-        }
+      const profile = (await this.profileDataStore.get()).response;
+      if (profile && !profile.google_calendar_integrated) {
+        // Google Calendar is not integrated, show action to do it.
+        const params: CalendarPrimingParams = {
+          // refresh profile status on success, so that we don't show "Add to Calendar"
+          // action anymore.
+          onSuccess: () => this.profileDataStore.refresh()
+        };
+        buttons.push({
+          text: 'Add to Calendar',
+          handler: () => { this.navCtrl.push(PageNames.CalendarPriming, { params }); }
+        });
       }
 
       if (appointment.client_phone) {
