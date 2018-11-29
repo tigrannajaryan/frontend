@@ -31,10 +31,10 @@ describe('PushNotificationTracker (client)', () => {
         providers: [
           Logger,
           Push, PushNotification, PushNotificationToastService,
+          { provide: NotificationsApi, useClass: NotificationsApiMock },
           // Ionic mocks:
           { provide: Events, useFactory: () => EventsMock.instance() },
           { provide: NavController, useFactory: () => NavControllerMock.instance() },
-          { provide: NotificationsApi, useClass: NotificationsApiMock },
           { provide: Platform, useFactory: () => PlatformMock.instance() },
           {
             provide: ToastController,

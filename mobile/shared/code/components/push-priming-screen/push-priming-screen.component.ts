@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Navbar, NavParams } from 'ionic-angular';
 
 import { PushNotification } from '~/shared/push/push-notification';
@@ -11,7 +11,7 @@ export interface PushPrimingScreenParams {
   selector: 'push-priming-screen',
   templateUrl: 'push-priming-screen.component.html'
 })
-export class PushPrimingScreenComponent {
+export class PushPrimingScreenComponent implements OnInit {
 
   @ViewChild(Navbar) navBar: Navbar;
 
@@ -21,6 +21,9 @@ export class PushPrimingScreenComponent {
     private navParams: NavParams,
     private pushNotification: PushNotification
   ) {
+  }
+
+  ngOnInit(): void {
     this.params = this.navParams.get('params') || {};
   }
 
