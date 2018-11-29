@@ -1,4 +1,4 @@
-import { TestBed } from '@angular/core/testing';
+import { async, TestBed } from '@angular/core/testing';
 import { AppMock } from 'ionic-mocks';
 import { App } from 'ionic-angular';
 
@@ -15,25 +15,28 @@ let instance: ServerStatusTracker;
 let sentryScope;
 
 describe('ServerStatusTracker', () => {
-  beforeAll(() => {
-    TestBed.configureTestingModule({
-      // provide the component-under-test and dependent service
-      providers: [
-        Logger,
-        ServerStatusTracker,
-        { provide: App, useClass: AppMock }
-      ]
-    });
-
-    instance = TestBed.get(ServerStatusTracker);
-  });
-
-  beforeEach(() => {
+  beforeEach(async(() => {
     sentryScope = jasmine.createSpyObj('scope', ['setUser', 'setTag', 'setExtra']);
 
     Sentry.configureScope = (callback) => { callback(sentryScope) };
     spyOn(Sentry, 'captureException');
-  })
+
+    return (
+      TestBed
+        .configureTestingModule({
+          // provide the component-under-test and dependent service
+          providers: [
+            Logger,
+            ServerStatusTracker,
+            { provide: App, useClass: AppMock }
+          ]
+        })
+        .compileComponents()
+        .then(() => {
+          instance = TestBed.get(ServerStatusTracker);
+        })
+    );
+  }));
 
   it('should create the server tracker', () => {
     expect(instance).toBeTruthy();
