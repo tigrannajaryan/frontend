@@ -1,5 +1,5 @@
 import { Component, NgZone, ViewChild } from '@angular/core';
-import { ActionSheetController, Content, NavController } from 'ionic-angular';
+import { ActionSheetController, Content, ModalController, NavController } from 'ionic-angular';
 import { ActionSheetButton } from 'ionic-angular/components/action-sheet/action-sheet-options';
 import { DatePicker } from '@ionic-native/date-picker';
 import * as moment from 'moment';
@@ -80,7 +80,8 @@ export class HomeSlotsComponent {
     private navCtrl: NavController,
     private ngZone: NgZone,
     private profileDataStore: ProfileDataStore,
-    private worktimeApi: WorktimeApi
+    private worktimeApi: WorktimeApi,
+    private modalCtrl: ModalController
   ) {
   }
 
@@ -178,6 +179,11 @@ export class HomeSlotsComponent {
 
   onTodayNavigateClick(): void {
     this.selectDateAndLoadAppointments(moment().startOf('day'));
+  }
+
+  onChangeTimeGapClick(): void {
+    const modal = this.modalCtrl.create(PageNames.ChangeGapTime);
+    modal.present();
   }
 
   onSelectedDateChange(date: moment.Moment): void {

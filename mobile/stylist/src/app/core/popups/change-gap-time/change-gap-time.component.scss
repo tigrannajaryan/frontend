@@ -1,0 +1,76 @@
+change-gap-time {
+  .changeGapTime {
+    position: absolute;
+    top: calc(100% - 389px);
+    width: 100%;
+    height: pxtovw(389px);
+    overflow-y: scroll;
+    text-align: center;
+    transition: all 100ms linear;
+  }
+
+  .changeGapTime-close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+  }
+
+  .changeGapTime-closeMargin {
+    height: pxtovw(40px);
+  }
+
+  .changeGapTime-cancel {
+    color: color($colors, danger);
+  }
+
+  .ServicesGap {
+    padding-top: pxtovw(25px);
+    padding-bottom: pxtovw(24px);
+    margin: 0;
+    box-shadow: 0 0 pxtovw(40px) #E4E4E4;
+  }
+
+  .changeGapTime-h1 {
+    margin-top: pxtovw(14px);
+    margin-bottom: pxtovw(17px);
+    font-size: pxtovw(21px);
+    font-weight: 700;
+    text-align: center;
+  }
+
+  .changeGapTime-percentage {
+    font-size: pxtovw(18px);
+    color: color($colors, warmGrey);
+  }
+
+  .changeGapTime-range {
+    margin-bottom: pxtovw(17px);
+  }
+
+  .changeGapTime-icon {
+    font-size: pxtovw(63px);
+  }
+
+  .changeGapTime-cancel {
+    color: color($colors, lightSalmon);
+  }
+
+  .ion-bb-range {
+    .range-knob {
+      background: color($colors, lightSalmon);
+    }
+  }
+
+  .bb-btn-circle {
+    box-shadow: none;
+
+    .button-inner {
+      width: 56px;
+      height: 56px;
+      background: color($colors, lightSalmon);
+      box-shadow: none;
+    }
+  }
+}

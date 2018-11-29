@@ -10,6 +10,7 @@ import { SharedEventTypes } from '~/shared/events/shared-event-types';
 import { ApiResponse } from '~/shared/api/base.models';
 
 import {
+  ServiceCategory,
   ServiceItem, ServiceTemplateSet, ServiceTemplateSetBase,
   SetStylistServicesParams, StylistProfile, StylistServicesListResponse
 } from '~/shared/api/stylist-app.models';
@@ -111,5 +112,21 @@ export class StylistServiceProvider extends BaseService {
    */
   getServicesPricesByDate(data: ServicesPricesParams): Observable<ApiResponse<ServicesPricesResponse>> {
     return this.post<ServicesPricesResponse>('stylist/services/pricing', data);
+  }
+
+  /**
+   * Converts groupped services from this.categores into a flat
+   * array of ServiceItem.
+   */
+  getFlatServiceList(categories: ServiceCategory[]): ServiceItem[] | undefined {
+    return categories.reduce((services, category) => (
+      services.concat(
+        category.services.map(service => ({
+          ...service,
+          is_enabled: true,
+          category_uuid: category.uuid
+        }))
+      )
+    ), []);
   }
 }

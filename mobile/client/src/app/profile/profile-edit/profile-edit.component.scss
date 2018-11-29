@@ -59,9 +59,9 @@ profile-edit {
     border: pxtovw(1px) solid rgba(white, 1);
     border-radius: 50%; // circle
 
-    ion-icon {
+    i {
       margin: pxtovw(-1px) 0 0; // fix centered align
-      font-size: $t-h3;
+      font-size: pxtovw(16px);
     }
   }
 
