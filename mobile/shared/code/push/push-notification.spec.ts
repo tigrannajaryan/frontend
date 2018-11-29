@@ -1,41 +1,43 @@
-import { TestBed } from '@angular/core/testing';
-import { Events, Platform, NavController } from 'ionic-angular';
-import { PlatformMock, NavControllerMock } from 'ionic-mocks';
+import { async, TestBed } from '@angular/core/testing';
+import { Events, IonicModule, Platform } from 'ionic-angular';
+import { EventsMock, PlatformMock } from 'ionic-mocks';
 import { Push, RegistrationEventResponse } from '@ionic-native/push';
 import * as faker from 'faker';
 
-import { Logger } from '~/shared/logger';
-import { PushNotification } from '~/shared/push/push-notification';
-import { NotificationsApi, RegUnregDeviceRequest } from './notifications.api';
-import { NotificationsApiMock } from './notifications.api.mock';
-import { AppStorageMock } from '~/shared/storage/app-storage.mock';
 import { isDevelopmentBuild } from '~/shared/get-build-info';
+import { Logger } from '~/shared/logger';
+import { NotificationsApi, RegUnregDeviceRequest } from '~/shared/push/notifications.api';
+import { NotificationsApiMock } from '~/shared/push/notifications.api.mock';
+import { PushNotification } from '~/shared/push/push-notification';
+import { AppStorageMock } from '~/shared/storage/app-storage.mock';
+
 import { appDefinitions } from '~/environments/app-def';
+import { ENV } from '~/environments/environment.default';
 
 let instance: PushNotification;
 
-function FakePrimingScreen() {
-}
-
-// These tests are disabled because they cause other tests to fail.
-// TODO: understand what's going on and fit it.
-xdescribe('PushNotification', () => {
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      // provide the component-under-test and dependent service
-      providers: [
-        Events,
-        Logger,
-        { provide: NavController, useFactory: () => NavControllerMock.instance() },
-        { provide: NotificationsApi, useClass: NotificationsApiMock },
-        { provide: Platform, useFactory: () => PlatformMock.instance() },
-        Push,
-        PushNotification
-      ]
-    });
-
-    instance = TestBed.get(PushNotification);
-  });
+describe('PushNotification', () => {
+  beforeEach(async(() =>
+    TestBed
+      .configureTestingModule({
+        providers: [
+          Logger,
+          Push, PushNotification,
+          { provide: NotificationsApi, useClass: NotificationsApiMock },
+          // Ionic mocks:
+          { provide: Events, useFactory: () => EventsMock.instance() },
+          { provide: Platform, useFactory: () => PlatformMock.instance() }
+        ],
+        imports: [
+          // Load all Ionic’s deps:
+          IonicModule.forRoot(this)
+        ]
+      })
+      .compileComponents()
+      .then(() => {
+        instance = TestBed.get(PushNotification);
+      })
+  ));
 
   it('should create the instance', () => {
     expect(instance).toBeTruthy();
@@ -79,8 +81,43 @@ xdescribe('PushNotification', () => {
 
   it('should init correctly', async () => {
     const storage = new AppStorageMock({});
+    const pushObjectMock = {
+      on: jasmine.createSpy('on').and.returnValue({
+        subscribe() {}
+      })
+    };
+
+    const push = TestBed.get(Push);
+    spyOn(push, 'hasPermission').and.returnValue(Promise.resolve(true));
+    spyOn(push, 'init').and.returnValue(pushObjectMock);
+
     await instance.init(storage);
 
-    // TODO: verify initialization
+    expect(push.hasPermission)
+      .toHaveBeenCalled();
+
+    // Initialized:
+    expect(push.init)
+      .toHaveBeenCalledWith({
+        android: {
+          senderID: ENV.FCM_PUSH_SENDER_ID
+        },
+        ios: {
+          alert: true,
+          badge: true,
+          sound: true
+        },
+        windows: {}
+      });
+
+    // Subscribed:
+    expect(pushObjectMock.on)
+      .toHaveBeenCalledWith('registration');
+    expect(pushObjectMock.on)
+      .toHaveBeenCalledWith('notification');
+
+    const { isRegistered } = instance as any;
+    expect(isRegistered)
+      .toBe(true);
   });
 });
