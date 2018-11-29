@@ -16,11 +16,10 @@ export class StylistServicesDataStore extends DataStore<StylistServicesListRespo
     this.api = api;
   }
 
-  // tslint:disable-next-line:variable-name
-  async setServices(services: ServiceItem[], service_time_gap_minutes: number): Promise<void> {
+  async setServices(services: ServiceItem[], serviceTimeGapMinutes: number): Promise<void> {
     const { response } = await this.api.setStylistServices({
       services,
-      service_time_gap_minutes
+      service_time_gap_minutes: serviceTimeGapMinutes
     }).get();
     if (response) {
       await this.set(response);
