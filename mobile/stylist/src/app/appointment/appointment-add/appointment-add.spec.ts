@@ -11,6 +11,7 @@ import { prepareSharedObjectsForTests } from '~/core/test-utils.spec';
 import { HomeService as AppointmentService } from '~/core/api/home.service';
 import { ServiceItem } from '~/shared/api/stylist-app.models';
 import { SelectServiceAction, servicesReducer, ServicesState } from '~/appointment/appointment-services/services.reducer';
+import { WorktimeApi } from '~/core/api/worktime.api';
 import { AppointmentAddComponent } from './appointment-add';
 
 const nextWeek = moment().add(7, 'days');
@@ -118,8 +119,8 @@ describe('Pages: Add Appointment', () => {
 
     fixture.detectChanges();
 
-    instance.form.patchValue({
-      isBlocked: true, // indicates is just a blocked slot
+    instance.isBlockedSlot.patchValue(true); // indicates it’s just a blocked slot
+    instance.form.patchValue({ // try to set up data for it, should be omitted in request
       client: `${client.first_name} ${client.last_name}`,
       phone: client.phone,
       date: nextWeek.format('YYYY-MM-DD'),
@@ -147,4 +148,27 @@ describe('Pages: Add Appointment', () => {
     expect(appointmentsService.createAppointment)
       .toHaveBeenCalledWith(data, forced, options);
   }));
+
+  it('should submit blocked day', () => {
+    instance.isBlockedFullDay.patchValue(true); // indicates it’s just a blocked slot
+    instance.form.patchValue({ // try to set up data for it, should be omitted in request
+      client: `${client.first_name} ${client.last_name}`,
+      phone: client.phone,
+      date: nextWeek.format('YYYY-MM-DD'),
+      time: nextWeek.format('HH:mm')
+    });
+
+    const worktimeService = fixture.debugElement.injector.get(WorktimeApi);
+    spyOn(worktimeService, 'setWorkdayAvailable').and.returnValue(
+      Observable.of({ is_available: false })
+    );
+
+    // enables submit
+    fixture.detectChanges();
+
+    fixture.nativeElement.querySelector('[id="submitBtn"]').click();
+
+    expect(worktimeService.setWorkdayAvailable)
+      .toHaveBeenCalledWith(nextWeek.format('YYYY-MM-DD'), false);
+  });
 });

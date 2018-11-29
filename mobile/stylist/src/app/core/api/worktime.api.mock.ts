@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+import * as moment from 'moment';
+
 import 'rxjs/add/observable/of';
 
 import { ApiResponse } from '~/shared/api/base.models';
-import { Worktime } from '~/shared/api/worktime.models';
+import { WorkdayAvailability, Worktime } from '~/shared/api/worktime.models';
 
 /**
  * AuthServiceProviderMock provides authentication mocked with one
@@ -30,6 +32,15 @@ export class WorktimeApiMock {
    */
   setWorktime(data: Worktime): Observable<ApiResponse<Worktime>> {
     this.lastSet = data;
+
+    return Observable.of({ response: data });
+  }
+
+  /**
+   * Set availability of a workday
+   */
+  setWorkdayAvailable(date: moment.Moment | Date | string, isAvailable: boolean): Observable<ApiResponse<WorkdayAvailability>> {
+    const data: WorkdayAvailability = { is_available: isAvailable };
 
     return Observable.of({ response: data });
   }

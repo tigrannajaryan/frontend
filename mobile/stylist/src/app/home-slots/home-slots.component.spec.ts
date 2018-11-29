@@ -109,6 +109,21 @@ describe('Pages: HomeSlotsComponent', () => {
       .toContain(today.format('D'));
   });
 
+  it('should show fully blocked day', () => {
+    instance.selectedDate = moment(); // today
+    instance.isFullyBlocked = true;
+
+    const buttons: ActionSheetButton[] = removeHandlers(
+      instance.getBlockedDayActionSheetOptions()
+    );
+
+    expect(buttons)
+      .toEqual([
+        { text: 'Unblock Day', role: 'destructive' },
+        { text: 'Back', role: 'cancel' }
+      ]);
+  });
+
   it('should add proper buttons to appointments', async () => {
     const startOfToday = moment().startOf('day').format();
 

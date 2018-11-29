@@ -64,6 +64,9 @@ export class HomeSlotsComponent {
   // Non-working weekdays
   disabledWeekdays: DisabledWeekday[] = [];
 
+  // Is fully blocked (non-working day)
+  isFullyBlocked = false;
+
   // And its components as strings (used in HTML)
   selectedMonthName: string;
   selectedWeekdayName: string;
@@ -129,6 +132,29 @@ export class HomeSlotsComponent {
           .filter((weekday: Workday): boolean => !weekday.work_start_at) // null for non-working
           .map((weekday: Workday): DisabledWeekday => ({ weekdayIso: weekday.weekday_iso }));
     }
+  }
+
+  onBlockedDayClick(): void {
+    const actionSheet = this.actionSheetCtrl.create({
+      buttons: this.getBlockedDayActionSheetOptions()
+    });
+    actionSheet.present();
+  }
+
+  getBlockedDayActionSheetOptions(): ActionSheetButton[] {
+    return [{
+      text: 'Unblock Day',
+      role: 'destructive',
+      handler: () => {
+        this.worktimeApi
+          .setWorkdayAvailable(this.selectedDate, true)
+          .toPromise()
+          .then(() => this.loadAppointments());
+      }
+    }, {
+      text: 'Back',
+      role: 'cancel'
+    }];
   }
 
   async onAppointmentClick(appointment: Appointment): Promise<void> {
@@ -326,6 +352,8 @@ export class HomeSlotsComponent {
 
   private async loadAppointments(): Promise<void> {
     const data = await this.appointmentsDataStore.get(this.selectedDate);
+    // Fully blocked means not available day with existed slots, because there are literally slots, they’re just booked.
+    this.isFullyBlocked = !data.response.is_day_available && data.response.total_slot_count > 0;
     this.processAppointments(data.response);
   }
 
