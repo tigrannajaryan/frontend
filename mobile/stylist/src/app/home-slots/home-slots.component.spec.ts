@@ -14,6 +14,8 @@ import { AppointmentsDataStore } from './appointments.data';
 import { ProfileDataStore } from '../core/profile.data';
 import { HomeSlotsComponent } from './home-slots.component';
 import { createAppointment } from './time-slots/time-slots.component.spec';
+import { ModalController, ViewController } from 'ionic-angular';
+import { PageNames } from '~/core/page-names';
 
 let fixture: ComponentFixture<HomeSlotsComponent>;
 let instance: HomeSlotsComponent;
@@ -36,7 +38,14 @@ describe('Pages: HomeSlotsComponent', () => {
   prepareSharedObjectsForTests();
 
   beforeEach(async(() =>
-    TestUtils.beforeEachCompiler([HomeSlotsComponent], [AppointmentsDataStore, ProfileDataStore])
+    TestUtils.beforeEachCompiler(
+      [HomeSlotsComponent],
+      [
+        AppointmentsDataStore,
+        ProfileDataStore,
+        ModalController
+      ]
+    )
       .then(compiled => {
         fixture = compiled.fixture;
         instance = compiled.instance;
@@ -266,5 +275,15 @@ describe('Pages: HomeSlotsComponent', () => {
         { text: 'Cancel Appointment', role: 'destructive' },
         { text: 'Back', role: 'cancel' }
       ]);
+  });
+
+  it('should have a button to open change gap time popup', () => {
+    let modalController = fixture.debugElement.injector.get(ModalController);
+    spyOn(modalController, 'create');
+
+    const onChangeTimeGapClick = fixture.nativeElement.querySelector('[data-test-id=onChangeTimeGapClick]');
+    onChangeTimeGapClick.click();
+
+    expect(modalController.create).toHaveBeenCalledWith(PageNames.ChangeGapTime);
   });
 });

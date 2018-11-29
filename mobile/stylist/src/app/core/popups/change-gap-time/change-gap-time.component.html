@@ -1,0 +1,31 @@
+<div (click)="closePopup()" class="changeGapTime-close"></div>
+<div class="changeGapTime">
+  <div (click)="closePopup()" class="changeGapTime-closeMargin"></div>
+
+  <div *ngIf="stylistServicesRes" class="ServicesGap" data-test-id="changeGapTime">
+    <i class="mb-icon-timer changeGapTime-icon"></i>
+
+    <div class="changeGapTime-h1" data-test-id="changeGapTime-h1">How many minutes between client bookings?</div>
+
+    <div class="changeGapTime-percentage" text-right data-test-id="changeGapTime-percentage">{{ stylistServicesRes.service_time_gap_minutes }} min</div>
+
+    <ion-range
+      [min]="15"
+      [max]="120"
+      [step]="5"
+      [(ngModel)]="stylistServicesRes.service_time_gap_minutes"
+      color="dark"
+      class="ion-bb-range changeGapTime-range"
+      data-test-id="changeGapTime-range"></ion-range>
+
+    <ion-row justify-content-center align-items-center>
+      <a style="visibility: hidden;">Cancel</a>
+
+      <button (click)="saveTimeGap()" ion-button type="submit" class="bb-btn-circle" data-test-id="changeGapTime-save">
+        <ion-icon name="ios-checkmark-outline"></ion-icon>
+      </button>
+
+      <a (click)="closePopup()" class="changeGapTime-cancel" data-test-id="changeGapTime-cancel">Cancel</a>
+    </ion-row>
+  </div>
+</div>

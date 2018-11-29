@@ -8,10 +8,9 @@ import {
 
 import { loading } from '~/shared/utils/loading';
 import { ServiceTemplateSetResponse, StylistServiceProvider } from '~/core/api/stylist.service';
-import { ServiceCategory, ServiceItem, ServiceTemplateItem, StylistServicesListResponse } from '~/shared/api/stylist-app.models';
+import { ServiceCategory, ServiceTemplateItem, StylistServicesListResponse } from '~/shared/api/stylist-app.models';
 import { StylistServicesDataStore } from '~/services/services-list/services.data';
 
-import { showAlert } from '~/shared/utils/alert';
 import { PageNames } from '~/core/page-names';
 import { ServiceListType } from '~/services/services.component';
 import { ServiceItemComponentData } from '~/services/services-item/services-item.component';
@@ -96,7 +95,7 @@ export class ServicesListComponent {
   }
 
   async onContinue(): Promise<void> {
-    const categoriesServices = this.getFlatServiceList();
+    const categoriesServices = this.stylistService.getFlatServiceList(this.categories);
 
     if (categoriesServices) {
       const { response } = await this.stylistService.setStylistServices({
@@ -112,29 +111,6 @@ export class ServicesListComponent {
         this.navCtrl.push(PageNames.WorkHours);
       }
     }
-  }
-
-  /**
-   * Converts groupped services from this.categores into a flat
-   * array of ServiceItem.
-   */
-  protected getFlatServiceList(): ServiceItem[] | undefined {
-    const serviceList: ServiceItem[] =
-      this.categories.reduce((services, category) => (
-        services.concat(
-          category.services.map(service => ({
-            ...service,
-            is_enabled: true,
-            category_uuid: category.uuid
-          }))
-        )
-      ), []);
-
-    if (serviceList.length === 0) {
-      showAlert('Services are empty', 'At least one service should be added.');
-      return;
-    }
-    return serviceList;
   }
 
   deleteConfirm(category: ServiceCategory, idx: number): void {
@@ -173,7 +149,7 @@ export class ServicesListComponent {
   }
 
   async saveRequest(): Promise<void> {
-    const categoriesServices = this.getFlatServiceList();
+    const categoriesServices = this.stylistService.getFlatServiceList(this.categories);
 
     if (categoriesServices) {
       const { response } = await this.stylistService.setStylistServices({
