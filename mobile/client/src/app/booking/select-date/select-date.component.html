@@ -7,9 +7,12 @@
 
 <ion-content class="SelectDate">
   <ion-grid fixed>
-    <div class="Spinner">
-      <ion-spinner *ngIf="isLoading"></ion-spinner>
+    <div *ngIf="isLoading" class="Spinner">
+      <ion-spinner></ion-spinner>
     </div>
+
+    <no-service-selected *ngIf="!bookingData.selectedServices || bookingData.selectedServices?.length === 0"
+      (addServiceClick)="onAddService()"></no-service-selected>
 
     <price-calendar [prices]="prices" (dayClick)="onSelectOffer($event)"></price-calendar>
   </ion-grid>

@@ -114,6 +114,9 @@ import { FollowersApiMock } from '~/core/api/followers.api.mock';
 import { FollowersApi } from '~/core/api/followers.api';
 import { ClientStartupNavigation } from '~/core/client-startup-navigation';
 
+import { BookingData } from '~/core/api/booking.data';
+import { BookingDataMock } from '~/core/api/booking.data.mock';
+
 declare const require: any;
 
 // First, initialize the Angular testing environment.
@@ -195,6 +198,7 @@ export class TestUtils {
         { provide: StylistsService, useClass: StylistsServiceMock },
         { provide: ProfileApi, useClass: ProfileApiMock },
         { provide: FollowersApi, useClass: FollowersApiMock },
+        { provide: BookingData, useClass: BookingDataMock },
         ...providers
       ],
       imports: [

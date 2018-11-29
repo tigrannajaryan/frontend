@@ -8,11 +8,11 @@ import { ApiError, HttpStatus } from '~/shared/api-errors';
 
 @Injectable()
 export class BaseServiceMock extends BaseService {
-  protected mockRequest<ResponseType>(responseMock: Observable<ResponseType>): Observable<ApiResponse<ResponseType>> {
+  mockRequest<ResponseType>(responseMock: Observable<ResponseType>): Observable<ApiResponse<ResponseType>> {
     return this.prepareResponse('', '', responseMock, {});
   }
 
-  protected simulateHttpError<ResponseType>(status: HttpStatus, error: ApiError): Observable<ApiResponse<ResponseType>> {
+  simulateHttpError<ResponseType>(status: HttpStatus, error: ApiError): Observable<ApiResponse<ResponseType>> {
     return this.prepareResponse('', '',
       Observable.create(() => {
         throw new HttpErrorResponse({ status, error });

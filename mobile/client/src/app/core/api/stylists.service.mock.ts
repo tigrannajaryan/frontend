@@ -7,12 +7,13 @@ import { BaseServiceMock } from '~/shared/api/base.service.mock';
 import {
   AddPreferredStylistResponse,
   PreferredStylistsListResponse,
+  StylistModel,
   StylistsListResponse,
   StylistsSearchParams
 } from '~/shared/api/stylists.models';
 import { randomPhone } from '~/shared/utils/test-utils';
 
-export const stylistsMock = Array(25).fill(undefined).map((val, index) => {
+export const stylistsMock: StylistModel[] = Array(25).fill(undefined).map((val, index) => {
   const [name, lastName] = [faker.name.firstName(), faker.name.lastName()];
   return {
     uuid: faker.random.uuid(),
@@ -24,7 +25,8 @@ export const stylistsMock = Array(25).fill(undefined).map((val, index) => {
     phone: randomPhone(),
     instagram_url: faker.helpers.slugify(`${name}${lastName}`),
     followers_count: faker.random.number(),
-    is_profile_bookable: !!(index % 2)
+    is_profile_bookable: !!(index % 2),
+    specialities: []
   };
 });
 

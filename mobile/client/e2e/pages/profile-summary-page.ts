@@ -1,6 +1,6 @@
-import { $, browser } from 'protractor';
+import { $ } from 'protractor';
 
-import { click, globals, waitForNot } from '../shared-e2e/utils';
+import { click, globals, waitFor, waitForNot } from '../shared-e2e/utils';
 
 class ProfileSummaryPage {
   // UI element declarations.
@@ -10,6 +10,7 @@ class ProfileSummaryPage {
   get logoutLink() { return $('profile-summary [data-test-id=logout]'); }
 
   async logout() {
+    await waitFor(this.logoutLink);
     await click(this.logoutLink);
     await click(globals.alertButton('Yes, Logout'));
     await waitForNot(this.logoutLink);

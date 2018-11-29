@@ -107,7 +107,6 @@ export class BookingData implements OnDestroy {
   setSelectedServices(services: ServiceModel[]): Promise<ApiResponse<GetPricelistResponse>> {
     // remember the list of services
     this._selectedServices = services;
-    this.onServicesChange();
 
     if (this._pricelist) {
       this._pricelist.deleteCache();
@@ -117,6 +116,8 @@ export class BookingData implements OnDestroy {
     this._pricelist = new DataStore('booking_pricelist',
       options => this.api.getPricelist(this._selectedServices, this._stylist.uuid, options),
       { cacheTtlMilliseconds: 0 });  // 0 cache ttl for data that can be externally modified
+
+    this.onServicesChange();
 
     // Preload prices (don't show alerts on errors since this is just preloading)
     // We don't want to show alert during preloading if there is an API error.

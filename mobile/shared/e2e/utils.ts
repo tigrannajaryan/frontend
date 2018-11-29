@@ -9,18 +9,30 @@ const waitTimeout = 10000; // ms
  * @param finder of the element
  */
 export async function click(finder: ElementFinder): Promise<any> {
-  const clickable = await waitForClickable(finder);
-  console.log(`${finder.locator().toString()} is clickable ${clickable}`);
+  // Wait until element is clickable. This usually works, but not always
+  // reliably, see below for more comments.
+  await waitForClickable(finder);
 
-  // protractor/WebDriver is unreliable. Sometimes it fails to click on elements and
+  // Protractor/WebDriver is unreliable. Sometimes it fails to click on elements and
   // produces internal errors in itself (it has its own bugs). I could not find any
-  // other way to reliably click.
-  for (let i = 0; i < 5; i++) {
+  // other way to reliably click except to try a few times with pauses.
+  const maxAttempts = 10;
+  let pausePeriodMs = 50;
+  for (let i = 0; i < maxAttempts; i++) {
     try {
       await finder.click();
+      // It worked, done.
       break;
     } catch (e) {
-      console.log(`Cannot click on ${finder.locator().toString()}`, e);
+      if (i < maxAttempts - 1) {
+        // This is usually internal error of WebDriver and we cannot do anything. Wait a bit and try again.
+        browser.sleep(pausePeriodMs);
+        // Increase pause period between attempts exponentially to avoid unneccessary clicks and CPU load.
+        pausePeriodMs = pausePeriodMs*2;
+      } else {
+        console.error(`Error: cannot click on ${finder.locator().toString()}`);
+        throw e;
+      }
     }
   }
 }

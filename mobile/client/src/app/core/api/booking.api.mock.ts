@@ -1,15 +1,20 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+import * as moment from 'moment';
 
 import { ApiResponse } from '~/shared/api/base.models';
 import { ServiceModel } from '~/shared/api/price.models';
-import { TimeslotsResponse } from './booking.api';
+import { BookingApi, TimeslotsResponse } from './booking.api';
 import { GetPricelistResponse } from '~/core/api/services.models';
 
 @Injectable()
-export class BookingApiMock {
+export class BookingApiMock extends BookingApi {
 
-  getTimeslots(stylistUuid: string, date: Date): Observable<ApiResponse<TimeslotsResponse>> {
+  constructor() {
+    super(undefined, undefined, undefined);
+  }
+
+  getTimeslots(stylistUuid: string, date: moment.Moment): Observable<ApiResponse<TimeslotsResponse>> {
     const response: TimeslotsResponse = {
       time_slots: [{
         start: '2018-08-18T09:00:00-06:00',
@@ -59,7 +64,12 @@ export class BookingApiMock {
     const response = {
       stylist_uuid: 'abc',
       service_uuid: 'def',
-      prices: []
+      prices: [{
+        date: '2018-01-01',
+        price: 123,
+        is_fully_booked: false,
+        is_working_day: true
+      }]
     };
     return Observable.of({ response });
   }

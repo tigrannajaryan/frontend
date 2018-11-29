@@ -53,4 +53,20 @@
     font-size: pxtovw(26px);
     color: color($grayscale, 800);
   }
+
+  .ServicesHeader-bigAddBtn {
+    border: pxtovw(1px) solid color($colors-shared, lightSalmon);
+    border-radius: pxtovw(4px);
+    font-size: pxtovw(18px);
+    padding: pxtovw(2px) pxtovw(6px) pxtovw(2px) pxtovw(2px);
+    line-height: pxtovw(24px);
+    color: color($colors-shared, lightSalmon);
+    margin-bottom: pxtovw(4px);
+  }
+
+  .ServicesHeader-bigAddBtn ion-icon {
+    margin: pxtovw(0px) pxtovw(4px);
+    position: relative;
+    top: 2px;
+  }
 }

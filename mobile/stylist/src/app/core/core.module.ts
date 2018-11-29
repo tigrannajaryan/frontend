@@ -10,6 +10,7 @@ import { GAWrapper } from '~/shared/google-analytics';
 import { HasErrorPipe } from '~/shared/pipes/has-error.pipe';
 import { PricePipe } from '~/shared/pipes/price.pipe';
 import { BaseService } from '~/shared/api/base.service';
+import { NoServiceSelectedComponent } from '~/shared/components/no-service-selected/no-service-selected.component';
 import { PriceCalendarComponent } from '~/shared/components/price-calendar/price-calendar.component';
 import { ServicesHeaderListComponent } from '~/shared/components/services-header-list/services-header-list';
 import { UserNamePhotoComponent } from '~/shared/components/user-name-photo/user-name-photo.component';
@@ -20,6 +21,7 @@ import { TimeSlotsComponent } from '~/home-slots/time-slots/time-slots.component
 
 const declarations = [
   HasErrorPipe,
+  NoServiceSelectedComponent,
   PriceCalendarComponent,
   PricePipe,
   ServicesHeaderListComponent,

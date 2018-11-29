@@ -1,0 +1,28 @@
+no-service-selected {
+  .NoServiceSelected {
+    padding: pxtovw(16px);
+    background: color($colors-shared, lightPeach);
+    font-size: pxtovw(18px);
+    line-height: pxtovw(24px);
+    border-radius: pxtovw(4px);
+  }
+
+  .NoServiceSelected-WashAndStyleIcon {
+    width: pxtovw(48px);
+    height: pxtovw(48px);
+    margin-right: pxtovw(16px);
+    background-image: url('../assets/icons/services-categories/wash_and_style.png');
+    background-size: contain;
+    float: left;
+  }
+
+  .NoServiceSelected button {
+    background: white;
+    border-radius: pxtovw(10px);
+    width: 100%;
+    font-size: pxtovw(18px);
+    font-weight: map-get($fontWeights, semibold);
+    padding: pxtovw(8px) 0;
+    margin-top: pxtovw(24px);
+  }
+}
