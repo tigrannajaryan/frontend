@@ -1,7 +1,7 @@
 <ion-header madeHeader [showHome]="true"></ion-header>
 
 <ion-content class="AppointmentPage">
-  <div class="contentSidePadding AppointmentPage-padding">
+  <div class="contentSidePadding SelectDate-header">
     <ng-template [ngIf]="params && params.appointment">
 
       <h1 class="pageTitle" *ngIf="params.appointment.status === AppointmentStatus.checked_out">Thanks for your visit!</h1>

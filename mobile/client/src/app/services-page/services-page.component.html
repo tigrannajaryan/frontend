@@ -6,7 +6,15 @@
 </ion-header>
 
 <ion-content class="ServicesPage">
-  <ion-grid fixed>
+  <div class="contentSidePadding SelectDate-header">
+    <ion-row *ngIf="!isAdditionalService" justify-content-between>
+      <div class="Made-h1">Select Service</div>
+
+      <ng-container *ngIf="bookingData?.stylist">
+        <user-name-photo [firstName]="bookingData.stylist?.first_name" [lastName]="bookingData.stylist?.last_name" [photoUrl]="bookingData.stylist?.profile_photo_url"></user-name-photo>
+      </ng-container>
+    </ion-row>
+
     <ion-row justify-content-center>
       <div *ngIf="category | async" [style.backgroundImage]="'url(' + 'assets/icons/services-categories/' + (category | async)?.category_code + '.png)'" class="ServicesPage-img"></div>
     </ion-row>
@@ -16,28 +24,27 @@
         <span *ngIf="services | async" class="Badge" data-test-id="categoryServiceCountBadge">{{ (services | async)?.length }}</span>
       </ion-row>
     </ion-row>
-  </ion-grid>
-  <ion-grid *ngIf="services | async" fixed>
-    <table class="ServicesPage-services Table">
+
+    <table *ngIf="services | async" class="ServicesPage-services Table">
       <thead class="Table-header">
-        <tr class="Table-row">
-          <th class="Table-col">Service</th>
-          <th colspan="2" class="Table-col">Base Price</th>
-        </tr>
+      <tr class="Table-row">
+        <th class="Table-col">Service</th>
+        <th colspan="2" class="Table-col">Base Price</th>
+      </tr>
       </thead>
       <tbody>
-        <tr
-          *ngFor="let service of services | async"
-          (click)="!(bookingData.hasSelectedService(service) && isAdditionalService) && onServiceClick(service)"
-          [class.ServicesPage-disabledRow]="bookingData.hasSelectedService(service) && isAdditionalService"
-          [attr.data-test-id]="'service' + service.name">
-          <td class="Table-col" data-test-id="serviceName">{{ service.name }}</td>
-          <td class="Table-col" data-test-id="servicePrice">{{ service.base_price | price }}</td>
-          <td class="ServicesPage-servicesArrow Table-col">
-            <i class="mb-icon-right-arrow"></i>
-          </td>
-        </tr>
+      <tr
+        *ngFor="let service of services | async"
+        (click)="!(bookingData.hasSelectedService(service) && isAdditionalService) && onServiceClick(service)"
+        [class.ServicesPage-disabledRow]="bookingData.hasSelectedService(service) && isAdditionalService"
+        [attr.data-test-id]="'service' + service.name">
+        <td class="Table-col" data-test-id="serviceName">{{ service.name }}</td>
+        <td class="Table-col" data-test-id="servicePrice">{{ service.base_price | price }}</td>
+        <td class="ServicesPage-servicesArrow Table-col">
+          <i class="mb-icon-right-arrow"></i>
+        </td>
+      </tr>
       </tbody>
     </table>
-  </ion-grid>
+  </div>
 </ion-content>
