@@ -30,6 +30,14 @@ home-slots {
     padding-bottom: pxtovw(8px);
   }
 
+  .HomeSlots-blockedDay {
+    padding: pxtovw(4px);
+    margin: pxtovw(16px) pxtovw(24px) pxtovw(16px) pxtovw(71px);
+    color: color($colors, warmGrey);
+    background-color: #E5E5E5;
+    border-radius: pxtovw(2px);
+  }
+
   .HomeSlots-dateIndicator {
     margin-left: pxtovw(24px);
   }

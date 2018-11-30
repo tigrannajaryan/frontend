@@ -3,12 +3,13 @@ import * as moment from 'moment';
 import { Store } from '@ngrx/store';
 import { Component } from '@angular/core';
 import { AlertController, NavController, NavParams } from 'ionic-angular';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { componentUnloaded } from '~/shared/component-unloaded';
 import { ServiceItem } from '~/shared/api/stylist-app.models';
 import { HomeService as AppointmentService } from '~/core/api/home.service';
 
+import { WorktimeApi } from '~/core/api/worktime.api';
 import { loading } from '~/core/utils/loading';
 import { PageNames } from '~/core/page-names';
 
@@ -43,6 +44,9 @@ export class AppointmentAddComponent {
   selectedService?: ServiceItem;
   params: AppointmentAddParams;
 
+  isBlockedSlot = new FormControl(false);
+  isBlockedFullDay = new FormControl(false);
+
   defaultDate = moment(new Date()).format(isoDateFormat);
   defaultTime = '09:00';
   startDate = '';
@@ -56,12 +60,14 @@ export class AppointmentAddComponent {
     private formBuilder: FormBuilder,
     private navCtrl: NavController,
     private navParams: NavParams,
-    private store: Store<ServicesState>
+    private store: Store<ServicesState>,
+    private worktimeApi: WorktimeApi
   ) {
-    this.params = this.navParams.get('params') || {};
   }
 
   ionViewWillLoad(): void {
+    this.params = this.navParams.get('params') || {};
+
     if (this.params.startDateTime) {
       this.defaultDate = this.startDate = this.params.startDateTime.format(isoDateFormat);
       this.defaultTime = this.startTime = this.params.startDateTime.format('HH:mm');
@@ -74,29 +80,37 @@ export class AppointmentAddComponent {
     this.store
       .select(selectSelectedService)
       .takeUntil(componentUnloaded(this))
-      .subscribe(selectedService => {
+      .subscribe((selectedService: ServiceItem) => {
         this.selectedService = selectedService;
       });
+
+    this.subscribeToIsBlockedChanges();
   }
 
   selectService(): void {
     this.navCtrl.push(PageNames.AppointmentServices);
   }
 
-  onSubmit(forced = false): void {
-    const { client, date, isBlocked, phone, time } = this.form.value;
+  async onSubmit(forced = false): Promise<void> {
+    const { client, date, phone, time } = this.form.value;
     const dateYMD = moment(date).format('YYYY-MM-DD');
 
-    // TODO: fix types
-    let data: any = {
-      client_phone: '',
-      client_first_name: '',
-      client_last_name: '',
-      datetime_start_at: `${dateYMD}T${time}:00`,
-      services: []
-    };
+    const isBlockedSlot = this.isBlockedSlot.value;
+    const isBlockedFullDay = this.isBlockedFullDay.value;
 
-    if (!isBlocked) {
+    if (isBlockedFullDay) {
+      this.blockFullDay(moment(date));
+
+    } else if (isBlockedSlot) {
+      this.createAppointment({
+        client_phone: '',
+        client_first_name: '',
+        client_last_name: '',
+        datetime_start_at: `${dateYMD}T${time}:00`,
+        services: []
+      }, forced);
+
+    } else {
       const [firstName, lastName] = client ? client.trim().split(/(^[^\s]+)/).slice(-2) : ['', ''];
       const clientData = {
         client_phone: phone,
@@ -104,14 +118,40 @@ export class AppointmentAddComponent {
         client_last_name: lastName.trim()
       };
 
-      data = {
-        ...data,
+      this.createAppointment({
         ...clientData,
+        datetime_start_at: `${dateYMD}T${time}:00`,
         services: this.selectedService ? [{ service_uuid: this.selectedService.uuid }] : []
-      };
+      }, forced);
     }
+  }
 
-    this.createAppointment(data, forced);
+  private subscribeToIsBlockedChanges(): void {
+    this.isBlockedSlot.valueChanges
+      .takeUntil(componentUnloaded(this))
+      .map((isBlockedSlot: boolean) => {
+        // Only one toggled can exist:
+        if (isBlockedSlot && this.isBlockedFullDay.value) {
+          this.isBlockedFullDay.patchValue(false);
+        }
+      })
+      .subscribe();
+
+    this.isBlockedFullDay.valueChanges
+      .takeUntil(componentUnloaded(this))
+      .map((isBlockedFullDay: boolean) => {
+        // Time is not required if full day is blocked, remove validation:
+        this.form.controls.time.setValidators(isBlockedFullDay ? [] : [Validators.required]);
+        this.form.controls.time.updateValueAndValidity();
+        return isBlockedFullDay;
+      })
+      .map((isBlockedFullDay: boolean) => {
+        // Only one toggled can exist:
+        if (isBlockedFullDay && this.isBlockedSlot.value) {
+          this.isBlockedSlot.patchValue(false);
+        }
+      })
+      .subscribe();
   }
 
   private showErrorMsg(e: ApiFieldAndNonFieldErrors): void {
@@ -141,6 +181,14 @@ export class AppointmentAddComponent {
     alert.present();
   }
 
+  private async blockFullDay(date: moment.Moment): Promise<any> {
+    const { response } = await this.worktimeApi.setWorkdayAvailable(date, false).toPromise();
+
+    if (response) {
+      this.navCtrl.pop();
+    }
+  }
+
   @loading
   private async createAppointment(data, forced): Promise<any> {
     // We will handle ApiFieldAndNonFieldErrors ourselves, so tell API to not show alerts
@@ -166,7 +214,6 @@ export class AppointmentAddComponent {
 
   private createForm(): void {
     this.form = this.formBuilder.group({
-      isBlocked: false,
       client: [''],
       phone: [''],
       date: [this.startDate, [Validators.required]],
