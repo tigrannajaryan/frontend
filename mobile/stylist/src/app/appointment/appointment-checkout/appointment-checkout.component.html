@@ -67,7 +67,7 @@
                 <ion-col col-5 class="CheckOut-col havePaddingLeft row">
                   <span [class.lineThrough]="!hasTaxIncluded" [class.inactive]="!hasTaxIncluded">${{ previewResponse.total_tax.toFixed(2) | number: '1.2' }}</span>
 
-                  <ion-toggle *ngIf="!params?.isAlreadyCheckedOut" (ionChange)="updatePreview()" [(ngModel)]="hasTaxIncluded" class="ion-bb-toggle"></ion-toggle>
+                  <ion-toggle *ngIf="!params?.isAlreadyCheckedOut && !params?.isReadonly" (ionChange)="updatePreview()" [(ngModel)]="hasTaxIncluded" class="ion-bb-toggle"></ion-toggle>
                 </ion-col>
               </ion-row>
 
@@ -82,13 +82,13 @@
                 <ion-col col-5 class="CheckOut-col havePaddingLeft row">
                   <span [class.lineThrough]="!hasCardFeeIncluded" [class.inactive]="!hasCardFeeIncluded">${{ previewResponse.total_card_fee.toFixed(2) | number: '1.2' }}</span>
 
-                  <ion-toggle *ngIf="!params?.isAlreadyCheckedOut" (ionChange)="updatePreview()" [(ngModel)]="hasCardFeeIncluded" class="ion-bb-toggle"></ion-toggle>
+                  <ion-toggle *ngIf="!params?.isAlreadyCheckedOut && !params?.isReadonly" (ionChange)="updatePreview()" [(ngModel)]="hasCardFeeIncluded" class="ion-bb-toggle"></ion-toggle>
                 </ion-col>
               </ion-row>
             </div>
           </ng-container>
 
-          <ion-row *ngIf="!params?.isAlreadyCheckedOut" data-test-id="appointmentAddServiceBtn" justify-content-center class="CheckOut-listBtn">
+          <ion-row *ngIf="!params?.isAlreadyCheckedOut && !params?.isReadonly" data-test-id="appointmentAddServiceBtn" justify-content-center class="CheckOut-listBtn">
             <ion-col col-8>
               <button (click)="addServicesClick()" class="Discounts-btn--light" ion-button>Add service</button>
             </ion-col>
@@ -102,7 +102,7 @@
 
 
 <ion-footer
-  *ngIf="!params?.isAlreadyCheckedOut"
+  *ngIf="!params?.isAlreadyCheckedOut && !params?.isReadonly"
   (continue)="onFinalizeCheckoutClick()"
   data-test-id="appointmentFinalizeCheckout"
   madeContinueFooter
