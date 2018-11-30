@@ -3,9 +3,9 @@ import * as faker from 'faker';
 
 import { TestUtils } from '../../../test';
 
-import { BookingData } from '../../core/api/booking.data';
+import { BookingData } from '~/core/api/booking.data';
 import { SelectDateComponent } from './select-date.component';
-import { stylistsMock } from '../../core/api/stylists.service.mock';
+import { stylistsMock } from '~/core/api/stylists.service.mock';
 
 let fixture: ComponentFixture<SelectDateComponent>;
 let instance: SelectDateComponent;
@@ -74,5 +74,11 @@ describe('Pages: Select Date', () => {
     selectServiceBigBtn.click();
 
     expect(instance.servicesHeader.onAdd).toHaveBeenCalled();
+  });
+
+  it('should have `user-name-photo` component with correct data', async () => {
+    const bookingData = fixture.debugElement.injector.get(BookingData);
+    const userFullName = fixture.nativeElement.querySelector('[data-test-id=userFullName]');
+    expect(userFullName.innerHTML).toContain(bookingData.stylist.first_name);
   });
 });

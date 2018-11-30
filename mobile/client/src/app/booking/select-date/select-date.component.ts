@@ -15,6 +15,7 @@ import { confirmMakeStylistPreferred } from '../booking-utils';
 import { PreferredStylistModel } from '~/shared/api/stylists.models';
 import { isoDateFormat } from '~/shared/api/base.models';
 import { BookServicesHeaderComponent } from '../book-services-header/book-services-header';
+import { ServiceItem } from '~/shared/api/stylist-app.models';
 
 @Component({
   selector: 'select-date',
@@ -24,13 +25,18 @@ export class SelectDateComponent {
   @ViewChild(Content) content: Content;
   @ViewChild(BookServicesHeaderComponent) servicesHeader: BookServicesHeaderComponent;
 
+  regularPrice: number;
   isLoading: boolean;
   prices: DayOffer[];
   preferredStylists: Promise<PreferredStylistModel[]>;
 
+  static getRegularPrice(services: ServiceItem[]): number {
+    return services.reduce((price, service) => price + service.base_price, 0);
+  }
+
   constructor(
-    private alertCtrl: AlertController,
     protected bookingData: BookingData,
+    private alertCtrl: AlertController,
     private events: Events,
     private logger: Logger,
     private navCtrl: NavController,
@@ -43,7 +49,7 @@ export class SelectDateComponent {
 
     this.bookingData.selectedServicesObservable
       .takeWhile(componentIsActive(this))
-      .subscribe(async () => {
+      .subscribe(async (services: ServiceItem[]) => {
         if (!this.bookingData.pricelist || !this.bookingData.selectedServices ||
           this.bookingData.selectedServices.length === 0) {
           // No services selected. Don't show prices
@@ -54,6 +60,10 @@ export class SelectDateComponent {
             is_working_day: false
           }];
           return;
+        }
+
+        if (services) {
+          this.regularPrice = SelectDateComponent.getRegularPrice(services);
         }
 
         const { response } = await loading(this, this.bookingData.pricelist.get());

@@ -4,9 +4,9 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 
 import { Logger } from '~/shared/logger';
+import { RequestState } from '~/shared/api/request.models';
 
 import { PageNames } from '~/core/page-names';
-import { RequestState } from '~/shared/api/request.models';
 import {
   GetStylistServicesAction,
   selectServicesRequestState,
@@ -14,6 +14,7 @@ import {
   ServicesState
 } from '~/core/reducers/services.reducer';
 import { ServiceCategoryModel } from '~/core/api/services.models';
+import { BookingData } from '~/core/api/booking.data';
 
 export interface ServicesCategoriesParams {
   stylistUuid: string;
@@ -26,12 +27,10 @@ export interface ServicesCategoriesParams {
 })
 export class ServicesCategoriesPageComponent {
   stylistUuid: string;
-
-  loadingCategories = Array(2).fill(undefined);
-
   categories: Observable<ServiceCategoryModel[]>;
   requestState: Observable<RequestState>;
 
+  loadingCategories = Array(2).fill(undefined);
   RequestState = RequestState; // expose to view
 
   isAdditionalService = false;
@@ -40,7 +39,8 @@ export class ServicesCategoriesPageComponent {
     private logger: Logger,
     private navCtrl: NavController,
     private navParams: NavParams,
-    private store: Store<ServicesState>
+    private store: Store<ServicesState>,
+    protected bookingData: BookingData
   ) {
   }
 

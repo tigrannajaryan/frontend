@@ -1,12 +1,27 @@
 <ion-header madeHeader [showHome]="true">
   <ion-toolbar class="SelectDate SelectDate-header">
-    <div class="SelectDate-title SharedH1">Select time</div>
+    <ion-row justify-content-between>
+      <div class="SelectDate-title Made-h1">
+        Select time
+        <div class="SelectDate-date">{{ bookingData?.offer?.date | date: 'EE, MMM LL' }}</div>
+      </div>
+
+      <ng-container *ngIf="bookingData?.stylist">
+        <user-name-photo [firstName]="bookingData.stylist?.first_name" [lastName]="bookingData.stylist?.last_name" [photoUrl]="bookingData.stylist?.profile_photo_url"></user-name-photo>
+      </ng-container>
+    </ion-row>
+
     <book-services-header></book-services-header>
+
+    <price-pair
+      *ngIf="bookingData.offer"
+      [regularPrice]="bookingData.offer?.totalRegularPrice"
+      [clientPrice]="bookingData.offer?.price"></price-pair>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="SelectTimeslot">
-  <div class="contentSidePadding">
+  <div class="grid">
     <div *ngIf="isLoading" class="Spinner">
       <ion-spinner></ion-spinner>
     </div>
@@ -15,8 +30,6 @@
       (addServiceClick)="onAddService()"></no-service-selected>
 
     <ng-container *ngIf="bookingData.selectedServices?.length > 0">
-
-      <price-pair *ngIf="bookingData.offer" [regularPrice]="bookingData.offer?.totalRegularPrice" [clientPrice]="bookingData.offer?.price"></price-pair>
 
       <div *ngIf="slotSections && slotSections.length===0" class="SelectTimeslot-notice">Could not get available times.
         Please try again.</div>
