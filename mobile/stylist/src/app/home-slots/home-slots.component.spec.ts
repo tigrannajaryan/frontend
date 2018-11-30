@@ -151,7 +151,7 @@ describe('Pages: HomeSlotsComponent', () => {
     );
     expect(buttons)
       .toEqual([
-        { text: 'Check Out' },
+        { text: 'View and Check Out' },
         { text: 'No Show' },
         { text: 'Add to Google Calendar' },
         { text: `Call: ${getPhoneNumber(appointment.client_phone)}`},
@@ -170,7 +170,7 @@ describe('Pages: HomeSlotsComponent', () => {
     );
     expect(buttons)
       .toEqual([
-        { text: 'Check Out' },
+        { text: 'View and Check Out' },
         { text: 'No Show' },
         { text: 'Add to Google Calendar' },
         // Call and copy unavailable in this case
@@ -189,7 +189,7 @@ describe('Pages: HomeSlotsComponent', () => {
     );
     expect(buttons)
       .toEqual([
-        { text: 'Check Out' },
+        { text: 'View and Check Out' },
         // 'No Show' removed in this case
         // { text: 'No Show' },
         { text: 'Add to Google Calendar' },
@@ -266,7 +266,7 @@ describe('Pages: HomeSlotsComponent', () => {
     );
     expect(buttons)
       .toEqual([
-        { text: 'Check Out' },
+        { text: 'Details' },
         // 'No Show' removed in this case
         // { text: 'No Show' },
         { text: 'Add to Google Calendar' },

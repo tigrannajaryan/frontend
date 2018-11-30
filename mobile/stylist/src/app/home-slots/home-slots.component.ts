@@ -72,6 +72,10 @@ export class HomeSlotsComponent {
   selectedWeekdayName: string;
   selectedDayOfMonth: string;
 
+  private static isUpcomingAppointment(appointment: Appointment): boolean {
+    return moment(appointment.datetime_start_at).isAfter(moment(), 'day');
+  }
+
   constructor(
     private actionSheetCtrl: ActionSheetController,
     private appointmentsDataStore: AppointmentsDataStore,
@@ -178,12 +182,13 @@ export class HomeSlotsComponent {
   /**
    * Handler for 'Checkout Client' action.
    */
-  checkOutAppointmentClick(appointment: Appointment): void {
+  checkOutOrDetailsClick(appointment: Appointment): void {
     const data: AppointmentCheckoutParams = {
       appointmentUuid: appointment.uuid,
 
       // Allow to checkout any appointment that is not already checked out.
-      isAlreadyCheckedOut: appointment.status === AppointmentStatuses.checked_out
+      isAlreadyCheckedOut: appointment.status === AppointmentStatuses.checked_out,
+      isReadonly: HomeSlotsComponent.isUpcomingAppointment(appointment)
     };
     this.navCtrl.push(PageNames.AppointmentCheckout, { data });
   }
@@ -255,10 +260,14 @@ export class HomeSlotsComponent {
     if (!isBlockedTime(appointment)) {
       // Show "Details" or "Checkout" action for real appointments
       if (appointment.status !== AppointmentStatuses.cancelled_by_client) {
+
+        const text = (appointment.status === AppointmentStatuses.checked_out ||
+          HomeSlotsComponent.isUpcomingAppointment(appointment)) ? 'Details' : 'View and Check Out';
+
         buttons.push({
-          text: appointment.status === AppointmentStatuses.checked_out ? 'Details' : 'Check Out',
+          text,
           handler: () => {
-            this.checkOutAppointmentClick(appointment);
+            this.checkOutOrDetailsClick(appointment);
           }
         });
       }
