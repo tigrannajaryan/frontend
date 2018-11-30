@@ -99,7 +99,7 @@ export class AppointmentAddComponent {
     const isBlockedFullDay = this.isBlockedFullDay.value;
 
     if (isBlockedFullDay) {
-      this.blockFullDay(dateYMD);
+      this.blockFullDay(moment(date));
 
     } else if (isBlockedSlot) {
       this.createAppointment({
@@ -181,8 +181,8 @@ export class AppointmentAddComponent {
     alert.present();
   }
 
-  private async blockFullDay(dateYMD: string): Promise<any> {
-    const { response } = await this.worktimeApi.setWorkdayAvailable(dateYMD, false).toPromise();
+  private async blockFullDay(date: moment.Moment): Promise<any> {
+    const { response } = await this.worktimeApi.setWorkdayAvailable(date, false).toPromise();
 
     if (response) {
       this.navCtrl.pop();

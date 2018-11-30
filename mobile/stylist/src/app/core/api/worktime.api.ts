@@ -40,8 +40,8 @@ export class WorktimeApi extends BaseService {
   /**
    * Set availability of a workday
    */
-  setWorkdayAvailable(date: moment.Moment | Date | string, isAvailable: boolean): Observable<ApiResponse<WorkdayAvailability>> {
-    const isoDate = moment(date).format('YYYY-MM-DD');
+  setWorkdayAvailable(date: moment.Moment, isAvailable: boolean): Observable<ApiResponse<WorkdayAvailability>> {
+    const isoDate = date.format('YYYY-MM-DD');
     const data: WorkdayAvailability = { is_available: isAvailable };
 
     return this.post<WorkdayAvailability>(`stylist/availability/special/${isoDate}`, data);

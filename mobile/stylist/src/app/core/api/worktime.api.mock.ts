@@ -39,7 +39,7 @@ export class WorktimeApiMock {
   /**
    * Set availability of a workday
    */
-  setWorkdayAvailable(date: moment.Moment | Date | string, isAvailable: boolean): Observable<ApiResponse<WorkdayAvailability>> {
+  setWorkdayAvailable(date: moment.Moment, isAvailable: boolean): Observable<ApiResponse<WorkdayAvailability>> {
     const data: WorkdayAvailability = { is_available: isAvailable };
 
     return Observable.of({ response: data });

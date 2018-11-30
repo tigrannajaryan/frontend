@@ -154,7 +154,7 @@ describe('Pages: Add Appointment', () => {
     instance.form.patchValue({ // try to set up data for it, should be omitted in request
       client: `${client.first_name} ${client.last_name}`,
       phone: client.phone,
-      date: nextWeek.format('YYYY-MM-DD'),
+      date: nextWeek,
       time: nextWeek.format('HH:mm')
     });
 
@@ -169,6 +169,6 @@ describe('Pages: Add Appointment', () => {
     fixture.nativeElement.querySelector('[id="submitBtn"]').click();
 
     expect(worktimeService.setWorkdayAvailable)
-      .toHaveBeenCalledWith(nextWeek.format('YYYY-MM-DD'), false);
+      .toHaveBeenCalledWith(moment(nextWeek), false);
   });
 });
