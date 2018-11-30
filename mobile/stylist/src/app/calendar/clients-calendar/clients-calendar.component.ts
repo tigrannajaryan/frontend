@@ -1,6 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { Content, NavController, NavParams } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
+import * as moment from 'moment';
 
 import { componentUnloaded } from '~/shared/component-unloaded';
 
@@ -13,6 +14,7 @@ import { ClientsApi } from '~/core/api/clients-api';
 import { PageNames } from '~/core/page-names';
 import { loading } from '~/core/utils/loading';
 import { ProfileDataStore } from '~/core/profile.data';
+import { isoDateFormat } from '~/shared/api/base.models';
 
 @Component({
   selector: 'page-clients-calendar',
@@ -22,6 +24,7 @@ export class ClientsCalendarComponent {
   @ViewChild(Content) content: Content;
   client?: MyClientModel;
   isRootPage?: Boolean;
+  isLoaded = false;
 
   profile: StylistProfile;
   prices: DayOffer[] = [];
@@ -45,7 +48,11 @@ export class ClientsCalendarComponent {
       this.profile = response;
     }
 
-    this.getPricing();
+    try {
+      await this.getPricing();
+    } finally {
+      this.isLoaded = true;
+    }
   }
 
   /**
@@ -61,16 +68,18 @@ export class ClientsCalendarComponent {
   }
 
   onAddService(): void {
-    this.navCtrl.push(PageNames.AddServicesComponent, { data: {
-      selectedServices: this.services.map(service => ({ service_uuid: service.uuid })),
-      onComplete: services => {
-        this.navCtrl.pop();
-        this.getPricing(services.map(service => service.service_uuid));
+    this.navCtrl.push(PageNames.AddServicesComponent, {
+      data: {
+        selectedServices: this.services.map(service => ({ service_uuid: service.uuid })),
+        onComplete: services => {
+          this.navCtrl.pop();
+          this.getPricing(services.map(service => service.service_uuid));
+        }
       }
-    }});
+    });
   }
 
-  onDeleteService(service: ServiceItem): void {
+  async onDeleteService(service: ServiceItem): Promise<void> {
     this.getPricing(
       this.services
         .filter(({ uuid }) => uuid !== service.uuid)
@@ -80,6 +89,18 @@ export class ClientsCalendarComponent {
 
   @loading
   private async getPricing(serviceUuids?: string[]): Promise<void> {
+    if (serviceUuids && serviceUuids.length === 0) {
+      // No services selected. Don't show prices
+      this.prices = [{
+        date: moment().format(isoDateFormat),
+        price: undefined,
+        is_fully_booked: false,
+        is_working_day: false
+      }];
+      this.services = [];
+      return;
+    }
+
     await this.clientsApi.getPricing(this.client && this.client.uuid, serviceUuids)
       .combineLatest(Observable.from(this.servicesData.get()))
       .takeUntil(componentUnloaded(this))

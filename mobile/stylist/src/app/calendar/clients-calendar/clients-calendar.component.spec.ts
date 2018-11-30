@@ -83,11 +83,11 @@ describe('Pages: Client’s Calendar ', () => {
       response.response.service_uuids = categoryMock.services.map(service => service.uuid);
       return response;
     });
-    instance.services = categoryMock.services;
 
     spyOn(clientsApi, 'getPricing').and.returnValue(pricingResponseWithTheSameServices);
 
     await instance.ionViewWillLoad();
+    instance.services = categoryMock.services;
     fixture.detectChanges();
 
     const regularPrice = categoryMock.services.reduce((price, service) => {
@@ -103,5 +103,41 @@ describe('Pages: Client’s Calendar ', () => {
       .toContain(`$${regularPrice}`);
 
     done();
+  });
+
+  it('should suggest to select service when no services are selected', async () => {
+    // Initially we do not have loading completed, NoServiceSelected should not be visible
+    fixture.detectChanges();
+    let noServiceSelected = fixture.nativeElement.querySelector('.NoServiceSelected');
+    expect(noServiceSelected).toBeNull();
+
+    // Load the view
+    await instance.ionViewWillLoad();
+    fixture.detectChanges();
+
+    // Now ensure the price is loaded again and 0 services are returned.
+    const clientsApi = fixture.debugElement.injector.get(ClientsApi);
+    const pricingResponseWithTheNoServices = clientsApi.getPricing().map(response => {
+      response.response.service_uuids = [];
+      return response;
+    });
+
+    spyOn(clientsApi, 'getPricing').and.returnValue(pricingResponseWithTheNoServices);
+
+    await instance.onDeleteService(instance.services[0]);
+    instance.services = [];
+    fixture.detectChanges();
+
+    // Now NoServiceSelected should be visible because by default we do not get services from mock API
+    noServiceSelected = fixture.nativeElement.querySelector('.NoServiceSelected');
+    expect(noServiceSelected).not.toBeNull();
+
+    const selectServiceBigBtn = fixture.nativeElement.querySelector('[data-test-id=selectServiceBigBtn]');
+    expect(selectServiceBigBtn).not.toBeNull();
+
+    spyOn(instance, 'onAddService');
+    selectServiceBigBtn.click();
+
+    expect(instance.onAddService).toHaveBeenCalled();
   });
 });

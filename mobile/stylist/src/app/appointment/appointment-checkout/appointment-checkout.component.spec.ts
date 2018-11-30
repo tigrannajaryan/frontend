@@ -169,10 +169,8 @@ describe('Pages: AppointmentCheckoutComponent', () => {
       .toBeNull();
 
     const appointmentCardFeePercentage = fixture.nativeElement.querySelector('[data-test-id=appointmentCardFeePercentage]');
-    debugger;
     expect(appointmentCardFeePercentage)
       .toBeNull();
-
 
     const appointmentAddServiceBtn = fixture.nativeElement.querySelector('[data-test-id=appointmentAddServiceBtn]');
     expect(appointmentAddServiceBtn).toBeNull();

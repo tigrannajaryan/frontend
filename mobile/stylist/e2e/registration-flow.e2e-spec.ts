@@ -153,6 +153,5 @@ describe('Registration Flow', () => {
     browser.wait(EC.visibilityOf(homePage.homeMenuToggleBtn), 20000);
     expect(homePage.homeMenuToggleBtn.isPresent()).toBeTruthy();
     homePage.homeMenuToggleBtn.click();
-    debugger;
   });
 });

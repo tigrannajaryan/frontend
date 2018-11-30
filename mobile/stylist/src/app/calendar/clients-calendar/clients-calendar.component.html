@@ -14,7 +14,11 @@
         <user-name-photo [firstName]="profile?.first_name" [lastName]="profile?.last_name" [photoUrl]="profile?.profile_photo_url"></user-name-photo>
       </ng-container>
     </ion-row>
-    <services-header-list (addService)="onAddService()" (deleteService)="onDeleteService($event)" [services]="services" [readonly]="false"></services-header-list>
+    <services-header-list *ngIf="isLoaded" (addService)="onAddService()" (deleteService)="onDeleteService($event)" [services]="services" [readonly]="false"></services-header-list>
+
+    <no-service-selected *ngIf="isLoaded && services?.length === 0"
+      (addServiceClick)="onAddService()"></no-service-selected>
+
     <ng-container *ngIf="getRegularPrice(services) as regularPrice">
       <price-pair [regularPrice]="regularPrice"></price-pair>
     </ng-container>

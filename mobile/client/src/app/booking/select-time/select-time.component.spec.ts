@@ -35,8 +35,8 @@ describe('Pages: Select Time', () => {
 
   it('should suggest to select service when no services are selected', async () => {
     // Initially we have no service defined, so NoServiceSelected should be visible
-    let noServiceSelected = fixture.nativeElement.querySelector('.SelectedDate-NoServiceSelected');
-    expect(noServiceSelected).toBeDefined();
+    let noServiceSelected = fixture.nativeElement.querySelector('.NoServiceSelected');
+    expect(noServiceSelected).not.toBeNull();
 
     // Add a service
     const bookingData = fixture.debugElement.injector.get(BookingData);
@@ -48,7 +48,7 @@ describe('Pages: Select Time', () => {
     fixture.detectChanges();
 
     // Now NoServiceSelected should not be visible
-    noServiceSelected = fixture.nativeElement.querySelector('.SelectedDate-NoServiceSelected');
+    noServiceSelected = fixture.nativeElement.querySelector('.NoServiceSelected');
     expect(noServiceSelected).toBeNull();
 
     // Remove the service again
@@ -56,13 +56,13 @@ describe('Pages: Select Time', () => {
     fixture.detectChanges();
 
     // Now NoServiceSelected should become visible again
-    noServiceSelected = fixture.nativeElement.querySelector('.SelectedDate-NoServiceSelected');
-    expect(noServiceSelected).toBeDefined();
+    noServiceSelected = fixture.nativeElement.querySelector('.NoServiceSelected');
+    expect(noServiceSelected).not.toBeNull();
   });
 
   it('should have working selectServiceBigBtn', async () => {
     const selectServiceBigBtn = fixture.nativeElement.querySelector('[data-test-id=selectServiceBigBtn]');
-    expect(selectServiceBigBtn).toBeDefined();
+    expect(selectServiceBigBtn).not.toBeNull();
 
     spyOn(instance.servicesHeader, 'onAdd');
     selectServiceBigBtn.click();
