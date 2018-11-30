@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import * as moment from 'moment';
 
@@ -6,7 +6,6 @@ import { Logger } from '~/shared/logger';
 import { formatTimeInZone } from '~/shared/utils/string-utils';
 import { loading } from '~/shared/utils/loading';
 import { ApiResponse } from '~/shared/api/base.models';
-import { ServiceModel } from '~/shared/api/price.models';
 
 import { showAlert } from '~/shared/utils/alert';
 import { PageNames } from '~/core/page-names';
@@ -14,6 +13,7 @@ import { BookingData } from '~/core/api/booking.data';
 import { BookingApi, CreateAppointmentRequest, TimeslotsResponse } from '~/core/api/booking.api';
 import { AppointmentsDataStore } from '~/core/api/appointments.datastore';
 import { AppointmentPageParams } from '~/appointment-page/appointment-page.component';
+import { BookServicesHeaderComponent } from '../book-services-header/book-services-header';
 
 interface DisplayTimeslot {
   displayTime: string;
@@ -37,6 +37,8 @@ interface TimeslotSection {
   templateUrl: 'select-time.component.html'
 })
 export class SelectTimeComponent {
+
+  @ViewChild(BookServicesHeaderComponent) servicesHeader: BookServicesHeaderComponent;
 
   slotSections: TimeslotSection[];
   isLoading: boolean;
@@ -162,11 +164,7 @@ export class SelectTimeComponent {
     }
   }
 
-  onDeleteService(service: ServiceModel): void {
-    this.bookingData.deleteService(service);
-  }
-
   onAddService(): void {
-    // TODO: navigate to Add Service screen
+    this.servicesHeader.onAdd();
   }
 }

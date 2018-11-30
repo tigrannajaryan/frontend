@@ -7,39 +7,45 @@
 
 <ion-content class="SelectTimeslot">
   <div class="contentSidePadding">
-    <price-pair
-      *ngIf="bookingData.offer"
-      [regularPrice]="bookingData.offer?.totalRegularPrice"
-      [clientPrice]="bookingData.offer?.price"></price-pair>
-
-    <div class="Spinner">
-      <ion-spinner *ngIf="isLoading"></ion-spinner>
+    <div *ngIf="isLoading" class="Spinner">
+      <ion-spinner></ion-spinner>
     </div>
 
-    <div *ngIf="slotSections && slotSections.length===0" class="SelectTimeslot-notice">Could not get available times. Please try again.</div>
+    <no-service-selected *ngIf="!bookingData.selectedServices || bookingData.selectedServices?.length === 0"
+      (addServiceClick)="onAddService()"></no-service-selected>
 
-    <div *ngIf="!bookingData.offer; else timeslots" class="SelectTimeslot-notice">
-      <span>Sorry, this date is no longer available. Please choose a&nbsp;different date.</span><br/>
-      <button (click)="navCtrl.pop()" ion-button small class="Button">Select date</button>
-    </div>
-    <ng-template #timeslots>
-      <ng-container *ngFor="let slotSection of slotSections">
-        <!-- section of timeslots -->
-        <div class="SelectTimeslot-sectionTitle">{{ slotSection.sectionName }}</div>
+    <ng-container *ngIf="bookingData.selectedServices?.length > 0">
 
-        <div class="SelectTimeslot-slotsContainer">
-          <ng-container *ngFor="let slot of slotSection.slots">
-            <!-- timeslot -->
-            <div class="SelectTimeslot-timeslot" [ngClass]="{
+      <price-pair *ngIf="bookingData.offer" [regularPrice]="bookingData.offer?.totalRegularPrice" [clientPrice]="bookingData.offer?.price"></price-pair>
+
+      <div *ngIf="slotSections && slotSections.length===0" class="SelectTimeslot-notice">Could not get available times.
+        Please try again.</div>
+
+      <div *ngIf="!bookingData.offer; else timeslots" class="SelectTimeslot-notice">
+        <span>Sorry, this date is no longer available. Please choose a&nbsp;different date.</span><br />
+        <button (click)="navCtrl.pop()" ion-button small class="Button">Select date</button>
+      </div>
+      <ng-template #timeslots>
+        <ng-container *ngFor="let slotSection of slotSections">
+          <!-- section of timeslots -->
+          <div class="SelectTimeslot-sectionTitle">{{ slotSection.sectionName }}</div>
+
+          <div class="SelectTimeslot-slotsContainer">
+            <ng-container *ngFor="let slot of slotSection.slots">
+              <!-- timeslot -->
+              <div class="SelectTimeslot-timeslot" [ngClass]="{
                 'SelectTimeslot-timeslotBooked': slot.isBooked,
                 'SelectTimeslot-timeslotAvailable': !slot.isBooked,
-                'SelectTimeslot-timeslotSelected': slot.startTime.isSame(this.bookingData.selectedTime)}" (click)="onSlotClick(slot)">
-              {{ slot.isBooked ? 'Booked' : slot.displayTime }}
-            </div>
-          </ng-container>
-        </div>
-      </ng-container>
-    </ng-template>
+                'SelectTimeslot-timeslotSelected': slot.startTime.isSame(this.bookingData.selectedTime)}"
+                (click)="onSlotClick(slot)">
+                {{ slot.isBooked ? 'Booked' : slot.displayTime }}
+              </div>
+            </ng-container>
+          </div>
+        </ng-container>
+      </ng-template>
+
+    </ng-container>
 
   </div>
 </ion-content>

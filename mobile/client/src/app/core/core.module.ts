@@ -14,6 +14,7 @@ import { CodeInputComponent } from '~/shared/components/code-input/code-input.co
 import { ContinueFooterComponent } from '~/shared/components/continue-footer/continue-footer.component';
 import { MadeLinkDirective } from '~/shared/directives/made-link.directive';
 import { MbIconsComponent } from '~/shared/components/mb-icons/mb-icons.component';
+import { NoServiceSelectedComponent } from '~/shared/components/no-service-selected/no-service-selected.component';
 import { NumListComponent } from '~/shared/components/num-list/num-list.component';
 import { PhoneInputComponent } from '~/shared/components/phone-input/phone-input.component';
 import { PhoneLinkComponent } from '~/shared/components/phone-link/phone-link.component';
@@ -50,6 +51,7 @@ const declarations = [
   MadeHeaderComponent,
   MadeLinkDirective,
   MbIconsComponent,
+  NoServiceSelectedComponent,
   NumListComponent,
   NumListComponent,
   PhoneInputComponent,

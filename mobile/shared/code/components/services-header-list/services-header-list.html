@@ -1,16 +1,21 @@
 <div class="ServiciesHeader">
 
-  <span class="ServiciesHeader-title">Services:</span>
+  <span *ngIf="!readonly || services?.length > 0" class="ServiciesHeader-title">Services:</span>
 
   <div class="ServiciesHeader-container">
     <div *ngFor="let service of services; let index = index" class="ServiciesHeader-seviceItem" [attr.data-test-id]="'serviceItem'+index">
       <div class="ServiciesHeader-seviceName" data-test-id="name">{{ service.name }}</div>
-      <ion-icon *ngIf="!readonly && services?.length > 1" class="ServiciesHeader-serviceItemClose" name="ios-close"
+      <ion-icon *ngIf="!readonly" class="ServiciesHeader-serviceItemClose" name="ios-close"
         (click)="onDelete(service)" data-test-id="deleteBtn"></ion-icon>
     </div>
 
-    <div *ngIf="!readonly" class="ServiciesHeader-seviceAdd">
+    <div *ngIf="!readonly && services?.length > 0" class="ServiciesHeader-seviceAdd">
       <ion-icon name="ios-add-circle-outline" (click)="onAdd()" data-test-id="addServiceBtn"></ion-icon>
+    </div>
+
+    <div *ngIf="!readonly && services?.length === 0" class="ServicesHeader-bigAddBtn" (click)="onAdd()">
+      <ion-icon ios="ios-add" md="md-add"></ion-icon>
+      Add Service
     </div>
 
   </div>

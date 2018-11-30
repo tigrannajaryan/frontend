@@ -1,5 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { AlertController, Content, Events, NavController } from 'ionic-angular';
+import * as moment from 'moment';
 
 import { Logger } from '~/shared/logger';
 import { loading } from '~/shared/utils/loading';
@@ -12,6 +13,8 @@ import { ClientEventTypes } from '~/core/client-event-types';
 import { PreferredStylistsData } from '~/core/api/preferred-stylists.data';
 import { confirmMakeStylistPreferred } from '../booking-utils';
 import { PreferredStylistModel } from '~/shared/api/stylists.models';
+import { isoDateFormat } from '~/shared/api/base.models';
+import { BookServicesHeaderComponent } from '../book-services-header/book-services-header';
 
 @Component({
   selector: 'select-date',
@@ -19,6 +22,8 @@ import { PreferredStylistModel } from '~/shared/api/stylists.models';
 })
 export class SelectDateComponent {
   @ViewChild(Content) content: Content;
+  @ViewChild(BookServicesHeaderComponent) servicesHeader: BookServicesHeaderComponent;
+
   isLoading: boolean;
   prices: DayOffer[];
   preferredStylists: Promise<PreferredStylistModel[]>;
@@ -39,7 +44,15 @@ export class SelectDateComponent {
     this.bookingData.selectedServicesObservable
       .takeWhile(componentIsActive(this))
       .subscribe(async () => {
-        if (!this.bookingData.pricelist) {
+        if (!this.bookingData.pricelist || !this.bookingData.selectedServices ||
+          this.bookingData.selectedServices.length === 0) {
+          // No services selected. Don't show prices
+          this.prices = [{
+            date: moment().format(isoDateFormat),
+            price: undefined,
+            is_fully_booked: false,
+            is_working_day: false
+          }];
           return;
         }
 
@@ -60,6 +73,10 @@ export class SelectDateComponent {
 
     // Start getting preferredStylists list
     this.preferredStylists = this.preferredStylistsData.get();
+  }
+
+  onAddService(): void {
+    this.servicesHeader.onAdd();
   }
 
   async onSelectOffer(offer: DayOffer): Promise<void> {

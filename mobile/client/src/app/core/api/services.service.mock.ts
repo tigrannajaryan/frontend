@@ -13,12 +13,19 @@ import {
   GetStylistServicesParams,
   GetStylistServicesResponse
 } from '~/core/api/services.models';
+import { ServicesService } from './services.service';
 
 @Injectable()
-export class ServicesServiceMock extends BaseServiceMock {
+export class ServicesServiceMock extends ServicesService {
+
+  private mock = new BaseServiceMock(undefined, undefined, undefined);
+
+  constructor() {
+    super(undefined, undefined, undefined);
+  }
 
   getStylistServices(params: GetStylistServicesParams): Observable<ApiResponse<GetStylistServicesResponse>> {
-    return this.mockRequest<GetStylistServicesResponse>(
+    return this.mock.mockRequest<GetStylistServicesResponse>(
       Observable.create(observer => {
         observer.next({
           stylist_uuid: params.stylist_uuid,
@@ -37,7 +44,7 @@ export class ServicesServiceMock extends BaseServiceMock {
   }
 
   getPricelist(params: GetPricelistParams): Observable<ApiResponse<GetPricelistResponse>> {
-    return this.mockRequest<GetPricelistResponse>(
+    return this.mock.mockRequest<GetPricelistResponse>(
       Observable.create(observer => {
         const prices = [];
         const start = moment(new Date());
