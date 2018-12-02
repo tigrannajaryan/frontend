@@ -3,7 +3,7 @@
     <ion-row justify-content-between>
       <div class="SelectDate-title Made-h1">
         Select time
-        <div class="SelectDate-date">{{ bookingData?.offer?.date | date: 'EE, MMM LL' }}</div>
+        <div class="SelectDate-date">{{ bookingData?.offer?.date | date: 'EE, MMM dd' }}</div>
       </div>
 
       <ng-container *ngIf="bookingData?.stylist">
