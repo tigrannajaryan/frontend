@@ -1,9 +1,8 @@
 change-gap-time {
   .changeGapTime {
     position: absolute;
-    top: calc(100% - 389px);
+    bottom: 0;
     width: 100%;
-    height: pxtovw(389px);
     overflow-y: scroll;
     text-align: center;
     transition: all 100ms linear;
@@ -67,8 +66,8 @@ change-gap-time {
     box-shadow: none;
 
     .button-inner {
-      width: 56px;
-      height: 56px;
+      width: pxtovw(56px);
+      height: pxtovw(56px);
       background: color($colors, lightSalmon);
       box-shadow: none;
     }
