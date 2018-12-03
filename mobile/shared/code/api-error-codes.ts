@@ -115,7 +115,8 @@ export type NonFieldErrorCode =
   'err_cannot_modify_appointment' |
   'err_invalid_phone_number' |
   'err_device_not_found' |
-  'err_failure_to_setup_oauth';
+  'err_failure_to_setup_oauth' |
+  'err_stylist_special_availability_date_not_found';
 
 // Mapping of all non-field error codes to human readable messages
 export const nonFieldErrorMsgs = new Map<NonFieldErrorCode, string>([
