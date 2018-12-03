@@ -24,7 +24,7 @@ calendar-picker {
     line-height: $base-line-height;
     color: color($colors, warmGrey);
     background: white;
-    border-bottom: 1px solid color($grayscale, 100);
+    border-bottom: pxtovw(1px) solid color($grayscale, 100);
   }
 
   .CP-month {
