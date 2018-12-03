@@ -15,6 +15,11 @@
           <br/> your booking is complete! </h2>
       </ion-col>
     </ion-row>
+    <ion-row *ngIf="!calendarIntegrated" align-items-baseline class="BookingComplete-gridRow">
+      <ion-col align-self-end>
+        <button ion-button class="Button lowcase BookingComplete-button" (click)="onAddToCalendarClick()">Add to Google Calendar</button>
+      </ion-col>
+    </ion-row>
     <ion-row align-items-baseline class="BookingComplete-gridRow">
       <ion-col align-self-end>
         <button ion-button class="Button lowcase BookingComplete-button" (click)="onReturnHomeClick()">Return to home screen</button>

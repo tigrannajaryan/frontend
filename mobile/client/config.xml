@@ -131,21 +131,18 @@
     <plugin name="cordova-android-play-services-gradle-release" spec="1.4.4">
         <variable name="PLAY_SERVICES_VERSION" value="11.0.1" />
     </plugin>
-    <edit-config file="*-Info.plist" mode="merge" target="NSLocationWhenInUseUsageDescription">
-        <string>We use your location to allow searching for stylists nearby.</string>
-    </edit-config>
     <plugin name="cordova-plugin-googleplus" spec="5.3.2">
         <variable name="PLAY_SERVICES_VERSION" value="11.0.1" />
         <variable name="REVERSED_CLIENT_ID" value="com.googleusercontent.apps.833238145213-u4lbuebvh1voqude6fo0qa3poc4aru75" />
         <variable name="WEB_APPLICATION_CLIENT_ID" value="17636556416-l518l3bkc3pev82sl9d2dq6vrd1th7hc.apps.googleusercontent.com" />
     </plugin>
-    <edit-config file="*-Info.plist" mode="merge" target="NSLocationWhenInUseUsageDescription">
-        <string>We use your location to allow searching for stylists nearby.</string>
-    </edit-config>
-    <engine name="android" spec="7.1.0" />
-    <engine name="ios" spec="4.5.5" />
     <plugin name="cordova-plugin-facebook4" spec="3.2.0">
         <variable name="APP_ID" value="334939343971396" />
         <variable name="APP_NAME" value="MadeBeauty" />
     </plugin>
+    <edit-config file="*-Info.plist" mode="merge" target="NSLocationWhenInUseUsageDescription">
+        <string>We use your location to allow searching for stylists nearby.</string>
+    </edit-config>
+    <engine name="ios" spec="4.5.5" />
+    <engine name="android" spec="7.1.0" />
 </widget>
