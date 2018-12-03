@@ -8,5 +8,5 @@
     <phone-link *ngIf="stylist" [phone]="stylist.phone"></phone-link>
   </div>
   <div (click)="onClose()" class="NonBookableSavePopup-btn Link">Keep Searching</div>
-  <div (click)="onRedirectToSavedStylists()" class="NonBookableSavePopup-btn Link">Go to Saved Stylists</div>
+  <div (click)="onRedirectToSavedStylists()" class="NonBookableSavePopup-btn Link" data-test-id="confirmSavingStylist">Go to Saved Stylists</div>
 </div>

@@ -25,7 +25,7 @@ export enum TabNames {
 }
 
 @Component({
-  selector: 'page-stylists',
+  selector: 'my-stylists',
   templateUrl: 'my-stylists.component.html'
 })
 export class MyStylistsComponent {
