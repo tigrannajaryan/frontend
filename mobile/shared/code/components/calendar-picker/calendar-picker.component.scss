@@ -45,7 +45,7 @@ calendar-picker {
   }
 
   .CP-day {
-    padding: 4px 0;
+    padding: pxtovw(4px) 0;
     margin: pxtovw(16px) 0;
     font-size: $base-font-size;
     font-weight: 500;
