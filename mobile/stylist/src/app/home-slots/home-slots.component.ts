@@ -393,8 +393,15 @@ export class HomeSlotsComponent {
 
   private async loadAppointments(): Promise<void> {
     const data = await this.appointmentsDataStore.get(this.selectedDate);
-    // Fully blocked means not available day with existed slots, because there are literally slots, they’re just booked.
-    this.isFullyBlocked = !data.response.is_day_available && data.response.total_slot_count > 0;
+
+    // Is fully-blocked?
+    const { response } = await this.worktimeApi.getWorkdayAvailable(this.selectedDate).toPromise();
+    if (response) {
+      this.isFullyBlocked = !response.is_available;
+    } else {
+      this.isFullyBlocked = false;
+    }
+
     this.processAppointments(data.response);
   }
 
