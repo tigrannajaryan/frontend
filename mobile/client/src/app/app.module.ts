@@ -44,9 +44,10 @@ import { BaseService } from '~/shared/api/base.service';
 import { ExternalAppService } from '~/shared/utils/external-app-service';
 import { GeolocationService } from '~/shared/utils/geolocation.service';
 import { ServerStatusTracker } from '~/shared/server-status-tracker';
-import { PushNotification } from './shared/push/push-notification';
+import { PushNotification } from '~/shared/push/push-notification';
 import { SuccessErrorPopupComponent } from '~/shared/components/success-error-popup/success-error-popup.component';
-import { CalendarPrimingComponent } from './shared/components/calendar-priming/calendar-priming.component';
+import { CalendarPickerComponent } from '~/shared/components/calendar-picker/calendar-picker.component';
+import { CalendarPrimingComponent } from '~/shared/components/calendar-priming/calendar-priming.component';
 import { profilePath, profileReducer } from '~/core/reducers/profile.reducer';
 import { servicesPath, servicesReducer } from '~/core/reducers/services.reducer';
 
@@ -97,6 +98,7 @@ const declarations = [
   AuthConfirmPageComponent,
   AuthPageComponent,
   BookingCompleteComponent,
+  CalendarPickerComponent,
   CalendarPrimingComponent,
   ClientAppComponent,
   FirstLastNameComponent,

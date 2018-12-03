@@ -3,6 +3,11 @@ export enum WeekdayIso {
   Mon = 1, Tue, Wed, Thu, Fri, Sat, Sun
 }
 
+// To be used in calendars
+export interface Weekday {
+  isoWeekday: WeekdayIso; // from 1 (Mon) to 7 (Sun)
+}
+
 // To get weekday full name, e.g. WEEKDAY_FULL_NAMES[WeekdayIso.Fri]
 export const WEEKDAY_FULL_NAMES = [undefined, 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
