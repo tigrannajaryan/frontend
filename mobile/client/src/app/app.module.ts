@@ -19,6 +19,7 @@ import { ScreenOrientation } from '@ionic-native/screen-orientation';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import { Push } from '@ionic-native/push';
+import { GooglePlus } from '@ionic-native/google-plus';
 
 import { META_REDUCERS, StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
@@ -189,6 +190,7 @@ const declarations = [
     SplashScreen,
     StatusBar,
     ScreenOrientation,
+    GooglePlus,
 
     // Shared:
     BaseService,
