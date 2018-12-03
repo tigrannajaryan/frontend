@@ -1,0 +1,37 @@
+<ion-header class="madeBackHeader">
+  <ion-navbar class="Made-wp BackHeader-backBtn"></ion-navbar>
+
+  <ion-toolbar class="CP-weekdays">
+
+    <ion-row align-items-center *ngIf="moment().startOf('week') as startOfWeek">
+      <div *ngFor="let weekday of Array(7).fill(''); index as i" class="CP-dayOfWeek">
+        {{ moment(startOfWeek).add(i, 'days').format('ddd') }}
+      </div>
+    </ion-row>
+
+  </ion-toolbar>
+</ion-header>
+
+<ion-content no-padding>
+
+  <ng-container *ngFor="let month of months">
+    <ng-container *ngIf="moment([month.year, month.month, 1]) as startOfMonth">
+
+      <div class="CP-monthName">
+        {{ startOfMonth.format('MMMM YYYY') }}
+      </div>
+
+      <ion-row align-items-center class="CP-month">
+        <div *ngFor="let empty of Array(startOfMonth.isoWeekday()).fill('')" class="CP-shift"></div>
+
+        <ng-container *ngFor="let isoDate of Array.from(month.days.keys())">
+          <div *ngIf="month.days.get(isoDate) as day" [ngClass]="getClassnames(isoDate, day)" (click)="onDateSelect(isoDate)" class="CP-day">
+            {{ day.day }}
+          </div>
+        </ng-container>
+      </ion-row>
+
+    </ng-container>
+  </ng-container>
+
+</ion-content>

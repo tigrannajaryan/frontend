@@ -1,6 +1,5 @@
 import { async, ComponentFixture } from '@angular/core/testing';
 import { ActionSheetButton } from 'ionic-angular/components/action-sheet/action-sheet-options';
-import { DatePicker } from '@ionic-native/date-picker';
 import * as moment from 'moment';
 
 import { getPhoneNumber } from '../shared/utils/phone-numbers';
@@ -14,7 +13,7 @@ import { AppointmentsDataStore } from './appointments.data';
 import { ProfileDataStore } from '../core/profile.data';
 import { HomeSlotsComponent } from './home-slots.component';
 import { createAppointment } from './time-slots/time-slots.component.spec';
-import { ModalController, ViewController } from 'ionic-angular';
+import { ModalController } from 'ionic-angular';
 import { PageNames } from '~/core/page-names';
 
 let fixture: ComponentFixture<HomeSlotsComponent>;
@@ -57,22 +56,19 @@ describe('Pages: HomeSlotsComponent', () => {
   });
 
   it('should select date on month name click', () => {
-    const datePicker = fixture.debugElement.injector.get(DatePicker);
+    const modal = fixture.debugElement.injector.get(ModalController);
+    spyOn(modal, 'create');
 
     fixture.nativeElement.querySelector('[data-test-id=selectDate]').click();
 
-    expect(datePicker.show)
-      .toHaveBeenCalledWith({
-        date: instance.selectedDate.toDate(),
-        mode: 'date',
-        androidTheme: datePicker.ANDROID_THEMES.THEME_DEVICE_DEFAULT_LIGHT
-      });
+    expect(modal.create)
+      .toHaveBeenCalled();
   });
 
   it('should show weekdays selector', () => {
     const today = moment();
     const startOfWeek = moment(today).startOf('week');
-    const disabled = { weekdayIso: WeekdayIso.Fri }; // TGI Friday
+    const disabled = { isoWeekday: WeekdayIso.Fri }; // TGI Friday
 
     instance.selectedDate = today;
     instance.disabledWeekdays = [disabled];
@@ -90,7 +86,7 @@ describe('Pages: HomeSlotsComponent', () => {
       expect(fixture.nativeElement.textContent)
         .toContain(date.format('D'));
 
-      if (date.isoWeekday() === disabled.weekdayIso) {
+      if (date.isoWeekday() === disabled.isoWeekday) {
         disabledDate = date;
       }
     }

@@ -1,0 +1,128 @@
+@keyframes scaleUp {
+  0%   { transform: scale(0); }
+  100% { transform: scale(1); }
+}
+
+calendar-picker {
+  $base-font-size: pxtovw(18px);
+  $title-font-size: pxtovw(21px);
+  $base-line-height: pxtovw(24px);
+
+  .CP-weekdays {
+    min-height: 0 !important;
+    padding: 0 pxtovw(8px) pxtovw(8px) pxtovw(8px);
+    color: color($colors, warmGrey);
+    border-bottom: pxtovw(1px) solid color($grayscale, 100);
+  }
+
+  .CP-monthName {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    padding: pxtovw(8px) pxtovw(24px);
+    font-size: $title-font-size;
+    line-height: $base-line-height;
+    color: color($colors, warmGrey);
+    background: white;
+    border-bottom: pxtovw(1px) solid color($grayscale, 100);
+  }
+
+  .CP-month {
+    padding: pxtovw(12px) pxtovw(16px) pxtovw(32px);
+  }
+
+  .CP-dayOfWeek,
+  .CP-day,
+  .CP-shift {
+    $day-size: 1 / 7 * 100%;
+
+    width: $day-size;
+  }
+
+  .CP-dayOfWeek,
+  .CP-day {
+    text-align: center;
+  }
+
+  .CP-day {
+    padding: pxtovw(4px) 0;
+    margin: pxtovw(16px) 0;
+    font-size: $base-font-size;
+    font-weight: 500;
+    line-height: $base-line-height;
+
+    &.is-faded {
+      font-weight: normal;
+      color: color($colors, warmGrey);
+    }
+
+    &.is-highlighted,
+    &.is-selected,
+    &.is-today,
+    &:active {
+      $circle-size: pxtovw(32px);
+      $ease-out-and-back: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+      position: relative;
+      font-weight: normal;
+      color: black;
+
+      &:before { // circle
+        position: absolute;
+        top: 50%;
+        right: 50%;
+        z-index: -1;
+        width: $circle-size;
+        height: $circle-size;
+        margin: (-1 * $circle-size / 2) (-1 * $circle-size / 2) 0 0;
+        content: '';
+        background: color($grayscale, 200);
+        border-radius: 50%;
+        animation: scaleUp 0.4s ease-in;
+        animation-timing-function: $ease-out-and-back;
+        animation-fill-mode: forwards;
+      }
+    }
+
+    &.is-selected,
+    &:active {
+      font-weight: 500;
+      color: white;
+
+      &:before {
+        background: black;
+      }
+    }
+
+    &.is-today {
+      font-weight: 500;
+      color: white;
+
+      &:before {
+        background: color($colors, lightSalmon);
+      }
+    }
+
+    &.is-highlighted.is-future:not(.is-selected):not(:active) {
+      $circle-size: pxtovw(6px);
+      $circle-color: #E96D5C;
+
+      &:before {
+        top: 100%;
+        right: 50%;
+        width: $circle-size;
+        height: $circle-size;
+        margin: (-1 * $circle-size) (-1 * $circle-size / 2) 0 0;
+        background: $circle-color;
+      }
+    }
+
+    &:active {
+      &:before {
+        transition: scale 0.4s ease-in-out;
+        transform: scale(1.5);
+        animation: none;
+      }
+    }
+  }
+}

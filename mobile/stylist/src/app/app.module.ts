@@ -91,6 +91,7 @@ import { NotificationsApi } from './shared/push/notifications.api';
 import { MadeMenuComponent } from '~/core/components/made-menu/made-menu.component';
 import { HomeSlotsComponent } from './home-slots/home-slots.component';
 import { ChangeGapTimeComponent } from '~/core/popups/change-gap-time/change-gap-time.component';
+import { CalendarPickerComponent } from '~/shared/components/calendar-picker/calendar-picker.component';
 
 initSentry();
 
@@ -138,6 +139,7 @@ const declarations = [
   AuthConfirmPageComponent,
   AuthPageComponent,
   CalendarExampleComponent,
+  CalendarPickerComponent,
   CalendarPrimingComponent,
   ChangeGapTimeComponent,
   ChangePercentComponent,

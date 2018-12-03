@@ -1,11 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import * as moment from 'moment';
 
-import { WeekdayIso } from '~/shared/weekday';
-
-export interface DisabledWeekday {
-  weekdayIso: WeekdayIso;
-}
+import { Weekday } from '~/shared/weekday';
 
 /**
  * A horizontal calendar with one week from Sun to Sat.
@@ -22,7 +18,7 @@ export class HorizontalCalendarComponent {
     this._selectedDate = date;
   }
 
-  @Input() disabledWeekdays: DisabledWeekday[] = [];
+  @Input() disabledWeekdays: Weekday[] = [];
 
   @Output() changeDate = new EventEmitter<moment.Moment>();
 
@@ -48,7 +44,7 @@ export class HorizontalCalendarComponent {
     const weekdayIso = date.isoWeekday();
     return (
       this.disabledWeekdays &&
-      this.disabledWeekdays.some(weekday => weekday.weekdayIso === weekdayIso)
+      this.disabledWeekdays.some(weekday => weekday.isoWeekday === weekdayIso)
     );
   }
 
