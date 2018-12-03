@@ -1,7 +1,6 @@
 import { Component, NgZone, ViewChild } from '@angular/core';
 import { ActionSheetController, Content, ModalController, NavController } from 'ionic-angular';
 import { ActionSheetButton } from 'ionic-angular/components/action-sheet/action-sheet-options';
-import { DatePicker } from '@ionic-native/date-picker';
 import * as moment from 'moment';
 import * as deepEqual from 'fast-deep-equal';
 
@@ -11,6 +10,7 @@ import { ExternalAppService } from '~/shared/utils/external-app-service';
 import { setIntervalOutsideNgZone } from '~/shared/utils/timer-utils';
 import { getPhoneNumber } from '~/shared/utils/phone-numbers';
 import { Workday } from '~/shared/api/worktime.models';
+import { Weekday } from '~/shared/weekday';
 
 import { Appointment, AppointmentStatuses, DayAppointmentsResponse } from '~/core/api/home.models';
 import { HomeService } from '~/core/api/home.service';
@@ -21,12 +21,19 @@ import { StylistAppStorage } from '~/core/stylist-app-storage';
 import { ProfileDataStore } from '~/core/profile.data';
 
 import { AppointmentAddParams } from '~/appointment/appointment-add/appointment-add';
-import { DisabledWeekday } from '~/calendar/horizontal-calendar/horizontal-calendar.component';
 
 import { FreeSlot, isBlockedTime } from './time-slots/time-slots.component';
 import { AppointmentsDataStore } from './appointments.data';
 
+import { ISODate, isoDateFormat } from '~/shared/api/base.models';
 import { CalendarPrimingParams } from '~/shared/components/calendar-priming/calendar-priming.component';
+import {
+  CalendarPickerComponent,
+  CalendarPickerParams,
+  DaysInMonth,
+  DefaultWeekday,
+  DefaultWeekdays
+} from '~/shared/components/calendar-picker/calendar-picker.component';
 
 const helpText = `Congratulations! Your registration is complete.<br/><br/>
   This is your home screen. Your appointments will show up here.<br/><br/>
@@ -62,7 +69,7 @@ export class HomeSlotsComponent {
   selectedDate: moment.Moment = moment().startOf('day');
 
   // Non-working weekdays
-  disabledWeekdays: DisabledWeekday[] = [];
+  disabledWeekdays: Weekday[] = [];
 
   // Is fully blocked (non-working day)
   isFullyBlocked = false;
@@ -80,7 +87,6 @@ export class HomeSlotsComponent {
     private actionSheetCtrl: ActionSheetController,
     private appointmentsDataStore: AppointmentsDataStore,
     private appStorage: StylistAppStorage,
-    private datePicker: DatePicker,
     private externalAppService: ExternalAppService,
     private homeService: HomeService,
     private logger: Logger,
@@ -135,7 +141,7 @@ export class HomeSlotsComponent {
       this.disabledWeekdays =
         response.weekdays
           .filter((weekday: Workday): boolean => !weekday.work_start_at) // null for non-working
-          .map((weekday: Workday): DisabledWeekday => ({ weekdayIso: weekday.weekday_iso }));
+          .map((weekday: Workday): Weekday => ({ isoWeekday: weekday.weekday_iso }));
     }
   }
 
@@ -229,18 +235,38 @@ export class HomeSlotsComponent {
   }
 
   onDateAreaClick(): void {
-    // Show date picker and let the user choose a date, then load appointments
-    // for selected date.
-    this.datePicker.show({
-      date: this.selectedDate.toDate(), // Start with current date
-      mode: 'date',
-      androidTheme: this.datePicker.ANDROID_THEMES.THEME_DEVICE_DEFAULT_LIGHT
-    }).then(
-      date => this.selectDateAndLoadAppointments(moment(date)),
-      err => {
-        // Nothing to do. Navigation cancelled.
+    const defaultWeekdays = [];
+
+    for (let isoWeekday = 1; isoWeekday <= 7; isoWeekday++) {
+      const weekday: DefaultWeekday = {
+        isoWeekday,
+        isFaded: this.disabledWeekdays.some(day => day.isoWeekday === isoWeekday)
+      };
+      defaultWeekdays.push(weekday);
+    }
+
+    const params: CalendarPickerParams = {
+      defaultWeekdays: defaultWeekdays as DefaultWeekdays,
+      selectedIsoDate: this.selectedDate.format(isoDateFormat),
+      onDaysLoaded: async (days: DaysInMonth): Promise<void> => {
+        const dates = Array.from(days.keys());
+
+        const { response = [] } = await this.homeService.getAppointments({
+            date_from: new Date(dates[0]),
+            date_to: new Date(dates[dates.length - 1])
+          }).toPromise();
+
+        for (const appointment of response) {
+          const appointmentDate = appointment.datetime_start_at.split('T')[0];
+          days.get(appointmentDate).isHighlighted = true;
+        }
+      },
+      onDateSelected: (date: ISODate): void => {
+        this.selectDateAndLoadAppointments(moment(date));
       }
-    );
+    };
+    const popup = this.modalCtrl.create(CalendarPickerComponent, { params });
+    popup.present();
   }
 
   onAddAppointmentClick(): void {
