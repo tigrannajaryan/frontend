@@ -58,7 +58,8 @@ calendar-picker {
 
     &.is-highlighted,
     &.is-selected,
-    &.is-today {
+    &.is-today,
+    &:active {
       $circle-size: pxtovw(32px);
       $ease-out-and-back: cubic-bezier(0.175, 0.885, 0.32, 1.275);
 
@@ -83,7 +84,8 @@ calendar-picker {
       }
     }
 
-    &.is-selected {
+    &.is-selected,
+    &:active {
       font-weight: 500;
       color: white;
 
@@ -101,7 +103,7 @@ calendar-picker {
       }
     }
 
-    &.is-highlighted.is-future:not(.is-selected) {
+    &.is-highlighted.is-future:not(.is-selected):not(:active) {
       $circle-size: pxtovw(6px);
       $circle-color: #E96D5C;
 
@@ -112,6 +114,14 @@ calendar-picker {
         height: $circle-size;
         margin: (-1 * $circle-size) (-1 * $circle-size / 2) 0 0;
         background: $circle-color;
+      }
+    }
+
+    &:active {
+      &:before {
+        transition: scale 0.4s ease-in-out;
+        transform: scale(1.5);
+        animation: none;
       }
     }
   }
