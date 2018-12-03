@@ -12,7 +12,7 @@ calendar-picker {
     min-height: 0 !important;
     padding: 0 pxtovw(8px) pxtovw(8px) pxtovw(8px);
     color: color($colors, warmGrey);
-    border-bottom: 1px solid color($grayscale, 100);
+    border-bottom: pxtovw(1px) solid color($grayscale, 100);
   }
 
   .CP-monthName {
