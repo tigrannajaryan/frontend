@@ -4,11 +4,15 @@ import { App, Content, Events, Refresher } from 'ionic-angular';
 import { Logger } from '~/shared/logger';
 import { componentUnloaded } from '~/shared/component-unloaded';
 import { loading } from '~/shared/utils/loading';
+import { PreferredStylistsListResponse } from '~/shared/api/stylists.models';
+
 import { AppointmentModel, AppointmentStatus, HomeResponse } from '~/core/api/appointments.models';
 import { AppointmentsDataStore } from '~/core/api/appointments.datastore';
 import { PageNames } from '~/core/page-names';
-import { AppointmentPageParams } from '~/appointment-page/appointment-page.component';
 import { ClientEventTypes } from '~/core/client-event-types';
+import { PreferredStylistsData } from '~/core/api/preferred-stylists.data';
+
+import { AppointmentPageParams } from '~/appointment-page/appointment-page.component';
 import { startRebooking } from '~/booking/booking-utils';
 import { ProfileDataStore } from '~/profile/profile.data';
 
@@ -30,20 +34,26 @@ export class HomePageComponent {
   @ViewChild(Content) content: Content;
 
   homeData: HomeResponse;
+  hasBookableStylist: boolean = undefined;
 
   isLoading: boolean;
 
   constructor(
     private app: App,
     private appointmentsDataStore: AppointmentsDataStore,
-    private dataStore: AppointmentsDataStore,
     private events: Events,
     private logger: Logger,
+    private preferredStylistsData: PreferredStylistsData,
     private profileDataStore: ProfileDataStore
   ) {
-    this.dataStore.home.asObservable()
+    this.appointmentsDataStore.home.asObservable()
       .takeUntil(componentUnloaded(this))
       .subscribe(apiResponse => this.onHomeData(apiResponse.response));
+
+    this.preferredStylistsData.asObservable()
+      .takeUntil(componentUnloaded(this))
+      .subscribe(apiResponse => this.onPreferredStylistData(apiResponse.response));
+    this.preferredStylistsData.get();
   }
 
   ionViewDidLoad(): void {
@@ -98,5 +108,13 @@ export class HomePageComponent {
   onBookClick(): void {
     this.logger.info('onBookClick');
     this.events.publish(ClientEventTypes.startBooking);
+  }
+
+  onSearchClick(): void {
+    this.app.getRootNav().push(PageNames.StylistSearch);
+  }
+
+  private onPreferredStylistData(response: PreferredStylistsListResponse): void {
+    this.hasBookableStylist = (response && response.stylists.some(stylist => stylist.is_profile_bookable));
   }
 }

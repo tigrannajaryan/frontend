@@ -16,7 +16,7 @@ import { PushNotificationHandlerParams, PushNotificationToastService, ToastDismi
 import { ClientEventTypes } from '~/core/client-event-types';
 import { PageNames } from '~/core/page-names';
 
-import { TabIndex } from '~/main-tabs/main-tabs.component';
+import { MainTabIndex } from '~/main-tabs/main-tabs.component';
 
 import { PushNotificationsTrackerComponent } from './push-notifications-tracker.component';
 
@@ -112,7 +112,7 @@ describe('PushNotificationTracker (client)', () => {
     expect(navCtrl.setRoot)
       .toHaveBeenCalledWith(PageNames.MainTabs);
     expect(events.publish)
-      .toHaveBeenCalledWith(ClientEventTypes.selectMainTab, TabIndex.Home);
+      .toHaveBeenCalledWith(ClientEventTypes.selectMainTab, MainTabIndex.Home);
 
     done();
   });
@@ -161,7 +161,7 @@ describe('PushNotificationTracker (client)', () => {
     expect(navCtrl.setRoot)
       .toHaveBeenCalledWith(PageNames.MainTabs);
     expect(events.publish)
-      .toHaveBeenCalledWith(ClientEventTypes.selectMainTab, TabIndex.Stylists);
+      .toHaveBeenCalledWith(ClientEventTypes.selectMainTab, MainTabIndex.Stylists);
     expect(navCtrl.push)
       .toHaveBeenCalledWith(PageNames.StylistSearch);
 

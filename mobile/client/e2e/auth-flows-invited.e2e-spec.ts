@@ -1,7 +1,7 @@
 import * as faker from 'faker';
 import { browser } from 'protractor';
 
-import { waitFor } from './shared-e2e/utils';
+import { waitFor, waitForNot } from './shared-e2e/utils';
 import { backdoorApi } from './shared-e2e/backdoor-api';
 import { phoneLoginPage } from './shared-e2e/phone-login-page';
 import { firstNameLastNamePage } from './pages/firstname-lastname-page';
@@ -14,6 +14,7 @@ import { createTestStylist, performLogin, performLogout } from './test-utils';
 import { stylistInvitationPage } from './pages/stylist-invitation-page';
 import { mainTabsPage } from './pages/main-tabs-page';
 import { pushPrimingPage } from './shared-e2e/push-priming-page';
+import { homePage } from './pages/home-page';
 
 describe('Authentication flows for invited client with app reloads', () => {
 
@@ -57,11 +58,16 @@ describe('Authentication flows for invited client with app reloads', () => {
     await howPricingWorksPage.continue();
     await pushPrimingPage.allow();
     await waitFor(mainTabsPage.homeTab);
+    await waitForNot(homePage.searchBtn);
+    await waitFor(homePage.bookBtn);
+    await homePage.startBooking();
   });
 
   it('Can restore auth on reload to mainTabsPage', async () => {
     await browser.get('');
     await waitFor(mainTabsPage.homeTab);
+    await waitForNot(homePage.searchBtn);
+    await waitFor(homePage.bookBtn);
   });
 
   it('Can logout', async () => {

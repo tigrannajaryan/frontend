@@ -119,7 +119,7 @@ export class ProfileEditComponent {
       profile_photo_id: this.picChanged ? this.form.value.profile_photo_id : undefined
     };
 
-    const updated = await this.profileDataStore.update(value);
+    const updated = await this.profileDataStore.set(value);
 
     if (updated && updated.response) {
       this.form.patchValue(updated.response);

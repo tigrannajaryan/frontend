@@ -54,7 +54,7 @@ export class PrivacySettingsComponent {
         }, {
           text: 'Yes, Change',
           handler: () => {
-            this.profileDataStore.update({ privacy });
+            this.profileDataStore.set({ privacy });
           }
         }]
       });
@@ -64,7 +64,7 @@ export class PrivacySettingsComponent {
         return;
       }
 
-      this.profileDataStore.update({ privacy });
+      this.profileDataStore.set({ privacy });
     }
   }
 }

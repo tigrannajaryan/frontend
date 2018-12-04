@@ -36,7 +36,8 @@ export class AuthConfirmPageComponent extends AbstractAuthConfirmComponent {
     // out without performing logout user action (e.g. on token expiration).
     await clearAllDataStores();
 
-    // Resubscrube to profile DataStore is needed in menu after storage was cleared out:
+    // Resubscribe to profile DataStore is needed in menu after storage was cleared out
+    // because clearAllDataStores invalidates all existing subscriptions.
     this.events.publish(StylistEventTypes.menuUpdateProfileSubscription);
 
     const profileStatus = response.profile_status as StylistProfileStatus;

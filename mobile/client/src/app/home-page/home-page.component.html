@@ -26,9 +26,7 @@
       <div *ngIf="homeData.upcoming?.length > 0; else noUpcoming">
         <!-- show upcoming appointment cards -->
         <div *ngFor="let appointment of homeData.upcoming">
-          <appointment-item
-            [appointment]="appointment"
-            (cardClick)="onAppointmentClick(appointment, AppointmentType.upcoming)"
+          <appointment-item [appointment]="appointment" (cardClick)="onAppointmentClick(appointment, AppointmentType.upcoming)"
             data-test-id="upcomingAppointment"></appointment-item>
         </div>
       </div>
@@ -47,25 +45,20 @@
         <div class="HomePage-subtitleContainer">
           <span class="HomePage-subtitle">Last Visits</span>
         </div>
-        <appointment-item
-          [appointment]="homeData.last_visited"
-          (cardClick)="onAppointmentClick(homeData.last_visited, AppointmentType.past)"
-          (rebookClick)="onRebookClick(homeData.last_visited)"
-          hasRebook="true"
-          data-test-id="lastVisitAppointment"></appointment-item>
+        <appointment-item [appointment]="homeData.last_visited" (cardClick)="onAppointmentClick(homeData.last_visited, AppointmentType.past)"
+          (rebookClick)="onRebookClick(homeData.last_visited)" hasRebook="true" data-test-id="lastVisitAppointment"></appointment-item>
       </div>
 
 
       <!-- show this if there are no past or upcoming visits, i.e. this is a new client -->
       <ion-grid no-padding class="HomePage-grid HomePage-homeEmpty" *ngIf="(!homeData.upcoming || homeData.upcoming.length === 0) && !homeData.last_visited">
-          <ion-row class="HomePage-wText">
-              <ion-col align-self-center>
-                Welcome!
-              </ion-col>
-            </ion-row>
+        <ion-row class="HomePage-wText">
+          <ion-col align-self-center>
+            Welcome!
+          </ion-col>
+        </ion-row>
         <ion-row>
           <ion-col class="HomePage-wImage">
-            <!--ToDo the image will be replaced once SVG is ready-->
             <img src="assets/icons/welcome-home.svg">
           </ion-col>
         </ion-row>
@@ -75,5 +68,7 @@
 </ion-content>
 
 <ion-footer>
-  <button *ngIf="homeData" (click)="onBookClick()" ion-button class="Button HomePageBookButton" data-test-id="bookLink">Book</button>
+  <button *ngIf="hasBookableStylist === false" (click)="onSearchClick()" ion-button class="Button HomePageBookButton"
+    data-test-id="searchBtn">Search Stylists</button>
+  <button *ngIf="hasBookableStylist && homeData" (click)="onBookClick()" ion-button class="Button HomePageBookButton" data-test-id="bookLink">Book</button>
 </ion-footer>

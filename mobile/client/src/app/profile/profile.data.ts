@@ -25,6 +25,7 @@ export class ProfileDataStore extends DataStore<ProfileModel> {
     profileStatus.has_email = profileStatus.has_email || Boolean(profile.email);
     profileStatus.has_picture_set = profileStatus.has_picture_set || Boolean(profile.profile_photo_url);
     profileStatus.has_zipcode = profileStatus.has_zipcode || Boolean(profile.zip_code);
+    profileStatus.has_seen_educational_screens = profile.has_seen_educational_screens;
     await saveAuthLocalData(authLocalData);
   }
 
@@ -38,14 +39,15 @@ export class ProfileDataStore extends DataStore<ProfileModel> {
     ProfileDataStore.guardInitilization = true;
   }
 
-  async update(profile: ProfileModel): Promise<ApiResponse<ProfileModel>>  {
+  async set(profile: ProfileModel): Promise<ApiResponse<ProfileModel>>  {
     // Save to backend
     const apiRes = await this.profileApi.updateProfile(profile).first().toPromise();
     const profileResponse: ProfileModel = apiRes.response;
     if (profileResponse) {
       // It was successful. Save locally too.
-      // First in our cache
-      this.set(profileResponse);
+
+      // First in our data store cache
+      await super.set(profileResponse);
 
       // Then update the local profile status appropriately
       await ProfileDataStore.updateLocalProfileStatus(profileResponse);

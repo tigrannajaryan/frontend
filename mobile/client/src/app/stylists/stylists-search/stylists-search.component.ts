@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { Events, ModalController, NavController, NavParams } from 'ionic-angular';
+import { Events, ModalController, NavController } from 'ionic-angular';
 
 import {
   PreferredStylistModel,
@@ -15,18 +15,13 @@ import { BookingData } from '~/core/api/booking.data';
 import { PreferredStylistsData } from '~/core/api/preferred-stylists.data';
 import { StylistsService } from '~/core/api/stylists.service';
 import { ClientEventTypes } from '~/core/client-event-types';
-import { ClientStartupNavigation } from '~/core/client-startup-navigation';
 import { PageNames } from '~/core/page-names';
 
-import { Tabs } from '~/stylists/my-stylists.component';
+import { MyStylistsTabs } from '~/stylists/my-stylists.component';
 import {
   NonBookableSavePopupComponent,
   NonBookableSavePopupParams
 } from '~/stylists/non-bookable-save-popup/non-bookable-save-popup.component';
-
-export interface StylistSearchParams {
-  onboarding?: boolean;
-}
 
 @Component({
   selector: 'page-stylists-search',
@@ -37,7 +32,6 @@ export class StylistSearchComponent {
   static SEARCHING_DELAY = 250;
 
   PageNames = PageNames;
-  onboarding = false;
 
   query: FormControl = new FormControl('');
   locationQuery: FormControl = new FormControl('');
@@ -58,23 +52,16 @@ export class StylistSearchComponent {
 
   constructor(
     private bookingData: BookingData,
-    private clientNavigation: ClientStartupNavigation,
     private events: Events,
     private geolocationService: GeolocationService,
     private modalCtrl: ModalController,
     private navCtrl: NavController,
-    private navParams: NavParams,
     private preferredStylistsData: PreferredStylistsData,
     private stylistsService: StylistsService
   ) {
   }
 
   async ionViewWillLoad(): Promise<void> {
-    const params = (this.navParams.get('data') || {}) as StylistSearchParams;
-
-    // Diff redirects for onboarding:
-    this.onboarding = params.onboarding;
-
     // Save preferred stylsits to identify preferred ones in search:
     this.preferredStylists = await this.preferredStylistsData.get();
 
@@ -141,18 +128,14 @@ export class StylistSearchComponent {
       }
     }
 
-    if (this.onboarding) {
-      // Show the next appropriate screen based on profile status
-      this.clientNavigation.showNextByProfileStatus(this.navCtrl);
-
-    } else if (!stylist.is_profile_bookable) {
+    if (!stylist.is_profile_bookable) {
       // If stylist is not bookable show a popup:
       this.showNonBookableStylistSavedPopup(stylist);
 
     } else {
       // Common case for adding a stylist navigates back to my stylists:
       await this.navCtrl.popToRoot();
-      this.events.publish(ClientEventTypes.selectStylistTab, Tabs.primeStylists);
+      this.events.publish(ClientEventTypes.selectStylistTab, MyStylistsTabs.primeStylists);
     }
   }
 

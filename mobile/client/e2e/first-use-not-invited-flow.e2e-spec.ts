@@ -15,6 +15,7 @@ import { clientApp } from './client-app';
 import { pushPrimingPage } from './shared-e2e/push-priming-page';
 import { mainTabsPage } from './pages/main-tabs-page';
 import { performLogout } from './test-utils';
+import { homePage } from './pages/home-page';
 
 describe('First use flow for not invited client', () => {
 
@@ -62,13 +63,11 @@ describe('First use flow for not invited client', () => {
     await howPricingWorksPage.continue();
   });
 
-  it('Can see stylists search page and add stylist', async () => {
-    await stylistsSearchPage.addFirstStylist();
-  });
-
   it('Can navigate to mainTabs', async () => {
     await pushPrimingPage.allow();
     await waitFor(mainTabsPage.homeTab);
+    await waitFor(homePage.searchBtn);
+    await waitForNot(homePage.bookBtn);
   });
 
   it('Can logout', async () => {

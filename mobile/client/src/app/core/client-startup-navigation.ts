@@ -2,15 +2,15 @@ import { Injectable } from '@angular/core';
 import { App, NavController } from 'ionic-angular';
 import { Page } from 'ionic-angular/navigation/nav-util';
 
-import { PageNames } from './page-names';
 import { ClientProfileStatus } from '~/shared/api/auth.models';
 import { StylistModel } from '~/shared/api/stylists.models';
 import { StylistInvitationParams } from '~/stylists/stylist/stylist.component';
 import { PushNotification } from '~/shared/push/push-notification';
 import { getAuthLocalData } from '~/shared/storage/token-utils';
-import { StylistSearchParams } from '~/stylists/stylists-search/stylists-search.component';
-import { FirstLastNamePageParams } from '~/profile/first-last-name/first-last-name.component';
 import { PushPrimingScreenParams } from '~/shared/components/push-priming-screen/push-priming-screen.component';
+
+import { PageNames } from './page-names';
+import { FirstLastNamePageParams } from '~/profile/first-last-name/first-last-name.component';
 
 export interface PageDescr {
   page: Page;
@@ -81,24 +81,14 @@ export class ClientStartupNavigation {
   }
 
   /**
-   * Show the screen that comes after HowPricingWorks. This is a special case that is
-   * not covered properly by generic showNextByProfileStatus().
+   * Show the next screen for a complete profile.
+   * Uses same logic as nextToShowForCompleteProfile(), but also shows the selected screen.
+   * @param navCtrl we will push() or setRoot() on this NavController to show the screen.
+   * @param pendingInvitation if not provided we assume there is no pending invitation
    */
-  async showAfterHowPricingWorks(navCtrl: NavController): Promise<void> {
-    const authLocalData = await getAuthLocalData();
-    const profileStatus: ClientProfileStatus = authLocalData ? authLocalData.profileStatus : undefined;
-
-    let pageDescr: PageDescr;
-    if (!profileStatus.has_preferred_stylist_set) {
-      // No preferred stylist, show search screen
-      const data: StylistSearchParams = { onboarding: true };
-      pageDescr = { page: PageNames.StylistSearch, params: { data } };
-    } else {
-      // The profile is complete, show the appropriate screen for complete profiles.
-      pageDescr = await this.nextToShowForCompleteProfile();
-    }
-
-    ClientStartupNavigation.showPage(navCtrl, pageDescr);
+  async showNextForCompleteProfile(navCtrl: NavController): Promise<void> {
+    const next = await this.nextToShowForCompleteProfile();
+    ClientStartupNavigation.showPage(navCtrl, next);
   }
 
   /**
@@ -126,9 +116,8 @@ export class ClientStartupNavigation {
       return { page: PageNames.StylistInvitation, params: { data } };
     }
 
-    if (!profileStatus.has_preferred_stylist_set) {
-      // No preferred stylist and no invitation, we are onboarding a new account,
-      // start with HowMadeWorks screen.
+    if (!profileStatus.has_seen_educational_screens) {
+      // Didn't see educational screen, show them.
       return { page: PageNames.HowMadeWorks };
     }
 
