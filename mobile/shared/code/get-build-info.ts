@@ -1,3 +1,7 @@
+import { Platform } from 'ionic-angular';
+
+import { PlatformNames } from './constants';
+
 declare const process: any; // make process variable visible to TypeScript
 
 export function getBuildNumber(): string {
@@ -16,4 +20,8 @@ export function isDevelopmentBuild(): boolean {
 
 export function getAppVersionNumber(): string {
     return process.env.APP_VERSION_NUMBER || '0.0.0';
+}
+
+export function getPlatformName(platform: Platform): PlatformNames {
+  return platform.is(PlatformNames.ios) ? PlatformNames.ios : PlatformNames.android;
 }

@@ -6,6 +6,10 @@ import * as camelcase from 'camelcase';
 import { getAppVersionNumber, getBuildNumber } from '~/shared/get-build-info';
 import { Logger } from '~/shared/logger';
 
+export enum GAEventCategory {
+  openScreen = 'open-screen'
+}
+
 /**
  * Wrapper class for Google Analytics which initializes it
  * and can defer calls until the initializtion is ready or
@@ -84,6 +88,10 @@ export class GAWrapper {
 
   trackTiming(category: string, intervalInMilliseconds: number, variable: string, label: string): void {
     this.execWhenReady(() => this.ga.trackTiming(category, intervalInMilliseconds, variable, label));
+  }
+
+  trackEvent(category: string, action: string, label?: string, value?: number, newSession?: boolean): void {
+    this.execWhenReady(() => this.ga.trackEvent(category, action, label, value, newSession));
   }
 
   private async initAppVer(): Promise<void> {
