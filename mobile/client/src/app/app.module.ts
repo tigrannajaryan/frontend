@@ -49,6 +49,8 @@ import { PushNotification } from '~/shared/push/push-notification';
 import { SuccessErrorPopupComponent } from '~/shared/components/success-error-popup/success-error-popup.component';
 import { CalendarPickerComponent } from '~/shared/components/calendar-picker/calendar-picker.component';
 import { CalendarPrimingComponent } from '~/shared/components/calendar-priming/calendar-priming.component';
+import { GoogleSignin } from './shared/google-signin';
+
 import { profilePath, profileReducer } from '~/core/reducers/profile.reducer';
 import { servicesPath, servicesReducer } from '~/core/reducers/services.reducer';
 
@@ -83,6 +85,7 @@ import { PushPrimingScreenComponent } from './shared/components/push-priming-scr
 import { ClientAppStorage } from './core/client-app-storage';
 import { FirstLastNameComponent } from '~/profile/first-last-name/first-last-name.component';
 import { ClientStartupNavigation } from './core/client-startup-navigation';
+import { IntegrationsApi } from './shared/api/integrations.api';
 
 // Init sentry reporting (inits only if ENV.sentryDsn):
 initSentry();
@@ -203,6 +206,10 @@ const declarations = [
 
     ClientAppStorage,
     ClientStartupNavigation,
+
+    GooglePlus,
+    GoogleSignin,
+    IntegrationsApi,
 
     { // Add auth token to all requests
       provide: HTTP_INTERCEPTORS,

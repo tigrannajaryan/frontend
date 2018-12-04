@@ -15,6 +15,7 @@ export interface ProfileModel extends ProfileImageModel {
   state?: string;
   instagram_url?: string;
   privacy?: string;
+  google_calendar_integrated?: boolean;
 }
 
 export interface ProfileCompleteness {

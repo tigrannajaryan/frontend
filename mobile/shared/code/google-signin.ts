@@ -40,6 +40,9 @@ export interface GoogleOAuthResponse {
 // Error code returned on Android when DENY button is tapped on the consent screen.
 const userDeniedAccess = 12501;
 
+// Shown when app is not correctly registered in Google Console / Firebase Console.
+const googleSigninError = 12500;
+
 @Injectable()
 export class GoogleSignin {
   constructor(
@@ -153,6 +156,11 @@ export class GoogleSignin {
 
     } else if (error === userDeniedAccess) {
       this.logger.warn('GoogleSignin: user denied access');
+    } else if (error === googleSigninError) {
+      this.logger.error(`GoogleSignin: error ${error}. ` +
+        'Did you add signing certificate SHA-1 fingerprint for this app to Firebase console at ' +
+        'https://console.firebase.google.com/u/0/project/made-staging/settings/general/ ?');
+      reportToSentry(error);
     }
   }
 }

@@ -6,6 +6,7 @@ import { SuccessErrorPopupComponent, SuccessErrorPopupParams } from '~/shared/co
 import { GoogleOAuthScope, GoogleSignin } from '~/shared/google-signin';
 import { AddIntegrationRequest, IntegrationsApi, IntegrationTypes } from '~/shared/api/integrations.api';
 
+import { Logger } from '~/shared/logger';
 import { PlatformNames } from '~/shared/constants';
 import { ENV } from '~/environments/environment.default';
 
@@ -27,6 +28,7 @@ export class CalendarPrimingComponent {
     private gs: GoogleSignin,
     private integrationsApi: IntegrationsApi,
     private loadingCtrl: LoadingController,
+    private logger: Logger,
     private modalCtrl: ModalController,
     private navCtrl: NavController,
     private navParams: NavParams,
@@ -48,6 +50,8 @@ export class CalendarPrimingComponent {
       const platformName = this.platform.is(PlatformNames.ios) ? PlatformNames.ios : PlatformNames.android;
       const envName = ENV.production ? 'prod' : 'staging'; // Not type safe, carefull, we read this from json
       const webClientId = webClientIdMap[envName][platformName];
+
+      this.logger.info(`Preparing for Google Signin using webClientId=${webClientId}`);
 
         // Ask user to login to their Google account and give us access to their calendar
       loginResponse = await this.gs.login(webClientId, [GoogleOAuthScope.CalendarEvents]);
