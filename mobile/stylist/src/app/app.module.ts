@@ -21,6 +21,7 @@ import { EmailComposer } from '@ionic-native/email-composer';
 import { Push } from '@ionic-native/push';
 import { DatePicker } from '@ionic-native/date-picker';
 import { GooglePlus } from '@ionic-native/google-plus';
+import { LaunchNavigator } from '@ionic-native/launch-navigator';
 
 import { UnhandledErrorHandler } from '~/shared/unhandled-error-handler';
 import { initSentry } from '~/shared/sentry';
@@ -78,6 +79,7 @@ import { InvitationsComponent } from '~/invitations/invitations.component';
 import { MyClientsComponent } from '~/clients/my-clients/my-clients.component';
 import { ClientDetailsComponent } from '~/clients/client-details/client-details.component';
 import { RegisterSalonComponent } from '~/register-salon/register-salon';
+import { ProfileComponent } from '~/profile/profile.component';
 import { ServicesComponent } from '~/services/services.component';
 import { ServicesCategoriesComponent } from '~/services/services-categories/services-categories.component';
 import { ServicesListComponent } from '~/services/services-list/services-list.component';
@@ -160,6 +162,7 @@ const declarations = [
   MyClientsComponent,
   PushPrimingScreenComponent,
   RegisterSalonComponent,
+  ProfileComponent,
   ServiceItemComponent,
   ServicesCategoriesComponent,
   ServicesComponent,
@@ -213,6 +216,8 @@ const declarations = [
 
     Push,
     PushNotification,
+
+    LaunchNavigator,
 
     { // Add auth token to all requests
       provide: HTTP_INTERCEPTORS,

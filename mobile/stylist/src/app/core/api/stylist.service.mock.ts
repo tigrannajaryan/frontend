@@ -11,6 +11,7 @@ import {
   StylistProfile,
   StylistServicesListResponse
 } from '~/shared/api/stylist-app.models';
+import { randomPhone } from '~/shared/utils/test-utils';
 
 export const serviceItemsMock: ServiceItem[] = [0, 0].map(() => ({
   uuid: faker.random.uuid(),
@@ -29,13 +30,15 @@ export const profileSummaryMock = {
     uuid: faker.random.uuid(),
     first_name: faker.name.firstName(),
     last_name: faker.name.lastName(),
-    phone: faker.phone.phoneNumber(),
-    public_phone: faker.phone.phoneNumber(),
+    phone: randomPhone(),
+    public_phone: randomPhone(),
     salon_address: faker.fake('{{address.city}} {{address.streetAddress}}'),
     salon_name: faker.company.companyName(),
     instagram_url: faker.internet.url(),
     website_url: faker.internet.url(),
-    followers_count: faker.random.number()
+    followers_count: faker.random.number(),
+    profile_photo_url: '',
+    email: faker.internet.email()
   },
   services: [
     { name: faker.commerce.productName(), base_price: Number(faker.commerce.price()), duration_minutes: 40 },

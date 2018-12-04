@@ -1,10 +1,9 @@
-<!-- Use [hideMenuButton]="true" to hide it even during onboarding -->
-<ion-header madeMenuHeader [hideBackButton]="!isRootPage" [hideMenuButton]="true">
-  <ion-title *ngIf="isRootPage">
+<ion-header madeMenuHeader [hideBackButton]="!params?.isRootPage" [hideMenuButton]="true">
+  <ion-title *ngIf="params?.isRootPage">
     <div class="Made-h1">My Profile</div>
   </ion-title>
 
-  <ion-buttons *ngIf="isRootPage" end>
+  <ion-buttons *ngIf="params?.isRootPage" end>
     <button [disabled]="form.invalid" (click)="onContinue()" ion-button icon-only color="dark" class="RightButton">
       Done
     </button>
@@ -13,7 +12,7 @@
 
 
 <ion-content no-padding>
-  <made-nav *ngIf="!isRootPage" [activePage]="PageNames.RegisterSalon"></made-nav>
+  <made-nav *ngIf="!params?.isRootPage" [activePage]="PageNames.RegisterSalon"></made-nav>
 
   <form [formGroup]="form" class="Made-wp Made-wpContent">
     <div class="Salon-circle">
@@ -92,7 +91,7 @@
       <ion-row>
         <ion-col>
           <ion-item class="Input">
-            <ion-label floating>Public profile phone</ion-label>
+            <ion-label floating>Public Profile Phone</ion-label>
             <ion-input formControlName="public_phone" type="tel"></ion-input>
             <div [class.is-active]="form.get('public_phone').dirty && form.get('public_phone').errors" class="InputError" item-end>
               <span *ngIf="form.get('public_phone').errors?.minlength">Minimal length {{ form.get('public_phone').errors?.minlength?.requiredLength }} digits</span>
@@ -105,8 +104,9 @@
 
       <ion-row>
         <ion-col>
-          <ion-item class="Input">
-            <ion-label floating>Instagram user name</ion-label>
+          <ion-item class="Input with-sufix">
+            <ion-label floating>Instagram ID</ion-label>
+            <div class="Input-sufix" item-start>instagram.com/</div>
             <ion-input formControlName="instagram_url" type="text"></ion-input>
             <div [class.is-active]="form.get('instagram_url').dirty && form.get('instagram_url').errors" class="InputError" item-end>
               <span *ngIf="form.get('instagram_url').errors?.pattern">Wrong name</span>
@@ -125,7 +125,7 @@
       </ion-row>
     </ion-grid>
   </form>
-  <div *ngIf="!isRootPage" class="Salon-submit Made-wp">
+  <div *ngIf="!params?.isRootPage" class="Salon-submit Made-wp">
     <button (click)="onContinue()" [disabled]="form.invalid" class="Discounts-btn" ion-button data-test-id="submitProfileBtn">{{ title || 'Continue' }}</button>
   </div>
 </ion-content>

@@ -56,7 +56,9 @@ describe('Pages: Client’s Calendar ', () => {
     // Using setTimeout to be sure that all async work inside profile effects is done:
     setTimeout(async () => {
       await instance.ionViewWillLoad();
-      instance.client = myClientsMock[0];
+      instance.params = {
+        client: myClientsMock[0]
+      };
       fixture.detectChanges();
 
       expect(fixture.nativeElement.textContent)

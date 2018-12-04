@@ -24,10 +24,10 @@
   margin: 0;
   font-size: pxtovw(15px);
   color: black;
-  text-transform: capitalize;
   border-bottom: pxtovw(2px) solid transparent;
   border-radius: initial;
   opacity: 0.4;
+  text-transform: inherit;
 
   b {
     text-transform: initial;

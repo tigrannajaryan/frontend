@@ -15,6 +15,13 @@ export interface StylistProfile {
   profile_photo_url?: string;
   google_api_key?: string;
   google_calendar_integrated?: boolean;
+
+  email?: string;
+}
+
+export interface StylistProfileCompleteness {
+  isProfileComplete: boolean;
+  completenessPercent: number;
 }
 
 export interface StylistProfileStatus {

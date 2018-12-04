@@ -31,6 +31,7 @@ import { MadeMenuHeaderComponent } from '~/core/components/made-menu-header/made
 import { PhoneLinkComponent } from '~/shared/components/phone-link/phone-link.component';
 import { ClientItemComponent } from '~/clients/client-item/client-item.component';
 import { HorizontalCalendarComponent } from '~/calendar/horizontal-calendar/horizontal-calendar.component';
+import { StylistPreviewComponent } from '~/core/components/stylist-preview/stylist-preview.component';
 
 const components = [
   MadeNavComponent,
@@ -54,7 +55,8 @@ const components = [
   CodeInputComponent,
   ClientItemComponent,
   PricePairComponent,
-  HorizontalCalendarComponent
+  HorizontalCalendarComponent,
+  StylistPreviewComponent
 ];
 
 @NgModule({

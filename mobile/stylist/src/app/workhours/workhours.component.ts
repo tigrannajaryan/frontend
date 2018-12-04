@@ -150,13 +150,17 @@ export const defaultEndTime = '17:00'; // 24 hour hh:mm format
  */
 type HourRange = [string, string];
 
+export interface WorkHoursComponentParams {
+  isRootPage?: boolean;
+}
+
 @Component({
   selector: 'page-hours',
   templateUrl: 'workhours.component.html'
 })
 export class WorkHoursComponent {
   protected PageNames = PageNames;
-  isRootPage?: Boolean;
+  params: WorkHoursComponentParams;
 
   cards: VisualWeekCard[] = [];
   isLoading = false;
@@ -193,11 +197,11 @@ export class WorkHoursComponent {
     private logger: Logger) { }
 
   async ionViewWillLoad(): Promise<void> {
-    this.isRootPage = Boolean(this.navParams.get('isRootPage'));
     await this.loadInitialData();
   }
 
   async loadInitialData(): Promise<void> {
+    this.params = this.navParams.get('params') as WorkHoursComponentParams;
     // Load data from backend and show it
     const { response } = await loading(this, this.api.getWorktime().get());
     if (response) {
@@ -238,7 +242,7 @@ export class WorkHoursComponent {
   }
 
   onContinue(): void {
-    if (!this.isRootPage) {
+    if (!(this.params && this.params.isRootPage)) {
       // Continue registration on the next page
       this.navCtrl.push(PageNames.DiscountsWeekday);
       this.autoSave();

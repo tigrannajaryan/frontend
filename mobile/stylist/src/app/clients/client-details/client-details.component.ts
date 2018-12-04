@@ -6,6 +6,7 @@ import { ExternalAppService } from '~/shared/utils/external-app-service';
 import { ClientDetailsApi } from '~/core/api/client-details.api';
 import { ClientDetailsModel, MyClientModel } from '~/core/api/clients-api.models';
 import { PageNames } from '~/core/page-names';
+import { ClientsCalendarComponentParams } from '~/calendar/clients-calendar/clients-calendar.component';
 
 @Component({
   selector: 'client-details',
@@ -35,6 +36,7 @@ export class ClientDetailsComponent {
   }
 
   onCalendarClick(): void {
-    this.navCtrl.push(PageNames.ClientsCalendar, { client: this.clientDetails });
+    const params: ClientsCalendarComponentParams = { client: this.clientDetails };
+    this.navCtrl.push(PageNames.ClientsCalendar, { params });
   }
 }

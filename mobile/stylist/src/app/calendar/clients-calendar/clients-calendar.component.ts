@@ -16,14 +16,18 @@ import { loading } from '~/core/utils/loading';
 import { ProfileDataStore } from '~/core/profile.data';
 import { isoDateFormat } from '~/shared/api/base.models';
 
+export interface ClientsCalendarComponentParams {
+  isRootPage?: boolean;
+  client?: MyClientModel;
+}
+
 @Component({
   selector: 'page-clients-calendar',
   templateUrl: 'clients-calendar.component.html'
 })
 export class ClientsCalendarComponent {
   @ViewChild(Content) content: Content;
-  client?: MyClientModel;
-  isRootPage?: Boolean;
+  params: ClientsCalendarComponentParams;
   isLoaded = false;
 
   profile: StylistProfile;
@@ -40,8 +44,7 @@ export class ClientsCalendarComponent {
   }
 
   async ionViewWillLoad(): Promise<void> {
-    this.isRootPage = Boolean(this.navParams.get('isRootPage'));
-    this.client = this.navParams.get('client') as MyClientModel;
+    this.params = this.navParams.get('params') as ClientsCalendarComponentParams;
 
     const { response } = await this.profileData.get();
     if (response) {
@@ -101,7 +104,7 @@ export class ClientsCalendarComponent {
       return;
     }
 
-    await this.clientsApi.getPricing(this.client && this.client.uuid, serviceUuids)
+    await this.clientsApi.getPricing(this.params && this.params.client && this.params.client.uuid, serviceUuids)
       .combineLatest(Observable.from(this.servicesData.get()))
       .takeUntil(componentUnloaded(this))
       .map(([pricing, services]) => {

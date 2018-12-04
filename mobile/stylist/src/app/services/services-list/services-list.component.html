@@ -1,11 +1,11 @@
-<ion-header madeMenuHeader [hideBackButton]="isRootPage">
-  <ion-title *ngIf="isRootPage">
+<ion-header madeMenuHeader [hideBackButton]="params?.isRootPage">
+  <ion-title *ngIf="params?.isRootPage">
     <div class="Made-h1">My Services</div>
   </ion-title>
 </ion-header>
 
 <ion-content no-padding>
-  <made-nav *ngIf="!isRootPage" [activePage]="PageNames.Services"></made-nav>
+  <made-nav *ngIf="!params?.isRootPage" [activePage]="PageNames.Services"></made-nav>
 
 
   <ion-fab right bottom>
@@ -16,7 +16,7 @@
 
 
   <div class="Made-wp Made-wpContent">
-    <div *ngIf="!isRootPage" class="Made-h1">My Services</div>
+    <div *ngIf="!params?.isRootPage" class="Made-h1">My Services</div>
     <div class="Made-text">
       <div class="Made-textItem">
         This is your current list of services. Click to edit or delete any of the services below.
@@ -89,4 +89,4 @@
 </ion-content>
 
 
-<ion-footer *ngIf="!isRootPage" (continue)="onContinue()" madeContinueFooter></ion-footer>
+<ion-footer *ngIf="!params?.isRootPage" (continue)="onContinue()" madeContinueFooter></ion-footer>

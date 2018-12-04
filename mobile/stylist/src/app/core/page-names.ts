@@ -22,6 +22,7 @@ import { FirstScreenComponent } from '~/first-screen/first-screen';
 import { HomeSlotsComponent } from '~/home-slots/home-slots.component';
 import { InvitationsComponent } from '~/invitations/invitations.component';
 import { MyClientsComponent } from '~/clients/my-clients/my-clients.component';
+import { ProfileComponent } from '~/profile/profile.component';
 import { PushPrimingScreenComponent } from '~/shared/components/push-priming-screen/push-priming-screen.component';
 import { RegisterSalonComponent } from '~/register-salon/register-salon';
 import { ServiceItemComponent } from '~/services/services-item/services-item.component';
@@ -65,6 +66,7 @@ export const PageNames = {
   HomeSlots: HomeSlotsComponent,
   Invitations: InvitationsComponent,
   MyClients: MyClientsComponent,
+  Profile: ProfileComponent,
   PushPrimingScreen: PushPrimingScreenComponent,
   RegisterSalon: RegisterSalonComponent,
   Services: ServicesComponent,
