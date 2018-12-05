@@ -18,7 +18,7 @@
           <button
             (click)="onTabChange(MyStylistsTabs.savedStylists)"
             [class.active]="tabs[MyStylistsTabs.savedStylists].name === activeTab"
-            ion-button clear color="dark" class="Tabs-btn">
+            ion-button clear color="dark" class="Tabs-btn" data-test-id="savedStylistsBtn">
             {{ TabNames.savedStylists }} &nbsp; <b *ngIf="tabs[MyStylistsTabs.savedStylists].stylists?.length > 0">{{ tabs[MyStylistsTabs.savedStylists].stylists.length }}</b>
           </button>
         </div>
@@ -35,7 +35,7 @@
 
 
   <ion-fab right bottom>
-    <button ion-fab [madeLink]="[PageNames.StylistSearch]" [isRootNav]="true">
+    <button ion-fab [madeLink]="[PageNames.StylistSearch]" [isRootNav]="true" data-test-id="goToStylistSearch">
       <ion-icon name="add"></ion-icon>
     </button>
   </ion-fab>
