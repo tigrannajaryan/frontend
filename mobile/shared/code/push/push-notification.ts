@@ -45,6 +45,15 @@ export enum PushNotificationCode { // (!) in alphabetical order
 }
 
 /**
+ * All known additional data key-values provided in additionalData prop of a push-notification.
+ */
+export interface PushNotificationAdditionalData { // (!) in alphabetical order
+  // NOTE: list any additional data you would like to use as an optional prop and with description.
+  appointment_datetime_start_at?: string; // start of appointment in iso format
+  appointment_uuid?: string; // uuid of appointment
+}
+
+/**
  * Resulting value returned by showPermissionScreen() method.
  */
 export enum PermissionScreenResult {
@@ -348,10 +357,10 @@ export class PushNotification {
     this.logger.info(`Push notification received ${notificationStr}`);
 
     const { additionalData, message } = notification;
-    const { code, coldstart, foreground, uuid } = additionalData;
+    const { code, coldstart, foreground, uuid, ...data } = additionalData;
     this.events.publish(
       SharedEventTypes.pushNotification,
-      new PushNotificationEventDetails(foreground, coldstart, uuid, code, message)
+      new PushNotificationEventDetails(foreground, coldstart, uuid, code, message, data)
     );
   }
 

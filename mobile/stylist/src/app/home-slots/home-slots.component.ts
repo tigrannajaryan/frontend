@@ -1,5 +1,5 @@
 import { Component, NgZone, ViewChild } from '@angular/core';
-import { ActionSheetController, Content, ModalController, NavController } from 'ionic-angular';
+import { ActionSheetController, Content, Events, ModalController, NavController } from 'ionic-angular';
 import { ActionSheetButton } from 'ionic-angular/components/action-sheet/action-sheet-options';
 import * as moment from 'moment';
 import * as deepEqual from 'fast-deep-equal';
@@ -34,6 +34,8 @@ import {
   DefaultWeekday,
   DefaultWeekdays
 } from '~/shared/components/calendar-picker/calendar-picker.component';
+
+import { FocusAppointmentEventParams, StylistEventTypes } from '~/core/stylist-event-types';
 
 const helpText = `Congratulations! Your registration is complete.<br/><br/>
   This is your home screen. Your appointments will show up here.<br/><br/>
@@ -74,6 +76,9 @@ export class HomeSlotsComponent {
   // Is fully blocked (non-working day)
   isFullyBlocked = false;
 
+  // An appointment we want to highlight:
+  highlightedAppointment: Appointment;
+
   // And its components as strings (used in HTML)
   selectedMonthName: string;
   selectedWeekdayName: string;
@@ -87,6 +92,7 @@ export class HomeSlotsComponent {
     private actionSheetCtrl: ActionSheetController,
     private appointmentsDataStore: AppointmentsDataStore,
     private appStorage: StylistAppStorage,
+    private events: Events,
     private externalAppService: ExternalAppService,
     private homeService: HomeService,
     private logger: Logger,
@@ -119,7 +125,7 @@ export class HomeSlotsComponent {
     }
 
     // Load and show appointments for selected date
-    this.loadAppointments();
+    await this.loadAppointments();
 
     // Autorefresh the view once every 10 mins. This is a temporary solution until
     // we implement push notifications.
@@ -128,11 +134,16 @@ export class HomeSlotsComponent {
 
     // Preload data
     this.profileDataStore.get();
+
+    // Focus on one particullar appointment:
+    this.events.subscribe(StylistEventTypes.focusAppointment, (params: FocusAppointmentEventParams) => this.focusAppointment(params));
   }
 
   ionViewWillLeave(): void {
     // Stop autorefresh
     clearInterval(this.autoRefreshTimer);
+
+    this.events.unsubscribe(StylistEventTypes.focusAppointment);
   }
 
   async setNonWorkingDays(): Promise<void> {
@@ -373,14 +384,31 @@ export class HomeSlotsComponent {
     return buttons;
   }
 
+  private async focusAppointment(params: FocusAppointmentEventParams): Promise<void> {
+    this.selectDate(moment(params.appointment_datetime_start_at));
+    await this.loadAppointments();
+
+    const highlightedAppointment = this.data.appointments.find(appointment => {
+      return appointment.uuid === params.appointment_uuid;
+    });
+    this.highlightedAppointment = highlightedAppointment;
+  }
+
   /**
    * Set the date to show appointments for.
    */
   private selectDate(date: moment.Moment): void {
-    this.selectedDate = date.clone().startOf('day');
-    this.selectedMonthName = moment(date).format('MMM');
-    this.selectedWeekdayName = moment(date).format('dddd');
-    this.selectedDayOfMonth = moment(date).format('D');
+    const newDate = date.clone().startOf('day');
+
+    if (date.toString() !== newDate.toString()) {
+      // Reset highlightedAppointment:
+      this.highlightedAppointment = undefined;
+    }
+
+    this.selectedDate = newDate;
+    this.selectedMonthName = date.format('MMM');
+    this.selectedWeekdayName = date.format('dddd');
+    this.selectedDayOfMonth = date.format('D');
   }
 
   /**

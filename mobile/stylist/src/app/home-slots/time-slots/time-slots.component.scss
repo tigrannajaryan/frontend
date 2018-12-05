@@ -1,5 +1,4 @@
 time-slots {
-
   $border-color: #E5E5E5;
 
   .TimeSlotsRoot {
@@ -143,5 +142,9 @@ time-slots {
 
   .TimeSlotPast {
     opacity: 0.75;
+  }
+
+  .TimeSlotHighlighted {
+    background: color($colors, secondary);
   }
 }

@@ -5,6 +5,7 @@ import { PushNotification } from '~/shared/push/push-notification';
 
 export interface PushPrimingScreenParams {
   onContinue: Function;
+  appType?: 'stylist' | 'client';
 }
 
 @Component({
@@ -24,7 +25,7 @@ export class PushPrimingScreenComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.params = this.navParams.get('params') || {};
+    this.params = this.navParams.get('params') || { appType: 'client' };
   }
 
   ionViewDidLoad(): void {

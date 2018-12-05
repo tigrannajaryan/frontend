@@ -132,6 +132,12 @@ export class TimeSlotsComponent implements AfterViewInit, OnDestroy {
     return this._showCurTimeIndicator;
   }
 
+  // Highlight one slot
+  @Input() set highlightedAppointment(value: Appointment) {
+    this._highlightedAppointment = value;
+    this.updateScrollPos();
+  }
+
   // Event fired when a free slot is clicked
   @Output() freeSlotClick = new EventEmitter<FreeSlot>();
 
@@ -159,6 +165,7 @@ export class TimeSlotsComponent implements AfterViewInit, OnDestroy {
   private _appointments: Appointment[] = [];
   private _selectedDate: moment.Moment = moment().startOf('day');
   private _showCurTimeIndicator: boolean;
+  private _highlightedAppointment: Appointment;
   private _startHour = 9;
   private _endHour = 17;
   private _slotIntervalInMin = 30;
@@ -253,7 +260,8 @@ export class TimeSlotsComponent implements AfterViewInit, OnDestroy {
     return {
       TimeSlotNew: appointment.status === AppointmentStatuses.new,
       TimeSlotCancelled: appointment.status === AppointmentStatuses.cancelled_by_client,
-      TimeSlotPast: this.appointmentEndMoment(appointment).isBefore(now)
+      TimeSlotPast: this.appointmentEndMoment(appointment).isBefore(now),
+      TimeSlotHighlighted: this._highlightedAppointment && this._highlightedAppointment.uuid === appointment.uuid
     };
   }
 
@@ -457,6 +465,19 @@ export class TimeSlotsComponent implements AfterViewInit, OnDestroy {
   }
 
   private updateScrollPos(): void {
+    // Scroll to highlighted appointment if there is one
+    if (this._highlightedAppointment) {
+      setTimeout(() => {
+        const appointmentEl: HTMLElement = document.querySelector(
+          `[data-appointment-uuid="${this._highlightedAppointment.uuid}"]`
+        );
+        if (appointmentEl) {
+          this.scroll._scrollContent.nativeElement.scrollTop = appointmentEl.offsetTop;
+        }
+      });
+      return;
+    }
+
     const now = moment();
 
     // If we are showing current time indicator then scroll to the beginning of its hours

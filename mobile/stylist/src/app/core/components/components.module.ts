@@ -32,6 +32,9 @@ import { PhoneLinkComponent } from '~/shared/components/phone-link/phone-link.co
 import { ClientItemComponent } from '~/clients/client-item/client-item.component';
 import { HorizontalCalendarComponent } from '~/calendar/horizontal-calendar/horizontal-calendar.component';
 import { StylistPreviewComponent } from '~/core/components/stylist-preview/stylist-preview.component';
+import {
+  StylistPushNotificationsTrackerComponent
+} from '~/core/components/push-notifications-tracker/push-notifications-tracker.component';
 
 const components = [
   MadeNavComponent,
@@ -56,7 +59,8 @@ const components = [
   ClientItemComponent,
   PricePairComponent,
   HorizontalCalendarComponent,
-  StylistPreviewComponent
+  StylistPreviewComponent,
+  StylistPushNotificationsTrackerComponent
 ];
 
 @NgModule({

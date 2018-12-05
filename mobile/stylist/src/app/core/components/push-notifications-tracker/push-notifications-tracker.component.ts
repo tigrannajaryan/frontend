@@ -5,17 +5,17 @@ import { PushNotificationEventDetails } from '~/shared/events/shared-event-types
 import { PushNotificationCode } from '~/shared/push/push-notification';
 import { PushNotificationHandlerParams, PushNotificationToastService } from '~/shared/push/push-notification-toast';
 
-import { ClientEventTypes } from '~/core/client-event-types';
+import { FocusAppointmentEventParams, StylistEventTypes } from '~/core/stylist-event-types';
 import { PageNames } from '~/core/page-names';
 
-import { MainTabIndex } from '~/main-tabs/main-tabs.component';
+import { AppointmentCheckoutParams } from '~/appointment/appointment-checkout/appointment-checkout.component';
 
 @Component({
   selector: 'push-notifications-tracker',
   // We only show toasts in the component, no template needed:
   template: ''
 })
-export class ClientPushNotificationsTrackerComponent implements OnInit, OnDestroy {
+export class StylistPushNotificationsTrackerComponent implements OnInit, OnDestroy {
   static toastCssClass = 'PushNotificationToast';
   static toastVisibleDurationMs = 5000;
 
@@ -41,26 +41,28 @@ export class ClientPushNotificationsTrackerComponent implements OnInit, OnDestro
     // Put the differencies between notifications in the switch/case:
     switch (details.code) {
 
-      case PushNotificationCode.hint_to_first_book:
-      case PushNotificationCode.hint_to_rebook:
+      case PushNotificationCode.new_appointment:
+      case PushNotificationCode.tomorrow_appointments: {
+        const { appointment_datetime_start_at, appointment_uuid } = details.data;
         return {
-          buttonText: 'Book',
+          buttonText: 'Open',
           onClick: async (): Promise<void> => {
-            await this.nav.setRoot(PageNames.MainTabs);
-            this.events.publish(ClientEventTypes.selectMainTab, MainTabIndex.Home);
+            const activePage = this.nav.getActive();
+            if (activePage.component !== PageNames.HomeSlots) {
+              await this.nav.setRoot(PageNames.HomeSlots);
+            }
+            this.events.publish(
+              StylistEventTypes.focusAppointment,
+              { appointment_datetime_start_at, appointment_uuid } as FocusAppointmentEventParams
+            );
+            const checkoutParams: AppointmentCheckoutParams = {
+              appointmentUuid: appointment_uuid,
+              isReadonly: true
+            };
+            await this.nav.push(PageNames.AppointmentCheckout, { data: checkoutParams });
           }
         };
-
-      case PushNotificationCode.hint_to_select_stylist:
-        return {
-          duration: 7000, // quite long text requires more time
-          buttonText: 'Search',
-          onClick: async (): Promise<void> => {
-            await this.nav.setRoot(PageNames.MainTabs);
-            this.events.publish(ClientEventTypes.selectMainTab, MainTabIndex.Stylists);
-            await this.nav.push(PageNames.StylistSearch);
-          }
-        };
+      }
 
       default:
         return;

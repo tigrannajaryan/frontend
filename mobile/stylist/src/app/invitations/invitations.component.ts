@@ -19,9 +19,10 @@ import { ClientInvitation, InvitationsResponse, InvitationStatus } from '~/share
 import { InvitationsApi } from '~/core/api/invitations.api';
 import { ApiResponse } from '~/shared/api/base.models';
 import { showAlert } from '~/shared/utils/alert';
+import { PushNotification } from '~/shared/push/push-notification';
 
 import { PageNames } from '~/core/page-names';
-import { trimStr } from '~/core/functions';
+import { nextToShowForCompleteProfile, trimStr } from '~/core/functions';
 import { ProfileDataStore } from '~/core/profile.data';
 
 class ErrorWrapper {
@@ -249,6 +250,7 @@ export class InvitationsComponent {
     private openNativeSettings: OpenNativeSettings,
     private platform: Platform,
     private profileData: ProfileDataStore,
+    private pushNotification: PushNotification,
     private sms: SMS
   ) {
   }
@@ -657,13 +659,15 @@ export class InvitationsComponent {
   /**
    * Event handler for 'Skip' click.
    */
-  protected onSkip(): void {
-    this.navCtrl.push(PageNames.HomeSlots);
-
+  protected async onSkip(): Promise<void> {
     // Send empty invitations list to backend to make sure the profile's
     // has_invited_clients is marked true and we do not bother the user
     // again during next login.
     this.invitationsApi.createInvitations([]).get();
+
+    // Show push priming screen if needed. Otherwise show home.
+    const nextPageDescr = await nextToShowForCompleteProfile();
+    this.navCtrl.setRoot(nextPageDescr.page);
   }
 
   /**

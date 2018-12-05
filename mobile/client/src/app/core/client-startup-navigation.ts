@@ -131,6 +131,7 @@ export class ClientStartupNavigation {
       // Yes, we need to show it. Do it.
 
       const params: PushPrimingScreenParams = {
+        appType: 'client',
         // Show next appropriate screen after PushPrimingScreen
         onContinue: () => this.showNextByProfileStatus(this.app.getRootNav())
       };

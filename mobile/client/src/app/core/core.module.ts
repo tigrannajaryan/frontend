@@ -29,7 +29,7 @@ import { PhoneInputDirective } from '~/shared/directives/phone-input.directive';
 import { AppointmentItemComponent } from '~/core/components/appointment-item/appointment-item.component';
 import { MadeHeaderComponent } from '~/core/components/made-header/made-header.component';
 import { ProfileHeaderComponent } from '~/core/components/profile-header/profile-header.component';
-import { PushNotificationsTrackerComponent } from '~/core/components/push-notifications-tracker/push-notifications-tracker.component';
+import { ClientPushNotificationsTrackerComponent } from '~/core/components/push-notifications-tracker/push-notifications-tracker.component';
 
 import { InputNumberDirective } from '~/core/directives/input-number.directive';
 
@@ -61,7 +61,7 @@ const declarations = [
   PricePairComponent,
   PricePipe,
   ProfileHeaderComponent,
-  PushNotificationsTrackerComponent,
+  ClientPushNotificationsTrackerComponent,
   ServerStatusComponent,
   ServicesHeaderListComponent,
   StylistCardComponent,

@@ -24,7 +24,8 @@
     <div class="TimeSlots">
 
       <div *ngFor="let item of slotItems" class="TimeSlotItem" [style.top]="item.posYInVw+'vw'" [style.left]="item.leftInVw+'vw'"
-        [style.width]="item.widthInVw+'vw'" [style.height]="item.heightInVw+'vw'" (click)="onSlotItemClick(item)">
+        [style.width]="item.widthInVw+'vw'" [style.height]="item.heightInVw+'vw'" (click)="onSlotItemClick(item)"
+        [attr.data-appointment-uuid]="item.appointment && item.appointment.uuid">
         <div class="TimeSlotInner">
           <!-- show appointment slot -->
           <ng-template [ngIf]="item.appointment">
