@@ -1,10 +1,10 @@
+import { NavParams } from 'ionic-angular';
 import { async, ComponentFixture } from '@angular/core/testing';
 
 import { TestUtils } from '~/../test';
 
 import { profileNotCompleate } from '~/core/api/profile-api.mock';
 import { ProfileEditComponent } from '~/profile/profile-edit/profile-edit.component';
-import { NavController, NavParams } from 'ionic-angular';
 
 let fixture: ComponentFixture<ProfileEditComponent>;
 let instance: ProfileEditComponent;
@@ -63,15 +63,15 @@ describe('Pages: Profile edit', () => {
     fixture.detectChanges();
 
     const submit = fixture.nativeElement.querySelector('[data-test-id=submit]');
-    spyOn(instance.profileDataStore, 'update');
+    spyOn(instance.profileDataStore, 'set');
     spyOn(instance.form, 'patchValue');
 
     submit.click();
 
-    instance.profileDataStore.update(instance.form.value);
+    instance.profileDataStore.set(instance.form.value);
     const { response } = await instance.profileDataStore.get();
 
-    expect(instance.profileDataStore.update).toHaveBeenCalledWith(instance.form.value);
+    expect(instance.profileDataStore.set).toHaveBeenCalledWith(instance.form.value);
 
     instance.form.patchValue(response);
     fixture.detectChanges();

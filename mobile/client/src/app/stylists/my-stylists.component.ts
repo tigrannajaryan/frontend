@@ -14,7 +14,7 @@ import { PreferredStylistsData } from '~/core/api/preferred-stylists.data';
 import { ApiResponse } from '~/shared/api/base.models';
 import { BookingData } from '~/core/api/booking.data';
 
-export enum Tabs {
+export enum MyStylistsTabs {
   primeStylists = 0,
   savedStylists = 1
 }
@@ -45,7 +45,7 @@ export class MyStylistsComponent {
   ];
   activeTab: TabNames;
 
-  Tabs = Tabs;
+  MyStylistsTabs = MyStylistsTabs;
   totalStylistsCount: number;
   TabNames = TabNames;
   PageNames = PageNames;
@@ -64,7 +64,7 @@ export class MyStylistsComponent {
   }
 
   ionViewDidLoad(): void {
-    this.activeTab = this.tabs[Tabs.primeStylists].name;
+    this.activeTab = this.tabs[MyStylistsTabs.primeStylists].name;
 
     this.preferredStylistsData.get();
 
@@ -83,14 +83,14 @@ export class MyStylistsComponent {
 
   ionViewWillEnter(): void {
     // Subscribe to be able to activate tab from outside the component:
-    this.events.subscribe(ClientEventTypes.selectStylistTab, (tabIndex: Tabs) => this.onTabChange(tabIndex));
+    this.events.subscribe(ClientEventTypes.selectStylistTab, (tabIndex: MyStylistsTabs) => this.onTabChange(tabIndex));
   }
 
   ionViewWillLeave(): void {
     this.events.unsubscribe(ClientEventTypes.selectStylistTab);
   }
 
-  onTabChange(tabIndex: Tabs): void {
+  onTabChange(tabIndex: MyStylistsTabs): void {
     this.slides.slideTo(tabIndex);
     this.activeTab = this.tabs[tabIndex].name;
   }
@@ -113,7 +113,7 @@ export class MyStylistsComponent {
 
   onRemoveStylist(stylist: PreferredStylistModel): void {
     // do not remove last primeStylists, at least one is required
-    if (this.tabs[Tabs.primeStylists].stylists.length === 1) {
+    if (this.activeTab === TabNames.primeStylists && this.tabs[MyStylistsTabs.primeStylists].stylists.length === 1) {
       return;
     }
 
@@ -148,13 +148,13 @@ export class MyStylistsComponent {
   splitStylistsList(stylists: PreferredStylistModel[]): void {
     // splitStylists = sorted array of two arrays
     const splitStylists = stylists.reduce((tabsObj, cur) => {
-      const tab = cur.is_profile_bookable ? Tabs.primeStylists : Tabs.savedStylists;
+      const tab = cur.is_profile_bookable ? MyStylistsTabs.primeStylists : MyStylistsTabs.savedStylists;
 
       if (!tabsObj[tab]) {
         tabsObj[tab] = [];
       }
 
-      if (tab === Tabs.savedStylists) {
+      if (tab === MyStylistsTabs.savedStylists) {
         cur.is_profile_preferred = true;
       }
 
@@ -165,9 +165,9 @@ export class MyStylistsComponent {
     // replace old list with new one
     // we need replace it (not clear and set)
     // to prevent from blinking html
-    this.tabs[Tabs.primeStylists].stylists = splitStylists[Tabs.primeStylists];
-    this.tabs[Tabs.primeStylists].loaded = true;
-    this.tabs[Tabs.savedStylists].stylists = splitStylists[Tabs.savedStylists];
-    this.tabs[Tabs.savedStylists].loaded = true;
+    this.tabs[MyStylistsTabs.primeStylists].stylists = splitStylists[MyStylistsTabs.primeStylists];
+    this.tabs[MyStylistsTabs.primeStylists].loaded = true;
+    this.tabs[MyStylistsTabs.savedStylists].stylists = splitStylists[MyStylistsTabs.savedStylists];
+    this.tabs[MyStylistsTabs.savedStylists].loaded = true;
   }
 }

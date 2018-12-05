@@ -40,7 +40,7 @@ export class FirstLastNameComponent {
   }
 
   async onContinue(): Promise<void> {
-    await this.profileDataStore.update(this.form.value);
+    await this.profileDataStore.set(this.form.value);
     this.clientNavigation.showNextByProfileStatus(this.navCtrl, this.params.pendingInvitation);
   }
 }

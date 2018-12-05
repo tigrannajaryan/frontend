@@ -7,7 +7,7 @@ import { ProfileCompleteness, ProfileModel } from '~/core/api/profile.models';
 import { checkProfileCompleteness } from '~/core/utils/user-utils';
 
 import { ClientEventTypes } from '~/core/client-event-types';
-import { TabIndex } from '~/main-tabs/main-tabs.component';
+import { MainTabIndex } from '~/main-tabs/main-tabs.component';
 
 @Component({
   selector: 'profile-header',
@@ -36,6 +36,6 @@ export class ProfileHeaderComponent implements OnDestroy {
   }
 
   onClick(): void {
-    this.events.publish(ClientEventTypes.selectMainTab, TabIndex.Profile);
+    this.events.publish(ClientEventTypes.selectMainTab, MainTabIndex.Profile);
   }
 }

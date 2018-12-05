@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
 
 import { ApiResponse } from '~/shared/api/base.models';
 import { DataStore, GetOptions } from '~/shared/storage/data-store';
@@ -38,8 +39,17 @@ export class PreferredStylistsData {
     }
     PreferredStylistsData.guardInitilization = true;
 
+    // Set very short 2 second TTL for this data. This data can be modified externally (e.g. by stylist)
+    // so we set very short TTL to make sure the data is reflected almost immediately here.
+    // At the same time by setting this above zero we ensure that multiple frequent calls to get this
+    // data in short period of time will not result in unneccessary network calls. This happens
+    // often when navigating between screens which use this same data store.
+    // Note: be aware of this TTL and that the cached data may be stale. If your business logic relies on
+    // up-to-date data make sure to call get({refresh:true}).
+    const cacheTtlMilliseconds = 1000 * 2;
+
     this.data = new DataStore('preferred-stylists', () => api.getPreferredStylists(),
-      { cacheTtlMilliseconds: 0 });  // 0 cache ttl for data that can be externally modified
+      { cacheTtlMilliseconds });
   }
 
   /**
@@ -92,5 +102,9 @@ export class PreferredStylistsData {
       preferredStylists.map(stylist => this.api.deletePreferredStylist(stylist.preference_uuid).get())
     );
     this.data.set({ stylists: [] });
+  }
+
+  asObservable(): Observable<ApiResponse<PreferredStylistsListResponse>> {
+    return this.data.asObservable();
   }
 }

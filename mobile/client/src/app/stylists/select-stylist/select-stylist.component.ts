@@ -9,7 +9,7 @@ import { PageNames } from '~/core/page-names';
 import { PreferredStylistsData } from '~/core/api/preferred-stylists.data';
 
 import { startBooking } from '~/booking/booking-utils';
-import { TabIndex } from '~/main-tabs/main-tabs.component';
+import { MainTabIndex } from '~/main-tabs/main-tabs.component';
 import { ServicesCategoriesParams } from '~/services-categories-page/services-categories-page.component';
 
 @Component({
@@ -40,7 +40,7 @@ export class SelectStylistComponent {
       // Cannot proceed if no prefered bookable styllist is selected.
       // Redirecting to Stylists tab and showing a warning popup:
       await this.navCtrl.setRoot(PageNames.MainTabs);
-      this.events.publish(ClientEventTypes.selectMainTab, TabIndex.Stylists, this.showNoSelectedStylistWarning);
+      this.events.publish(ClientEventTypes.selectMainTab, MainTabIndex.Stylists, this.showNoSelectedStylistWarning);
     }
   }
 

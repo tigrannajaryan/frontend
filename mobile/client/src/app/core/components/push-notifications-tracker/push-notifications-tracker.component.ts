@@ -8,7 +8,7 @@ import { PushNotificationHandlerParams, PushNotificationToastService } from '~/s
 import { ClientEventTypes } from '~/core/client-event-types';
 import { PageNames } from '~/core/page-names';
 
-import { TabIndex } from '~/main-tabs/main-tabs.component';
+import { MainTabIndex } from '~/main-tabs/main-tabs.component';
 
 @Component({
   selector: 'push-notifications-tracker',
@@ -46,7 +46,7 @@ export class PushNotificationsTrackerComponent implements OnInit, OnDestroy {
           buttonText: 'Book',
           onClick: async (): Promise<void> => {
             await this.nav.setRoot(PageNames.MainTabs);
-            this.events.publish(ClientEventTypes.selectMainTab, TabIndex.Home);
+            this.events.publish(ClientEventTypes.selectMainTab, MainTabIndex.Home);
           }
         };
 
@@ -56,7 +56,7 @@ export class PushNotificationsTrackerComponent implements OnInit, OnDestroy {
           buttonText: 'Search',
           onClick: async (): Promise<void> => {
             await this.nav.setRoot(PageNames.MainTabs);
-            this.events.publish(ClientEventTypes.selectMainTab, TabIndex.Stylists);
+            this.events.publish(ClientEventTypes.selectMainTab, MainTabIndex.Stylists);
             await this.nav.push(PageNames.StylistSearch);
           }
         };

@@ -20,7 +20,7 @@ interface TabsObject {
   badge?: string | null;
 }
 
-export enum TabIndex {
+export enum MainTabIndex {
   Home = 0,
   History,
   Stylists,
@@ -80,7 +80,7 @@ export class MainTabsComponent implements OnDestroy {
 
   ionViewWillEnter(): void {
     // Subscribe to react to external requests to select a specific tab
-    this.events.subscribe(ClientEventTypes.selectMainTab, (idx: TabIndex, callback?: (tab: Tab) => void) => {
+    this.events.subscribe(ClientEventTypes.selectMainTab, (idx: MainTabIndex, callback?: (tab: Tab) => void) => {
       this.onTabSelectedFromOutside(idx, callback);
     });
   }
@@ -89,7 +89,7 @@ export class MainTabsComponent implements OnDestroy {
     this.events.unsubscribe(ClientEventTypes.selectMainTab);
   }
 
-  onTabSelectedFromOutside(idx: TabIndex, callback?: (tab: Tab) => void): void {
+  onTabSelectedFromOutside(idx: MainTabIndex, callback?: (tab: Tab) => void): void {
     const tab = this.tabs.getByIndex(idx);
     if (tab) {
       this.tabs.select(tab);
@@ -112,8 +112,8 @@ export class MainTabsComponent implements OnDestroy {
 
   onProfileChange(profileResponse: ApiResponse<ProfileModel>): void {
     if (profileResponse.response) {
-      this.tabsData[TabIndex.Profile].badge =
-        checkProfileCompleteness(profileResponse.response).isProfileComplete ? undefined : this.tabsData[TabIndex.Profile].name;
+      this.tabsData[MainTabIndex.Profile].badge =
+        checkProfileCompleteness(profileResponse.response).isProfileComplete ? undefined : this.tabsData[MainTabIndex.Profile].name;
     }
   }
 

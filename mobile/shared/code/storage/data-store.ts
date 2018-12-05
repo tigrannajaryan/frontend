@@ -173,13 +173,12 @@ export class DataStore<T> {
    * API endpoint to fetch fresh data.
    *
    * Also this ensures that the cached state is deleted from persistent storage.
-   * This is usesfull when performing operations like app-wide Logout which must
-   * guarantee that next logged in person does not see the cache of previous user
-   * (this is important because usually cache is persisted per data store type,
-   * it is not per user).
+   * This is usesfull when performing operations which make the content of stored
+   * no longer consistent with the backend data.
    *
-   * Observers that are currently subscribed to this store will remain subscribed
-   * and will receive future updates when the data changes.
+   * Existing observers that are currently subscribed to this store will remain subscribed,
+   * however they will not receive an update when this function is called. Existing
+   * observers will continue to receive future updates when the data changes.
    */
   async deleteCache(): Promise<void> {
     // Wait for ongoing operations to finish because it may be using the cache storage.
@@ -187,16 +186,19 @@ export class DataStore<T> {
 
     // Now clear the storage.
     const storage = AppModule.injector.get(Storage);
-    return storage.remove(this.storageKey);
+    await storage.remove(this.storageKey);
   }
 
   /**
    *
    * Observers that are currently subscribed to this store will loose the subscription
    * and will not receive future updates when the data changes. You will need to
-   * resubscribe them. This is usually only useful when you destroying the data
+   * resubscribe them. This is usually only useful when you are destroying the data
    * store and want to make sure the data is cleaned and observers dont't receive
-   * any more updates.
+   * any more updates. This is used for app-wide Logout which must
+   * guarantee that next logged in person does not see the cache of previous user
+   * (this is important because usually cache is persisted per data store type,
+   * it is not per user).
    *
    * If you only need to clear the local cache while keeping the DataStore active
    * and current subsriptions valid use deleteCache() instead.

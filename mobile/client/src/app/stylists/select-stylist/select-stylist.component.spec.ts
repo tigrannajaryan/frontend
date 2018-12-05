@@ -8,7 +8,7 @@ import { StylistsService } from '~/core/api/stylists.service';
 import { stylistsMock } from '~/core/api/stylists.service.mock';
 import { ClientEventTypes } from '~/core/client-event-types';
 
-import { TabIndex } from '~/main-tabs/main-tabs.component';
+import { MainTabIndex } from '~/main-tabs/main-tabs.component';
 import { SelectStylistComponent } from '~/stylists/select-stylist/select-stylist.component';
 
 let fixture: ComponentFixture<SelectStylistComponent>;
@@ -64,7 +64,7 @@ describe('Pages: Select Stylist', () => {
 
     const events = fixture.debugElement.injector.get(Events);
     expect(events.publish)
-      .toHaveBeenCalledWith(ClientEventTypes.selectMainTab, TabIndex.Stylists, instance.showNoSelectedStylistWarning);
+      .toHaveBeenCalledWith(ClientEventTypes.selectMainTab, MainTabIndex.Stylists, instance.showNoSelectedStylistWarning);
 
     done();
   });

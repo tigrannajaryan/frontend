@@ -14,6 +14,7 @@ import { performLogin, performLogout } from './test-utils';
 import { stylistsSearchPage } from './pages/stylists-search-page';
 import { mainTabsPage } from './pages/main-tabs-page';
 import { pushPrimingPage } from './shared-e2e/push-priming-page';
+import { homePage } from './pages/home-page';
 
 describe('Authentication flows for non-invited client with app reloads', () => {
 
@@ -33,9 +34,10 @@ describe('Authentication flows for non-invited client with app reloads', () => {
     await firstNameLastNamePage.fillIn(firstName, lastName);
     await howMadeWorksPage.continue();
     await howPricingWorksPage.continue();
-    await stylistsSearchPage.addFirstStylist();
     await pushPrimingPage.allow();
     await waitFor(mainTabsPage.homeTab);
+    await waitFor(homePage.searchBtn);
+    await waitForNot(homePage.bookBtn);
   });
 
   it('Can logout', async () => {
@@ -65,27 +67,28 @@ describe('Authentication flows for non-invited client with app reloads', () => {
     await firstNameLastNamePage.fillIn(firstName, lastName);
   });
 
-  it('Can navigate through info screens', async () => {
+  it('Can navigate through howMadeWorksPage screen', async () => {
     await howMadeWorksPage.continue();
-    await howPricingWorksPage.continue();
-    await waitFor(stylistsSearchPage.searchInput);
   });
 
   it('Can restore auth on reload to howMadeWorksPage', async () => {
     await browser.get('');
     await howMadeWorksPage.continue();
     await howPricingWorksPage.continue();
+    await waitFor(pushPrimingPage.allowBtn);
   });
 
   it('Can land on mainTabsPage', async () => {
-    await stylistsSearchPage.addFirstStylist();
     await pushPrimingPage.allow();
     await waitFor(mainTabsPage.homeTab);
+    await homePage.startSearch();
   });
 
   it('Can restore auth on reload to mainTabsPage', async () => {
     await browser.get('');
     await waitFor(mainTabsPage.homeTab);
+    await waitFor(homePage.searchBtn);
+    await waitForNot(homePage.bookBtn);
   });
 
   it('Can logout', async () => {

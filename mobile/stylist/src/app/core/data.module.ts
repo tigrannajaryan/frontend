@@ -55,6 +55,10 @@ export class DataModule {
 /**
  * Clear cached content of all data stores. Normally used by Logout or Login actions
  * to make sure we don't have stale data (e.g. if we need to login using a different user).
+ * Note that this uses DataStore.reinit() method which clears cache and invalidates
+ * all subscribed observers. If you have an observer that you want to continue receiving
+ * updates to the data changes you must subscribe to the corresponding DataStore observable
+ * again after calling this function.
  */
 export async function clearAllDataStores(): Promise<void> {
   // Get all data store classes:
@@ -63,14 +67,13 @@ export async function clearAllDataStores(): Promise<void> {
   for (const storeClass of dataStores) {
     const store = AppModule.injector.get(storeClass);
     if (store instanceof DataStore) {
-      // Just calling DataStore.prototype.clear:
-      await store.deleteCache();
+      await store.reinit();
     } else {
       // Search for DataStore as a prop and call DataStore.prototype.clear on it:
       for (const propName of Object.getOwnPropertyNames(store)) {
         const prop = store[propName];
         if (prop instanceof DataStore) {
-          await prop.deleteCache();
+          await prop.reinit();
         }
       }
     }

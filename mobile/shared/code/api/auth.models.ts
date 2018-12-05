@@ -46,6 +46,7 @@ export interface ClientProfileStatus {
   has_booked_appointment?: boolean;
   has_past_visit?: boolean;
   has_invitation?: boolean;
+  has_seen_educational_screens?: boolean;
 }
 
 export type UserProfileStatus = StylistProfileStatus | ClientProfileStatus;

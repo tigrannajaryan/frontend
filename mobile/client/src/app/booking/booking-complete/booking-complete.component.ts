@@ -4,7 +4,7 @@ import { Subscription } from 'rxjs/Subscription';
 
 import { ApiResponse } from '~/shared/api/base.models';
 import { ClientEventTypes } from '~/core/client-event-types';
-import { TabIndex } from '~/main-tabs/main-tabs.component';
+import { MainTabIndex } from '~/main-tabs/main-tabs.component';
 import { ProfileDataStore } from '~/profile/profile.data';
 import { CalendarPrimingParams } from '~/shared/components/calendar-priming/calendar-priming.component';
 import { PageNames } from '~/core/page-names';
@@ -40,7 +40,7 @@ export class BookingCompleteComponent {
 
   onReturnHomeClick(): void {
     this.navCtrl.popToRoot();
-    this.events.publish(ClientEventTypes.selectMainTab, TabIndex.Home);
+    this.events.publish(ClientEventTypes.selectMainTab, MainTabIndex.Home);
   }
 
   async onAddToCalendarClick(): Promise<void> {

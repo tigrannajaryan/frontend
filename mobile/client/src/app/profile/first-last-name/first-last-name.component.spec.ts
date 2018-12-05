@@ -52,10 +52,10 @@ describe('Pages: First Last Name', () => {
 
   it('should be able to press on onContinue button', () => {
     const onContinue = fixture.nativeElement.querySelector('[data-test-id=onContinue]');
-    spyOn(instance.profileDataStore, 'update');
+    spyOn(instance.profileDataStore, 'set');
 
     onContinue.click();
 
-    expect(instance.profileDataStore.update).toHaveBeenCalledWith(instance.form.value);
+    expect(instance.profileDataStore.set).toHaveBeenCalledWith(instance.form.value);
   });
 });

@@ -4,7 +4,7 @@ import { TestUtils } from '~/../test';
 
 import { StylistsServiceMock } from '~/core/api/stylists.service.mock';
 import { StylistsService } from '~/core/api/stylists.service';
-import { MyStylistsComponent, Tabs } from '~/stylists/my-stylists.component';
+import { MyStylistsComponent, MyStylistsTabs } from '~/stylists/my-stylists.component';
 import { ApiResponse } from '~/shared/api/base.models';
 import { PreferredStylistModel, PreferredStylistsListResponse } from '~/shared/api/stylists.models';
 
@@ -47,9 +47,9 @@ describe('MyStylistsComponent', () => {
 
   it('should have stylists in both tabs', () => {
     const myStylistsTabList = fixture.nativeElement.querySelectorAll('[data-test-id=myStylistsTabList] stylist-card');
-    expect(myStylistsTabList.length).toBe(instance.tabs[Tabs.primeStylists].stylists.length);
+    expect(myStylistsTabList.length).toBe(instance.tabs[MyStylistsTabs.primeStylists].stylists.length);
     const savedStylistsTabList = fixture.nativeElement.querySelectorAll('[data-test-id=savedStylistsTabList] stylist-card');
-    expect(savedStylistsTabList.length).toBe(instance.tabs[Tabs.savedStylists].stylists.length);
+    expect(savedStylistsTabList.length).toBe(instance.tabs[MyStylistsTabs.savedStylists].stylists.length);
   });
 
   it('should have title with number of all stylist', () => {
@@ -58,7 +58,7 @@ describe('MyStylistsComponent', () => {
   });
 
   it('should show "There Is no preferred stylists yet"', () => {
-    instance.tabs[Tabs.primeStylists].stylists = [];
+    instance.tabs[MyStylistsTabs.primeStylists].stylists = [];
     fixture.detectChanges();
 
     const savedStylistsTabList = fixture.nativeElement.querySelector('[data-test-id=myStylistsTabList]');
@@ -67,7 +67,7 @@ describe('MyStylistsComponent', () => {
   });
 
   it('should show "There Is no saved stylists yet"', () => {
-    instance.tabs[Tabs.savedStylists].stylists = [];
+    instance.tabs[MyStylistsTabs.savedStylists].stylists = [];
     fixture.detectChanges();
 
     const savedStylistsTabList = fixture.nativeElement.querySelector('[data-test-id=savedStylistsTabList]');
@@ -82,7 +82,7 @@ describe('MyStylistsComponent', () => {
   });
 
   it('should not be able to remove last primeStylists', () => {
-    instance.tabs[Tabs.primeStylists].stylists.length = 1;
+    instance.tabs[MyStylistsTabs.primeStylists].stylists.length = 1;
     fixture.detectChanges();
 
     const savedStylistsTabList = fixture.nativeElement.querySelector('[data-test-id=removeStylist]');
