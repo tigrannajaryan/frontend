@@ -397,10 +397,7 @@ export class HomeSlotsComponent {
   private selectDate(date: moment.Moment): void {
     const newDate = date.clone().startOf('day');
 
-    if (date.toString() !== newDate.toString()) {
-      // Reset highlightedAppointment:
-      this.highlightedAppointment = undefined;
-    }
+    this.highlightedAppointment = undefined;
 
     this.selectedDate = newDate;
     this.selectedMonthName = date.format('MMM');
