@@ -1,4 +1,4 @@
-import { Component, NgZone } from '@angular/core';
+import { Component, NgZone, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Camera, CameraOptions } from '@ionic-native/camera';
@@ -10,7 +10,7 @@ import {
   ActionSheetController,
   ActionSheetOptions,
   NavController,
-  NavParams
+  NavParams, Slides
 } from 'ionic-angular';
 
 import 'rxjs/add/operator/pluck';
@@ -25,44 +25,63 @@ import { getPhoneNumber } from '~/shared/utils/phone-numbers';
 import { loading } from '~/core/utils/loading';
 import { PageNames } from '~/core/page-names';
 import { ProfileDataStore } from '~/core/profile.data';
+import { StylistProfile, StylistProfileCompleteness } from '~/shared/api/stylist-app.models';
+import { calcProfileCompleteness } from '~/core/utils/stylist-utils';
+import { emptyOr } from '~/shared/validators';
 
 declare var window: any;
 
-export interface RegisterSalonComponentParams {
-  isRootPage?: boolean;
+export enum ProfileTabs {
+  edit = 0,
+  clientView = 1
+}
+
+export enum ProfileTabNames {
+  edit = 'Edit',
+  clientView = 'Preview as client'
 }
 
 @Component({
-  selector: 'page-register-salon',
-  templateUrl: 'register-salon.html'
+  selector: 'page-profile',
+  templateUrl: 'profile.component.html'
 })
-export class RegisterSalonComponent {
-  PageNames = PageNames;
-  params: RegisterSalonComponentParams;
+export class ProfileComponent {
+  @ViewChild(Slides) slides: Slides;
   form: FormGroup;
   autocomplete: Autocomplete;
   autocompleteInput: HTMLInputElement;
+  activeTab: ProfileTabNames;
+  stylistProfileCompleteness: StylistProfileCompleteness;
 
-  private rawPhone: string;
+  refresherEnabled = true;
+  ProfileTabNames = ProfileTabNames;
+  ProfileTabs = ProfileTabs;
+  PageNames = PageNames;
+  tabs = [
+    {
+      name: ProfileTabNames.edit
+    },
+    {
+      name: ProfileTabNames.clientView
+    }
+  ];
+
+  rawPhone: string;
 
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
     public formBuilder: FormBuilder,
+    public profileData: ProfileDataStore,
     private baseService: BaseService,
     private domSanitizer: DomSanitizer,
     private camera: Camera,
     private actionSheetCtrl: ActionSheetController,
     private logger: Logger,
     private mapsAPILoader: MapsAPILoader,
-    private ngZone: NgZone,
-    private profileData: ProfileDataStore
+    private ngZone: NgZone
   ) {
     this.form = this.formBuilder.group({
-      vars: this.formBuilder.group({
-        image: ''
-      }),
-
       first_name: ['', [
         Validators.required,
         Validators.maxLength(30)
@@ -90,15 +109,22 @@ export class RegisterSalonComponent {
         Validators.maxLength(17)
       ]],
       // tslint:disable-next-line:no-null-keyword
-      profile_photo_id: null,
+      profile_photo_id: undefined,
+      profile_photo_url: undefined,
       instagram_url: ['', Validators.pattern(/([A-Za-z0-9_](?:(?:[A-Za-z0-9_]|(?:\\.(?!\\.))){0,28}(?:[A-Za-z0-9_]))?)/)],
+      followers_count: [''],
+      email: ['', [emptyOr(Validators.email)]],
       website_url: ['']
+    });
+
+    this.activeTab = this.tabs[ProfileTabs.edit].name;
+
+    this.form.valueChanges.subscribe((stylistProfile: StylistProfile) => {
+      this.stylistProfileCompleteness = calcProfileCompleteness(stylistProfile);
     });
   }
 
   async ionViewWillEnter(): Promise<void> {
-    this.params = this.navParams.get('params') as RegisterSalonComponentParams;
-
     // loadFormInitialData must be called and finished before initAutocomplete because
     // initAutocomplete uses the apiKey that we get in loadFormInitialData.
     await this.loadFormInitialData();
@@ -123,6 +149,8 @@ export class RegisterSalonComponent {
       salon_address,
       profile_photo_id,
       instagram_url,
+      followers_count,
+      email,
       website_url
     } = response;
 
@@ -132,7 +160,7 @@ export class RegisterSalonComponent {
 
     this.form.patchValue({
       // tslint:disable-next-line:no-null-keyword
-      vars: { image: profile_photo_url ? `url(${profile_photo_url})` : null },
+      profile_photo_url,
       first_name,
       last_name,
       phone: formattedPhone,
@@ -141,6 +169,8 @@ export class RegisterSalonComponent {
       salon_address,
       profile_photo_id,
       instagram_url,
+      followers_count,
+      email,
       website_url
     });
   }
@@ -226,17 +256,8 @@ export class RegisterSalonComponent {
     }
   }
 
-  nextRoute(): void {
-    if (this.params && this.params.isRootPage) {
-      this.navCtrl.pop();
-      return;
-    }
-
-    this.navCtrl.push(PageNames.WelcomeToMade);
-  }
-
   @loading
-  async onContinue(): Promise<void> {
+  async updateProfile(): Promise<void> {
     const { vars, ...profile } = this.form.value;
     const data = {
       ...profile,
@@ -250,7 +271,7 @@ export class RegisterSalonComponent {
     };
     const { error } = await this.profileData.set(data);
     if (!error) {
-      this.nextRoute();
+      this.navCtrl.pop();
     }
   }
 
@@ -275,12 +296,12 @@ export class RegisterSalonComponent {
       ]
     };
 
-    if (this.form.get('vars.image').value) {
+    if (this.form.get('profile_photo_url').value) {
       opts.buttons.splice(-1, 0, {
         text: 'Remove Photo',
         role: 'destructive',
         handler: () => {
-          this.form.get('vars.image').setValue('');
+          this.form.get('profile_photo_url').setValue(undefined);
           // tslint:disable-next-line:no-null-keyword
           this.form.get('profile_photo_id').setValue(null);
         }
@@ -289,6 +310,23 @@ export class RegisterSalonComponent {
 
     const actionSheet = this.actionSheetCtrl.create(opts);
     actionSheet.present();
+  }
+
+  onTabChange(tabIndex: ProfileTabs): void {
+    this.slides.slideTo(tabIndex);
+    this.activeTab = this.tabs[tabIndex].name;
+  }
+
+  onTabSwipe(): void {
+    // if index more or equal to tabs length we got an error
+    if (this.slides.getActiveIndex() >= this.tabs.length) {
+      return;
+    }
+    this.activeTab = this.tabs[this.slides.getActiveIndex()].name;
+  }
+
+  onEnableRefresher(isEnabled: boolean): void {
+    this.refresherEnabled = isEnabled;
   }
 
   @loading
@@ -317,7 +355,7 @@ export class RegisterSalonComponent {
     const downscaledBase64Image = await downscalePhoto(originalBase64Image);
 
     // set image preview
-    this.form.get('vars.image')
+    this.form.get('profile_photo_url')
       .setValue(this.domSanitizer.bypassSecurityTrustStyle(`url(${downscaledBase64Image})`));
 
     // convert base64 to File after to formData and send it to server

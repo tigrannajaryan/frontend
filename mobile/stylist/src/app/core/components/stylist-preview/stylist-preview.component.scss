@@ -1,0 +1,70 @@
+stylist-preview {
+  .StylistCard-photo {
+    width: pxtovw(88px);
+    height: pxtovw(88px);
+    margin: 0 auto;
+    background-color: color($grayscale, 100);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    border-radius: 50%; // circle
+  }
+
+  .StylistCard-salon {
+    width: 100%;
+    margin-top: pxtovw(7px);
+    overflow: hidden;
+    font-size: $t-h4;
+    color: color($grayscale, 500);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .StylistCard-name {
+    width: 100%;
+    margin: pxtovw(9px) 0 pxtovw(1px);
+    overflow: hidden;
+    font-size: $t-h2;
+    font-weight: 700;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .StylistCard-links {
+    $icon-size: pxtovw(24px);
+
+    margin: pxtovw(25px) 0 pxtovw(28px);
+
+    > * {
+      width: $icon-size;
+      height: $icon-size;
+      margin: 0 ($icon-size / 2);
+      font-size: $icon-size;
+      color: color($colors, lightSalmon);
+    }
+  }
+
+  .StylistCard-address,
+  .StylistCard-followers {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: pxtovw(8px);
+    font-size: $t-h4;
+    color: color($colors, lightSalmon);
+    white-space: normal;
+
+    i[class^=mb-icon] {
+      height: pxtovw(14px);
+      margin-right: pxtovw(2px);
+      font-size: pxtovw(14px);
+      line-height: pxtovw(15px);
+      color: color($colors, lightSalmon);
+    }
+  }
+
+  .StylistCard-address {
+    display: inline-block;
+    color: color($colors, lightSalmon);
+  }
+}

@@ -1,6 +1,6 @@
 <ion-menu [content]="content" [swipeEnabled]="swipeEnabled" type="overlay">
   <div
-    (click)="setPage(PageNames.RegisterSalon, { isRootPage: true }, false)"
+    (click)="onMenuClick()"
     data-test-id="menuProfileLink"
     menuClose class="sideMenu-header sideMenu-wp">
     <div *ngIf="profile" class="sideMenu-user">

@@ -73,6 +73,10 @@ interface DisplayContactSection {
  */
 const defaultCountry = 'US';
 
+export interface InvitationsComponentParams {
+  isRootPage?: boolean;
+}
+
 @Component({
   selector: 'page-invitations',
   templateUrl: 'invitations.component.html'
@@ -84,7 +88,7 @@ export class InvitationsComponent {
   InvitationStatus = InvitationStatus;
 
   // Indicates that this page is opened from the Main screen.
-  isRootPage: boolean;
+  params: InvitationsComponentParams;
 
   // The flag that indicates if we can read local contacts successfully.
   canReadPhoneContacts: boolean;
@@ -250,7 +254,7 @@ export class InvitationsComponent {
   }
 
   protected ionViewWillEnter(): void {
-    this.isRootPage = Boolean(this.navParams.get('isRootPage'));
+    this.params = this.navParams.get('params') as InvitationsComponentParams;
     this.loadContacts();
 
     // Preload stylist profile and discounts that we will need later
@@ -666,7 +670,7 @@ export class InvitationsComponent {
    * Action to perform when sending invitation is finished (successfully or not).
    */
   private sendingFinished(): void {
-    if (this.isRootPage) {
+    if (this.params && this.params.isRootPage) {
       // Do nothing if this is a regular view from Main screen.
       return;
     }

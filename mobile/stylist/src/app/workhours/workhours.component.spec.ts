@@ -32,8 +32,9 @@ describe('Pages: WorktimeComponent', () => {
     await instance.ionViewWillLoad();
 
     // Test non-registration mode, when saving should result in refreshing of the page
-    instance.isRootPage = true;
-
+    instance.params = {
+      isRootPage: true
+    };
     expect(instance.cards.length).toEqual(1);
 
     expect(instance.cards[0].workStartAt).toEqual(defaultStartTime);

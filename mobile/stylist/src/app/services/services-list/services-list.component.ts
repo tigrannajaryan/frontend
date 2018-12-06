@@ -15,6 +15,11 @@ import { PageNames } from '~/core/page-names';
 import { ServiceListType } from '~/services/services.component';
 import { ServiceItemComponentData } from '~/services/services-item/services-item.component';
 
+export interface ServicesListComponentParams {
+  isRootPage?: boolean;
+  uuid?: string;
+}
+
 @Component({
   selector: 'page-services-list',
   templateUrl: 'services-list.component.html'
@@ -23,7 +28,7 @@ export class ServicesListComponent {
   protected PageNames = PageNames;
   protected categories: ServiceCategory[] = [];
   protected isEmptyCategories = false;
-  protected isRootPage?: Boolean;
+  params: ServicesListComponentParams;
   protected timeGap = 30;
   isLoading = false;
 
@@ -51,17 +56,16 @@ export class ServicesListComponent {
   }
 
   async ionViewWillLoad(): Promise<void> {
-    this.isRootPage = Boolean(this.navParams.get('isRootPage'));
     this.loadInitialData();
   }
 
   async loadInitialData(): Promise<void> {
-    const uuid = this.navParams.get('uuid');
+    this.params = this.navParams.get('params') as ServicesListComponentParams;
     let response: StylistServicesListResponse | ServiceTemplateSetResponse;
 
-    if (uuid && uuid !== ServiceListType.blank) {
-      response = (await loading(this, this.stylistService.getServiceTemplateSetByUuid(uuid))).response;
-    } else if (uuid === ServiceListType.blank) {
+    if (this.params && this.params.uuid && this.params.uuid !== ServiceListType.blank) {
+      response = (await loading(this, this.stylistService.getServiceTemplateSetByUuid(this.params.uuid))).response;
+    } else if (this.params && this.params.uuid === ServiceListType.blank) {
       response = (await loading(this, this.servicesData.get())).response;
       response.categories = ServicesListComponent.buildBlankCategoriesList(response.categories);
     } else {

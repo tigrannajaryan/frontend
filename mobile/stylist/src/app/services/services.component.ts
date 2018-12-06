@@ -42,8 +42,10 @@ export class ServicesComponent {
   }
 
   openService(serviceItem?: ServiceTemplateSetBase): void {
-    const serviceItemUuid = serviceItem ? serviceItem.uuid : ServiceListType.blank;
+    const params = {
+      uuid: serviceItem ? serviceItem.uuid : ServiceListType.blank
+    };
 
-    this.navCtrl.push(PageNames.ServicesList, { uuid: serviceItemUuid });
+    this.navCtrl.push(PageNames.ServicesList, { params });
   }
 }

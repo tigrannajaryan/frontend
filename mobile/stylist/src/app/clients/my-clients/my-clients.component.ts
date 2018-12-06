@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { NavController, Refresher } from 'ionic-angular';
+import { NavController, NavParams, Refresher } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
 
 import { composeRequest, loading, withRefresher } from '~/shared/utils/request-utils';
@@ -9,6 +9,11 @@ import { ClientModel, GetMyClientsResponse } from '~/core/api/clients-api.models
 import { MyClientsDataStore } from '~/clients/my-clients/my-clients.data';
 
 import { PageNames } from '~/core/page-names';
+import { InvitationsComponentParams } from '~/invitations/invitations.component';
+
+export interface MyClientsComponentParams {
+  isRootPage?: boolean;
+}
 
 @Component({
   selector: 'page-my-clients',
@@ -19,14 +24,18 @@ export class MyClientsComponent {
 
   clients: Observable<ClientModel[]>;
   isLoading: boolean;
+  params: MyClientsComponentParams;
 
   constructor(
+    public navParams: NavParams,
     private clientsData: MyClientsDataStore,
     private navCtrl: NavController
   ) {
   }
 
   ionViewWillLoad(): Promise<ApiResponse<GetMyClientsResponse>> {
+    this.params = this.navParams.get('params') as MyClientsComponentParams;
+
     this.clients = this.clientsData.asObservable().map(({ response }) => response && response.clients);
     return this.requestClients(false);
   }
@@ -36,7 +45,8 @@ export class MyClientsComponent {
   }
 
   onInviteClick(): void {
-    this.navCtrl.setRoot(PageNames.Invitations, {isRootPage: true});
+    const params: InvitationsComponentParams = { isRootPage: true };
+    this.navCtrl.setRoot(PageNames.Invitations, { params });
   }
 
   onClientClick(client: ClientModel): void {

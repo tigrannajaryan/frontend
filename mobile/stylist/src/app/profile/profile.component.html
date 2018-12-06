@@ -1,0 +1,184 @@
+<ion-header madeMenuHeader [hideBackButton]="true" [hideMenuButton]="false">
+  <ion-title>
+    <div class="madeMenuHeader-nameTitle" data-test-id="profileNameTitle">{{ form.get('first_name').value }}</div>
+  </ion-title>
+
+  <ion-buttons end>
+    <button [disabled]="form.invalid" (click)="updateProfile()" ion-button icon-only color="dark" class="RightButton">
+      Done
+    </button>
+  </ion-buttons>
+
+  <ion-toolbar class="ProfilePage-toolbar" no-padding>
+    <div *ngIf="form.invalid || stylistProfileCompleteness && !stylistProfileCompleteness?.isProfileComplete" class="ProfilePage-completion" data-test-id="isProfileComplete">
+      <span data-test-id="completenessPercent">Profile completion: {{ form.valid ? stylistProfileCompleteness?.completenessPercent : '--' }}%</span>
+
+      <div class="ProfilePage-completionBar"><span [style.width]="stylistProfileCompleteness?.completenessPercent + '%'"></span></div>
+    </div>
+
+    <div class="Tabs-box MyStylistsPage-tabsMargin">
+      <ion-row no-padding>
+        <ion-col col-3 no-padding></ion-col>
+        <ion-col col-6 no-padding>
+          <div class="Tabs-wp" data-test-id="profileTabs">
+            <button
+              (click)="onTabChange(ProfileTabs.edit)"
+              [class.active]="tabs[ProfileTabs.edit].name === activeTab"
+              ion-button clear color="dark" class="Tabs-btn">
+              {{ ProfileTabNames.edit }}
+            </button>
+            <button
+              (click)="onTabChange(ProfileTabs.clientView)"
+              [class.active]="tabs[ProfileTabs.clientView].name === activeTab"
+              ion-button clear color="dark" class="Tabs-btn">
+              {{ ProfileTabNames.clientView }}
+            </button>
+          </div>
+        </ion-col>
+        <ion-col col-3 no-padding></ion-col>
+      </ion-row>
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content no-padding>
+  <ion-slides (ionSlideDrag)="onEnableRefresher(false)" (touchend)="onEnableRefresher(true)" (ionSlideDidChange)="onTabSwipe()" no-padding class="Tabs-slides">
+    <ion-slide>
+      <div class="Tabs-slide">
+        <form [formGroup]="form" class="Made-wp Made-wpContent">
+          <div (click)="processPhoto()" [style.background-image]="'url(' + form.get('profile_photo_url').value + ')'" class="ProfilePage-pic" data-test-id="profile_photo">
+            <div *ngIf="!form.get('profile_photo_url').value" class="ProfilePage-defPic"></div>
+            <div class="ProfilePage-add">
+              <i class="mb-icon-pencil"></i>
+            </div>
+          </div>
+
+          <ion-grid class="InputsOffset">
+            <ion-row>
+              <ion-col>
+                <ion-item class="Input">
+                  <ion-label floating>First name</ion-label>
+                  <ion-input formControlName="first_name" data-test-id="first_name" type="text"></ion-input>
+                  <div [class.is-active]="form.get('first_name').dirty && form.get('first_name').errors" class="InputError" item-end>
+                    <span *ngIf="form.get('first_name').errors?.required">This field is required</span>
+                    <span *ngIf="form.get('first_name').errors?.maxlength">Maximal length {{ form.get('first_name').errors?.maxlength?.requiredLength }} symbols</span>
+                  </div>
+                </ion-item>
+              </ion-col>
+            </ion-row>
+
+            <ion-row>
+              <ion-col>
+                <ion-item class="Input">
+                  <ion-label floating>Last name</ion-label>
+                  <ion-input formControlName="last_name" data-test-id="last_name" type="text"></ion-input>
+                  <div [class.is-active]="form.get('last_name').dirty && form.get('last_name').errors" class="InputError" item-end>
+                    <span *ngIf="form.get('last_name').errors?.required">This field is required</span>
+                    <span *ngIf="form.get('last_name').errors?.maxlength">Maximal length {{ form.get('last_name').errors?.maxlength?.requiredLength }} symbols</span>
+                  </div>
+                </ion-item>
+              </ion-col>
+            </ion-row>
+
+            <ion-row>
+              <ion-col>
+                <ion-item class="Input">
+                  <ion-label floating>Salon name</ion-label>
+                  <ion-input formControlName="salon_name" data-test-id="salon_name" type="text"></ion-input>
+                  <div [class.is-active]="form.get('salon_name').dirty && form.get('salon_name').errors" class="InputError" item-end>
+                    <span *ngIf="form.get('salon_name').errors?.required">This field is required</span>
+                    <span *ngIf="form.get('salon_name').errors?.minlength">Minimal length {{ form.get('salon_name').errors?.minlength?.requiredLength }} digits</span>
+                    <span *ngIf="form.get('salon_name').errors?.maxlength">Maximal length {{ form.get('salon_name').errors?.maxlength?.requiredLength }} symbols</span>
+                  </div>
+                </ion-item>
+              </ion-col>
+            </ion-row>
+
+            <ion-row>
+              <ion-col>
+                <ion-item class="Input">
+                  <ion-label floating>Address</ion-label>
+                  <ion-input formControlName="salon_address" data-test-id="salon_address" type="text" class="ion_autocomplete"></ion-input>
+                  <div [class.is-active]="form.get('salon_address').dirty && form.get('salon_address').errors" class="InputError" item-end>
+                    <span *ngIf="form.get('salon_address').errors?.minlength">Minimal length {{ form.get('salon_address').errors?.minlength?.requiredLength }} digits</span>
+                    <span *ngIf="form.get('salon_address').errors?.required">This field is required</span>
+                  </div>
+                </ion-item>
+              </ion-col>
+            </ion-row>
+
+            <ion-row>
+              <ion-col>
+                <ion-item class="Input">
+                  <ion-label floating>Account phone</ion-label>
+                  <ion-input readonly formControlName="phone" data-test-id="phone" type="tel"></ion-input>
+                  <div [class.is-active]="form.get('phone').dirty && form.get('phone').errors" class="InputError" item-end>
+                    <span *ngIf="form.get('phone').errors?.minlength">Minimal length {{ form.get('phone').errors?.minlength?.requiredLength }} digits</span>
+                    <span *ngIf="form.get('phone').errors?.maxlength">Maximal length {{ form.get('phone').errors?.maxlength?.requiredLength }} symbols</span>
+                    <span *ngIf="form.get('phone').errors?.required">This field is required</span>
+                  </div>
+                </ion-item>
+              </ion-col>
+            </ion-row>
+
+            <ion-row>
+              <ion-col>
+                <ion-item class="Input">
+                  <ion-label floating>Public Profile Phone</ion-label>
+                  <ion-input formControlName="public_phone" data-test-id="public_phone" type="tel"></ion-input>
+                  <div [class.is-active]="form.get('public_phone').dirty && form.get('public_phone').errors" class="InputError" item-end>
+                    <span *ngIf="form.get('public_phone').errors?.minlength">Minimal length {{ form.get('public_phone').errors?.minlength?.requiredLength }} digits</span>
+                    <span *ngIf="form.get('public_phone').errors?.maxlength">Maximal length {{ form.get('public_phone').errors?.maxlength?.requiredLength }} symbols</span>
+                    <span *ngIf="form.get('public_phone').errors?.required">This field is required</span>
+                  </div>
+                </ion-item>
+              </ion-col>
+            </ion-row>
+
+            <ion-row>
+              <ion-col>
+                <ion-item class="Input with-sufix">
+                  <ion-label floating>Instagram ID</ion-label>
+                  <div class="Input-sufix" item-start>instagram.com/</div>
+                  <ion-input formControlName="instagram_url" data-test-id="instagram_url" type="text"></ion-input>
+                  <div [class.is-active]="form.get('instagram_url').dirty && form.get('instagram_url').errors" class="InputError" item-end>
+                    <span *ngIf="form.get('instagram_url').errors?.pattern">Wrong name</span>
+                  </div>
+                </ion-item>
+              </ion-col>
+            </ion-row>
+
+            <ion-row>
+              <ion-col>
+                <ion-item class="Input">
+                  <ion-label floating>Email (optional)</ion-label>
+                  <ion-input formControlName="email" data-test-id="email" type="text"></ion-input>
+                  <div [class.is-active]="form.get('email').dirty && form.get('email').errors" class="InputError" item-end>
+                    <span *ngIf="form.get('email').errors?.required">This field is required</span>
+                    <span *ngIf="form.get('email').errors?.email">Enter a valid email</span>
+                  </div>
+                </ion-item>
+              </ion-col>
+            </ion-row>
+
+            <ion-row>
+              <ion-col>
+                <ion-item class="Input">
+                  <ion-label floating>Website (optional)</ion-label>
+                  <ion-input formControlName="website_url" data-test-id="website_url" type="text"></ion-input>
+                </ion-item>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </form>
+      </div>
+    </ion-slide>
+
+    <ion-slide>
+      <div class="Tabs-slide">
+        <stylist-preview [stylist]="form.value"></stylist-preview>
+      </div>
+    </ion-slide>
+  </ion-slides>
+</ion-content>

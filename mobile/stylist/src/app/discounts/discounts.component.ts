@@ -15,11 +15,17 @@ export enum DiscountTabNames {
   max
 }
 
+export interface DiscountsComponentParams {
+  isRootPage: boolean;
+}
+
 @Component({
   selector: 'page-discounts',
   templateUrl: 'discounts.component.html'
 })
 export class DiscountsComponent {
+  @ViewChild(Content) content: Content;
+  @ViewChild(Slides) slides: Slides;
   PageNames = PageNames;
   DiscountTabNames = DiscountTabNames;
   weekdays: WeekdayDiscount[];
@@ -41,9 +47,7 @@ export class DiscountsComponent {
     { name: 'Maximum' }
   ];
   activeTab: DiscountTabNames;
-  isRootPage: Boolean;
-  @ViewChild(Slides) slides: Slides;
-  @ViewChild(Content) content: Content;
+  params: DiscountsComponentParams;
 
   constructor(
     public navParams: NavParams,
@@ -56,7 +60,7 @@ export class DiscountsComponent {
   }
 
   ionViewWillEnter(): void {
-    this.isRootPage = Boolean(this.navParams.get('isRootPage'));
+    this.params = this.navParams.get('params') as DiscountsComponentParams;
     this.loadInitialData();
   }
 

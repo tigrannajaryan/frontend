@@ -53,14 +53,16 @@ export class MadeMenuComponent implements OnInit {
     private events: Events,
     private store: Store<{}>
   ) {
+    const redirectParams = { isRootPage: true };
+
     this.menuItems = [
       { title: 'Appointments', redirectToPage: PageNames.HomeSlots, redirectParams: {}, icon: 'home-a' },
-      { title: 'Clients', redirectToPage: PageNames.MyClients, redirectParams: {}, icon: 'stylists-a' },
-      { title: 'Discounts', redirectToPage: PageNames.Discounts, redirectParams: {isRootPage: true}, icon: 'discounts' },
-      { title: 'Calendar', redirectToPage: PageNames.ClientsCalendar, redirectParams: {isRootPage: true}, icon: 'calendar-add' },
-      { title: 'Hours', redirectToPage: PageNames.WorkHours, redirectParams: {isRootPage: true}, icon: 'clock-a' },
-      { title: 'Services', redirectToPage: PageNames.ServicesList, redirectParams: {isRootPage: true}, icon: 'conditioners-a' },
-      { title: 'Invite Clients', redirectToPage: PageNames.Invitations, redirectParams: {isRootPage: true}, icon: 'invite-a' }
+      { title: 'Clients', redirectToPage: PageNames.MyClients, redirectParams, icon: 'stylists-a' },
+      { title: 'Discounts', redirectToPage: PageNames.Discounts, redirectParams, icon: 'discounts' },
+      { title: 'Calendar', redirectToPage: PageNames.ClientsCalendar, redirectParams, icon: 'calendar-add' },
+      { title: 'Hours', redirectToPage: PageNames.WorkHours, redirectParams, icon: 'clock-a' },
+      { title: 'Services', redirectToPage: PageNames.ServicesList, redirectParams, icon: 'conditioners-a' },
+      { title: 'Invite Clients', redirectToPage: PageNames.Invitations, redirectParams, icon: 'invite-a' }
     ];
   }
 
@@ -83,13 +85,13 @@ export class MadeMenuComponent implements OnInit {
     });
   }
 
-  setPage(redirectToPage: Page, redirectParams: any, isRootPage = true): void {
+  setPage(redirectToPage: Page, params: any, isRootPage = true): void {
     if (isRootPage) {
       // Reset the content nav to have just this page
       // we wouldn't want the back button to show in this scenario
-      this.nav.setRoot(redirectToPage, redirectParams);
+      this.nav.setRoot(redirectToPage, { params });
     } else {
-      this.nav.push(redirectToPage, redirectParams);
+      this.nav.push(redirectToPage, { params });
     }
   }
 
@@ -121,6 +123,10 @@ export class MadeMenuComponent implements OnInit {
     }
 
     return true;
+  }
+
+  onMenuClick(): void {
+    this.setPage(PageNames.Profile, {}, false);
   }
 
   private subscribe(): void {

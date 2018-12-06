@@ -5,6 +5,7 @@
     min-height: auto;
     padding: 0 0 pxtovw(15.5px);
     margin: 0;
+    transition: font-size 150ms ease-in-out, top 150ms ease-in-out, left 150ms ease-in-out;
 
     .label[floating] {
       position: absolute;
@@ -22,7 +23,6 @@
 
       .text-input {
         margin: 0;
-        font-weight: 600;
       }
     }
 
@@ -39,6 +39,23 @@
       }
     }
   }
+
+  &.with-sufix.item-label-floating {
+    &:not(.input-has-focus) .label[floating] {
+      left: auto;
+    }
+
+    &.input-has-value .label[floating] {
+      left: 0;
+    }
+  }
+}
+
+.Input-sufix[item-start] {
+  margin-right: 0;
+  margin-bottom: 3px;
+  color: color($colors, warmGrey);
+  font-size: 18px;
 }
 
 [item-end].InputError {
