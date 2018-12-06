@@ -10,7 +10,7 @@
 
     <book-services-header (serviceChange)="onServiceChange()"></book-services-header>
 
-    <price-pair *ngIf="regularPrice" [regularPrice]="regularPrice"></price-pair>
+    <price-pair *ngIf="regularPrice && bookingData?.selectedServices?.length !== 0" [regularPrice]="regularPrice"></price-pair>
   </ion-toolbar>
 </ion-header>
 
