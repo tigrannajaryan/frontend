@@ -9,10 +9,10 @@
   </ion-title>
 
   <ion-buttons end>
-    <button ion-button clear (click)="onChangeTimeGapClick()" class="HomeSlots-menuBtn" data-test-id="onChangeTimeGapClick">
+    <button (click)="onChangeTimeGapClick()" ion-button clear class="HomeSlots-menuBtn" data-test-id="onChangeTimeGapClick">
       <i class="mb-icon-settings HomeSlots-icon"></i>
     </button>
-    <button ion-button clear (click)="onTodayNavigateClick()" class="HomeSlots-menuBtn">
+    <button [disabled]="isShowingToday()" (click)="onTodayNavigateClick()" ion-button clear class="HomeSlots-menuBtn" data-test-id="onTodayNavigateClick">
       <i class="mb-icon-today HomeSlots-icon"></i>
     </button>
   </ion-buttons>
