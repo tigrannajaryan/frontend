@@ -5,50 +5,55 @@ import * as camelcase from 'camelcase';
 
 import { getAppVersionNumber, getBuildNumber } from '~/shared/get-build-info';
 import { Logger } from '~/shared/logger';
+import { MadeAnalyticsApi } from '~/shared/api/made-analytics.api';
 
 /**
- * Wrapper class for Google Analytics which initializes it
- * and can defer calls until the initializtion is ready or
- * skip calls if initialization fails.
+ * Internal App Analytics class which sends analytics data to Google Analytics
+ * and to Made Analytics
  */
 @Injectable()
-export class GAWrapper {
-  private ready = false;
-  private failed = false;
-  private pendingCalls: Function[] = [];
+export class AppAnalytics {
+  private gaReady = false;
+  private gaFailed = false;
+  private gaPendingCalls: Function[] = [];
 
   constructor(
-    private ga: GoogleAnalytics,
-    private logger: Logger
+    private analytics: GoogleAnalytics,
+    private logger: Logger,
+    private madeAnalytics: MadeAnalyticsApi
   ) {
   }
 
-  async init(id: string): Promise<void> {
-    if (id === undefined) {
-      this.logger.info('GA: No tracking ID defined. Disabling Google Analytics.');
-      this.failed = true;
+  /**
+   * Initialize Google Analytics. Any tracking calls made before this intialization are
+   * queued and if this initialization is successful are immediately sent to GA.
+   */
+  async init(gaId: string): Promise<void> {
+    if (gaId === undefined) {
+      this.logger.info('Analytics: No Google Analytics tracking ID defined. Disabling Google Analytics.');
+      this.gaFailed = true;
       return;
     }
 
-    this.logger.info(`GA: Initializing Google Analytics with id=${id}...`);
+    this.logger.info(`Analytics: Initializing Google Analytics with id=${gaId}...`);
 
     try {
-      await this.ga.startTrackerWithId(id);
+      await this.analytics.startTrackerWithId(gaId);
       await this.initAppVer();
 
       // Execute all pending calls
-      for (const func of this.pendingCalls) {
+      for (const func of this.gaPendingCalls) {
         func();
       }
-      this.pendingCalls = [];
+      this.gaPendingCalls = [];
 
       // We are now ready to perform direct GA calls
-      this.ready = true;
+      this.gaReady = true;
 
-      this.logger.info('GA: Google Analytics is ready now');
+      this.logger.info('Analytics: Google Analytics is ready now');
     } catch (e) {
-      this.failed = true;
-      this.logger.warn('GA: Error starting Google Analytics (this is expected if not on the phone):', e);
+      this.gaFailed = true;
+      this.logger.warn('Analytics: Error starting Google Analytics (this is expected if not on the phone):', e);
     }
   }
 
@@ -74,35 +79,36 @@ export class GAWrapper {
   }
 
   setUserId(userId: string): void {
-    this.execWhenReady(() => this.ga.setUserId(userId));
+    this.execWhenGaReady(() => this.analytics.setUserId(userId));
   }
 
   trackView(title: string, campaignUrl?: string, newSession?: boolean): void {
-    this.logger.info(`GA: Entered ${title}`);
-    this.execWhenReady(() => this.ga.trackView(title, campaignUrl, newSession));
+    this.logger.info(`Analytics: Entered ${title}`);
+    this.madeAnalytics.trackView(title);
+    this.execWhenGaReady(() => this.analytics.trackView(title, campaignUrl, newSession));
   }
 
   trackTiming(category: string, intervalInMilliseconds: number, variable: string, label: string): void {
-    this.execWhenReady(() => this.ga.trackTiming(category, intervalInMilliseconds, variable, label));
+    this.execWhenGaReady(() => this.analytics.trackTiming(category, intervalInMilliseconds, variable, label));
   }
 
   private async initAppVer(): Promise<void> {
     const fullVer = `${getAppVersionNumber()}.${getBuildNumber()}`;
-    this.ga.setAppVersion(fullVer);
+    this.analytics.setAppVersion(fullVer);
   }
 
-  private async execWhenReady(func: Function): Promise<void> {
-    if (this.ready) {
+  private async execWhenGaReady(func: Function): Promise<void> {
+    if (this.gaReady) {
       func();
       return;
     }
 
-    if (this.failed) {
+    if (this.gaFailed) {
       // GA failed to initialize. Ignore all calls.
       return;
     }
 
     // GA init not ready. Add call to pending list.
-    this.pendingCalls.push(func);
+    this.gaPendingCalls.push(func);
   }
 }

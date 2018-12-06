@@ -92,6 +92,9 @@ import { StylistServiceMock } from '~/core/api/stylist.service.mock';
 import { WorktimeApi } from '~/core/api/worktime.api';
 import { WorktimeApiMock } from '~/core/api/worktime.api.mock';
 
+import { MadeAnalyticsApi } from './app/shared/api/made-analytics.api';
+import { MadeAnalyticsApiMock } from './app/shared/api/made-analytics.api.mock';
+
 import { ExternalAppService } from '~/shared/utils/external-app-service';
 import { Logger } from '~/shared/logger';
 
@@ -194,6 +197,7 @@ export class TestUtils {
         { provide: HomeService, useClass: HomeServiceMock },
         { provide: StylistServiceProvider, useClass: StylistServiceMock },
         { provide: WorktimeApi, useClass: WorktimeApiMock },
+        { provide: MadeAnalyticsApi, useClass: MadeAnalyticsApiMock },
         ...providers
       ],
       imports: [

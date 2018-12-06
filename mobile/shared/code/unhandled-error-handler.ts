@@ -28,7 +28,7 @@ export class UnhandledErrorHandler {
     private logger: Logger,
     private alertCtrl: AlertController,
     private injector: Injector,
-    private ga: GoogleAnalytics
+    private analytics: GoogleAnalytics
   ) { }
 
   /**
@@ -57,7 +57,7 @@ export class UnhandledErrorHandler {
     this.logger.error('Unhandled exception:', errorType, errorDescription, error);
 
     // Report to GA
-    this.ga.trackException(`${errorType}: ${errorDescription}`, false)
+    this.analytics.trackException(`${errorType}: ${errorDescription}`, false)
       .catch(e => {
         // Ignore errors during reporting, there is nothing else we can do.
       });

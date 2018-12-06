@@ -1,6 +1,6 @@
 import { $ } from 'protractor';
 
-import { waitFor, waitForNot } from '../shared-e2e/utils';
+import { click, waitFor, waitForNot } from '../shared-e2e/utils';
 
 class HowMadeWorksPage {
   // UI element declarations.
@@ -9,7 +9,7 @@ class HowMadeWorksPage {
   // Operations
   async continue() {
     await waitFor(this.continueBtn);
-    await this.continueBtn.click();
+    await click(this.continueBtn);
     await waitForNot(this.continueBtn);
   }
 }

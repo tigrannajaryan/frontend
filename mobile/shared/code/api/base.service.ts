@@ -11,8 +11,13 @@ import { ApiRequest, ApiResponse } from '~/shared/api/base.models';
 import { ServerStatusTracker } from '~/shared/server-status-tracker';
 import { Logger } from '~/shared/logger';
 
+import config from '~/auth/config.json';
+import { UserRole } from './auth.models';
+
 @Injectable()
 export class BaseService {
+
+  static role: UserRole = (config && config.role) || 'client';
 
   constructor(
     private http: HttpClient,

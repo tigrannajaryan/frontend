@@ -9,20 +9,15 @@ import {
   ConfirmCodeParams,
   ConfirmCodeResponse,
   GetCodeParams,
-  GetCodeResponse,
-  UserRole
+  GetCodeResponse
 } from '~/shared/api/auth.models';
 import { ApiFieldAndNonFieldErrors, ApiRequestOptions, FieldErrorItem, NonFieldErrorItem } from '~/shared/api-errors';
 import { Logger } from '~/shared/logger';
 import { ServerStatusTracker } from '~/shared/server-status-tracker';
 import { UserContext } from '~/shared/user-context';
 
-import config from '~/auth/config.json';
-
 @Injectable()
 export class AuthService extends BaseService {
-
-  static role: UserRole = (config && config.role) || 'client';
 
   static waitNewCodeError =
     new ApiFieldAndNonFieldErrors(
@@ -44,7 +39,7 @@ export class AuthService extends BaseService {
   }
 
   getCode(phone: string): Observable<ApiResponse<GetCodeResponse>> {
-    const params: GetCodeParams = { phone, role: AuthService.role };
+    const params: GetCodeParams = { phone, role: BaseService.role };
     const options: ApiRequestOptions = {
       hideGenericAlertOnErrorsLike: [AuthService.waitNewCodeError]
     };
@@ -61,7 +56,7 @@ export class AuthService extends BaseService {
   }
 
   confirmCode(phone: string, code: string): Observable<ApiResponse<ConfirmCodeResponse>> {
-    const params: ConfirmCodeParams = { phone, code, role: AuthService.role };
+    const params: ConfirmCodeParams = { phone, code, role: BaseService.role };
     const options: ApiRequestOptions = {
       // The invalidConfirmCodeError is handled customly by the AuthConfirm component, skip common handling:
       hideGenericAlertOnErrorsLike: [AuthService.invalidConfirmCodeError]
@@ -71,7 +66,7 @@ export class AuthService extends BaseService {
   }
 
   refreshAuth(authToken: string): Observable<ApiResponse<AuthResponse>> {
-    const request = { token: authToken, role: AuthService.role };
+    const request = { token: authToken, role: BaseService.role };
     return this.processAuthResponse(
       () => this.post<AuthResponse>('auth/refresh-token', request));
   }

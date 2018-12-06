@@ -4,7 +4,7 @@ import { Page } from 'ionic-angular/navigation/nav-util';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 
-import { GAWrapper } from '~/shared/google-analytics';
+import { AppAnalytics } from '~/shared/app-analytics';
 import { ApiResponse } from '~/shared/api/base.models';
 
 import { PageNames } from '~/core/page-names';
@@ -66,7 +66,7 @@ export class MainTabsComponent implements OnDestroy {
 
   constructor(
     private events: Events,
-    private ga: GAWrapper,
+    private analytics: AppAnalytics,
     private profileDataStore: ProfileDataStore
   ) {
     this.profileObservable = this.profileDataStore.asObservable();
@@ -104,13 +104,13 @@ export class MainTabsComponent implements OnDestroy {
     tab.popToRoot();
 
     // Track all tab changes
-    this.ga.trackViewChange(tab.getActive());
+    this.analytics.trackViewChange(tab.getActive());
 
     // Track all screen changes inside tab
     if (this.lastSubsrciption) {
       this.lastSubsrciption.unsubscribe();
     }
-    this.lastSubsrciption = tab.viewDidEnter.subscribe(view => this.ga.trackViewChange(view));
+    this.lastSubsrciption = tab.viewDidEnter.subscribe(view => this.analytics.trackViewChange(view));
   }
 
   onProfileChange(profileResponse: ApiResponse<ProfileModel>): void {
