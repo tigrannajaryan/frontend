@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import * as moment from 'moment';
 
-import { Weekday } from '~/shared/weekday';
+import { Workday } from '~/shared/api/worktime.models';
 
 /**
  * A horizontal calendar with one week from Sun to Sat.
@@ -18,7 +18,14 @@ export class HorizontalCalendarComponent {
     this._selectedDate = date;
   }
 
-  @Input() disabledWeekdays: Weekday[] = [];
+  @Input() set weekdays(weekdays: Workday[]) {
+    if (weekdays) {
+      for (const weekday of weekdays) {
+        this.disabledWeekdays[weekday.weekday_iso] = !weekday.is_available;
+        this.daysWithAppointments[weekday.weekday_iso] = Boolean(weekday.has_appointments);
+      }
+    }
+  }
 
   @Output() changeDate = new EventEmitter<moment.Moment>();
 
@@ -26,6 +33,9 @@ export class HorizontalCalendarComponent {
   daysInWeek = Array(7).fill('');
 
   private _selectedDate: moment.Moment;
+
+  private disabledWeekdays: boolean[] = Array(8).fill(false);
+  private daysWithAppointments: boolean[] = Array(8).fill(false);
 
   constructor() {
     // Set today as a default:
@@ -42,10 +52,12 @@ export class HorizontalCalendarComponent {
 
   isDisabled(date: moment.Moment): boolean {
     const weekdayIso = date.isoWeekday();
-    return (
-      this.disabledWeekdays &&
-      this.disabledWeekdays.some(weekday => weekday.isoWeekday === weekdayIso)
-    );
+    return this.disabledWeekdays[weekdayIso];
+  }
+
+  hasAppointments(date: moment.Moment): boolean {
+    const weekdayIso = date.isoWeekday();
+    return this.daysWithAppointments[weekdayIso];
   }
 
   onDateSelect(date: moment.Moment): void {

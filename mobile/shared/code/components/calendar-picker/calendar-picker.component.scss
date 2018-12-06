@@ -103,7 +103,7 @@ calendar-picker {
       }
     }
 
-    &.is-highlighted.is-future:not(.is-selected):not(:active) {
+    &.is-highlighted:not(.is-selected):not(:active) {
       $circle-size: pxtovw(6px);
       $circle-color: #E96D5C;
 

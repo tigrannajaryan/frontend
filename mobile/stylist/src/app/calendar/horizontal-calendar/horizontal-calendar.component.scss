@@ -20,11 +20,31 @@
     $days-to-show: 7;
 
     min-width: 100% / $days-to-show;
-    margin-bottom: pxtovw(6px); // bottom offset of selected cicrle
+    margin-bottom: pxtovw(16px); // bottom offset of selected cicrle
     text-align: center;
 
     &.is-today {
       color: color($colors, lightSalmon);
+    }
+
+    &.is-highlighted:not(.is-selected) {
+      position: relative;
+
+      &:before { // circle
+        $circle-size: pxtovw(6px);
+        $circle-color: #E96D5C;
+
+        position: absolute;
+        top: 100%;
+        right: 50%;
+        z-index: 1;
+        width: $circle-size;
+        height: $circle-size;
+        margin-right: -1 * $circle-size / 2;
+        content: '';
+        background: $circle-color;
+        border-radius: 50%;
+      }
     }
 
     &.is-disabled {
