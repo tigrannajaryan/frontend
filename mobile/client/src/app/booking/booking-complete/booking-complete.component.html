@@ -1,29 +1,28 @@
 <ion-header madeHeader [hideBackButton]="true"></ion-header>
 
-<ion-content class="BookingCompletePage">
-  <ion-grid fixed class="BookingComplete-grid">
-    <ion-row class="BookingComplete-checkmark-row">
-      <ion-col>
-        <div class="BookingComplete-checkmarkCircle">
-          <div class="BookingComplete-checkmarkCircleInner"></div>
-        </div>
-      </ion-col>
-    </ion-row>
-    <ion-row class="BookingComplete-gridRow">
-      <ion-col>
-        <h2 class="BookingComplete-h2"> Congratulations,
-          <br/> your booking is complete! </h2>
-      </ion-col>
-    </ion-row>
-    <ion-row *ngIf="!calendarIntegrated" align-items-baseline class="BookingComplete-gridRow">
-      <ion-col align-self-end>
-        <button ion-button class="Button lowcase BookingComplete-button" (click)="onAddToCalendarClick()">Add to Google Calendar</button>
-      </ion-col>
-    </ion-row>
-    <ion-row align-items-baseline class="BookingComplete-gridRow">
-      <ion-col align-self-end>
-        <button ion-button class="Button lowcase BookingComplete-button" (click)="onReturnHomeClick()">Return to home screen</button>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+<ion-content>
+  <div class="contentSidePadding">
+    <div class="BookingComplete-icon">
+      <img src="assets/icons/bookingComplete.png" alt="">
+    </div>
+
+    <h2 class="BookingComplete-h2" data-test-id="bookingCompleteTitle">
+      Congratulations,
+      <br/>
+      your booking is complete!
+    </h2>
+
+    <div *ngIf="bookingData?.offer?.totalRegularPrice !== bookingData?.offer?.price" class="BookingComplete-final" data-test-id="totalRegularPrice">
+      Final price <span>WAS ${{ bookingData?.offer?.totalRegularPrice }}</span>
+    </div>
+    <div class="BookingComplete-price" data-test-id="price">
+      <span>$</span>{{ bookingData?.offer?.price }}
+    </div>
+
+    <button (click)="onReturnHomeClick()" ion-button class="Button" data-test-id="returnHome">Return Home</button>
+
+    <div *ngIf="!calendarIntegrated">
+      <button (click)="onAddToCalendarClick()" ion-button class="Link is-button BookingComplete-addToCalendar" data-test-id="addToCalendar">Add to Calendar</button>
+    </div>
+  </div>
 </ion-content>

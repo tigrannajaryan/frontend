@@ -1,55 +1,60 @@
-.BookingCompletePage {
-  .BookingComplete-grid {
-    height: 100%;
-    text-align: center;
-
-    .BookingComplete-gridRow {
-      height: 27%;
-    }
-
-    .BookingComplete-checkmarkRow {
-      height: 44%;
-    }
-  }
-
-  .BookingComplete-checkmarkCircle {
-    width: pxtovw(232px);
-    height: pxtovw(232px);
-    padding: pxtovw(34px);
-    margin: pxtovw(22px) auto 0;
-    border: 1px solid color($grayscale, 300);
+page-booking-complete {
+  .BookingComplete-icon {
+    width: pxtovw(187px);
+    padding: pxtovw(45px);
+    margin: 0 auto pxtovw(32px);
+    border: pxtovw(1px) solid color($grayscale, 300);
     border-radius: 50%;
 
-    .BookingComplete-checkmarkCircleInner {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 100%;
-      height: 100%;
-      margin: auto;
-      background: rgba(254, 224, 208, 0.5);
-      border-radius: 50%;
-
-      &:after {
-        width: pxtovw(43px);
-        height: pxtovw(19px);
-        content: '';
-        border: solid black;
-        border-width: 0 0 pxtovw(1px) pxtovw(1px);
-        transform: rotate(-45deg) translate(pxtovw(4px), pxtovw(-4px));
-      }
+    img {
+      width: pxtovw(96px);
     }
   }
 
   .BookingComplete-h2 {
     margin-top: pxtovw(15px);
-    font-size: pxtovw(26px);
+    margin-bottom: pxtovw(29px);
+    font-size: pxtovw(28px);
     font-weight: 700;
-    line-height: 1.2;
-    letter-spacing: pxtovw(0.4px);
+    text-align: center;
   }
 
-  .BookingComplete-button {
-    margin-bottom: pxtovw(20px);
+  .BookingComplete-final {
+    position: relative;
+    display: table;
+    margin: 0 auto;
+    font-size: pxtovw(15px);
+    color: color($colors, warmGrey);
+
+    span {
+      position: absolute;
+      top: 0;
+      right: pxtovw(-78px);
+      padding: pxtovw(2px) pxtovw(6px);
+      font-size: pxtovw(10px);
+      color: white;
+      background: #FF3333;
+      border-radius: pxtovw(3px);
+    }
+  }
+
+  .BookingComplete-price {
+    position: relative;
+    display: table;
+    margin: pxtovw(-6px) auto pxtovw(50px);
+    font-size: pxtovw(64px);
+    font-weight: 700;
+    text-align: center;
+
+    span {
+      position: absolute;
+      top: pxtovw(12px);
+      left: pxtovw(-12px);
+      font-size: pxtovw(18px);
+    }
+  }
+
+  .BookingComplete-addToCalendar {
+    margin-top: pxtovw(7px);
   }
 }

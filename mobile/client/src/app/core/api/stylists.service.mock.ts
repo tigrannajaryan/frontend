@@ -34,6 +34,13 @@ export const preferenceMock = {
   preference_uuid: faker.random.uuid()
 };
 
+export const offerMock = {
+  date: '2018-12-31',
+  price: faker.random.number(),
+  is_fully_booked: faker.random.boolean(),
+  is_working_day: faker.random.boolean()
+};
+
 @Injectable()
 export class StylistsServiceMock extends BaseServiceMock {
 
