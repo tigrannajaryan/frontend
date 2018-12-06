@@ -88,6 +88,13 @@ export class ClientsCalendarComponent {
         .filter(({ uuid }) => uuid !== service.uuid)
         .map(({ uuid }) => uuid)
     );
+
+    // Tell the content to recalculate its dimensions. According to Ionic docs this
+    // should be called after dynamically adding/removing headers, footers, or tabs.
+    // See https://ionicframework.com/docs/api/components/content/Content/#resize
+    if (this.content) {
+      this.content.resize();
+    }
   }
 
   @loading
