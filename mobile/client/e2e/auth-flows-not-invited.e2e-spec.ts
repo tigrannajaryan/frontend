@@ -94,4 +94,9 @@ describe('Authentication flows for non-invited client with app reloads', () => {
   it('Can logout', async () => {
     await performLogout();
   });
+
+  it('Can relogin and start search', async () => {
+    await performLogin(clientPhoneNumber);
+    await homePage.startSearch();
+  });
 });

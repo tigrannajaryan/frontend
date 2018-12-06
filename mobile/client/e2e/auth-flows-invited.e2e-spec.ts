@@ -73,4 +73,9 @@ describe('Authentication flows for invited client with app reloads', () => {
   it('Can logout', async () => {
     await performLogout();
   });
+
+  it('Can relogin and start booking', async () => {
+    await performLogin(clientPhoneNumber);
+    await homePage.startBooking();
+  });
 });
