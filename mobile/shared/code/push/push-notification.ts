@@ -44,6 +44,28 @@ export enum PushNotificationCode { // (!) in alphabetical order
   visit_report = 'visit_report'
 }
 
+// tslint:disable-next-line:no-empty-interface
+export interface EmptyAdditionalData { // for simple notifications
+}
+
+export interface NewAppointmentAdditionalData { // new_appointment
+  appointment_datetime_start_at: string; // start of appointment in iso format
+  appointment_uuid: string; // uuid of appointment
+}
+
+export interface TomorrowAppointmentsAdditionalData { // tomorrow_appointments
+  appointment_datetime_start_at: string; // start of appointment in iso format
+}
+
+/**
+ * All known additional data key-values provided in additionalData prop of a push-notification.
+ */
+// NOTE: list any additional data you would like to use
+export type PushNotificationAdditionalData = // (!) in alphabetical order
+  | EmptyAdditionalData
+  | NewAppointmentAdditionalData
+  | TomorrowAppointmentsAdditionalData;
+
 /**
  * Resulting value returned by showPermissionScreen() method.
  */
@@ -348,10 +370,10 @@ export class PushNotification {
     this.logger.info(`Push notification received ${notificationStr}`);
 
     const { additionalData, message } = notification;
-    const { code, coldstart, foreground, uuid } = additionalData;
+    const { code, coldstart, foreground, uuid, ...data } = additionalData;
     this.events.publish(
       SharedEventTypes.pushNotification,
-      new PushNotificationEventDetails(foreground, coldstart, uuid, code, message)
+      new PushNotificationEventDetails(foreground, coldstart, uuid, code, message, data)
     );
   }
 

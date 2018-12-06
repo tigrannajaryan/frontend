@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { App, NavController } from 'ionic-angular';
 import { Page } from 'ionic-angular/navigation/nav-util';
 
-import { ClientProfileStatus } from '~/shared/api/auth.models';
+import { ClientProfileStatus, UserRole } from '~/shared/api/auth.models';
 import { StylistModel } from '~/shared/api/stylists.models';
 import { StylistInvitationParams } from '~/stylists/stylist/stylist.component';
 import { PushNotification } from '~/shared/push/push-notification';
@@ -131,6 +131,7 @@ export class ClientStartupNavigation {
       // Yes, we need to show it. Do it.
 
       const params: PushPrimingScreenParams = {
+        appType: UserRole.client,
         // Show next appropriate screen after PushPrimingScreen
         onContinue: () => this.showNextByProfileStatus(this.app.getRootNav())
       };

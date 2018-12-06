@@ -109,7 +109,10 @@ export class MyAppComponent {
       if (authResponse) {
         this.logger.info('App: Authentication refreshed.');
 
-        const requiredPages = createNavHistoryList(authResponse.profile_status as StylistProfileStatus);
+        // Let pushNotification know who is the current user
+        this.pushNotification.setUser(authResponse.user_uuid);
+
+        const requiredPages = await createNavHistoryList(authResponse.profile_status as StylistProfileStatus);
         this.nav.setPages(requiredPages);
         return;
       }

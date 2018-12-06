@@ -1,5 +1,5 @@
 import { Component, NgZone, ViewChild } from '@angular/core';
-import { ActionSheetController, Content, ModalController, NavController } from 'ionic-angular';
+import { ActionSheetController, Content, Events, ModalController, NavController } from 'ionic-angular';
 import { ActionSheetButton } from 'ionic-angular/components/action-sheet/action-sheet-options';
 import * as moment from 'moment';
 import * as deepEqual from 'fast-deep-equal';
@@ -22,7 +22,8 @@ import { ProfileDataStore } from '~/core/profile.data';
 
 import { AppointmentAddParams } from '~/appointment/appointment-add/appointment-add';
 
-import { FreeSlot, isBlockedTime } from './time-slots/time-slots.component';
+import { FreeSlot } from './time-slots/time-slots.component';
+import { isBlockedTime } from './time-slot-content/time-slot-content.component';
 import { AppointmentsDataStore } from './appointments.data';
 
 import { ISODate, isoDateFormat } from '~/shared/api/base.models';
@@ -34,6 +35,8 @@ import {
   DefaultWeekday,
   DefaultWeekdays
 } from '~/shared/components/calendar-picker/calendar-picker.component';
+
+import { FocusAppointmentEventParams, StylistEventTypes } from '~/core/stylist-event-types';
 
 const helpText = `Congratulations! Your registration is complete.<br/><br/>
   This is your home screen. Your appointments will show up here.<br/><br/>
@@ -74,6 +77,9 @@ export class HomeSlotsComponent {
   // Is fully blocked (non-working day)
   isFullyBlocked = false;
 
+  // An appointment we want to highlight:
+  highlightedAppointment: Appointment;
+
   // And its components as strings (used in HTML)
   selectedMonthName: string;
   selectedWeekdayName: string;
@@ -87,6 +93,7 @@ export class HomeSlotsComponent {
     private actionSheetCtrl: ActionSheetController,
     private appointmentsDataStore: AppointmentsDataStore,
     private appStorage: StylistAppStorage,
+    private events: Events,
     private externalAppService: ExternalAppService,
     private homeService: HomeService,
     private logger: Logger,
@@ -101,9 +108,6 @@ export class HomeSlotsComponent {
   async ionViewWillLoad(): Promise<void> {
     // Set disabled days for horizontal calendar
     await this.setNonWorkingDays();
-
-    // Select and show today's date
-    this.selectDate(moment().startOf('day'));
   }
 
   // we need ionViewWillEnter here because it fire each time when we go to this page
@@ -112,27 +116,32 @@ export class HomeSlotsComponent {
   async ionViewWillEnter(): Promise<void> {
     this.logger.info('HomeSlotsComponent: entering.');
 
+    // Focus on one particullar appointment
+    this.events.subscribe(StylistEventTypes.focusAppointment, (params: FocusAppointmentEventParams) => this.focusAppointment(params));
+
     await this.appStorage.ready();
     if (this.appStorage.get('showHomeScreenHelp')) {
       showAlert('', helpText);
       this.appStorage.set('showHomeScreenHelp', false);
     }
 
+    // Preload data
+    this.profileDataStore.get();
+
     // Load and show appointments for selected date
-    this.loadAppointments();
+    await this.loadAppointments();
 
     // Autorefresh the view once every 10 mins. This is a temporary solution until
     // we implement push notifications.
     const autoRefreshInterval = moment.duration(10, 'minute').asMilliseconds();
     this.autoRefreshTimer = await setIntervalOutsideNgZone(this.ngZone, () => this.loadAppointments(), autoRefreshInterval);
-
-    // Preload data
-    this.profileDataStore.get();
   }
 
   ionViewWillLeave(): void {
     // Stop autorefresh
     clearInterval(this.autoRefreshTimer);
+
+    this.events.unsubscribe(StylistEventTypes.focusAppointment);
   }
 
   async setNonWorkingDays(): Promise<void> {
@@ -373,22 +382,35 @@ export class HomeSlotsComponent {
     return buttons;
   }
 
+  private async focusAppointment(params: FocusAppointmentEventParams): Promise<void> {
+    await this.selectDateAndLoadAppointments(moment(params.appointment_datetime_start_at));
+
+    const highlightedAppointment = this.data.appointments.find(appointment => {
+      return appointment.uuid === params.appointment_uuid;
+    });
+    this.highlightedAppointment = highlightedAppointment;
+  }
+
   /**
    * Set the date to show appointments for.
    */
   private selectDate(date: moment.Moment): void {
-    this.selectedDate = date.clone().startOf('day');
-    this.selectedMonthName = moment(date).format('MMM');
-    this.selectedWeekdayName = moment(date).format('dddd');
-    this.selectedDayOfMonth = moment(date).format('D');
+    const newDate = date.clone().startOf('day');
+
+    this.highlightedAppointment = undefined;
+
+    this.selectedDate = newDate;
+    this.selectedMonthName = date.format('MMM');
+    this.selectedWeekdayName = date.format('dddd');
+    this.selectedDayOfMonth = date.format('D');
   }
 
   /**
    * Set the date to show appointments for and load and display the appointments.
    */
-  private selectDateAndLoadAppointments(date: moment.Moment): void {
+  private async selectDateAndLoadAppointments(date: moment.Moment): Promise<void> {
     this.selectDate(date);
-    this.loadAppointments();
+    await this.loadAppointments();
   }
 
   private async loadAppointments(): Promise<void> {

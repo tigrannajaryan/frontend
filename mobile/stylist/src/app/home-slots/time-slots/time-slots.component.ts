@@ -65,16 +65,6 @@ function compareAppointments(a: Appointment, b: Appointment): number {
   return ma.diff(mb);
 }
 
-/**
- * Return true if the appointment is just a blocked time and not a real appointment.
- */
-export function isBlockedTime(appointment: Appointment): boolean {
-  return !appointment.client_uuid &&
-    !appointment.client_first_name &&
-    !appointment.client_last_name &&
-    !appointment.client_phone;
-}
-
 // Define the total vertical size of the view in hours. Must be integer.
 const totalHoursInDay = 24;
 
@@ -89,7 +79,6 @@ export interface FreeSlot {
 })
 export class TimeSlotsComponent implements AfterViewInit, OnDestroy {
   AppointmentStatuses = AppointmentStatuses;
-  isBlockedTime = isBlockedTime;
 
   // List of appointments to show
   @Input() set appointments(value: Appointment[]) {
@@ -100,6 +89,7 @@ export class TimeSlotsComponent implements AfterViewInit, OnDestroy {
   @Input() set selectedDate(value: moment.Moment) {
     this._selectedDate = value.startOf('day');
     this.updateAppointments();
+    this.updateScrollPos();
   }
 
   // Interval between slots in minutes
@@ -132,6 +122,18 @@ export class TimeSlotsComponent implements AfterViewInit, OnDestroy {
     return this._showCurTimeIndicator;
   }
 
+  // Highlight one slot
+  @Input() set highlightedAppointment(value: Appointment) {
+    this.selectedTimeSlot = this.slotItems.find(({ appointment }) => appointment && appointment.uuid === value.uuid);
+
+    if (this.selectedTimeSlot) {
+      // We use setTimeout to insure the view is updated
+      setTimeout(() => {
+        this.updateScrollPos();
+      });
+    }
+  }
+
   // Event fired when a free slot is clicked
   @Output() freeSlotClick = new EventEmitter<FreeSlot>();
 
@@ -154,7 +156,7 @@ export class TimeSlotsComponent implements AfterViewInit, OnDestroy {
   // The slot items to display
   slotItems: TimeSlotItem[] = [];
 
-  protected selectedFreeSlot: TimeSlotItem;
+  protected selectedTimeSlot: TimeSlotItem;
 
   private _appointments: Appointment[] = [];
   private _selectedDate: moment.Moment = moment().startOf('day');
@@ -174,7 +176,6 @@ export class TimeSlotsComponent implements AfterViewInit, OnDestroy {
     // Update current time indicator once a minute
     const autoRefreshInterval = moment.duration(1, 'minute').asMilliseconds();
     this.autoRefreshTimerId = await setIntervalOutsideNgZone(this.ngZone, () => this.updateCurrentTime(), autoRefreshInterval);
-
     this.updateScrollPos();
   }
 
@@ -183,94 +184,17 @@ export class TimeSlotsComponent implements AfterViewInit, OnDestroy {
   }
 
   /**
-   * Format client name and return as string. Will use first/last if it is known
-   * otherwise will return phone instead of the name.
-   */
-  formatClientName(appointment: Appointment): string {
-    let str = appointment.client_first_name.trim();
-    if (appointment.client_last_name.trim()) {
-      // Add last name if it is known
-      if (str.length) {
-        str = `${str} `;
-      }
-      str = `${str}${appointment.client_last_name.trim()}`;
-    }
-    if (!str && appointment.client_phone.trim()) {
-      // Use phone number if name is missing
-      str = appointment.client_phone.trim();
-    }
-    return str;
-  }
-
-  /**
-   * Format a list of services as a comman separated string
-   */
-  formatServices(appointment: Appointment): string {
-    return appointment.services.map(s => s.service_name).join(', ');
-  }
-
-  /**
-   * Calculate and return end time of the appointment
-   */
-  appointmentEndMoment(appointment: Appointment): moment.Moment {
-    const start = moment(appointment.datetime_start_at);
-    return start.add(appointment.duration_minutes, 'minutes');
-  }
-
-  isAppointmentPendingCheckout(appointment: Appointment): boolean {
-    if (appointment.status === AppointmentStatuses.new) {
-      const end = this.appointmentEndMoment(appointment);
-      if (end.isBefore(moment())) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  /**
-   * Returns the appropriate icon url for the appointment depending on the
-   * state of the appointment.
-   */
-  protected appointmentIconUrl(appointment: Appointment): string {
-    if (appointment.status === AppointmentStatuses.no_show) {
-      return 'assets/icons/appointment/no-show@3x.png';
-    } else if (this.isAppointmentPendingCheckout(appointment)) {
-      return 'assets/icons/appointment/pending-checkout@3x.png';
-    } else if (appointment.client_profile_photo_url) {
-      return appointment.client_profile_photo_url;
-    } else {
-      return 'assets/icons/stylist-avatar.png';
-    }
-  }
-
-  /**
-   * Returns an Object with keys as CSS class names in a way that is defind by ngClass
-   * Angular directive: https://angular.io/api/common/NgClass
-   * Used for styling appointment slots.
-   */
-  protected appointmentCssClasses(appointment: Appointment): Object {
-    const now = moment();
-    return {
-      TimeSlotNew: appointment.status === AppointmentStatuses.new,
-      TimeSlotCancelled: appointment.status === AppointmentStatuses.cancelled_by_client,
-      TimeSlotPast: this.appointmentEndMoment(appointment).isBefore(now)
-    };
-  }
-
-  /**
    * Click handler for slots
    */
   protected onSlotItemClick(slotItem: TimeSlotItem): void {
+    // Indicate selected
+    this.selectedTimeSlot = slotItem;
+
     if (slotItem.appointment) {
       // It is an appointment slot
       this.appointmentClick.emit(slotItem.appointment);
     } else {
-      // It is a free slot
-
-      // Show free slotselector
-      this.selectedFreeSlot = slotItem;
-
-      // Keep it visible for a while to allow the user to see it
+      // It is a free slot. Keep it selected for a while to allow the user to see it
       const showFreeSlotSelectorForMs = moment.duration(0.2, 'second').asMilliseconds();
       setTimeout(() => {
         // Now fire the event to let others know free slot is selected
@@ -456,27 +380,53 @@ export class TimeSlotsComponent implements AfterViewInit, OnDestroy {
     }
   }
 
+  /**
+   * This hook is used for scrolling. The view is scrolled:
+   * 1. to the selected (highlighted_ slot if there is some;
+   * 2. to the current time horizontal indicator if it’s shown;
+   * 3. to the start of working hours if it’s a working day or start of a day if it’s a non-working day.
+   */
   private updateScrollPos(): void {
+    // We use setTimeout to be sure everything is become visible on the view
     const now = moment();
 
     // If we are showing current time indicator then scroll to the beginning of its hours
-    // otherwise scroll to the beginning of working day.
-    let scrollToHour: number;
-
     if (this._selectedDate.isSame(now, 'day') && this._showCurTimeIndicator) {
-      scrollToHour = Math.trunc(getHoursSinceMidnight(now));
-    } else if (this._startHour) {
-      scrollToHour = Math.trunc(this._startHour);
-    } else {
-      scrollToHour = 0;
+      const scrollToHour = Math.trunc(getHoursSinceMidnight(now));
+      this.scrollToHour(scrollToHour);
+      return;
     }
 
-    // Find the label for the starting hour
-    const label = this.timeLabels[scrollToHour];
+    const scrollToSlotOffset = 24;
+
+    // Scroll to selected slot
+    const selected: HTMLElement = document.querySelector('[data-selected="true"]');
+    if (selected) {
+      // TODO: scroll only if not visible
+      this.scroll._scrollContent.nativeElement.scrollTop = selected.offsetTop - scrollToSlotOffset;
+      return;
+    }
+
+    // Scroll to the beginning of working day.
+    if (this._startHour) {
+      const scrollToHour = Math.trunc(this._startHour);
+      this.scrollToHour(scrollToHour);
+    }
+  }
+
+  private scrollToHour(hour: number): void {
+    const label = this.timeLabels[hour];
 
     if (!label) {
-      // When almost next day
-      // TODO: ideally we should scroll to the position of possible label
+      // This can happen in 2 situations when we have no lables by design.
+      // 1. When a day just started we have no lable and we don’t need to scroll.
+      // 2. When a day almost ended. We need to scroll to the bottom.
+
+      if (hour === 0 || isNaN(hour)) {
+        return;
+      }
+
+      this.scroll._scrollContent.nativeElement.scrollTop = this.scroll._scrollContent.nativeElement.children[0].offsetHeight;
       return;
     }
 
@@ -486,7 +436,8 @@ export class TimeSlotsComponent implements AfterViewInit, OnDestroy {
     // Scrol vertically to the top of the label text
     if (elem && text) {
       this.scroll._scrollContent.nativeElement.scrollTop = elem.offsetTop - text.offsetHeight;
-    } else {
+
+    } else { // JIC smth stranged happened
       this.scroll._scrollContent.nativeElement.scrollTop = 0;
     }
   }

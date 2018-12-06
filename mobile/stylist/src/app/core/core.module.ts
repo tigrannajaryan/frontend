@@ -12,6 +12,7 @@ import { PricePipe } from '~/shared/pipes/price.pipe';
 import { BaseService } from '~/shared/api/base.service';
 import { NoServiceSelectedComponent } from '~/shared/components/no-service-selected/no-service-selected.component';
 import { PriceCalendarComponent } from '~/shared/components/price-calendar/price-calendar.component';
+import { PushNotificationToastService } from '~/shared/push/push-notification-toast';
 import { ServicesHeaderListComponent } from '~/shared/components/services-header-list/services-header-list';
 import { UserNamePhotoComponent } from '~/shared/components/user-name-photo/user-name-photo.component';
 
@@ -52,6 +53,7 @@ const declarations = [
     Logger,
     GoogleAnalytics,
     GAWrapper,
+    PushNotificationToastService,
     UserContext
   ]
 })

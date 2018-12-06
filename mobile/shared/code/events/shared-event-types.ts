@@ -1,4 +1,4 @@
-import { PushNotificationCode } from '~/shared/push/push-notification';
+import { PushNotificationAdditionalData, PushNotificationCode } from '~/shared/push/push-notification';
 
 /**
  * Global application events that are dispatched and handled from decoupled
@@ -39,7 +39,9 @@ export class PushNotificationEventDetails {
     // Unique notification code we use in the backend:
     public code: PushNotificationCode,
     // A message from NotificationEventResponse:
-    public message: string
+    public message: string,
+    // Any additional data
+    public data?: PushNotificationAdditionalData
   ) {
   }
 }

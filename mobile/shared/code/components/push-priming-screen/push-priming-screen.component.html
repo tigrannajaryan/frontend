@@ -1,14 +1,19 @@
 <ion-header class="madeHeader">
-  <ion-navbar class="Made-wp BackHeader-backBtn is-hiddenBackButton">
+  <ion-navbar [hideBackButton]="true" class="Made-wp BackHeader-backBtn is-hiddenBackButton">
     <ion-title>
-      <i class="mb-icon-logo"></i>
+      <i *ngIf="params.appType === UserRole.client" class="mb-icon-logo"></i>
     </ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
   <div class="PushPrimingText">
-    Do you want to know when your stylist has the best deals and get updates about your favorite services?
+    <ng-container *ngIf="params.appType === UserRole.client; else stylistTpl">
+      Do you want to know when your stylist has the best deals and get updates about your favorite services?
+    </ng-container>
+    <ng-template #stylistTpl>
+      Do you want to know when your clients schedule appointments with you?
+    </ng-template>
   </div>
 
   <ion-row justify-content-center>

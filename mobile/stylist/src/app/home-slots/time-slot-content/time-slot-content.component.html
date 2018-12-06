@@ -1,0 +1,36 @@
+<div class="TimeSlotInner">
+  <!-- show appointment slot -->
+  <ng-container *ngIf="timeSlot.appointment; else freeSlotTpl">
+
+    <!-- show blocked slot -->
+    <div
+      *ngIf="isBlockedTime(timeSlot.appointment); else clientAppointmentSlot"
+      [class.is-selected]="isSelected"
+      class="TimeSlotBlockedTime">Blocked Slot</div>
+
+    <!-- show appointment slot -->
+    <ng-template #clientAppointmentSlot>
+      <div
+        [ngClass]="getAppointmentCssClasses(timeSlot.appointment)"
+        [class.is-selected]="isSelected"
+        class="TimeSlotAppointment">
+
+        <!-- show client photo or icon -->
+        <i
+          *ngIf="timeSlot.appointment.client_uuid"
+          [style.background-image]="'url(' + getAppointmentIconUrl(timeSlot.appointment) + ')'"
+          class="TimeSlotPhoto"></i>
+
+        <!-- appointment details -->
+        <div class="TimeSlotClientName">{{ formatAppointmentClientName(timeSlot.appointment) }}</div>
+        <div class="TimeSlotServices">${{ timeSlot.appointment.grand_total }} &#8226; {{ formatAppointmentServices(timeSlot.appointment) }}</div>
+      </div>
+    </ng-template>
+  </ng-container>
+
+  <!-- show free slot selector -->
+  <ng-template #freeSlotTpl>
+    <div *ngIf="isSelected" class="TmeSlotFreeSelected">+</div>
+    <!-- <div *ngIf="selectedFreeSlot === timeSlot" class="TmeSlotFreeSelected">+</div> -->
+  </ng-template>
+</div>

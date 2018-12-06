@@ -15,7 +15,7 @@ import { MainTabIndex } from '~/main-tabs/main-tabs.component';
   // We only show toasts in the component, no template needed:
   template: ''
 })
-export class PushNotificationsTrackerComponent implements OnInit, OnDestroy {
+export class ClientPushNotificationsTrackerComponent implements OnInit, OnDestroy {
   static toastCssClass = 'PushNotificationToast';
   static toastVisibleDurationMs = 5000;
 
@@ -42,6 +42,7 @@ export class PushNotificationsTrackerComponent implements OnInit, OnDestroy {
     switch (details.code) {
 
       case PushNotificationCode.hint_to_first_book:
+      case PushNotificationCode.hint_to_rebook:
         return {
           buttonText: 'Book',
           onClick: async (): Promise<void> => {

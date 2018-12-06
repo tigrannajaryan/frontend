@@ -46,7 +46,7 @@ export class AuthConfirmPageComponent extends AbstractAuthConfirmComponent {
     // false = Set it back to false for the case when we change user
     this.storage.set('showHomeScreenHelp', !isRegistrationComplete(profileStatus));
 
-    const requiredPages = createNavHistoryList(profileStatus);
+    const requiredPages = await createNavHistoryList(profileStatus);
     this.navCtrl.setPages(requiredPages);
   }
 }

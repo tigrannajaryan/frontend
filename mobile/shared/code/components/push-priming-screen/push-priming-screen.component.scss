@@ -1,4 +1,33 @@
 push-priming-screen {
+  .madeHeader {
+    .mb-icon-logo {
+      font-size: pxtovw(24px);
+    }
+
+    .toolbar {
+      min-height: pxtovw(41px);
+
+      &-title {
+        height: 100%;
+        color: color($grayscale, 800);
+
+        .mb-icon-logo {
+          display: inline-block;
+          margin: pxtovw(4px) 0 0;
+        }
+      }
+
+      &-background {
+        background: none;
+        border-color: transparent;
+      }
+    }
+
+    &:after {
+      display: none;
+    }
+  }
+
   .PushPrimingText {
     margin: pxtovw(8px) pxtovw(24px) 0;
     font-size: pxtovw(21px);
@@ -14,9 +43,15 @@ push-priming-screen {
   }
 
   .Button {
-    margin-bottom: pxtovw(27px);
+    display: block;
+    min-width: 100%;
+    min-height: pxtovw(55px);
+    margin: 0 0 pxtovw(27px) 0;
     font-size: pxtovw(18px);
-    font-weight: map-get($fontWeights, semibold);
+    font-weight: 500;
+    text-transform: none;  //Added to remove upercase No button in design is upercase
+    background-color: color($colors, secondary);
+    border-radius: pxtovw(10px);
   }
 
   .Link {
@@ -24,6 +59,9 @@ push-priming-screen {
   }
 
   .Footer {
-    padding-bottom: 0;
+    padding: pxtovw(24px) pxtovw(25px) 0;
+
+    // Removes top border
+    &:before { display: none; }
   }
 }

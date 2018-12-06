@@ -22,31 +22,17 @@
 
     <!-- show time slots on the right -->
     <div class="TimeSlots">
-
-      <div *ngFor="let item of slotItems" class="TimeSlotItem" [style.top]="item.posYInVw+'vw'" [style.left]="item.leftInVw+'vw'"
-        [style.width]="item.widthInVw+'vw'" [style.height]="item.heightInVw+'vw'" (click)="onSlotItemClick(item)">
-        <div class="TimeSlotInner">
-          <!-- show appointment slot -->
-          <ng-template [ngIf]="item.appointment">
-            <div *ngIf="isBlockedTime(item.appointment); else clientAppointmentSlot" class="TimeSlotBlockedTime">Blocked Slot</div>
-
-            <ng-template #clientAppointmentSlot>
-              <div class="TimeSlotAppointment" [ngClass]="appointmentCssClasses(item.appointment)">
-
-                <!-- show client photo or icon -->
-                <i *ngIf="item.appointment.client_uuid" [style.background-image]="'url(' + appointmentIconUrl(item.appointment) + ')'"
-                  class="TimeSlotPhoto"></i>
-
-                <!-- appointment details -->
-                <div class="TimeSlotClientName">{{ formatClientName(item.appointment) }}</div>
-                <div class="TimeSlotServices">${{ item.appointment.grand_total }} &#8226; {{ formatServices(item.appointment) }}</div>
-              </div>
-            </ng-template>
-          </ng-template>
-
-          <!-- show free slot selector -->
-          <div *ngIf="selectedFreeSlot === item" class="TmeSlotFreeSelected">+</div>
-        </div>
+      <div
+        *ngFor="let item of slotItems"
+        [style.top]="item.posYInVw+'vw'"
+        [style.left]="item.leftInVw+'vw'"
+        [style.width]="item.widthInVw+'vw'"
+        [style.height]="item.heightInVw+'vw'"
+        [attr.data-selected]="selectedTimeSlot === item"
+        [attr.data-taken-slot]="!!item.appointment"
+        (click)="onSlotItemClick(item)"
+        class="TimeSlotItem">
+        <time-slot-content [timeSlot]="item" [isSelected]="selectedTimeSlot === item"></time-slot-content>
       </div>
 
       <!-- show current time indicator -->

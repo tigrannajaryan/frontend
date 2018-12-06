@@ -1,7 +1,13 @@
 import { Page } from 'ionic-angular/navigation/nav-util';
+import { App } from 'ionic-angular';
 
+import { UserRole } from '~/shared/api/auth.models';
 import { StylistProfileStatus } from '~/shared/api/stylist-app.models';
-import { PageNames } from './page-names';
+import { PushPrimingScreenParams } from '~/shared/components/push-priming-screen/push-priming-screen.component';
+import { PushNotification } from '~/shared/push/push-notification';
+
+import { AppModule } from '~/app.module';
+import { PageNames } from '~/core/page-names';
 
 export interface PageDescr {
   page: Page;
@@ -17,7 +23,7 @@ export interface PageDescr {
  * Must match behavior of isRegistrationComplete.
  * @param profileStatus as returned by auth.
  */
-export function createNavHistoryList(profileStatus: StylistProfileStatus): PageDescr[] {
+export async function createNavHistoryList(profileStatus: StylistProfileStatus): Promise<PageDescr[]> {
   const pages: PageDescr[] = [];
 
   // If we are restoring a navigation then the list should start with FirstScreen
@@ -54,9 +60,31 @@ export function createNavHistoryList(profileStatus: StylistProfileStatus): PageD
     return pages;
   }
 
+  return [ await nextToShowForCompleteProfile() ];
+}
+
+export async function nextToShowForCompleteProfile(): Promise<PageDescr> {
+  const pushNotification = AppModule.injector.get(PushNotification);
+
+  // The only remaining optional screen is push priming screen. Check if need to show it.
+  if (await pushNotification.needToShowPermissionScreen()) {
+    // Yes, we need to show it. Do it.
+
+    const params: PushPrimingScreenParams = {
+      appType: UserRole.stylist,
+      // Show next appropriate screen after PushPrimingScreen
+      onContinue: () => {
+        // Redirect to home screen:
+        const app = AppModule.injector.get(App);
+        app.getRootNav().setRoot(PageNames.HomeSlots);
+      }
+    };
+    return { page: PageNames.PushPrimingScreen, params: { params } };
+  }
+
   // Everything is complete, go to Home screen. We are return a single page here,
   // there will be no navigation history.
-  return [{ page: PageNames.HomeSlots }];
+  return { page: PageNames.HomeSlots };
 }
 
 /**
