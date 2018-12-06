@@ -387,16 +387,7 @@ export class TimeSlotsComponent implements AfterViewInit, OnDestroy {
    * 3. to the start of working hours if it’s a working day or start of a day if it’s a non-working day.
    */
   private updateScrollPos(): void {
-    // We use setTimeout to be sure everything is become visible on the view
     const now = moment();
-
-    // If we are showing current time indicator then scroll to the beginning of its hours
-    if (this._selectedDate.isSame(now, 'day') && this._showCurTimeIndicator) {
-      const scrollToHour = Math.trunc(getHoursSinceMidnight(now));
-      this.scrollToHour(scrollToHour);
-      return;
-    }
-
     const scrollToSlotOffset = 24;
 
     // Scroll to selected slot
@@ -404,6 +395,13 @@ export class TimeSlotsComponent implements AfterViewInit, OnDestroy {
     if (selected) {
       // TODO: scroll only if not visible
       this.scroll._scrollContent.nativeElement.scrollTop = selected.offsetTop - scrollToSlotOffset;
+      return;
+    }
+
+    // If we are showing current time indicator then scroll to the beginning of its hours
+    if (this._selectedDate.isSame(now, 'day') && this._showCurTimeIndicator) {
+      const scrollToHour = Math.trunc(getHoursSinceMidnight(now));
+      this.scrollToHour(scrollToHour);
       return;
     }
 
