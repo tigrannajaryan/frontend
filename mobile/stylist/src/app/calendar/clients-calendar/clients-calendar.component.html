@@ -16,9 +16,6 @@
     </ion-row>
     <services-header-list *ngIf="isLoaded" (addService)="onAddService()" (deleteService)="onDeleteService($event)" [services]="services" [readonly]="false"></services-header-list>
 
-    <no-service-selected *ngIf="isLoaded && services?.length === 0"
-      (addServiceClick)="onAddService()"></no-service-selected>
-
     <ng-container *ngIf="getRegularPrice(services) as regularPrice">
       <price-pair [regularPrice]="regularPrice"></price-pair>
     </ng-container>
@@ -27,6 +24,9 @@
 
 <ion-content no-padding>
   <div class="Made-wp Made-wpContent">
+    <no-service-selected *ngIf="isLoaded && services?.length === 0"
+                         (addServiceClick)="onAddService()"></no-service-selected>
+
     <price-calendar [prices]="prices"></price-calendar>
   </div>
 </ion-content>
