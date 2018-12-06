@@ -23,6 +23,11 @@
     <i *ngIf="stylist.instagram_url" (click)="onInstagramClick()" class="mb-icon-instagram" data-test-id="preview_instagram_url"></i>
     <i *ngIf="stylist.website_url" (click)="onWebsiteClick()" class="mb-icon-globe" data-test-id="preview_website_url"></i>
     <i class="mb-icon-calendar" (click)="onShowCalendar()"></i>
-    <phone-link *ngIf="stylist.public_phone" [phone]="stylist.public_phone" [iconForm]="true" icon="mb-icon-phone-a" data-test-id="preview_public_phone"></phone-link>
+    <phone-link
+      *ngIf="stylist.public_phone || stylist.phone"
+      [phone]="stylist.public_phone || stylist.phone"
+      [iconForm]="true"
+      icon="mb-icon-phone-a"
+      data-test-id="preview_public_phone"></phone-link>
   </div>
 </div>
