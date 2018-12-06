@@ -1,6 +1,7 @@
 import { Page } from 'ionic-angular/navigation/nav-util';
 import { App } from 'ionic-angular';
 
+import { UserRole } from '~/shared/api/auth.models';
 import { StylistProfileStatus } from '~/shared/api/stylist-app.models';
 import { PushPrimingScreenParams } from '~/shared/components/push-priming-screen/push-priming-screen.component';
 import { PushNotification } from '~/shared/push/push-notification';
@@ -70,7 +71,7 @@ export async function nextToShowForCompleteProfile(): Promise<PageDescr> {
     // Yes, we need to show it. Do it.
 
     const params: PushPrimingScreenParams = {
-      appType: 'stylist',
+      appType: UserRole.stylist,
       // Show next appropriate screen after PushPrimingScreen
       onContinue: () => {
         // Redirect to home screen:

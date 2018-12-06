@@ -17,6 +17,7 @@ import { discountsFirstVisitPage } from './pages/discounts-first-visit-page';
 import { invitationsPage } from './pages/invitations-page';
 import { selectServiceListPage } from './pages/select-service-list-page';
 import { calendarExamplePage } from './pages/calendar-example-page';
+import { pushPrimingPage } from './shared-e2e/push-priming-page';
 import { homePage } from './pages/home-page';
 
 describe('Registration Flow', () => {
@@ -134,6 +135,10 @@ describe('Registration Flow', () => {
 
   it('should show Invitations page', async () => {
     await invitationsPage.skip();
+  });
+
+  it('should show notification priming page', async () => {
+    await pushPrimingPage.allow();
   });
 
   it('should see Congratulations message', async () => {

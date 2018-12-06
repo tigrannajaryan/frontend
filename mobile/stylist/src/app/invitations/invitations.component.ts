@@ -665,7 +665,7 @@ export class InvitationsComponent {
 
     // Show push priming screen if needed. Otherwise show home.
     const nextPageDescr = await nextToShowForCompleteProfile();
-    this.navCtrl.setRoot(nextPageDescr.page);
+    this.navCtrl.setRoot(nextPageDescr.page, nextPageDescr.params);
   }
 
   /**
