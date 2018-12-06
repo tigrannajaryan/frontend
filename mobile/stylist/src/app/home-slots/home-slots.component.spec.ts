@@ -282,4 +282,12 @@ describe('Pages: HomeSlotsComponent', () => {
 
     expect(modalController.create).toHaveBeenCalledWith(PageNames.ChangeGapTime);
   });
+
+  it('should not be able to click on calendar icon if this is current day', () => {
+    const onTodayNavigateClick = fixture.nativeElement.querySelector('[data-test-id=onTodayNavigateClick]');
+    onTodayNavigateClick.click();
+    spyOn(instance, 'onTodayNavigateClick');
+
+    expect(instance.onTodayNavigateClick).not.toHaveBeenCalledWith();
+  });
 });

@@ -15,6 +15,10 @@ home-slots {
 
   .HomeSlots-menuBtn {
     margin-right: -1 * pxtovw(16px);
+
+    &[disabled] .HomeSlots-icon {
+      color: color($colors, warmGrey);
+    }
   }
 
   .HomeSlots-icon {
