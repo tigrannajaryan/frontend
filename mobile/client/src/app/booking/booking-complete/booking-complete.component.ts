@@ -9,6 +9,7 @@ import { ProfileDataStore } from '~/profile/profile.data';
 import { CalendarPrimingParams } from '~/shared/components/calendar-priming/calendar-priming.component';
 import { PageNames } from '~/core/page-names';
 import { ProfileModel } from '~/core/api/profile.models';
+import { BookingData } from '~/core/api/booking.data';
 
 @Component({
   selector: 'page-booking-complete',
@@ -19,6 +20,7 @@ export class BookingCompleteComponent {
   protected calendarIntegrated = false;
 
   constructor(
+    public bookingData: BookingData,
     private events: Events,
     private navCtrl: NavController,
     private profileDataStore: ProfileDataStore

@@ -29,4 +29,9 @@
   font-weight: 500;
   color: color($colors, honey);
   white-space: nowrap;
+
+  &.is-button {
+    width: 100%;
+    background: none;
+  }
 }
