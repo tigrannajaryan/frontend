@@ -11,7 +11,12 @@ import { PushNotificationEventDetails } from '~/shared/events/shared-event-types
 import { Logger } from '~/shared/logger';
 import { NotificationsApi } from '~/shared/push/notifications.api';
 import { NotificationsApiMock } from '~/shared/push/notifications.api.mock';
-import { PushNotification, PushNotificationCode } from '~/shared/push/push-notification';
+import {
+  NewAppointmentAdditionalData,
+  PushNotification,
+  PushNotificationCode,
+  TomorrowAppointmentsAdditionalData
+} from '~/shared/push/push-notification';
 import { PushNotificationHandlerParams, PushNotificationToastService, ToastDismissedBy } from '~/shared/push/push-notification-toast';
 
 import { PageNames } from '~/core/page-names';
@@ -23,7 +28,7 @@ import { StylistPushNotificationsTrackerComponent } from './push-notifications-t
 let instance: StylistPushNotificationsTrackerComponent;
 let fixture: ComponentFixture<StylistPushNotificationsTrackerComponent>;
 
-fdescribe('PushNotificationTracker (client)', () => {
+describe('PushNotificationTracker (client)', () => {
   beforeEach(async(() =>
     TestBed
       .configureTestingModule({
@@ -79,6 +84,10 @@ fdescribe('PushNotificationTracker (client)', () => {
     const uuid = faker.random.uuid();
     const message =
       'You have a new appointment at <date-time> for $N <service-names> from <client-name/phone-number>';
+    const data = {
+      appointment_datetime_start_at: moment().add(1, 'day').format(),
+      appointment_uuid: faker.random.uuid()
+    } as NewAppointmentAdditionalData;
 
     // Create push-notification details:
     const details = new PushNotificationEventDetails(
@@ -87,10 +96,7 @@ fdescribe('PushNotificationTracker (client)', () => {
       /* uuid: */ uuid,
       /* code: */ PushNotificationCode.new_appointment,
       /* message: */ message,
-      /* additional data */ {
-        appointment_datetime_start_at: moment().add(1, 'day').format(),
-        appointment_uuid: faker.random.uuid()
-      }
+      /* additional data */ data
     );
 
     const handlerParams: PushNotificationHandlerParams = getNotificationParams(details);
@@ -119,15 +125,78 @@ fdescribe('PushNotificationTracker (client)', () => {
     expect(events.publish)
       .toHaveBeenCalledWith(
         StylistEventTypes.focusAppointment,
-        details.data as FocusAppointmentEventParams
+        data as FocusAppointmentEventParams
       );
 
     const checkoutParams: AppointmentCheckoutParams = {
-      appointmentUuid: details.data.appointment_uuid,
+      appointmentUuid: data.appointment_uuid,
       isReadonly: true
     };
     expect(navCtrl.push)
       .toHaveBeenCalledWith(PageNames.AppointmentCheckout, { data: checkoutParams });
+
+    done();
+  });
+
+  it('should handle tomorrow_appointments correctly', async done => {
+    const api = fixture.debugElement.injector.get(NotificationsApi);
+    const events = fixture.debugElement.injector.get(Events);
+    const navCtrl = fixture.debugElement.injector.get(NavController);
+    const pushToast = fixture.debugElement.injector.get(PushNotificationToastService);
+    const toast = fixture.debugElement.injector.get(ToastController);
+
+    // Subscribe to PushNotificationToastService:
+    instance.ngOnInit();
+
+    // Private to public:
+    const getNotificationParams = (pushToast as any).getNotificationParams.bind(pushToast);
+    const getToastOptions = (pushToast as any).getToastOptions.bind(pushToast);
+    const handlePushNotificationEvent = (pushToast as any).handlePushNotificationEvent.bind(pushToast);
+
+    const uuid = faker.random.uuid();
+    const message = 'You have new appointments tomorrow. Tap to see the list.';
+    const data = {
+      appointment_datetime_start_at: moment().add(1, 'day').format()
+    } as TomorrowAppointmentsAdditionalData;
+
+    // Create push-notification details:
+    const details = new PushNotificationEventDetails(
+      /* foreground: */ true,
+      /* coldstart: */ false,
+      /* uuid: */ uuid,
+      /* code: */ PushNotificationCode.new_appointment,
+      /* message: */ message,
+      /* additional data */ data
+    );
+
+    const handlerParams: PushNotificationHandlerParams = getNotificationParams(details);
+    const toastOptions: ToastOptions = getToastOptions(details, handlerParams);
+
+    expect(toastOptions)
+      .toEqual({
+        ...PushNotificationToastService.defaultToastParams,
+        closeButtonText: 'Open',
+        message
+      });
+
+    spyOn(api, 'ackNotification').and.returnValue(of());
+    await handlePushNotificationEvent(details); // handlerParams.onClick() inside
+
+    expect(toast.create)
+      .toHaveBeenCalledWith(toastOptions);
+    expect(api.ackNotification)
+      .toHaveBeenCalledWith({
+        message_uuids: [uuid]
+      });
+
+    // Test handlerParams.onClick() call:
+    expect(navCtrl.setRoot)
+      .toHaveBeenCalledWith(PageNames.HomeSlots);
+    expect(events.publish)
+      .toHaveBeenCalledWith(
+        StylistEventTypes.focusAppointment,
+        { ...details.data, appointment_uuid: undefined } as FocusAppointmentEventParams
+      );
 
     done();
   });

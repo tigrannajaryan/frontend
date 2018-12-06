@@ -22,7 +22,8 @@ import { ProfileDataStore } from '~/core/profile.data';
 
 import { AppointmentAddParams } from '~/appointment/appointment-add/appointment-add';
 
-import { FreeSlot, isBlockedTime } from './time-slots/time-slots.component';
+import { FreeSlot } from './time-slots/time-slots.component';
+import { isBlockedTime } from './time-slot-content/time-slot-content.component';
 import { AppointmentsDataStore } from './appointments.data';
 
 import { ISODate, isoDateFormat } from '~/shared/api/base.models';
@@ -107,9 +108,6 @@ export class HomeSlotsComponent {
   async ionViewWillLoad(): Promise<void> {
     // Set disabled days for horizontal calendar
     await this.setNonWorkingDays();
-
-    // Select and show today's date
-    this.selectDate(moment().startOf('day'));
   }
 
   // we need ionViewWillEnter here because it fire each time when we go to this page
@@ -118,11 +116,17 @@ export class HomeSlotsComponent {
   async ionViewWillEnter(): Promise<void> {
     this.logger.info('HomeSlotsComponent: entering.');
 
+    // Focus on one particullar appointment
+    this.events.subscribe(StylistEventTypes.focusAppointment, (params: FocusAppointmentEventParams) => this.focusAppointment(params));
+
     await this.appStorage.ready();
     if (this.appStorage.get('showHomeScreenHelp')) {
       showAlert('', helpText);
       this.appStorage.set('showHomeScreenHelp', false);
     }
+
+    // Preload data
+    this.profileDataStore.get();
 
     // Load and show appointments for selected date
     await this.loadAppointments();
@@ -131,12 +135,6 @@ export class HomeSlotsComponent {
     // we implement push notifications.
     const autoRefreshInterval = moment.duration(10, 'minute').asMilliseconds();
     this.autoRefreshTimer = await setIntervalOutsideNgZone(this.ngZone, () => this.loadAppointments(), autoRefreshInterval);
-
-    // Preload data
-    this.profileDataStore.get();
-
-    // Focus on one particullar appointment:
-    this.events.subscribe(StylistEventTypes.focusAppointment, (params: FocusAppointmentEventParams) => this.focusAppointment(params));
   }
 
   ionViewWillLeave(): void {
@@ -385,8 +383,7 @@ export class HomeSlotsComponent {
   }
 
   private async focusAppointment(params: FocusAppointmentEventParams): Promise<void> {
-    this.selectDate(moment(params.appointment_datetime_start_at));
-    await this.loadAppointments();
+    await this.selectDateAndLoadAppointments(moment(params.appointment_datetime_start_at));
 
     const highlightedAppointment = this.data.appointments.find(appointment => {
       return appointment.uuid === params.appointment_uuid;
@@ -414,9 +411,9 @@ export class HomeSlotsComponent {
   /**
    * Set the date to show appointments for and load and display the appointments.
    */
-  private selectDateAndLoadAppointments(date: moment.Moment): void {
+  private async selectDateAndLoadAppointments(date: moment.Moment): Promise<void> {
     this.selectDate(date);
-    this.loadAppointments();
+    await this.loadAppointments();
   }
 
   private async loadAppointments(): Promise<void> {

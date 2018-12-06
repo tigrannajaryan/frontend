@@ -44,14 +44,27 @@ export enum PushNotificationCode { // (!) in alphabetical order
   visit_report = 'visit_report'
 }
 
+// tslint:disable-next-line:no-empty-interface
+export interface EmptyAdditionalData { // for simple notifications
+}
+
+export interface NewAppointmentAdditionalData { // new_appointment
+  appointment_datetime_start_at: string; // start of appointment in iso format
+  appointment_uuid: string; // uuid of appointment
+}
+
+export interface TomorrowAppointmentsAdditionalData { // tomorrow_appointments
+  appointment_datetime_start_at: string; // start of appointment in iso format
+}
+
 /**
  * All known additional data key-values provided in additionalData prop of a push-notification.
  */
-export interface PushNotificationAdditionalData { // (!) in alphabetical order
-  // NOTE: list any additional data you would like to use as an optional prop and with description.
-  appointment_datetime_start_at?: string; // start of appointment in iso format
-  appointment_uuid?: string; // uuid of appointment
-}
+// NOTE: list any additional data you would like to use
+export type PushNotificationAdditionalData = // (!) in alphabetical order
+  | EmptyAdditionalData
+  | NewAppointmentAdditionalData
+  | TomorrowAppointmentsAdditionalData;
 
 /**
  * Resulting value returned by showPermissionScreen() method.

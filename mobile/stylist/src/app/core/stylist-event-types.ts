@@ -12,5 +12,5 @@ export enum StylistEventTypes {
  */
 export interface FocusAppointmentEventParams {
   appointment_datetime_start_at: string; // start of appointment in iso format
-  appointment_uuid: string; // uuid of appointment
+  appointment_uuid?: string; // uuid of appointment
 }

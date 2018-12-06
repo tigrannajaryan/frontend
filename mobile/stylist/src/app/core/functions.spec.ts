@@ -1,20 +1,56 @@
-import { async } from '@angular/core/testing';
+import { async, TestBed } from '@angular/core/testing';
+import { Events, IonicModule, Platform } from 'ionic-angular';
+import { EventsMock, PlatformMock } from 'ionic-mocks';
+import { Push } from '@ionic-native/push';
+
+import { StylistProfileStatus } from '~/shared/api/stylist-app.models';
+import { Logger } from '~/shared/logger';
+import { NotificationsApi } from '~/shared/push/notifications.api';
+import { NotificationsApiMock } from '~/shared/push/notifications.api.mock';
+import { PushNotification } from '~/shared/push/push-notification';
+
+import { AppModule } from '~/app.module';
 import { createNavHistoryList } from './functions';
 import { PageNames } from './page-names';
-import { StylistProfileStatus } from '~/shared/api/stylist-app.models';
+
+let pushNotification: PushNotification;
 
 describe('Shared functions: profileStatusToPage', () => {
+  beforeEach(async(() =>
+    TestBed
+      .configureTestingModule({
+        providers: [
+          Logger,
+          Push, PushNotification,
+          { provide: NotificationsApi, useClass: NotificationsApiMock },
+          // Ionic mocks:
+          { provide: Events, useFactory: () => EventsMock.instance() },
+          { provide: Platform, useFactory: () => PlatformMock.instance() }
+        ],
+        imports: [
+          // Load all Ionic’s deps:
+          IonicModule.forRoot(this)
+        ]
+      })
+      .compileComponents()
+      .then(() => {
+        AppModule.injector = TestBed;
+        pushNotification = TestBed.get(PushNotification);
+      })
+  ));
 
-  it('should correctly map undefined profile status to RegisterSalon', async(() => {
+  it('should correctly map undefined profile status to RegisterSalon', async done => {
     // No profile
-    expect(createNavHistoryList(undefined))
+    expect(await createNavHistoryList(undefined))
       .toEqual([
         { page: PageNames.FirstScreen },
         { page: PageNames.RegisterSalon }
       ]);
-  }));
 
-  it('should correctly map fully complete profile completeness to Tabs screen', async(() => {
+    done();
+  });
+
+  it('should correctly map fully complete profile completeness to home screen', async done => {
     // Full profile
     const profileStatus: StylistProfileStatus = {
       has_business_hours_set: true,
@@ -26,11 +62,17 @@ describe('Shared functions: profileStatusToPage', () => {
       has_weekday_discounts_set: true
     };
 
-    expect(createNavHistoryList(profileStatus))
-      .toEqual([{ page: PageNames.HomeSlots }]);
-  }));
+    spyOn(pushNotification, 'needToShowPermissionScreen').and.returnValue(
+      Promise.resolve(false) // skip push notification priming screen
+    );
 
-  it('should correctly map half complete profile to the correct list', async(() => {
+    expect(await createNavHistoryList(profileStatus))
+      .toEqual([{ page: PageNames.HomeSlots }]);
+
+    done();
+  });
+
+  it('should correctly map half complete profile to the correct list', async done => {
     // Half profile
     const profileStatus: StylistProfileStatus = {
       has_business_hours_set: true,
@@ -42,7 +84,7 @@ describe('Shared functions: profileStatusToPage', () => {
       has_weekday_discounts_set: false
     };
 
-    expect(createNavHistoryList(profileStatus))
+    expect(await createNavHistoryList(profileStatus))
       .toEqual([
         { page: PageNames.FirstScreen },
         { page: PageNames.RegisterSalon },
@@ -50,5 +92,7 @@ describe('Shared functions: profileStatusToPage', () => {
         { page: PageNames.WorkHours },
         { page: PageNames.DiscountsWeekday }
       ]);
-  }));
+
+    done();
+  });
 });

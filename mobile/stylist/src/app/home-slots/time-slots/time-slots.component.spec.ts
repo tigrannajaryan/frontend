@@ -5,6 +5,12 @@ import * as moment from 'moment';
 import { prepareSharedObjectsForTests } from '../../core/test-utils.spec';
 import { Appointment, AppointmentService, AppointmentStatuses } from '../../core/api/home.models';
 import { fullSlotWidthInVw, TimeSlotColumn, TimeSlotItem, TimeSlotLabel, TimeSlotsComponent } from './time-slots.component';
+import {
+  formatAppointmentClientName,
+  formatAppointmentServices,
+  getAppointmentEndMoment,
+  isAppointmentPendingCheckout
+} from '../time-slot-content/time-slot-content.component';
 
 export function createAppointment(): Appointment {
   return {
@@ -90,46 +96,46 @@ describe('TimeSlotsComponent', () => {
     appointment.client_first_name = 'Abc';
     appointment.client_last_name = '';
     appointment.client_phone = '';
-    expect(component.formatClientName(appointment)).toEqual('Abc');
+    expect(formatAppointmentClientName(appointment)).toEqual('Abc');
 
     appointment.client_first_name = '';
     appointment.client_last_name = 'Def';
     appointment.client_phone = '';
-    expect(component.formatClientName(appointment)).toEqual('Def');
+    expect(formatAppointmentClientName(appointment)).toEqual('Def');
 
     appointment.client_first_name = 'Abc';
     appointment.client_last_name = 'Def';
     appointment.client_phone = '';
-    expect(component.formatClientName(appointment)).toEqual('Abc Def');
+    expect(formatAppointmentClientName(appointment)).toEqual('Abc Def');
 
     appointment.client_first_name = '';
     appointment.client_last_name = '';
     appointment.client_phone = '+12345';
-    expect(component.formatClientName(appointment)).toEqual('+12345');
+    expect(formatAppointmentClientName(appointment)).toEqual('+12345');
 
     appointment.client_first_name = 'Abc';
     appointment.client_last_name = 'Def';
     appointment.client_phone = '+1234';
-    expect(component.formatClientName(appointment)).toEqual('Abc Def');
+    expect(formatAppointmentClientName(appointment)).toEqual('Abc Def');
   });
 
   it('should formatServices correctly', () => {
     const appointment: Appointment = createAppointment();
 
     appointment.services = [];
-    expect(component.formatServices(appointment)).toEqual('');
+    expect(formatAppointmentServices(appointment)).toEqual('');
 
     const service = createService();
     service.service_name = 'abc';
     appointment.services = [service];
-    expect(component.formatServices(appointment)).toEqual('abc');
+    expect(formatAppointmentServices(appointment)).toEqual('abc');
 
     const service1 = createService();
     const service2 = createService();
     service1.service_name = 'abc';
     service2.service_name = 'defg';
     appointment.services = [service1, service2];
-    expect(component.formatServices(appointment)).toEqual('abc, defg');
+    expect(formatAppointmentServices(appointment)).toEqual('abc, defg');
   });
 
   it('should appointmentEndMoment correctly', () => {
@@ -137,11 +143,11 @@ describe('TimeSlotsComponent', () => {
 
     appointment.datetime_start_at = '2018-11-02T09:00:00-04:00';
     appointment.duration_minutes = 30;
-    expect(component.appointmentEndMoment(appointment).isSame(moment('2018-11-02T09:30:00-04:00'))).toBeTruthy();
+    expect(getAppointmentEndMoment(appointment).isSame(moment('2018-11-02T09:30:00-04:00'))).toBeTruthy();
 
     appointment.datetime_start_at = '2018-11-02T09:32:00+04:00';
     appointment.duration_minutes = 61;
-    expect(component.appointmentEndMoment(appointment).isSame(moment('2018-11-02T10:33:00+04:00'))).toBeTruthy();
+    expect(getAppointmentEndMoment(appointment).isSame(moment('2018-11-02T10:33:00+04:00'))).toBeTruthy();
   });
 
   it('should isAppointmentPendingCheckout correctly', () => {
@@ -150,17 +156,17 @@ describe('TimeSlotsComponent', () => {
     appointment.datetime_start_at = '2018-11-02T09:00:00-04:00';
     appointment.duration_minutes = 30;
     appointment.status = AppointmentStatuses.new;
-    expect(component.isAppointmentPendingCheckout(appointment)).toBeTruthy();
+    expect(isAppointmentPendingCheckout(appointment)).toBeTruthy();
 
     appointment.datetime_start_at = '2018-11-02T09:00:00-04:00';
     appointment.duration_minutes = 30;
     appointment.status = AppointmentStatuses.checked_out;
-    expect(component.isAppointmentPendingCheckout(appointment)).toBeFalsy();
+    expect(isAppointmentPendingCheckout(appointment)).toBeFalsy();
 
     appointment.datetime_start_at = '3018-11-02T09:00:00-04:00';
     appointment.duration_minutes = 30;
     appointment.status = AppointmentStatuses.new;
-    expect(component.isAppointmentPendingCheckout(appointment)).toBeFalsy();
+    expect(isAppointmentPendingCheckout(appointment)).toBeFalsy();
   });
 
   it('should create time axis', () => {

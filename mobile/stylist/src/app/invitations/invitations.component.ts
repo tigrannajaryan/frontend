@@ -19,7 +19,6 @@ import { ClientInvitation, InvitationsResponse, InvitationStatus } from '~/share
 import { InvitationsApi } from '~/core/api/invitations.api';
 import { ApiResponse } from '~/shared/api/base.models';
 import { showAlert } from '~/shared/utils/alert';
-import { PushNotification } from '~/shared/push/push-notification';
 
 import { PageNames } from '~/core/page-names';
 import { nextToShowForCompleteProfile, trimStr } from '~/core/functions';
@@ -250,7 +249,6 @@ export class InvitationsComponent {
     private openNativeSettings: OpenNativeSettings,
     private platform: Platform,
     private profileData: ProfileDataStore,
-    private pushNotification: PushNotification,
     private sms: SMS
   ) {
   }

@@ -2,7 +2,11 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Events, Nav } from 'ionic-angular';
 
 import { PushNotificationEventDetails } from '~/shared/events/shared-event-types';
-import { PushNotificationCode } from '~/shared/push/push-notification';
+import {
+  NewAppointmentAdditionalData,
+  PushNotificationCode,
+  TomorrowAppointmentsAdditionalData
+} from '~/shared/push/push-notification';
 import { PushNotificationHandlerParams, PushNotificationToastService } from '~/shared/push/push-notification-toast';
 
 import { FocusAppointmentEventParams, StylistEventTypes } from '~/core/stylist-event-types';
@@ -41,16 +45,12 @@ export class StylistPushNotificationsTrackerComponent implements OnInit, OnDestr
     // Put the differencies between notifications in the switch/case:
     switch (details.code) {
 
-      case PushNotificationCode.new_appointment:
-      case PushNotificationCode.tomorrow_appointments: {
-        const { appointment_datetime_start_at, appointment_uuid } = details.data;
+      case PushNotificationCode.new_appointment: {
+        const { appointment_datetime_start_at, appointment_uuid } = details.data as NewAppointmentAdditionalData;
         return {
           buttonText: 'Open',
           onClick: async (): Promise<void> => {
-            const activePage = this.nav.getActive();
-            if (activePage.component !== PageNames.HomeSlots) {
-              await this.nav.setRoot(PageNames.HomeSlots);
-            }
+            await this.nav.setRoot(PageNames.HomeSlots);
             this.events.publish(
               StylistEventTypes.focusAppointment,
               { appointment_datetime_start_at, appointment_uuid } as FocusAppointmentEventParams
@@ -60,6 +60,20 @@ export class StylistPushNotificationsTrackerComponent implements OnInit, OnDestr
               isReadonly: true
             };
             await this.nav.push(PageNames.AppointmentCheckout, { data: checkoutParams });
+          }
+        };
+      }
+
+      case PushNotificationCode.tomorrow_appointments: {
+        const { appointment_datetime_start_at } = details.data as TomorrowAppointmentsAdditionalData;
+        return {
+          buttonText: 'Open',
+          onClick: async (): Promise<void> => {
+            await this.nav.setRoot(PageNames.HomeSlots);
+            this.events.publish(
+              StylistEventTypes.focusAppointment,
+              { appointment_datetime_start_at } as FocusAppointmentEventParams
+            );
           }
         };
       }

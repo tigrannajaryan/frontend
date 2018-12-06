@@ -36,6 +36,8 @@ import {
   StylistPushNotificationsTrackerComponent
 } from '~/core/components/push-notifications-tracker/push-notifications-tracker.component';
 
+import { TimeSlotContentComponent } from '~/home-slots/time-slot-content/time-slot-content.component';
+
 const components = [
   MadeNavComponent,
   ServerStatusComponent,
@@ -60,7 +62,8 @@ const components = [
   PricePairComponent,
   HorizontalCalendarComponent,
   StylistPreviewComponent,
-  StylistPushNotificationsTrackerComponent
+  StylistPushNotificationsTrackerComponent,
+  TimeSlotContentComponent
 ];
 
 @NgModule({

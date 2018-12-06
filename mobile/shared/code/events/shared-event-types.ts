@@ -41,7 +41,7 @@ export class PushNotificationEventDetails {
     // A message from NotificationEventResponse:
     public message: string,
     // Any additional data
-    public data: PushNotificationAdditionalData = {}
+    public data: PushNotificationAdditionalData
   ) {
   }
 }
