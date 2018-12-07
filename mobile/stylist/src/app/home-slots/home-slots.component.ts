@@ -10,7 +10,6 @@ import { ExternalAppService } from '~/shared/utils/external-app-service';
 import { setIntervalOutsideNgZone } from '~/shared/utils/timer-utils';
 import { getPhoneNumber } from '~/shared/utils/phone-numbers';
 import { Workday } from '~/shared/api/worktime.models';
-import { Weekday } from '~/shared/weekday';
 
 import { Appointment, AppointmentStatuses, DayAppointmentsResponse } from '~/core/api/home.models';
 import { HomeService } from '~/core/api/home.service';
@@ -35,6 +34,7 @@ import {
   DefaultWeekday,
   DefaultWeekdays
 } from '~/shared/components/calendar-picker/calendar-picker.component';
+import { WeekdayIso } from '~/shared/weekday';
 
 import { FocusAppointmentEventParams, StylistEventTypes } from '~/core/stylist-event-types';
 
@@ -71,8 +71,8 @@ export class HomeSlotsComponent {
   // Current selected date
   selectedDate: moment.Moment = moment().startOf('day');
 
-  // Non-working weekdays
-  disabledWeekdays: Weekday[] = [];
+  // Weekdays
+  weekdays: Workday[];
 
   // Is fully blocked (non-working day)
   isFullyBlocked = false;
@@ -147,10 +147,7 @@ export class HomeSlotsComponent {
   async setNonWorkingDays(): Promise<void> {
     const { response } = await this.worktimeApi.getWorktime().get();
     if (response) {
-      this.disabledWeekdays =
-        response.weekdays
-          .filter((weekday: Workday): boolean => !weekday.work_start_at) // null for non-working
-          .map((weekday: Workday): Weekday => ({ isoWeekday: weekday.weekday_iso }));
+      this.weekdays = response.weekdays;
     }
   }
 
@@ -246,10 +243,10 @@ export class HomeSlotsComponent {
   onDateAreaClick(): void {
     const defaultWeekdays = [];
 
-    for (let isoWeekday = 1; isoWeekday <= 7; isoWeekday++) {
+    for (let isoWeekday = WeekdayIso.Mon; isoWeekday <= WeekdayIso.Sun; isoWeekday++) {
       const weekday: DefaultWeekday = {
         isoWeekday,
-        isFaded: this.disabledWeekdays.some(day => day.isoWeekday === isoWeekday)
+        isFaded: Boolean(this.weekdays) && !this.weekdays.find(day => day.weekday_iso === isoWeekday).is_available
       };
       defaultWeekdays.push(weekday);
     }

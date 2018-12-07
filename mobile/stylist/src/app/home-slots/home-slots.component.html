@@ -20,7 +20,7 @@
   <ion-toolbar>
     <horizontal-calendar
       [selectedDate]="selectedDate"
-      [disabledWeekdays]="disabledWeekdays"
+      [weekdays]="weekdays"
       (changeDate)="onSelectedDateChange($event)"></horizontal-calendar>
 
     <div *ngIf="isFullyBlocked" (click)="onBlockedDayClick()" class="HomeSlots-blockedDay">Blocked Day</div>

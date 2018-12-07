@@ -9,6 +9,7 @@ export interface Workday extends WorkdayAvailability {
   weekday_iso: number; // 1..7
   work_start_at: string; // time of day formatted as hh:mm:ss
   work_end_at: string;   // time of day formatted as hh:mm:ss
+  has_appointments?: boolean;
 }
 
 export interface Worktime {

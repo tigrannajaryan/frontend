@@ -1,20 +1,33 @@
 import { async, ComponentFixture } from '@angular/core/testing';
+import { ModalController } from 'ionic-angular';
 import { ActionSheetButton } from 'ionic-angular/components/action-sheet/action-sheet-options';
 import * as moment from 'moment';
 
-import { getPhoneNumber } from '../shared/utils/phone-numbers';
-import { WeekdayIso } from '../shared/weekday';
+import { getPhoneNumber } from '~/shared/utils/phone-numbers';
+import { WeekdayIso } from '~/shared/weekday';
 
-import { Appointment, AppointmentStatuses } from '../core/api/home.models';
-import { prepareSharedObjectsForTests } from '../core/test-utils.spec';
+import { Appointment, AppointmentStatuses } from '~/core/api/home.models';
+import { PageNames } from '~/core/page-names';
+import { ProfileDataStore } from '~/core/profile.data';
+import { prepareSharedObjectsForTests } from '~/core/test-utils.spec';
 
 import { TestUtils } from '../../test';
+
 import { AppointmentsDataStore } from './appointments.data';
-import { ProfileDataStore } from '../core/profile.data';
 import { HomeSlotsComponent } from './home-slots.component';
 import { createAppointment } from './time-slots/time-slots.component.spec';
-import { ModalController } from 'ionic-angular';
-import { PageNames } from '~/core/page-names';
+
+const weekdays = [
+  // Has appointments only on Monday:
+  { weekday_iso: WeekdayIso.Mon, is_available: true, has_appointments: true, label: '', work_start_at: '', work_end_at: '' },
+  { weekday_iso: WeekdayIso.Tue, is_available: true, has_appointments: false, label: '', work_start_at: '', work_end_at: '' },
+  { weekday_iso: WeekdayIso.Wed, is_available: true, has_appointments: false, label: '', work_start_at: '', work_end_at: '' },
+  { weekday_iso: WeekdayIso.Thu, is_available: true, has_appointments: false, label: '', work_start_at: '', work_end_at: '' },
+  // Mark only Friday ad non-working (TGI Friday):
+  { weekday_iso: WeekdayIso.Fri, is_available: false, has_appointments: false, label: '', work_start_at: '', work_end_at: '' },
+  { weekday_iso: WeekdayIso.Sat, is_available: true, has_appointments: false, label: '', work_start_at: '', work_end_at: '' },
+  { weekday_iso: WeekdayIso.Sun, is_available: true, has_appointments: false, label: '', work_start_at: '', work_end_at: '' }
+];
 
 let fixture: ComponentFixture<HomeSlotsComponent>;
 let instance: HomeSlotsComponent;
@@ -68,13 +81,13 @@ describe('Pages: HomeSlotsComponent', () => {
   it('should show weekdays selector', () => {
     const today = moment();
     const startOfWeek = moment(today).startOf('week');
-    const disabled = { isoWeekday: WeekdayIso.Fri }; // TGI Friday
 
     instance.selectedDate = today;
-    instance.disabledWeekdays = [disabled];
+    instance.weekdays = weekdays;
 
     fixture.detectChanges();
 
+    let dateWithAppointments: moment.Moment;
     let disabledDate: moment.Moment;
 
     // Check all weekdays present:
@@ -86,10 +99,25 @@ describe('Pages: HomeSlotsComponent', () => {
       expect(fixture.nativeElement.textContent)
         .toContain(date.format('D'));
 
-      if (date.isoWeekday() === disabled.isoWeekday) {
+      if (date.isoWeekday() === WeekdayIso.Mon) {
+        dateWithAppointments = date;
+      }
+
+      if (date.isoWeekday() === WeekdayIso.Fri) {
         disabledDate = date;
       }
     }
+
+    // WARNING: template-dependant selector
+    const highlightedEl: HTMLElement = fixture.nativeElement.querySelector('.HCalendar-date.is-highlighted');
+
+    // Check Monday is highlighted (has appointments and a red dot indicator):
+    expect(highlightedEl)
+      .toBeTruthy();
+    expect(highlightedEl.textContent)
+      .toContain(dateWithAppointments.format('ddd'));
+    expect(highlightedEl.textContent)
+      .toContain(dateWithAppointments.format('D'));
 
     // WARNING: template-dependant selector
     const disabledEl: HTMLElement = fixture.nativeElement.querySelector('.HCalendar-date.is-disabled');
