@@ -16,7 +16,8 @@ module.exports = function (config) {
       require('@angular/cli/plugins/karma')
     ],
     client:{
-      clearContext: false // leave Jasmine Spec Runner output visible in browser
+      clearContext: false, // leave Jasmine Spec Runner output visible in browser
+      captureConsole: false // disable all console output and pipe it to the terminal.
     },
     files: [
       { pattern: './src/test.ts', watched: false }
