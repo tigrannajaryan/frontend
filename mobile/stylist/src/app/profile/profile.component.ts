@@ -38,7 +38,7 @@ export enum ProfileTabs {
 
 export enum ProfileTabNames {
   edit = 'Edit',
-  clientView = 'Preview as client'
+  clientView = 'Preview as Client'
 }
 
 @Component({
