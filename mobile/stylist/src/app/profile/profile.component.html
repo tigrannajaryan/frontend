@@ -10,8 +10,8 @@
   </ion-buttons>
 
   <ion-toolbar class="ProfilePage-toolbar" no-padding>
-    <div *ngIf="form.invalid || stylistProfileCompleteness && !stylistProfileCompleteness?.isProfileComplete" class="ProfilePage-completion" data-test-id="isProfileComplete">
-      <span data-test-id="completenessPercent">Profile completion: {{ form.valid ? stylistProfileCompleteness?.completenessPercent : '--' }}%</span>
+    <div *ngIf="!stylistProfileCompleteness?.isProfileComplete" class="ProfilePage-completion" data-test-id="isProfileComplete">
+      <span data-test-id="completenessPercent">Profile completion: {{ stylistProfileCompleteness?.completenessPercent }}%</span>
 
       <div class="ProfilePage-completionBar"><span [style.width]="stylistProfileCompleteness?.completenessPercent + '%'"></span></div>
     </div>

@@ -12,8 +12,8 @@
       your booking is complete!
     </h2>
 
-    <div *ngIf="bookingData?.offer?.totalRegularPrice !== bookingData?.offer?.price" class="BookingComplete-final" data-test-id="totalRegularPrice">
-      Final price <span>WAS ${{ bookingData?.offer?.totalRegularPrice }}</span>
+    <div class="BookingComplete-final" data-test-id="totalRegularPrice">
+      Final price <span *ngIf="bookingData?.offer?.totalRegularPrice !== bookingData?.offer?.price">WAS ${{ bookingData?.offer?.totalRegularPrice }}</span>
     </div>
     <div class="BookingComplete-price" data-test-id="price">
       <span>$</span>{{ bookingData?.offer?.price }}

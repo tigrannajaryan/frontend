@@ -14,7 +14,7 @@ stylist-preview {
     width: 100%;
     margin-top: pxtovw(7px);
     overflow: hidden;
-    font-size: $t-h4;
+    font-size: pxtovw(18px);
     color: color($grayscale, 500);
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -24,7 +24,7 @@ stylist-preview {
     width: 100%;
     margin: pxtovw(9px) 0 pxtovw(1px);
     overflow: hidden;
-    font-size: $t-h2;
+    font-size: pxtovw(28px);
     font-weight: 700;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -50,7 +50,7 @@ stylist-preview {
     align-items: center;
     justify-content: center;
     margin-top: pxtovw(8px);
-    font-size: $t-h4;
+    font-size: pxtovw(18px);
     color: color($colors, lightSalmon);
     white-space: normal;
 
