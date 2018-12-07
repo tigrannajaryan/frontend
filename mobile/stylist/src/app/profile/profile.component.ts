@@ -363,7 +363,7 @@ export class ProfileComponent {
     const formData = new FormData();
     formData.append('file', file);
 
-    const response: any = await this.baseService.uploadFile(formData);
+    const { response } = await this.baseService.uploadFile<{ uuid: string }>(formData).toPromise();
     this.form.get('profile_photo_id').setValue(response.uuid);
   }
 }

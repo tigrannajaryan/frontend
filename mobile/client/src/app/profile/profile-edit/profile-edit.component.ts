@@ -151,7 +151,7 @@ export class ProfileEditComponent {
       const formData = new FormData();
       formData.append('file', file);
 
-      const response: any = await this.baseService.uploadFile<{ uuid: string }>(formData);
+      const { response } = await this.baseService.uploadFile<{ uuid: string }>(formData).toPromise();
 
       // Update url and save id to the form:
       this.form.patchValue({

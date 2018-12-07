@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { HttpParams } from '@angular/common/http/src/params';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/first';
@@ -110,15 +110,10 @@ export class BaseService {
     return this.request<ResponseType>('delete', apiPath, undefined, options);
   }
 
-  uploadFile<ResponseType>(formData: FormData): Promise<ResponseType> {
+  uploadFile<ResponseType>(formData: FormData): Observable<ApiResponse<ResponseType>> {
     const url = `${ENV.apiUrl}common/image/upload`;
 
-    return this.http.post<ResponseType>(url, formData)
-      .toPromise()
-      .catch(e => {
-        this.logger.error('API request failed:', JSON.stringify(e));
-        throw e;
-      });
+    return this.prepareResponse('get', url, this.http.post<ResponseType>(url, formData), {});
   }
 }
 
