@@ -11,10 +11,10 @@
       </ng-container>
     </ion-row>
 
-    <book-services-header></book-services-header>
+    <book-services-header (serviceChange)="onServiceChange()"></book-services-header>
 
     <price-pair
-      *ngIf="bookingData.offer"
+      *ngIf="bookingData.offer && bookingData?.selectedServices?.length !== 0"
       [regularPrice]="bookingData.offer?.totalRegularPrice"
       [clientPrice]="bookingData.offer?.price"></price-pair>
   </ion-toolbar>
