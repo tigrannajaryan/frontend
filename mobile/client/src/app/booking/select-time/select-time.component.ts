@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { Content, NavController } from 'ionic-angular';
 import * as moment from 'moment';
 
 import { Logger } from '~/shared/logger';
@@ -37,7 +37,7 @@ interface TimeslotSection {
   templateUrl: 'select-time.component.html'
 })
 export class SelectTimeComponent {
-
+  @ViewChild(Content) content: Content;
   @ViewChild(BookServicesHeaderComponent) servicesHeader: BookServicesHeaderComponent;
 
   slotSections: TimeslotSection[];
@@ -129,6 +129,15 @@ export class SelectTimeComponent {
       this.logger.info('SelectTimeComponent.onSlotClick', slot);
       this.bookingData.selectedTime = slot.startTime;
       this.performBooking();
+    }
+  }
+
+  onServiceChange(): void {
+    // Tell the content to recalculate its dimensions. According to Ionic docs this
+    // should be called after dynamically adding/removing headers, footers, or tabs.
+    // See https://ionicframework.com/docs/api/components/content/Content/#resize
+    if (this.content) {
+      this.content.resize();
     }
   }
 
