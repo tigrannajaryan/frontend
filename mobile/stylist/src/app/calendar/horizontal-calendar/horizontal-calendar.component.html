@@ -5,7 +5,8 @@
       [ngClass]="{
         'is-selected': isSelected(date),
         'is-today': isToday(date),
-        'is-disabled': isDisabled(date)
+        'is-disabled': isDisabled(date),
+        'is-highlighted': hasAppointments(date)
       }"
       (click)="onDateSelect(date)"
       class="HCalendar-date">
