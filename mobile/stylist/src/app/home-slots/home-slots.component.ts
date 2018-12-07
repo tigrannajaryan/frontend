@@ -34,6 +34,7 @@ import {
   DefaultWeekday,
   DefaultWeekdays
 } from '~/shared/components/calendar-picker/calendar-picker.component';
+import { WeekdayIso } from '~/shared/weekday';
 
 import { FocusAppointmentEventParams, StylistEventTypes } from '~/core/stylist-event-types';
 
@@ -242,10 +243,10 @@ export class HomeSlotsComponent {
   onDateAreaClick(): void {
     const defaultWeekdays = [];
 
-    for (let isoWeekday = 1; isoWeekday <= 7; isoWeekday++) {
+    for (let isoWeekday = WeekdayIso.Mon; isoWeekday <= WeekdayIso.Sun; isoWeekday++) {
       const weekday: DefaultWeekday = {
         isoWeekday,
-        isFaded: this.disabledWeekdays.some(day => day.isoWeekday === isoWeekday)
+        isFaded: Boolean(this.weekdays) && !this.weekdays.find(day => day.weekday_iso === isoWeekday).is_available
       };
       defaultWeekdays.push(weekday);
     }

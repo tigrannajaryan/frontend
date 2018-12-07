@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import * as moment from 'moment';
 
+import { WEEKDAY_SHORT_NAMES } from '~/shared/weekday';
 import { Workday } from '~/shared/api/worktime.models';
 
 /**
@@ -34,8 +35,10 @@ export class HorizontalCalendarComponent {
 
   private _selectedDate: moment.Moment;
 
-  private disabledWeekdays: boolean[] = Array(8).fill(false);
-  private daysWithAppointments: boolean[] = Array(8).fill(false);
+  // Store disabled and days with appointments in 8-length array.
+  // NOTE: because of wekday_iso starts from 1 and ends with 7 we use 8 for length, not 7.
+  private disabledWeekdays: boolean[] = WEEKDAY_SHORT_NAMES.map(() => false);
+  private daysWithAppointments: boolean[] = WEEKDAY_SHORT_NAMES.map(() => false);
 
   constructor() {
     // Set today as a default:
