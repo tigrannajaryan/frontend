@@ -345,7 +345,14 @@ export class PushNotification {
     pushObject.on('registration').subscribe((registration: RegistrationEventResponse) => this.onDeviceRegistration(registration));
 
     // Prepare to receive notifications
-    pushObject.on('notification').subscribe((notification: NotificationEventResponse) => this.onNotification(notification));
+    pushObject.on('notification').subscribe(async (notification: NotificationEventResponse) => {
+      this.onNotification(notification);
+      try {
+        await pushObject.finish();
+      } catch {
+        // ignore errors
+      }
+    });
 
     // Log the errors
     pushObject.on('error').subscribe(error => this.logger.error('Push: error with Push plugin', error));
@@ -371,10 +378,23 @@ export class PushNotification {
 
     const { additionalData, message } = notification;
     const { code, coldstart, foreground, uuid, ...data } = additionalData;
-    this.events.publish(
-      SharedEventTypes.pushNotification,
-      new PushNotificationEventDetails(foreground, coldstart, uuid, code, message, data)
-    );
+
+    const publish = () => {
+      this.events.publish(
+        SharedEventTypes.pushNotification,
+        new PushNotificationEventDetails(foreground, coldstart, uuid, code, message, data)
+      );
+    };
+
+    if (foreground) {
+      publish();
+    } else {
+      // Wait for App fully loaded when background notification received
+      this.events.subscribe(SharedEventTypes.appLoaded, () => {
+        this.events.unsubscribe(SharedEventTypes.appLoaded);
+        publish();
+      });
+    }
   }
 
   private onLogin(e: AfterLoginEvent): void {
