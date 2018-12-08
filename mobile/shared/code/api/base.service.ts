@@ -113,7 +113,7 @@ export class BaseService {
   uploadFile<ResponseType>(formData: FormData): Observable<ApiResponse<ResponseType>> {
     const url = `${ENV.apiUrl}common/image/upload`;
 
-    return this.prepareResponse('get', url, this.http.post<ResponseType>(url, formData), {});
+    return this.prepareResponse('post', url, this.http.post<ResponseType>(url, formData), {});
   }
 }
 
