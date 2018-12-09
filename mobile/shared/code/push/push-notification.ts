@@ -1,4 +1,4 @@
-import { Injectable, NgZone } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { NotificationEventResponse, Push, PushObject, PushOptions, RegistrationEventResponse } from '@ionic-native/push';
 import { Events, Platform } from 'ionic-angular';
 import * as moment from 'moment';
@@ -149,28 +149,23 @@ export class PushNotification {
 
   private deviceType: PushDeviceType;
 
-  private appResumed = false;
+  private appReady: Promise<boolean>;
 
   constructor(
     private events: Events,
     private logger: Logger,
     private api: NotificationsApi,
     private platform: Platform,
-    private push: Push,
-    private zone: NgZone
+    private push: Push
   ) {
     if (!ENV.ffEnablePushNotifications) {
       this.logger.info('Push: feature is not enabled.');
       return;
     }
 
-    // Indicate app paused and resumed.
-    // This is used for proper handling of background notifications when app is paused.
-    this.platform.resume.subscribe(() => {
-      this.appResumed = true;
-    });
-    this.platform.pause.subscribe(() => {
-      this.appResumed = false;
+    this.appReady = new Promise(resolve => {
+      this.events.subscribe(SharedEventTypes.appLoaded, resolve);
+      this.platform.resume.subscribe(resolve);
     });
 
     this.deviceType = this.platform.is(PlatformNames.android) ? 'fcm' : 'apns';
@@ -384,37 +379,18 @@ export class PushNotification {
     const { additionalData, message } = notification;
     const { code, coldstart, foreground, uuid, ...data } = additionalData;
 
-    const publish = () => {
-      this.events.publish(
-        SharedEventTypes.pushNotification,
-        new PushNotificationEventDetails(foreground, coldstart, uuid, code, message, data)
-      );
-    };
+    // NOTE: the next line ensures notification is handled only after all initial work is done
+    await this.appReady;
 
-    if (foreground) {
-      publish();
-    } else if (this.appResumed) {
-      // App already loaded and just resumed.
-      // NOTE: we use NgZone.run to ensure the app handles all view updates properly.
-      // Removing NgZone.run produces freezing interface after notification handler finishes.
-      // The Problem is: IF YOU navigate with your NavCtrl INSIDE a callback-function, it will not be inside the NgZone.
-      // More on https://forum.ionicframework.com/t/view-doesnt-update-all-the-time-in-ionic/109814/4.
-      this.zone.run(() => {
-        publish();
-      });
-    } else {
-      // Wait for App to fully load. The SharedEventTypes.appLoaded is triggered from app.component
-      // after it’s completely initialized and a starting page is set.
-      this.events.subscribe(SharedEventTypes.appLoaded, () => {
-        this.events.unsubscribe(SharedEventTypes.appLoaded);
-        publish();
-      });
-    }
+    this.events.publish(
+      SharedEventTypes.pushNotification,
+      new PushNotificationEventDetails(foreground, coldstart, uuid, code, message, data)
+    );
 
     try {
       // When you receive a background push on iOS you will be given 30 seconds of time in which to complete a task.
       // If you spend longer than 30 seconds on the task the OS may decide that your app is misbehaving and kill it.
-      // In order to signal iOS that your on('notification') handler is done you will need to call the new push.finish() method.
+      // In order to signal iOS that your on('notification') handler is done you will need to call the push.finish() method.
       await pushObject.finish();
     } catch {
       // ignore errors
