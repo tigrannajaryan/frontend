@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { Nav, Platform } from 'ionic-angular';
+import { Events, Nav, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { ScreenOrientation } from '@ionic-native/screen-orientation';
@@ -18,6 +18,7 @@ import { ENV } from '~/environments/environment.default';
 import { AuthService } from './shared/api/auth.api';
 import { deleteAuthLocalData, getAuthLocalData } from './shared/storage/token-utils';
 import { AuthResponse } from './shared/api/auth.models';
+import { SharedEventTypes } from './shared/events/shared-event-types';
 import { StylistAppStorage } from './core/stylist-app-storage';
 
 @Component({
@@ -27,6 +28,7 @@ export class MyAppComponent {
   @ViewChild(Nav) nav: Nav;
 
   constructor(
+    private events: Events,
     public platform: Platform,
     public statusBar: StatusBar,
     public splashScreen: SplashScreen,
@@ -83,6 +85,9 @@ export class MyAppComponent {
       this.statusBar.styleLightContent();
     }
 
+    // Notify that init is done
+    this.events.publish(SharedEventTypes.appLoaded);
+
     // All done, measure the loading time and report to GA
     const loadTime = Date.now() - startTime;
     this.logger.info('App: loaded in', loadTime, 'ms');
@@ -113,7 +118,7 @@ export class MyAppComponent {
         this.pushNotification.setUser(authResponse.user_uuid);
 
         const requiredPages = await createNavHistoryList(authResponse.profile_status as StylistProfileStatus);
-        this.nav.setPages(requiredPages);
+        await this.nav.setPages(requiredPages);
         return;
       }
     }
@@ -121,6 +126,6 @@ export class MyAppComponent {
     this.logger.info('App: No valid authenticated session. Start from first screen.');
 
     // No valid saved authentication, just show the first screen.
-    this.nav.setRoot(PageNames.FirstScreen, {}, { animate: false }, () => this.statusBar.hide());
+    await this.nav.setRoot(PageNames.FirstScreen, {}, { animate: false }, () => this.statusBar.hide());
   }
 }
