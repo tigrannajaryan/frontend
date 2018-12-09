@@ -12,6 +12,12 @@ import { PushNotification } from '~/shared/push/push-notification';
 let fixture: ComponentFixture<PushPrimingScreenComponent>;
 let instance: PushPrimingScreenComponent;
 
+// Modify platform mock
+const platformMock = PlatformMock.instance();
+platformMock.resume = jasmine.createSpyObj('resume', {
+  subscribe() {}
+});
+
 describe('PushPrimingScreenComponent', () => {
   beforeEach(async(() =>
     TestBed
@@ -23,7 +29,7 @@ describe('PushPrimingScreenComponent', () => {
           { provide: NotificationsApi, useClass: NotificationsApiMock },
           // Ionic mocks:
           { provide: Events, useFactory: () => EventsMock.instance() },
-          { provide: Platform, useFactory: () => PlatformMock.instance() }
+          { provide: Platform, useFactory: () => platformMock }
         ],
         imports: [
           // Load all Ionic’s deps:
