@@ -5,19 +5,21 @@ try {
   xml2js = require('../stylist/node_modules/xml2js');
 }
 
-function patchBuildGradle(fs, fname) {
+function patchBuildGradle(
+  fs, fname,
+  // swap jcenter() and maven repositories. maven must come before jcenter
+  // This is required because certain libraries do not exist in jcenter, they
+  // are in maven and build fails if repositories that contain them are listed
+  // in the wrong order.
+  re = /(allprojects {\n\s+repositories {\n)(\s+jcenter\(\))\n(\s+maven {\n\s+url ".*"\n\s+})(\n\s+})/gim,
+  result = '$1$3\n$2$4'
+  ) {
 
   console.log('cordova-after-platform-add.js: patching', fname);
 
   var data = fs.readFileSync(fname, 'utf-8');
 
-  // swap jcenter() and maven repositories. maven must come before jcenter
-  // This is required because certain libraries do not exist in jcenter, they
-  // are in maven and build fails if repositories that contain them are listed
-  // in the wrong order.
-  var re = /(allprojects {\n\s+repositories {\n)(\s+jcenter\(\))\n(\s+maven {\n\s+url ".*"\n\s+})(\n\s+})/gim;
-
-  var newValue = data.replace(re, '$1$3\n$2$4');
+  var newValue = data.replace(re, result);
 
   fs.writeFileSync(fname, newValue, 'utf-8');
 
@@ -51,6 +53,15 @@ module.exports = function (ctx) {
     // Patches for Android builds
     var buildGradle = path.join(ctx.opts.projectRoot, 'platforms/android/build.gradle');
     patchBuildGradle(fs, buildGradle);
+
+    var googleServicesBuildGradle = path.join(ctx.opts.projectRoot, 'platforms/android/cordova-support-google-services/android-build.gradle');
+    patchBuildGradle(
+      fs, buildGradle,
+      // use maven { url "https://maven.google.com" } jcenter() mavenLocal()
+      // intead of jcenter() mavenCentral()
+      /(buildscript \{\n\s+repositories \{\n)(\s+)(jcenter\(\))\n(\s+mavenCentral\(\))/gim,
+        '$1$2maven { url "https://maven.google.com" }\n$2$3\n$2mavenLocal()'
+    );
 
     var projProp = path.join(ctx.opts.projectRoot, 'platforms/android/project.properties');
     patchProjectProperties(fs, projProp);
