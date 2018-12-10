@@ -11,7 +11,7 @@ cd $TRAVIS_BUILD_DIR/mobile/$APP_TYPE
 ./node_modules/ionic/bin/ionic cordova platform rm android
 ./node_modules/ionic/bin/ionic cordova platform add android@7.1.0
 
-./node_modules/ionic/bin/ionic cordova build android --release --verbose --prod
+./node_modules/ionic/bin/ionic cordova build android --debug --stacktrace --info --verbose --prod
 
 # Before deploying, zipalign and sign application; see more
 # details about it at https://developer.android.com/studio/publish/app-signing,
