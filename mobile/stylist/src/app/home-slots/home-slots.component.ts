@@ -50,7 +50,8 @@ const defaultData: DayAppointmentsResponse = {
   total_slot_count: 16,
   work_start_at: '9:00', // in hh:mm working hours start
   work_end_at: '17:00', // in hh:mm working hours end
-  is_day_available: true // is a working day
+  is_day_available: true, // is a working day
+  week_summary: []
 };
 
 @Component({
@@ -105,11 +106,6 @@ export class HomeSlotsComponent {
   ) {
   }
 
-  async ionViewWillLoad(): Promise<void> {
-    // Set disabled days for horizontal calendar
-    await this.setNonWorkingDays();
-  }
-
   // we need ionViewWillEnter here because it fire each time when we go to this page
   // for example form adding appointment using nav.pop
   // and ionViewDidLoad fire only once this is not what we need here
@@ -142,13 +138,6 @@ export class HomeSlotsComponent {
     clearInterval(this.autoRefreshTimer);
 
     this.events.unsubscribe(StylistEventTypes.focusAppointment);
-  }
-
-  async setNonWorkingDays(): Promise<void> {
-    const { response } = await this.worktimeApi.getWorktime().get();
-    if (response) {
-      this.weekdays = response.weekdays;
-    }
   }
 
   onBlockedDayClick(): void {
@@ -246,7 +235,7 @@ export class HomeSlotsComponent {
     for (let isoWeekday = WeekdayIso.Mon; isoWeekday <= WeekdayIso.Sun; isoWeekday++) {
       const weekday: DefaultWeekday = {
         isoWeekday,
-        isFaded: Boolean(this.weekdays) && !this.weekdays.find(day => day.weekday_iso === isoWeekday).is_available
+        isFaded: Boolean(this.weekdays) && !this.weekdays.find(day => day.weekday_iso === isoWeekday).is_working_day
       };
       defaultWeekdays.push(weekday);
     }
@@ -412,6 +401,8 @@ export class HomeSlotsComponent {
 
   private async loadAppointments(): Promise<void> {
     const data = await this.appointmentsDataStore.get(this.selectedDate);
+
+    this.weekdays = data.response && data.response.week_summary;
 
     // Is fully-blocked?
     const { response } = await this.worktimeApi.getWorkdayAvailable(this.selectedDate).toPromise();

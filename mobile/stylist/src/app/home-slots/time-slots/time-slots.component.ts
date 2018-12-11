@@ -124,7 +124,11 @@ export class TimeSlotsComponent implements AfterViewInit, OnDestroy {
 
   // Highlight one slot
   @Input() set highlightedAppointment(value: Appointment) {
-    this.selectedTimeSlot = this.slotItems.find(({ appointment }) => appointment && appointment.uuid === value.uuid);
+    if (value) {
+      this.selectedTimeSlot = this.slotItems.find(({ appointment }) => appointment && appointment.uuid === value.uuid);
+    } else {
+      this.selectedTimeSlot = undefined;
+    }
 
     if (this.selectedTimeSlot) {
       // We use setTimeout to insure the view is updated

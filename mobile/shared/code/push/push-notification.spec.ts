@@ -16,6 +16,12 @@ import { ENV } from '~/environments/environment.default';
 
 let instance: PushNotification;
 
+// Modify platform mock
+const platformMock = PlatformMock.instance();
+platformMock.resume = jasmine.createSpyObj('resume', {
+  subscribe() {}
+});
+
 describe('PushNotification', () => {
   beforeEach(async(() =>
     TestBed
@@ -26,7 +32,7 @@ describe('PushNotification', () => {
           { provide: NotificationsApi, useClass: NotificationsApiMock },
           // Ionic mocks:
           { provide: Events, useFactory: () => EventsMock.instance() },
-          { provide: Platform, useFactory: () => PlatformMock.instance() }
+          { provide: Platform, useFactory: () => platformMock }
         ],
         imports: [
           // Load all Ionic’s deps:

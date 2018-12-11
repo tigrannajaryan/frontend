@@ -46,8 +46,6 @@ interface RefreshAuthResult {
 export class ClientAppComponent implements OnInit, OnDestroy {
   @ViewChild(Nav) nav: Nav;
 
-  rootPage: any;
-
   constructor(
     private authApiService: AuthService,
     private clientNavigation: ClientStartupNavigation,
@@ -125,7 +123,7 @@ export class ClientAppComponent implements OnInit, OnDestroy {
 
     if (!authLocalData) {
       this.logger.info('App: will show FirstScreen');
-      this.rootPage = PageNames.FirstScreen;
+      await this.nav.setRoot(PageNames.FirstScreen);
     } else {
       // Let pushNotification know who is the current user
       this.pushNotification.setUser(authLocalData.userUuid);
@@ -133,8 +131,11 @@ export class ClientAppComponent implements OnInit, OnDestroy {
       // Show the appropriate page
       const pendingInvitation = refreshAuthResult ? refreshAuthResult.pendingInvitation : undefined;
       const pageDescr = await this.clientNavigation.nextToShowByProfileStatus(pendingInvitation);
-      this.nav.setRoot(pageDescr.page, pageDescr.params);
+      await this.nav.setRoot(pageDescr.page, pageDescr.params);
     }
+
+    // Notify that init is done
+    this.events.publish(SharedEventTypes.appLoaded);
   }
 
   ngOnDestroy(): void {

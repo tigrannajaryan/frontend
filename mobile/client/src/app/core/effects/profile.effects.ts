@@ -68,10 +68,9 @@ export class ProfileEffects {
   @Effect() profileUpdateImage: Observable<Action> = this.actions
     .ofType<UpdateImage>(profileActionTypes.UPDATE_IMAGE)
     .switchMap(action =>
-      Observable
-        .from(this.baseService.uploadFile<{ uuid: string }>(action.formData))
+      this.baseService.uploadFile<{ uuid: string }>(action.formData)
         .pipe(
-          map(response => new UpdateImageSuccess(response.uuid)),
+          map(({ response }) => new UpdateImageSuccess(response.uuid)),
           catchError(error => Observable.of(new UpdateImageError(error)))
         )
     );

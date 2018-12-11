@@ -131,6 +131,12 @@ const context: any = require.context('./', true, /\.spec\.ts$/);
 context.keys()
   .map(context);
 
+// Modify platform mock
+const platformMock = PlatformMock.instance();
+platformMock.resume = jasmine.createSpyObj('resume', {
+  subscribe() {}
+});
+
 export class TestUtils {
 
   static beforeEachCompiler(components: any[], providers: any[] = [], imports: any = []): Promise<{ fixture: any, instance: any }> {
@@ -170,7 +176,7 @@ export class TestUtils {
         { provide: Events, useFactory: () => EventsMock.instance() },
         { provide: LoadingController, useFactory: () => LoadingControllerMock.instance() },
         { provide: NavController, useFactory: () => NavControllerMock.instance() },
-        { provide: Platform, useFactory: () => PlatformMock.instance() },
+        { provide: Platform, useFactory: () => platformMock },
         { provide: StatusBar, useFactory: () => StatusBarMock.instance() },
         { provide: Storage, useFactory: () => StorageMock.instance() },
         { provide: AuthProcessState, useClass: AuthProcessStateMock },

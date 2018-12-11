@@ -6,6 +6,11 @@ import { PushNotificationAdditionalData, PushNotificationCode } from '~/shared/p
  */
 export enum SharedEventTypes {
   /**
+   * This event is triggered when ngOnInit of app.component is done.
+   */
+  appLoaded = 'appLoaded',
+
+  /**
    * Event fired when StylistServiceProvider.getProfile() gets resolved.
    * This event is needed because the Google Maps api loads the api key dynamically.
    * When this event is fired, the subscriber in GoogleMapsConfig updates the api key
