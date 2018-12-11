@@ -1,4 +1,4 @@
-import { Injectable, OnDestroy } from '@angular/core';
+import { Injectable, NgZone, OnDestroy } from '@angular/core';
 import { Events, ToastController } from 'ionic-angular';
 import { ToastOptions } from 'ionic-angular/components/toast/toast-options';
 
@@ -60,7 +60,8 @@ export class PushNotificationToastService implements OnDestroy {
   constructor(
     private api: NotificationsApi,
     private events: Events,
-    private toastCtrl: ToastController
+    private toastCtrl: ToastController,
+    private zone: NgZone
   ) {
     this.events.subscribe(SharedEventTypes.pushNotification,
       (details: PushNotificationEventDetails) => this.handlePushNotificationEvent(details));
@@ -110,7 +111,11 @@ export class PushNotificationToastService implements OnDestroy {
     } else {
       // When in background and tapped just do onClick if exists:
       if (handlerParams.onClick) {
-        handlerParams.onClick();
+        // Navigation with the NavCtrl in a callback-function will not be inside the NgZone
+        // and therefor will not result in view changes. Wrapping it in NgZone.run ensures view will be updated.
+        this.zone.run(() => {
+          handlerParams.onClick();
+        });
       }
     }
 

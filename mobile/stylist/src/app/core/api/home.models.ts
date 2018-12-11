@@ -1,4 +1,5 @@
 import { ISODateTime, ISOTimeOnly } from '~/shared/api/base.models';
+import { Weekdays } from '~/shared/api/worktime.models';
 
 export enum AppointmentStatuses {
   new = 'new',
@@ -116,4 +117,5 @@ export interface DayAppointmentsResponse {
   work_start_at: ISOTimeOnly; // in hh:mm working hours start
   work_end_at: ISOTimeOnly; // in hh:mm working hours end
   is_day_available: boolean; // is a working day
+  week_summary: Weekdays;
 }

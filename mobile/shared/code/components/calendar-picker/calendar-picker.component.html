@@ -27,6 +27,7 @@
         <ng-container *ngFor="let isoDate of Array.from(month.days.keys())">
           <div *ngIf="month.days.get(isoDate) as day" [ngClass]="getClassnames(isoDate, day)" (click)="onDateSelect(isoDate)" class="CP-day">
             {{ day.day }}
+            <div class="indicator">{{ day.day }}</div>
           </div>
         </ng-container>
       </ion-row>

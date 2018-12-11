@@ -110,15 +110,10 @@ export class BaseService {
     return this.request<ResponseType>('delete', apiPath, undefined, options);
   }
 
-  uploadFile<ResponseType>(formData: FormData): Promise<ResponseType> {
+  uploadFile<ResponseType>(formData: FormData): Observable<ApiResponse<ResponseType>> {
     const url = `${ENV.apiUrl}common/image/upload`;
 
-    return this.http.post<ResponseType>(url, formData)
-      .toPromise()
-      .catch(e => {
-        this.logger.error('API request failed:', JSON.stringify(e));
-        throw e;
-      });
+    return this.prepareResponse('post', url, this.http.post<ResponseType>(url, formData), {});
   }
 }
 

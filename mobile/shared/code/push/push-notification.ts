@@ -149,6 +149,8 @@ export class PushNotification {
 
   private deviceType: PushDeviceType;
 
+  private appReady: Promise<boolean>;
+
   constructor(
     private events: Events,
     private logger: Logger,
@@ -160,6 +162,11 @@ export class PushNotification {
       this.logger.info('Push: feature is not enabled.');
       return;
     }
+
+    this.appReady = new Promise(resolve => {
+      this.events.subscribe(SharedEventTypes.appLoaded, resolve);
+      this.platform.resume.subscribe(resolve);
+    });
 
     this.deviceType = this.platform.is(PlatformNames.android) ? 'fcm' : 'apns';
 
@@ -345,7 +352,7 @@ export class PushNotification {
     pushObject.on('registration').subscribe((registration: RegistrationEventResponse) => this.onDeviceRegistration(registration));
 
     // Prepare to receive notifications
-    pushObject.on('notification').subscribe((notification: NotificationEventResponse) => this.onNotification(notification));
+    pushObject.on('notification').subscribe((notification: NotificationEventResponse) => this.onNotification(notification, pushObject));
 
     // Log the errors
     pushObject.on('error').subscribe(error => this.logger.error('Push: error with Push plugin', error));
@@ -360,7 +367,7 @@ export class PushNotification {
   /**
    * Push notification handler. Called when we have a new message pushed to us.
    */
-  private onNotification(notification: NotificationEventResponse): void {
+  private async onNotification(notification: NotificationEventResponse, pushObject: PushObject): Promise<void> {
     let notificationStr;
     try {
       notificationStr = JSON.stringify(notification);
@@ -371,10 +378,23 @@ export class PushNotification {
 
     const { additionalData, message } = notification;
     const { code, coldstart, foreground, uuid, ...data } = additionalData;
+
+    // NOTE: the next line ensures notification is handled only after all initial work is done
+    await this.appReady;
+
     this.events.publish(
       SharedEventTypes.pushNotification,
       new PushNotificationEventDetails(foreground, coldstart, uuid, code, message, data)
     );
+
+    try {
+      // When you receive a background push on iOS you will be given 30 seconds of time in which to complete a task.
+      // If you spend longer than 30 seconds on the task the OS may decide that your app is misbehaving and kill it.
+      // In order to signal iOS that your on('notification') handler is done you will need to call the push.finish() method.
+      await pushObject.finish();
+    } catch {
+      // ignore errors
+    }
   }
 
   private onLogin(e: AfterLoginEvent): void {

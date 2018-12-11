@@ -18,7 +18,7 @@ calendar-picker {
   .CP-monthName {
     position: sticky;
     top: 0;
-    z-index: 1;
+    z-index: 2;
     padding: pxtovw(8px) pxtovw(24px);
     font-size: $title-font-size;
     line-height: $base-line-height;
@@ -51,6 +51,10 @@ calendar-picker {
     font-weight: 500;
     line-height: $base-line-height;
 
+    .indicator {
+      display: none;
+    }
+
     &.is-faded {
       font-weight: normal;
       color: color($colors, warmGrey);
@@ -67,15 +71,18 @@ calendar-picker {
       font-weight: normal;
       color: black;
 
-      &:before { // circle
+      .indicator { // circle
         position: absolute;
         top: 50%;
         right: 50%;
-        z-index: -1;
+        z-index: 1;
+        display: block;
         width: $circle-size;
         height: $circle-size;
         margin: (-1 * $circle-size / 2) (-1 * $circle-size / 2) 0 0;
-        content: '';
+        font-weight: 500;
+        line-height: $circle-size;
+        text-align: center;
         background: color($grayscale, 200);
         border-radius: 50%;
         animation: scaleUp 0.4s ease-in;
@@ -89,7 +96,7 @@ calendar-picker {
       font-weight: 500;
       color: white;
 
-      &:before {
+      .indicator {
         background: black;
       }
     }
@@ -98,30 +105,29 @@ calendar-picker {
       font-weight: 500;
       color: white;
 
-      &:before {
+      .indicator {
         background: color($colors, lightSalmon);
       }
+    }
+
+    &:active .indicator {
+      transition: scale 0.4s ease-in-out;
+      transform: scale(1.5);
+      animation: none;
     }
 
     &.is-highlighted:not(.is-selected):not(:active) {
       $circle-size: pxtovw(6px);
       $circle-color: #E96D5C;
 
-      &:before {
+      .indicator {
         top: 100%;
         right: 50%;
         width: $circle-size;
         height: $circle-size;
         margin: (-1 * $circle-size) (-1 * $circle-size / 2) 0 0;
+        color: transparent; // invisible font
         background: $circle-color;
-      }
-    }
-
-    &:active {
-      &:before {
-        transition: scale 0.4s ease-in-out;
-        transform: scale(1.5);
-        animation: none;
       }
     }
   }

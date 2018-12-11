@@ -1,11 +1,12 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Page } from 'ionic-angular/navigation/nav-util';
-import { Content, Events, Nav, ViewController } from 'ionic-angular';
+import { Content, Events, MenuController, Nav, ViewController } from 'ionic-angular';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs/Subscription';
 
 import { AuthService } from '~/shared/api/auth.api';
 import { StylistProfile } from '~/shared/api/stylist-app.models';
+import { SharedEventTypes } from '~/shared/events/shared-event-types';
 import { getAppVersionNumber, getBuildNumber } from '~/shared/get-build-info';
 import { ApiResponse } from '~/shared/api/base.models';
 import { deleteAuthLocalData } from '~/shared/storage/token-utils';
@@ -51,6 +52,7 @@ export class MadeMenuComponent implements OnInit {
     public profileData: ProfileDataStore,
     private authApiService: AuthService,
     private events: Events,
+    private menu: MenuController,
     private store: Store<{}>
   ) {
     const redirectParams = { isRootPage: true };
@@ -76,6 +78,13 @@ export class MadeMenuComponent implements OnInit {
       StylistEventTypes.menuUpdateProfileSubscription,
       () => {
         this.resubscribe();
+      }
+    );
+
+    this.events.subscribe(
+      SharedEventTypes.pushNotification,
+      () => {
+        this.menu.close();
       }
     );
 

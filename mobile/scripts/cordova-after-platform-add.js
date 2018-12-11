@@ -4,7 +4,6 @@ try {
 } catch (err) {
   xml2js = require('../stylist/node_modules/xml2js');
 }
-
 function patchBuildGradle(fs, fname) {
 
   console.log('cordova-after-platform-add.js: patching', fname);
@@ -18,6 +17,29 @@ function patchBuildGradle(fs, fname) {
   var re = /(allprojects {\n\s+repositories {\n)(\s+jcenter\(\))\n(\s+maven {\n\s+url ".*"\n\s+})(\n\s+})/gim;
 
   var newValue = data.replace(re, '$1$3\n$2$4');
+
+  fs.writeFileSync(fname, newValue, 'utf-8');
+
+  console.log('cordova-after-platform-add.js: patching complete');
+}
+
+function patchCordovaSupportBuildGradle(fs, fname) {
+
+  console.log('cordova-after-platform-add.js: patching', fname);
+
+  var data = fs.readFileSync(fname, 'utf-8');
+  
+  // Add extra repository to android-build.gradle of 
+  // cordova-support-google-services. This is required to get 
+  // com.google.gms:google-services:3.2.0 jar which is absent in both
+  // jcenter and mavenCentral
+
+  const repoUrl = 'https://dl.bintray.com/android/android-tools';
+  const repoSetting = `maven {url "${repoUrl}"}`;
+
+  // add extra repository (jcenter android-tools)
+  var re = /(buildscript[\n|\s]*\{[\n|\s]*repositories[\n|\s]*\{[\n|\s]*)(jcenter\(\)[\n|\s]*mavenCentral[\n|\s]*\(\))([\n|\s]*})/gim;
+  var newValue = data.replace(re, `$1\n${repoSetting}\n$2$3`);
 
   fs.writeFileSync(fname, newValue, 'utf-8');
 
@@ -51,6 +73,11 @@ module.exports = function (ctx) {
     // Patches for Android builds
     var buildGradle = path.join(ctx.opts.projectRoot, 'platforms/android/build.gradle');
     patchBuildGradle(fs, buildGradle);
+
+    var cordovaSupportBuildGradle = path.join(
+      ctx.opts.projectRoot, 'platforms/android/cordova-support-google-services/android-build.gradle'
+    );
+    patchCordovaSupportBuildGradle(fs, cordovaSupportBuildGradle);
 
     var projProp = path.join(ctx.opts.projectRoot, 'platforms/android/project.properties');
     patchProjectProperties(fs, projProp);

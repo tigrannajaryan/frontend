@@ -15,6 +15,12 @@ import { PageNames } from './page-names';
 
 let pushNotification: PushNotification;
 
+// Modify platform mock
+const platformMock = PlatformMock.instance();
+platformMock.resume = jasmine.createSpyObj('resume', {
+  subscribe() {}
+});
+
 describe('Shared functions: profileStatusToPage', () => {
   beforeEach(async(() =>
     TestBed
@@ -25,7 +31,7 @@ describe('Shared functions: profileStatusToPage', () => {
           { provide: NotificationsApi, useClass: NotificationsApiMock },
           // Ionic mocks:
           { provide: Events, useFactory: () => EventsMock.instance() },
-          { provide: Platform, useFactory: () => PlatformMock.instance() }
+          { provide: Platform, useFactory: () => platformMock }
         ],
         imports: [
           // Load all Ionic’s deps:
