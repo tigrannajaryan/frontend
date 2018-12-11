@@ -15,10 +15,33 @@ npm install -g cordova@8.0.0
 # save sentry properties before we start adding/removing plugins
 cp sentry.properties sentry.properties.bak
 
+# Prepare plugins
+# Make sure config.xml is original (previous Android build most likely touched it)
+git checkout -- config.xml
+
+# Make sure cache directory exists
+CACHE_DIR=$TRAVIS_BUILD_DIR/.cache/$APP_TYPE/$MB_ENV
+mkdir -p $CACHE_DIR
+
+PLUGINS_CACHED_ZIP=$CACHE_DIR/plugins_ios.zip
+
+if diff config.xml $CACHE_DIR/config.xml >/dev/null ; then
+  echo config.xml is unchanged, use plugins cache
+  unzip -q $PLUGINS_CACHED_ZIP
+else
+  echo config.xml is different, do not use plugins cache
+  cp config.xml $CACHE_DIR
+fi
+
 # Remove and add platform; before_platform_rm hook will update
 # application name, description, version and ios bundle id
 ./node_modules/ionic/bin/ionic cordova platform rm ios || true
 ./node_modules/ionic/bin/ionic cordova platform add ios || true
+
+# Zip and store plugins in the cache
+rm $PLUGINS_CACHED_ZIP || true
+zip -r -qdgds 10m --symlinks $PLUGINS_CACHED_ZIP plugins
+ls -al $CACHE_DIR
 
 # re-add sentry-cordova, adding it with cordova directly
 echo "Re-adding sentry-cordova"

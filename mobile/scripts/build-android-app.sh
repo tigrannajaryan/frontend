@@ -6,10 +6,29 @@ echo "Starting Android build"
 
 cd $TRAVIS_BUILD_DIR/mobile/$APP_TYPE
 
-# build application binary
+# Prepare plugins
+
+# Make sure cache directory exists
+CACHE_DIR=$TRAVIS_BUILD_DIR/.cache/$APP_TYPE/$MB_ENV
+mkdir -p $CACHE_DIR
+
+PLUGINS_CACHED_ZIP=$CACHE_DIR/plugins_android.zip
+
+if diff config.xml $CACHE_DIR/config.xml >/dev/null ; then
+  echo config.xml is unchanged, use plugins cache
+  unzip -q $PLUGINS_CACHED_ZIP
+else
+  echo config.xml is different, do not use plugins cache
+  cp config.xml $CACHE_DIR
+fi
 
 ./node_modules/ionic/bin/ionic cordova platform rm android
 ./node_modules/ionic/bin/ionic cordova platform add android@7.1.0
+
+# Zip and store plugins in the cache
+rm $PLUGINS_CACHED_ZIP || true
+zip -r -qdgds 10m --symlinks $PLUGINS_CACHED_ZIP plugins
+ls -al $CACHE_DIR
 
 ./node_modules/ionic/bin/ionic cordova build android --release --verbose --prod
 

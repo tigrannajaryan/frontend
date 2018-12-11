@@ -30,6 +30,7 @@ cache:
   directories:
     - mobile/stylist/node_modules
     - mobile/client/node_modules
+    - .cache
 
 # global env variables, common to each build's environment
 env:
