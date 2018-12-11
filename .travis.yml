@@ -24,15 +24,12 @@ addons:
 # if a change is detected after build finishes - update cache
 
 before_cache:
-  - rm -rf $HOME/.gradle/caches/*/plugin-resolution/ || true
-  - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock || true
+  - rm -rf $HOME/.gradle/caches || true
 
 cache:
   directories:
     - mobile/stylist/node_modules
     - mobile/client/node_modules
-    - $HOME/.gradle/caches/
-    - $HOME/.gradle/wrapper/
 
 # global env variables, common to each build's environment
 env:
