@@ -19,14 +19,14 @@ import { createAppointment } from './time-slots/time-slots.component.spec';
 
 const weekdays = [
   // Has appointments only on Monday:
-  { weekday_iso: WeekdayIso.Mon, is_available: true, has_appointments: true, label: '', work_start_at: '', work_end_at: '' },
-  { weekday_iso: WeekdayIso.Tue, is_available: true, has_appointments: false, label: '', work_start_at: '', work_end_at: '' },
-  { weekday_iso: WeekdayIso.Wed, is_available: true, has_appointments: false, label: '', work_start_at: '', work_end_at: '' },
-  { weekday_iso: WeekdayIso.Thu, is_available: true, has_appointments: false, label: '', work_start_at: '', work_end_at: '' },
+  { weekday_iso: WeekdayIso.Mon, is_working_day: true, has_appointments: true, label: '', work_start_at: '', work_end_at: '' },
+  { weekday_iso: WeekdayIso.Tue, is_working_day: true, has_appointments: false, label: '', work_start_at: '', work_end_at: '' },
+  { weekday_iso: WeekdayIso.Wed, is_working_day: true, has_appointments: false, label: '', work_start_at: '', work_end_at: '' },
+  { weekday_iso: WeekdayIso.Thu, is_working_day: true, has_appointments: false, label: '', work_start_at: '', work_end_at: '' },
   // Mark only Friday ad non-working (TGI Friday):
-  { weekday_iso: WeekdayIso.Fri, is_available: false, has_appointments: false, label: '', work_start_at: '', work_end_at: '' },
-  { weekday_iso: WeekdayIso.Sat, is_available: true, has_appointments: false, label: '', work_start_at: '', work_end_at: '' },
-  { weekday_iso: WeekdayIso.Sun, is_available: true, has_appointments: false, label: '', work_start_at: '', work_end_at: '' }
+  { weekday_iso: WeekdayIso.Fri, is_working_day: false, has_appointments: false, label: '', work_start_at: '', work_end_at: '' },
+  { weekday_iso: WeekdayIso.Sat, is_working_day: true, has_appointments: false, label: '', work_start_at: '', work_end_at: '' },
+  { weekday_iso: WeekdayIso.Sun, is_working_day: true, has_appointments: false, label: '', work_start_at: '', work_end_at: '' }
 ];
 
 let fixture: ComponentFixture<HomeSlotsComponent>;
