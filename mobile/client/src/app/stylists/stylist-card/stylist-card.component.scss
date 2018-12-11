@@ -18,10 +18,6 @@ stylist-card {
   border-radius: pxtovw(16px);
   box-shadow: 0 pxtovw(7px) pxtovw(43px) 0 rgba(0, 0, 0, 0.08);
   transition: all $animation-speed ease;
-
-  &:not(.is-myStylist) {
-    align-items: flex-start;
-  }
 }
 
 .StylistCard-heart {
@@ -50,7 +46,7 @@ stylist-card {
   position: absolute;
   top: pxtovw(16px);
   right: pxtovw(14px);
-  font-size: pxtovw(16px);
+  font-size: pxtovw(15px);
   color: color($colors, orange);
   opacity: 1;
   transition: all $animation-speed ease;
@@ -73,10 +69,9 @@ stylist-card {
 }
 
 .StylistCard-salon {
-  width: 100%;
+  width: 65%;
   overflow: hidden;
   font-size: $t-base;
-  color: color($grayscale, 500);
   text-overflow: ellipsis;
   white-space: nowrap;
   transition: all $animation-speed ease;
@@ -100,7 +95,6 @@ stylist-card {
   justify-content: flex-start;
   margin: 0;
   font-size: pxtovw(15px);
-  color: color($grayscale, 500);
   white-space: normal;
   transition: all $animation-speed ease;
 
@@ -226,6 +220,7 @@ stylist-card {
   }
 
   .StylistCard-salon {
+    width: 100%;
     margin-top: 7px;
     font-size: $t-h4;
   }
@@ -276,33 +271,5 @@ stylist-card {
 
   .StylistCard-bookable {
     opacity: 0;
-  }
-}
-
-.StylistCard.is-search-card {
-  background: color($colors, primary);
-  border-color: transparent;
-
-  i[class*=mb-icon] {
-    color: color($colors, burntSienna);
-  }
-}
-
-.StylistCard.is-active.is-search-card {
-  .StylistCard-salon {
-    color: black;
-  }
-
-  .StylistCard-followers,
-  .StylistCard-speciality,
-  .StylistCard-address {
-    color: color($colors, burntSienna);
-  }
-
-  .StylistCard-submit {
-    font-size: pxtovw(18px);
-    font-weight: 600;
-    background: white;
-    box-shadow: 0 pxtovw(7px) pxtovw(43px) 0 rgba(0, 0, 0, 0.08);
   }
 }

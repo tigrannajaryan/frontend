@@ -47,7 +47,7 @@ describe('MyStylistsComponent', () => {
 
   it('should have stylists in both tabs', () => {
     const myStylistsTabList = fixture.nativeElement.querySelectorAll('[data-test-id=myStylistsTabList] stylist-card');
-    expect(myStylistsTabList.length).toBe(instance.tabs[MyStylistsTabs.primeStylists].stylists.length);
+    expect(myStylistsTabList.length).toBe(instance.tabs[MyStylistsTabs.madeStylists].stylists.length);
     const savedStylistsTabList = fixture.nativeElement.querySelectorAll('[data-test-id=savedStylistsTabList] stylist-card');
     expect(savedStylistsTabList.length).toBe(instance.tabs[MyStylistsTabs.savedStylists].stylists.length);
   });
@@ -57,22 +57,22 @@ describe('MyStylistsComponent', () => {
     expect(myStylistsTitle.outerText).toContain(`Stylists ${instance.totalStylistsCount}`);
   });
 
-  it('should show "There Is no preferred stylists yet"', () => {
-    instance.tabs[MyStylistsTabs.primeStylists].stylists = [];
+  it('should show "You didn\'t save anyone yet."', () => {
+    instance.tabs[MyStylistsTabs.madeStylists].stylists = [];
     fixture.detectChanges();
 
     const savedStylistsTabList = fixture.nativeElement.querySelector('[data-test-id=myStylistsTabList]');
     expect(savedStylistsTabList.outerText.trim())
-      .toContain('You did not select preferred stylists yet.');
+      .toContain('You didn\'t save anyone yet.');
   });
 
-  it('should show "There Is no saved stylists yet"', () => {
+  it('should show "You didn\'t save anyone yet."', () => {
     instance.tabs[MyStylistsTabs.savedStylists].stylists = [];
     fixture.detectChanges();
 
     const savedStylistsTabList = fixture.nativeElement.querySelector('[data-test-id=savedStylistsTabList]');
     expect(savedStylistsTabList.outerText.trim())
-      .toContain('You did not save any stylists yet.');
+      .toContain('You didn\'t save anyone yet.');
   });
 
   it('should not be able to open stylist clients page if this is not-bookable profile', () => {
@@ -81,8 +81,8 @@ describe('MyStylistsComponent', () => {
       .toContain('is-notBookable');
   });
 
-  it('should not be able to remove last primeStylists', () => {
-    instance.tabs[MyStylistsTabs.primeStylists].stylists.length = 1;
+  it('should not be able to remove last madeStylists', () => {
+    instance.tabs[MyStylistsTabs.madeStylists].stylists.length = 1;
     fixture.detectChanges();
 
     const savedStylistsTabList = fixture.nativeElement.querySelector('[data-test-id=removeStylist]');

@@ -20,6 +20,18 @@
     line-height: $button-height;
   }
 
+  &.button-mini {
+    width: auto;
+    height: auto;
+    min-height: auto;
+    padding: 0 pxtovw(8px);
+    margin: 0;
+    font-size: pxtovw(16px);
+    line-height: initial;
+    border-radius: pxtovw(20px);
+    box-shadow: none;
+  }
+
   &.is-loading {
     box-shadow: none;
   }

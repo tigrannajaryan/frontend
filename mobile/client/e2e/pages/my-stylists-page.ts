@@ -1,9 +1,9 @@
-import { $ } from 'protractor';
+import { $, $$ } from 'protractor';
 import { click, globals, waitFor, waitForNot } from '../shared-e2e/utils';
 
 class MyStylistsPage {
   // UI element declarations.
-  get stylistSearchBtn() { return $('my-stylists button[data-test-id=goToStylistSearch]'); }
+  get stylistSearchBtn() { return $$('my-stylists button[data-test-id=goToStylistSearch]').first(); }
   get savedStylistsBtn() { return $('my-stylists button[data-test-id=savedStylistsBtn]'); }
   get savedStylistsCard() { return $('my-stylists [data-test-id=savedStylistsTabList] stylist-card:first-child'); }
   get savedStylistsCardRemoveBtn() { return $('my-stylists [data-test-id=savedStylistsTabList] stylist-card:first-child [data-test-id=savedStylistRemoveBtn]'); }

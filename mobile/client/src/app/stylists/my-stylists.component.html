@@ -3,23 +3,32 @@
     <div class="Made-wp MyStylistsPage-headerMargin">
       <div class="Badge-H1 flexBetween">
         <div data-test-id="myStylistsTitle">
-          Stylists <span *ngIf="totalStylistsCount && totalStylistsCount > 0" class="Badge">{{ totalStylistsCount }}</span>
+          My Stylists <span *ngIf="totalStylistsCount && totalStylistsCount > 0" class="Badge">{{ totalStylistsCount }}</span>
         </div>
+
+        <button
+          *ngIf="isStylistsSearchButtonVisible()"
+          (click)="goToStylistsSearch()"
+          class="Button button-mini"
+          data-test-id="goToStylistSearch"
+          ion-button>
+          <b>Add Stylist</b>
+        </button>
       </div>
 
       <div class="Tabs-box MyStylistsPage-tabsMargin">
         <div class="Tabs-wp">
           <button
-            (click)="onTabChange(MyStylistsTabs.primeStylists)"
-            [class.active]="tabs[MyStylistsTabs.primeStylists].name === activeTab"
+            (click)="onTabChange(MyStylistsTabs.madeStylists)"
+            [class.active]="tabs[MyStylistsTabs.madeStylists].name === activeTab"
             ion-button clear color="dark" class="Tabs-btn">
-            {{ TabNames.primeStylists }} &nbsp; <b *ngIf="tabs[MyStylistsTabs.primeStylists].stylists?.length > 0">{{ tabs[MyStylistsTabs.primeStylists].stylists.length }}</b>
+            {{ TabNames.madeStylists }} &nbsp; <b>{{ tabs[MyStylistsTabs.madeStylists].stylists?.length || 0 }}</b>
           </button>
           <button
             (click)="onTabChange(MyStylistsTabs.savedStylists)"
             [class.active]="tabs[MyStylistsTabs.savedStylists].name === activeTab"
             ion-button clear color="dark" class="Tabs-btn" data-test-id="savedStylistsBtn">
-            {{ TabNames.savedStylists }} &nbsp; <b *ngIf="tabs[MyStylistsTabs.savedStylists].stylists?.length > 0">{{ tabs[MyStylistsTabs.savedStylists].stylists.length }}</b>
+            {{ TabNames.savedStylists }} &nbsp; <b>{{ tabs[MyStylistsTabs.savedStylists].stylists?.length || 0 }}</b>
           </button>
         </div>
       </div>
@@ -33,34 +42,31 @@
     <ion-spinner></ion-spinner>
   </ion-refresher>
 
-
-  <ion-fab right bottom>
-    <button ion-fab [madeLink]="[PageNames.StylistSearch]" [isRootNav]="true" data-test-id="goToStylistSearch">
-      <ion-icon name="add"></ion-icon>
-    </button>
-  </ion-fab>
-
-
   <ion-slides (ionSlideDrag)="onEnableRefresher(false)" (touchend)="onEnableRefresher(true)" (ionSlideDidChange)="onTabSwipe()" no-padding class="Tabs-slides">
     <ion-slide class="Tabs-slide" data-test-id="myStylistsTabList">
-      <div *ngIf="!tabs[MyStylistsTabs.primeStylists].loaded">
+      <div *ngIf="!tabs[MyStylistsTabs.madeStylists].loaded">
         <ion-spinner></ion-spinner>
       </div>
 
 
-      <div *ngIf="tabs[MyStylistsTabs.primeStylists].loaded" class="Made-wp Made-wpContent">
+      <div *ngIf="tabs[MyStylistsTabs.madeStylists].loaded" class="Made-wp Made-wpContent">
         <stylist-card
-          *ngFor="let stylist of tabs[MyStylistsTabs.primeStylists].stylists"
+          *ngFor="let stylist of tabs[MyStylistsTabs.madeStylists].stylists"
           [stylist]="stylist"
           [isActive]="stylist.uuid === activeStylist?.uuid"
           [isMyStylist]="true"
-          [enableRemove]="tabs[MyStylistsTabs.primeStylists].stylists.length === 1"
+          [enableRemove]="tabs[MyStylistsTabs.madeStylists].stylists.length === 1"
           (openCard)="onSetActiveStylist(stylist)"
           (closeCard)="onSetActiveStylist(undefined)"
           (showCalendar)="onShowCalendar(stylist)"
           (removeStylist)="onRemoveStylist(stylist)"></stylist-card>
 
-        <div *ngIf="!tabs[MyStylistsTabs.primeStylists].stylists || tabs[MyStylistsTabs.primeStylists].stylists?.length === 0">You did not select preferred stylists yet.</div>
+        <div
+          *ngIf="!tabs[MyStylistsTabs.madeStylists].stylists || tabs[MyStylistsTabs.madeStylists].stylists?.length === 0"
+          class="MyStylistsPage-noStylistsMargin">
+          <div class="MyStylistsPage-noStylistsMarginTitle">You didn't save anyone yet.</div>
+          <button (click)="goToStylistsSearch()" ion-button class="Button button-small" data-test-id="goToStylistSearch"><b>Search Stylists</b></button>
+        </div>
       </div>
     </ion-slide>
 
@@ -80,7 +86,12 @@
           (closeCard)="onSetActiveStylist(undefined)"
           (removeStylist)="onRemoveStylist(stylist)"></stylist-card>
 
-        <div *ngIf="!tabs[MyStylistsTabs.savedStylists].stylists || tabs[MyStylistsTabs.savedStylists].stylists?.length === 0">You did not save any stylists yet.</div>
+        <div
+          *ngIf="!tabs[MyStylistsTabs.savedStylists].stylists || tabs[MyStylistsTabs.savedStylists].stylists?.length === 0"
+          class="MyStylistsPage-noStylistsMargin">
+          <div class="MyStylistsPage-noStylistsMarginTitle">You didn't save anyone yet.</div>
+          <button (click)="goToStylistsSearch()" ion-button class="Button button-small" data-test-id="goToStylistSearch"><b>Search Stylists</b></button>
+        </div>
       </div>
     </ion-slide>
   </ion-slides>

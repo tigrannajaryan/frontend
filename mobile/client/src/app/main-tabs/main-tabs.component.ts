@@ -100,6 +100,9 @@ export class MainTabsComponent implements OnDestroy {
   }
 
   onTabChange(tab: Tab): void {
+    // show root tab and clear history
+    tab.popToRoot();
+
     // Track all tab changes
     this.ga.trackViewChange(tab.getActive());
 
