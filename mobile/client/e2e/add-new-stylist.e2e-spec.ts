@@ -1,6 +1,6 @@
 import * as faker from 'faker';
 
-import { waitFor, waitForNot } from './shared-e2e/utils';
+import { click, waitFor, waitForNot } from './shared-e2e/utils';
 import { backdoorApi } from './shared-e2e/backdoor-api';
 import { phoneLoginPage } from './shared-e2e/phone-login-page';
 import { firstNameLastNamePage } from './pages/firstname-lastname-page';
@@ -15,6 +15,7 @@ import { mainTabsPage } from './pages/main-tabs-page';
 import { pushPrimingPage } from './shared-e2e/push-priming-page';
 import { myStylistsPage } from './pages/my-stylists-page';
 import { homePage } from './pages/home-page';
+import clock = jasmine.clock;
 
 describe('Stylists add/remove flow', () => {
 
@@ -44,12 +45,13 @@ describe('Stylists add/remove flow', () => {
 
   it('Can navigate to search stylists page and add one more stylist', async () => {
     await myStylistsPage.goToStylistSearch();
-    await stylistsSearchPage.addSecondStylist();
+    await stylistsSearchPage.addFirstStylist();
   });
 
   it('Can navigate to search stylists page and add one nonBookable stylist', async () => {
-    await myStylistsPage.goToStylistSearch();
     await stylistsSearchPage.addNonBookableStylist();
+    await click(stylistsSearchPage.goBack);
+    await waitFor(mainTabsPage.stylsitsTab);
   });
 
   it('Can navigate to my saved stylists tab and remove first stylist', async () => {

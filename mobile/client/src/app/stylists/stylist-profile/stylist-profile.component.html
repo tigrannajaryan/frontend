@@ -1,0 +1,145 @@
+<ion-header class="madeHeader">
+  <ion-navbar class="Made-wp BackHeader-backBtn">
+    <ion-title>
+      <i class="mb-icon-logo"></i>
+    </ion-title>
+
+    <ion-buttons *ngIf="stylistProfile" end>
+      <button
+        *ngIf="!stylistProfile.is_preferred"
+        (click)="onSaveStylist()"
+        class="Button button-mini is-inHeader"
+        data-test-id="addStylist"
+        ion-button>
+        <b>SAVE</b>
+      </button>
+
+      <button
+        *ngIf="stylistProfile.is_preferred"
+        (click)="onRemoveStylist()"
+        [class.is-saved]="stylistProfile?.is_preferred"
+        class="Button button-mini is-inHeader"
+        data-test-id="removeStylist"
+        ion-button>
+        <b>SAVED</b>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content no-padding>
+  <div *ngIf="stylistProfile">
+    <div class="Made-wp">
+      <div class="StylistProfilePreview-name" data-test-id="stylistProfilePreviewName">{{ stylistProfile.first_name }}</div>
+
+      <div class="StylistProfilePreview-salon" data-test-id="stylistProfilePreviewSalon">{{ stylistProfile.salon_name }}</div>
+
+      <div class="StylistProfilePreview-clients"
+           (click)="stylistProfile.is_profile_bookable && onFollowersClick()"
+           [class.is-notBookable]="!stylistProfile.is_profile_bookable"
+           data-test-id="stylistProfilePreviewClients">
+        <i class="mb-icon-heart-a"></i> <b>{{ stylistProfile.followers_count }}</b>&nbsp;MADE Clients
+      </div>
+    </div>
+
+    <div class="StylistProfilePreview-photo">
+      <img [src]="stylistProfile.profile_photo_url  || 'assets/icons/stylistProfile-avatar.png'" alt="">
+    </div>
+
+    <div class="Made-wp">
+      <div *ngIf="stylistProfile.salon_address" (click)="onAddressClick()" class="StylistProfilePreview-item" data-test-id="stylistProfilePreviewAddress">
+        <div class="StylistProfilePreview-itemTitle">
+          <span>Address</span>
+
+          <i class="mb-icon-marker"></i>
+        </div>
+        <div class="StylistProfilePreview-itemText">
+          {{ stylistProfile.salon_address }}
+        </div>
+      </div>
+
+      <div *ngIf="stylistProfile.instagram_url" (click)="onInstagramClick()" class="StylistProfilePreview-item" data-test-id="stylistProfilePreviewInstagram">
+        <div class="StylistProfilePreview-itemTitle">
+          <span>Instagram</span>
+
+          <i class="mb-icon-instagram"></i>
+        </div>
+        <div class="StylistProfilePreview-itemText">
+          {{ stylistProfile.instagram_url }}
+        </div>
+      </div>
+
+      <div (click)="stylistProfile.is_profile_bookable ? onShowCalendar() : null" class="StylistProfilePreview-item">
+        <div class="StylistProfilePreview-itemTitle">
+          <span>Calendar</span>
+
+          <i class="mb-icon-calendar"></i>
+        </div>
+        <div *ngIf="!stylistProfile.is_profile_bookable" class="StylistProfilePreview-itemText" data-test-id="stylistProfilePreviewNoCalendar">
+          No Calendar Available
+        </div>
+
+        <div *ngIf="stylistProfile.is_profile_bookable" data-test-id="stylistProfilePreviewCalendar">
+          <div *ngIf="!(service?.name && prices)" class="text-center">
+            <div class="Spinner"><ion-spinner></ion-spinner></div>
+          </div>
+
+          <div *ngIf="service?.name && prices">
+            <ion-row no-padding justify-content-between align-items-center="">
+              <div class="ServiciesHeader-seviceItem">
+                <div class="ServiciesHeader-seviceName" data-test-id="name">{{ service?.name }}</div>
+                <ion-icon class="ServiciesHeader-serviceItemClose" name="ios-close"></ion-icon>
+              </div>
+
+              <button class="Button button-mini is-inHeader" ion-button>Add Service</button>
+            </ion-row>
+
+            <price-calendar [prices]="prices" [showOneMonth]="true"></price-calendar>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="stylistProfile.website_url" (click)="onWebsiteClick()" class="StylistProfilePreview-item" data-test-id="stylistProfilePreviewWebsite">
+        <div class="StylistProfilePreview-itemTitle">
+          <span>Website</span>
+
+          <i class="mb-icon-globe"></i>
+        </div>
+        <div class="StylistProfilePreview-itemText">
+          {{ stylistProfile.website_url }}
+        </div>
+      </div>
+
+      <div *ngIf="stylistProfile.email" (click)="onEmailClick()" class="StylistProfilePreview-item" data-test-id="stylistProfilePreviewEmail">
+        <div class="StylistProfilePreview-itemTitle">
+          <span>Email</span>
+
+          <i class="mb-icon-mail"></i>
+        </div>
+        <div class="StylistProfilePreview-itemText">
+          {{ stylistProfile.email }}
+        </div>
+      </div>
+
+      <div *ngIf="stylistProfile.phone" (click)="onPhoneClick()" class="StylistProfilePreview-item" data-test-id="stylistProfilePreviewPhone">
+        <div class="StylistProfilePreview-itemTitle">
+          <span>Phone</span>
+
+          <i class="mb-icon-phone-a"></i>
+        </div>
+        <div class="StylistProfilePreview-itemText">
+          {{ stylistProfile.phone }}
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-content>
+
+
+<ion-footer
+  *ngIf="stylistProfile?.is_profile_bookable"
+  [title]="'Book with ' + stylistProfile?.first_name"
+  (continue)="onStartBooking()"
+  madeContinueFooter
+  data-test-id="stylistProfilePreviewFooter"></ion-footer>

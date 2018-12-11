@@ -1,6 +1,3 @@
-// Very fast animation could help to make it smoother:
-$animation-speed: 80ms;
-
 stylist-card {
   display: block;
   text-align: left;
@@ -17,18 +14,10 @@ stylist-card {
   border: pxtovw(2px) solid transparent;
   border-radius: pxtovw(16px);
   box-shadow: 0 pxtovw(7px) pxtovw(43px) 0 rgba(0, 0, 0, 0.08);
-  transition: all $animation-speed ease;
-}
 
-.StylistCard-heart {
-  position: absolute;
-  top: pxtovw(16px);
-  left: pxtovw(14px);
-  font-size: pxtovw(21px);
-  color: color($colors, orange);
-  pointer-events: none;
-  opacity: 0;
-  transition: all $animation-speed ease;
+  &.is-nonBookable {
+    // we need it only for e2e tests - to get non bookable stylists
+  }
 }
 
 .StylistCard-close {
@@ -39,7 +28,6 @@ stylist-card {
   font-size: pxtovw(16px);
   pointer-events: none;
   opacity: 0;
-  transition: all $animation-speed ease;
 }
 
 .StylistCard-bookable {
@@ -49,7 +37,6 @@ stylist-card {
   font-size: pxtovw(15px);
   color: color($colors, orange);
   opacity: 1;
-  transition: all $animation-speed ease;
 }
 
 .StylistCard-body {
@@ -65,7 +52,6 @@ stylist-card {
   background-position: center;
   background-size: cover;
   border-radius: 50%; // circle
-  transition: all $animation-speed ease;
 }
 
 .StylistCard-salon {
@@ -74,7 +60,6 @@ stylist-card {
   font-size: $t-base;
   text-overflow: ellipsis;
   white-space: nowrap;
-  transition: all $animation-speed ease;
 }
 
 .StylistCard-name {
@@ -85,10 +70,8 @@ stylist-card {
   font-weight: 700;
   text-overflow: ellipsis;
   white-space: nowrap;
-  transition: all $animation-speed ease;
 }
 
-.StylistCard-address,
 .StylistCard-followers {
   display: flex;
   align-items: center;
@@ -96,13 +79,11 @@ stylist-card {
   margin: 0;
   font-size: pxtovw(15px);
   white-space: normal;
-  transition: all $animation-speed ease;
 
   .Link {
     // Add more contrast:
     color: color($colors, orange);
     white-space: normal;
-    transition: all $animation-speed ease;
   }
 
   i[class^=mb-icon] {
@@ -111,165 +92,5 @@ stylist-card {
     font-size: pxtovw(14px);
     line-height: pxtovw(15px);
     color: color($colors, orange);
-    transition: all $animation-speed ease;
-  }
-}
-
-.StylistCard-address {
-  align-items: flex-start;
-
-  .mb-icon-marker {
-    margin: pxtovw(3px) pxtovw(4px) 0 pxtovw(1px);
-  }
-}
-
-.StylistCard-info {
-  font-size: pxtovw(15px);
-  color: color($grayscale, 500);
-  white-space: normal;
-
-  [class^=mb-icon] {
-    min-width: pxtovw(18px);
-    color: color($colors, orange);
-  }
-
-  .Link {
-    white-space: normal;
-  }
-}
-
-.StylistCard-speciality {
-  display: block;
-  margin-top: pxtovw(8px);
-  font-size: $t-h4;
-  color: color($grayscale, 500);
-}
-
-.StylistCard-links {
-  $icon-size: pxtovw(24px);
-
-  margin: pxtovw(25px) 0 pxtovw(28px);
-
-  > * {
-    width: $icon-size;
-    height: $icon-size;
-    margin: 0 ($icon-size / 2);
-    font-size: $icon-size;
-    color: color($colors, orange);
-  }
-}
-
-.StylistCard-submit {
-  $submit-height: pxtovw(48px);
-
-  display: block;
-  width: 73%;
-  min-height: $submit-height;
-  margin: 0 auto pxtovw(18px);
-  line-height: $submit-height;
-  text-align: center;
-  box-shadow: none;
-
-  > span {
-    display: inline-block;
-    width: auto;
-    max-width: 100%;
-    overflow: hidden;
-    text-align: left;
-    text-overflow: ellipsis;
-  }
-}
-
-.StylistCard-action {
-  display: block;
-  font-size: $t-h4;
-  font-weight: 600;
-  color: color($colors, orange);
-  text-align: center;
-  background: none;
-
-  > span {
-    display: inline-block;
-    width: auto;
-    max-width: 100%;
-    overflow: hidden;
-    text-align: left;
-    text-overflow: ellipsis;
-  }
-}
-
-// card closed
-.StylistCard-info,
-.StylistCard-links,
-.StylistCard-submit,
-.StylistCard-action {
-  display: none;
-}
-
-// card expanded
-.StylistCard.is-active {
-  flex-flow: column;
-  align-items: center;
-  text-align: center;
-  border-color: rgb(229, 229, 229);
-
-  .StylistCard-photo {
-    width: pxtovw(88px);
-    height: pxtovw(88px);
-    margin: 0;
-  }
-
-  .StylistCard-salon {
-    width: 100%;
-    margin-top: 7px;
-    font-size: $t-h4;
-  }
-
-  .StylistCard-name {
-    margin-top: 9px;
-    font-size: $t-h2;
-  }
-
-  .StylistCard-followers {
-    justify-content: center;
-    margin-top: 8px;
-    font-size: $t-h4;
-
-    &:not(.is-notBookable) {
-      color: color($colors, orange);
-    }
-  }
-
-  .StylistCard-address {
-    display: inline-block;
-    margin-top: pxtovw(8px);
-    font-size: $t-h4;
-    color: color($colors, orange);
-  }
-
-  .StylistCard-info {
-    margin-top: 12px;
-    font-size: $t-h4;
-  }
-
-  // card opened
-  .StylistCard-info,
-  .StylistCard-submit,
-  .StylistCard-links {
-    display: block;
-  }
-
-  .StylistCard-heart,
-  .StylistCard-close {
-    pointer-events: auto;
-    opacity: 1;
-  }
-
-  .StylistCard-action {
-    display: inline-block;
-  }
-
-  .StylistCard-bookable {
-    opacity: 0;
   }
 }

@@ -1,0 +1,23 @@
+.ServiciesHeader-seviceItem {
+  display: flex;
+  align-items: center;
+  width: fit-content;
+  padding: pxtovw(2px) pxtovw(8px);
+  margin: 0 pxtovw(4px) pxtovw(4px) 0;
+  line-height: pxtovw(28px);
+  color: color($grayscale, 800);
+  background: #FEE0D0;
+  border-radius: pxtovw(3px);
+
+  .ServiciesHeader-seviceName {
+    display: inline-block;
+    font-size: pxtovw(16px);
+    font-weight: 600;
+  }
+
+  .ServiciesHeader-serviceItemClose {
+    margin-left: pxtovw(8px);
+    font-size: $t-h2;
+    line-height: pxtovw(28px);
+  }
+}

@@ -86,6 +86,8 @@ import { ClientAppStorage } from './core/client-app-storage';
 import { FirstLastNameComponent } from '~/profile/first-last-name/first-last-name.component';
 import { ClientStartupNavigation } from './core/client-startup-navigation';
 import { IntegrationsApi } from './shared/api/integrations.api';
+import { StylistProfileComponent } from '~/stylists/stylist-profile/stylist-profile.component';
+import { StylistProfileApi } from '~/shared/api/stylist-profile.api';
 
 // Init sentry reporting (inits only if ENV.sentryDsn):
 initSentry();
@@ -114,16 +116,17 @@ const declarations = [
   MainTabsComponent,
   MyStylistsComponent,
   NonBookableSavePopupComponent,
-  PushPrimingScreenComponent,
   PrivacySettingsComponent,
   ProfileEditComponent,
   ProfileSummaryComponent,
+  PushPrimingScreenComponent,
   SelectDateComponent,
   SelectStylistComponent,
   SelectTimeComponent,
   ServicesCategoriesPageComponent,
   ServicesPageComponent,
   StylistComponent,
+  StylistProfileComponent,
   StylistSearchComponent,
   SuccessErrorPopupComponent,
   UiKitPreviewComponent
@@ -210,6 +213,7 @@ const declarations = [
     GooglePlus,
     GoogleSignin,
     IntegrationsApi,
+    StylistProfileApi,
 
     { // Add auth token to all requests
       provide: HTTP_INTERCEPTORS,

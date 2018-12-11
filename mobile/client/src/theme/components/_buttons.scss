@@ -28,8 +28,20 @@
     margin: 0;
     font-size: pxtovw(16px);
     line-height: initial;
+    border: 1px solid transparent;
     border-radius: pxtovw(20px);
     box-shadow: none;
+
+    &.is-inHeader {
+      padding: pxtovw(2px) pxtovw(12px);
+      font-size: pxtovw(16px) !important; // rewrite ionic header buttons style
+    }
+
+    &.is-saved {
+      color: color($colors, lightSalmon);
+      background: none;
+      border: 1px solid color($colors, lightSalmon);
+    }
   }
 
   &.is-loading {

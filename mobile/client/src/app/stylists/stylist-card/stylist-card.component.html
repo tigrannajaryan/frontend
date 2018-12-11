@@ -1,20 +1,11 @@
 <div *ngIf="stylist"
-     [class.is-active]="isActive"
-     [class.is-hearted]="!stylist.is_profile_bookable"
-     (click)="onCardOpen()"
+     [class.is-nonBookable]="!stylist.is_profile_bookable"
      class="StylistCard"
      data-test-id="StylistCard">
-  <ng-container *ngIf="!stylist.is_profile_bookable">
-    <i *ngIf="stylist.is_profile_preferred" (click)="onRemoveStylist()" class="StylistCard-heart mb-icon-heart-a" data-test-id="savedStylistRemoveBtn"></i>
-    <i *ngIf="!stylist.is_profile_preferred" (click)="onSelectStylist()" class="StylistCard-heart mb-icon-heart" data-test-id="savedStylistSaveBtn"></i>
-  </ng-container>
 
-  <i (click)="onCardClose($event)" class="StylistCard-close mb-icon-cross"></i>
   <div *ngIf="stylist.is_profile_bookable" class="StylistCard-bookable">BOOK NOW</div>
 
-
   <div
-    (click)="canStartBooking() && onStartBooking()"
     class="StylistCard-photo"
     [style.backgroundImage]="'url(' + (stylist.profile_photo_url  || 'assets/icons/stylist-avatar.png') + ')'"></div>
 
@@ -25,43 +16,10 @@
 
     <div
       *ngIf="stylist.followers_count"
-      (click)="stylist.is_profile_bookable && onFollowersClick(stylist)"
       [class.is-notBookable]="!stylist.is_profile_bookable"
       class="StylistCard-followers"
       data-test-id="stylistFollowers">
       <i class="mb-icon-heart-a"></i>&nbsp;<span><b>{{ stylist.followers_count }}</b> MADE Clients</span>
     </div>
-
-    <div *ngIf="isActive" (click)="onAddressClick()" class="StylistCard-address">
-      <i class="mb-icon-marker"></i>&nbsp;<span>{{ stylist.salon_address }}</span>
-    </div>
-
-    <b *ngIf="isActive && stylist.specialities.length > 0" class="StylistCard-speciality">
-      Specialty: <span *ngFor="let speciality of stylist.specialities; let last = last">{{ speciality }}{{ last ? '' : ', ' }}</span>
-    </b>
-
-    <div class="StylistCard-links">
-      <i *ngIf="stylist.instagram_url" (click)="onInstagramClick()" class="mb-icon-instagram"></i>
-      <i *ngIf="stylist.website_url" (click)="onWebsiteClick()" class="mb-icon-globe"></i>
-      <i *ngIf="stylist.is_profile_bookable" class="mb-icon-calendar" (click)="onShowCalendar()"></i>
-      <phone-link [phone]="stylist.phone" [iconForm]="true" icon="mb-icon-phone-a"></phone-link>
-    </div>
-
-    <button
-      *ngIf="!isMyStylist && stylist.is_profile_bookable"
-      (click)="onSelectStylist()"
-      class="Button StylistCard-submit"
-      data-test-id="addStylist"
-      ion-button small>
-      Add {{ stylist.first_name }}!
-    </button>
-
-    <button
-      *ngIf="isMyStylist && !enableRemove && stylist.is_profile_bookable"
-      (click)="onRemoveStylist()"
-      class="StylistCard-action"
-      data-test-id="removeStylist">
-      Remove Stylist
-    </button>
   </div>
 </div>

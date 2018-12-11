@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { Events, NavController, Refresher, Slides } from 'ionic-angular';
+import { App, Events, NavController, Refresher, Slides } from 'ionic-angular';
 
 import {
   PreferredStylistModel,
@@ -7,12 +7,12 @@ import {
   StylistModel
 } from '~/shared/api/stylists.models';
 import { componentUnloaded } from '~/shared/component-unloaded';
+import { StylistProfileParams } from '~/stylists/stylist-profile/stylist-profile.component';
+import { ApiResponse } from '~/shared/api/base.models';
 
 import { ClientEventTypes } from '~/core/client-event-types';
 import { PageNames } from '~/core/page-names';
 import { PreferredStylistsData } from '~/core/api/preferred-stylists.data';
-import { ApiResponse } from '~/shared/api/base.models';
-import { BookingData } from '~/core/api/booking.data';
 
 export enum MyStylistsTabs {
   madeStylists = 0,
@@ -56,7 +56,7 @@ export class MyStylistsComponent {
   onboarding = false;
 
   constructor(
-    private bookingData: BookingData,
+    public app: App,
     private events: Events,
     private navCtrl: NavController,
     private preferredStylistsData: PreferredStylistsData
@@ -111,25 +111,6 @@ export class MyStylistsComponent {
     this.refresherEnabled = isEnabled;
   }
 
-  onRemoveStylist(stylist: PreferredStylistModel): void {
-    // do not remove last madeStylists, at least one is required
-    if (this.activeTab === TabNames.madeStylists && this.tabs[MyStylistsTabs.madeStylists].stylists.length === 1) {
-      return;
-    }
-
-    this.preferredStylistsData.removeStylist(stylist.preference_uuid);
-  }
-
-  async onShowCalendar(stylist: StylistModel): Promise<void> {
-    this.bookingData.start(stylist);
-
-    // We want to show the price calendar of this stylist for the most popular service
-    const { response } = await this.bookingData.selectMostPopularService();
-    if (response) {
-      this.navCtrl.push(PageNames.SelectDate);
-    }
-  }
-
   onRefresh(refresher: Refresher): void {
     try {
       // Reload stylists information
@@ -177,9 +158,7 @@ export class MyStylistsComponent {
         tabsObj[tab] = [];
       }
 
-      if (tab === MyStylistsTabs.savedStylists) {
-        cur.is_profile_preferred = true;
-      }
+      cur.is_profile_preferred = true;
 
       tabsObj[tab].push(cur);
       return tabsObj;
@@ -192,5 +171,13 @@ export class MyStylistsComponent {
     this.tabs[MyStylistsTabs.madeStylists].loaded = true;
     this.tabs[MyStylistsTabs.savedStylists].stylists = splitStylists[MyStylistsTabs.savedStylists];
     this.tabs[MyStylistsTabs.savedStylists].loaded = true;
+  }
+
+  openStylistPreview(stylist: PreferredStylistModel): void {
+    const params: StylistProfileParams = {
+      stylist
+    };
+
+    this.app.getRootNav().push(PageNames.StylistProfile, { params });
   }
 }
