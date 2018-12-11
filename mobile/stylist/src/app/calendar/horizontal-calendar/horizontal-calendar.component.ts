@@ -22,7 +22,7 @@ export class HorizontalCalendarComponent {
   @Input() set weekdays(weekdays: Workday[]) {
     if (weekdays) {
       for (const weekday of weekdays) {
-        this.disabledWeekdays[weekday.weekday_iso] = !weekday.is_available;
+        this.disabledWeekdays[weekday.weekday_iso] = !weekday.is_working_day;
         this.daysWithAppointments[weekday.weekday_iso] = Boolean(weekday.has_appointments);
       }
     }

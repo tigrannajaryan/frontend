@@ -1,7 +1,10 @@
 // API models for stylist working days and hours
 
 export interface WorkdayAvailability {
-  is_available: boolean;
+  // Canonically we use is_available in Workdays API. Appointment’s one-day API introduced is_working_day.
+  // All these changes means we should use either is_available or is_working_day.
+  is_available?: boolean;
+  is_working_day?: boolean;
 }
 
 export interface Workday extends WorkdayAvailability {
@@ -12,6 +15,8 @@ export interface Workday extends WorkdayAvailability {
   has_appointments?: boolean;
 }
 
+export type Weekdays = Workday[];
+
 export interface Worktime {
-  weekdays: Workday[];
+  weekdays: Weekdays;
 }
