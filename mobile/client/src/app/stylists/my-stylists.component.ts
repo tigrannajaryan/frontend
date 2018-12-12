@@ -15,13 +15,13 @@ import { ApiResponse } from '~/shared/api/base.models';
 import { BookingData } from '~/core/api/booking.data';
 
 export enum MyStylistsTabs {
-  primeStylists = 0,
+  madeStylists = 0,
   savedStylists = 1
 }
 
 export enum TabNames {
-  primeStylists = 'Prime Stylists',
-  savedStylists = 'Saved'
+  madeStylists = 'MADE Stylists',
+  savedStylists = 'Stylists'
 }
 
 @Component({
@@ -33,7 +33,7 @@ export class MyStylistsComponent {
   activeStylist?: StylistModel;
   tabs = [
     {
-      name: TabNames.primeStylists,
+      name: TabNames.madeStylists,
       loaded: false,
       stylists: []
     },
@@ -64,7 +64,7 @@ export class MyStylistsComponent {
   }
 
   ionViewDidLoad(): void {
-    this.activeTab = this.tabs[MyStylistsTabs.primeStylists].name;
+    this.activeTab = this.tabs[MyStylistsTabs.madeStylists].name;
 
     this.preferredStylistsData.get();
 
@@ -112,8 +112,8 @@ export class MyStylistsComponent {
   }
 
   onRemoveStylist(stylist: PreferredStylistModel): void {
-    // do not remove last primeStylists, at least one is required
-    if (this.activeTab === TabNames.primeStylists && this.tabs[MyStylistsTabs.primeStylists].stylists.length === 1) {
+    // do not remove last madeStylists, at least one is required
+    if (this.activeTab === TabNames.madeStylists && this.tabs[MyStylistsTabs.madeStylists].stylists.length === 1) {
       return;
     }
 
@@ -140,6 +140,29 @@ export class MyStylistsComponent {
     }
   }
 
+  goToStylistsSearch(): void {
+    this.navCtrl.push(PageNames.StylistSearch);
+  }
+
+  isStylistsSearchButtonVisible(): boolean {
+    if (
+      this.tabs[MyStylistsTabs.madeStylists].name === this.activeTab &&
+      this.tabs[MyStylistsTabs.madeStylists].stylists &&
+      this.tabs[MyStylistsTabs.madeStylists].stylists.length > 0
+    ) {
+     return true;
+    } else if (
+      this.tabs[MyStylistsTabs.savedStylists].name === this.activeTab
+      &&
+      this.tabs[MyStylistsTabs.savedStylists].stylists
+      && this.tabs[MyStylistsTabs.savedStylists].stylists.length > 0
+    ) {
+      return true;
+    }
+
+    return false;
+  }
+
   /**
    * Split stylists list to two separate lists
    * and use it for different tabs
@@ -148,7 +171,7 @@ export class MyStylistsComponent {
   splitStylistsList(stylists: PreferredStylistModel[]): void {
     // splitStylists = sorted array of two arrays
     const splitStylists = stylists.reduce((tabsObj, cur) => {
-      const tab = cur.is_profile_bookable ? MyStylistsTabs.primeStylists : MyStylistsTabs.savedStylists;
+      const tab = cur.is_profile_bookable ? MyStylistsTabs.madeStylists : MyStylistsTabs.savedStylists;
 
       if (!tabsObj[tab]) {
         tabsObj[tab] = [];
@@ -165,8 +188,8 @@ export class MyStylistsComponent {
     // replace old list with new one
     // we need replace it (not clear and set)
     // to prevent from blinking html
-    this.tabs[MyStylistsTabs.primeStylists].stylists = splitStylists[MyStylistsTabs.primeStylists];
-    this.tabs[MyStylistsTabs.primeStylists].loaded = true;
+    this.tabs[MyStylistsTabs.madeStylists].stylists = splitStylists[MyStylistsTabs.madeStylists];
+    this.tabs[MyStylistsTabs.madeStylists].loaded = true;
     this.tabs[MyStylistsTabs.savedStylists].stylists = splitStylists[MyStylistsTabs.savedStylists];
     this.tabs[MyStylistsTabs.savedStylists].loaded = true;
   }

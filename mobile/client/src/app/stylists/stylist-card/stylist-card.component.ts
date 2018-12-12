@@ -15,7 +15,6 @@ import { PageNames } from '~/core/page-names';
 export class StylistCardComponent implements OnInit {
   @Input() stylist: StylistModel;
   @Input() isActive = false;
-  @Input() isSearchCard = false;
   @Input() isMyStylist = false;
   @Input() enableRemove = false;
 
@@ -110,6 +109,6 @@ export class StylistCardComponent implements OnInit {
    * We can start booking process on avatar click only on my stylists tab and if a prime stylist
    */
   canStartBooking(): boolean {
-    return this.isActive && !this.isSearchCard && this.stylist.is_profile_bookable;
+    return this.isActive && this.stylist.is_profile_bookable;
   }
 }
