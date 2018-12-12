@@ -3,6 +3,7 @@ import { Content, NavParams, Slides } from 'ionic-angular';
 
 import { DiscountsApi } from '~/core/api/discounts.api';
 import { MaximumDiscounts, MaximumDiscountsWithVars, WeekdayDiscount } from '~/core/api/discounts.models';
+import { ProfileStatusDataStore } from '~/core/components/made-menu/profile-status.data';
 import { PageNames } from '~/core/page-names';
 import { loading } from '~/core/utils/loading';
 import { FirstBooking } from '~/discounts/discounts-first-booking/discounts-first-booking.component';
@@ -51,17 +52,19 @@ export class DiscountsComponent {
 
   constructor(
     public navParams: NavParams,
-    private discountsApi: DiscountsApi
+    private discountsApi: DiscountsApi,
+    private profileStatusData: ProfileStatusDataStore
   ) {
+  }
+
+  async ionViewWillLoad(): Promise<void> {
+    this.params = this.navParams.get('params') as DiscountsComponentParams;
+    await this.loadInitialData();
+    await this.performInitialSaving(); // if needed
   }
 
   ionViewDidLoad(): void {
     this.activeTab = DiscountTabNames.weekday;
-  }
-
-  ionViewWillEnter(): void {
-    this.params = this.navParams.get('params') as DiscountsComponentParams;
-    this.loadInitialData();
   }
 
   @loading
@@ -128,5 +131,30 @@ export class DiscountsComponent {
       maximum_discount: this.maximumDiscounts.maximum_discount,
       is_maximum_discount_enabled: this.maximumDiscounts.is_maximum_discount_enabled
     }).get();
+  }
+
+  private async performInitialSaving(): Promise<void> {
+    const { response: profileStatus } = await this.profileStatusData.get();
+    if (profileStatus && !profileStatus.has_weekday_discounts_set) {
+      // Perform initial saving of the discounts and mark them checked.
+      const responses = await Promise.all([
+        this.discountsApi.setDiscounts({
+          ...DiscountsRevisitComponent.transformDiscountsToRebook(this.rebook),
+          weekdays: this.weekdays,
+          first_booking: this.firstBooking.percentage
+        }).first().toPromise(),
+        this.discountsApi.setMaximumDiscounts({
+          maximum_discount: this.maximumDiscounts.maximum_discount,
+          is_maximum_discount_enabled: this.maximumDiscounts.is_maximum_discount_enabled
+        }).first().toPromise()
+      ]);
+      // If succeded and return no errors mark discounts checked.
+      if (responses.every(({ error }) => !error)) {
+        this.profileStatusData.set({
+          ...profileStatus,
+          has_weekday_discounts_set: true
+        });
+      }
+    }
   }
 }

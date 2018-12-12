@@ -12,6 +12,7 @@ import { ServiceCategory, ServiceTemplateItem, StylistServicesListResponse } fro
 import { StylistServicesDataStore } from '~/services/services-list/services.data';
 
 import { PageNames } from '~/core/page-names';
+import { ProfileStatusDataStore } from '~/core/components/made-menu/profile-status.data';
 import { ServiceListType } from '~/services/services.component';
 import { ServiceItemComponentData } from '~/services/services-item/services-item.component';
 
@@ -50,6 +51,7 @@ export class ServicesListComponent {
     public navCtrl: NavController,
     public navParams: NavParams,
     public modalCtrl: ModalController,
+    private profileStatusData: ProfileStatusDataStore,
     private servicesData: StylistServicesDataStore,
     private stylistService: StylistServiceProvider
   ) {
@@ -112,7 +114,14 @@ export class ServicesListComponent {
       await this.servicesData.deleteCache();
 
       if (response) {
-        this.navCtrl.push(PageNames.WorkHours);
+        const { response: profileStatus } = await this.profileStatusData.get();
+        await this.profileStatusData.set({
+          ...profileStatus,
+          has_services_set: true
+        });
+
+        const params: ServicesListComponentParams = { isRootPage: true };
+        this.navCtrl.setRoot(PageNames.ServicesList, { params });
       }
     }
   }

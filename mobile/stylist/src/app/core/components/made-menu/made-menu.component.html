@@ -6,9 +6,12 @@
     <div *ngIf="profile" class="sideMenu-user">
       <div [style.background-image]="profile.profile_photo_url ? 'url(' + profile.profile_photo_url + ')' : null" class="sideMenu-userAva"></div>
 
-      <div>
+      <div class="sideMenu-userInfo">
         <div data-test-id="menuProfileSalon" class="sideMenu-userSalon">{{ profile.salon_name }}</div>
-        <div data-test-id="menuProfileName" class="sideMenu-userName">{{ profile.first_name + ' ' + profile.last_name }}</div>
+        <div data-test-id="menuProfileName" class="sideMenu-userName">
+          <span>{{ profile.first_name + ' ' + profile.last_name }}</span>
+          <img *ngIf="!isProfileComplete()" class="sideMenu-notice" src="assets/icons/!@2x.png" />
+        </div>
         <div *ngIf="profile.followers_count" data-test-id="menuProfileFollowers" class="sideMenu-userClients"><i class="mb-icon-heart-a"></i> {{ profile.followers_count }} MADE Clients</div>
       </div>
     </div>
@@ -21,11 +24,13 @@
         *ngFor="let item of menuItems; let index = index"
         (click)="setPage(item.redirectToPage, item.redirectParams)"
         [class.is-active]=""
+        [class.is-noticed]="shouldShowNotice(item)"
         [attr.data-test-id]="'menuItem' + index"
         class="sideMenu-link"
         menuClose>
         <i class="mb-icon-{{ item.icon }}"></i>
-        {{ item.title }}
+        <span>{{ item.title }}</span>
+        <img class="sideMenu-notice" src="assets/icons/!@2x.png" />
       </button>
 
       <button

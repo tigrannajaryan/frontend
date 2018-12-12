@@ -62,7 +62,7 @@ export class CalendarExampleComponent {
   }
 
   onContinue(): void {
-    this.navCtrl.push(PageNames.Services);
+    this.navCtrl.push(PageNames.RegistrationDone);
   }
 
   onDeleteService(): void {

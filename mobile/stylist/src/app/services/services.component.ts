@@ -8,6 +8,9 @@ import { ServiceTemplateSetBase } from '~/shared/api/stylist-app.models';
 import { loading } from '~/shared/utils/loading';
 import { PageNames } from '~/core/page-names';
 
+import { StylistServicesDataStore } from '~/services/services-list/services.data';
+import { ServicesListComponentParams } from '~/services/services-list/services-list.component';
+
 export enum ServiceListType {
   blank = 'blank'
 }
@@ -27,11 +30,22 @@ export class ServicesComponent {
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
+    private servicesData: StylistServicesDataStore,
     private stylistService: StylistServiceProvider,
     private sanitizer: DomSanitizer
   ) {
     this.whiteImage = this.sanitizer.bypassSecurityTrustStyle('url(assets/imgs/services/white.png)');
     this.blackImage = this.sanitizer.bypassSecurityTrustStyle('url(assets/imgs/services/black.png)');
+  }
+
+  async ionViewCanEnter(): Promise<boolean> {
+    const { response } = await this.servicesData.get();
+    if (response && response.categories.some(({ services }) => services.length !== 0)) {
+      const params: ServicesListComponentParams = { isRootPage: true };
+      this.navCtrl.setRoot(PageNames.ServicesList, { params });
+    }
+
+    return true;
   }
 
   async ionViewWillLoad(): Promise<void> {

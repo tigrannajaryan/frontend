@@ -1,0 +1,50 @@
+registration-done {
+  @mixin create-img-styles($size) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: $size;
+    height: $size;
+    margin: auto;
+    border: pxtovw(1px) solid color($grayscale, 200);
+    border-radius: 50%;
+
+    img {
+      width: $size * 0.52173913;
+      height: $size * 0.5;
+    }
+  }
+
+  .Made-h1 {
+    justify-content: center;
+    margin: pxtovw(16px) auto;
+    text-align: center;
+  }
+
+  .RegistrationDone-img {
+    @include create-img-styles(pxtovw(184px));
+  }
+
+  .RegistrationDone-menuimg {
+    @include create-img-styles(pxtovw(56px));
+
+    margin: pxtovw(16px) auto;
+
+    img {
+      margin: pxtovw(6px) 0 0 pxtovw(4px);
+    }
+  }
+
+  .RegistrationDone-text {
+    font-size: $t-h3;
+    line-height: $t-h2;
+    color: color($colors, warmGrey);
+    text-align: center;
+  }
+
+  .Footer {
+    .Button {
+      margin-bottom: 0;
+    }
+  }
+}

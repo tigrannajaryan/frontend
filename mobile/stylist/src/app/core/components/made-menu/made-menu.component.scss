@@ -28,6 +28,10 @@ made-menu {
     border-radius: 50%;
   }
 
+  .sideMenu-userInfo {
+    flex: 1;
+  }
+
   .sideMenu-userSalon {
     font-size: pxtovw(18px);
     line-height: pxtovw(24px);
@@ -35,10 +39,18 @@ made-menu {
   }
 
   .sideMenu-userName {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
     font-size: pxtovw(21px);
     font-weight: 600;
     line-height: pxtovw(24px);
     color: black;
+
+    .sideMenu-notice {
+      display: block;
+    }
   }
 
   .sideMenu-userClients {
@@ -74,6 +86,14 @@ made-menu {
     border-top: pxtovw(2px) solid color($colors, lightSalmon);
   }
 
+  .sideMenu-notice {
+    $size: pxtovw(16px);
+
+    display: none; // enabled only for .sideMenu-link.is-noticed
+    width: $size;
+    height: $size;
+  }
+
   .sideMenu-link {
     position: relative;
     display: flex;
@@ -87,8 +107,27 @@ made-menu {
     text-align: left;
     background: none;
 
+    span { flex: 1; }
+
+    &.is-noticed {
+      font-weight: 500;
+
+      img.sideMenu-notice {
+        display: block;
+      }
+    }
+
     &.is-active {
       background: color($colors, warmGrey);
+    }
+
+    &.is-version {
+      font-size: pxtovw(15px);
+      line-height: pxtovw(16px);
+
+      span {
+        color: color($colors, warmGrey);
+      }
     }
 
     i {
@@ -132,15 +171,6 @@ made-menu {
 
     i[class^='mb-icon-invite-a'] {
       font-size: pxtovw(21px);
-    }
-
-    &.is-version {
-      font-size: pxtovw(15px);
-      line-height: pxtovw(16px);
-
-      span {
-        color: color($colors, warmGrey);
-      }
     }
   }
 }

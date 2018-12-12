@@ -40,27 +40,10 @@ export async function createNavHistoryList(profileStatus: StylistProfileStatus):
     return pages;
   }
 
-  pages.push({ page: PageNames.Services });
-  if (!profileStatus.has_services_set) {
-    return pages;
-  }
-
-  pages.push({ page: PageNames.WorkHours });
-  if (!profileStatus.has_business_hours_set) {
-    return pages;
-  }
-
-  pages.push({ page: PageNames.DiscountsWeekday });
-  if (!profileStatus.has_weekday_discounts_set || !profileStatus.has_other_discounts_set) {
-    return pages;
-  }
-
-  pages.push({ page: PageNames.Invitations });
-  if (!profileStatus.has_invited_clients) {
-    return pages;
-  }
-
-  return [ await nextToShowForCompleteProfile() ];
+  return [
+    { page: PageNames.RegistrationDone },
+    await nextToShowForCompleteProfile()
+  ];
 }
 
 export async function nextToShowForCompleteProfile(): Promise<PageDescr> {
@@ -92,12 +75,7 @@ export async function nextToShowForCompleteProfile(): Promise<PageDescr> {
  * completed. Must match behavior of createNavHistoryList.
  */
 export function isRegistrationComplete(profileStatus: StylistProfileStatus): boolean {
-  return profileStatus.has_business_hours_set &&
-    profileStatus.has_invited_clients &&
-    profileStatus.has_other_discounts_set &&
-    profileStatus.has_personal_data &&
-    profileStatus.has_services_set &&
-    profileStatus.has_weekday_discounts_set;
+  return profileStatus.has_personal_data;
 }
 
 export function trimStr(s?: string): string {

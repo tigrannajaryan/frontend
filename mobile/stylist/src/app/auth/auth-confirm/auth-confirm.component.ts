@@ -7,6 +7,7 @@ import { StylistProfileStatus } from '~/shared/api/stylist-app.models';
 import { AbstractAuthConfirmComponent } from '~/shared/components/auth/abstract-auth-confirm.component';
 import { AuthProcessState } from '~/shared/storage/auth-process-state';
 
+import { ProfileStatusDataStore } from '~/core/components/made-menu/profile-status.data';
 import { clearAllDataStores } from '~/core/data.module';
 import { createNavHistoryList, isRegistrationComplete } from '~/core/functions';
 import { StylistAppStorage } from '~/core/stylist-app-storage';
@@ -24,6 +25,7 @@ export class AuthConfirmPageComponent extends AbstractAuthConfirmComponent {
     protected events: Events,
     protected navCtrl: NavController,
     protected navParams: NavParams,
+    private profileStatusData: ProfileStatusDataStore,
     private storage: StylistAppStorage
   ) {
     super();
@@ -41,6 +43,9 @@ export class AuthConfirmPageComponent extends AbstractAuthConfirmComponent {
     this.events.publish(StylistEventTypes.menuUpdateProfileSubscription);
 
     const profileStatus = response.profile_status as StylistProfileStatus;
+
+    // Set initial data of the profile status DataStore.
+    this.profileStatusData.set(profileStatus);
 
     // true = This is a new user, enable help screens
     // false = Set it back to false for the case when we change user

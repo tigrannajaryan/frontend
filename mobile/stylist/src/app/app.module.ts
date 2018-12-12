@@ -79,6 +79,7 @@ import { InvitationsComponent } from '~/invitations/invitations.component';
 import { MyClientsComponent } from '~/clients/my-clients/my-clients.component';
 import { ClientDetailsComponent } from '~/clients/client-details/client-details.component';
 import { RegisterSalonComponent } from '~/register-salon/register-salon';
+import { RegistrationDoneComponent } from '~/onboarding/registration-done/registration-done.component';
 import { ProfileComponent } from '~/profile/profile.component';
 import { ServicesComponent } from '~/services/services.component';
 import { ServicesCategoriesComponent } from '~/services/services-categories/services-categories.component';
@@ -162,6 +163,7 @@ const declarations = [
   MyClientsComponent,
   PushPrimingScreenComponent,
   RegisterSalonComponent,
+  RegistrationDoneComponent,
   ProfileComponent,
   ServiceItemComponent,
   ServicesCategoriesComponent,

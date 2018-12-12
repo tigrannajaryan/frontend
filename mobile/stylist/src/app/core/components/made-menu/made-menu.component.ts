@@ -5,7 +5,7 @@ import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs/Subscription';
 
 import { AuthService } from '~/shared/api/auth.api';
-import { StylistProfile } from '~/shared/api/stylist-app.models';
+import { StylistProfile, StylistProfileStatus } from '~/shared/api/stylist-app.models';
 import { SharedEventTypes } from '~/shared/events/shared-event-types';
 import { getAppVersionNumber, getBuildNumber } from '~/shared/get-build-info';
 import { ApiResponse } from '~/shared/api/base.models';
@@ -15,7 +15,9 @@ import { LogoutAction } from '~/app.reducers';
 import { PageNames } from '~/core/page-names';
 import { clearAllDataStores } from '~/core/data.module';
 import { ProfileDataStore } from '~/core/profile.data';
+import { ProfileStatusDataStore } from '~/core/components/made-menu/profile-status.data';
 import { StylistEventTypes } from '~/core/stylist-event-types';
+import { calcProfileCompleteness } from '~/core/utils/stylist-utils';
 
 interface MenuItem {
   title: string;
@@ -33,6 +35,7 @@ export class MadeMenuComponent implements OnInit {
   @Input() nav: Nav;
 
   profile: StylistProfile;
+  profileStatus: StylistProfileStatus;
   menuItems: MenuItem[];
   swipeEnabled: boolean;
 
@@ -41,6 +44,7 @@ export class MadeMenuComponent implements OnInit {
   PageNames = PageNames;
 
   private profileSubscription: Subscription;
+  private profileStatusSubscription: Subscription;
 
   private pagesWithoutMenu: Page[] = [
     PageNames.FirstScreen,
@@ -48,14 +52,19 @@ export class MadeMenuComponent implements OnInit {
     PageNames.AuthConfirm
   ];
 
+  private servicesMenuItem: MenuItem;
+
   constructor(
     public profileData: ProfileDataStore,
     private authApiService: AuthService,
     private events: Events,
     private menu: MenuController,
+    private profileStatusData: ProfileStatusDataStore,
     private store: Store<{}>
   ) {
     const redirectParams = { isRootPage: true };
+
+    this.servicesMenuItem = { title: 'Services', redirectToPage: PageNames.ServicesList, redirectParams, icon: 'conditioners-a' };
 
     this.menuItems = [
       { title: 'Appointments', redirectToPage: PageNames.HomeSlots, redirectParams: {}, icon: 'home-a' },
@@ -63,7 +72,7 @@ export class MadeMenuComponent implements OnInit {
       { title: 'Discounts', redirectToPage: PageNames.Discounts, redirectParams, icon: 'discounts' },
       { title: 'Calendar', redirectToPage: PageNames.ClientsCalendar, redirectParams, icon: 'calendar-add' },
       { title: 'Hours', redirectToPage: PageNames.WorkHours, redirectParams, icon: 'clock-a' },
-      { title: 'Services', redirectToPage: PageNames.ServicesList, redirectParams, icon: 'conditioners-a' },
+      this.servicesMenuItem, // by ref
       { title: 'Invite Clients', redirectToPage: PageNames.Invitations, redirectParams, icon: 'invite-a' }
     ];
   }
@@ -134,8 +143,33 @@ export class MadeMenuComponent implements OnInit {
     return true;
   }
 
+  isProfileComplete(): boolean {
+    if (this.profile) {
+      return calcProfileCompleteness(this.profile).isProfileComplete;
+    }
+    return true;
+  }
+
   onMenuClick(): void {
     this.setPage(PageNames.Profile, {}, false);
+  }
+
+  shouldShowNotice(menuItem: MenuItem): boolean {
+    if (!this.profileStatus) {
+      return false;
+    }
+
+    switch (menuItem.redirectToPage) {
+      case PageNames.Discounts:
+        return !this.profileStatus.has_weekday_discounts_set;
+      case PageNames.WorkHours:
+        return !this.profileStatus.has_business_hours_set;
+      case PageNames.Services:
+      case PageNames.ServicesList:
+        return !this.profileStatus.has_services_set;
+      default:
+        return false;
+    }
   }
 
   private subscribe(): void {
@@ -143,10 +177,25 @@ export class MadeMenuComponent implements OnInit {
       this.profile = profileResponse.response;
     });
     this.profileData.get();
+
+    this.profileStatusSubscription = this.profileStatusData.subscribe((profileStatusResponse: ApiResponse<StylistProfileStatus>) => {
+      this.profileStatus = profileStatusResponse.response;
+
+      if (this.profileStatus) {
+        // Set services page or services template page based on `has_services_set`:
+        if (this.profileStatus.has_services_set) {
+          this.servicesMenuItem.redirectToPage = PageNames.ServicesList;
+        } else {
+          this.servicesMenuItem.redirectToPage = PageNames.Services;
+        }
+      }
+    });
+    this.profileStatusData.get();
   }
 
   private resubscribe(): void {
     this.profileSubscription.unsubscribe();
+    this.profileStatusSubscription.unsubscribe();
     this.subscribe();
   }
 }
