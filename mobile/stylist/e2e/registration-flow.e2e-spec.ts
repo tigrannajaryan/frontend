@@ -100,7 +100,7 @@ describe('Registration Flow', () => {
   });
 
   it('should see list of services', async () => {
-    const set1CategoryNames = ['', 'Color', 'Conditioners', 'Cuts', '', 'Special Occassions', 'Treatments', 'Wash and Style'];
+    const set1CategoryNames = ['Wash and Style', '', 'Color', 'Conditioners', 'Cuts', '', 'Special Occassions', 'Treatments'];
     // TODO: verify set #2
     // const set2categoryNames = ['', 'Color', 'Conditioners', 'Cuts', 'Special Occasions', 'Treatments', 'Wash and Style'];
 
