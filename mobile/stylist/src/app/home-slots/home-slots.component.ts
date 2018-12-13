@@ -5,7 +5,6 @@ import * as moment from 'moment';
 import * as deepEqual from 'fast-deep-equal';
 
 import { Logger } from '~/shared/logger';
-import { showAlert } from '~/shared/utils/alert';
 import { ExternalAppService } from '~/shared/utils/external-app-service';
 import { setIntervalOutsideNgZone } from '~/shared/utils/timer-utils';
 import { getPhoneNumber } from '~/shared/utils/phone-numbers';
@@ -16,7 +15,6 @@ import { HomeService } from '~/core/api/home.service';
 import { WorktimeApi } from '~/core/api/worktime.api';
 import { AppointmentCheckoutParams } from '~/appointment/appointment-checkout/appointment-checkout.component';
 import { PageNames } from '~/core/page-names';
-import { StylistAppStorage } from '~/core/stylist-app-storage';
 import { ProfileDataStore } from '~/core/profile.data';
 
 import { AppointmentAddParams } from '~/appointment/appointment-add/appointment-add';
@@ -37,10 +35,6 @@ import {
 import { WeekdayIso } from '~/shared/weekday';
 
 import { FocusAppointmentEventParams, StylistEventTypes } from '~/core/stylist-event-types';
-
-const helpText = `Congratulations! Your registration is complete.<br/><br/>
-  This is your home screen. Your appointments will show up here.<br/><br/>
-  Let's get started.`;
 
 // Default data that we display until the real data is being loaded
 const defaultData: DayAppointmentsResponse = {
@@ -93,7 +87,6 @@ export class HomeSlotsComponent {
   constructor(
     private actionSheetCtrl: ActionSheetController,
     private appointmentsDataStore: AppointmentsDataStore,
-    private appStorage: StylistAppStorage,
     private events: Events,
     private externalAppService: ExternalAppService,
     private homeService: HomeService,
@@ -114,12 +107,6 @@ export class HomeSlotsComponent {
 
     // Focus on one particullar appointment
     this.events.subscribe(StylistEventTypes.focusAppointment, (params: FocusAppointmentEventParams) => this.focusAppointment(params));
-
-    await this.appStorage.ready();
-    if (this.appStorage.get('showHomeScreenHelp')) {
-      showAlert('', helpText);
-      this.appStorage.set('showHomeScreenHelp', false);
-    }
 
     // Preload data
     this.profileDataStore.get();

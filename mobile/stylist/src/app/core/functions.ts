@@ -7,7 +7,6 @@ import { PushPrimingScreenParams } from '~/shared/components/push-priming-screen
 import { PushNotification } from '~/shared/push/push-notification';
 
 import { AppModule } from '~/app.module';
-import { StylistAppStorage } from '~/core/stylist-app-storage';
 import { PageNames } from '~/core/page-names';
 
 export interface PageDescr {
@@ -58,26 +57,13 @@ export async function nextToShowForCompleteProfile(): Promise<PageDescr> {
       // Show next appropriate screen after PushPrimingScreen
       onContinue: async () => {
         const app = AppModule.injector.get(App);
-        const { page, params } = await nextToShowAfterPrimingScreen();
-        app.getRootNav().setRoot(page, params);
+        app.getRootNav().setRoot(PageNames.HomeSlots);
       }
     };
     return { page: PageNames.PushPrimingScreen, params: { params: pushParams } };
   }
 
-  return nextToShowAfterPrimingScreen();
-}
-
-export function nextToShowAfterPrimingScreen(): PageDescr {
-  const storage = AppModule.injector.get(StylistAppStorage);
-
-  // Show registration done screen or not
-  if (!storage.get('hideRegistrationDone')) {
-    return { page: PageNames.RegistrationDone };
-  }
-
-  // Everything is complete, go to Home screen. We are return a single page here,
-  // there will be no navigation history.
+  // Show home screen
   return { page: PageNames.HomeSlots };
 }
 

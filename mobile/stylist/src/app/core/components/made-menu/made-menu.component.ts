@@ -13,7 +13,6 @@ import { LogoutAction } from '~/app.reducers';
 import { PageNames } from '~/core/page-names';
 import { clearAllDataStores } from '~/core/data.module';
 import { ProfileDataStore } from '~/core/profile.data';
-import { StylistAppStorage } from '~/core/stylist-app-storage';
 import { calcProfileCompleteness } from '~/core/utils/stylist-utils';
 
 interface MenuItem {
@@ -53,7 +52,6 @@ export class MadeMenuComponent implements OnInit {
     private authApiService: AuthService,
     private events: Events,
     private menu: MenuController,
-    private storage: StylistAppStorage,
     private store: Store<{}>,
     private zone: NgZone
   ) {
@@ -123,9 +121,6 @@ export class MadeMenuComponent implements OnInit {
 
     // Dismiss user’s state
     this.store.dispatch(new LogoutAction());
-
-    // Clear all data in stylist’s storage
-    this.storage.clearAll();
 
     // Clear cached data
     await clearAllDataStores();

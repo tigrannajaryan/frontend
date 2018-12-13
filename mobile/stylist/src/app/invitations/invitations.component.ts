@@ -668,21 +668,6 @@ export class InvitationsComponent {
   }
 
   /**
-   * Event handler for 'Skip' click.
-   */
-  // TODO: remove onSkip, not in use anymore
-  protected async onSkip(): Promise<void> {
-    // Send empty invitations list to backend to make sure the profile's
-    // has_invited_clients is marked true and we do not bother the user
-    // again during next login.
-    // this.invitationsApi.createInvitations([]).get();
-
-    // Show push priming screen if needed. Otherwise show home.
-    // const nextPageDescr = await nextToShowForCompleteProfile();
-    // this.navCtrl.setRoot(nextPageDescr.page, nextPageDescr.params);
-  }
-
-  /**
    * Action to perform when sending invitation is finished (successfully or not).
    */
   private sendingFinished(): void {

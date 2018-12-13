@@ -1,4 +1,4 @@
-import { browser, protractor } from 'protractor';
+import { browser } from 'protractor';
 import * as faker from 'faker';
 
 import { clearIonicStorage, click, getRandomString, globals, waitFor, waitForNot } from './shared-e2e/utils';
@@ -90,22 +90,32 @@ describe('Registration Flow', () => {
     await registrationDonePage.continue();
   });
 
-  it('should see Congratulations message', async () => {
-    waitFor(globals.alertSubtitle);
-    expect(globals.alertSubtitle.getText()).toContain('Congratulations! Your registration is complete.');
-
-    const alertButton = globals.alertButton('Dismiss');
-    click(alertButton);
-    waitForNot(alertButton);
-
-    waitFor(homePage.home);
+  it('should be able to open menu and logout', async () => {
+    await waitFor(homePage.menuBtn);
+    await click(homePage.menuBtn);
+    await waitFor(homePage.logoutBtn);
+    await click(homePage.logoutBtn);
+    await waitForNot(homePage.home);
   });
 
-  // TODO: check why we can't open a menu
-  xit('should have a menu button', async () => {
-    const EC = protractor.ExpectedConditions;
-    browser.wait(EC.visibilityOf(homePage.homeMenuToggleBtn), 20000);
-    expect(homePage.homeMenuToggleBtn.isPresent()).toBeTruthy();
-    homePage.homeMenuToggleBtn.click();
+  it('should be able to login again', async () => {
+    await waitFor(firstPage.getStartedBtn);
+    await firstPage.getStarted();
+
+    await waitFor(phoneLoginPage.phoneInput);
+    await phoneLoginPage.login(phoneNumber);
+
+    await waitFor(phoneCodePage.codeInput);
+
+    const loginCode = await backdoorApi.getCode(`+1${phoneNumber}`);
+
+    await phoneCodePage.codeInput.clear();
+    await phoneCodePage.codeInput.sendKeys(loginCode);
+
+    await waitForNot(phoneCodePage.codeInput);
+  });
+
+  it('should see home screen', async () => {
+    waitFor(homePage.home);
   });
 });

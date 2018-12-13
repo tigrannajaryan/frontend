@@ -141,9 +141,6 @@ export async function clearSessionData(): Promise<any> {
 }
 
 class Globals {
-  get alertSubtitle() { return $('ion-alert .alert-sub-title'); }
-  alertButton(buttonText: string) { return firstVisible(by.cssContainingText('ion-alert button span', buttonText)); }
-
   get ionLoading() { return $('ion-loading'); }
 }
 

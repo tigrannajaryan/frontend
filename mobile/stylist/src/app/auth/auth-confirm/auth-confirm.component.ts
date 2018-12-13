@@ -8,8 +8,7 @@ import { AbstractAuthConfirmComponent } from '~/shared/components/auth/abstract-
 import { AuthProcessState } from '~/shared/storage/auth-process-state';
 
 import { clearAllDataStores } from '~/core/data.module';
-import { createNavHistoryList, isRegistrationComplete } from '~/core/functions';
-import { StylistAppStorage } from '~/core/stylist-app-storage';
+import { createNavHistoryList } from '~/core/functions';
 
 @Component({
   selector: 'page-auth-confirm',
@@ -22,8 +21,7 @@ export class AuthConfirmPageComponent extends AbstractAuthConfirmComponent {
     protected authDataState: AuthProcessState,
     protected events: Events,
     protected navCtrl: NavController,
-    protected navParams: NavParams,
-    private storage: StylistAppStorage
+    protected navParams: NavParams
   ) {
     super();
   }
@@ -36,11 +34,6 @@ export class AuthConfirmPageComponent extends AbstractAuthConfirmComponent {
     await clearAllDataStores();
 
     const profileStatus = response.profile_status as StylistProfileStatus;
-
-    // true = This is a new user, enable help screens
-    // false = Set it back to false for the case when we change user
-    this.storage.set('showHomeScreenHelp', !isRegistrationComplete(profileStatus));
-
     const requiredPages = await createNavHistoryList(profileStatus);
     this.navCtrl.setPages(requiredPages);
   }

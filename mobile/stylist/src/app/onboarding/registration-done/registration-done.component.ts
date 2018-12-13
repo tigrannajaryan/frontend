@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 
-import { nextToShowForCompleteProfile } from '~/core/functions';
-import { StylistAppStorage } from '~/core/stylist-app-storage';
+import { PageNames } from '~/core/page-names';
 
 @Component({
   selector: 'registration-done',
@@ -11,15 +10,10 @@ import { StylistAppStorage } from '~/core/stylist-app-storage';
 export class RegistrationDoneComponent {
 
   constructor(
-    private navCtrl: NavController,
-    private storage: StylistAppStorage
+    private navCtrl: NavController
   ) {}
 
   async onContinue(): Promise<void> {
-    await this.storage.set('hideRegistrationDone', true);
-
-    // Show push priming screen if needed. Otherwise show home.
-    const { page, params } = await nextToShowForCompleteProfile();
-    this.navCtrl.setRoot(page, params);
+    this.navCtrl.setRoot(PageNames.HomeSlots);
   }
 }

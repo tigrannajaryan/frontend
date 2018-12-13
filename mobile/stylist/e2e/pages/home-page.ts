@@ -3,7 +3,8 @@ import { $ } from 'protractor';
 class HomePage {
   // UI element declarations.
   get home() { return $('home-slots'); }
-  get homeMenuToggleBtn() { return $('home-slots [data-test-id=menuToggleBtn]'); }
+  get menuBtn() { return $('[data-test-id=menuToggleBtn]'); }
+  get logoutBtn() { return $('[data-test-id=menuLogoutLink]'); }
 }
 
 export const homePage = new HomePage();
