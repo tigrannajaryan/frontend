@@ -7,12 +7,7 @@
 
       <ion-row nowrap class="PhoneBodyWrapper-sticky">
         <div class="Made-h1">How pricing works</div>
-
-        <user-name-photo
-          [firstName]="profile?.first_name"
-          [lastName]="profile?.last_name"
-          [photoUrl]="profile?.profile_photo_url ? profile.profile_photo_url : 'assets/icons/stylist-avatar.png'"
-          col-4>
+        <user-name-photo [firstName]="profile.first_name" [lastName]="profile.last_name" col-4>
         </user-name-photo>
       </ion-row>
 
