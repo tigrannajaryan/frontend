@@ -1,9 +1,12 @@
 // Stylist profile
 
-export interface StylistProfile {
-  uuid?: string;
+export interface StylistProfileName {
   first_name: string;
   last_name: string;
+}
+
+export interface StylistProfile extends StylistProfileName {
+  uuid?: string;
   phone: string;
   public_phone: string;
   salon_name: string;

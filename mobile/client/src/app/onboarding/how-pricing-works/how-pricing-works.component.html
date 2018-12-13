@@ -1,18 +1,32 @@
 <ion-header madeHeader></ion-header>
 
-
 <ion-content no-padding>
-  <div class="contentVerticalPadding">
+  <div class="PhoneBodyWrapper">
+
     <div class="Made-wp Made-wpContent">
-      <div class="Made-h1 text-center">How pricing works</div>
 
-      <check-list [list]="list"></check-list>
+      <ion-row nowrap class="PhoneBodyWrapper-sticky">
+        <div class="Made-h1">How pricing works</div>
 
-      <div class="Made-h3">What you see at booking:</div>
-      <img src="assets/imgs/discounts/welcome.png" alt="">
+        <user-name-photo
+          [firstName]="profile?.first_name"
+          [lastName]="profile?.last_name"
+          [photoUrl]="profile?.profile_photo_url ? profile.profile_photo_url : 'assets/icons/stylist-avatar.png'"
+          col-4>
+        </user-name-photo>
+      </ion-row>
+
+      <div class="Subtitle">Add any promos you like, as days fill prices auto increase back to full rate!</div>
+
+      <services-header-list [services]="services" [readonly]="false" (deleteService)="onDeleteService()">
+      </services-header-list>
+
+      <price-pair [regularPrice]="200"></price-pair>
+
+      <price-calendar [prices]="prices"></price-calendar>
     </div>
+
   </div>
 </ion-content>
-
 
 <ion-footer *ngIf="!hideContinueButton" madeContinueFooter (continue)="onContinue()"></ion-footer>
