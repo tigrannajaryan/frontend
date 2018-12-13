@@ -95,6 +95,7 @@ export class ClientAppComponent implements OnInit, OnDestroy {
     this.nav.viewDidEnter.subscribe(view => this.ga.trackViewChange(view));
 
     this.statusBar.styleDefault();
+    this.splashScreen.hide();
 
     // Get locally saved auth data
     let authLocalData: AuthLocalData = await getAuthLocalData();
@@ -132,8 +133,6 @@ export class ClientAppComponent implements OnInit, OnDestroy {
       const pageDescr = await this.clientNavigation.nextToShowByProfileStatus(pendingInvitation);
       await this.nav.setRoot(pageDescr.page, pageDescr.params);
     }
-
-    this.splashScreen.hide();
 
     // Notify that init is done
     this.events.publish(SharedEventTypes.appLoaded);
