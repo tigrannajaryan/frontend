@@ -1,7 +1,7 @@
 import { browser } from 'protractor';
 import * as faker from 'faker';
 
-import { clearIonicStorage, click, getRandomString, globals, waitFor, waitForNot } from './shared-e2e/utils';
+import { clearIonicStorage, clearSessionData, click, getRandomString, globals, waitFor, waitForNot } from './shared-e2e/utils';
 import { backdoorApi } from './shared-e2e/backdoor-api';
 import { phoneLoginPage } from './shared-e2e/phone-login-page';
 import { phoneCodePage } from './shared-e2e/phone-code-page';
@@ -25,12 +25,15 @@ describe('Registration Flow', () => {
   const websiteName = getRandomString(8);
 
   beforeAll(async () => {
+    await browser.restart();
+    await clearIonicStorage();
+    await browser.get('');
+    await clearSessionData();
+
     phoneNumber = await backdoorApi.getNewUnusedPhoneNumber();
   });
 
   it('Can navigate to login screen', async () => {
-    await clearIonicStorage();
-    await browser.get('');
     await firstPage.getStarted();
     await waitFor(phoneLoginPage.phoneInput);
   });
