@@ -11,6 +11,7 @@ export class StylistAppStorageMock extends AppStorageMock<StylistAppPersistentDa
   constructor() {
     const initialMockData = {
       showHomeScreenHelp: false,
+      hideRegistrationDone: false,
       pushNotificationParams: {
         isPermissionGranted: false,
         isPermissionDenied: false,

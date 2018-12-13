@@ -9,7 +9,6 @@ import { AllClientsDataStore } from '~/clients/all-clients/all-clients.data';
 import { MyClientsDataStore } from '~/clients/my-clients/my-clients.data';
 import { StylistServicesDataStore } from '~/services/services-list/services.data';
 import { ProfileDataStore } from '~/core/profile.data';
-import { ProfileStatusDataStore } from '~/core/components/made-menu/profile-status.data';
 import { AppModule } from '~/app.module';
 import { AppointmentsDataStore } from '~/home-slots/appointments.data';
 
@@ -48,7 +47,6 @@ export class DataModule {
         AppointmentsDataStore,
         MyClientsDataStore,
         ProfileDataStore,
-        ProfileStatusDataStore,
         StylistServicesDataStore
       ]
     };

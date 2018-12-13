@@ -7,6 +7,7 @@ import { PushPrimingScreenParams } from '~/shared/components/push-priming-screen
 import { PushNotification } from '~/shared/push/push-notification';
 
 import { AppModule } from '~/app.module';
+import { StylistAppStorage } from '~/core/stylist-app-storage';
 import { PageNames } from '~/core/page-names';
 
 export interface PageDescr {
@@ -41,7 +42,6 @@ export async function createNavHistoryList(profileStatus: StylistProfileStatus):
   }
 
   return [
-    { page: PageNames.RegistrationDone },
     await nextToShowForCompleteProfile()
   ];
 }
@@ -53,16 +53,27 @@ export async function nextToShowForCompleteProfile(): Promise<PageDescr> {
   if (await pushNotification.needToShowPermissionScreen()) {
     // Yes, we need to show it. Do it.
 
-    const params: PushPrimingScreenParams = {
+    const pushParams: PushPrimingScreenParams = {
       appType: UserRole.stylist,
       // Show next appropriate screen after PushPrimingScreen
-      onContinue: () => {
-        // Redirect to home screen:
+      onContinue: async () => {
         const app = AppModule.injector.get(App);
-        app.getRootNav().setRoot(PageNames.HomeSlots);
+        const { page, params } = await nextToShowAfterPrimingScreen();
+        app.getRootNav().setRoot(page, params);
       }
     };
-    return { page: PageNames.PushPrimingScreen, params: { params } };
+    return { page: PageNames.PushPrimingScreen, params: { params: pushParams } };
+  }
+
+  return nextToShowAfterPrimingScreen();
+}
+
+export function nextToShowAfterPrimingScreen(): PageDescr {
+  const storage = AppModule.injector.get(StylistAppStorage);
+
+  // Show registration done screen or not
+  if (!storage.get('hideRegistrationDone')) {
+    return { page: PageNames.RegistrationDone };
   }
 
   // Everything is complete, go to Home screen. We are return a single page here,

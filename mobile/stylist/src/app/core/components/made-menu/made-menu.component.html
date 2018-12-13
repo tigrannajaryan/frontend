@@ -1,4 +1,4 @@
-<ion-menu [content]="content" [swipeEnabled]="swipeEnabled" type="overlay">
+<ion-menu (ionOpen)="onMenuOpen()" [content]="content" [swipeEnabled]="swipeEnabled" type="overlay">
   <div
     (click)="onMenuClick()"
     data-test-id="menuProfileLink"
@@ -24,7 +24,7 @@
         *ngFor="let item of menuItems; let index = index"
         (click)="setPage(item.redirectToPage, item.redirectParams)"
         [class.is-active]=""
-        [class.is-noticed]="shouldShowNotice(item)"
+        [class.is-notDefined]="shouldShowNotice(item)"
         [attr.data-test-id]="'menuItem' + index"
         class="sideMenu-link"
         menuClose>
@@ -38,7 +38,7 @@
         data-test-id="menuLegalLink"
         class="sideMenu-link is-version"
         menuClose>
-        Legal <span>Version {{ appVersion }} ({{ appBuildNumber }})</span>
+        Legal <div>Version {{ appVersion }} ({{ appBuildNumber }})</div>
       </button>
     </div>
 

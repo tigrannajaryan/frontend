@@ -3,11 +3,12 @@ import { Content, NavParams, Slides } from 'ionic-angular';
 
 import { DiscountsApi } from '~/core/api/discounts.api';
 import { MaximumDiscounts, MaximumDiscountsWithVars, WeekdayDiscount } from '~/core/api/discounts.models';
-import { ProfileStatusDataStore } from '~/core/components/made-menu/profile-status.data';
 import { PageNames } from '~/core/page-names';
 import { loading } from '~/core/utils/loading';
 import { FirstBooking } from '~/discounts/discounts-first-booking/discounts-first-booking.component';
 import { DiscountsRevisitComponent } from '~/discounts/discounts-revisit/discounts-revisit.component';
+import { getProfileStatus, updateProfileStatus } from '~/shared/storage/token-utils';
+import { StylistProfileStatus } from '~/shared/api/stylist-app.models';
 
 export enum DiscountTabNames {
   weekday,
@@ -52,8 +53,7 @@ export class DiscountsComponent {
 
   constructor(
     public navParams: NavParams,
-    private discountsApi: DiscountsApi,
-    private profileStatusData: ProfileStatusDataStore
+    private discountsApi: DiscountsApi
   ) {
   }
 
@@ -134,7 +134,7 @@ export class DiscountsComponent {
   }
 
   private async performInitialSaving(): Promise<void> {
-    const { response: profileStatus } = await this.profileStatusData.get();
+    const profileStatus = await getProfileStatus() as StylistProfileStatus;
     if (profileStatus && !profileStatus.has_weekday_discounts_set) {
       // Perform initial saving of the discounts and mark them checked.
       const responses = await Promise.all([
@@ -150,7 +150,7 @@ export class DiscountsComponent {
       ]);
       // If succeded and return no errors mark discounts checked.
       if (responses.every(({ error }) => !error)) {
-        this.profileStatusData.set({
+        await updateProfileStatus({
           ...profileStatus,
           has_weekday_discounts_set: true
         });

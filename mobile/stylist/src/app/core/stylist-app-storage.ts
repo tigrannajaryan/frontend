@@ -11,6 +11,7 @@ import { PushPersistentData } from '~/shared/push/push-notification';
  */
 export interface StylistAppPersistentData {
   showHomeScreenHelp: boolean;
+  hideRegistrationDone: boolean;
   pushNotificationParams: PushPersistentData;
 }
 
@@ -27,6 +28,7 @@ export class StylistAppStorage extends AppStorage<StylistAppPersistentData> {
     // we run the app the first time or storage was deleted.
     const defaultData = {
       showHomeScreenHelp: false,
+      hideRegistrationDone: false,
       pushNotificationParams: {
         isPermissionGranted: false,
         isPermissionDenied: false,

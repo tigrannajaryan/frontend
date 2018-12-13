@@ -9,6 +9,9 @@ import { NotificationsApi } from '~/shared/push/notifications.api';
 import { NotificationsApiMock } from '~/shared/push/notifications.api.mock';
 import { PushNotification } from '~/shared/push/push-notification';
 
+import { StylistAppStorage } from '~/core/stylist-app-storage';
+import { StylistAppStorageMock } from '~/core/stylist-app-storage.mock';
+
 import { AppModule } from '~/app.module';
 import { createNavHistoryList } from './functions';
 import { PageNames } from './page-names';
@@ -29,6 +32,7 @@ describe('Shared functions: profileStatusToPage', () => {
           Logger,
           Push, PushNotification,
           { provide: NotificationsApi, useClass: NotificationsApiMock },
+          { provide: StylistAppStorage, useClass: StylistAppStorageMock },
           // Ionic mocks:
           { provide: Events, useFactory: () => EventsMock.instance() },
           { provide: Platform, useFactory: () => platformMock }
@@ -56,7 +60,7 @@ describe('Shared functions: profileStatusToPage', () => {
     done();
   });
 
-  it('should correctly map fully complete profile completeness to home screen', async done => {
+  it('should correctly map complete profile to RegistrationDone', async done => {
     // Full profile
     const profileStatus: StylistProfileStatus = {
       has_business_hours_set: true,
@@ -73,12 +77,38 @@ describe('Shared functions: profileStatusToPage', () => {
     );
 
     expect(await createNavHistoryList(profileStatus))
+      .toEqual([{ page: PageNames.RegistrationDone }]);
+
+    done();
+  });
+
+  it('should correctly map fully complete profile completeness to home screen', async done => {
+    // Full profile
+    const profileStatus: StylistProfileStatus = {
+      has_business_hours_set: true,
+      has_invited_clients: true,
+      has_other_discounts_set: true,
+      has_personal_data: true,
+      has_picture_set: true,
+      has_services_set: true,
+      has_weekday_discounts_set: true
+    };
+
+    spyOn(pushNotification, 'needToShowPermissionScreen').and.returnValue(
+      Promise.resolve(false) // skip push notification priming screen
+    );
+
+    const storage = TestBed.get(StylistAppStorage);
+    spyOn(storage, 'get').and.returnValue(true);
+
+    expect(await createNavHistoryList(profileStatus))
       .toEqual([{ page: PageNames.HomeSlots }]);
 
     done();
   });
 
-  it('should correctly map half complete profile to the correct list', async done => {
+  // TODO: reimplement when new stylist flow created
+  xit('should correctly map half complete profile to the correct list', async done => {
     // Half profile
     const profileStatus: StylistProfileStatus = {
       has_business_hours_set: true,

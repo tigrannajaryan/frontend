@@ -1,22 +1,19 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, NgZone, OnInit } from '@angular/core';
 import { Page } from 'ionic-angular/navigation/nav-util';
 import { Content, Events, MenuController, Nav, ViewController } from 'ionic-angular';
 import { Store } from '@ngrx/store';
-import { Subscription } from 'rxjs/Subscription';
 
 import { AuthService } from '~/shared/api/auth.api';
 import { StylistProfile, StylistProfileStatus } from '~/shared/api/stylist-app.models';
 import { SharedEventTypes } from '~/shared/events/shared-event-types';
 import { getAppVersionNumber, getBuildNumber } from '~/shared/get-build-info';
-import { ApiResponse } from '~/shared/api/base.models';
-import { deleteAuthLocalData } from '~/shared/storage/token-utils';
+import { deleteAuthLocalData, getProfileStatus } from '~/shared/storage/token-utils';
 
 import { LogoutAction } from '~/app.reducers';
 import { PageNames } from '~/core/page-names';
 import { clearAllDataStores } from '~/core/data.module';
 import { ProfileDataStore } from '~/core/profile.data';
-import { ProfileStatusDataStore } from '~/core/components/made-menu/profile-status.data';
-import { StylistEventTypes } from '~/core/stylist-event-types';
+import { StylistAppStorage } from '~/core/stylist-app-storage';
 import { calcProfileCompleteness } from '~/core/utils/stylist-utils';
 
 interface MenuItem {
@@ -43,9 +40,6 @@ export class MadeMenuComponent implements OnInit {
   appVersion = getAppVersionNumber();
   PageNames = PageNames;
 
-  private profileSubscription: Subscription;
-  private profileStatusSubscription: Subscription;
-
   private pagesWithoutMenu: Page[] = [
     PageNames.FirstScreen,
     PageNames.Auth,
@@ -59,8 +53,9 @@ export class MadeMenuComponent implements OnInit {
     private authApiService: AuthService,
     private events: Events,
     private menu: MenuController,
-    private profileStatusData: ProfileStatusDataStore,
-    private store: Store<{}>
+    private storage: StylistAppStorage,
+    private store: Store<{}>,
+    private zone: NgZone
   ) {
     const redirectParams = { isRootPage: true };
 
@@ -81,25 +76,34 @@ export class MadeMenuComponent implements OnInit {
    * NOTE: this component is never destroyed
    */
   async ngOnInit(): Promise<void> {
-    this.subscribe();
-
-    this.events.subscribe(
-      StylistEventTypes.menuUpdateProfileSubscription,
-      () => {
-        this.resubscribe();
-      }
-    );
-
-    this.events.subscribe(
-      SharedEventTypes.pushNotification,
-      () => {
-        this.menu.close();
-      }
-    );
+    // Close menu when notification appears in foreground
+    // TODO: close menu only when notification clicked
+    this.events.subscribe(SharedEventTypes.pushNotification, () => this.menu.close());
 
     // Track all top-level screen changes
     this.nav.viewDidEnter.subscribe(view => {
       this.swipeEnabled = this.hasMenu(view);
+    });
+  }
+
+  onMenuOpen(): void {
+    this.zone.run(async () => {
+      // Make view updates based on profile and profile status
+
+      const { response: profile } = await this.profileData.get();
+      this.profile = profile;
+
+      const profileStatus: StylistProfileStatus = await getProfileStatus() as StylistProfileStatus;
+      this.profileStatus = profileStatus;
+
+      if (this.profileStatus) {
+        // Set services page or services template page based on `has_services_set`:
+        if (this.profileStatus.has_services_set) {
+          this.servicesMenuItem.redirectToPage = PageNames.ServicesList;
+        } else {
+          this.servicesMenuItem.redirectToPage = PageNames.Services;
+        }
+      }
     });
   }
 
@@ -119,6 +123,9 @@ export class MadeMenuComponent implements OnInit {
 
     // Dismiss user’s state
     this.store.dispatch(new LogoutAction());
+
+    // Clear all data in stylist’s storage
+    this.storage.clearAll();
 
     // Clear cached data
     await clearAllDataStores();
@@ -162,40 +169,15 @@ export class MadeMenuComponent implements OnInit {
     switch (menuItem.redirectToPage) {
       case PageNames.Discounts:
         return !this.profileStatus.has_weekday_discounts_set;
-      case PageNames.WorkHours:
-        return !this.profileStatus.has_business_hours_set;
+      case PageNames.Invitations:
+        return !this.profileStatus.has_invited_clients;
       case PageNames.Services:
       case PageNames.ServicesList:
         return !this.profileStatus.has_services_set;
+      case PageNames.WorkHours:
+        return !this.profileStatus.has_business_hours_set;
       default:
         return false;
     }
-  }
-
-  private subscribe(): void {
-    this.profileSubscription = this.profileData.subscribe((profileResponse: ApiResponse<StylistProfile>) => {
-      this.profile = profileResponse.response;
-    });
-    this.profileData.get();
-
-    this.profileStatusSubscription = this.profileStatusData.subscribe((profileStatusResponse: ApiResponse<StylistProfileStatus>) => {
-      this.profileStatus = profileStatusResponse.response;
-
-      if (this.profileStatus) {
-        // Set services page or services template page based on `has_services_set`:
-        if (this.profileStatus.has_services_set) {
-          this.servicesMenuItem.redirectToPage = PageNames.ServicesList;
-        } else {
-          this.servicesMenuItem.redirectToPage = PageNames.Services;
-        }
-      }
-    });
-    this.profileStatusData.get();
-  }
-
-  private resubscribe(): void {
-    this.profileSubscription.unsubscribe();
-    this.profileStatusSubscription.unsubscribe();
-    this.subscribe();
   }
 }

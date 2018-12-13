@@ -3,7 +3,6 @@
  * part of the code.
  */
 export enum StylistEventTypes {
-  menuUpdateProfileSubscription = 'menuUpdateProfileSubscription',
   focusAppointment = 'focusAppointment'
 }
 

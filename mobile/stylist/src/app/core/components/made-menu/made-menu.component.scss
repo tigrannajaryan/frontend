@@ -89,7 +89,7 @@ made-menu {
   .sideMenu-notice {
     $size: pxtovw(16px);
 
-    display: none; // enabled only for .sideMenu-link.is-noticed
+    display: none; // enabled only for .sideMenu-link.is-notDefined
     width: $size;
     height: $size;
   }
@@ -109,7 +109,7 @@ made-menu {
 
     span { flex: 1; }
 
-    &.is-noticed {
+    &.is-notDefined {
       font-weight: 500;
 
       img.sideMenu-notice {
@@ -125,7 +125,7 @@ made-menu {
       font-size: pxtovw(15px);
       line-height: pxtovw(16px);
 
-      span {
+      div {
         color: color($colors, warmGrey);
       }
     }

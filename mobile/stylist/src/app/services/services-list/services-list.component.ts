@@ -8,11 +8,11 @@ import {
 
 import { loading } from '~/shared/utils/loading';
 import { ServiceTemplateSetResponse, StylistServiceProvider } from '~/core/api/stylist.service';
-import { ServiceCategory, ServiceTemplateItem, StylistServicesListResponse } from '~/shared/api/stylist-app.models';
+import { ServiceCategory, ServiceTemplateItem, StylistProfileStatus, StylistServicesListResponse } from '~/shared/api/stylist-app.models';
+import { getProfileStatus, updateProfileStatus } from '~/shared/storage/token-utils';
 import { StylistServicesDataStore } from '~/services/services-list/services.data';
 
 import { PageNames } from '~/core/page-names';
-import { ProfileStatusDataStore } from '~/core/components/made-menu/profile-status.data';
 import { ServiceListType } from '~/services/services.component';
 import { ServiceItemComponentData } from '~/services/services-item/services-item.component';
 
@@ -51,7 +51,6 @@ export class ServicesListComponent {
     public navCtrl: NavController,
     public navParams: NavParams,
     public modalCtrl: ModalController,
-    private profileStatusData: ProfileStatusDataStore,
     private servicesData: StylistServicesDataStore,
     private stylistService: StylistServiceProvider
   ) {
@@ -114,12 +113,15 @@ export class ServicesListComponent {
       await this.servicesData.deleteCache();
 
       if (response) {
-        const { response: profileStatus } = await this.profileStatusData.get();
-        await this.profileStatusData.set({
+        const profileStatus = await getProfileStatus() as StylistProfileStatus;
+        await updateProfileStatus({
           ...profileStatus,
           has_services_set: true
         });
 
+        // If no services exists we landed to Services page to enter stylist’s services first.
+        // When this happens ServicesList becomes a second page in stack. After services
+        // are saved ServicesList should become a root page.
         const params: ServicesListComponentParams = { isRootPage: true };
         this.navCtrl.setRoot(PageNames.ServicesList, { params });
       }

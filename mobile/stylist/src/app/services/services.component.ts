@@ -38,13 +38,20 @@ export class ServicesComponent {
     this.blackImage = this.sanitizer.bypassSecurityTrustStyle('url(assets/imgs/services/black.png)');
   }
 
+  /**
+   * This is a defensive approach: in case we redirected here from the menu and
+   * we already have services show ServicesList page. This code is placed
+   * in ionViewCanEnter to isolate it from ionViewWillLoad and let it start
+   * before actual rendering of the view.
+   *
+   * NOTE: if we return false this.navCtrl.setRoot is not going to work.
+   */
   async ionViewCanEnter(): Promise<boolean> {
     const { response } = await this.servicesData.get();
     if (response && response.categories.some(({ services }) => services.length !== 0)) {
       const params: ServicesListComponentParams = { isRootPage: true };
       this.navCtrl.setRoot(PageNames.ServicesList, { params });
     }
-
     return true;
   }
 

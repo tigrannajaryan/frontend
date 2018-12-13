@@ -7,11 +7,9 @@ import { StylistProfileStatus } from '~/shared/api/stylist-app.models';
 import { AbstractAuthConfirmComponent } from '~/shared/components/auth/abstract-auth-confirm.component';
 import { AuthProcessState } from '~/shared/storage/auth-process-state';
 
-import { ProfileStatusDataStore } from '~/core/components/made-menu/profile-status.data';
 import { clearAllDataStores } from '~/core/data.module';
 import { createNavHistoryList, isRegistrationComplete } from '~/core/functions';
 import { StylistAppStorage } from '~/core/stylist-app-storage';
-import { StylistEventTypes } from '~/core/stylist-event-types';
 
 @Component({
   selector: 'page-auth-confirm',
@@ -25,7 +23,6 @@ export class AuthConfirmPageComponent extends AbstractAuthConfirmComponent {
     protected events: Events,
     protected navCtrl: NavController,
     protected navParams: NavParams,
-    private profileStatusData: ProfileStatusDataStore,
     private storage: StylistAppStorage
   ) {
     super();
@@ -38,14 +35,7 @@ export class AuthConfirmPageComponent extends AbstractAuthConfirmComponent {
     // out without performing logout user action (e.g. on token expiration).
     await clearAllDataStores();
 
-    // Resubscribe to profile DataStore is needed in menu after storage was cleared out
-    // because clearAllDataStores invalidates all existing subscriptions.
-    this.events.publish(StylistEventTypes.menuUpdateProfileSubscription);
-
     const profileStatus = response.profile_status as StylistProfileStatus;
-
-    // Set initial data of the profile status DataStore.
-    this.profileStatusData.set(profileStatus);
 
     // true = This is a new user, enable help screens
     // false = Set it back to false for the case when we change user

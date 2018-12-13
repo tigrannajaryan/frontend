@@ -62,4 +62,13 @@ export class AppStorage<AppPersistentData> {
     this.data[key] = value;
     return this.storage.set(storageKey, this.data);
   }
+
+  /**
+   * Removes all data from the storage.
+   */
+  async clearAll(): Promise<void> {
+    for (const key of Object.keys(this.data)) {
+      await this.storage.remove(key);
+    }
+  }
 }

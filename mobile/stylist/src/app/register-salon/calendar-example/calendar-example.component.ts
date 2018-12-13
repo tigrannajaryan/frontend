@@ -6,6 +6,7 @@ import { PageNames } from '~/core/page-names';
 import { DayOffer, ServiceModel } from '~/shared/api/price.models';
 import { StylistProfile } from '~/shared/api/stylist-app.models';
 import { ProfileDataStore } from '~/core/profile.data';
+import { nextToShowForCompleteProfile } from '~/core/functions';
 
 // Some nice looking fake prices
 const fakePrices = [
@@ -61,8 +62,9 @@ export class CalendarExampleComponent {
     this.profile = response;
   }
 
-  onContinue(): void {
-    this.navCtrl.push(PageNames.RegistrationDone);
+  async onContinue(): Promise<void> {
+    const { page, params } = await nextToShowForCompleteProfile();
+    this.navCtrl.push(page, params);
   }
 
   onDeleteService(): void {

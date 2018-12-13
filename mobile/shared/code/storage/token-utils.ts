@@ -67,3 +67,31 @@ export async function deleteAuthLocalData(): Promise<void> {
   const storage = await getStorage();
   return storage.remove(TOKEN_KEY);
 }
+
+/**
+ * Shortcut to update (save) only profile data
+ */
+export async function updateProfileStatus(newProfileStatus: UserProfileStatus): Promise<UserProfileStatus> {
+  const data = await getAuthLocalData();
+  if (!data) {
+    console.warn('updateProfileStatus: data is empty');
+    return; // no initial data found, cannot update
+  }
+  const updatedProfileStatus = {
+    ...data.profileStatus,
+    ...newProfileStatus
+  };
+  await saveAuthLocalData({
+    ...data,
+    profileStatus: updatedProfileStatus
+  });
+  return updatedProfileStatus;
+}
+
+/**
+ * Shortcut to get only profile status
+ */
+export async function getProfileStatus(): Promise<UserProfileStatus> {
+  const data = await getAuthLocalData();
+  return data && data.profileStatus;
+}

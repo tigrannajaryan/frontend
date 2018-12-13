@@ -14,14 +14,15 @@ import * as Fuse from 'fuse.js/dist/fuse';
 import { normalizePhoneNumber } from '~/shared/utils/phone-numbers';
 import { Discounts } from '~/core/api/discounts.models';
 import { DiscountsApi } from '~/core/api/discounts.api';
-import { StylistProfile } from '~/shared/api/stylist-app.models';
+import { StylistProfile, StylistProfileStatus } from '~/shared/api/stylist-app.models';
 import { ClientInvitation, InvitationsResponse, InvitationStatus } from '~/shared/api/invitations.models';
 import { InvitationsApi } from '~/core/api/invitations.api';
 import { ApiResponse } from '~/shared/api/base.models';
 import { showAlert } from '~/shared/utils/alert';
+import { getProfileStatus, updateProfileStatus } from '~/shared/storage/token-utils';
 
 import { PageNames } from '~/core/page-names';
-import { nextToShowForCompleteProfile, trimStr } from '~/core/functions';
+import { trimStr } from '~/core/functions';
 import { ProfileDataStore } from '~/core/profile.data';
 
 class ErrorWrapper {
@@ -251,6 +252,18 @@ export class InvitationsComponent {
     private profileData: ProfileDataStore,
     private sms: SMS
   ) {
+  }
+
+  protected async ionViewWillLoad(): Promise<void> {
+    // After it’s visited set has_invited_clients to true. It indicates
+    // that a stylist has seen the inivitations screen.
+    const profileStatus = await getProfileStatus() as StylistProfileStatus;
+    if (profileStatus && !profileStatus.has_invited_clients) {
+      await updateProfileStatus({
+        ...profileStatus,
+        has_invited_clients: true
+      });
+    }
   }
 
   protected ionViewWillEnter(): void {
@@ -657,15 +670,16 @@ export class InvitationsComponent {
   /**
    * Event handler for 'Skip' click.
    */
+  // TODO: remove onSkip, not in use anymore
   protected async onSkip(): Promise<void> {
     // Send empty invitations list to backend to make sure the profile's
     // has_invited_clients is marked true and we do not bother the user
     // again during next login.
-    this.invitationsApi.createInvitations([]).get();
+    // this.invitationsApi.createInvitations([]).get();
 
     // Show push priming screen if needed. Otherwise show home.
-    const nextPageDescr = await nextToShowForCompleteProfile();
-    this.navCtrl.setRoot(nextPageDescr.page, nextPageDescr.params);
+    // const nextPageDescr = await nextToShowForCompleteProfile();
+    // this.navCtrl.setRoot(nextPageDescr.page, nextPageDescr.params);
   }
 
   /**

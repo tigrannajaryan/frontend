@@ -9,15 +9,9 @@ import { phoneCodePage } from './shared-e2e/phone-code-page';
 import { profilePage } from './pages/profile-page';
 import { welcomeToMadePage } from './pages/welcome-to-made-page';
 import { firstPage } from './pages/first-page';
-import { servicesPage } from './pages/services-page';
-import { worktimePage } from './pages/worktime-page';
-import { discountsWeekdayPage } from './pages/discounts-weekday-page';
-import { discountsRevisitPage } from './pages/discounts-revisit-page';
-import { discountsFirstVisitPage } from './pages/discounts-first-visit-page';
-import { invitationsPage } from './pages/invitations-page';
-import { selectServiceListPage } from './pages/select-service-list-page';
 import { calendarExamplePage } from './pages/calendar-example-page';
 import { pushPrimingPage } from './shared-e2e/push-priming-page';
+import { registrationDonePage } from './shared-e2e/registration-done-page';
 import { homePage } from './pages/home-page';
 
 describe('Registration Flow', () => {
@@ -88,57 +82,12 @@ describe('Registration Flow', () => {
     await calendarExamplePage.continue();
   });
 
-  it('should show service list selection', async () => {
-
-    expect(selectServiceListPage.getServiceSetName(0).getText()).toEqual('Naturally Straight Hair');
-    expect(selectServiceListPage.getServiceSetName(1).getText()).toEqual('Naturally Curly Hair');
-
-    expect(selectServiceListPage.getServiceCountText(0).getText()).toMatch(/\d Services/);
-    expect(selectServiceListPage.getServiceCountText(1).getText()).toMatch(/\d Services/);
-
-    await selectServiceListPage.selectSet(0);
-  });
-
-  it('should see list of services', async () => {
-    const set1CategoryNames = ['Wash and Style', '', 'Color', 'Conditioners', 'Cuts', '', 'Special Occassions', 'Treatments'];
-    // TODO: verify set #2
-    // const set2categoryNames = ['', 'Color', 'Conditioners', 'Cuts', 'Special Occasions', 'Treatments', 'Wash and Style'];
-
-    for (let i = 0; i < set1CategoryNames.length; i++) {
-      expect(servicesPage.getCategoryName(i).getText()).toEqual(set1CategoryNames[i]);
-      const expectedMinServiceCount = set1CategoryNames[i] ? 1 : 0;
-      expect(servicesPage.getServicesInCategory(i).count()).toBeGreaterThanOrEqual(
-        expectedMinServiceCount,
-        `Incorrect service count for category #${i}: ${set1CategoryNames[i]}`);
-    }
-
-    await servicesPage.continue();
-  });
-
-  it('can toggle week days on Worktime page', async () => {
-    await worktimePage.toggleWeekDay(0, 5); // toggle Sat
-    await worktimePage.toggleWeekDay(0, 6); // toggle Sun
-    await worktimePage.continue();
-  });
-
-  it('should show Weekday Discounts page', async () => {
-    await discountsWeekdayPage.continue();
-  });
-
-  it('should show Revisit Discounts page', async () => {
-    await discountsRevisitPage.continue();
-  });
-
-  it('should show First Visit Discounts page', async () => {
-    await discountsFirstVisitPage.continue();
-  });
-
-  it('should show Invitations page', async () => {
-    await invitationsPage.skip();
-  });
-
   it('should show notification priming page', async () => {
     await pushPrimingPage.allow();
+  });
+
+  it('should show registration done screen', async () => {
+    await registrationDonePage.continue();
   });
 
   it('should see Congratulations message', async () => {

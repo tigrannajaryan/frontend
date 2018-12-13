@@ -6,8 +6,9 @@ import { WorktimeApi } from '~/core/api/worktime.api';
 import { convertMinsToHrsMins, Time, TimeRange } from '~/shared/time';
 import { WEEKDAY_SHORT_NAMES, WeekdayIso } from '~/shared/weekday';
 import { Logger } from '~/shared/logger';
+import { getProfileStatus, updateProfileStatus } from '~/shared/storage/token-utils';
+import { StylistProfileStatus } from '~/shared/api/stylist-app.models';
 
-import { ProfileStatusDataStore } from '~/core/components/made-menu/profile-status.data';
 import { PageNames } from '~/core/page-names';
 import { loading } from '~/shared/utils/loading';
 
@@ -195,8 +196,7 @@ export class WorkHoursComponent {
     private api: WorktimeApi,
     private logger: Logger,
     private navCtrl: NavController,
-    private navParams: NavParams,
-    private profileStatusData: ProfileStatusDataStore
+    private navParams: NavParams
   ) { }
 
   async ionViewWillLoad(): Promise<void> {
@@ -259,11 +259,11 @@ export class WorkHoursComponent {
   }
 
   private async performInitialSaving(): Promise<void> {
-    const { response: profileStatus } = await this.profileStatusData.get();
+    const profileStatus = await getProfileStatus() as StylistProfileStatus;
     if (profileStatus && !profileStatus.has_business_hours_set) {
       const { response } = await this.api.setWorktime(this.presentation2api(this.cards)).get();
       if (response) {
-        this.profileStatusData.set({
+        await updateProfileStatus({
           ...profileStatus,
           has_business_hours_set: true
         });

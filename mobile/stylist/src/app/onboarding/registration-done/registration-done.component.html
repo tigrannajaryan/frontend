@@ -1,4 +1,4 @@
-<ion-header madeMenuHeader></ion-header>
+<ion-header madeMenuHeader [hideMenuButton]="true" [hideBackButton]="true"></ion-header>
 
 <ion-content no-padding>
 
@@ -18,7 +18,7 @@
   </div>
 
   <ion-footer class="Footer">
-    <button (click)="onContinue()" ion-button class="Button">View My Profile</button>
+    <button (click)="onContinue()" ion-button class="Button" data-test-id="continueBtn">View My Profile</button>
   </ion-footer>
 
 </ion-content>
