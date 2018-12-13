@@ -95,7 +95,7 @@ describe('Registration Flow', () => {
     await click(homePage.menuBtn);
     await waitFor(homePage.logoutBtn);
     await click(homePage.logoutBtn);
-    await waitForNot(homePage.home);
+    await waitForNot(homePage.logoutBtn);
   });
 
   it('should be able to login again', async () => {
