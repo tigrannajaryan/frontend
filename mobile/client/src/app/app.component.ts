@@ -5,7 +5,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { ScreenOrientation } from '@ionic-native/screen-orientation';
 
 import { getBuildNumber, getCommitHash } from '~/shared/get-build-info';
-import { GAWrapper } from '~/shared/google-analytics';
+import { AppAnalytics } from '~/shared/app-analytics';
 import { Logger } from '~/shared/logger';
 import { ServerStatusTracker } from '~/shared/server-status-tracker';
 import {
@@ -50,7 +50,7 @@ export class ClientAppComponent implements OnInit, OnDestroy {
     private authApiService: AuthService,
     private clientNavigation: ClientStartupNavigation,
     private events: Events,
-    private ga: GAWrapper,
+    private analytics: AppAnalytics,
     private logger: Logger,
     private platform: Platform,
     private preferredStylistsData: PreferredStylistsData,
@@ -85,14 +85,14 @@ export class ClientAppComponent implements OnInit, OnDestroy {
     // that our app needs and wait until all initializations finish. Add here any other
     // initialization operation that must be done before the initial page is shown.
     await async_all([
-      this.ga.init(ENV.gaTrackingId),
+      this.analytics.init(ENV.gaTrackingId),
       this.storage.init()
     ]);
 
     await this.pushNotification.init(this.storage);
 
     // Track all top-level screen changes
-    this.nav.viewDidEnter.subscribe(view => this.ga.trackViewChange(view));
+    this.nav.viewDidEnter.subscribe(view => this.analytics.trackViewChange(view));
 
     this.statusBar.styleDefault();
     this.splashScreen.hide();
@@ -119,7 +119,7 @@ export class ClientAppComponent implements OnInit, OnDestroy {
     const loadTime = Date.now() - startTime;
     this.logger.info('App: loaded in', loadTime, 'ms');
 
-    this.ga.trackTiming('Loading', loadTime, 'AppInitialization', 'FirstLoad');
+    this.analytics.trackTiming('Loading', loadTime, 'AppInitialization', 'FirstLoad');
 
     if (!authLocalData) {
       this.logger.info('App: will show FirstScreen');

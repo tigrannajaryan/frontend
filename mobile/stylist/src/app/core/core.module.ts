@@ -6,7 +6,7 @@ import { InlineSVGModule } from 'ng-inline-svg';
 
 import { Logger } from '~/shared/logger';
 import { UserContext } from '~/shared/user-context';
-import { GAWrapper } from '~/shared/google-analytics';
+import { AppAnalytics } from '~/shared/app-analytics';
 import { HasErrorPipe } from '~/shared/pipes/has-error.pipe';
 import { PricePipe } from '~/shared/pipes/price.pipe';
 import { BaseService } from '~/shared/api/base.service';
@@ -52,7 +52,7 @@ const declarations = [
     BaseService,
     Logger,
     GoogleAnalytics,
-    GAWrapper,
+    AppAnalytics,
     PushNotificationToastService,
     UserContext
   ]

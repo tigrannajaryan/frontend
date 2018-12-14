@@ -7,7 +7,7 @@ import { ScreenOrientation } from '@ionic-native/screen-orientation';
 import { async_all } from '~/shared/async-helpers';
 import { Logger } from '~/shared/logger';
 import { getBuildNumber, getCommitHash } from '~/shared/get-build-info';
-import { GAWrapper } from '~/shared/google-analytics';
+import { AppAnalytics } from '~/shared/app-analytics';
 import { StylistProfileStatus } from '~/shared/api/stylist-app.models';
 import { PushNotification } from '~/shared/push/push-notification';
 
@@ -34,7 +34,7 @@ export class MyAppComponent {
     public splashScreen: SplashScreen,
     private authApiService: AuthService,
     private logger: Logger,
-    private ga: GAWrapper,
+    private analytics: AppAnalytics,
     private pushNotification: PushNotification,
     private serverStatusTracker: ServerStatusTracker,
     private storage: StylistAppStorage,
@@ -60,7 +60,7 @@ export class MyAppComponent {
     // that our app needs and wait until all initializations finish. Add here any other
     // initialization operation that must be done before the initial page is shown.
     await async_all([
-      this.ga.init(ENV.gaTrackingId),
+      this.analytics.init(ENV.gaTrackingId),
       this.storage.init()
     ]);
 
@@ -72,7 +72,7 @@ export class MyAppComponent {
     }
 
     // Track all top-level screen changes
-    this.nav.viewDidEnter.subscribe(view => this.ga.trackViewChange(view));
+    this.nav.viewDidEnter.subscribe(view => this.analytics.trackViewChange(view));
 
     // All initializations are done, show the initial page to the user
     await this.showInitialPage();
@@ -92,7 +92,7 @@ export class MyAppComponent {
     const loadTime = Date.now() - startTime;
     this.logger.info('App: loaded in', loadTime, 'ms');
 
-    this.ga.trackTiming('Loading', loadTime, 'AppInitialization', 'FirstLoad');
+    this.analytics.trackTiming('Loading', loadTime, 'AppInitialization', 'FirstLoad');
   }
 
   async showInitialPage(): Promise<void> {

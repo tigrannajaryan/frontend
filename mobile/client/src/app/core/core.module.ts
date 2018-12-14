@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { IonicModule } from 'ionic-angular';
 import { GoogleAnalytics } from '@ionic-native/google-analytics';
 
-import { GAWrapper } from '~/shared/google-analytics';
+import { AppAnalytics } from '~/shared/app-analytics';
 import { PushNotificationToastService } from '~/shared/push/push-notification-toast';
 import { UserContext } from '~/shared/user-context';
 
@@ -30,6 +30,7 @@ import { AppointmentItemComponent } from '~/core/components/appointment-item/app
 import { MadeHeaderComponent } from '~/core/components/made-header/made-header.component';
 import { ProfileHeaderComponent } from '~/core/components/profile-header/profile-header.component';
 import { ClientPushNotificationsTrackerComponent } from '~/core/components/push-notifications-tracker/push-notifications-tracker.component';
+import { MadeAnalyticsApi } from '~/shared/api/made-analytics.api';
 
 import { InputNumberDirective } from '~/core/directives/input-number.directive';
 
@@ -80,7 +81,8 @@ const declarations = [
   ],
   providers: [
     GoogleAnalytics,
-    GAWrapper,
+    AppAnalytics,
+    MadeAnalyticsApi,
     PushNotificationToastService,
     UserContext
   ]

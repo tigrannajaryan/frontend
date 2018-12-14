@@ -144,6 +144,13 @@ export interface ApiRequestOptions {
   // and handle ApiFieldAndNonFieldErrors in your code that calls API functions.
   hideGenericAlertOnFieldAndNonFieldErrors?: boolean;
 
+  // If true will results in NOT notifying ServerStatusTracker on ANY errors.
+  // This means ServerStatusTracker will not show any UI indicators that something
+  // when wrong. Usually used when the call you make can be lost and there is nothing
+  // that we want to do about it or even let user know about it (e.g. sending
+  // supplementary analytics data failed).
+  hideAllErrors?: boolean;
+
   // Similar to above. If error happens which is like one of the elements of
   // hideGenericAlertOnErrorsLike array then do not show the error.
   // Uses ApiError.isLike() function to decide "likeness" of errors.
@@ -304,7 +311,10 @@ export function processApiResponseError(error: any, options: ApiRequestOptions):
     retApiVal = { error: new ServerUnknownError(error.error), notifyTracker: true };
   }
 
-  if (options && options.hideGenericAlertOnErrorsLike) {
+  if (options && options.hideAllErrors) {
+    // Caller asked to hide all errors, don't notify tracker.
+    retApiVal.notifyTracker = false;
+  } else if (options && options.hideGenericAlertOnErrorsLike) {
     // if we have any error like options.hideGenericAlertOnErrorsLike then return false
     // for the second value.
     retApiVal.notifyTracker = !options.hideGenericAlertOnErrorsLike.some(e => e.isLike(retApiVal.error));

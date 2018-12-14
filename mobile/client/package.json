@@ -99,6 +99,7 @@
     "sentry-cordova": "0.12.3",
     "sw-toolbox": "3.6.0",
     "uk.co.workingedge.phonegap.plugin.launchnavigator": "4.2.2",
+    "uuid": "3.3.2",
     "xml2js": "0.4.19",
     "zone.js": "0.8.20"
   },

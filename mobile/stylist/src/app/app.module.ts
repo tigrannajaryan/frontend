@@ -36,6 +36,7 @@ import { SuccessErrorPopupComponent } from '~/shared/components/success-error-po
 import { CalendarPrimingComponent } from '~/shared/components/calendar-priming/calendar-priming.component';
 import { GoogleSignin } from './shared/google-signin';
 import { IntegrationsApi } from './shared/api/integrations.api';
+import { MadeAnalyticsApi } from './shared/api/made-analytics.api';
 
 import { ENV } from '~/environments/environment.default';
 
@@ -252,6 +253,7 @@ const declarations = [
     ClientDetailsApi,
     NotificationsApi,
     IntegrationsApi,
+    MadeAnalyticsApi,
 
     ExternalAppService,
 

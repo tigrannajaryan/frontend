@@ -72,50 +72,53 @@ import {
   StorageMock
 } from 'ionic-mocks';
 
-import { ExternalAppService } from '~/shared/utils/external-app-service';
-import { GeolocationService } from '~/shared/utils/geolocation.service';
-import { GeolocationServiceMock } from '~/shared/utils/geolocation.service.mock';
-import { PushNotification } from '~/shared/push/push-notification';
-import { SharedSingletonsModule } from '~/shared/shared-singletons.module';
-import { CoreModule } from '~/core/core.module';
+import { ExternalAppService } from './app/shared/utils/external-app-service';
+import { GeolocationService } from './app/shared/utils/geolocation.service';
+import { GeolocationServiceMock } from './app/shared/utils/geolocation.service.mock';
+import { PushNotification } from './app/shared/push/push-notification';
+import { SharedSingletonsModule } from './app/shared/shared-singletons.module';
+import { CoreModule } from './app/core/core.module';
 
 // ngrx
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
-import { Logger } from '~/shared/logger';
+import { Logger } from './app/shared/logger';
 
-import { AppModule } from '~/app.module';
+import { AppModule } from './app/app.module';
 
-import { AppointmentsApi } from '~/core/api/appointments.api';
-import { AppointmentsApiMock } from '~/core/api/appointments.api.mock';
-import { AuthService } from '~/shared/api/auth.api';
-import { AuthServiceMock } from '~/shared/api/auth.api.mock';
-import { BookingApi } from '~/core/api/booking.api';
-import { BookingApiMock } from '~/core/api/booking.api.mock';
-import { ServicesService } from '~/core/api/services.service';
-import { ServicesServiceMock } from '~/core/api/services.service.mock';
-import { StylistsService } from '~/core/api/stylists.service';
-import { StylistsServiceMock } from '~/core/api/stylists.service.mock';
-import { ProfileApi } from '~/core/api/profile-api';
-import { ProfileApiMock } from '~/core/api/profile-api.mock';
+import { AppointmentsApi } from './app/core/api/appointments.api';
+import { AppointmentsApiMock } from './app/core/api/appointments.api.mock';
+import { AuthService } from './app/shared/api/auth.api';
+import { AuthServiceMock } from './app/shared/api/auth.api.mock';
+import { MadeAnalyticsApi } from './app/shared/api/made-analytics.api';
+import { MadeAnalyticsApiMock } from './app/shared/api/made-analytics.api.mock';
 
-import { profilePath, profileReducer } from '~/core/reducers/profile.reducer';
-import { servicesPath, servicesReducer } from '~/core/reducers/services.reducer';
+import { BookingApi } from './app/core/api/booking.api';
+import { BookingApiMock } from './app/core/api/booking.api.mock';
+import { ServicesService } from './app/core/api/services.service';
+import { ServicesServiceMock } from './app/core/api/services.service.mock';
+import { StylistsService } from './app/core/api/stylists.service';
+import { StylistsServiceMock } from './app/core/api/stylists.service.mock';
+import { ProfileApi } from './app/core/api/profile-api';
+import { ProfileApiMock } from './app/core/api/profile-api.mock';
 
-import { LogoutEffects } from '~/core/effects/logout.effects';
-import { ServicesEffects } from '~/core/effects/services.effects';
+import { profilePath, profileReducer } from './app/core/reducers/profile.reducer';
+import { servicesPath, servicesReducer } from './app/core/reducers/services.reducer';
 
-import { AuthProcessState } from '~/shared/storage/auth-process-state';
-import { AuthProcessStateMock } from '~/shared/storage/auth-process-state.mock';
+import { LogoutEffects } from './app/core/effects/logout.effects';
+import { ServicesEffects } from './app/core/effects/services.effects';
 
-import { DataModule } from '~/core/api/data.module';
-import { BaseService } from '~/shared/api/base.service';
-import { FollowersApiMock } from '~/core/api/followers.api.mock';
-import { FollowersApi } from '~/core/api/followers.api';
-import { ClientStartupNavigation } from '~/core/client-startup-navigation';
+import { AuthProcessState } from './app/shared/storage/auth-process-state';
+import { AuthProcessStateMock } from './app/shared/storage/auth-process-state.mock';
 
-import { BookingData } from '~/core/api/booking.data';
-import { BookingDataMock } from '~/core/api/booking.data.mock';
+import { DataModule } from './app/core/api/data.module';
+import { BaseService } from './app/shared/api/base.service';
+import { FollowersApiMock } from './app/core/api/followers.api.mock';
+import { FollowersApi } from './app/core/api/followers.api';
+import { ClientStartupNavigation } from './app/core/client-startup-navigation';
+
+import { BookingData } from './app/core/api/booking.data';
+import { BookingDataMock } from './app/core/api/booking.data.mock';
 
 declare const require: any;
 
@@ -205,6 +208,7 @@ export class TestUtils {
         { provide: ProfileApi, useClass: ProfileApiMock },
         { provide: FollowersApi, useClass: FollowersApiMock },
         { provide: BookingData, useClass: BookingDataMock },
+        { provide: MadeAnalyticsApi, useClass: MadeAnalyticsApiMock },
         ...providers
       ],
       imports: [

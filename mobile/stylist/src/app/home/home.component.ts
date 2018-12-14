@@ -11,7 +11,7 @@ import * as deepEqual from 'fast-deep-equal';
 import { formatNumber } from 'libphonenumber-js';
 
 import { Logger } from '~/shared/logger';
-import { GAWrapper } from '~/shared/google-analytics';
+import { AppAnalytics } from '~/shared/app-analytics';
 import { ExternalAppService } from '~/shared/utils/external-app-service';
 import { NumberFormat } from '~/shared/directives/phone-input.directive';
 import { ApiResponse } from '~/shared/api/base.models';
@@ -82,7 +82,7 @@ export class UpcomingAndPastComponent {
     private ngZone: NgZone,
     private actionSheetCtrl: ActionSheetController,
     private logger: Logger,
-    private ga: GAWrapper,
+    private analytics: AppAnalytics,
     private externalAppService: ExternalAppService,
     private profileDataStore: ProfileDataStore
   ) {
@@ -245,7 +245,7 @@ export class UpcomingAndPastComponent {
     }
     this.activeTab = this.tabs[this.slides.getActiveIndex()].name;
     this.loadAppointments(this.activeTab);
-    this.ga.trackView(`Home${this.activeTab}`);
+    this.analytics.trackView(`Home${this.activeTab}`);
   }
 
   private async loadAppointments(tabType: TabNames): Promise<void> {
