@@ -1,4 +1,26 @@
 page-calendar-example {
+  .scroll-content {
+    overflow-y: hidden;
+    background: url('../assets/imgs/device.jpg');
+    background-repeat: no-repeat;
+    background-position: top center;
+    background-size: 100% auto;
+  }
+
+  .PhoneBodyWrapper {
+    height: 100%;
+    margin: pxtovw(110px) pxtovw(20px) 0;
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .PhoneBodyWrapper-sticky {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    background: white;
+  }
+
   .CalendarExample-Subtitle {
     margin: pxtovw(8px) 0;
     font-size: pxtovw(16px);
