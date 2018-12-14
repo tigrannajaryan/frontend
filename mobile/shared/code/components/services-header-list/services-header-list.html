@@ -13,10 +13,7 @@
       <ion-icon name="ios-add-circle-outline" (click)="onAdd()" data-test-id="addServiceBtn"></ion-icon>
     </div>
 
-    <div *ngIf="!readonly && services?.length === 0" class="ServicesHeader-bigAddBtn" (click)="onAdd()">
-      <ion-icon ios="ios-add" md="md-add"></ion-icon>
-      Add Service
-    </div>
+    <div *ngIf="!readonly && services?.length === 0" class="ServicesHeader-bigAddBtn" (click)="onAdd()">Add Service</div>
 
   </div>
 

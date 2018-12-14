@@ -117,20 +117,7 @@ describe('Pages: Client’s Calendar ', () => {
     await instance.ionViewWillLoad();
     fixture.detectChanges();
 
-    // Now ensure the price is loaded again and 0 services are returned.
-    const clientsApi = fixture.debugElement.injector.get(ClientsApi);
-    const pricingResponseWithTheNoServices = clientsApi.getPricing().map(response => {
-      response.response.service_uuids = [];
-      return response;
-    });
-
-    spyOn(clientsApi, 'getPricing').and.returnValue(pricingResponseWithTheNoServices);
-
-    await instance.onDeleteService(instance.services[0]);
-    instance.services = [];
-    fixture.detectChanges();
-
-    // Now NoServiceSelected should be visible because by default we do not get services from mock API
+    // Now NoServiceSelected should be visible because by default we do not show services
     noServiceSelected = fixture.nativeElement.querySelector('.NoServiceSelected');
     expect(noServiceSelected).not.toBeNull();
 

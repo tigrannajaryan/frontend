@@ -52,7 +52,8 @@ export class ClientsCalendarComponent {
     }
 
     try {
-      await this.getPricing();
+      const noServices = [];
+      await this.getPricing(noServices);
     } finally {
       this.isLoaded = true;
     }
@@ -99,6 +100,7 @@ export class ClientsCalendarComponent {
 
   @loading
   private async getPricing(serviceUuids?: string[]): Promise<void> {
+
     if (serviceUuids && serviceUuids.length === 0) {
       // No services selected. Don't show prices
       this.prices = [{
@@ -108,25 +110,25 @@ export class ClientsCalendarComponent {
         is_working_day: false
       }];
       this.services = [];
-      return;
-    }
 
-    await this.clientsApi.getPricing(this.params && this.params.client && this.params.client.uuid, serviceUuids)
-      .combineLatest(Observable.from(this.servicesData.get()))
-      .takeUntil(componentUnloaded(this))
-      .map(([pricing, services]) => {
-        if (pricing.response) {
-          this.prices = pricing.response.prices;
+    } else {
+      await this.clientsApi.getPricing(this.params && this.params.client && this.params.client.uuid, serviceUuids)
+        .combineLatest(Observable.from(this.servicesData.get()))
+        .takeUntil(componentUnloaded(this))
+        .map(([pricing, services]) => {
+          if (pricing.response) {
+            this.prices = pricing.response.prices;
 
-          if (services.response) {
-            this.services =
-              services.response.categories
-                .reduce((allServices, category) => [...allServices, ...category.services], [])
-                .filter(service => pricing.response.service_uuids.indexOf(service.uuid) !== -1);
+            if (services.response) {
+              this.services =
+                services.response.categories
+                  .reduce((allServices, category) => [...allServices, ...category.services], [])
+                  .filter(service => pricing.response.service_uuids.indexOf(service.uuid) !== -1);
+            }
           }
-        }
-      })
-      .toPromise();
+        })
+        .toPromise();
+    }
 
     // Tell the content to recalculate its dimensions. According to Ionic docs this
     // should be called after dynamically adding/removing headers, footers, or tabs.
