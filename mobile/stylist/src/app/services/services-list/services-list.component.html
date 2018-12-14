@@ -5,8 +5,6 @@
 </ion-header>
 
 <ion-content no-padding>
-  <made-nav *ngIf="!params?.isRootPage" [activePage]="PageNames.Services"></made-nav>
-
 
   <ion-fab right bottom>
     <button (click)="openServiceModal()" ion-fab>
@@ -89,4 +87,4 @@
 </ion-content>
 
 
-<ion-footer *ngIf="!params?.isRootPage" (continue)="onContinue()" madeContinueFooter></ion-footer>
+<ion-footer *ngIf="!params?.isRootPage" (continue)="onContinue()" madeContinueFooter title="Save"></ion-footer>

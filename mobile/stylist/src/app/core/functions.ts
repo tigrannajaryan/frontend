@@ -40,27 +40,9 @@ export async function createNavHistoryList(profileStatus: StylistProfileStatus):
     return pages;
   }
 
-  pages.push({ page: PageNames.Services });
-  if (!profileStatus.has_services_set) {
-    return pages;
-  }
-
-  pages.push({ page: PageNames.WorkHours });
-  if (!profileStatus.has_business_hours_set) {
-    return pages;
-  }
-
-  pages.push({ page: PageNames.DiscountsWeekday });
-  if (!profileStatus.has_weekday_discounts_set || !profileStatus.has_other_discounts_set) {
-    return pages;
-  }
-
-  pages.push({ page: PageNames.Invitations });
-  if (!profileStatus.has_invited_clients) {
-    return pages;
-  }
-
-  return [ await nextToShowForCompleteProfile() ];
+  return [
+    await nextToShowForCompleteProfile()
+  ];
 }
 
 export async function nextToShowForCompleteProfile(): Promise<PageDescr> {
@@ -70,20 +52,18 @@ export async function nextToShowForCompleteProfile(): Promise<PageDescr> {
   if (await pushNotification.needToShowPermissionScreen()) {
     // Yes, we need to show it. Do it.
 
-    const params: PushPrimingScreenParams = {
+    const pushParams: PushPrimingScreenParams = {
       appType: UserRole.stylist,
       // Show next appropriate screen after PushPrimingScreen
-      onContinue: () => {
-        // Redirect to home screen:
+      onContinue: async () => {
         const app = AppModule.injector.get(App);
         app.getRootNav().setRoot(PageNames.HomeSlots);
       }
     };
-    return { page: PageNames.PushPrimingScreen, params: { params } };
+    return { page: PageNames.PushPrimingScreen, params: { params: pushParams } };
   }
 
-  // Everything is complete, go to Home screen. We are return a single page here,
-  // there will be no navigation history.
+  // Show home screen
   return { page: PageNames.HomeSlots };
 }
 
@@ -92,12 +72,7 @@ export async function nextToShowForCompleteProfile(): Promise<PageDescr> {
  * completed. Must match behavior of createNavHistoryList.
  */
 export function isRegistrationComplete(profileStatus: StylistProfileStatus): boolean {
-  return profileStatus.has_business_hours_set &&
-    profileStatus.has_invited_clients &&
-    profileStatus.has_other_discounts_set &&
-    profileStatus.has_personal_data &&
-    profileStatus.has_services_set &&
-    profileStatus.has_weekday_discounts_set;
+  return profileStatus.has_personal_data;
 }
 
 export function trimStr(s?: string): string {

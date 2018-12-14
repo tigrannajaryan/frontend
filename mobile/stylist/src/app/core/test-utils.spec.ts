@@ -2,6 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { StoreModule } from '@ngrx/store';
 
 import { CoreModule } from '~/core/core.module';
+import { DataModule } from '~/core/data.module';
 import { SharedSingletonsModule } from '~/shared/shared-singletons.module';
 
 /**
@@ -13,6 +14,7 @@ export const prepareSharedObjectsForTests = () => {
     TestBed.configureTestingModule({
       imports: [
         CoreModule,
+        DataModule.forRoot(),
         SharedSingletonsModule,
         StoreModule.forRoot({})
       ]

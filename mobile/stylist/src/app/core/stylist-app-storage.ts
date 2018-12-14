@@ -10,7 +10,6 @@ import { PushPersistentData } from '~/shared/push/push-notification';
  * want to be able to store in persistent storage and access via StylistAppStorage class.
  */
 export interface StylistAppPersistentData {
-  showHomeScreenHelp: boolean;
   pushNotificationParams: PushPersistentData;
 }
 
@@ -26,7 +25,6 @@ export class StylistAppStorage extends AppStorage<StylistAppPersistentData> {
     // Define default state of data if the storage does not exist, e.g
     // we run the app the first time or storage was deleted.
     const defaultData = {
-      showHomeScreenHelp: false,
       pushNotificationParams: {
         isPermissionGranted: false,
         isPermissionDenied: false,

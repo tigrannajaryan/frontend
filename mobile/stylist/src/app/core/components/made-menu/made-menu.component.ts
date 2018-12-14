@@ -1,21 +1,19 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, NgZone, OnInit } from '@angular/core';
 import { Page } from 'ionic-angular/navigation/nav-util';
 import { Content, Events, MenuController, Nav, ViewController } from 'ionic-angular';
 import { Store } from '@ngrx/store';
-import { Subscription } from 'rxjs/Subscription';
 
 import { AuthService } from '~/shared/api/auth.api';
-import { StylistProfile } from '~/shared/api/stylist-app.models';
+import { StylistProfile, StylistProfileStatus } from '~/shared/api/stylist-app.models';
 import { SharedEventTypes } from '~/shared/events/shared-event-types';
 import { getAppVersionNumber, getBuildNumber } from '~/shared/get-build-info';
-import { ApiResponse } from '~/shared/api/base.models';
-import { deleteAuthLocalData } from '~/shared/storage/token-utils';
+import { deleteAuthLocalData, getProfileStatus } from '~/shared/storage/token-utils';
 
 import { LogoutAction } from '~/app.reducers';
 import { PageNames } from '~/core/page-names';
 import { clearAllDataStores } from '~/core/data.module';
 import { ProfileDataStore } from '~/core/profile.data';
-import { StylistEventTypes } from '~/core/stylist-event-types';
+import { calcProfileCompleteness } from '~/core/utils/stylist-utils';
 
 interface MenuItem {
   title: string;
@@ -33,6 +31,7 @@ export class MadeMenuComponent implements OnInit {
   @Input() nav: Nav;
 
   profile: StylistProfile;
+  profileStatus: StylistProfileStatus;
   menuItems: MenuItem[];
   swipeEnabled: boolean;
 
@@ -40,22 +39,25 @@ export class MadeMenuComponent implements OnInit {
   appVersion = getAppVersionNumber();
   PageNames = PageNames;
 
-  private profileSubscription: Subscription;
-
   private pagesWithoutMenu: Page[] = [
     PageNames.FirstScreen,
     PageNames.Auth,
     PageNames.AuthConfirm
   ];
 
+  private servicesMenuItem: MenuItem;
+
   constructor(
     public profileData: ProfileDataStore,
     private authApiService: AuthService,
     private events: Events,
     private menu: MenuController,
-    private store: Store<{}>
+    private store: Store<{}>,
+    private zone: NgZone
   ) {
     const redirectParams = { isRootPage: true };
+
+    this.servicesMenuItem = { title: 'Services', redirectToPage: PageNames.ServicesList, redirectParams, icon: 'conditioners-a' };
 
     this.menuItems = [
       { title: 'Appointments', redirectToPage: PageNames.HomeSlots, redirectParams: {}, icon: 'home-a' },
@@ -63,7 +65,7 @@ export class MadeMenuComponent implements OnInit {
       { title: 'Discounts', redirectToPage: PageNames.Discounts, redirectParams, icon: 'discounts' },
       { title: 'Calendar', redirectToPage: PageNames.ClientsCalendar, redirectParams, icon: 'calendar-add' },
       { title: 'Hours', redirectToPage: PageNames.WorkHours, redirectParams, icon: 'clock-a' },
-      { title: 'Services', redirectToPage: PageNames.ServicesList, redirectParams, icon: 'conditioners-a' },
+      this.servicesMenuItem, // by ref
       { title: 'Invite Clients', redirectToPage: PageNames.Invitations, redirectParams, icon: 'invite-a' }
     ];
   }
@@ -72,25 +74,34 @@ export class MadeMenuComponent implements OnInit {
    * NOTE: this component is never destroyed
    */
   async ngOnInit(): Promise<void> {
-    this.subscribe();
-
-    this.events.subscribe(
-      StylistEventTypes.menuUpdateProfileSubscription,
-      () => {
-        this.resubscribe();
-      }
-    );
-
-    this.events.subscribe(
-      SharedEventTypes.pushNotification,
-      () => {
-        this.menu.close();
-      }
-    );
+    // Close menu when notification appears in foreground
+    // TODO: close menu only when notification clicked
+    this.events.subscribe(SharedEventTypes.pushNotification, () => this.menu.close());
 
     // Track all top-level screen changes
     this.nav.viewDidEnter.subscribe(view => {
       this.swipeEnabled = this.hasMenu(view);
+    });
+  }
+
+  onMenuOpen(): void {
+    this.zone.run(async () => {
+      // Make view updates based on profile and profile status
+
+      const { response: profile } = await this.profileData.get();
+      this.profile = profile;
+
+      const profileStatus: StylistProfileStatus = await getProfileStatus() as StylistProfileStatus;
+      this.profileStatus = profileStatus;
+
+      if (this.profileStatus) {
+        // Set services page or services template page based on `has_services_set`:
+        if (this.profileStatus.has_services_set) {
+          this.servicesMenuItem.redirectToPage = PageNames.ServicesList;
+        } else {
+          this.servicesMenuItem.redirectToPage = PageNames.Services;
+        }
+      }
     });
   }
 
@@ -134,19 +145,34 @@ export class MadeMenuComponent implements OnInit {
     return true;
   }
 
+  isProfileComplete(): boolean {
+    if (this.profile) {
+      return calcProfileCompleteness(this.profile).isProfileComplete;
+    }
+    return true;
+  }
+
   onMenuClick(): void {
     this.setPage(PageNames.Profile, {}, false);
   }
 
-  private subscribe(): void {
-    this.profileSubscription = this.profileData.subscribe((profileResponse: ApiResponse<StylistProfile>) => {
-      this.profile = profileResponse.response;
-    });
-    this.profileData.get();
-  }
+  shouldShowNotice(menuItem: MenuItem): boolean {
+    if (!this.profileStatus) {
+      return false;
+    }
 
-  private resubscribe(): void {
-    this.profileSubscription.unsubscribe();
-    this.subscribe();
+    switch (menuItem.redirectToPage) {
+      case PageNames.Discounts:
+        return !this.profileStatus.has_weekday_discounts_set;
+      case PageNames.Invitations:
+        return !this.profileStatus.has_invited_clients;
+      case PageNames.Services:
+      case PageNames.ServicesList:
+        return !this.profileStatus.has_services_set;
+      case PageNames.WorkHours:
+        return !this.profileStatus.has_business_hours_set;
+      default:
+        return false;
+    }
   }
 }

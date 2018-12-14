@@ -7,6 +7,8 @@ import { PageNames } from '~/core/page-names';
 import { loading } from '~/core/utils/loading';
 import { FirstBooking } from '~/discounts/discounts-first-booking/discounts-first-booking.component';
 import { DiscountsRevisitComponent } from '~/discounts/discounts-revisit/discounts-revisit.component';
+import { getProfileStatus, updateProfileStatus } from '~/shared/storage/token-utils';
+import { StylistProfileStatus } from '~/shared/api/stylist-app.models';
 
 export enum DiscountTabNames {
   weekday,
@@ -55,13 +57,14 @@ export class DiscountsComponent {
   ) {
   }
 
-  ionViewDidLoad(): void {
-    this.activeTab = DiscountTabNames.weekday;
+  async ionViewWillLoad(): Promise<void> {
+    this.params = this.navParams.get('params') as DiscountsComponentParams;
+    await this.loadInitialData();
+    await this.performInitialSaving(); // if needed
   }
 
-  ionViewWillEnter(): void {
-    this.params = this.navParams.get('params') as DiscountsComponentParams;
-    this.loadInitialData();
+  ionViewDidLoad(): void {
+    this.activeTab = DiscountTabNames.weekday;
   }
 
   @loading
@@ -128,5 +131,30 @@ export class DiscountsComponent {
       maximum_discount: this.maximumDiscounts.maximum_discount,
       is_maximum_discount_enabled: this.maximumDiscounts.is_maximum_discount_enabled
     }).get();
+  }
+
+  private async performInitialSaving(): Promise<void> {
+    const profileStatus = await getProfileStatus() as StylistProfileStatus;
+    if (profileStatus && !profileStatus.has_weekday_discounts_set) {
+      // Perform initial saving of the discounts and mark them checked.
+      const responses = await Promise.all([
+        this.discountsApi.setDiscounts({
+          ...DiscountsRevisitComponent.transformDiscountsToRebook(this.rebook),
+          weekdays: this.weekdays,
+          first_booking: this.firstBooking.percentage
+        }).first().toPromise(),
+        this.discountsApi.setMaximumDiscounts({
+          maximum_discount: this.maximumDiscounts.maximum_discount,
+          is_maximum_discount_enabled: this.maximumDiscounts.is_maximum_discount_enabled
+        }).first().toPromise()
+      ]);
+      // If succeded and return no errors mark discounts checked.
+      if (responses.every(({ error }) => !error)) {
+        await updateProfileStatus({
+          ...profileStatus,
+          has_weekday_discounts_set: true
+        });
+      }
+    }
   }
 }

@@ -25,6 +25,7 @@ import { MyClientsComponent } from '~/clients/my-clients/my-clients.component';
 import { ProfileComponent } from '~/profile/profile.component';
 import { PushPrimingScreenComponent } from '~/shared/components/push-priming-screen/push-priming-screen.component';
 import { RegisterSalonComponent } from '~/register-salon/register-salon';
+import { RegistrationDoneComponent } from '~/onboarding/registration-done/registration-done.component';
 import { ServiceItemComponent } from '~/services/services-item/services-item.component';
 import { ServicesCategoriesComponent } from '~/services/services-categories/services-categories.component';
 import { ServicesComponent } from '~/services/services.component';
@@ -69,6 +70,7 @@ export const PageNames = {
   Profile: ProfileComponent,
   PushPrimingScreen: PushPrimingScreenComponent,
   RegisterSalon: RegisterSalonComponent,
+  RegistrationDone: RegistrationDoneComponent,
   Services: ServicesComponent,
   ServicesCategories: ServicesCategoriesComponent,
   ServicesItem: ServiceItemComponent,

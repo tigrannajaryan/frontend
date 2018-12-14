@@ -1,5 +1,7 @@
 import { $, browser, by, element, ElementFinder, ExpectedConditions, Locator } from 'protractor';
 import { formatNumber, parseNumber } from 'libphonenumber-js';
+import * as path from 'path';
+import * as fs from 'fs';
 
 const waitTimeout = 10000; // ms
 
@@ -138,6 +140,18 @@ export async function clearSessionData(): Promise<any> {
   await browser.executeScript('window.localStorage.clear();');
   await browser.executeScript('window.sessionStorage.clear();');
   await browser.driver.manage().deleteAllCookies();
+}
+
+/**
+ * Takes a screenshot and stores it in [filename].png
+ */
+export async function takeScreenShot(filename: string) {
+  const png = await browser.takeScreenshot();
+  const fullname = path.join(__dirname, `${filename}.png`);
+  const stream = fs.createWriteStream(fullname);
+  stream.write(new Buffer(png, 'base64'));
+  stream.end();
+  console.log(`screenshot ${fullname}`);
 }
 
 class Globals {

@@ -8,6 +8,9 @@ import { ServiceTemplateSetBase } from '~/shared/api/stylist-app.models';
 import { loading } from '~/shared/utils/loading';
 import { PageNames } from '~/core/page-names';
 
+import { StylistServicesDataStore } from '~/services/services-list/services.data';
+import { ServicesListComponentParams } from '~/services/services-list/services-list.component';
+
 export enum ServiceListType {
   blank = 'blank'
 }
@@ -27,6 +30,7 @@ export class ServicesComponent {
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
+    private servicesData: StylistServicesDataStore,
     private stylistService: StylistServiceProvider,
     private sanitizer: DomSanitizer
   ) {
@@ -35,6 +39,8 @@ export class ServicesComponent {
   }
 
   async ionViewWillLoad(): Promise<void> {
+    await this.guardRedirect();
+
     const { response } = await loading(this, this.stylistService.getServiceTemplateSetsList());
     if (response) {
       this.serviceTemplateSets = response.service_template_sets;
@@ -47,5 +53,17 @@ export class ServicesComponent {
     };
 
     this.navCtrl.push(PageNames.ServicesList, { params });
+  }
+
+  /**
+   * This is a defensive approach: in case we redirected here from the menu and we
+   * already have services show ServicesList page before actual rendering of the view.
+   */
+  private async guardRedirect(): Promise<void> {
+    const { response } = await this.servicesData.get();
+    if (response && response.categories.some(({ services }) => services.length !== 0)) {
+      const params: ServicesListComponentParams = { isRootPage: true };
+      this.navCtrl.setRoot(PageNames.ServicesList, { params });
+    }
   }
 }

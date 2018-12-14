@@ -29,13 +29,7 @@ export class MadeNavComponent {
   private pages = [
     { name: 'Personal Info', page: PageNames.RegisterSalon },
     { name: 'Welcome', page: PageNames.WelcomeToMade },
-    { name: 'Welcome', page: PageNames.CalendarExample },
-    { name: 'Services', page: PageNames.Services },
-    { name: 'My Hours', page: PageNames.WorkHours },
-    { name: 'Daily', page: PageNames.DiscountsWeekday },
-    { name: 'Revisit', page: PageNames.DiscountsRevisit },
-    { name: 'First Visit', page: PageNames.DiscountsFirstBooking },
-    { name: 'Invite Clients', page: PageNames.Invitations }
+    { name: 'Welcome', page: PageNames.CalendarExample }
   ];
 
   constructor(public navCtrl: NavController) {

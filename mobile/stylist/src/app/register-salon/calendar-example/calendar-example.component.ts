@@ -2,6 +2,9 @@ import { Component, ViewChild } from '@angular/core';
 import { Content, NavController } from 'ionic-angular';
 import * as moment from 'moment';
 
+import { UserRole } from '~/shared/api/auth.models';
+import { PushNotification } from '~/shared/push/push-notification';
+import { PushPrimingScreenParams } from '~/shared/components/push-priming-screen/push-priming-screen.component';
 import { PageNames } from '~/core/page-names';
 import { DayOffer, ServiceModel } from '~/shared/api/price.models';
 import { StylistProfile } from '~/shared/api/stylist-app.models';
@@ -39,7 +42,8 @@ export class CalendarExampleComponent {
 
   constructor(
     private navCtrl: NavController,
-    private profileData: ProfileDataStore
+    private profileData: ProfileDataStore,
+    private pushNotification: PushNotification
   ) {
     // Generate offers starting from today using fake prices
     for (let i = 0; i < fakePrices.length; i++) {
@@ -61,8 +65,22 @@ export class CalendarExampleComponent {
     this.profile = response;
   }
 
-  onContinue(): void {
-    this.navCtrl.push(PageNames.Services);
+  /**
+   * Shows PageNames.RegistrationDone immediatly or after PushPrimingScreen.
+   */
+  async onContinue(): Promise<void> {
+    if (await this.pushNotification.needToShowPermissionScreen()) {
+      const pushParams: PushPrimingScreenParams = {
+        appType: UserRole.stylist,
+        onContinue: async () => {
+          // Show registration done screen after push priming
+          this.navCtrl.push(PageNames.RegistrationDone);
+        }
+      };
+      this.navCtrl.push(PageNames.PushPrimingScreen, { params: pushParams });
+    } else {
+      this.navCtrl.push(PageNames.RegistrationDone);
+    }
   }
 
   onDeleteService(): void {

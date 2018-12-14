@@ -16,6 +16,7 @@ export enum DataCacheKey {
   allClients = 'allClients',
   myClients = 'myClients',
   profile = 'profile',
+  profileStatus = 'profileStatus',
   stylistServices = 'stylistServices',
   appointments = 'appointments'
 }
