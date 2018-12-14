@@ -20,7 +20,7 @@ let fixture: ComponentFixture<ClientsCalendarComponent>;
 let instance: ClientsCalendarComponent;
 let store: Store<ProfileState>;
 
-fdescribe('Pages: Client’s Calendar ', () => {
+describe('Pages: Client’s Calendar ', () => {
 
   prepareSharedObjectsForTests();
 
