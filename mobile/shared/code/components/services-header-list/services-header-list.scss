@@ -1,4 +1,6 @@
 .ServiciesHeader {
+  $light-orange-color: #FEE0D0;
+
   padding: pxtovw(5px) 0 pxtovw(3px) 0;
   border-bottom: 1px solid color($grayscale, 300);
 
@@ -26,7 +28,7 @@
     margin: 0 pxtovw(4px) pxtovw(4px) 0;
     line-height: pxtovw(28px);
     color: color($grayscale, 800);
-    background: #FEE0D0;
+    background: $light-orange-color;
     border-radius: pxtovw(3px);
 
     .ServiciesHeader-seviceName {
@@ -55,18 +57,19 @@
   }
 
   .ServicesHeader-bigAddBtn {
-    border: pxtovw(1px) solid color($colors-shared, lightSalmon);
-    border-radius: pxtovw(4px);
-    font-size: pxtovw(18px);
-    padding: pxtovw(2px) pxtovw(6px) pxtovw(2px) pxtovw(2px);
-    line-height: pxtovw(24px);
-    color: color($colors-shared, lightSalmon);
+    padding: pxtovw(4px) pxtovw(8px);
     margin-bottom: pxtovw(4px);
+    font-size: pxtovw(16px);
+    font-weight: 500;
+    line-height: pxtovw(24px);
+    color: black;
+    background: $light-orange-color;
+    border-radius: pxtovw(16px);
   }
 
   .ServicesHeader-bigAddBtn ion-icon {
-    margin: pxtovw(0px) pxtovw(4px);
     position: relative;
     top: 2px;
+    margin: 0 pxtovw(4px);
   }
 }
