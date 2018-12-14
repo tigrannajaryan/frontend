@@ -1,7 +1,16 @@
 import { browser } from 'protractor';
 import * as faker from 'faker';
 
-import { clearIonicStorage, clearSessionData, click, getRandomString, globals, waitFor, waitForNot } from './shared-e2e/utils';
+import {
+  clearIonicStorage,
+  clearSessionData,
+  click,
+  getRandomString,
+  globals,
+  takeScreenShot,
+  waitFor,
+  waitForNot
+} from './shared-e2e/utils';
 import { backdoorApi } from './shared-e2e/backdoor-api';
 import { phoneLoginPage } from './shared-e2e/phone-login-page';
 import { phoneCodePage } from './shared-e2e/phone-code-page';
@@ -93,11 +102,20 @@ describe('Registration Flow', () => {
     await registrationDonePage.continue();
   });
 
+  /**
+   * Inside there is some very strange bug that is discussed
+   * on https://stackoverflow.com/questions/11908249/debugging-element-is-not-clickable-at-point-error page.
+   * When calling browser.takeScreenshot() it’s somehow fixed. Don’t remove the screenshots taking from the code!
+   */
   it('should be able to open menu and logout', async () => {
     await waitFor(homePage.menuBtn);
+    await browser.takeScreenshot();
     await click(homePage.menuBtn);
     await waitFor(homePage.logoutBtn);
+    await browser.takeScreenshot();
     await click(homePage.logoutBtn);
+    await browser.takeScreenshot();
+    await waitForNot(homePage.logoutBtn);
   });
 
   it('should be able to login again', async () => {
