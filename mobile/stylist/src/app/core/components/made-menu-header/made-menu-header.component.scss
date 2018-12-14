@@ -62,6 +62,7 @@
   }
 
   .madeMenuHeader-menuBtn {
+    position: relative;
     left: 0;
     z-index: 1;
     display: block;
@@ -72,6 +73,17 @@
 
     .mb-icon-menu {
       font-size: pxtovw(18px);
+    }
+
+    .madeMenuHeader-notice {
+      $notice-size: pxtovw(16px);
+
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      width: $notice-size;
+      height: $notice-size;
+      margin: 0 (-1 * $notice-size / 2) (-1 * $notice-size / 2) 0;
     }
   }
 
