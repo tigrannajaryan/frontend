@@ -68,14 +68,18 @@ describe('Pages: HomeSlotsComponent', () => {
     expect(instance).toBeTruthy();
   });
 
-  it('should select date on month name click', () => {
+  it('should select date on month name click', async done => {
     const modal = fixture.debugElement.injector.get(ModalController);
-    spyOn(modal, 'create');
+    spyOn(modal, 'create').and.returnValue({
+      present() {}
+    });
 
-    fixture.nativeElement.querySelector('[data-test-id=selectDate]').click();
+    await instance.onDateAreaClick();
 
     expect(modal.create)
       .toHaveBeenCalled();
+
+    done();
   });
 
   it('should show weekdays selector', () => {

@@ -15,6 +15,8 @@ import {
   AppointmentParams,
   AppointmentPreviewRequest,
   AppointmentPreviewResponse,
+  DatesWithAppointmentsParams,
+  DatesWithAppointmentsResponse,
   DayAppointmentsResponse,
   HomeData,
   NewAppointmentRequest
@@ -55,6 +57,25 @@ export class HomeService extends BaseService {
       });
     }
     return this.get<Appointment[]>('stylist/appointments', params);
+  }
+
+  /**
+   * Get dates with appointments.
+   */
+  getDatesWithAppointments(appointmentParams?: DatesWithAppointmentsParams): Observable<ApiResponse<DatesWithAppointmentsResponse>> {
+    let params = new HttpParams();
+    if (appointmentParams) {
+      Object.keys(appointmentParams).forEach(key => {
+        const param = appointmentParams[key];
+
+        if (param instanceof Date) {
+          params = params.append(key, moment(param).format(isoDateFormat));
+        } else {
+          params = params.append(key, param);
+        }
+      });
+    }
+    return this.get<DatesWithAppointmentsResponse>('stylist/appointments/dates-with-appointments', params);
   }
 
   /**

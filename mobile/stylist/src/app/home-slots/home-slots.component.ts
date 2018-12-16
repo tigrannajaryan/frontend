@@ -216,15 +216,18 @@ export class HomeSlotsComponent {
     this.navCtrl.push(PageNames.AppointmentAdd, { params });
   }
 
-  onDateAreaClick(): void {
+  async onDateAreaClick(): Promise<void> {
     const defaultWeekdays = [];
+    const { response: worktime } = await this.worktimeApi.getWorktime().toPromise();
 
-    for (let isoWeekday = WeekdayIso.Mon; isoWeekday <= WeekdayIso.Sun; isoWeekday++) {
-      const weekday: DefaultWeekday = {
-        isoWeekday,
-        isFaded: Boolean(this.weekdays) && !this.weekdays.find(day => day.weekday_iso === isoWeekday).is_working_day
-      };
-      defaultWeekdays.push(weekday);
+    if (worktime && worktime.weekdays.length === 7) {
+      for (let isoWeekday = WeekdayIso.Mon; isoWeekday <= WeekdayIso.Sun; isoWeekday++) {
+        const weekday: DefaultWeekday = {
+          isoWeekday,
+          isFaded: Boolean(worktime) && !worktime.weekdays.find(day => day.weekday_iso === isoWeekday).is_available
+        };
+        defaultWeekdays.push(weekday);
+      }
     }
 
     const params: CalendarPickerParams = {
@@ -233,14 +236,16 @@ export class HomeSlotsComponent {
       onDaysLoaded: async (days: DaysInMonth): Promise<void> => {
         const dates = Array.from(days.keys());
 
-        const { response = [] } = await this.homeService.getAppointments({
+        const { response } = await this.homeService.getDatesWithAppointments({
             date_from: new Date(dates[0]),
             date_to: new Date(dates[dates.length - 1])
           }).toPromise();
 
-        for (const appointment of response) {
-          const appointmentDate = appointment.datetime_start_at.split('T')[0];
-          days.get(appointmentDate).isHighlighted = true;
+        if (response) {
+          for (const appointment of response.dates) {
+            const day = days.get(appointment.date);
+            day.isHighlighted = true;
+          }
         }
       },
       onDateSelected: (date: ISODate): void => {

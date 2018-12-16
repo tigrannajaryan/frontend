@@ -1,4 +1,4 @@
-import { ISODateTime, ISOTimeOnly } from '~/shared/api/base.models';
+import { ISODate, ISODateTime, ISOTimeOnly } from '~/shared/api/base.models';
 import { Weekdays } from '~/shared/api/worktime.models';
 
 export enum AppointmentStatuses {
@@ -9,9 +9,12 @@ export enum AppointmentStatuses {
   checked_out = 'checked_out'
 }
 
-export interface AppointmentParams {
+export interface DatesWithAppointmentsParams {
   date_from?: Date; // (yyyy-mm-dd) inclusive. If not specified will output appointments since the beginning of era
   date_to?: Date; // (yyyy-mm-dd) inclusive. If not specified will output appointments till the end of era
+}
+
+export interface AppointmentParams extends DatesWithAppointmentsParams {
   include_cancelled?: boolean; // False by default, if true, will also return cancelled appointments
   limit?: number; // limit the query, default is 100
 }
@@ -80,6 +83,15 @@ export interface Appointment {
   client_profile_photo_url: string;
   grand_total: number;
   created_at: ISODateTime;
+}
+
+export interface DateWithAppointment {
+  date: ISODate;
+  has_appointments: boolean;
+}
+
+export interface DatesWithAppointmentsResponse {
+  dates: DateWithAppointment[];
 }
 
 export interface AppointmentDateOffer {
