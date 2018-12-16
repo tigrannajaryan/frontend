@@ -16,6 +16,8 @@ export class PriceCalendarComponent {
   // Expose to the view:
   moment = moment;
 
+  @Input() showOneMonth: boolean;
+
   @Output() dayClick = new EventEmitter<CalendarDay>();
 
   protected start: ISODate;
@@ -45,7 +47,7 @@ export class PriceCalendarComponent {
     this.start = moment(prices[0].date).startOf('month').format('YYYY-MM-DD');
     this.end = moment(prices[prices.length - 1].date).endOf('month').format('YYYY-MM-DD');
 
-    this.monthsCount = Math.max(moment(this.end).diff(this.start, 'months'), 2);
+    this.monthsCount = Math.max(moment(this.end).diff(this.start, 'months'), this.showOneMonth ? 1 : 2);
     this.monthsArray = Array(this.monthsCount).fill('');
   }
 

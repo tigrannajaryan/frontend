@@ -43,12 +43,7 @@
       <stylist-card
         *ngFor="let stylist of stylists"
         [stylist]="stylist"
-        [isActive]="stylist.uuid === activeStylist?.uuid"
-        (openCard)="onSetActiveStylist(stylist)"
-        (closeCard)="onSetActiveStylist(undefined)"
-        (showCalendar)="onShowCalendar(stylist)"
-        (selectStylist)="onContinueWithStylist(stylist)"
-        (removeStylist)="onRemoveStylist(stylist)"></stylist-card>
+        (click)="openStylistPreview(stylist)"></stylist-card>
 
       <div *ngIf="stylists.length === 0">
         <ng-container *ngIf="!query.value; else notFound">I'm sorry there are no stylists in your area yet. But check back often we're adding new stylists every day!</ng-container>

@@ -1,0 +1,68 @@
+.StylistProfilePreview-name {
+  margin-bottom: pxtovw(8px);
+  font-size: $shared-h2;
+  font-weight: 700;
+}
+
+.StylistProfilePreview-salon {
+  margin-bottom: pxtovw(28px);
+  font-size: $shared-h4;
+  color: color($colors-shared, warmGrey);
+}
+
+.StylistProfilePreview-clients {
+  display: flex;
+  align-items: center;
+  margin-bottom: pxtovw(16px);
+  font-size: $shared-h4;
+
+  i[class^=mb-icon] {
+    height: pxtovw(22px);
+    margin-right: pxtovw(7px);
+    font-size: pxtovw(22px);
+    line-height: pxtovw(23px);
+    color: color($colors-shared, lightSalmon);
+  }
+
+  &:not(.is-notBookable) {
+    color: color($colors-shared, lightSalmon);
+  }
+}
+
+.StylistProfilePreview-photo {
+  img {
+    width: 100%;
+    vertical-align: middle;
+  }
+}
+
+
+.StylistProfilePreview-item {
+  padding-bottom: pxtovw(16px);
+  margin-top: pxtovw(16px);
+  border-bottom: 1px solid rgb(236, 236, 236);
+}
+
+.StylistProfilePreview-itemTitle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: pxtovw(11px);
+  font-size: pxtovw(14px);
+  color: color($colors-shared, warmGrey);
+  text-transform: uppercase;
+
+  i[class^=mb-icon] {
+    font-size: pxtovw(23px);
+    color: color($colors-shared, lightSalmon);
+  }
+
+  span:first-letter {
+    font-size: pxtovw(18px);
+  }
+}
+
+.StylistProfilePreview-itemText {
+  font-size: $shared-h4;
+  font-weight: 300;
+}

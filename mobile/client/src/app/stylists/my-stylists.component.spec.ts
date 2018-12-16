@@ -46,8 +46,8 @@ describe('MyStylistsComponent', () => {
   });
 
   it('should have stylists in both tabs', () => {
-    const myStylistsTabList = fixture.nativeElement.querySelectorAll('[data-test-id=myStylistsTabList] stylist-card');
-    expect(myStylistsTabList.length).toBe(instance.tabs[MyStylistsTabs.madeStylists].stylists.length);
+    const madeStylistsTabList = fixture.nativeElement.querySelectorAll('[data-test-id=madeStylistsTabList] stylist-card');
+    expect(madeStylistsTabList.length).toBe(instance.tabs[MyStylistsTabs.madeStylists].stylists.length);
     const savedStylistsTabList = fixture.nativeElement.querySelectorAll('[data-test-id=savedStylistsTabList] stylist-card');
     expect(savedStylistsTabList.length).toBe(instance.tabs[MyStylistsTabs.savedStylists].stylists.length);
   });
@@ -61,7 +61,7 @@ describe('MyStylistsComponent', () => {
     instance.tabs[MyStylistsTabs.madeStylists].stylists = [];
     fixture.detectChanges();
 
-    const savedStylistsTabList = fixture.nativeElement.querySelector('[data-test-id=myStylistsTabList]');
+    const savedStylistsTabList = fixture.nativeElement.querySelector('[data-test-id=madeStylistsTabList]');
     expect(savedStylistsTabList.outerText.trim())
       .toContain('You didn\'t save anyone yet.');
   });
@@ -73,19 +73,5 @@ describe('MyStylistsComponent', () => {
     const savedStylistsTabList = fixture.nativeElement.querySelector('[data-test-id=savedStylistsTabList]');
     expect(savedStylistsTabList.outerText.trim())
       .toContain('You didn\'t save anyone yet.');
-  });
-
-  it('should not be able to open stylist clients page if this is not-bookable profile', () => {
-    const stylistFollowers = fixture.nativeElement.querySelector('[data-test-id=savedStylistsTabList] stylist-card [data-test-id=stylistFollowers]');
-    expect(stylistFollowers.className)
-      .toContain('is-notBookable');
-  });
-
-  it('should not be able to remove last madeStylists', () => {
-    instance.tabs[MyStylistsTabs.madeStylists].stylists.length = 1;
-    fixture.detectChanges();
-
-    const savedStylistsTabList = fixture.nativeElement.querySelector('[data-test-id=removeStylist]');
-    expect(savedStylistsTabList).toBeNull();
   });
 });

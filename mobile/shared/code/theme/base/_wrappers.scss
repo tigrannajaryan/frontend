@@ -13,3 +13,7 @@
   display: flex;
   justify-content: space-between;
 }
+
+.ios .ion-page.show-page ~ .nav-decor {
+  background: initial; // rewrite ionic black background
+}

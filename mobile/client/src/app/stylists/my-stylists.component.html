@@ -43,7 +43,7 @@
   </ion-refresher>
 
   <ion-slides (ionSlideDrag)="onEnableRefresher(false)" (touchend)="onEnableRefresher(true)" (ionSlideDidChange)="onTabSwipe()" no-padding class="Tabs-slides">
-    <ion-slide class="Tabs-slide" data-test-id="myStylistsTabList">
+    <ion-slide class="Tabs-slide" data-test-id="madeStylistsTabList">
       <div *ngIf="!tabs[MyStylistsTabs.madeStylists].loaded">
         <ion-spinner></ion-spinner>
       </div>
@@ -52,14 +52,8 @@
       <div *ngIf="tabs[MyStylistsTabs.madeStylists].loaded" class="Made-wp Made-wpContent">
         <stylist-card
           *ngFor="let stylist of tabs[MyStylistsTabs.madeStylists].stylists"
-          [stylist]="stylist"
-          [isActive]="stylist.uuid === activeStylist?.uuid"
-          [isMyStylist]="true"
-          [enableRemove]="tabs[MyStylistsTabs.madeStylists].stylists.length === 1"
-          (openCard)="onSetActiveStylist(stylist)"
-          (closeCard)="onSetActiveStylist(undefined)"
-          (showCalendar)="onShowCalendar(stylist)"
-          (removeStylist)="onRemoveStylist(stylist)"></stylist-card>
+          (click)="openStylistPreview(stylist)"
+          [stylist]="stylist"></stylist-card>
 
         <div
           *ngIf="!tabs[MyStylistsTabs.madeStylists].stylists || tabs[MyStylistsTabs.madeStylists].stylists?.length === 0"
@@ -79,12 +73,8 @@
       <div *ngIf="tabs[MyStylistsTabs.savedStylists].loaded" class="Made-wp Made-wpContent">
         <stylist-card
           *ngFor="let stylist of tabs[MyStylistsTabs.savedStylists].stylists"
-          [stylist]="stylist"
-          [isActive]="stylist.uuid === activeStylist?.uuid"
-          [isMyStylist]="true"
-          (openCard)="onSetActiveStylist(stylist)"
-          (closeCard)="onSetActiveStylist(undefined)"
-          (removeStylist)="onRemoveStylist(stylist)"></stylist-card>
+          (click)="openStylistPreview(stylist)"
+          [stylist]="stylist"></stylist-card>
 
         <div
           *ngIf="!tabs[MyStylistsTabs.savedStylists].stylists || tabs[MyStylistsTabs.savedStylists].stylists?.length === 0"
