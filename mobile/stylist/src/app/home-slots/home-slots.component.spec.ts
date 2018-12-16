@@ -68,7 +68,7 @@ describe('Pages: HomeSlotsComponent', () => {
     expect(instance).toBeTruthy();
   });
 
-  fit('should select date on month name click', async done => {
+  it('should select date on month name click', async done => {
     const modal = fixture.debugElement.injector.get(ModalController);
     spyOn(modal, 'create').and.returnValue({
       present() {}
