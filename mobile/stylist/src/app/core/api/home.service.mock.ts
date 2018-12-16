@@ -12,6 +12,7 @@ import {
   AppointmentPreviewRequest,
   AppointmentPreviewResponse,
   AppointmentStatuses,
+  DatesWithAppointmentsResponse,
   HomeData,
   NewAppointmentRequest
 } from './home.models';
@@ -40,6 +41,10 @@ export class HomeServiceMock {
    */
   getAppointments(appointmentParams?: AppointmentParams): Observable<ApiResponse<Appointment[]>> {
     return Observable.of({ response: [] });
+  }
+
+  getDatesWithAppointments(appointmentParams?: AppointmentParams): Observable<ApiResponse<DatesWithAppointmentsResponse>> {
+    return Observable.of({ response: { dates: [] } });
   }
 
   /**

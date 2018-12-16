@@ -220,12 +220,14 @@ export class HomeSlotsComponent {
     const defaultWeekdays = [];
     const { response: worktime } = await this.worktimeApi.getWorktime().toPromise();
 
-    for (let isoWeekday = WeekdayIso.Mon; isoWeekday <= WeekdayIso.Sun; isoWeekday++) {
-      const weekday: DefaultWeekday = {
-        isoWeekday,
-        isFaded: Boolean(worktime) && !worktime.weekdays.find(day => day.weekday_iso === isoWeekday).is_available
-      };
-      defaultWeekdays.push(weekday);
+    if (worktime && worktime.weekdays.length === 7) {
+      for (let isoWeekday = WeekdayIso.Mon; isoWeekday <= WeekdayIso.Sun; isoWeekday++) {
+        const weekday: DefaultWeekday = {
+          isoWeekday,
+          isFaded: Boolean(worktime) && !worktime.weekdays.find(day => day.weekday_iso === isoWeekday).is_available
+        };
+        defaultWeekdays.push(weekday);
+      }
     }
 
     const params: CalendarPickerParams = {

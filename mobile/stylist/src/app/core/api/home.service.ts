@@ -59,6 +59,9 @@ export class HomeService extends BaseService {
     return this.get<Appointment[]>('stylist/appointments', params);
   }
 
+  /**
+   * Get dates with appointments.
+   */
   getDatesWithAppointments(appointmentParams?: DatesWithAppointmentsParams): Observable<ApiResponse<DatesWithAppointmentsResponse>> {
     let params = new HttpParams();
     if (appointmentParams) {
