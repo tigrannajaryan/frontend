@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
+
+import { AppStoreWebPage, PlatformNames } from '~/shared/constants';
+import { ExternalAppService } from '~/shared/utils/external-app-service';
 
 import { PageNames } from '~/core/page-names';
 
@@ -10,7 +13,9 @@ import { PageNames } from '~/core/page-names';
 })
 export class FirstScreenComponent {
   constructor(
+    private external: ExternalAppService,
     private navCtrl: NavController,
+    private platform: Platform,
     private statusBar: StatusBar
   ) {
   }
@@ -25,5 +30,13 @@ export class FirstScreenComponent {
 
   login(): void {
     this.navCtrl.push(PageNames.Auth);
+  }
+
+  openClientApp(): void {
+    if (this.platform.is(PlatformNames.ios)) {
+      this.external.openWebPage(AppStoreWebPage.iOSClient);
+    } else {
+      this.external.openWebPage(AppStoreWebPage.androidClient);
+    }
   }
 }
