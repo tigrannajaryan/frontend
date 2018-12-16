@@ -1,22 +1,16 @@
-<ion-content fullscreen padding class="p-fs-bg">
-  <div class="p-fs bb-wp-b">
-    <div class="p-fs-img">
-      <div class="p-fs-img-text">Made</div>
+<ion-content fullscreen padding>
+  <ion-row align-items-center justify-content-center class="FirstScreen-logo">
+    <img src="assets/icons/text-logo@3x.png" />
+  </ion-row>
 
-      <img src="assets/imgs/welcome.svg" alt="">
-    </div>
-
-
-    <div class="p-fs-box">
-      <div class="p-fs-title">
-        Hello Beautiful,
-      </div>
-
-      <div class="p-fs-box-buttons">
-        <button (click)="login()" ion-button full color="bb_skin" class="bb-btn-a" data-test-id="getStartedBtn">
-          Get Started
-        </button>
-      </div>
-    </div>
-  </div>
+  <ion-footer class="Footer">
+    <div class="Made-h1 FirstScreen-title" col-8 no-padding>Welcome to the MADE Stylist App!</div>
+    <div class="FirstScreen-subtitle">Fill up your days. Earn more.</div>
+    <button (click)="login()" ion-button class="Button FirstScreen-continue" data-test-id="getStartedBtn">
+      Get Started
+    </button>
+    <ion-row align-items-center justify-content-center>
+      <div (click)="openClientApp()" class="Link FirstScreen-clientAppLink"  data-test-id="clientAppBtn">I’m a Client, not a Stylist</div>
+    </ion-row>
+  </ion-footer>
 </ion-content>

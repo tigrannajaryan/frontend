@@ -1,69 +1,45 @@
+@mixin water-circles {
+  $circle-color: lighten(color($colors, secondary), 1%);
+  $circle-size: pxtovw(55px);
+  $circle-stroke: pxtovw(1px);
+
+  box-shadow:
+    0 0 0 ($circle-stroke) $circle-color,
+    0 0 0 ($circle-size * 1) white,
+    0 0 0 ($circle-size * 1 + $circle-stroke) $circle-color,
+    0 0 0 ($circle-size * 2.2) white,
+    0 0 0 ($circle-size * 2.2 + $circle-stroke) $circle-color,
+    0 0 0 ($circle-size * 3.5) white,
+    0 0 0 ($circle-size * 3.5 + $circle-stroke) $circle-color;
+}
+
 page-first-screen {
-  // p = page
-  // -fs = first letter of each word (in this case just -fs)
-  .p-fs {
-    position: relative;
-    height: 100%;
-    display: flex;
-    align-items: flex-end;
-    text-align: center;
-    justify-content: center;
+  .FirstScreen-logo {
+    $size: pxtovw(187px);
 
-    &-bg{
-      background: color($colors, color4);
+    @include water-circles;
+
+    width: $size;
+    height: $size;
+    margin: pxtovw(150px) auto 0;
+    border-radius: 50%;
+
+    img {
+      width: 155 / 187 * 100%;
     }
+  }
 
-    &-img{
-      position: absolute;
-      left: 0;
-      top: -16px; // - .scroll-content padding
-      right: 0;
-      max-height: 440px;
+  .FirstScreen-title {
+    min-width: 100%;
+    margin-bottom: pxtovw(16px);
+  }
 
-      &-text{
-        position: absolute;
-        left: 0;
-        top: 0;
-        right: 0;
-        text-align: center;
-        color: white;
-        padding-top: pxtorem(60);
-        font-size: pxtoem(24);
-      }
+  .FirstScreen-subtitle {
+    font-size: pxtovw(15px);
+    color: color($colors, warmGrey);
+  }
 
-      img{
-        width: 150%;
-      }
-    }
-
-    &-title{
-      font-size: pxtoem(24);
-    }
-
-    &-box{
-      padding-bottom: 15px;
-
-      &-buttons{
-        max-width: 380px;
-        margin: pxtorem(45) auto pxtorem(55);
-
-        @media ($tablet) {
-          max-width: 340px;
-          margin: pxtorem(45) auto;
-        }
-        @media ($smartphone) {
-          max-width: 290px;
-          margin: pxtorem(45) auto;
-        }
-        @media ($phone) {
-          max-width: 240px;
-          margin: pxtorem(45) auto pxtorem(30);
-        }
-
-        button{
-          margin: pxtorem(15) 0;
-        }
-      }
-    }
+  .FirstScreen-continue {
+    margin: pxtovw(32px) 0 pxtovw(28px);
   }
 }

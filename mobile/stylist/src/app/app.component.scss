@@ -26,22 +26,16 @@
 // Global styles
 // ---------------------------
 
-.Button {
+.Button { // overwrites
   display: block;
   min-width: 100%;
-  min-height: pxtovw(55px);
-  margin: 0 0 pxtovw(27px) 0;
   font-size: pxtovw(18px);
   font-weight: 500;
-  text-transform: none;  //Added to remove upercase No button in design is upercase
   background-color: color($colors, secondary);
   border-radius: pxtovw(10px);
 }
 
-.Footer {
+.Footer { // overwrites
   padding: pxtovw(24px) pxtovw(25px) pxtovw(39px);
-
-  // Removes top border
-  &:before { display: none; }
 }
 

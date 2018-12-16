@@ -8,7 +8,6 @@
   text-transform: none;  //Added to remove upercase No button in design is upercase
   background-color: color($colors, primary);
   border-radius: pxtovw(10px);
-  box-shadow: 0 6px 34px rgba(color($colors, primary), 50%);
 
   &.button-small {
     $button-height: pxtovw(40px);
@@ -30,7 +29,6 @@
     line-height: initial;
     border: 1px solid transparent;
     border-radius: pxtovw(20px);
-    box-shadow: none;
 
     &.is-inHeader {
       padding: pxtovw(2px) pxtovw(12px);
@@ -38,20 +36,16 @@
     }
 
     &.is-saved {
-      color: color($colors, lightSalmon);
+      color: color($colors-shared, lightSalmon);
       background: none;
-      border: 1px solid color($colors, lightSalmon);
+      border: 1px solid color($colors-shared, lightSalmon);
     }
-  }
-
-  &.is-loading {
-    box-shadow: none;
   }
 }
 
 .Link {
   font-weight: 500;
-  color: color($colors, honey);
+  color: color($colors-shared, honey);
   white-space: nowrap;
 
   &.is-button {
