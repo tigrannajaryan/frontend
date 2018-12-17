@@ -9,6 +9,7 @@ import { MapsAPILoader } from '@agm/core';
 import {
   ActionSheetController,
   ActionSheetOptions,
+  Events,
   NavController,
   NavParams, Slides
 } from 'ionic-angular';
@@ -28,6 +29,7 @@ import { ProfileDataStore } from '~/core/profile.data';
 import { StylistProfile, StylistProfileCompleteness } from '~/shared/api/stylist-app.models';
 import { calcProfileCompleteness } from '~/core/utils/stylist-utils';
 import { emptyOr } from '~/shared/validators';
+import { SetStylistProfileTabEventParams, StylistEventTypes } from '~/core/stylist-event-types';
 
 declare var window: any;
 
@@ -76,6 +78,7 @@ export class ProfileComponent {
     private baseService: BaseService,
     private domSanitizer: DomSanitizer,
     private camera: Camera,
+    private events: Events,
     private actionSheetCtrl: ActionSheetController,
     private logger: Logger,
     private mapsAPILoader: MapsAPILoader,
@@ -125,10 +128,19 @@ export class ProfileComponent {
   }
 
   async ionViewWillEnter(): Promise<void> {
+    // Allow to set active tab from outside the component
+    this.events.subscribe(StylistEventTypes.setStylistProfileTab, (params: SetStylistProfileTabEventParams) => {
+      this.onTabChange(params.profileTab);
+    });
+
     // loadFormInitialData must be called and finished before initAutocomplete because
     // initAutocomplete uses the apiKey that we get in loadFormInitialData.
     await this.loadFormInitialData();
     this.initAutocomplete();
+  }
+
+  ionViewWillLeave(): void {
+    this.events.unsubscribe(StylistEventTypes.setStylistProfileTab);
   }
 
   @loading
