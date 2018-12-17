@@ -1,5 +1,5 @@
 os: osx
-osx_image: xcode9.4
+osx_image: xcode10.1
 
 language: node_js
 node_js:
@@ -35,7 +35,7 @@ cache:
 env:
   global:
     - APP_VERSION_NUMBER=1.2.3
-    - IOS_SDK="iphoneos11.4"
+    - IOS_SDK="iphoneos12.1"
     - ANDROID_SDK=android_sdk
     - ANDROID_BUILD_TOOLS_VERSION="28.0.1"
     - ANDROID_HOME="$TRAVIS_BUILD_DIR/$ANDROID_SDK"
