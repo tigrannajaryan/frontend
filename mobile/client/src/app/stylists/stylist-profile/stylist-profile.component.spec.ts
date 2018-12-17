@@ -51,7 +51,7 @@ describe('StylistProfileComponent', () => {
             instance.stylistProfile = stylistProfile.response;
           }
 
-          instance.ionViewWillEnter();
+          instance.ionViewDidLoad();
           fixture.detectChanges();
         })
     )
