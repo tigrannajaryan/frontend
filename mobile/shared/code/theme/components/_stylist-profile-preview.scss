@@ -7,6 +7,7 @@
 .StylistProfilePreview-salon {
   margin-bottom: pxtovw(28px);
   font-size: $shared-h4;
+  font-variant: small-caps;
   color: color($colors-shared, warmGrey);
 }
 
@@ -48,17 +49,13 @@
   align-items: center;
   justify-content: space-between;
   margin-bottom: pxtovw(11px);
-  font-size: pxtovw(14px);
+  font-size: $shared-h4;
+  font-variant: small-caps;
   color: color($colors-shared, warmGrey);
-  text-transform: uppercase;
 
   i[class^=mb-icon] {
     font-size: pxtovw(23px);
     color: color($colors-shared, lightSalmon);
-  }
-
-  span:first-letter {
-    font-size: pxtovw(18px);
   }
 }
 

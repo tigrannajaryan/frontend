@@ -138,8 +138,15 @@
 
 
 <ion-footer
-  *ngIf="stylistProfile?.is_profile_bookable"
+  *ngIf="stylistProfile && stylistProfile.is_profile_bookable"
   [title]="'Book with ' + stylistProfile?.first_name"
   (continue)="onStartBooking()"
   madeContinueFooter
   data-test-id="stylistProfilePreviewFooter"></ion-footer>
+
+<ion-footer
+  *ngIf="stylistProfile && !stylistProfile.is_profile_bookable"
+  [title]="'Call ' + stylistProfile?.first_name"
+  (continue)="onCall()"
+  madeContinueFooter
+  data-test-id="stylistProfilePreviewFooterCall"></ion-footer>

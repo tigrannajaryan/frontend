@@ -110,4 +110,10 @@ describe('StylistProfileComponent', () => {
     expect(stylistProfilePreviewNoCalendar).toBeDefined();
     expect(stylistProfilePreviewNoCalendar.innerText).toContain(`No Calendar Available`);
   });
+
+  it('should have footer with call button for non bookable stylist', () => {
+    const stylistProfilePreviewFooterCall = fixture.nativeElement.querySelector('[data-test-id=stylistProfilePreviewFooterCall]');
+    expect(stylistProfilePreviewFooterCall).toBeDefined();
+    expect(stylistProfilePreviewFooterCall.innerText).toContain(`Call ${instance.stylistProfile.first_name}`);
+  });
 });

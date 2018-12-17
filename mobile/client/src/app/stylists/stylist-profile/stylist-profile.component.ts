@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { ActionSheetController, Events, NavController, NavParams } from 'ionic-angular';
+import { Component, ViewChild } from '@angular/core';
+import { ActionSheetController, Content, Events, NavController, NavParams } from 'ionic-angular';
 import { LaunchNavigator } from '@ionic-native/launch-navigator';
 import { formatNumber } from 'libphonenumber-js';
 
@@ -33,6 +33,7 @@ export interface StylistProfileParams {
   templateUrl: 'stylist-profile.component.html'
 })
 export class StylistProfileComponent {
+  @ViewChild(Content) content: Content;
   UpdateStylistStatus = UpdateStylistStatus;
   params: StylistProfileParams;
   prices: DayOffer[];
@@ -88,10 +89,17 @@ export class StylistProfileComponent {
     if (services.length > 0) {
       this.service = services[0];
     }
+
+    if (this.content) {
+      // need to update scrollable area when calendar appear
+      this.content.resize();
+    }
   }
 
   async onShowCalendar(): Promise<void> {
     if (this.prices) {
+      // clear services - we should show calendar without services
+      this.bookingData.setSelectedServices([]);
       this.navCtrl.push(PageNames.SelectDate);
     }
   }
@@ -100,8 +108,6 @@ export class StylistProfileComponent {
     if (!(this.params && this.stylistProfile)) {
       return;
     }
-
-    this.navCtrl.pop();
 
     const isRemoved = await this.preferredStylistsData.removeStylist(this.stylistProfile.preference_uuid);
     this.stylistProfile.is_preferred = !isRemoved;
@@ -177,5 +183,9 @@ export class StylistProfileComponent {
 
   onEmailClick(): void {
     this.externalAppService.openMailApp(this.stylistProfile.email);
+  }
+
+  onCall(): void {
+    this.externalAppService.doPhoneCall(this.stylistProfile.phone);
   }
 }
