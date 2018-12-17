@@ -21,7 +21,7 @@
       <stylist-card
         *ngFor="let stylist of stylists"
         [stylist]="stylist"
-        (openCard)="onContinueWithStylist(stylist.uuid)"></stylist-card>
+        (click)="onContinueWithStylist(stylist.uuid)"></stylist-card>
     </div>
 
   </div>

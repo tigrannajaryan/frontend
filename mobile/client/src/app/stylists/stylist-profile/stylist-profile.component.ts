@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { ActionSheetController, Events, NavController, NavParams } from 'ionic-angular';
+import { Component, ViewChild } from '@angular/core';
+import { ActionSheetController, Content, Events, NavController, NavParams } from 'ionic-angular';
 import { LaunchNavigator } from '@ionic-native/launch-navigator';
 import { formatNumber } from 'libphonenumber-js';
 
@@ -33,6 +33,7 @@ export interface StylistProfileParams {
   templateUrl: 'stylist-profile.component.html'
 })
 export class StylistProfileComponent {
+  @ViewChild(Content) content: Content;
   UpdateStylistStatus = UpdateStylistStatus;
   params: StylistProfileParams;
   prices: DayOffer[];
@@ -88,10 +89,23 @@ export class StylistProfileComponent {
     if (services.length > 0) {
       this.service = services[0];
     }
+
+    if (this.content) {
+      // if we don't update scrollable area on calendar appear
+      // phone block will be under the scrollable area
+      this.content.resize();
+    }
   }
 
   async onShowCalendar(): Promise<void> {
     if (this.prices) {
+      // Previously we loaded most popular service
+      // in order to show the preview of a prices-calendar with them.
+      // Now we are removing them from the booking data
+      // because we need tho show stylist’s calendar without any service selected.
+      //
+      // NOTE: most popular services will be restored on entering this page again.
+      this.bookingData.setSelectedServices([]);
       this.navCtrl.push(PageNames.SelectDate);
     }
   }
@@ -100,8 +114,6 @@ export class StylistProfileComponent {
     if (!(this.params && this.stylistProfile)) {
       return;
     }
-
-    this.navCtrl.pop();
 
     const isRemoved = await this.preferredStylistsData.removeStylist(this.stylistProfile.preference_uuid);
     this.stylistProfile.is_preferred = !isRemoved;
@@ -177,5 +189,9 @@ export class StylistProfileComponent {
 
   onEmailClick(): void {
     this.externalAppService.openMailApp(this.stylistProfile.email);
+  }
+
+  onPhoneCall(): void {
+    this.externalAppService.doPhoneCall(this.stylistProfile.phone);
   }
 }
