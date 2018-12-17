@@ -29,7 +29,7 @@ push-priming-screen {
   }
 
   .PushPrimingText {
-    margin: pxtovw(8px) pxtovw(24px) 0;
+    margin: pxtovw(8px) 0 pxtovw(24px);
     font-size: pxtovw(21px);
     font-weight: 500;
     line-height: pxtovw(24px);
@@ -43,6 +43,6 @@ push-priming-screen {
   }
 
   .Link {
-    margin-bottom: pxtovw(39px);
+    margin: pxtovw(24px) auto pxtovw(39px);
   }
 }
