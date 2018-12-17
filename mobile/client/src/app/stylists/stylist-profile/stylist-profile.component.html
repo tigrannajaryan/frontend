@@ -147,6 +147,6 @@
 <ion-footer
   *ngIf="stylistProfile && !stylistProfile.is_profile_bookable"
   [title]="'Call ' + stylistProfile?.first_name"
-  (continue)="onCall()"
+  (continue)="onPhoneCall()"
   madeContinueFooter
   data-test-id="stylistProfilePreviewFooterCall"></ion-footer>

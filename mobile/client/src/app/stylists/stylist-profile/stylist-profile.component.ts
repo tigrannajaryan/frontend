@@ -91,7 +91,8 @@ export class StylistProfileComponent {
     }
 
     if (this.content) {
-      // need to update scrollable area when calendar appear
+      // if we don't update scrollable area on calendar appear
+      // phone block will be under the scrollable area
       this.content.resize();
     }
   }
@@ -185,7 +186,7 @@ export class StylistProfileComponent {
     this.externalAppService.openMailApp(this.stylistProfile.email);
   }
 
-  onCall(): void {
+  onPhoneCall(): void {
     this.externalAppService.doPhoneCall(this.stylistProfile.phone);
   }
 }
