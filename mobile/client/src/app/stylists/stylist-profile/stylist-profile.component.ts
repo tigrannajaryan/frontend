@@ -99,7 +99,12 @@ export class StylistProfileComponent {
 
   async onShowCalendar(): Promise<void> {
     if (this.prices) {
-      // clear services - we should show calendar without services
+      // Previously we loaded most popular service
+      // in order to show the preview of a prices-calendar with them.
+      // Now we are removing them from the booking data
+      // because we need tho show stylist’s calendar without any service selected.
+      //
+      // NOTE: most popular services will be restored on entering this page again.
       this.bookingData.setSelectedServices([]);
       this.navCtrl.push(PageNames.SelectDate);
     }
