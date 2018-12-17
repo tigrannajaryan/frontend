@@ -53,7 +53,7 @@ export class StylistProfileComponent {
   ) {
   }
 
-  async ionViewWillEnter(): Promise<void> {
+  async ionViewDidLoad(): Promise<void> {
     this.params = this.navParams.get('params') as StylistProfileParams;
 
     if (this.params && this.params.stylist) {
@@ -66,6 +66,13 @@ export class StylistProfileComponent {
 
       if (response) {
         this.stylistProfile = response;
+
+        if (this.content) {
+          // Tell the content to recalculate its dimensions. According to Ionic docs this
+          // should be called after dynamically adding/removing headers, footers, or tabs.
+          // See https://ionicframework.com/docs/api/components/content/Content/#resize
+          this.content.resize();
+        }
       }
     }
 
@@ -88,12 +95,6 @@ export class StylistProfileComponent {
     const services = await this.bookingData.selectedServicesObservable.get();
     if (services.length > 0) {
       this.service = services[0];
-    }
-
-    if (this.content) {
-      // if we don't update scrollable area on calendar appear
-      // phone block will be under the scrollable area
-      this.content.resize();
     }
   }
 
