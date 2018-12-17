@@ -138,7 +138,7 @@
 
 
 <ion-footer
-  *ngIf="stylistProfile && stylistProfile.is_profile_bookable"
+  *ngIf="stylistProfile?.is_profile_bookable"
   [title]="'Book with ' + stylistProfile?.first_name"
   (continue)="onStartBooking()"
   madeContinueFooter

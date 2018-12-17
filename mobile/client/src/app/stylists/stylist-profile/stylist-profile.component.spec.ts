@@ -112,6 +112,9 @@ describe('StylistProfileComponent', () => {
   });
 
   it('should have footer with call button for non bookable stylist', () => {
+    instance.stylistProfile.is_profile_bookable = false;
+    fixture.detectChanges();
+
     const stylistProfilePreviewFooterCall = fixture.nativeElement.querySelector('[data-test-id=stylistProfilePreviewFooterCall]');
     expect(stylistProfilePreviewFooterCall).toBeDefined();
     expect(stylistProfilePreviewFooterCall.innerText).toContain(`Call ${instance.stylistProfile.first_name}`);
