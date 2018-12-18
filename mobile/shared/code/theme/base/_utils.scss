@@ -12,3 +12,9 @@
   align-items: center;
   justify-content: center;
 }
+
+.text-muted {
+  font-size: pxtovw(18px);
+  line-height: pxtovw(24px);
+  color: color($colors-shared, warmGrey);
+}

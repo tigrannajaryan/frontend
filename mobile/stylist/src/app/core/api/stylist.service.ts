@@ -129,4 +129,11 @@ export class StylistServiceProvider extends BaseService {
       )
     ), []);
   }
+
+  /**
+   * Patch stylist’s profile providing only instagram_access_token.
+   */
+  setInstagramAccessToken(token: string): Observable<ApiResponse<StylistProfile>> {
+    return this.patch('stylist/profile', { instagram_access_token: token });
+  }
 }

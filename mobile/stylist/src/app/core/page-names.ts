@@ -13,6 +13,7 @@ import { ChangePercentComponent } from '~/core/popups/change-percent/change-perc
 import { ClientDetailsComponent } from '~/clients/client-details/client-details.component';
 import { ClientsCalendarComponent } from '~/calendar/clients-calendar/clients-calendar.component';
 import { ConfirmCheckoutComponent } from '~/core/popups/confirm-checkout/confirm-checkout.component';
+import { ConnectInstagramComponent } from '~/onboarding/connect-instagram/connect-instagram.component';
 import { DiscountsAlertComponent } from '~/discounts/discounts-alert/discounts-alert.component';
 import { DiscountsComponent } from '~/discounts/discounts.component';
 import { DiscountsFirstBookingComponent } from '~/discounts/discounts-first-booking/discounts-first-booking.component';
@@ -58,6 +59,7 @@ export const PageNames = {
   ClientDetails: ClientDetailsComponent,
   ClientsCalendar: ClientsCalendarComponent,
   ConfirmCheckoutComponent,
+  ConnectInstagram: ConnectInstagramComponent,
   Discounts: DiscountsComponent,
   DiscountsAlert: DiscountsAlertComponent,
   DiscountsFirstBooking: DiscountsFirstBookingComponent,

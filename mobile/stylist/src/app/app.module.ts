@@ -37,6 +37,7 @@ import { CalendarPrimingComponent } from '~/shared/components/calendar-priming/c
 import { GoogleSignin } from './shared/google-signin';
 import { IntegrationsApi } from './shared/api/integrations.api';
 import { MadeAnalyticsApi } from './shared/api/made-analytics.api';
+import { InstagramOAuthService } from '~/shared/utils/instagram-oauth-service';
 
 import { ENV } from '~/environments/environment.default';
 
@@ -96,6 +97,7 @@ import { MadeMenuComponent } from '~/core/components/made-menu/made-menu.compone
 import { HomeSlotsComponent } from './home-slots/home-slots.component';
 import { ChangeGapTimeComponent } from '~/core/popups/change-gap-time/change-gap-time.component';
 import { CalendarPickerComponent } from '~/shared/components/calendar-picker/calendar-picker.component';
+import { ConnectInstagramComponent } from '~/onboarding/connect-instagram/connect-instagram.component';
 
 initSentry();
 
@@ -150,6 +152,7 @@ const declarations = [
   ClientDetailsComponent,
   ClientsCalendarComponent,
   ConfirmCheckoutComponent,
+  ConnectInstagramComponent,
   DiscountsAlertComponent,
   DiscountsComponent,
   DiscountsFirstBookingComponent,
@@ -216,6 +219,8 @@ const declarations = [
 
     GooglePlus,
     GoogleSignin,
+
+    InstagramOAuthService,
 
     Push,
     PushNotification,
