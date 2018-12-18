@@ -17,6 +17,11 @@ export enum ServiceListType {
   blank = 'blank'
 }
 
+export interface ServicesComponentParams {
+  isRootPage?: boolean;
+  hideBackButton?: boolean;
+}
+
 @Component({
   selector: 'page-services',
   templateUrl: 'services.component.html'
@@ -28,6 +33,7 @@ export class ServicesComponent {
   protected whiteImage: SafeStyle;
   protected blackImage: SafeStyle;
   isLoading = false;
+  params: ServicesComponentParams;
 
   constructor(
     public navCtrl: NavController,
@@ -41,6 +47,8 @@ export class ServicesComponent {
   }
 
   async ionViewWillLoad(): Promise<void> {
+    this.params = this.navParams.get('params') as ServicesComponentParams;
+
     await this.guardRedirect();
 
     const { response } = await loading(this, this.stylistService.getServiceTemplateSetsList());
@@ -71,7 +79,7 @@ export class ServicesComponent {
           has_services_set: true
         });
       }
-      const params: ServicesListComponentParams = { isRootPage: true };
+      const params: ServicesListComponentParams = { isRootPage: true, hideBackButton: true };
       this.navCtrl.setRoot(PageNames.ServicesList, { params });
     }
   }

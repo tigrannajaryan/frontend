@@ -154,6 +154,7 @@ type HourRange = [string, string];
 
 export interface WorkHoursComponentParams {
   isRootPage?: boolean;
+  hideBackButton?: boolean;
 }
 
 @Component({

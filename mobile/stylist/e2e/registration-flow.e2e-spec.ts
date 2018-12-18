@@ -14,7 +14,7 @@ import { backdoorApi } from './shared-e2e/backdoor-api';
 import { phoneLoginPage } from './shared-e2e/phone-login-page';
 import { phoneCodePage } from './shared-e2e/phone-code-page';
 
-import { profilePage } from './pages/profile-page';
+import { registerProfilePage } from './pages/register-profile-page';
 import { welcomeToMadePage } from './pages/welcome-to-made-page';
 import { firstPage } from './pages/first-page';
 import { calendarExamplePage } from './pages/calendar-example-page';
@@ -22,6 +22,9 @@ import { pushPrimingPage } from './shared-e2e/push-priming-page';
 import { registrationDonePage } from './shared-e2e/registration-done-page';
 import { instagramConnectPage } from './pages/instagram-connect-page';
 import { homePage } from './pages/home-page';
+import { profilePage } from './pages/profile-page';
+import { worktimePage } from './pages/worktime-page';
+import { discountsPage } from './pages/discounts-page';
 
 describe('Registration Flow', () => {
 
@@ -66,22 +69,22 @@ describe('Registration Flow', () => {
     await waitForNot(globals.ionLoading);
 
     // We should arive to profile screen, check it.
-    await waitFor(profilePage.continueButton);
+    await waitFor(registerProfilePage.continueButton);
 
-    expect(profilePage.takePhotoBtn.isPresent()).toBeTruthy();
-    expect(profilePage.firstNameInput.isPresent()).toBeTruthy();
-    expect(profilePage.lastNameInput.isPresent()).toBeTruthy();
-    expect(profilePage.salonNameInput.isPresent()).toBeTruthy();
-    expect(profilePage.salonAddressInput.isPresent()).toBeTruthy();
-    expect(profilePage.phoneNumberInput.isPresent()).toBeTruthy();
-    expect(profilePage.websiteInput.isPresent()).toBeTruthy();
-    expect(profilePage.continueButton.isPresent()).toBeTruthy();
-    expect(profilePage.continueButton.isEnabled()).toBeFalsy();
+    expect(registerProfilePage.takePhotoBtn.isPresent()).toBeTruthy();
+    expect(registerProfilePage.firstNameInput.isPresent()).toBeTruthy();
+    expect(registerProfilePage.lastNameInput.isPresent()).toBeTruthy();
+    expect(registerProfilePage.salonNameInput.isPresent()).toBeTruthy();
+    expect(registerProfilePage.salonAddressInput.isPresent()).toBeTruthy();
+    expect(registerProfilePage.phoneNumberInput.isPresent()).toBeTruthy();
+    expect(registerProfilePage.websiteInput.isPresent()).toBeTruthy();
+    expect(registerProfilePage.continueButton.isPresent()).toBeTruthy();
+    expect(registerProfilePage.continueButton.isEnabled()).toBeFalsy();
 
     // Fill registration form
-    await profilePage.fillForm(firstName, lastName, salonName, address, phoneNumber, websiteName);
+    await registerProfilePage.fillForm(firstName, lastName, salonName, address, phoneNumber, websiteName);
 
-    await profilePage.submitForm();
+    await registerProfilePage.submitForm();
   });
 
   it('should skip Instagram connect page', async () => {
@@ -102,6 +105,38 @@ describe('Registration Flow', () => {
 
   it('should show registration done screen', async () => {
     await registrationDonePage.continue();
+  });
+
+  it('should change tab on profile screen to Edit tab', async () => {
+    await waitFor(profilePage.getProfileEditTab);
+    await click(profilePage.getProfileEditTab);
+  });
+
+  it('should go to Hours edit screen from profile edit tab', async () => {
+    await profilePage.goToHoursPage();
+    await click(worktimePage.goBack);
+    await waitForNot(worktimePage.goBack);
+  });
+
+  it('should go to Services edit screen from profile edit tab with new profile', async () => {
+    await profilePage.goToServicePage();
+    await waitFor(homePage.menuBtn);
+    await click(homePage.menuBtn);
+    await browser.takeScreenshot(); // When calling browser.takeScreenshot() it’s somehow fixed. Don’t remove the screenshots taking from the code!
+    await waitFor(homePage.getMenuProfileLink);
+    await click(homePage.getMenuProfileLink);
+    await browser.takeScreenshot(); // When calling browser.takeScreenshot() it’s somehow fixed. Don’t remove the screenshots taking from the code!
+    await waitForNot(homePage.getMenuProfileLink);
+    await waitFor(profilePage.getProfileEditTab);
+  });
+
+  it('should go to Discounts edit screen from profile edit tab', async () => {
+    await waitFor(profilePage.getProfileEditTab);
+    await click(profilePage.getProfileEditTab);
+    await profilePage.goToDiscountsPage();
+    await waitFor(discountsPage.goBack);
+    await click(discountsPage.goBack);
+    await waitForNot(discountsPage.goBack);
   });
 
   /**
