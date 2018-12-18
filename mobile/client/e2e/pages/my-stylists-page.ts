@@ -25,6 +25,7 @@ class MyStylistsPage {
     await click(this.savedStylistsCard);
     await waitFor(stylistProfilePage.removeStylist);
     await click(stylistProfilePage.removeStylist);
+    await click(stylistProfilePage.goBack);
     await waitForNot(stylistProfilePage.removeStylist);
   }
 }

@@ -44,7 +44,7 @@
     </div>
 
     <div class="StylistProfilePreview-photo">
-      <img [src]="stylistProfile.profile_photo_url  || 'assets/icons/stylistProfile-avatar.png'" alt="">
+      <img [src]="stylistProfile.profile_photo_url  || 'assets/icons/stylist-avatar.png'" alt="">
     </div>
 
     <div class="Made-wp">
@@ -143,3 +143,10 @@
   (continue)="onStartBooking()"
   madeContinueFooter
   data-test-id="stylistProfilePreviewFooter"></ion-footer>
+
+<ion-footer
+  *ngIf="stylistProfile && !stylistProfile.is_profile_bookable"
+  [title]="'Call ' + stylistProfile?.first_name"
+  (continue)="onPhoneCall()"
+  madeContinueFooter
+  data-test-id="stylistProfilePreviewFooterCall"></ion-footer>

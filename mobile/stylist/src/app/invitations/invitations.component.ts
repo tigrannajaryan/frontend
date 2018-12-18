@@ -1,14 +1,13 @@
 import {
   AlertController,
   NavController,
-  NavParams,
-  Platform
+  NavParams
 } from 'ionic-angular';
 
 import { Component } from '@angular/core';
 import { Contact, Contacts, IContactFindOptions } from '@ionic-native/contacts';
 import { OpenNativeSettings } from '@ionic-native/open-native-settings';
-import { SMS } from '@ionic-native/sms';
+import { SMS, SmsOptions } from '@ionic-native/sms';
 import * as Fuse from 'fuse.js/dist/fuse';
 
 import { normalizePhoneNumber } from '~/shared/utils/phone-numbers';
@@ -248,7 +247,6 @@ export class InvitationsComponent {
     private navCtrl: NavController,
     private navParams: NavParams,
     private openNativeSettings: OpenNativeSettings,
-    private platform: Platform,
     private profileData: ProfileDataStore,
     private sms: SMS
   ) {
@@ -585,29 +583,7 @@ export class InvitationsComponent {
     }
 
     const invitationText = await this.composeInvitationText();
-
-    if (this.platform.is('android')) {
-      const alert = this.alertCtrl.create({
-        subTitle: `Text message will be sent to ${this.selectedContacts.length} number(s). Are you sure?`,
-        buttons:
-          [
-            {
-              text: 'Cancel',
-              role: 'cancel'
-            },
-            {
-              text: 'Send',
-              handler: () => {
-                this.sendInvitations(invitationText);
-              }
-            }
-          ]
-      });
-      alert.present();
-    } else {
-      // No need for warning on iOS since it opens Messages app and user can still cancel
-      this.sendInvitations(invitationText);
-    }
+    this.sendInvitations(invitationText);
   }
 
   /**
@@ -630,8 +606,13 @@ export class InvitationsComponent {
 
       try {
         // Send the message. On iOS This opens standard SMS App on the phone and the user must manually
-        // tap the Send button. On Android this sends directly without user intervention.
-        await this.sms.send(invitation.phone, invitationText);
+        // tap the Send button. On Android we use intent to achieve similar functionality.
+        const options: SmsOptions = {
+          android: {
+            intent: 'INTENT' // Use intent to open default SMS app instead of sending directly
+          }
+        };
+        await this.sms.send(invitation.phone, invitationText, options);
       } catch (e) {
         // SMS is not sent. Most likely cancelled by the user.
         const alert = this.alertCtrl.create({
