@@ -5,6 +5,8 @@ import { Logger } from '~/shared/logger';
 import { showAlert } from '~/shared/utils/alert';
 import { InstagramOAuthService } from '~/shared/utils/instagram-oauth-service';
 
+import { ENV } from '~/environments/environment.default';
+
 import { StylistServiceProvider } from '~/core/api/stylist.service';
 import { PageNames } from '~/core/page-names';
 
@@ -41,7 +43,7 @@ export class ConnectInstagramComponent {
       return;
     }
 
-    const token = await this.instagram.auth('417299d1d7ee4c67972fd7b62c8d5044').catch(error => {
+    const token = await this.instagram.auth(ENV.INSTAGRAM_CLIENT_ID).catch(error => {
       this.logger.error(error);
     });
 

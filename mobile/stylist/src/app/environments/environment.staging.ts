@@ -11,5 +11,8 @@ export const ENV = {
   gaTrackingId: 'UA-120898935-1',
 
   // Firebase Cloud Messaging Sender ID
-  FCM_PUSH_SENDER_ID: '17636556416'
+  FCM_PUSH_SENDER_ID: '17636556416',
+
+  // ID of Made Pro client, check https://www.instagram.com/developer/clients
+  INSTAGRAM_CLIENT_ID: '417299d1d7ee4c67972fd7b62c8d5044'
 };

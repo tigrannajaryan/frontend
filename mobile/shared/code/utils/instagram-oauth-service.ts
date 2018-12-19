@@ -7,7 +7,7 @@ type channel = 'loadstart' | 'loadstop' | 'loaderror' | 'exit';
 
 interface InAppBrowserEvent extends Event {
   /** the eventname, either loadstart, loadstop, loaderror, or exit. */
-  type: string;
+  type: channel;
   /** the URL that was loaded. */
   url: string;
   /** the error code, only in the case of loaderror. */
@@ -43,7 +43,15 @@ interface InAppBrowser {
 @Injectable()
 export class InstagramOAuthService {
   static baseUrl = 'https://api.instagram.com/oauth/authorize/';
-  static redirectTo = 'http://localhost:8100';
+
+  /**
+   * This url can be whatever you like. In fact a user won’t be redirected to it.
+   * We will handle a redirect on load start.
+   *
+   * NOTE: this url should be listed in ”Valid redirect URIs” section of your instagram client,
+   *       check https://www.instagram.com/developer/clients/.
+   */
+  static redirectTo = 'https://madebeauty.com/';
 
   /**
    * Instagram’s OAuth implementation:
@@ -64,7 +72,8 @@ export class InstagramOAuthService {
 
       browserWindow.addEventListener('loadstart', event => {
 
-        // If the url starts with redirectTo
+        // If the url starts with redirectTo url it means that authentication flow is finished at Instagram and
+        // Instagram redirected to our url and the access token is expected to be in the url.
         if (event.url.indexOf(InstagramOAuthService.redirectTo) === 0) {
           browserWindow.close();
 
@@ -72,7 +81,7 @@ export class InstagramOAuthService {
           if (token && token[1]) {
             resolve(token[1].toString());
           } else {
-            const error = new Error(`cannot retrieve the token from ${event.url}`);
+            const error = new Error(`cannot retrieve Instagram access token from ${event.url}`);
             reportToSentry(error);
             reject(error);
           }
@@ -103,7 +112,7 @@ export class InstagramOAuthService {
     if (!cordova) {
       throw new Error('cordova not available');
     }
-    return (cordova as { InAppBrowser: InAppBrowser }).InAppBrowser.open(
+    return cordova.InAppBrowser.open(
       url, '_blank', 'location=no,clearsessioncache=yes,clearcache=yes,closebuttoncaption=Cancel'
     );
   };
