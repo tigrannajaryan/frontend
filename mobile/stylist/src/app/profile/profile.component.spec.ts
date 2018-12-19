@@ -1,7 +1,7 @@
 import { async, ComponentFixture } from '@angular/core/testing';
 import { HttpClient, HttpHandler } from '@angular/common/http';
 import { Camera } from '@ionic-native/camera';
-import { ActionSheetController } from 'ionic-angular';
+import { ActionSheetController} from 'ionic-angular';
 import { MapsAPILoader } from '@agm/core';
 import { LaunchNavigator } from '@ionic-native/launch-navigator';
 
@@ -101,7 +101,7 @@ describe('Pages: ProfileComponent', async () => {
     expect(stylistProfilePreviewAddress.innerText).toContain(instance.profile.salon_address);
 
     const stylistProfilePreviewInstagram = fixture.nativeElement.querySelector('[data-test-id=stylistProfilePreviewInstagram]');
-    expect(stylistProfilePreviewInstagram.innerText).toContain(instance.profile.instagram_url);
+    expect(stylistProfilePreviewInstagram.innerText).toContain('Add Instagram'); // because instagram not integrated
 
     const stylistProfilePreviewWebsite = fixture.nativeElement.querySelector('[data-test-id=stylistProfilePreviewWebsite]');
     expect(stylistProfilePreviewWebsite.innerText).toContain(instance.profile.website_url);
@@ -128,7 +128,7 @@ describe('Pages: ProfileComponent', async () => {
     fixture.detectChanges();
     const stylistProfilePreviewInstagram = fixture.nativeElement.querySelector('[data-test-id=stylistProfilePreviewInstagram]');
     stylistProfilePreviewInstagram.click();
-    expect(instance.onFieldEdit).toHaveBeenCalledWith(ProfileEditableFields.instagram_url);
+    expect(instance.onFieldEdit).toHaveBeenCalledWith(ProfileEditableFields.instagram);
 
     instance.profile.website_url = '';
     fixture.detectChanges();
@@ -256,7 +256,7 @@ describe('Pages: ProfileComponent', async () => {
 
     const ProfileEditInstagram = fixture.nativeElement.querySelector('[data-test-id=ProfileEditInstagram]');
     ProfileEditInstagram.click();
-    expect(instance.onFieldEdit).toHaveBeenCalledWith(ProfileEditableFields.instagram_url);
+    expect(instance.onFieldEdit).toHaveBeenCalledWith(ProfileEditableFields.instagram);
 
     const ProfileEditName = fixture.nativeElement.querySelector('[data-test-id=ProfileEditName]');
     ProfileEditName.click();
