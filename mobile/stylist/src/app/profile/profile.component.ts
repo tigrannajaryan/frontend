@@ -31,7 +31,7 @@ export enum ProfileTabNames {
 export enum ProfileEditableFields {
   name,
   profile_photo_url,
-  instagram_url,
+  instagram,
   website_url,
   email,
   salon_address,
@@ -127,10 +127,15 @@ export class ProfileComponent {
   }
 
   onFieldEdit(field: ProfileEditableFields): void {
-    // TODO: go to edit field page
+    switch (field) {
+      case ProfileEditableFields.instagram:
+        this.navCtrl.push(PageNames.ConnectInstagram);
+        break;
 
-    // remove it when we will have separate page
-    this.navCtrl.push(PageNames.RegisterSalon, { params: { isRootPage: true }});
+      default:
+        this.navCtrl.push(PageNames.RegisterSalon, { params: { isRootPage: true }});
+        break;
+    }
   }
 
   onSetAccountInfo(page: Page): void {

@@ -1,0 +1,28 @@
+.InstaGallery {
+  $img-size: pxtovw(108px);
+
+  .swiper-container {
+    padding-bottom: 32px; // static
+
+    .swiper-slide {
+      align-items: flex-start;
+      min-height: $img-size * 3;
+    }
+
+    > .swiper-pagination-bullets {
+      bottom: 0;
+    }
+
+    .swiper-pagination-bullet-active {
+      background: color($colors-shared, honey);
+    }
+  }
+
+  .InstaGallery-img {
+    min-width: $img-size;
+    min-height: $img-size;
+    background-position: center;
+    background-size: cover;
+    border: 0.5px solid white;
+  }
+}

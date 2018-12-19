@@ -1,0 +1,13 @@
+<div class="InstaGallery">
+  <ion-slides *ngIf="mediaObjects" [pager]="true" paginationType="bullets">
+    <ion-slide *ngFor="let slide of Array(Math.ceil(mediaObjects.length / 9) || 1).fill(''); index as i">
+      <ion-row>
+        <div
+          *ngFor="let media of Array(Math.min(9, mediaObjects.length - 9 * i)).fill(''); index as j"
+          (click)="openImageModal(i * 9 + j)"
+          [ngStyle]="{'background-image': 'url(' + mediaObjects[i * 9 + j].images.standard_resolution.url + '' }"
+          class="InstaGallery-img"></div>
+      </ion-row>
+    </ion-slide>
+  </ion-slides>
+</div>

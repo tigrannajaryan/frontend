@@ -1,7 +1,7 @@
 import { AgmCoreModule, LAZY_MAPS_API_CONFIG } from '@agm/core';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { SplashScreen } from '@ionic-native/splash-screen';
-import { BrowserModule } from '@angular/platform-browser';
+import { BrowserModule, HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
 import { ErrorHandler, Injector, NgModule } from '@angular/core';
 import { META_REDUCERS, StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
@@ -22,6 +22,7 @@ import { Push } from '@ionic-native/push';
 import { DatePicker } from '@ionic-native/date-picker';
 import { GooglePlus } from '@ionic-native/google-plus';
 import { LaunchNavigator } from '@ionic-native/launch-navigator';
+import { GalleryModalHammerConfig, GalleryModalModule } from 'ionic-gallery-modal';
 
 import { UnhandledErrorHandler } from '~/shared/unhandled-error-handler';
 import { initSentry } from '~/shared/sentry';
@@ -199,6 +200,8 @@ const declarations = [
     StoreModule.forFeature('service', servicesReducer),
     EffectsModule.forFeature([ServicesEffects]),
 
+    GalleryModalModule,
+
     ...imports
   ],
 
@@ -248,6 +251,12 @@ const declarations = [
     {
       // Override google maps config
       provide: LAZY_MAPS_API_CONFIG, useClass: GoogleMapsConfig
+    },
+
+    {
+      // https://www.npmjs.com/package/ionic-gallery-modal
+      provide: HAMMER_GESTURE_CONFIG,
+      useClass: GalleryModalHammerConfig
     },
 
     // Providers for pages

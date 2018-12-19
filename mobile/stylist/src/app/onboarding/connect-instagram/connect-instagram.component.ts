@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { Component, OnInit } from '@angular/core';
+import { NavController, NavParams } from 'ionic-angular';
 
 import { Logger } from '~/shared/logger';
 import { showAlert } from '~/shared/utils/alert';
@@ -10,11 +10,17 @@ import { ENV } from '~/environments/environment.default';
 import { StylistServiceProvider } from '~/core/api/stylist.service';
 import { PageNames } from '~/core/page-names';
 
+export interface ConnectInstagramComponentParams {
+  isOnboarding?: boolean;
+}
+
 @Component({
   selector: 'connect-instagram',
   templateUrl: 'connect-instagram.component.html'
 })
-export class ConnectInstagramComponent {
+export class ConnectInstagramComponent implements OnInit {
+  params: ConnectInstagramComponentParams;
+
   connected = false;
   token: string;
 
@@ -22,12 +28,21 @@ export class ConnectInstagramComponent {
     private api: StylistServiceProvider,
     private instagram: InstagramOAuthService,
     private logger: Logger,
-    private navCtrl: NavController
+    private navCtrl: NavController,
+    private navParams: NavParams
   ) {
   }
 
+  ngOnInit(): void {
+    this.params = this.navParams.get('params') || {};
+  }
+
   onNavigateNext(): void {
-    this.navCtrl.push(PageNames.WelcomeToMade);
+    if (this.params.isOnboarding) {
+      this.navCtrl.push(PageNames.WelcomeToMade);
+    } else {
+      this.navCtrl.pop();
+    }
   }
 
   async onContinue(): Promise<void> {

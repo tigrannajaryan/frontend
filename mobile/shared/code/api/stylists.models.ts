@@ -81,3 +81,24 @@ export interface WorkingHours {
   work_end_at: string;
   is_available: boolean;
 }
+
+export interface InstagramImage {
+  width: number;
+  height: number;
+  url: string;
+}
+
+export interface InstagramMedia {
+  id: string;
+  content_type: 'image' | 'video';
+  likes_count: number;
+  images: {
+    low_resolution: InstagramImage;
+    standard_resolution: InstagramImage;
+    thumbnail: InstagramImage;
+  };
+}
+
+export interface StylistInstagramImagesResponse {
+  instagram_media: InstagramMedia[];
+}

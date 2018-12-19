@@ -8,6 +8,7 @@ import { NumListComponent } from '~/shared/components/num-list/num-list.componen
 import { PhoneInputComponent } from '~/shared/components/phone-input/phone-input.component';
 import { CodeInputComponent } from '~/shared/components/code-input/code-input.component';
 import { PricePairComponent } from '~/shared/components/price-pair/price-pair.component';
+import { InstagramGalleryComponent } from '~/shared/components/instagram-gallery/instagram-gallery.component';
 
 import { DiscountsApi } from '~/core/api/discounts.api';
 
@@ -63,7 +64,8 @@ const components = [
   HorizontalCalendarComponent,
   StylistPreviewComponent,
   StylistPushNotificationsTrackerComponent,
-  TimeSlotContentComponent
+  TimeSlotContentComponent,
+  InstagramGalleryComponent
 ];
 
 @NgModule({

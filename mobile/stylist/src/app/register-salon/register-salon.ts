@@ -26,6 +26,8 @@ import { loading } from '~/core/utils/loading';
 import { PageNames } from '~/core/page-names';
 import { ProfileDataStore } from '~/core/profile.data';
 
+import { ConnectInstagramComponentParams } from '~/onboarding/connect-instagram/connect-instagram.component';
+
 declare var window: any;
 
 export interface RegisterSalonComponentParams {
@@ -229,7 +231,8 @@ export class RegisterSalonComponent {
       return;
     }
 
-    this.navCtrl.push(PageNames.ConnectInstagram);
+    const params: ConnectInstagramComponentParams = { isOnboarding: true };
+    this.navCtrl.push(PageNames.ConnectInstagram, { params });
   }
 
   @loading
