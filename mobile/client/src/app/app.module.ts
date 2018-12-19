@@ -51,7 +51,8 @@ import { PushNotification } from '~/shared/push/push-notification';
 import { SuccessErrorPopupComponent } from '~/shared/components/success-error-popup/success-error-popup.component';
 import { CalendarPickerComponent } from '~/shared/components/calendar-picker/calendar-picker.component';
 import { CalendarPrimingComponent } from '~/shared/components/calendar-priming/calendar-priming.component';
-import { GoogleSignin } from './shared/google-signin';
+import { GoogleSignin } from '~/shared/google-signin';
+import { InstagramGalleryComponent } from '~/shared/components/instagram-gallery/instagram-gallery.component';
 
 import { profilePath, profileReducer } from '~/core/reducers/profile.reducer';
 import { servicesPath, servicesReducer } from '~/core/reducers/services.reducer';
@@ -115,6 +116,7 @@ const declarations = [
   HomePageComponent,
   HowMadeWorksComponent,
   HowPricingWorksComponent,
+  InstagramGalleryComponent,
   MainTabsComponent,
   MyStylistsComponent,
   NonBookableSavePopupComponent,
