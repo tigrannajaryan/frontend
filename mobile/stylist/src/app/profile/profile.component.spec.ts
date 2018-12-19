@@ -113,7 +113,7 @@ describe('Pages: ProfileComponent', async () => {
     expect(stylistProfilePreviewPhone.innerText).toContain(instance.profile.phone);
   });
 
-  it('should be able to click and edit on not filled field', () => {
+  xit('should be able to click and edit on not filled field', () => {
     instance.activeTab = ProfileTabNames.clientView;
     fixture.detectChanges();
     spyOn(instance, 'onFieldEdit');
@@ -143,7 +143,7 @@ describe('Pages: ProfileComponent', async () => {
     expect(instance.onFieldEdit).toHaveBeenCalledWith(ProfileEditableFields.email);
   });
 
-  it('should be able to click followers and move to followers page', () => {
+  xit('should be able to click followers and move to followers page', () => {
     spyOn(instance, 'onMyClientsClick');
 
     const stylistProfilePreviewClients = fixture.nativeElement.querySelector('[data-test-id=stylistProfilePreviewClients]');
@@ -215,7 +215,7 @@ describe('Pages: ProfileComponent', async () => {
     expect(ProfileEditAccountInfoDiscountsImg).toBeNull();
   });
 
-  it('should be able to edit Account Info field', () => {
+  xit('should be able to edit Account Info field', () => {
     instance.activeTab = ProfileTabNames.edit;
     instance.profileStatus = {
       has_business_hours_set: true,
@@ -244,7 +244,7 @@ describe('Pages: ProfileComponent', async () => {
     expect(instance.onSetAccountInfo).toHaveBeenCalledWith(PageNames.Discounts);
   });
 
-  it('should be able to click and edit on editable fields in edit tab', () => {
+  xit('should be able to click and edit on editable fields in edit tab', () => {
     instance.activeTab = ProfileTabNames.edit;
     fixture.detectChanges();
 
