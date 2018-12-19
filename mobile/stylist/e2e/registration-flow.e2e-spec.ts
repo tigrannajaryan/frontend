@@ -7,7 +7,6 @@ import {
   click,
   getRandomString,
   globals,
-  takeScreenShot,
   waitFor,
   waitForNot
 } from './shared-e2e/utils';
@@ -21,6 +20,7 @@ import { firstPage } from './pages/first-page';
 import { calendarExamplePage } from './pages/calendar-example-page';
 import { pushPrimingPage } from './shared-e2e/push-priming-page';
 import { registrationDonePage } from './shared-e2e/registration-done-page';
+import { instagramConnectPage } from './pages/instagram-connect-page';
 import { homePage } from './pages/home-page';
 
 describe('Registration Flow', () => {
@@ -30,7 +30,6 @@ describe('Registration Flow', () => {
   const lastName = faker.name.lastName();
   const salonName = faker.company.companyName(0);
   const address = faker.address.streetAddress();
-  const instagramName = getRandomString(8);
   const websiteName = getRandomString(8);
 
   beforeAll(async () => {
@@ -75,15 +74,18 @@ describe('Registration Flow', () => {
     expect(profilePage.salonNameInput.isPresent()).toBeTruthy();
     expect(profilePage.salonAddressInput.isPresent()).toBeTruthy();
     expect(profilePage.phoneNumberInput.isPresent()).toBeTruthy();
-    expect(profilePage.instagramNameInput.isPresent()).toBeTruthy();
     expect(profilePage.websiteInput.isPresent()).toBeTruthy();
     expect(profilePage.continueButton.isPresent()).toBeTruthy();
     expect(profilePage.continueButton.isEnabled()).toBeFalsy();
 
     // Fill registration form
-    await profilePage.fillForm(firstName, lastName, salonName, address, phoneNumber, instagramName, websiteName);
+    await profilePage.fillForm(firstName, lastName, salonName, address, phoneNumber, websiteName);
 
     await profilePage.submitForm();
+  });
+
+  it('should skip Instagram connect page', async () => {
+    await instagramConnectPage.skip();
   });
 
   it('can navigate through Welcome To Made page', async () => {

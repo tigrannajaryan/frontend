@@ -91,7 +91,6 @@ export class RegisterSalonComponent {
       ]],
       // tslint:disable-next-line:no-null-keyword
       profile_photo_id: null,
-      instagram_url: ['', Validators.pattern(/([A-Za-z0-9_](?:(?:[A-Za-z0-9_]|(?:\\.(?!\\.))){0,28}(?:[A-Za-z0-9_]))?)/)],
       website_url: ['']
     });
   }
@@ -122,7 +121,6 @@ export class RegisterSalonComponent {
       salon_name,
       salon_address,
       profile_photo_id,
-      instagram_url,
       website_url
     } = response;
 
@@ -140,7 +138,6 @@ export class RegisterSalonComponent {
       salon_name,
       salon_address,
       profile_photo_id,
-      instagram_url,
       website_url
     });
   }
@@ -232,7 +229,7 @@ export class RegisterSalonComponent {
       return;
     }
 
-    this.navCtrl.push(PageNames.WelcomeToMade);
+    this.navCtrl.push(PageNames.ConnectInstagram);
   }
 
   @loading
@@ -242,8 +239,6 @@ export class RegisterSalonComponent {
       ...profile,
       // use raw phone number (required field, cannot omit):
       phone: this.rawPhone,
-      // remove @ from instagram username:
-      instagram_url: profile.instagram_url && profile.instagram_url.replace(/^\@/, ''),
       // the API requires null if empty salon_name
       // tslint:disable-next-line:no-null-keyword
       salon_name: profile.salon_name || null

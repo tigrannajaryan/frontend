@@ -7,5 +7,8 @@ export const ENV = {
 
   // Disable Sentry reporting for now. Once we have a staging environment file
   // use the following dsn for staging: 'https://b238c730d93f4e11917f5f716dc1920a@sentry.io/1229223'
-  sentryDsn: undefined
+  sentryDsn: undefined,
+
+  // ID of Made Pro client, check https://www.instagram.com/developer/clients
+  INSTAGRAM_CLIENT_ID: '417299d1d7ee4c67972fd7b62c8d5044'
 };

@@ -10,6 +10,16 @@
   }
 }
 
+.Made-h2 {
+  font-size: pxtovw(21px);
+  font-weight: bold;
+  line-height: pxtovw(24px);
+
+  strong {
+    color: color($colors-shared, honey);
+  }
+}
+
 .Made-h3 {
   margin-bottom: pxtovw(8px);
   font-size: pxtovw(18px);

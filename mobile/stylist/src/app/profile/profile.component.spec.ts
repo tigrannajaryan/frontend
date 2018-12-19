@@ -75,11 +75,11 @@ describe('Pages: ProfileComponent', () => {
       .toBeTruthy();
   }));
 
-  it('should have two tabs', async(() => {
+  it('should have two tabs', () => {
     const profileTabs = fixture.nativeElement.querySelector('[data-test-id=profileTabs]');
     expect(profileTabs.innerText).toContain(ProfileTabNames.edit);
     expect(profileTabs.innerText).toContain(ProfileTabNames.clientView);
-  }));
+  });
 
   it('should have not a complete profile', () => {
     instance.stylistProfileCompleteness = calcProfileCompleteness(instance.form.value);

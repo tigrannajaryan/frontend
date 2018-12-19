@@ -1,0 +1,29 @@
+<ion-header madeMenuHeader [hideMenuButton]="true">
+
+  <ion-buttons end>
+    <button (click)="onNavigateNext()" class="ConnectInstagram-skip" data-test-id="skipBtn">Later</button>
+  </ion-buttons>
+
+</ion-header>
+
+<ion-content no-padding>
+  <div class="Made-wp Made-wpContent ConnectInstagram-content">
+
+    <div class="Made-h2 ConnectInstagram-h2">
+      Let’s connect your <strong (click)="onContinue()">Instagram</strong>?
+    </div>
+    <p class="text-muted">This is your gallery. Show your work to potential clients.</p>
+
+    <ion-row align-items-center justify-content-center (click)="onContinue()" class="ConnectInstagram-img">
+      <img src="assets/icons/instagram-logo@3x.png" />
+    </ion-row>
+    <ion-row align-items-center justify-content-center>
+      <button (click)="onContinue()" class="Button ConnectInstagram-buttonInline">Connect</button>
+    </ion-row>
+
+    <ion-footer class="Footer ConnectInstagram-footer">
+      <button (click)="onContinue()" class="Button">{{ token ? 'Continue' : 'Connect to Instagram' }}</button>
+    </ion-footer>
+
+  </div>
+</ion-content>
