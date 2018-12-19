@@ -17,6 +17,8 @@ class WorktimePage {
 
   get continueButton() { return $('page-hours button[data-test-id=continueBtn]'); }
 
+  get goBack() { return $('page-hours button.back-button'); }
+
   // Operations
   async isWeekdaySelected(cardNum: number, weekDayNum: number): Promise<boolean> {
     const classes = await worktimePage.getWeekDayToggle(cardNum, weekDayNum).getAttribute('class');

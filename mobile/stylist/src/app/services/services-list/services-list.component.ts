@@ -18,6 +18,7 @@ import { ServiceItemComponentData } from '~/services/services-item/services-item
 
 export interface ServicesListComponentParams {
   isRootPage?: boolean;
+  hideBackButton?: boolean;
   uuid?: string;
 }
 
@@ -122,7 +123,7 @@ export class ServicesListComponent {
         // If no services exists we landed to Services page to enter stylist’s services first.
         // When this happens ServicesList becomes a second page in stack. After services
         // are saved ServicesList should become a root page.
-        const params: ServicesListComponentParams = { isRootPage: true };
+        const params: ServicesListComponentParams = { isRootPage: true, hideBackButton: true };
         this.navCtrl.setRoot(PageNames.ServicesList, { params });
       }
     }

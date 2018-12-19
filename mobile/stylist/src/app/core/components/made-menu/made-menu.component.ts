@@ -47,6 +47,26 @@ export class MadeMenuComponent implements OnInit {
 
   private servicesMenuItem: MenuItem;
 
+  static showNotice(page: Page, profileStatus: StylistProfileStatus): boolean {
+    if (!profileStatus) {
+      return false;
+    }
+
+    switch (page) {
+      case PageNames.Discounts:
+        return !profileStatus.has_weekday_discounts_set;
+      case PageNames.Invitations:
+        return !profileStatus.has_invited_clients;
+      case PageNames.Services:
+      case PageNames.ServicesList:
+        return !profileStatus.has_services_set;
+      case PageNames.WorkHours:
+        return !profileStatus.has_business_hours_set;
+      default:
+        return false;
+    }
+  }
+
   constructor(
     public profileData: ProfileDataStore,
     private authApiService: AuthService,
@@ -56,15 +76,21 @@ export class MadeMenuComponent implements OnInit {
     private zone: NgZone
   ) {
     const redirectParams = { isRootPage: true };
+    const redirectParamsAccountInfos = { isRootPage: true, hideBackButton: true };
 
-    this.servicesMenuItem = { title: 'Services', redirectToPage: PageNames.ServicesList, redirectParams, icon: 'conditioners-a' };
+    this.servicesMenuItem = {
+      title: 'Services',
+      redirectToPage: PageNames.ServicesList,
+      redirectParams: redirectParamsAccountInfos,
+      icon: 'conditioners-a'
+    };
 
     this.menuItems = [
       { title: 'Appointments', redirectToPage: PageNames.HomeSlots, redirectParams: {}, icon: 'home-a' },
       { title: 'Clients', redirectToPage: PageNames.MyClients, redirectParams, icon: 'stylists-a' },
-      { title: 'Discounts', redirectToPage: PageNames.Discounts, redirectParams, icon: 'discounts' },
+      { title: 'Discounts', redirectToPage: PageNames.Discounts, redirectParams: redirectParamsAccountInfos, icon: 'discounts' },
       { title: 'Calendar', redirectToPage: PageNames.ClientsCalendar, redirectParams, icon: 'calendar-add' },
-      { title: 'Hours', redirectToPage: PageNames.WorkHours, redirectParams, icon: 'clock-a' },
+      { title: 'Hours', redirectToPage: PageNames.WorkHours, redirectParams: redirectParamsAccountInfos, icon: 'clock-a' },
       this.servicesMenuItem, // by ref
       { title: 'Invite Clients', redirectToPage: PageNames.Invitations, redirectParams, icon: 'invite-a' }
     ];
@@ -153,26 +179,14 @@ export class MadeMenuComponent implements OnInit {
   }
 
   onMenuClick(): void {
-    this.setPage(PageNames.Profile, {}, false);
+    this.setPage(PageNames.Profile, {}, true);
   }
 
-  shouldShowNotice(menuItem: MenuItem): boolean {
+  shouldShowNotice(page: Page): boolean {
     if (!this.profileStatus) {
       return false;
     }
 
-    switch (menuItem.redirectToPage) {
-      case PageNames.Discounts:
-        return !this.profileStatus.has_weekday_discounts_set;
-      case PageNames.Invitations:
-        return !this.profileStatus.has_invited_clients;
-      case PageNames.Services:
-      case PageNames.ServicesList:
-        return !this.profileStatus.has_services_set;
-      case PageNames.WorkHours:
-        return !this.profileStatus.has_business_hours_set;
-      default:
-        return false;
-    }
+    return MadeMenuComponent.showNotice(page, this.profileStatus);
   }
 }

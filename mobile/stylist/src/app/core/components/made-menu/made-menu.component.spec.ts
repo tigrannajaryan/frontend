@@ -44,7 +44,7 @@ describe('Component: menu', () => {
     expect(menuProfileLink).toBeDefined();
 
     menuProfileLink.click();
-    expect(instance.setPage).toHaveBeenCalledWith(PageNames.Profile, {}, false);
+    expect(instance.setPage).toHaveBeenCalledWith(PageNames.Profile, {}, true);
 
     const menuProfileSalon = fixture.nativeElement.querySelector('[data-test-id=menuProfileSalon]');
     expect(menuProfileSalon.innerText).toContain(instance.profile.salon_name);

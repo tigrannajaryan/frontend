@@ -24,7 +24,7 @@
         *ngFor="let item of menuItems; let index = index"
         (click)="setPage(item.redirectToPage, item.redirectParams)"
         [class.is-active]=""
-        [class.is-notDefined]="shouldShowNotice(item)"
+        [class.is-notDefined]="shouldShowNotice(item.redirectToPage)"
         [attr.data-test-id]="'menuItem' + index"
         class="sideMenu-link"
         menuClose>

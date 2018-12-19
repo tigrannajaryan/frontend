@@ -1,44 +1,37 @@
 import { $ } from 'protractor';
 
-import { click, waitForNot } from '../shared-e2e/utils';
+import { click, waitFor, waitForNot } from '../shared-e2e/utils';
+import { selectServiceListPage } from './select-service-list-page';
+import { servicesPage } from './services-page';
 
 /**
  * Profile page definition
  */
 class ProfilePage {
   // UI element declarations
-  get takePhotoBtn() { return $('page-register-salon [data-test-id=takePhotoBtn]'); }
-  get firstNameInput() { return $('page-register-salon input[formControlName=first_name]'); }
-  get lastNameInput() { return $('page-register-salon input[formControlName=last_name]'); }
-  get salonNameInput() { return $('page-register-salon input[formControlName=salon_name]'); }
-  get salonAddressInput() { return $('page-register-salon input[formControlName=salon_address]'); }
-  get phoneNumberInput() { return $('page-register-salon input[formControlName=phone]'); }
-  get websiteInput() { return $('page-register-salon input[formControlName=website_url]'); }
-  get continueButton() { return $('page-register-salon [data-test-id=submitProfileBtn]'); }
+  get getProfileEditTab() { return $('page-profile [data-test-id=ProfileEditTab]'); }
+  get getProfileEditAccountInfoHoursBtn() { return $('page-profile [data-test-id=ProfileEditAccountInfoHours]'); }
+  get getProfileEditAccountInfoServiceBtn() { return $('page-profile [data-test-id=ProfileEditAccountInfoService]'); }
+  get getProfileEditAccountInfoDiscountsBtn() { return $('page-profile [data-test-id=ProfileEditAccountInfoDiscounts]'); }
 
   // Operations
-  async fillForm(firstName, lastName, salonName, address, phoneNumber, websiteName) {
-    await this.firstNameInput.sendKeys(firstName);
-    await this.lastNameInput.sendKeys(lastName);
-    await this.salonNameInput.sendKeys(salonName);
-    await this.salonAddressInput.sendKeys(address);
-    await this.phoneNumberInput.sendKeys(phoneNumber);
-    await this.websiteInput.sendKeys(websiteName);
+  async goToHoursPage() {
+    await waitFor(profilePage.getProfileEditTab);
+    await click(profilePage.getProfileEditAccountInfoHoursBtn);
   }
-
-  async submitForm() {
-    try {
-      await click(profilePage.continueButton);
-    } catch (e) {
-      console.warn('Cannot click on Continue button in profile page.', e);
-      console.warn(await this.firstNameInput.getText());
-      console.warn(await this.lastNameInput.getText());
-      console.warn(await this.salonNameInput.getText());
-      console.warn(await this.salonAddressInput.getText());
-      console.warn(await this.phoneNumberInput.getText());
-      console.warn(await this.websiteInput.getText());
-    }
-    await waitForNot(this.continueButton);
+  async goToServicePage() {
+    await waitFor(profilePage.getProfileEditTab);
+    await click(profilePage.getProfileEditAccountInfoServiceBtn);
+    await waitFor(selectServiceListPage.getSelectSetButton(0));
+    await click(selectServiceListPage.getSelectSetButton(0));
+    await waitForNot(selectServiceListPage.getSelectSetButton(0));
+    await waitFor(servicesPage.continueButton);
+    await click(servicesPage.continueButton);
+    await waitForNot(servicesPage.continueButton);
+  }
+  async goToDiscountsPage() {
+    await waitFor(profilePage.getProfileEditTab);
+    await click(profilePage.getProfileEditAccountInfoDiscountsBtn);
   }
 }
 

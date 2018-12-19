@@ -1,19 +1,14 @@
 <ion-header madeMenuHeader [hideBackButton]="true" [hideMenuButton]="false">
-  <ion-title>
-    <div class="madeMenuHeader-nameTitle" data-test-id="profileNameTitle">{{ form.get('first_name').value }}</div>
+  <ion-title *ngIf="profile">
+    <div class="madeMenuHeader-nameTitle" data-test-id="profileNameTitle">{{ profile.first_name }}</div>
   </ion-title>
-
-  <ion-buttons end>
-    <button [disabled]="form.invalid" (click)="updateProfile()" ion-button icon-only color="dark" class="RightButton">
-      Done
-    </button>
-  </ion-buttons>
 
   <ion-toolbar class="ProfilePage-toolbar" no-padding>
     <div *ngIf="!stylistProfileCompleteness?.isProfileComplete" class="ProfilePage-completion" data-test-id="isProfileComplete">
-      <span data-test-id="completenessPercent">Profile completion: {{ stylistProfileCompleteness?.completenessPercent }}%</span>
-
-      <div class="ProfilePage-completionBar"><span [style.width]="stylistProfileCompleteness?.completenessPercent + '%'"></span></div>
+      <span data-test-id="completenessPercent">
+        Profile completion: {{ stylistProfileCompleteness?.completenessPercent }}%
+        <img class="ProfilePage-blockItemNameNotice" src="assets/icons/!@2x.png" />
+      </span>
     </div>
 
     <div class="Tabs-box MyStylistsPage-tabsMargin">
@@ -21,16 +16,16 @@
         <ion-col col-8 no-padding>
           <div class="Tabs-wp" data-test-id="profileTabs">
             <button
-              (click)="onTabChange(ProfileTabs.edit)"
-              [class.active]="tabs[ProfileTabs.edit].name === activeTab"
-              ion-button clear color="dark" class="Tabs-btn">
-              {{ ProfileTabNames.edit }}
-            </button>
-            <button
               (click)="onTabChange(ProfileTabs.clientView)"
               [class.active]="tabs[ProfileTabs.clientView].name === activeTab"
-              ion-button clear color="dark" class="Tabs-btn">
+              ion-button clear color="dark" class="Tabs-btn is-big">
               {{ ProfileTabNames.clientView }}
+            </button>
+            <button
+              (click)="onTabChange(ProfileTabs.edit)"
+              [class.active]="tabs[ProfileTabs.edit].name === activeTab"
+              ion-button clear color="dark" class="Tabs-btn is-big" data-test-id="ProfileEditTab">
+              {{ ProfileTabNames.edit }}
             </button>
           </div>
         </ion-col>
@@ -44,138 +39,250 @@
   <ion-slides (ionSlideDrag)="onEnableRefresher(false)" (touchend)="onEnableRefresher(true)" (ionSlideDidChange)="onTabSwipe()" no-padding class="Tabs-slides">
     <ion-slide>
       <div class="Tabs-slide">
-        <form [formGroup]="form" class="Made-wp Made-wpContent">
-          <div (click)="processPhoto()" [style.background-image]="'url(' + form.get('profile_photo_url').value + ')'" class="ProfilePage-pic" data-test-id="profile_photo">
-            <div *ngIf="!form.get('profile_photo_url').value" class="ProfilePage-defPic"></div>
-            <div class="ProfilePage-add">
-              <i class="mb-icon-pencil"></i>
+        <div *ngIf="profile">
+          <div class="Made-wp">
+            <div class="StylistProfilePreview-name" data-test-id="stylistProfilePreviewName">{{ profile.first_name }}</div>
+
+            <div class="StylistProfilePreview-salon" data-test-id="stylistProfilePreviewSalon">{{ profile.salon_name }}</div>
+
+            <div *ngIf="profile.followers_count" (click)="onMyClientsClick()" class="StylistProfilePreview-clients"
+                 data-test-id="stylistProfilePreviewClients">
+              <i class="mb-icon-heart-a"></i> <b>{{ profile.followers_count }}</b>&nbsp;MADE Clients
             </div>
           </div>
 
-          <ion-grid class="InputsOffset">
-            <ion-row>
-              <ion-col>
-                <ion-item class="Input">
-                  <ion-label floating>First name</ion-label>
-                  <ion-input formControlName="first_name" data-test-id="first_name" type="text"></ion-input>
-                  <div [class.is-active]="form.get('first_name').dirty && form.get('first_name').errors" class="InputError" item-end>
-                    <span *ngIf="form.get('first_name').errors?.required">This field is required</span>
-                    <span *ngIf="form.get('first_name').errors?.maxlength">Maximal length {{ form.get('first_name').errors?.maxlength?.requiredLength }} symbols</span>
-                  </div>
-                </ion-item>
-              </ion-col>
-            </ion-row>
+          <div (click)="!profile.profile_photo_url && onFieldEdit(ProfileEditableFields.profile_photo_url)" class="StylistProfilePreview-photo" data-test-id="stylistProfilePreviewPhoto">
+            <img [src]="profile.profile_photo_url  || 'assets/icons/stylist-avatar.png'" alt="">
+          </div>
 
-            <ion-row>
-              <ion-col>
-                <ion-item class="Input">
-                  <ion-label floating>Last name</ion-label>
-                  <ion-input formControlName="last_name" data-test-id="last_name" type="text"></ion-input>
-                  <div [class.is-active]="form.get('last_name').dirty && form.get('last_name').errors" class="InputError" item-end>
-                    <span *ngIf="form.get('last_name').errors?.required">This field is required</span>
-                    <span *ngIf="form.get('last_name').errors?.maxlength">Maximal length {{ form.get('last_name').errors?.maxlength?.requiredLength }} symbols</span>
-                  </div>
-                </ion-item>
-              </ion-col>
-            </ion-row>
+          <div class="Made-wp">
+            <div class="StylistProfilePreview-item" data-test-id="stylistProfilePreviewAddress">
+              <div class="StylistProfilePreview-itemTitle">
+                <span>Address</span>
 
-            <ion-row>
-              <ion-col>
-                <ion-item class="Input">
-                  <ion-label floating>Salon name</ion-label>
-                  <ion-input formControlName="salon_name" data-test-id="salon_name" type="text"></ion-input>
-                  <div [class.is-active]="form.get('salon_name').dirty && form.get('salon_name').errors" class="InputError" item-end>
-                    <span *ngIf="form.get('salon_name').errors?.required">This field is required</span>
-                    <span *ngIf="form.get('salon_name').errors?.minlength">Minimal length {{ form.get('salon_name').errors?.minlength?.requiredLength }} digits</span>
-                    <span *ngIf="form.get('salon_name').errors?.maxlength">Maximal length {{ form.get('salon_name').errors?.maxlength?.requiredLength }} symbols</span>
-                  </div>
-                </ion-item>
-              </ion-col>
-            </ion-row>
+                <i class="mb-icon-marker"></i>
+              </div>
+              <div class="StylistProfilePreview-itemText">
+                {{ profile.salon_address }}
+              </div>
+            </div>
 
-            <ion-row>
-              <ion-col>
-                <ion-item class="Input">
-                  <ion-label floating>Address</ion-label>
-                  <ion-input formControlName="salon_address" data-test-id="salon_address" type="text" class="ion_autocomplete"></ion-input>
-                  <div [class.is-active]="form.get('salon_address').dirty && form.get('salon_address').errors" class="InputError" item-end>
-                    <span *ngIf="form.get('salon_address').errors?.minlength">Minimal length {{ form.get('salon_address').errors?.minlength?.requiredLength }} digits</span>
-                    <span *ngIf="form.get('salon_address').errors?.required">This field is required</span>
-                  </div>
-                </ion-item>
-              </ion-col>
-            </ion-row>
+            <div (click)="!profile.instagram_url && onFieldEdit(ProfileEditableFields.instagram_url)" class="StylistProfilePreview-item" data-test-id="stylistProfilePreviewInstagram">
+              <div class="StylistProfilePreview-itemTitle">
+                <span>Instagram</span>
 
-            <ion-row>
-              <ion-col>
-                <ion-item class="Input">
-                  <ion-label floating>Account phone</ion-label>
-                  <ion-input readonly formControlName="phone" data-test-id="phone" type="tel"></ion-input>
-                  <div [class.is-active]="form.get('phone').dirty && form.get('phone').errors" class="InputError" item-end>
-                    <span *ngIf="form.get('phone').errors?.minlength">Minimal length {{ form.get('phone').errors?.minlength?.requiredLength }} digits</span>
-                    <span *ngIf="form.get('phone').errors?.maxlength">Maximal length {{ form.get('phone').errors?.maxlength?.requiredLength }} symbols</span>
-                    <span *ngIf="form.get('phone').errors?.required">This field is required</span>
-                  </div>
-                </ion-item>
-              </ion-col>
-            </ion-row>
+                <i class="mb-icon-instagram"></i>
+              </div>
 
-            <ion-row>
-              <ion-col>
-                <ion-item class="Input">
-                  <ion-label floating>Public Profile Phone</ion-label>
-                  <ion-input formControlName="public_phone" data-test-id="public_phone" type="tel"></ion-input>
-                  <div [class.is-active]="form.get('public_phone').dirty && form.get('public_phone').errors" class="InputError" item-end>
-                    <span *ngIf="form.get('public_phone').errors?.minlength">Minimal length {{ form.get('public_phone').errors?.minlength?.requiredLength }} digits</span>
-                    <span *ngIf="form.get('public_phone').errors?.maxlength">Maximal length {{ form.get('public_phone').errors?.maxlength?.requiredLength }} symbols</span>
-                    <span *ngIf="form.get('public_phone').errors?.required">This field is required</span>
-                  </div>
-                </ion-item>
-              </ion-col>
-            </ion-row>
+              <div *ngIf="!profile.instagram_url" class="StylistProfilePreview-itemLink">
+                Add Instagram
+              </div>
+              <div *ngIf="profile.instagram_url" class="StylistProfilePreview-itemText">
+                {{ profile.instagram_url }}
+              </div>
+            </div>
 
-            <ion-row>
-              <ion-col>
-                <ion-item class="Input with-sufix">
-                  <ion-label floating>Instagram ID</ion-label>
-                  <div class="Input-sufix" item-start>instagram.com/</div>
-                  <ion-input formControlName="instagram_url" data-test-id="instagram_url" type="text"></ion-input>
-                  <div [class.is-active]="form.get('instagram_url').dirty && form.get('instagram_url').errors" class="InputError" item-end>
-                    <span *ngIf="form.get('instagram_url').errors?.pattern">Wrong name</span>
-                  </div>
-                </ion-item>
-              </ion-col>
-            </ion-row>
+            <div class="StylistProfilePreview-item">
+              <div class="StylistProfilePreview-itemTitle">
+                <span>Calendar</span>
 
-            <ion-row>
-              <ion-col>
-                <ion-item class="Input">
-                  <ion-label floating>Email (optional)</ion-label>
-                  <ion-input formControlName="email" data-test-id="email" type="text"></ion-input>
-                  <div [class.is-active]="form.get('email').dirty && form.get('email').errors" class="InputError" item-end>
-                    <span *ngIf="form.get('email').errors?.required">This field is required</span>
-                    <span *ngIf="form.get('email').errors?.email">Enter a valid email</span>
-                  </div>
-                </ion-item>
-              </ion-col>
-            </ion-row>
+                <i class="mb-icon-calendar"></i>
+              </div>
 
-            <ion-row>
-              <ion-col>
-                <ion-item class="Input">
-                  <ion-label floating>Website (optional)</ion-label>
-                  <ion-input formControlName="website_url" data-test-id="website_url" type="text"></ion-input>
-                </ion-item>
-              </ion-col>
-            </ion-row>
-          </ion-grid>
-        </form>
+              <div *ngIf="!calendar" class="StylistProfilePreview-itemText" data-test-id="stylistProfilePreviewNoCalendar">
+                Add Services
+              </div>
+              <div *ngIf="calendar" data-test-id="stylistProfilePreviewCalendar">
+                <!--<div *ngIf="!(service?.name && prices)" class="text-center">-->
+                  <!--<div class="Spinner"><ion-spinner></ion-spinner></div>-->
+                <!--</div>-->
+
+                <!--<div *ngIf="service?.name && prices">-->
+                  <!--<ion-row no-padding justify-content-between align-items-center="">-->
+                    <!--<div class="ServiciesHeader-seviceItem">-->
+                      <!--<div class="ServiciesHeader-seviceName" data-test-id="name">{{ service?.name }}</div>-->
+                      <!--<ion-icon class="ServiciesHeader-serviceItemClose" name="ios-close"></ion-icon>-->
+                    <!--</div>-->
+
+                    <!--<button class="Button button-mini is-inHeader" ion-button>Add Service</button>-->
+                  <!--</ion-row>-->
+
+                  <!--<price-calendar [prices]="prices" [showOneMonth]="true"></price-calendar>-->
+                <!--</div>-->
+              </div>
+            </div>
+
+            <div (click)="!profile.website_url && onFieldEdit(ProfileEditableFields.website_url)" class="StylistProfilePreview-item" data-test-id="stylistProfilePreviewWebsite">
+              <div class="StylistProfilePreview-itemTitle">
+                <span>Website</span>
+
+                <i class="mb-icon-globe"></i>
+              </div>
+
+              <div *ngIf="!profile.website_url" class="StylistProfilePreview-itemLink">
+                Add Website
+              </div>
+              <div *ngIf="profile.website_url" class="StylistProfilePreview-itemText">
+                {{ profile.website_url }}
+              </div>
+            </div>
+
+            <div (click)="!profile.email && onFieldEdit(ProfileEditableFields.email)" class="StylistProfilePreview-item" data-test-id="stylistProfilePreviewEmail">
+              <div class="StylistProfilePreview-itemTitle">
+                <span>Email</span>
+
+                <i class="mb-icon-mail"></i>
+              </div>
+
+              <div *ngIf="!profile.email" class="StylistProfilePreview-itemLink">
+                Add Email
+              </div>
+              <div *ngIf="profile.email" class="StylistProfilePreview-itemText">
+                {{ profile.email }}
+              </div>
+            </div>
+
+            <div *ngIf="profile.phone" class="StylistProfilePreview-item" data-test-id="stylistProfilePreviewPhone">
+              <div class="StylistProfilePreview-itemTitle">
+                <span>Phone</span>
+
+                <i class="mb-icon-phone-a"></i>
+              </div>
+              <div class="StylistProfilePreview-itemText">
+                {{ profile.phone }}
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </ion-slide>
 
     <ion-slide>
-      <div class="Tabs-slide">
-        <stylist-preview [stylist]="form.value"></stylist-preview>
+      <div *ngIf="profile" class="Tabs-slide">
+        <div class="ProfilePage-block">
+          <div class="ProfilePage-blockTitle">
+            Account Info
+          </div>
+
+          <div (click)="onSetAccountInfo(PageNames.WorkHours)" class="ProfilePage-blockItem" data-test-id="ProfileEditAccountInfoHours">
+            <div class="ProfilePage-blockItemName">
+              <span>Hours <img *ngIf="shouldShowNotice(PageNames.WorkHours)" class="ProfilePage-blockItemNameNotice" src="assets/icons/!@2x.png" /></span>
+              <i class="mb-icon-right-arrow"></i>
+            </div>
+            <div *ngIf="shouldShowNotice(PageNames.WorkHours)" class="ProfilePage-blockItemValue">Add Info</div>
+            <div *ngIf="!shouldShowNotice(PageNames.WorkHours)" class="ProfilePage-blockItemValue">Complete</div>
+          </div>
+
+          <div (click)="onSetAccountInfo(servicesPage)" class="ProfilePage-blockItem" data-test-id="ProfileEditAccountInfoService">
+            <div class="ProfilePage-blockItemName">
+              <span>Service <img *ngIf="shouldShowNotice(PageNames.ServicesList)" class="ProfilePage-blockItemNameNotice" src="assets/icons/!@2x.png" /></span>
+              <i class="mb-icon-right-arrow"></i>
+            </div>
+            <div *ngIf="shouldShowNotice(PageNames.ServicesList)" class="ProfilePage-blockItemValue">Add Info</div>
+            <div *ngIf="!shouldShowNotice(PageNames.ServicesList)" class="ProfilePage-blockItemValue">Complete</div>
+          </div>
+
+          <div (click)="onSetAccountInfo(PageNames.Discounts)" class="ProfilePage-blockItem" data-test-id="ProfileEditAccountInfoDiscounts">
+            <div class="ProfilePage-blockItemName">
+              <span>Discounts <img *ngIf="shouldShowNotice(PageNames.Discounts)" class="ProfilePage-blockItemNameNotice" src="assets/icons/!@2x.png" /></span>
+              <i class="mb-icon-right-arrow"></i>
+            </div>
+            <div *ngIf="shouldShowNotice(PageNames.Discounts)" class="ProfilePage-blockItemValue">Add Info</div>
+            <div *ngIf="!shouldShowNotice(PageNames.Discounts)" class="ProfilePage-blockItemValue">Complete</div>
+          </div>
+        </div>
+
+        <div class="ProfilePage-block">
+          <div class="ProfilePage-blockTitle">
+            Photos
+          </div>
+
+          <div (click)="onFieldEdit(ProfileEditableFields.profile_photo_url)" class="ProfilePage-blockItem" data-test-id="ProfileEditPhoto">
+            <div class="ProfilePage-blockItemName">
+              <span>Image <img *ngIf="!profile.profile_photo_url" class="ProfilePage-blockItemNameNotice" src="assets/icons/!@2x.png" /></span>
+              <i class="mb-icon-right-arrow"></i>
+            </div>
+            <div *ngIf="profile.profile_photo_url" class="ProfilePage-blockItemPicture"><img [src]="profile.profile_photo_url" alt=""></div>
+            <div *ngIf="!profile.profile_photo_url" class="ProfilePage-blockItemPicture"><img src="assets/icons/stylist-avatar.png" alt=""></div>
+          </div>
+
+          <div (click)="onFieldEdit(ProfileEditableFields.instagram_url)" class="ProfilePage-blockItem" data-test-id="ProfileEditInstagram">
+            <div class="ProfilePage-blockItemName">
+              <span>Instagram <img *ngIf="!profile.instagram_url" class="ProfilePage-blockItemNameNotice" src="assets/icons/!@2x.png" /></span>
+              <i class="mb-icon-right-arrow"></i>
+            </div>
+            <div *ngIf="profile.instagram_url" class="ProfilePage-blockItemValue">{{ profile.instagram_url }}</div>
+            <div *ngIf="!profile.instagram_url" class="ProfilePage-blockItemValue">Add Info</div>
+          </div>
+        </div>
+
+        <div class="ProfilePage-block">
+          <div class="ProfilePage-blockTitle">
+            Basic Info
+          </div>
+
+          <div (click)="onFieldEdit(ProfileEditableFields.name)" class="ProfilePage-blockItem" data-test-id="ProfileEditName">
+            <div class="ProfilePage-blockItemName">
+              <span>Name</span>
+              <i class="mb-icon-right-arrow"></i>
+            </div>
+            <div class="ProfilePage-blockItemValue">{{ profile.first_name }} {{ profile.last_name }}</div>
+          </div>
+
+          <div (click)="onFieldEdit(ProfileEditableFields.salon_name)" class="ProfilePage-blockItem" data-test-id="ProfileEditSalonName">
+            <div class="ProfilePage-blockItemName">
+              <span>Salon Name</span>
+              <i class="mb-icon-right-arrow"></i>
+            </div>
+            <div class="ProfilePage-blockItemValue">{{ profile.salon_name }}</div>
+          </div>
+        </div>
+
+        <div class="ProfilePage-block">
+          <div class="ProfilePage-blockTitle">
+            Contact Info
+          </div>
+
+          <div (click)="onFieldEdit(ProfileEditableFields.salon_address)" class="ProfilePage-blockItem" data-test-id="ProfileEditAddress">
+            <div class="ProfilePage-blockItemName">
+              <span>Address</span>
+              <i class="mb-icon-right-arrow"></i>
+            </div>
+            <div class="ProfilePage-blockItemValue">{{ profile.salon_address }}</div>
+          </div>
+
+          <div (click)="onFieldEdit(ProfileEditableFields.email)" class="ProfilePage-blockItem" data-test-id="ProfileEditEmail">
+            <div class="ProfilePage-blockItemName">
+              <span>Email <img *ngIf="!profile.email" class="ProfilePage-blockItemNameNotice" src="assets/icons/!@2x.png" /></span>
+              <i class="mb-icon-right-arrow"></i>
+            </div>
+            <div *ngIf="profile.email" class="ProfilePage-blockItemValue">{{ profile.email }}</div>
+            <div *ngIf="!profile.email" class="ProfilePage-blockItemValue">Add Info</div>
+          </div>
+
+          <div (click)="onFieldEdit(ProfileEditableFields.website_url)" class="ProfilePage-blockItem" data-test-id="ProfileEditWebsite">
+            <div class="ProfilePage-blockItemName">
+              <span>Website <img *ngIf="!profile.website_url" class="ProfilePage-blockItemNameNotice" src="assets/icons/!@2x.png" /></span>
+              <i class="mb-icon-right-arrow"></i>
+            </div>
+            <div *ngIf="profile.website_url" class="ProfilePage-blockItemValue">{{ profile.website_url }}</div>
+            <div *ngIf="!profile.website_url" class="ProfilePage-blockItemValue">Add Info</div>
+          </div>
+
+          <div (click)="onFieldEdit(ProfileEditableFields.public_phone)" class="ProfilePage-blockItem" data-test-id="ProfileEditPublicPhone">
+            <div class="ProfilePage-blockItemName">
+              <span>Public Phone <img *ngIf="!profile.public_phone" class="ProfilePage-blockItemNameNotice" src="assets/icons/!@2x.png" /></span>
+              <i class="mb-icon-right-arrow"></i>
+            </div>
+            <div *ngIf="profile.public_phone" class="ProfilePage-blockItemValue">{{ profile.public_phone }}</div>
+            <div *ngIf="!profile.public_phone" class="ProfilePage-blockItemValue">Add Info</div>
+          </div>
+
+          <div class="ProfilePage-blockItem" data-test-id="ProfileEditPhone">
+            <div class="ProfilePage-blockItemName">Registered Phone</div>
+            <div class="ProfilePage-blockItemValue">{{ profile.phone }}</div>
+          </div>
+        </div>
       </div>
     </ion-slide>
   </ion-slides>

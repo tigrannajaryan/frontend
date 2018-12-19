@@ -2,6 +2,7 @@
   margin-bottom: pxtovw(8px);
   font-size: $shared-h2;
   font-weight: 700;
+  text-align: left;
 }
 
 .StylistProfilePreview-salon {
@@ -9,6 +10,7 @@
   font-size: $shared-h4;
   font-variant: small-caps;
   color: color($colors-shared, warmGrey);
+  text-align: left;
 }
 
 .StylistProfilePreview-clients {
@@ -62,4 +64,12 @@
 .StylistProfilePreview-itemText {
   font-size: $shared-h4;
   font-weight: 300;
+  text-align: left;
+}
+
+.StylistProfilePreview-itemLink {
+  font-size: $shared-h4;
+  font-weight: 600;
+  text-align: left;
+  color: color($colors-shared, lightSalmon);
 }

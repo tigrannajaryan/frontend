@@ -1,4 +1,4 @@
-<ion-header madeMenuHeader [hideBackButton]="params?.isRootPage">
+<ion-header madeMenuHeader [hideBackButton]="params?.hideBackButton" [hideMenuButton]="!params?.hideBackButton">
   <ion-title *ngIf="params?.isRootPage">
     <div class="Made-h1">My Hours</div>
   </ion-title>

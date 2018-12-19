@@ -32,6 +32,11 @@
   b {
     text-transform: initial;
   }
+
+  &.is-big {
+    height: pxtovw(47px);
+    font-size: $t-h3;
+  }
 }
 
 .Tabs-btn.activated,

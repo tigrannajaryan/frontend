@@ -3,27 +3,29 @@ import { HttpClient, HttpHandler } from '@angular/common/http';
 import { Camera } from '@ionic-native/camera';
 import { ActionSheetController } from 'ionic-angular';
 import { MapsAPILoader } from '@agm/core';
+import { LaunchNavigator } from '@ionic-native/launch-navigator';
 
 import { Logger } from '~/shared/logger';
 import { ServerStatusTracker } from '~/shared/server-status-tracker';
 import { ProfileDataStore } from '~/core/profile.data';
 import { prepareSharedObjectsForTests } from '~/core/test-utils.spec';
 import { TestUtils } from '../../test';
-import { ProfileComponent, ProfileTabNames } from './profile.component';
-import { LaunchNavigator } from '@ionic-native/launch-navigator';
+import { ProfileComponent, ProfileEditableFields, ProfileTabNames } from './profile.component';
 import { getPhoneNumber } from '~/shared/utils/phone-numbers';
 import { calcProfileCompleteness } from '~/core/utils/stylist-utils';
+import { PageNames } from '~/core/page-names';
+import { StylistServiceMock } from '~/core/api/stylist.service.mock';
+import { StylistServiceProvider } from '~/core/api/stylist.service';
 
 let fixture: ComponentFixture<ProfileComponent>;
 let instance: ProfileComponent;
 
-describe('Pages: ProfileComponent', () => {
-
+describe('Pages: ProfileComponent', async () => {
   prepareSharedObjectsForTests();
 
   // TestBed.createComponent(ProfileComponent) inside
   // see https://angular.io/guide/testing#component-class-testing for more info
-  beforeEach(() => TestUtils.beforeEachCompiler(
+  beforeEach(async () => TestUtils.beforeEachCompiler(
     [
       ProfileComponent
     ], [
@@ -35,45 +37,38 @@ describe('Pages: ProfileComponent', () => {
       Camera,
       ActionSheetController,
       LaunchNavigator,
-      ProfileDataStore
-    ]).then(async (compiled) => {
+      ProfileDataStore,
+      StylistServiceMock
+    ])
+    .then(async (compiled) => {
       fixture = compiled.fixture; // https://angular.io/api/core/testing/ComponentFixture
       instance = compiled.instance;
       instance.ionViewWillEnter();
 
-      const { response } = await instance.profileData.get();
-      if (response) {
-        instance.rawPhone = response.phone;
-        const formattedPhone = getPhoneNumber(response.phone);
-        const formattedPublicPhone = getPhoneNumber(response.public_phone);
+      const stylistProfileApi = fixture.debugElement.injector.get(StylistServiceProvider);
+      const stylistProfileApiMock = fixture.debugElement.injector.get(StylistServiceMock);
+      spyOn(stylistProfileApi, 'getProfile').and.returnValue(
+        stylistProfileApiMock.getProfile()
+      );
 
-        instance.form.patchValue({
-          // tslint:disable-next-line:no-null-keyword
-          profile_photo_url: response.profile_photo_url,
-          first_name: response.first_name,
-          last_name: response.last_name,
-          phone: formattedPhone,
-          public_phone: formattedPublicPhone,
-          salon_name: response.salon_name,
-          salon_address: response.salon_address,
-          profile_photo_id: response.profile_photo_id,
-          instagram_url: response.instagram_url,
-          followers_count: response.followers_count,
-          email: response.email,
-          website_url: response.website_url
-        });
+      const stylistProfileApiRes = await stylistProfileApiMock.getProfile().get();
 
-        instance.stylistProfileCompleteness = calcProfileCompleteness(response);
+      if (stylistProfileApiRes.response) {
+        instance.profile = stylistProfileApiRes.response;
+        instance.profile.phone = getPhoneNumber(instance.profile.phone);
+        instance.profile.public_phone = getPhoneNumber(instance.profile.public_phone);
+
+        instance.stylistProfileCompleteness = calcProfileCompleteness(instance.profile);
       }
 
       fixture.detectChanges();
     })
   );
 
-  it('should create the page', async(() => {
+  it('should create the page', () => {
     expect(instance)
       .toBeTruthy();
-  }));
+  });
 
   it('should have two tabs', () => {
     const profileTabs = fixture.nativeElement.querySelector('[data-test-id=profileTabs]');
@@ -82,7 +77,7 @@ describe('Pages: ProfileComponent', () => {
   });
 
   it('should have not a complete profile', () => {
-    instance.stylistProfileCompleteness = calcProfileCompleteness(instance.form.value);
+    instance.stylistProfileCompleteness = calcProfileCompleteness(instance.profile);
     expect(instance.stylistProfileCompleteness.isProfileComplete).toBe(false);
 
     const isProfileComplete = fixture.nativeElement.querySelector('[data-test-id=isProfileComplete]');
@@ -92,57 +87,210 @@ describe('Pages: ProfileComponent', () => {
     expect(completenessPercent.innerText).toContain(instance.stylistProfileCompleteness.completenessPercent);
   });
 
-  it('should have all needed fields in first tab', async(() => {
-    const first_name = fixture.nativeElement.querySelector('[data-test-id=first_name] input');
-    expect(first_name.value).toBe(instance.form.get('first_name').value);
+  it('should show all data set', () => {
+    const stylistProfilePreviewName = fixture.nativeElement.querySelector('[data-test-id=stylistProfilePreviewName]');
+    expect(stylistProfilePreviewName.innerText).toContain(instance.profile.first_name);
 
-    const last_name = fixture.nativeElement.querySelector('[data-test-id=last_name] input');
-    expect(last_name.value).toBe(instance.form.get('last_name').value);
+    const stylistProfilePreviewSalon = fixture.nativeElement.querySelector('[data-test-id=stylistProfilePreviewSalon]');
+    expect(stylistProfilePreviewSalon.innerText).toContain(instance.profile.salon_name);
 
-    const salon_name = fixture.nativeElement.querySelector('[data-test-id=salon_name] input');
-    expect(salon_name.value).toBe(instance.form.get('salon_name').value);
+    const stylistProfilePreviewClients = fixture.nativeElement.querySelector('[data-test-id=stylistProfilePreviewClients]');
+    expect(stylistProfilePreviewClients.innerText).toContain(instance.profile.followers_count);
 
-    const salon_address = fixture.nativeElement.querySelector('[data-test-id=salon_address] input');
-    expect(salon_address.value).toBe(instance.form.get('salon_address').value);
+    const stylistProfilePreviewAddress = fixture.nativeElement.querySelector('[data-test-id=stylistProfilePreviewAddress]');
+    expect(stylistProfilePreviewAddress.innerText).toContain(instance.profile.salon_address);
 
-    const phone = fixture.nativeElement.querySelector('[data-test-id=phone] input');
-    expect(phone.value).toBe(instance.form.get('phone').value);
+    const stylistProfilePreviewInstagram = fixture.nativeElement.querySelector('[data-test-id=stylistProfilePreviewInstagram]');
+    expect(stylistProfilePreviewInstagram.innerText).toContain(instance.profile.instagram_url);
 
-    const public_phone = fixture.nativeElement.querySelector('[data-test-id=public_phone] input');
-    expect(public_phone.value).toBe(instance.form.get('public_phone').value);
+    const stylistProfilePreviewWebsite = fixture.nativeElement.querySelector('[data-test-id=stylistProfilePreviewWebsite]');
+    expect(stylistProfilePreviewWebsite.innerText).toContain(instance.profile.website_url);
 
-    const instagram_url = fixture.nativeElement.querySelector('[data-test-id=instagram_url] input');
-    expect(instagram_url.value).toBe(instance.form.get('instagram_url').value);
+    const stylistProfilePreviewEmail = fixture.nativeElement.querySelector('[data-test-id=stylistProfilePreviewEmail]');
+    expect(stylistProfilePreviewEmail.innerText).toContain(instance.profile.email);
 
-    const email = fixture.nativeElement.querySelector('[data-test-id=email] input');
-    expect(email.value).toBe(instance.form.get('email').value);
+    const stylistProfilePreviewPhone = fixture.nativeElement.querySelector('[data-test-id=stylistProfilePreviewPhone]');
+    expect(stylistProfilePreviewPhone.innerText).toContain(instance.profile.phone);
+  });
 
-    const website_url = fixture.nativeElement.querySelector('[data-test-id=website_url] input');
-    expect(website_url.value).toBe(instance.form.get('website_url').value);
-  }));
-
-  it('should see client view with all filled fields from first tab', async(() => {
+  xit('should be able to click and edit on not filled field', () => {
     instance.activeTab = ProfileTabNames.clientView;
+    fixture.detectChanges();
+    spyOn(instance, 'onFieldEdit');
 
-    const preview_salon_name = fixture.nativeElement.querySelector('[data-test-id=preview_salon_name]');
-    expect(preview_salon_name).toBeDefined();
+    instance.profile.profile_photo_url = '';
+    fixture.detectChanges();
+    const stylistProfilePreviewPhoto = fixture.nativeElement.querySelector('[data-test-id=stylistProfilePreviewPhoto]');
+    stylistProfilePreviewPhoto.click();
+    expect(instance.onFieldEdit).toHaveBeenCalledWith(ProfileEditableFields.profile_photo_url);
 
-    const preview_name = fixture.nativeElement.querySelector('[data-test-id=preview_name]');
-    expect(preview_name).toBeDefined();
+    instance.profile.instagram_url = '';
+    fixture.detectChanges();
+    const stylistProfilePreviewInstagram = fixture.nativeElement.querySelector('[data-test-id=stylistProfilePreviewInstagram]');
+    stylistProfilePreviewInstagram.click();
+    expect(instance.onFieldEdit).toHaveBeenCalledWith(ProfileEditableFields.instagram_url);
 
-    const preview_followers_count = fixture.nativeElement.querySelector('[data-test-id=preview_followers_count]');
-    expect(preview_followers_count).toBeDefined();
+    instance.profile.website_url = '';
+    fixture.detectChanges();
+    const stylistProfilePreviewWebsite = fixture.nativeElement.querySelector('[data-test-id=stylistProfilePreviewWebsite]');
+    stylistProfilePreviewWebsite.click();
+    expect(instance.onFieldEdit).toHaveBeenCalledWith(ProfileEditableFields.website_url);
 
-    const preview_salon_address = fixture.nativeElement.querySelector('[data-test-id=preview_salon_address]');
-    expect(preview_salon_address).toBeDefined();
+    instance.profile.email = '';
+    fixture.detectChanges();
+    const stylistProfilePreviewEmail = fixture.nativeElement.querySelector('[data-test-id=stylistProfilePreviewEmail]');
+    stylistProfilePreviewEmail.click();
+    expect(instance.onFieldEdit).toHaveBeenCalledWith(ProfileEditableFields.email);
+  });
 
-    const preview_instagram_url = fixture.nativeElement.querySelector('[data-test-id=preview_instagram_url]');
-    expect(preview_instagram_url).toBeDefined();
+  xit('should be able to click followers and move to followers page', () => {
+    spyOn(instance, 'onMyClientsClick');
 
-    const preview_website_url = fixture.nativeElement.querySelector('[data-test-id=preview_website_url]');
-    expect(preview_website_url).toBeDefined();
+    const stylistProfilePreviewClients = fixture.nativeElement.querySelector('[data-test-id=stylistProfilePreviewClients]');
+    stylistProfilePreviewClients.click();
+    expect(instance.onMyClientsClick).toHaveBeenCalled();
+  });
 
-    const preview_public_phone = fixture.nativeElement.querySelector('[data-test-id=preview_public_phone]');
-    expect(preview_public_phone).toBeDefined();
-  }));
+  it('should have not set Account Info', () => {
+    instance.activeTab = ProfileTabNames.edit;
+    instance.profileStatus = {
+      has_business_hours_set: false,
+      has_invited_clients: false,
+      has_other_discounts_set: false,
+      has_personal_data: false,
+      has_picture_set: false,
+      has_services_set: false,
+      has_weekday_discounts_set: false
+    };
+    fixture.detectChanges();
+
+    const ProfileEditAccountInfoHours = fixture.nativeElement.querySelector('[data-test-id=ProfileEditAccountInfoHours]');
+    const ProfileEditAccountInfoHoursImg = fixture.nativeElement.querySelector('[data-test-id=ProfileEditAccountInfoHours] img');
+    expect(ProfileEditAccountInfoHours.innerText).toContain('Hours');
+    expect(ProfileEditAccountInfoHours.innerText).toContain('Add Info');
+    expect(ProfileEditAccountInfoHoursImg).toBeDefined();
+
+    const ProfileEditAccountInfoService = fixture.nativeElement.querySelector('[data-test-id=ProfileEditAccountInfoService]');
+    const ProfileEditAccountInfoServiceImg = fixture.nativeElement.querySelector('[data-test-id=ProfileEditAccountInfoService] img');
+    expect(ProfileEditAccountInfoService.innerText).toContain('Service');
+    expect(ProfileEditAccountInfoService.innerText).toContain('Add Info');
+    expect(ProfileEditAccountInfoServiceImg).toBeDefined();
+
+    const ProfileEditAccountInfoDiscounts = fixture.nativeElement.querySelector('[data-test-id=ProfileEditAccountInfoDiscounts]');
+    const ProfileEditAccountInfoDiscountsImg = fixture.nativeElement.querySelector('[data-test-id=ProfileEditAccountInfoDiscounts] img');
+    expect(ProfileEditAccountInfoDiscounts.innerText).toContain('Discounts');
+    expect(ProfileEditAccountInfoDiscounts.innerText).toContain('Add Info');
+    expect(ProfileEditAccountInfoDiscountsImg).toBeDefined();
+  });
+
+  it('should have set Account Info', () => {
+    instance.activeTab = ProfileTabNames.edit;
+    instance.profileStatus = {
+      has_business_hours_set: true,
+      has_invited_clients: true,
+      has_other_discounts_set: true,
+      has_personal_data: true,
+      has_picture_set: true,
+      has_services_set: true,
+      has_weekday_discounts_set: true
+    };
+    fixture.detectChanges();
+
+    const ProfileEditAccountInfoHours = fixture.nativeElement.querySelector('[data-test-id=ProfileEditAccountInfoHours]');
+    const ProfileEditAccountInfoHoursImg = fixture.nativeElement.querySelector('[data-test-id=ProfileEditAccountInfoHours] img');
+    expect(ProfileEditAccountInfoHours.innerText).toContain('Hours');
+    expect(ProfileEditAccountInfoHours.innerText).toContain('Complete');
+    expect(ProfileEditAccountInfoHoursImg).toBeNull();
+
+    const ProfileEditAccountInfoService = fixture.nativeElement.querySelector('[data-test-id=ProfileEditAccountInfoService]');
+    const ProfileEditAccountInfoServiceImg = fixture.nativeElement.querySelector('[data-test-id=ProfileEditAccountInfoService] img');
+    expect(ProfileEditAccountInfoService.innerText).toContain('Service');
+    expect(ProfileEditAccountInfoService.innerText).toContain('Complete');
+    expect(ProfileEditAccountInfoServiceImg).toBeNull();
+
+    const ProfileEditAccountInfoDiscounts = fixture.nativeElement.querySelector('[data-test-id=ProfileEditAccountInfoDiscounts]');
+    const ProfileEditAccountInfoDiscountsImg = fixture.nativeElement.querySelector('[data-test-id=ProfileEditAccountInfoDiscounts] img');
+    expect(ProfileEditAccountInfoDiscounts.innerText).toContain('Discounts');
+    expect(ProfileEditAccountInfoDiscounts.innerText).toContain('Complete');
+    expect(ProfileEditAccountInfoDiscountsImg).toBeNull();
+  });
+
+  xit('should be able to edit Account Info field', () => {
+    instance.activeTab = ProfileTabNames.edit;
+    instance.profileStatus = {
+      has_business_hours_set: true,
+      has_invited_clients: true,
+      has_other_discounts_set: true,
+      has_personal_data: true,
+      has_picture_set: true,
+      has_services_set: true,
+      has_weekday_discounts_set: true
+    };
+    instance.servicesPage = PageNames.ServicesList;
+    fixture.detectChanges();
+
+    spyOn(instance, 'onSetAccountInfo');
+
+    const ProfileEditAccountInfoHours = fixture.nativeElement.querySelector('[data-test-id=ProfileEditAccountInfoHours]');
+    ProfileEditAccountInfoHours.click();
+    expect(instance.onSetAccountInfo).toHaveBeenCalledWith(PageNames.WorkHours);
+
+    const ProfileEditAccountInfoService = fixture.nativeElement.querySelector('[data-test-id=ProfileEditAccountInfoService]');
+    ProfileEditAccountInfoService.click();
+    expect(instance.onSetAccountInfo).toHaveBeenCalledWith(instance.servicesPage);
+
+    const ProfileEditAccountInfoDiscounts = fixture.nativeElement.querySelector('[data-test-id=ProfileEditAccountInfoDiscounts]');
+    ProfileEditAccountInfoDiscounts.click();
+    expect(instance.onSetAccountInfo).toHaveBeenCalledWith(PageNames.Discounts);
+  });
+
+  xit('should be able to click and edit on editable fields in edit tab', () => {
+    instance.activeTab = ProfileTabNames.edit;
+    fixture.detectChanges();
+
+    spyOn(instance, 'onFieldEdit');
+
+    const ProfileEditPhoto = fixture.nativeElement.querySelector('[data-test-id=ProfileEditPhoto]');
+    ProfileEditPhoto.click();
+    expect(instance.onFieldEdit).toHaveBeenCalledWith(ProfileEditableFields.profile_photo_url);
+
+    const ProfileEditInstagram = fixture.nativeElement.querySelector('[data-test-id=ProfileEditInstagram]');
+    ProfileEditInstagram.click();
+    expect(instance.onFieldEdit).toHaveBeenCalledWith(ProfileEditableFields.instagram_url);
+
+    const ProfileEditName = fixture.nativeElement.querySelector('[data-test-id=ProfileEditName]');
+    ProfileEditName.click();
+    expect(instance.onFieldEdit).toHaveBeenCalledWith(ProfileEditableFields.name);
+
+    const ProfileEditSalonName = fixture.nativeElement.querySelector('[data-test-id=ProfileEditSalonName]');
+    ProfileEditSalonName.click();
+    expect(instance.onFieldEdit).toHaveBeenCalledWith(ProfileEditableFields.salon_name);
+
+    const ProfileEditAddress = fixture.nativeElement.querySelector('[data-test-id=ProfileEditAddress]');
+    ProfileEditAddress.click();
+    expect(instance.onFieldEdit).toHaveBeenCalledWith(ProfileEditableFields.salon_address);
+
+    const ProfileEditEmail = fixture.nativeElement.querySelector('[data-test-id=ProfileEditEmail]');
+    ProfileEditEmail.click();
+    expect(instance.onFieldEdit).toHaveBeenCalledWith(ProfileEditableFields.email);
+
+    const ProfileEditWebsite = fixture.nativeElement.querySelector('[data-test-id=ProfileEditWebsite]');
+    ProfileEditWebsite.click();
+    expect(instance.onFieldEdit).toHaveBeenCalledWith(ProfileEditableFields.website_url);
+
+    const ProfileEditPublicPhone = fixture.nativeElement.querySelector('[data-test-id=ProfileEditPublicPhone]');
+    ProfileEditPublicPhone.click();
+    expect(instance.onFieldEdit).toHaveBeenCalledWith(ProfileEditableFields.public_phone);
+  });
+
+  it('should not be able to click and edit on Phone', () => {
+    instance.activeTab = ProfileTabNames.edit;
+    fixture.detectChanges();
+
+    spyOn(instance, 'onFieldEdit');
+
+    const ProfileEditPhone = fixture.nativeElement.querySelector('[data-test-id=ProfileEditPhone]');
+    ProfileEditPhone.click();
+    expect(instance.onFieldEdit).not.toHaveBeenCalled();
+  });
 });
