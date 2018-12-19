@@ -1,7 +1,7 @@
 import { enableProdMode, ErrorHandler, Injector, NgModule } from '@angular/core';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
-import { BrowserModule } from '@angular/platform-browser';
+import { BrowserModule, HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
 
 import { IonicApp, IonicModule } from 'ionic-angular';
 
@@ -20,6 +20,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import { Push } from '@ionic-native/push';
 import { GooglePlus } from '@ionic-native/google-plus';
+
+import { GalleryModalHammerConfig, GalleryModalModule } from 'ionic-gallery-modal';
 
 import { META_REDUCERS, StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
@@ -142,6 +144,8 @@ const declarations = [
     SharedSingletonsModule,
     DataModule.forRoot(),
 
+    GalleryModalModule,
+
     IonicModule.forRoot(ClientAppComponent, {
       backButtonText: '',
       backButtonIcon: 'ios-arrow-round-back'
@@ -231,6 +235,12 @@ const declarations = [
       provide: META_REDUCERS,
       deps: [Logger],
       useFactory: getMetaReducers
+    },
+
+    {
+      // https://www.npmjs.com/package/ionic-gallery-modal
+      provide: HAMMER_GESTURE_CONFIG,
+      useClass: GalleryModalHammerConfig
     },
 
     Camera
