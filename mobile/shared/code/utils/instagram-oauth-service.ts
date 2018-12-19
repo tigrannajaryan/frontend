@@ -45,8 +45,8 @@ export class InstagramOAuthService {
   static baseUrl = 'https://api.instagram.com/oauth/authorize/';
 
   /**
-   * This url can be whatever you like. In fact a user won’t be redirected to it.
-   * We will handle a redirect on load start.
+   * This url can be whatever you like. In fact, a user won’t be redirected to it.
+   * We handle a redirect on load start.
    *
    * NOTE: this url should be listed in ”Valid redirect URIs” section of your instagram client,
    *       check https://www.instagram.com/developer/clients/.
@@ -60,7 +60,7 @@ export class InstagramOAuthService {
    * 3. when redirected back (handled in loadstart) retrieve the token value.
    *
    * This is known as Client-Side (Implicit) Authentication which can be found
-   * on https://www.instagram.com/developer/authentication/ page.
+   * in https://www.instagram.com/developer/authentication/ guide.
    *
    * NOTE: the OAuth used here (basic scope) will be deprecated/disabled in early 2020.
    */
@@ -72,8 +72,8 @@ export class InstagramOAuthService {
 
       browserWindow.addEventListener('loadstart', event => {
 
-        // If the url starts with redirectTo url it means that authentication flow is finished at Instagram and
-        // Instagram redirected to our url and the access token is expected to be in the url.
+        // If the url starts with redirectTo url it means that authentication flow is finished at Instagram
+        // and Instagram redirected to our url and the access token is expected to be in the url.
         if (event.url.indexOf(InstagramOAuthService.redirectTo) === 0) {
           browserWindow.close();
 
@@ -112,7 +112,7 @@ export class InstagramOAuthService {
     if (!cordova) {
       throw new Error('cordova not available');
     }
-    return cordova.InAppBrowser.open(
+    return (cordova.InAppBrowser as InAppBrowser).open(
       url, '_blank', 'location=no,clearsessioncache=yes,clearcache=yes,closebuttoncaption=Cancel'
     );
   };

@@ -13,18 +13,16 @@ class ProfilePage {
   get salonNameInput() { return $('page-register-salon input[formControlName=salon_name]'); }
   get salonAddressInput() { return $('page-register-salon input[formControlName=salon_address]'); }
   get phoneNumberInput() { return $('page-register-salon input[formControlName=phone]'); }
-  get instagramNameInput() { return $('page-register-salon input[formControlName=instagram_url]'); }
   get websiteInput() { return $('page-register-salon input[formControlName=website_url]'); }
   get continueButton() { return $('page-register-salon [data-test-id=submitProfileBtn]'); }
 
   // Operations
-  async fillForm(firstName, lastName, salonName, address, phoneNumber, instagramName, websiteName) {
+  async fillForm(firstName, lastName, salonName, address, phoneNumber, websiteName) {
     await this.firstNameInput.sendKeys(firstName);
     await this.lastNameInput.sendKeys(lastName);
     await this.salonNameInput.sendKeys(salonName);
     await this.salonAddressInput.sendKeys(address);
     await this.phoneNumberInput.sendKeys(phoneNumber);
-    await this.instagramNameInput.sendKeys(instagramName);
     await this.websiteInput.sendKeys(websiteName);
   }
 
@@ -38,7 +36,6 @@ class ProfilePage {
       console.warn(await this.salonNameInput.getText());
       console.warn(await this.salonAddressInput.getText());
       console.warn(await this.phoneNumberInput.getText());
-      console.warn(await this.instagramNameInput.getText());
       console.warn(await this.websiteInput.getText());
     }
     await waitForNot(this.continueButton);
