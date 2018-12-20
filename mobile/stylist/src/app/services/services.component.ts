@@ -19,7 +19,6 @@ export enum ServiceListType {
 
 export interface ServicesComponentParams {
   isRootPage?: boolean;
-  hideBackButton?: boolean;
 }
 
 @Component({
@@ -58,7 +57,7 @@ export class ServicesComponent {
   }
 
   openService(serviceItem?: ServiceTemplateSetBase): void {
-    const params = {
+    const params: ServicesListComponentParams = {
       uuid: serviceItem ? serviceItem.uuid : ServiceListType.blank
     };
 
@@ -79,7 +78,7 @@ export class ServicesComponent {
           has_services_set: true
         });
       }
-      const params: ServicesListComponentParams = { isRootPage: true, hideBackButton: true };
+      const params: ServicesListComponentParams = { isRootPage: true };
       this.navCtrl.setRoot(PageNames.ServicesList, { params });
     }
   }

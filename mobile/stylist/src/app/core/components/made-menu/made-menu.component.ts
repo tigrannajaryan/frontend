@@ -76,21 +76,20 @@ export class MadeMenuComponent implements OnInit {
     private zone: NgZone
   ) {
     const redirectParams = { isRootPage: true };
-    const redirectParamsAccountInfos = { isRootPage: true, hideBackButton: true };
 
     this.servicesMenuItem = {
       title: 'Services',
       redirectToPage: PageNames.ServicesList,
-      redirectParams: redirectParamsAccountInfos,
+      redirectParams,
       icon: 'conditioners-a'
     };
 
     this.menuItems = [
       { title: 'Appointments', redirectToPage: PageNames.HomeSlots, redirectParams: {}, icon: 'home-a' },
       { title: 'Clients', redirectToPage: PageNames.MyClients, redirectParams, icon: 'stylists-a' },
-      { title: 'Discounts', redirectToPage: PageNames.Discounts, redirectParams: redirectParamsAccountInfos, icon: 'discounts' },
+      { title: 'Discounts', redirectToPage: PageNames.Discounts, redirectParams, icon: 'discounts' },
       { title: 'Calendar', redirectToPage: PageNames.ClientsCalendar, redirectParams, icon: 'calendar-add' },
-      { title: 'Hours', redirectToPage: PageNames.WorkHours, redirectParams: redirectParamsAccountInfos, icon: 'clock-a' },
+      { title: 'Hours', redirectToPage: PageNames.WorkHours, redirectParams, icon: 'clock-a' },
       this.servicesMenuItem, // by ref
       { title: 'Invite Clients', redirectToPage: PageNames.Invitations, redirectParams, icon: 'invite-a' }
     ];

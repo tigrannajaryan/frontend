@@ -1,15 +1,12 @@
 <ion-header madeMenuHeader [hideBackButton]="params?.isRootPage">
-  <ion-title *ngIf="params?.isRootPage">
+  <ion-title>
     <div class="Made-h1">Invite Clients</div>
   </ion-title>
 </ion-header>
 
 
 <ion-content no-padding>
-  <made-nav *ngIf="!params?.isRootPage" [activePage]="PageNames.Invitations"></made-nav>
-
   <div class="Made-wp Made-wpContent">
-    <div *ngIf="!params?.isRootPage" class="Made-h1">Invite Clients</div>
     <!-- This is shown if we do not have persmissions to read phone contacts -->
     <div *ngIf="!canReadPhoneContacts && !loadingContacts" class="Made-text">
       <div class="Made-textItem">
@@ -97,4 +94,6 @@
     </ion-grid>
   </div>
 </ion-content>
+
+
 <ion-footer (continue)="onInviteClients()" [title]="'Invite clients'" madeContinueFooter></ion-footer>

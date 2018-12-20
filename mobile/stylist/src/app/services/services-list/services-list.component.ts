@@ -18,7 +18,6 @@ import { ServiceItemComponentData } from '~/services/services-item/services-item
 
 export interface ServicesListComponentParams {
   isRootPage?: boolean;
-  hideBackButton?: boolean;
   uuid?: string;
 }
 
@@ -100,7 +99,7 @@ export class ServicesListComponent {
     profileModal.present();
   }
 
-  async onContinue(): Promise<void> {
+  async onSave(): Promise<void> {
     const categoriesServices = this.stylistService.getFlatServiceList(this.categories);
 
     if (categoriesServices) {
@@ -123,7 +122,7 @@ export class ServicesListComponent {
         // If no services exists we landed to Services page to enter stylist’s services first.
         // When this happens ServicesList becomes a second page in stack. After services
         // are saved ServicesList should become a root page.
-        const params: ServicesListComponentParams = { isRootPage: true, hideBackButton: true };
+        const params: ServicesListComponentParams = { isRootPage: true };
         this.navCtrl.setRoot(PageNames.ServicesList, { params });
       }
     }

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavParams } from 'ionic-angular';
 
 import { Workday, Worktime } from '~/shared/api/worktime.models';
 import { WorktimeApi } from '~/core/api/worktime.api';
@@ -154,7 +154,6 @@ type HourRange = [string, string];
 
 export interface WorkHoursComponentParams {
   isRootPage?: boolean;
-  hideBackButton?: boolean;
 }
 
 @Component({
@@ -196,7 +195,6 @@ export class WorkHoursComponent {
   constructor(
     private api: WorktimeApi,
     private logger: Logger,
-    private navCtrl: NavController,
     private navParams: NavParams
   ) { }
 
@@ -244,14 +242,6 @@ export class WorkHoursComponent {
     this.cards.splice(index, 1);
 
     this.autoSave();
-  }
-
-  onContinue(): void {
-    if (!(this.params && this.params.isRootPage)) {
-      // Continue registration on the next page
-      this.navCtrl.push(PageNames.DiscountsWeekday);
-      this.autoSave();
-    }
   }
 
   autoSave(): void {

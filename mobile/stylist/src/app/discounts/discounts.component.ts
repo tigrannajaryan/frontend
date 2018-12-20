@@ -18,8 +18,7 @@ export enum DiscountTabNames {
 }
 
 export interface DiscountsComponentParams {
-  isRootPage: boolean;
-  hideBackButton?: boolean;
+  isRootPage?: boolean;
 }
 
 @Component({

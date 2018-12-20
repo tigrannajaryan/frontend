@@ -231,7 +231,7 @@ export class RegisterSalonComponent {
       return;
     }
 
-    const params: ConnectInstagramComponentParams = { isOnboarding: true };
+    const params: ConnectInstagramComponentParams = { isRootPage: false };
     this.navCtrl.push(PageNames.ConnectInstagram, { params });
   }
 

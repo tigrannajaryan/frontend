@@ -129,7 +129,7 @@ export class ProfileComponent {
   onFieldEdit(field: ProfileEditableFields): void {
     switch (field) {
       case ProfileEditableFields.instagram:
-        this.navCtrl.push(PageNames.ConnectInstagram);
+        this.navCtrl.push(PageNames.ConnectInstagram, { params: { isRootPage: true }});
         break;
 
       default:
@@ -140,8 +140,7 @@ export class ProfileComponent {
 
   onSetAccountInfo(page: Page): void {
     const params = {
-      isRootPage: true,
-      hideBackButton: false
+      isRootPage: false
     };
 
     this.navCtrl.push(page, { params });

@@ -11,7 +11,7 @@ import { StylistServiceProvider } from '~/core/api/stylist.service';
 import { PageNames } from '~/core/page-names';
 
 export interface ConnectInstagramComponentParams {
-  isOnboarding?: boolean;
+  isRootPage?: boolean;
 }
 
 @Component({
@@ -38,7 +38,7 @@ export class ConnectInstagramComponent implements OnInit {
   }
 
   onNavigateNext(): void {
-    if (this.params.isOnboarding) {
+    if (!this.params.isRootPage) {
       this.navCtrl.push(PageNames.WelcomeToMade);
     } else {
       this.navCtrl.pop();
