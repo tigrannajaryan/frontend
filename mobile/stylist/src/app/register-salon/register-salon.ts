@@ -27,6 +27,7 @@ import { PageNames } from '~/core/page-names';
 import { ProfileDataStore } from '~/core/profile.data';
 
 import { ConnectInstagramComponentParams } from '~/onboarding/connect-instagram/connect-instagram.component';
+import { emptyOr } from '~/shared/validators';
 
 declare var window: any;
 
@@ -93,6 +94,7 @@ export class RegisterSalonComponent {
       ]],
       // tslint:disable-next-line:no-null-keyword
       profile_photo_id: null,
+      email: ['', [emptyOr(Validators.email)]],
       website_url: ['']
     });
   }
@@ -123,6 +125,7 @@ export class RegisterSalonComponent {
       salon_name,
       salon_address,
       profile_photo_id,
+      email,
       website_url
     } = response;
 
@@ -140,6 +143,7 @@ export class RegisterSalonComponent {
       salon_name,
       salon_address,
       profile_photo_id,
+      email,
       website_url
     });
   }

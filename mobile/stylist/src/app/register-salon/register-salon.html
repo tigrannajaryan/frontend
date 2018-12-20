@@ -105,6 +105,18 @@
       <ion-row>
         <ion-col>
           <ion-item class="Input">
+            <ion-label floating>Email</ion-label>
+            <ion-input formControlName="email" type="email"></ion-input>
+            <div [class.is-active]="form.get('email').dirty && form.get('email').errors" class="InputError" item-end>
+              <span *ngIf="form.get('email').errors?.email">Please enter a valid Email</span>
+            </div>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col>
+          <ion-item class="Input">
             <ion-label floating>Website</ion-label>
             <ion-input formControlName="website_url" type="text"></ion-input>
           </ion-item>
