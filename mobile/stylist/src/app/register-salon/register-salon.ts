@@ -26,6 +26,8 @@ import { loading } from '~/core/utils/loading';
 import { PageNames } from '~/core/page-names';
 import { ProfileDataStore } from '~/core/profile.data';
 
+import { ENV } from '~/environments/environment.default';
+
 import { ConnectInstagramComponentParams } from '~/onboarding/connect-instagram/connect-instagram.component';
 import { emptyOr } from '~/shared/validators';
 
@@ -95,6 +97,7 @@ export class RegisterSalonComponent {
       // tslint:disable-next-line:no-null-keyword
       profile_photo_id: null,
       email: ['', [emptyOr(Validators.email)]],
+      instagram_url: ['', Validators.pattern(/([A-Za-z0-9_](?:(?:[A-Za-z0-9_]|(?:\\.(?!\\.))){0,28}(?:[A-Za-z0-9_]))?)/)],
       website_url: ['']
     });
   }
@@ -126,6 +129,7 @@ export class RegisterSalonComponent {
       salon_address,
       profile_photo_id,
       email,
+      instagram_url,
       website_url
     } = response;
 
@@ -144,6 +148,7 @@ export class RegisterSalonComponent {
       salon_address,
       profile_photo_id,
       email,
+      instagram_url,
       website_url
     });
   }
@@ -235,8 +240,13 @@ export class RegisterSalonComponent {
       return;
     }
 
-    const params: ConnectInstagramComponentParams = { isRootPage: false };
-    this.navCtrl.push(PageNames.ConnectInstagram, { params });
+    if (ENV.ffEnableInstagramLinking) {
+      const params: ConnectInstagramComponentParams = { isRootPage: false };
+      this.navCtrl.push(PageNames.ConnectInstagram, { params });
+      return;
+    }
+
+    this.navCtrl.push(PageNames.WelcomeToMade);
   }
 
   @loading

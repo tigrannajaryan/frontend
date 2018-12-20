@@ -104,6 +104,19 @@
 
       <ion-row>
         <ion-col>
+          <ion-item class="Input with-sufix">
+            <ion-label floating>Instagram ID</ion-label>
+            <div class="Input-sufix" item-start>instagram.com/</div>
+            <ion-input formControlName="instagram_url" type="text"></ion-input>
+            <div [class.is-active]="form.get('instagram_url').dirty && form.get('instagram_url').errors" class="InputError" item-end>
+              <span *ngIf="form.get('instagram_url').errors?.pattern">Wrong name</span>
+            </div>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col>
           <ion-item class="Input">
             <ion-label floating>Email</ion-label>
             <ion-input formControlName="email" type="email"></ion-input>
