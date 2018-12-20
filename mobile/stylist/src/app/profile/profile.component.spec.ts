@@ -101,7 +101,7 @@ describe('Pages: ProfileComponent', async () => {
     expect(stylistProfilePreviewAddress.innerText).toContain(instance.profile.salon_address);
 
     const stylistProfilePreviewInstagram = fixture.nativeElement.querySelector('[data-test-id=stylistProfilePreviewInstagram]');
-    expect(stylistProfilePreviewInstagram.innerText).toContain('Add Instagram'); // because instagram not integrated
+    expect(stylistProfilePreviewInstagram.innerText).toContain(instance.profile.instagram_url);
 
     const stylistProfilePreviewWebsite = fixture.nativeElement.querySelector('[data-test-id=stylistProfilePreviewWebsite]');
     expect(stylistProfilePreviewWebsite.innerText).toContain(instance.profile.website_url);

@@ -5,6 +5,9 @@ export const ENV = {
   // Feature flag to enable push notifications
   ffEnablePushNotifications: true,
 
+  // Feature flag to enable instagram integration
+  ffEnableInstagramLinking: false,
+
   // Enable Sentry reporting on production
   sentryDsn: 'https://5d75acaf6e9246b79b4bbcf3b5d86d2a@sentry.io/1229225',
 
@@ -15,4 +18,5 @@ export const ENV = {
 
   // ID of Made Pro client, check https://www.instagram.com/developer/clients
   INSTAGRAM_CLIENT_ID: '417299d1d7ee4c67972fd7b62c8d5044'
+
 };

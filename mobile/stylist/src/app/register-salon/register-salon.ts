@@ -240,8 +240,7 @@ export class RegisterSalonComponent {
       return;
     }
 
-    // Show instagram connection page only on staging and dev
-    if (!ENV.production) {
+    if (ENV.ffEnableInstagramLinking) {
       const params: ConnectInstagramComponentParams = { isRootPage: false };
       this.navCtrl.push(PageNames.ConnectInstagram, { params });
       return;

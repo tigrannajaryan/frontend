@@ -129,7 +129,7 @@ export class ProfileComponent {
   }
 
   onFieldEdit(field: ProfileEditableFields): void {
-    if (!ENV.production && field === ProfileEditableFields.instagram) {
+    if (ENV.ffEnableInstagramLinking && field === ProfileEditableFields.instagram) {
       this.navCtrl.push(PageNames.ConnectInstagram, { params: { isRootPage: true }});
       return;
     }
