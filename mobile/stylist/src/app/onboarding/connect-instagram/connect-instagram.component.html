@@ -1,6 +1,6 @@
 <ion-header madeMenuHeader [hideMenuButton]="true">
 
-  <ion-buttons end>
+  <ion-buttons end *ngIf="params.isOnboarding">
     <button (click)="onNavigateNext()" class="ConnectInstagram-skip" data-test-id="skipBtn">Later</button>
   </ion-buttons>
 

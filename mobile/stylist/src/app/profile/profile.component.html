@@ -67,18 +67,18 @@
               </div>
             </div>
 
-            <div (click)="!profile.instagram_url && onFieldEdit(ProfileEditableFields.instagram_url)" class="StylistProfilePreview-item" data-test-id="stylistProfilePreviewInstagram">
+            <div (click)="!profile.instagram_integrated && onFieldEdit(ProfileEditableFields.instagram)" class="StylistProfilePreview-item" data-test-id="stylistProfilePreviewInstagram">
               <div class="StylistProfilePreview-itemTitle">
                 <span>Instagram</span>
 
                 <i class="mb-icon-instagram"></i>
               </div>
 
-              <div *ngIf="!profile.instagram_url" class="StylistProfilePreview-itemLink">
+              <div *ngIf="!profile.instagram_integrated" class="StylistProfilePreview-itemLink">
                 Add Instagram
               </div>
-              <div *ngIf="profile.instagram_url" class="StylistProfilePreview-itemText">
-                {{ profile.instagram_url }}
+              <div class="StylistProfilePreview-itemText">
+                <instagram-gallery *ngIf="profile.instagram_integrated" [stylist]="profile"></instagram-gallery>
               </div>
             </div>
 
@@ -206,13 +206,13 @@
             <div *ngIf="!profile.profile_photo_url" class="ProfilePage-blockItemPicture"><img src="assets/icons/stylist-avatar.png" alt=""></div>
           </div>
 
-          <div (click)="onFieldEdit(ProfileEditableFields.instagram_url)" class="ProfilePage-blockItem" data-test-id="ProfileEditInstagram">
+          <div (click)="onFieldEdit(ProfileEditableFields.instagram)" class="ProfilePage-blockItem" data-test-id="ProfileEditInstagram">
             <div class="ProfilePage-blockItemName">
-              <span>Instagram <img *ngIf="!profile.instagram_url" class="ProfilePage-blockItemNameNotice" src="assets/icons/!@2x.png" /></span>
+              <span>Instagram <img *ngIf="!profile.instagram_integrated" class="ProfilePage-blockItemNameNotice" src="assets/icons/!@2x.png" /></span>
               <i class="mb-icon-right-arrow"></i>
             </div>
-            <div *ngIf="profile.instagram_url" class="ProfilePage-blockItemValue">{{ profile.instagram_url }}</div>
-            <div *ngIf="!profile.instagram_url" class="ProfilePage-blockItemValue">Add Info</div>
+            <div *ngIf="profile.instagram_integrated" class="ProfilePage-blockItemValue">Connected</div>
+            <div *ngIf="!profile.instagram_integrated" class="ProfilePage-blockItemValue">Connect your profile</div>
           </div>
         </div>
 

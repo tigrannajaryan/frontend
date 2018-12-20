@@ -99,6 +99,7 @@
     "fast-deep-equal": "2.0.1",
     "fuse.js": "3.2.1",
     "ionic-angular": "3.9.2",
+    "ionic-gallery-modal": "0.2.7",
     "ionic-mocks": "1.3.0",
     "ionicons": "3.0.0",
     "libphonenumber-js": "1.2.21",

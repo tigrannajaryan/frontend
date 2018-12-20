@@ -8,7 +8,12 @@ import { ServerStatusTracker } from '~/shared/server-status-tracker';
 import { BaseService } from '~/shared/api/base.service';
 
 import { UserContext } from '~/shared/user-context';
-import { StylistProfileRequestParams, StylistProfileResponse } from '~/shared/api/stylists.models';
+import {
+  StylistInstagramImagesResponse,
+  StylistProfileRequestParams,
+  StylistProfileResponse,
+  StylistUuidModel
+} from '~/shared/api/stylists.models';
 
 @Injectable()
 export class StylistProfileApi extends BaseService {
@@ -24,5 +29,12 @@ export class StylistProfileApi extends BaseService {
 
   getStylistProfile(request: StylistProfileRequestParams): Observable<ApiResponse<StylistProfileResponse>> {
     return this.get<StylistProfileResponse>(`common/stylist-profile/${request.stylistUuid}?role=${request.role}`);
+  }
+
+  /**
+   * Retrieve Instagram photos of a stylist who has token set up.
+   */
+  getStylistInstagramImages(stylist: StylistUuidModel): Observable<ApiResponse<StylistInstagramImagesResponse>> {
+    return this.get<StylistInstagramImagesResponse>(`common/stylist/${stylist.uuid}/instagram-photos`);
   }
 }

@@ -1,7 +1,7 @@
 import { enableProdMode, ErrorHandler, Injector, NgModule } from '@angular/core';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
-import { BrowserModule } from '@angular/platform-browser';
+import { BrowserModule, HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
 
 import { IonicApp, IonicModule } from 'ionic-angular';
 
@@ -20,6 +20,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import { Push } from '@ionic-native/push';
 import { GooglePlus } from '@ionic-native/google-plus';
+
+import { GalleryModalHammerConfig, GalleryModalModule } from 'ionic-gallery-modal';
 
 import { META_REDUCERS, StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
@@ -49,7 +51,8 @@ import { PushNotification } from '~/shared/push/push-notification';
 import { SuccessErrorPopupComponent } from '~/shared/components/success-error-popup/success-error-popup.component';
 import { CalendarPickerComponent } from '~/shared/components/calendar-picker/calendar-picker.component';
 import { CalendarPrimingComponent } from '~/shared/components/calendar-priming/calendar-priming.component';
-import { GoogleSignin } from './shared/google-signin';
+import { GoogleSignin } from '~/shared/google-signin';
+import { InstagramGalleryComponent } from '~/shared/components/instagram-gallery/instagram-gallery.component';
 
 import { profilePath, profileReducer } from '~/core/reducers/profile.reducer';
 import { servicesPath, servicesReducer } from '~/core/reducers/services.reducer';
@@ -113,6 +116,7 @@ const declarations = [
   HomePageComponent,
   HowMadeWorksComponent,
   HowPricingWorksComponent,
+  InstagramGalleryComponent,
   MainTabsComponent,
   MyStylistsComponent,
   NonBookableSavePopupComponent,
@@ -141,6 +145,8 @@ const declarations = [
     CoreModule,
     SharedSingletonsModule,
     DataModule.forRoot(),
+
+    GalleryModalModule,
 
     IonicModule.forRoot(ClientAppComponent, {
       backButtonText: '',
@@ -231,6 +237,12 @@ const declarations = [
       provide: META_REDUCERS,
       deps: [Logger],
       useFactory: getMetaReducers
+    },
+
+    {
+      // https://www.npmjs.com/package/ionic-gallery-modal
+      provide: HAMMER_GESTURE_CONFIG,
+      useClass: GalleryModalHammerConfig
     },
 
     Camera

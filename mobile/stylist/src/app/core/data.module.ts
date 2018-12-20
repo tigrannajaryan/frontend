@@ -2,6 +2,7 @@ import { ModuleWithProviders, NgModule } from '@angular/core';
 import { IonicModule } from 'ionic-angular';
 
 import { ClientsApi } from '~/core/api/clients-api';
+import { StylistProfileApi } from '~/shared/api/stylist-profile.api';
 import { StylistServiceProvider } from '~/core/api/stylist.service';
 import { DataStore } from '~/shared/storage/data-store';
 
@@ -32,6 +33,7 @@ export enum DataCacheKey {
   providers: [
     // services
     ClientsApi,
+    StylistProfileApi,
     StylistServiceProvider
   ]
 })
