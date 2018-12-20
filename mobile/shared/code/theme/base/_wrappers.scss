@@ -18,3 +18,10 @@
 .ios .ion-page.show-page ~ .nav-decor {
   background: initial; // rewrite ionic black background
 }
+
+.CenterBlock {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100%;
+}

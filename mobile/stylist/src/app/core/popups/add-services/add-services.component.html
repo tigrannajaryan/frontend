@@ -1,10 +1,22 @@
-<ion-header class="ion-bb-header" madeUserHeader></ion-header>
+<ion-header class="ion-bb-header" madeBackHeader></ion-header>
 
 <ion-content>
-  <services-pick *ngIf="serviceCategories" [services]="serviceCategories" (serviceAdd)="onServiceAdd($event)"></services-pick>
+  <div *ngIf="serviceCategories && hasServices">
+    <services-pick
+      [services]="serviceCategories"
+      (serviceAdd)="onServiceAdd($event)">
+    </services-pick>
+  </div>
+
+  <div *ngIf="serviceCategories && !hasServices" class="Made-wp Made-wpContent CenterBlock">
+    <div>
+      <span>You have no services yet, please add ay least one!</span><br>
+      <button (click)="addMyServices()" ion-button full color="bb_skin" class="bb-btn-a MyClients-inviteBtn" data-test-id="inviteClientsBtn">Add Services</button>
+    </div>
+  </div>
 </ion-content>
 
-<ion-footer class="Services-footer">
+<ion-footer *ngIf="serviceCategories && hasServices" class="Services-footer">
   <ion-toolbar>
     <ion-row align-items-center>
       <ion-col col-4></ion-col>

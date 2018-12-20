@@ -7,9 +7,18 @@ import {
 } from 'ionic-angular';
 import 'rxjs/add/operator/pluck';
 
-import { StylistProfile, StylistProfileCompleteness, StylistProfileStatus } from '~/shared/api/stylist-app.models';
-import { getProfileStatus } from '~/shared/storage/token-utils';
+import {
+  ServiceItem,
+  StylistProfile,
+  StylistProfileCompleteness,
+  StylistProfileStatus
+} from '~/shared/api/stylist-app.models';
+import { getProfileStatus, updateProfileStatus } from '~/shared/storage/token-utils';
 import { getPhoneNumber } from '~/shared/utils/phone-numbers';
+import { StylistServicesDataStore } from '~/services/services-list/services.data';
+import { DayOffer } from '~/shared/api/price.models';
+
+import { ENV } from '~/environments/environment.default';
 
 import { loading } from '~/core/utils/loading';
 import { PageNames } from '~/core/page-names';
@@ -17,8 +26,8 @@ import { ProfileDataStore } from '~/core/profile.data';
 import { calcProfileCompleteness } from '~/core/utils/stylist-utils';
 import { SetStylistProfileTabEventParams, StylistEventTypes } from '~/core/stylist-event-types';
 import { MadeMenuComponent } from '~/core/components/made-menu/made-menu.component';
+import { ClientsApi } from '~/core/api/clients-api';
 
-import { ENV } from '~/environments/environment.default';
 import { StylistProfileApi } from '~/shared/api/stylist-profile.api';
 import { StylistProfileRequestParams, StylistProfileResponse } from '~/shared/api/stylists.models';
 import { UserRole } from '~/shared/api/auth.models';
@@ -54,10 +63,11 @@ export class ProfileComponent {
   profileStatus: StylistProfileStatus;
   activeTab: ProfileTabNames;
   stylistProfileCompleteness: StylistProfileCompleteness;
+  prices: DayOffer[];
+  service: ServiceItem;
   stylistProfile: StylistProfileResponse;
 
   servicesPage: Page = PageNames.Services;
-  calendar = false;
   refresherEnabled = true;
   ProfileTabNames = ProfileTabNames;
   ProfileEditableFields = ProfileEditableFields;
@@ -76,6 +86,8 @@ export class ProfileComponent {
     public navCtrl: NavController,
     public navParams: NavParams,
     public profileData: ProfileDataStore,
+    private clientsApi: ClientsApi,
+    private servicesData: StylistServicesDataStore,
     private events: Events,
     private stylistProfileApi: StylistProfileApi
   ) {
@@ -89,6 +101,14 @@ export class ProfileComponent {
       this.onTabChange(params.profileTab);
     });
 
+    await this.getProfile();
+
+    await this.getStylistProfileStatus();
+
+    await this.getServicesList();
+  }
+
+  async getProfile(): Promise<void> {
     const { response } = await this.profileData.get({refresh: true});
     if (response) {
       this.profile = response;
@@ -96,17 +116,21 @@ export class ProfileComponent {
       this.profile.public_phone = getPhoneNumber(response.public_phone);
       this.stylistProfileCompleteness = calcProfileCompleteness(response);
     }
+  }
 
+  async getStylistProfileStatus(): Promise<void> {
     const profileStatus: StylistProfileStatus = await getProfileStatus() as StylistProfileStatus;
     if (profileStatus) {
       this.profileStatus = profileStatus;
 
-      // Set services page or services template page based on `has_services_set`:
       if (this.profileStatus.has_services_set) {
+        // Set services page instead of services template page to skip filling in services
         this.servicesPage = PageNames.ServicesList;
       }
     }
+  }
 
+  async getServicesList(): Promise<void> {
     const params: StylistProfileRequestParams = {
       role: UserRole.stylist,
       stylistUuid: this.profile.uuid
@@ -115,10 +139,42 @@ export class ProfileComponent {
     if (stylistProfileResponse.response) {
       this.stylistProfile = stylistProfileResponse.response;
     }
+
+    const services = await this.servicesData.getServicesList();
+    if (services) {
+      // we need just one random service for calendar preview
+      this.service = services.length > 0 ? services[0] : undefined;
+      // empty service === !has_services_set
+      this.profileStatus.has_services_set = !!this.service;
+      // update localstorage
+      updateProfileStatus(this.profileStatus);
+
+      if (this.profileStatus.has_services_set) {
+        this.getPrice(this.service.uuid);
+      } else {
+        // Set services page to select category since we have no services:
+        this.servicesPage = PageNames.Services;
+      }
+    }
+  }
+
+  async getPrice(serviceUuid: string): Promise<void> {
+    const { response } = await this.clientsApi.getPricing(undefined, [serviceUuid]).toPromise();
+    if (response) {
+      this.prices = response.prices;
+    }
   }
 
   ionViewWillLeave(): void {
     this.events.unsubscribe(StylistEventTypes.setStylistProfileTab);
+  }
+
+  onCalendarClick(): void {
+    if (!this.service) {
+      this.onSetAccountInfo(this.servicesPage);
+    } else {
+      this.navCtrl.setRoot(PageNames.ClientsCalendar, { params: { isRootPage: true }});
+    }
   }
 
   onTabChange(tabIndex: ProfileTabs): void {
