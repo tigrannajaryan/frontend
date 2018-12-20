@@ -1,5 +1,5 @@
-<ion-header madeMenuHeader [hideBackButton]="params?.hideBackButton" [hideMenuButton]="!params?.hideBackButton">
-  <ion-title *ngIf="params?.isRootPage">
+<ion-header madeMenuHeader [hideBackButton]="params?.isRootPage">
+  <ion-title>
     <div class="Made-h1">My Services</div>
   </ion-title>
 </ion-header>
@@ -14,13 +14,11 @@
 
 
   <div class="Made-wp Made-wpContent">
-    <div *ngIf="!params?.isRootPage" class="Made-h1">My Services</div>
     <div class="Made-text">
       <div class="Made-textItem">
         This is your current list of services. Click to edit or delete any of the services below.
       </div>
     </div>
-
 
     <div *ngIf="categories" class="ServicesLis-offset">
       <div *ngFor="let category of categories; let index = index"
@@ -87,4 +85,4 @@
 </ion-content>
 
 
-<ion-footer *ngIf="!params?.isRootPage" (continue)="onContinue()" madeContinueFooter title="Save"></ion-footer>
+<ion-footer *ngIf="!params?.isRootPage" (continue)="onSave()" madeContinueFooter title="Save"></ion-footer>

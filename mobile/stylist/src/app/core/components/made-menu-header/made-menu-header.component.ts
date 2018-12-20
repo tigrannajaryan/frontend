@@ -12,7 +12,7 @@ import { calcProfileCompleteness } from '~/core/utils/stylist-utils';
 })
 export class MadeMenuHeaderComponent implements OnDestroy, OnInit {
   @Input() hideBackButton;
-  @Input() hideMenuButton;
+  @Input() hideBackAndMenuButtons;
 
   profile: StylistProfile;
   private subscription: Subscription;

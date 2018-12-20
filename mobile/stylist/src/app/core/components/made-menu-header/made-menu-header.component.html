@@ -1,5 +1,5 @@
-<ion-navbar [class.is-hiddenBackButton]="hideBackButton" class="Made-wp BackHeader-backBtn">
-  <ion-buttons *ngIf="!hideMenuButton" left>
+<ion-navbar [class.is-hiddenBackButton]="hideBackAndMenuButtons ? true : hideBackButton" class="Made-wp BackHeader-backBtn">
+  <ion-buttons *ngIf="hideBackAndMenuButtons ? false : hideBackButton" left>
     <button class="madeMenuHeader-menuBtn" data-test-id="menuToggleBtn" menuToggle>
       <i class="mb-icon-menu"></i>
       <img *ngIf="!isProfileComplete()" class="madeMenuHeader-notice" src="assets/icons/!@2x.png" />
