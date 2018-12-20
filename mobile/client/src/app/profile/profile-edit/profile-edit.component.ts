@@ -123,7 +123,7 @@ export class ProfileEditComponent {
 
     if (updated && updated.response) {
       this.form.patchValue(updated.response);
-      this.navCtrl.pop();
+      this.navCtrl.popToRoot();
     }
   }
 
