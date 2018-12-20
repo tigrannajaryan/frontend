@@ -18,6 +18,8 @@ import { calcProfileCompleteness } from '~/core/utils/stylist-utils';
 import { SetStylistProfileTabEventParams, StylistEventTypes } from '~/core/stylist-event-types';
 import { MadeMenuComponent } from '~/core/components/made-menu/made-menu.component';
 
+import { ENV } from '~/environments/environment.default';
+
 export enum ProfileTabs {
   clientView,
   edit
@@ -127,15 +129,11 @@ export class ProfileComponent {
   }
 
   onFieldEdit(field: ProfileEditableFields): void {
-    switch (field) {
-      case ProfileEditableFields.instagram:
-        this.navCtrl.push(PageNames.ConnectInstagram, { params: { isRootPage: true }});
-        break;
-
-      default:
-        this.navCtrl.push(PageNames.RegisterSalon, { params: { isRootPage: true }});
-        break;
+    if (!ENV.production && field === ProfileEditableFields.instagram) {
+      this.navCtrl.push(PageNames.ConnectInstagram, { params: { isRootPage: true }});
+      return;
     }
+    this.navCtrl.push(PageNames.RegisterSalon, { params: { isRootPage: true }});
   }
 
   onSetAccountInfo(page: Page): void {
