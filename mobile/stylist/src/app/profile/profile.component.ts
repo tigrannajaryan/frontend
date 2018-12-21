@@ -19,6 +19,9 @@ import { SetStylistProfileTabEventParams, StylistEventTypes } from '~/core/styli
 import { MadeMenuComponent } from '~/core/components/made-menu/made-menu.component';
 
 import { ENV } from '~/environments/environment.default';
+import { StylistProfileApi } from '~/shared/api/stylist-profile.api';
+import { StylistProfileRequestParams, StylistProfileResponse } from '~/shared/api/stylists.models';
+import { UserRole } from '~/shared/api/auth.models';
 
 export enum ProfileTabs {
   clientView,
@@ -51,6 +54,7 @@ export class ProfileComponent {
   profileStatus: StylistProfileStatus;
   activeTab: ProfileTabNames;
   stylistProfileCompleteness: StylistProfileCompleteness;
+  stylistProfile: StylistProfileResponse;
 
   servicesPage: Page = PageNames.Services;
   calendar = false;
@@ -72,7 +76,8 @@ export class ProfileComponent {
     public navCtrl: NavController,
     public navParams: NavParams,
     public profileData: ProfileDataStore,
-    private events: Events
+    private events: Events,
+    private stylistProfileApi: StylistProfileApi
   ) {
     this.activeTab = this.tabs[ProfileTabs.clientView].name;
   }
@@ -100,6 +105,15 @@ export class ProfileComponent {
       if (this.profileStatus.has_services_set) {
         this.servicesPage = PageNames.ServicesList;
       }
+    }
+
+    const params: StylistProfileRequestParams = {
+      role: UserRole.stylist,
+      stylistUuid: this.profile.uuid
+    };
+    const stylistProfileResponse = await this.stylistProfileApi.getStylistProfile(params).toPromise();
+    if (stylistProfileResponse.response) {
+      this.stylistProfile = stylistProfileResponse.response;
     }
   }
 

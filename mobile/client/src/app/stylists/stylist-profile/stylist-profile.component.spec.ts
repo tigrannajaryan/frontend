@@ -1,10 +1,11 @@
 import { async, ComponentFixture } from '@angular/core/testing';
+import { AgmCoreModule } from '@agm/core';
+import { NavParams } from 'ionic-angular';
 
 import { TestUtils } from '~/../test';
 
 import { StylistsServiceMock } from '~/core/api/stylists.service.mock';
 import { StylistsService } from '~/core/api/stylists.service';
-import { NavParams } from 'ionic-angular';
 import { StylistProfileComponent } from '~/stylists/stylist-profile/stylist-profile.component';
 import { StylistProfileApi } from '~/shared/api/stylist-profile.api';
 import { StylistProfileApiMock } from '~/shared/api/stylist-profile.api.mock';
@@ -19,7 +20,7 @@ describe('StylistProfileComponent', () => {
         StylistProfileApi,
         StylistProfileApiMock,
         StylistsServiceMock
-      ])
+      ], [AgmCoreModule])
         .then(compiled => {
           // Common setup:
           fixture = compiled.fixture;

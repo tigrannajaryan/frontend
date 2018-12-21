@@ -73,3 +73,10 @@
   text-align: left;
   color: color($colors-shared, lightSalmon);
 }
+
+.StylistProfilePreview-map {
+  display: block;
+  width: 100%;
+  height: pxtovw(96px);
+  margin-top: pxtovw(16px);
+}
