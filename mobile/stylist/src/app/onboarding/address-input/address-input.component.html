@@ -1,0 +1,20 @@
+<ion-header madeMenuHeader></ion-header>
+
+<ion-content no-padding>
+  <div class="Made-wp Made-wpContent Onboarding-content">
+
+    <div class="Made-h2 Onboarding-h2">
+      What's your <strong>address</strong>?
+    </div>
+
+    <ion-item class="Input">
+      <ion-label floating>Address</ion-label>
+      <ion-input [formControl]="address" type="text" class="ion_autocomplete"></ion-input>
+    </ion-item>
+
+    <ion-footer class="Footer Onboarding-footer">
+      <button (click)="onContinue()" [disabled]="!isValid()" class="Button">Continue</button>
+    </ion-footer>
+
+  </div>
+</ion-content>

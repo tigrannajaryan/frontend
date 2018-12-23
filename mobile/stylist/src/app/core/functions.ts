@@ -30,7 +30,8 @@ export async function createNavHistoryList(profileStatus: StylistProfileStatus):
   // so that you can navigate all way back to it.
   pages.push({ page: PageNames.FirstScreen });
 
-  pages.push({ page: PageNames.RegisterSalon });
+  pages.push({ page: PageNames.NameSurname });
+
   if (!profileStatus) {
     // No profile at all, start from beginning.
     return pages;

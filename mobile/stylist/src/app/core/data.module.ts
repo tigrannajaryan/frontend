@@ -12,6 +12,7 @@ import { StylistServicesDataStore } from '~/services/services-list/services.data
 import { ProfileDataStore } from '~/core/profile.data';
 import { AppModule } from '~/app.module';
 import { AppointmentsDataStore } from '~/home-slots/appointments.data';
+import { RegistrationForm } from '~/onboarding/registration.form';
 
 export enum DataCacheKey {
   allClients = 'allClients',
@@ -49,6 +50,7 @@ export class DataModule {
         AppointmentsDataStore,
         MyClientsDataStore,
         ProfileDataStore,
+        RegistrationForm,
         StylistServicesDataStore
       ]
     };
