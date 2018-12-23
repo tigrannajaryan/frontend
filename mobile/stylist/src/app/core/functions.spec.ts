@@ -54,7 +54,7 @@ describe('Shared functions: profileStatusToPage', () => {
     expect(await createNavHistoryList(undefined))
       .toEqual([
         { page: PageNames.FirstScreen },
-        { page: PageNames.RegisterSalon }
+        { page: PageNames.NameSurname }
       ]);
 
     done();

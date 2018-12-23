@@ -1,6 +1,6 @@
-import { AfterViewInit, Component, NgZone, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, NgZone, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { NavController } from 'ionic-angular';
+import { NavController, NavParams } from 'ionic-angular';
 
 import { MapsAPILoader } from '@agm/core';
 import Autocomplete = google.maps.places.Autocomplete;
@@ -13,6 +13,10 @@ import { loading } from '~/core/utils/loading';
 
 import { RegistrationForm } from '~/onboarding/registration.form';
 
+export interface AddressInputComponentParams {
+  isRootPage?: boolean;
+}
+
 declare var window: any;
 
 @Component({
@@ -20,6 +24,7 @@ declare var window: any;
   templateUrl: 'address-input.component.html'
 })
 export class AddressInputComponent implements AfterViewInit, OnInit {
+  params: AddressInputComponentParams;
 
   address: FormControl;
 
@@ -27,9 +32,11 @@ export class AddressInputComponent implements AfterViewInit, OnInit {
   autocompleteInput: HTMLInputElement;
 
   constructor(
+    private changeDetectorRef: ChangeDetectorRef,
     private logger: Logger,
     private mapsAPILoader: MapsAPILoader,
     private navCtrl: NavController,
+    private navParams: NavParams,
     private ngZone: NgZone,
     private registrationForm: RegistrationForm,
     private stylistApi: StylistServiceProvider
@@ -37,6 +44,8 @@ export class AddressInputComponent implements AfterViewInit, OnInit {
   }
 
   ngOnInit(): void {
+    this.params = this.navParams.get('params') || {};
+
     const { salon_address } = this.registrationForm.getFormControls();
 
     this.address = salon_address;
@@ -54,7 +63,11 @@ export class AddressInputComponent implements AfterViewInit, OnInit {
   }
 
   onNavigateNext(): void {
-    this.navCtrl.push(PageNames.ConnectInstagram);
+    if (!this.params.isRootPage) {
+      this.navCtrl.push(PageNames.ConnectInstagram);
+    } else {
+      this.navCtrl.popToRoot();
+    }
   }
 
   @loading
@@ -115,6 +128,9 @@ export class AddressInputComponent implements AfterViewInit, OnInit {
       this.autocomplete.addListener('place_changed', () => {
         const place = this.autocomplete.getPlace();
         this.address.patchValue(place.formatted_address);
+
+        // Ensure the view updated:
+        this.changeDetectorRef.detectChanges();
       });
     });
   }
@@ -130,7 +146,7 @@ export class AddressInputComponent implements AfterViewInit, OnInit {
   }
 
   // Fix address autocomplete dropdown position relative to address input field.
-  private fixAutocompletePosition(): void {
+  private fixAutocompletePosition = (): void => {
     const pacContainer = document.getElementsByClassName('pac-container')[0];
     if (pacContainer) {
       const pacContainerCarriers = document.getElementsByClassName('pac_container_carrier');
@@ -143,5 +159,5 @@ export class AddressInputComponent implements AfterViewInit, OnInit {
         pacContainerCarriers[pacContainerCarrierIndex].appendChild(pacContainer);
       }
     }
-  }
+  };
 }

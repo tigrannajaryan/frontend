@@ -18,7 +18,7 @@ import { calcProfileCompleteness } from '~/core/utils/stylist-utils';
 import { SetStylistProfileTabEventParams, StylistEventTypes } from '~/core/stylist-event-types';
 import { MadeMenuComponent } from '~/core/components/made-menu/made-menu.component';
 
-import { ENV } from '~/environments/environment.default';
+import { RegistrationForm } from '~/onboarding/registration.form';
 
 export enum ProfileTabs {
   clientView,
@@ -72,9 +72,15 @@ export class ProfileComponent {
     public navCtrl: NavController,
     public navParams: NavParams,
     public profileData: ProfileDataStore,
-    private events: Events
+    private events: Events,
+    private registrationForm: RegistrationForm
   ) {
     this.activeTab = this.tabs[ProfileTabs.clientView].name;
+  }
+
+  async ionViewWillLoad(): Promise<void> {
+    this.registrationForm.init();
+    await this.registrationForm.loadFormInitialData();
   }
 
   @loading
@@ -129,11 +135,30 @@ export class ProfileComponent {
   }
 
   onFieldEdit(field: ProfileEditableFields): void {
-    if (ENV.ffEnableInstagramLinking && field === ProfileEditableFields.instagram) {
-      this.navCtrl.push(PageNames.ConnectInstagram, { params: { isRootPage: true }});
-      return;
+    switch (field) {
+      case ProfileEditableFields.profile_photo_url:
+        this.navCtrl.push(PageNames.StylistPhoto, { params: { isRootPage: true }});
+        return;
+
+      case ProfileEditableFields.name:
+        this.navCtrl.push(PageNames.NameSurname, { params: { isRootPage: true }});
+        return;
+
+      case ProfileEditableFields.salon_name:
+        this.navCtrl.push(PageNames.SalonName, { params: { isRootPage: true }});
+        return;
+
+      case ProfileEditableFields.salon_address:
+        this.navCtrl.push(PageNames.AddressInput, { params: { isRootPage: true }});
+        return;
+
+      case ProfileEditableFields.instagram:
+        this.navCtrl.push(PageNames.ConnectInstagram, { params: { isRootPage: true }});
+        return;
+
+      default:
+        this.navCtrl.push(PageNames.RegisterSalon, { params: { isRootPage: true }});
     }
-    this.navCtrl.push(PageNames.RegisterSalon, { params: { isRootPage: true }});
   }
 
   onSetAccountInfo(page: Page): void {

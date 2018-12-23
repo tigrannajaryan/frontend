@@ -6,7 +6,6 @@ import {
   clearSessionData,
   click,
   getRandomString,
-  globals,
   waitFor,
   waitForNot
 } from './shared-e2e/utils';
@@ -14,7 +13,6 @@ import { backdoorApi } from './shared-e2e/backdoor-api';
 import { phoneLoginPage } from './shared-e2e/phone-login-page';
 import { phoneCodePage } from './shared-e2e/phone-code-page';
 
-import { registerProfilePage } from './pages/register-profile-page';
 import { welcomeToMadePage } from './pages/welcome-to-made-page';
 import { firstPage } from './pages/first-page';
 import { calendarExamplePage } from './pages/calendar-example-page';
@@ -25,6 +23,10 @@ import { homePage } from './pages/home-page';
 import { profilePage } from './pages/profile-page';
 import { worktimePage } from './pages/worktime-page';
 import { discountsPage } from './pages/discounts-page';
+import { nameSurnamePage } from './pages/name-surname-page';
+import { salonNamePage } from './pages/salon-name-page';
+import { salonAddressPage } from './pages/salon-address-page';
+import { photoAddPage } from './pages/photo-add-page';
 
 describe('Registration Flow', () => {
 
@@ -33,7 +35,6 @@ describe('Registration Flow', () => {
   const lastName = faker.name.lastName();
   const salonName = faker.company.companyName(0);
   const address = faker.address.streetAddress();
-  const websiteName = getRandomString(8);
 
   beforeAll(async () => {
     await browser.restart();
@@ -65,30 +66,27 @@ describe('Registration Flow', () => {
     await waitForNot(phoneCodePage.codeInput);
   });
 
-  it('should be able to fill registration form', async () => {
-    await waitForNot(globals.ionLoading);
+  it('should be able to fill name and surname', async () => {
+    await nameSurnamePage.fillForm(firstName, lastName);
+    await nameSurnamePage.submitForm();
+  });
 
-    // We should arive to profile screen, check it.
-    await waitFor(registerProfilePage.continueButton);
+  it('should be able to fill salon name', async () => {
+    await salonNamePage.fillForm(salonName);
+    await salonNamePage.submitForm();
+  });
 
-    expect(registerProfilePage.takePhotoBtn.isPresent()).toBeTruthy();
-    expect(registerProfilePage.firstNameInput.isPresent()).toBeTruthy();
-    expect(registerProfilePage.lastNameInput.isPresent()).toBeTruthy();
-    expect(registerProfilePage.salonNameInput.isPresent()).toBeTruthy();
-    expect(registerProfilePage.salonAddressInput.isPresent()).toBeTruthy();
-    expect(registerProfilePage.phoneNumberInput.isPresent()).toBeTruthy();
-    expect(registerProfilePage.websiteInput.isPresent()).toBeTruthy();
-    expect(registerProfilePage.continueButton.isPresent()).toBeTruthy();
-    expect(registerProfilePage.continueButton.isEnabled()).toBeFalsy();
-
-    // Fill registration form
-    await registerProfilePage.fillForm(firstName, lastName, salonName, address, phoneNumber, websiteName);
-
-    await registerProfilePage.submitForm();
+  it('should be able to fill salon address', async () => {
+    await salonAddressPage.fillForm(address);
+    await salonAddressPage.submitForm();
   });
 
   it('should skip Instagram connect page', async () => {
     await instagramConnectPage.skip();
+  });
+
+  it('should skip add photo page', async () => {
+    await photoAddPage.skip();
   });
 
   it('can navigate through Welcome To Made page', async () => {
@@ -122,10 +120,12 @@ describe('Registration Flow', () => {
     await profilePage.goToServicePage();
     await waitFor(homePage.menuBtn);
     await click(homePage.menuBtn);
-    await browser.takeScreenshot(); // When calling browser.takeScreenshot() it’s somehow fixed. Don’t remove the screenshots taking from the code!
+    // When calling browser.takeScreenshot() it’s somehow fixed. Don’t remove the screenshots taking from the code!
+    await browser.takeScreenshot();
     await waitFor(homePage.getMenuProfileLink);
     await click(homePage.getMenuProfileLink);
-    await browser.takeScreenshot(); // When calling browser.takeScreenshot() it’s somehow fixed. Don’t remove the screenshots taking from the code!
+    // When calling browser.takeScreenshot() it’s somehow fixed. Don’t remove the screenshots taking from the code!
+    await browser.takeScreenshot();
     await waitForNot(homePage.getMenuProfileLink);
     await waitFor(profilePage.getProfileEditTab);
   });

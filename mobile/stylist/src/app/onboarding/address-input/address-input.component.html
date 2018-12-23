@@ -9,11 +9,13 @@
 
     <ion-item class="Input">
       <ion-label floating>Address</ion-label>
-      <ion-input [formControl]="address" type="text" class="ion_autocomplete"></ion-input>
+      <ion-input [formControl]="address" type="text" class="ion_autocomplete" data-test-id="salonAddress"></ion-input>
     </ion-item>
 
     <ion-footer class="Footer Onboarding-footer">
-      <button (click)="onContinue()" [disabled]="!isValid()" class="Button">Continue</button>
+      <button (click)="onContinue()" [disabled]="!isValid()" class="Button" data-test-id="continueBtn">
+        {{ params?.isRootPage ? 'Save' : 'Continue' }}
+      </button>
     </ion-footer>
 
   </div>

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Camera, CameraOptions } from '@ionic-native/camera';
-import { ActionSheetController, ActionSheetOptions, NavController } from 'ionic-angular';
+import { ActionSheetController, ActionSheetOptions, NavController, NavParams } from 'ionic-angular';
 
 import { BaseService } from '~/shared/api/base.service';
 import { PhotoSourceType } from '~/shared/constants';
@@ -14,11 +14,16 @@ import { loading } from '~/core/utils/loading';
 
 import { RegistrationForm } from '~/onboarding/registration.form';
 
+export interface StylistPhotoComponentParams {
+  isRootPage?: boolean;
+}
+
 @Component({
   selector: 'stylist-photo',
   templateUrl: 'stylist-photo.component.html'
 })
 export class StylistPhotoComponent implements OnInit {
+  params: StylistPhotoComponentParams;
 
   private photoId: FormControl;
   private photoUrl: FormControl;
@@ -29,11 +34,14 @@ export class StylistPhotoComponent implements OnInit {
     private camera: Camera,
     private logger: Logger,
     private navCtrl: NavController,
+    private navParams: NavParams,
     private registrationForm: RegistrationForm
   ) {
   }
 
   async ngOnInit(): Promise<void> {
+    this.params = this.navParams.get('params') || {};
+
     const { profile_photo_id, profile_photo_url } = this.registrationForm.getFormControls();
 
     this.photoId = profile_photo_id;
@@ -48,7 +56,11 @@ export class StylistPhotoComponent implements OnInit {
   async onNavigateNext(): Promise<void> {
     await this.registrationForm.save();
 
-    this.navCtrl.push(PageNames.WelcomeToMade);
+    if (!this.params.isRootPage) {
+      this.navCtrl.push(PageNames.WelcomeToMade);
+    } else {
+      this.navCtrl.popToRoot();
+    }
   }
 
   async onContinue(): Promise<void> {

@@ -1,6 +1,6 @@
 <ion-header madeMenuHeader>
   <ion-buttons end>
-    <button (click)="onNavigateNext()" class="Onboarding-skip" data-test-id="skipBtn">Later</button>
+    <button *ngIf="!params.isRootPage" (click)="onNavigateNext()" class="Onboarding-skip" data-test-id="skipBtn">Later</button>
   </ion-buttons>
 </ion-header>
 
@@ -25,7 +25,7 @@
 
     <ion-footer class="Footer Onboarding-footer">
       <button (click)="onContinue()" class="Button">
-        {{ hasPhoto() ? 'Continue' : 'Upload Photo' }}
+        {{ hasPhoto() ? (params.isRootPage ? 'Save' : 'Continue') : 'Upload Photo' }}
       </button>
     </ion-footer>
 

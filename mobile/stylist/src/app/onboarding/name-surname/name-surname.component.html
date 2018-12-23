@@ -4,20 +4,22 @@
   <div class="Made-wp Made-wpContent Onboarding-content">
 
     <div class="Made-h2 Onboarding-h2">
-      Hello. What’s <strong>your name</strong>?
+      <span *ngIf="!params?.isRootPage">Hello. </span>What’s <strong>your name</strong>?
     </div>
 
     <ion-item class="Input">
       <ion-label floating>First name</ion-label>
-      <ion-input [formControl]="firstName" type="text"></ion-input>
+      <ion-input [formControl]="firstName" type="text" data-test-id="firstName"></ion-input>
     </ion-item>
     <ion-item class="Input">
       <ion-label floating>Last name</ion-label>
-      <ion-input [formControl]="lastName" type="text"></ion-input>
+      <ion-input [formControl]="lastName" type="text" data-test-id="lastName"></ion-input>
     </ion-item>
 
     <ion-footer class="Footer Onboarding-footer">
-      <button (click)="onContinue()" [disabled]="!isValid()" class="Button">Continue</button>
+      <button (click)="onContinue()" [disabled]="!isValid()" class="Button" data-test-id="continueBtn">
+        {{ params?.isRootPage ? 'Save' : 'Continue' }}
+      </button>
     </ion-footer>
 
   </div>

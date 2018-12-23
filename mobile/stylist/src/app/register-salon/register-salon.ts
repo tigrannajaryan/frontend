@@ -2,6 +2,7 @@ import { Component, NgZone } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Camera, CameraOptions } from '@ionic-native/camera';
+// tslint:disable-next-line
 import { } from 'googlemaps';
 import Autocomplete = google.maps.places.Autocomplete;
 import { MapsAPILoader } from '@agm/core';
@@ -25,8 +26,6 @@ import { getPhoneNumber } from '~/shared/utils/phone-numbers';
 import { loading } from '~/core/utils/loading';
 import { PageNames } from '~/core/page-names';
 import { ProfileDataStore } from '~/core/profile.data';
-
-import { ENV } from '~/environments/environment.default';
 
 import { ConnectInstagramComponentParams } from '~/onboarding/connect-instagram/connect-instagram.component';
 import { emptyOr } from '~/shared/validators';
@@ -239,14 +238,8 @@ export class RegisterSalonComponent {
       this.navCtrl.pop();
       return;
     }
-
-    if (ENV.ffEnableInstagramLinking) {
-      const params: ConnectInstagramComponentParams = { isRootPage: false };
-      this.navCtrl.push(PageNames.ConnectInstagram, { params });
-      return;
-    }
-
-    this.navCtrl.push(PageNames.WelcomeToMade);
+    const params: ConnectInstagramComponentParams = { isRootPage: false };
+    this.navCtrl.push(PageNames.ConnectInstagram, { params });
   }
 
   @loading
