@@ -65,6 +65,22 @@
               <div class="StylistProfilePreview-itemText">
                 {{ profile.salon_address }}
               </div>
+
+              <agm-map
+                *ngIf="stylistProfile?.location"
+                [latitude]="stylistProfile.location?.lat"
+                [longitude]="stylistProfile.location?.lng"
+                [zoom]="13"
+                [disableDefaultUI]="true"
+                [zoomControl]="false"
+                [mapDraggable]="false"
+                class="StylistProfilePreview-map">
+                <agm-marker
+                  [latitude]="stylistProfile.location?.lat"
+                  [longitude]="stylistProfile.location?.lng"
+                  [markerDraggable]="false"
+                  [iconUrl]="'assets/icons/marker.png'"></agm-marker>
+              </agm-map>
             </div>
 
             <div (click)="!profile.instagram_url && onFieldEdit(ProfileEditableFields.instagram)" class="StylistProfilePreview-item" data-test-id="stylistProfilePreviewInstagram">

@@ -72,6 +72,10 @@ export interface StylistProfileResponse {
   working_hours: {
     weekdays: WorkingHours[]
   };
+  location: {
+    lat: string;
+    lng: string;
+  };
 }
 
 export interface WorkingHours {

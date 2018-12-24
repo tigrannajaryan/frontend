@@ -17,6 +17,7 @@ export interface ProfileModel extends ProfileImageModel {
   privacy?: string;
   google_calendar_integrated?: boolean;
   has_seen_educational_screens?: boolean;
+  google_api_key?: string;
 }
 
 export interface ProfileCompleteness {

@@ -54,7 +54,7 @@ import { InvitationsApi } from '~/core/api/invitations.api';
 import { ClientDetailsApi } from '~/core/api/client-details.api';
 
 import { CoreModule } from '~/core/core.module';
-import { GoogleMapsConfig } from '~/core/google-maps-config';
+import { GoogleMapsConfig } from '~/shared/google-maps-config';
 import { AddServicesComponent } from '~/core/popups/add-services/add-services.component';
 import { ChangePercentComponent } from '~/core/popups/change-percent/change-percent.component';
 import { ConfirmCheckoutComponent } from '~/core/popups/confirm-checkout/confirm-checkout.component';

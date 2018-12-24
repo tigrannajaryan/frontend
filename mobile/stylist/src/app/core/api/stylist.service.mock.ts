@@ -76,7 +76,11 @@ export const profileSummaryMock = {
       booked_appointments_count: faker.random.number()
     }
   ],
-  total_week_appointments_count: faker.random.number()
+  total_week_appointments_count: faker.random.number(),
+  location: {
+    lat: 0,
+    lng: 0
+  }
 };
 
 @Injectable()
