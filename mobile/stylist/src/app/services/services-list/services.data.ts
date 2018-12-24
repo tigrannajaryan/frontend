@@ -27,4 +27,20 @@ export class StylistServicesDataStore extends DataStore<StylistServicesListRespo
       await this.deleteCache();
     }
   }
+
+  async getServicesList(): Promise<ServiceItem[]> {
+    const { response } = await this.get();
+
+    const services: ServiceItem[] = [];
+
+    if (response && response.categories) {
+      for (const category of response.categories) {
+        services.push(...category.services);
+      }
+
+      return services;
+    }
+
+    return [];
+  }
 }

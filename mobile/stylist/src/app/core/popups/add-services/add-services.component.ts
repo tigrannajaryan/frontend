@@ -5,6 +5,8 @@ import { StylistServiceProvider } from '~/core/api/stylist.service';
 import { ServiceCategory, ServiceItem, StylistServicesList } from '~/shared/api/stylist-app.models';
 import { CheckOutService } from '~/core/api/home.models';
 import { loading } from '~/core/utils/loading';
+import { PageNames } from '~/core/page-names';
+import { ServicesComponentParams } from '~/services/services.component';
 
 export class AddServicesComponentParams {
   appointmentUuid: string;
@@ -22,6 +24,7 @@ export class AddServicesComponentParams {
   templateUrl: 'add-services.component.html'
 })
 export class AddServicesComponent {
+  hasServices: boolean;
   protected serviceCategories: ServiceCategory[];
   protected addedServices: ServiceItem[];
   protected params: AddServicesComponentParams;
@@ -44,7 +47,17 @@ export class AddServicesComponent {
     const response: StylistServicesList = (await this.stylistService.getStylistServices().get()).response;
     if (response) {
       this.serviceCategories = this.filterSelectedServices(response.categories);
+
+      this.hasServices = response.categories.some(category => category.services.length > 0);
     }
+  }
+
+  addMyServices(): void {
+    const params: ServicesComponentParams = {
+      isRootPage: false
+    };
+
+    this.navCtrl.push(PageNames.Services, { params });
   }
 
   protected onServiceAdd(services): void {

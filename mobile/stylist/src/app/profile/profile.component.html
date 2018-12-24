@@ -56,7 +56,10 @@
           </div>
 
           <div class="Made-wp">
-            <div class="StylistProfilePreview-item" data-test-id="stylistProfilePreviewAddress">
+            <div
+              (click)="onFieldEdit(ProfileEditableFields.salon_address)"
+              class="StylistProfilePreview-item"
+              data-test-id="stylistProfilePreviewAddress">
               <div class="StylistProfilePreview-itemTitle">
                 <span>Address</span>
 
@@ -83,7 +86,10 @@
               </agm-map>
             </div>
 
-            <div (click)="!profile.instagram_url && onFieldEdit(ProfileEditableFields.instagram)" class="StylistProfilePreview-item" data-test-id="stylistProfilePreviewInstagram">
+            <div
+              (click)="onFieldEdit(ProfileEditableFields.instagram)"
+              class="StylistProfilePreview-item"
+              data-test-id="stylistProfilePreviewInstagram">
               <div class="StylistProfilePreview-itemTitle">
                 <span>Instagram</span>
 
@@ -100,37 +106,42 @@
               </div>
             </div>
 
-            <div class="StylistProfilePreview-item">
+            <div
+              (click)="onCalendarClick()"
+              class="StylistProfilePreview-item">
               <div class="StylistProfilePreview-itemTitle">
                 <span>Calendar</span>
 
                 <i class="mb-icon-calendar"></i>
               </div>
 
-              <div *ngIf="!calendar" class="StylistProfilePreview-itemText" data-test-id="stylistProfilePreviewNoCalendar">
+              <div *ngIf="!service" class="StylistProfilePreview-itemLink" data-test-id="stylistProfilePreviewNoCalendar">
                 Add Services
               </div>
-              <div *ngIf="calendar" data-test-id="stylistProfilePreviewCalendar">
-                <!--<div *ngIf="!(service?.name && prices)" class="text-center">-->
-                  <!--<div class="Spinner"><ion-spinner></ion-spinner></div>-->
-                <!--</div>-->
+              <div *ngIf="service" data-test-id="stylistProfilePreviewCalendar">
+                <div *ngIf="!(service.name && prices)" class="text-center">
+                  <div class="Spinner"><ion-spinner></ion-spinner></div>
+                </div>
 
-                <!--<div *ngIf="service?.name && prices">-->
-                  <!--<ion-row no-padding justify-content-between align-items-center="">-->
-                    <!--<div class="ServiciesHeader-seviceItem">-->
-                      <!--<div class="ServiciesHeader-seviceName" data-test-id="name">{{ service?.name }}</div>-->
-                      <!--<ion-icon class="ServiciesHeader-serviceItemClose" name="ios-close"></ion-icon>-->
-                    <!--</div>-->
+                <div *ngIf="service.name && prices">
+                  <ion-row no-padding justify-content-between align-items-center="">
+                    <div class="ServiciesHeader-seviceItem">
+                      <div class="ServiciesHeader-seviceName" data-test-id="name">{{ service.name }}</div>
+                      <ion-icon class="ServiciesHeader-serviceItemClose" name="ios-close"></ion-icon>
+                    </div>
 
-                    <!--<button class="Button button-mini is-inHeader" ion-button>Add Service</button>-->
-                  <!--</ion-row>-->
+                    <button class="Button button-mini is-inHeader" ion-button>Add Service</button>
+                  </ion-row>
 
-                  <!--<price-calendar [prices]="prices" [showOneMonth]="true"></price-calendar>-->
-                <!--</div>-->
+                  <price-calendar [prices]="prices" [showOneMonth]="true"></price-calendar>
+                </div>
               </div>
             </div>
 
-            <div (click)="!profile.website_url && onFieldEdit(ProfileEditableFields.website_url)" class="StylistProfilePreview-item" data-test-id="stylistProfilePreviewWebsite">
+            <div
+              (click)="onFieldEdit(ProfileEditableFields.website_url)"
+              class="StylistProfilePreview-item"
+              data-test-id="stylistProfilePreviewWebsite">
               <div class="StylistProfilePreview-itemTitle">
                 <span>Website</span>
 
@@ -145,7 +156,10 @@
               </div>
             </div>
 
-            <div (click)="!profile.email && onFieldEdit(ProfileEditableFields.email)" class="StylistProfilePreview-item" data-test-id="stylistProfilePreviewEmail">
+            <div
+              (click)="onFieldEdit(ProfileEditableFields.email)"
+              class="StylistProfilePreview-item"
+              data-test-id="stylistProfilePreviewEmail">
               <div class="StylistProfilePreview-itemTitle">
                 <span>Email</span>
 
@@ -160,7 +174,11 @@
               </div>
             </div>
 
-            <div *ngIf="profile.phone" class="StylistProfilePreview-item" data-test-id="stylistProfilePreviewPhone">
+            <div
+              *ngIf="profile.phone"
+              (click)="onFieldEdit(ProfileEditableFields.public_phone)"
+              class="StylistProfilePreview-item"
+              data-test-id="stylistProfilePreviewPhone">
               <div class="StylistProfilePreview-itemTitle">
                 <span>Phone</span>
 
