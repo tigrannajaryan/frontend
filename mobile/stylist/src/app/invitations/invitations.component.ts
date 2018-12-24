@@ -668,7 +668,7 @@ export class InvitationsComponent {
     let defaultInvitationText = `Hi, it's ${stylistProfile.first_name}. I'm now using the Made app to book`;
     defaultInvitationText = defaultInvitationText + (discounts.first_booking > 0 ? ' and I discounted your next visit on the app.' : '.');
 
-    defaultInvitationText = `${defaultInvitationText} You can get it at https://www.madebeauty.com/get.`;
+    defaultInvitationText = `${defaultInvitationText} You can get it at https://madebeauty.com/get/`;
 
     return defaultInvitationText;
   }
