@@ -141,13 +141,14 @@ export class ProfileComponent {
     }
 
     const services = await this.servicesData.getServicesList();
+    // empty service === !has_services_set
+    this.profileStatus.has_services_set = services && services.length > 0;
+    // update localstorage
+    updateProfileStatus(this.profileStatus);
+
     if (services) {
       // we need just one random service for calendar preview
       this.service = services.length > 0 ? services[0] : undefined;
-      // empty service === !has_services_set
-      this.profileStatus.has_services_set = !!this.service;
-      // update localstorage
-      updateProfileStatus(this.profileStatus);
 
       if (this.profileStatus.has_services_set) {
         this.getPrice(this.service.uuid);
