@@ -31,6 +31,7 @@ import { ClientsApi } from '~/core/api/clients-api';
 import { StylistProfileApi } from '~/shared/api/stylist-profile.api';
 import { StylistProfileRequestParams, StylistProfileResponse } from '~/shared/api/stylists.models';
 import { UserRole } from '~/shared/api/auth.models';
+import { VisualWeekCard } from '~/shared/utils/worktime-utils';
 
 export enum ProfileTabs {
   clientView,
@@ -67,6 +68,7 @@ export class ProfileComponent {
   service: ServiceItem;
   stylistProfile: StylistProfileResponse;
 
+  cards: VisualWeekCard[] = [];
   servicesPage: Page = PageNames.Services;
   refresherEnabled = true;
   ProfileTabNames = ProfileTabNames;
@@ -103,6 +105,8 @@ export class ProfileComponent {
 
     await this.getProfile();
 
+    await this.getStylistProfile();
+
     await this.getStylistProfileStatus();
 
     await this.getServicesList();
@@ -115,6 +119,21 @@ export class ProfileComponent {
       this.profile.phone = getPhoneNumber(response.phone);
       this.profile.public_phone = getPhoneNumber(response.public_phone);
       this.stylistProfileCompleteness = calcProfileCompleteness(response);
+    }
+  }
+
+  async getStylistProfile(): Promise<void> {
+    const params: StylistProfileRequestParams = {
+      role: UserRole.stylist,
+      stylistUuid: this.profile.uuid
+    };
+    const stylistProfileResponse = await this.stylistProfileApi.getStylistProfile(params).toPromise();
+    if (stylistProfileResponse.response) {
+      this.stylistProfile = stylistProfileResponse.response;
+
+      if (this.stylistProfile.working_hours && this.stylistProfile.working_hours.weekdays) {
+        this.cards = VisualWeekCard.worktime2presentation(this.stylistProfile.working_hours);
+      }
     }
   }
 
@@ -131,15 +150,6 @@ export class ProfileComponent {
   }
 
   async getServicesList(): Promise<void> {
-    const params: StylistProfileRequestParams = {
-      role: UserRole.stylist,
-      stylistUuid: this.profile.uuid
-    };
-    const stylistProfileResponse = await this.stylistProfileApi.getStylistProfile(params).toPromise();
-    if (stylistProfileResponse.response) {
-      this.stylistProfile = stylistProfileResponse.response;
-    }
-
     const services = await this.servicesData.getServicesList();
     // empty service === !has_services_set
     this.profileStatus.has_services_set = services && services.length > 0;

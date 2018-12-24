@@ -87,6 +87,20 @@
             </div>
 
             <div
+              *ngIf="cards"
+              class="StylistProfilePreview-item">
+              <div class="StylistProfilePreview-itemTitle">
+                <span>Hours</span>
+
+                <i class="mb-icon-clock-a"></i>
+              </div>
+
+              <div *ngFor="let card of cards" class="StylistProfilePreview-itemText">
+                {{ card.getSummaryStr() }}
+              </div>
+            </div>
+
+            <div
               (click)="onFieldEdit(ProfileEditableFields.instagram)"
               class="StylistProfilePreview-item"
               data-test-id="stylistProfilePreviewInstagram">
