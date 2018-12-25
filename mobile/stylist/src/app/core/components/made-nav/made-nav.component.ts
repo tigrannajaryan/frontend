@@ -27,7 +27,6 @@ export class MadeNavComponent {
     }
   }
   private pages = [
-    { name: 'Personal Info', page: PageNames.RegisterSalon },
     { name: 'Welcome', page: PageNames.WelcomeToMade },
     { name: 'Welcome', page: PageNames.CalendarExample }
   ];

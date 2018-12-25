@@ -51,7 +51,7 @@
             </div>
           </div>
 
-          <div (click)="!profile.profile_photo_url && onFieldEdit(ProfileEditableFields.profile_photo_url)" class="StylistProfilePreview-photo" data-test-id="stylistProfilePreviewPhoto">
+          <div (click)="!profile.profile_photo_url && onFieldEdit('profile_photo_url')" class="StylistProfilePreview-photo" data-test-id="stylistProfilePreviewPhoto">
             <img [src]="profile.profile_photo_url  || 'assets/icons/stylist-avatar.png'" alt="">
           </div>
 
@@ -67,7 +67,7 @@
               </div>
             </div>
 
-            <div (click)="!profile.instagram_url && onFieldEdit(ProfileEditableFields.instagram)" class="StylistProfilePreview-item" data-test-id="stylistProfilePreviewInstagram">
+            <div (click)="!profile.instagram_url && onFieldEdit('instagram_url')" class="StylistProfilePreview-item" data-test-id="stylistProfilePreviewInstagram">
               <div class="StylistProfilePreview-itemTitle">
                 <span>Instagram</span>
 
@@ -114,7 +114,7 @@
               </div>
             </div>
 
-            <div (click)="!profile.website_url && onFieldEdit(ProfileEditableFields.website_url)" class="StylistProfilePreview-item" data-test-id="stylistProfilePreviewWebsite">
+            <div (click)="!profile.website_url && onFieldEdit('website_url')" class="StylistProfilePreview-item" data-test-id="stylistProfilePreviewWebsite">
               <div class="StylistProfilePreview-itemTitle">
                 <span>Website</span>
 
@@ -129,7 +129,7 @@
               </div>
             </div>
 
-            <div (click)="!profile.email && onFieldEdit(ProfileEditableFields.email)" class="StylistProfilePreview-item" data-test-id="stylistProfilePreviewEmail">
+            <div (click)="!profile.email && onFieldEdit('email')" class="StylistProfilePreview-item" data-test-id="stylistProfilePreviewEmail">
               <div class="StylistProfilePreview-itemTitle">
                 <span>Email</span>
 
@@ -199,7 +199,7 @@
             Photos
           </div>
 
-          <div (click)="onFieldEdit(ProfileEditableFields.profile_photo_url)" class="ProfilePage-blockItem" data-test-id="ProfileEditPhoto">
+          <div (click)="onFieldEdit('profile_photo_url')" class="ProfilePage-blockItem" data-test-id="ProfileEditPhoto">
             <div class="ProfilePage-blockItemName">
               <span>Image <img *ngIf="!profile.profile_photo_url" class="ProfilePage-blockItemNameNotice" src="assets/icons/!@2x.png" /></span>
               <i class="mb-icon-right-arrow"></i>
@@ -208,7 +208,7 @@
             <div *ngIf="!profile.profile_photo_url" class="ProfilePage-blockItemPicture"><img src="assets/icons/stylist-avatar.png" alt=""></div>
           </div>
 
-          <div (click)="onFieldEdit(ProfileEditableFields.instagram)" class="ProfilePage-blockItem" data-test-id="ProfileEditInstagram">
+          <div (click)="onFieldEdit('instagram')" class="ProfilePage-blockItem" data-test-id="ProfileEditInstagram">
             <div class="ProfilePage-blockItemName">
               <span>Instagram <img *ngIf="!profile.instagram_integrated" class="ProfilePage-blockItemNameNotice" src="assets/icons/!@2x.png" /></span>
               <i class="mb-icon-right-arrow"></i>
@@ -223,7 +223,7 @@
             Basic Info
           </div>
 
-          <div (click)="onFieldEdit(ProfileEditableFields.name)" class="ProfilePage-blockItem" data-test-id="ProfileEditName">
+          <div (click)="onFieldEdit('first_name')" class="ProfilePage-blockItem" data-test-id="ProfileEditName">
             <div class="ProfilePage-blockItemName">
               <span>Name</span>
               <i class="mb-icon-right-arrow"></i>
@@ -231,7 +231,7 @@
             <div class="ProfilePage-blockItemValue">{{ profile.first_name }} {{ profile.last_name }}</div>
           </div>
 
-          <div (click)="onFieldEdit(ProfileEditableFields.salon_name)" class="ProfilePage-blockItem" data-test-id="ProfileEditSalonName">
+          <div (click)="onFieldEdit('salon_name')" class="ProfilePage-blockItem" data-test-id="ProfileEditSalonName">
             <div class="ProfilePage-blockItemName">
               <span>Salon Name</span>
               <i class="mb-icon-right-arrow"></i>
@@ -245,7 +245,7 @@
             Contact Info
           </div>
 
-          <div (click)="onFieldEdit(ProfileEditableFields.salon_address)" class="ProfilePage-blockItem" data-test-id="ProfileEditAddress">
+          <div (click)="onFieldEdit('salon_address')" class="ProfilePage-blockItem" data-test-id="ProfileEditAddress">
             <div class="ProfilePage-blockItemName">
               <span>Address</span>
               <i class="mb-icon-right-arrow"></i>
@@ -253,7 +253,7 @@
             <div class="ProfilePage-blockItemValue">{{ profile.salon_address }}</div>
           </div>
 
-          <div (click)="onFieldEdit(ProfileEditableFields.email)" class="ProfilePage-blockItem" data-test-id="ProfileEditEmail">
+          <div (click)="onFieldEdit('email')" class="ProfilePage-blockItem" data-test-id="ProfileEditEmail">
             <div class="ProfilePage-blockItemName">
               <span>Email <img *ngIf="!profile.email" class="ProfilePage-blockItemNameNotice" src="assets/icons/!@2x.png" /></span>
               <i class="mb-icon-right-arrow"></i>
@@ -262,7 +262,7 @@
             <div *ngIf="!profile.email" class="ProfilePage-blockItemValue">Add Info</div>
           </div>
 
-          <div (click)="onFieldEdit(ProfileEditableFields.website_url)" class="ProfilePage-blockItem" data-test-id="ProfileEditWebsite">
+          <div (click)="onFieldEdit('website_url')" class="ProfilePage-blockItem" data-test-id="ProfileEditWebsite">
             <div class="ProfilePage-blockItemName">
               <span>Website <img *ngIf="!profile.website_url" class="ProfilePage-blockItemNameNotice" src="assets/icons/!@2x.png" /></span>
               <i class="mb-icon-right-arrow"></i>
@@ -271,7 +271,7 @@
             <div *ngIf="!profile.website_url" class="ProfilePage-blockItemValue">Add Info</div>
           </div>
 
-          <div (click)="onFieldEdit(ProfileEditableFields.public_phone)" class="ProfilePage-blockItem" data-test-id="ProfileEditPublicPhone">
+          <div (click)="onFieldEdit('public_phone')" class="ProfilePage-blockItem" data-test-id="ProfileEditPublicPhone">
             <div class="ProfilePage-blockItemName">
               <span>Public Phone <img *ngIf="!profile.public_phone" class="ProfilePage-blockItemNameNotice" src="assets/icons/!@2x.png" /></span>
               <i class="mb-icon-right-arrow"></i>

@@ -18,7 +18,8 @@ import { calcProfileCompleteness } from '~/core/utils/stylist-utils';
 import { SetStylistProfileTabEventParams, StylistEventTypes } from '~/core/stylist-event-types';
 import { MadeMenuComponent } from '~/core/components/made-menu/made-menu.component';
 
-import { RegistrationForm } from '~/onboarding/registration.form';
+import { FieldEditComponentParams } from '~/onboarding/field-edit/field-edit.component';
+import { RegistrationForm, RegistrationFormControlName } from '~/onboarding/registration.form';
 
 export enum ProfileTabs {
   clientView,
@@ -28,17 +29,6 @@ export enum ProfileTabs {
 export enum ProfileTabNames {
   clientView = 'Client View',
   edit = 'Edit'
-}
-
-export enum ProfileEditableFields {
-  name,
-  profile_photo_url,
-  instagram,
-  website_url,
-  email,
-  salon_address,
-  salon_name,
-  public_phone
 }
 
 @Component({
@@ -56,7 +46,6 @@ export class ProfileComponent {
   calendar = false;
   refresherEnabled = true;
   ProfileTabNames = ProfileTabNames;
-  ProfileEditableFields = ProfileEditableFields;
   ProfileTabs = ProfileTabs;
   PageNames = PageNames;
   tabs = [
@@ -134,30 +123,25 @@ export class ProfileComponent {
     this.navCtrl.push(PageNames.MyClients);
   }
 
-  onFieldEdit(field: ProfileEditableFields): void {
-    switch (field) {
-      case ProfileEditableFields.profile_photo_url:
+  onFieldEdit(control: RegistrationFormControlName): void {
+    switch (control) {
+      case 'profile_photo_id':
+      case 'profile_photo_url':
         this.navCtrl.push(PageNames.StylistPhoto, { params: { isRootPage: true }});
         return;
 
-      case ProfileEditableFields.name:
-        this.navCtrl.push(PageNames.NameSurname, { params: { isRootPage: true }});
+      case 'salon_address':
+        this.navCtrl.push(PageNames.SalonAddress, { params: { isRootPage: true }});
         return;
 
-      case ProfileEditableFields.salon_name:
-        this.navCtrl.push(PageNames.SalonName, { params: { isRootPage: true }});
-        return;
-
-      case ProfileEditableFields.salon_address:
-        this.navCtrl.push(PageNames.AddressInput, { params: { isRootPage: true }});
-        return;
-
-      case ProfileEditableFields.instagram:
+      case 'instagram_url':
         this.navCtrl.push(PageNames.ConnectInstagram, { params: { isRootPage: true }});
         return;
 
       default:
-        this.navCtrl.push(PageNames.RegisterSalon, { params: { isRootPage: true }});
+        const params: FieldEditComponentParams = { isRootPage: true, control };
+        this.navCtrl.push(PageNames.FieldEdit, { params });
+        return;
     }
   }
 

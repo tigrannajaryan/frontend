@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
+import { emptyOr, instagramValidator } from '~/shared/validators';
+
 import { ProfileDataStore } from '~/core/profile.data';
 
 export type RegistrationFormControlName =
@@ -8,6 +10,10 @@ export type RegistrationFormControlName =
   | 'last_name'
   | 'salon_name'
   | 'salon_address'
+  | 'public_phone'
+  | 'email'
+  | 'instagram_url'
+  | 'website_url'
   | 'profile_photo_id'
   | 'profile_photo_url';
 
@@ -54,6 +60,17 @@ export class RegistrationForm {
       salon_address: ['', [
         Validators.required,
         Validators.minLength(10)
+      ]],
+      public_phone: ['', [
+        Validators.minLength(5),
+        Validators.maxLength(17)
+      ]],
+      email: ['', [
+        emptyOr(Validators.email)
+      ]],
+      website_url: [''],
+      instagram_url: ['', [
+        instagramValidator
       ]],
       // tslint:disable-next-line:no-null-keyword
       profile_photo_id: null,

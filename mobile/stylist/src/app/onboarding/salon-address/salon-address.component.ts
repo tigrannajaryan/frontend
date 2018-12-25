@@ -13,18 +13,18 @@ import { loading } from '~/core/utils/loading';
 
 import { RegistrationForm } from '~/onboarding/registration.form';
 
-export interface AddressInputComponentParams {
+export interface SalonAddressComponentParams {
   isRootPage?: boolean;
 }
 
 declare var window: any;
 
 @Component({
-  selector: 'address-input',
-  templateUrl: 'address-input.component.html'
+  selector: 'salon-address',
+  templateUrl: 'salon-address.component.html'
 })
-export class AddressInputComponent implements AfterViewInit, OnInit {
-  params: AddressInputComponentParams;
+export class SalonAddressComponent implements AfterViewInit, OnInit {
+  params: SalonAddressComponentParams;
 
   address: FormControl;
 

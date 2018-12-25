@@ -8,6 +8,7 @@ import { PushNotification } from '~/shared/push/push-notification';
 
 import { AppModule } from '~/app.module';
 import { PageNames } from '~/core/page-names';
+import { FieldEditComponentParams } from '~/onboarding/field-edit/field-edit.component';
 
 export interface PageDescr {
   page: Page;
@@ -30,7 +31,8 @@ export async function createNavHistoryList(profileStatus: StylistProfileStatus):
   // so that you can navigate all way back to it.
   pages.push({ page: PageNames.FirstScreen });
 
-  pages.push({ page: PageNames.NameSurname });
+  const fieldEditParams: FieldEditComponentParams = { control: 'first_name' };
+  pages.push({ page: PageNames.FieldEdit, params: { params: fieldEditParams } });
 
   if (!profileStatus) {
     // No profile at all, start from beginning.

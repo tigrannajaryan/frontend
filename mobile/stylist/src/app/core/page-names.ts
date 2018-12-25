@@ -36,11 +36,13 @@ import { WelcomeToMadeComponent } from '~/discounts/welcome-to-made/welcome-to-m
 import { WorkHoursComponent } from '~/workhours/workhours.component';
 
 // New onboarding
-import { AddressInputComponent } from '~/onboarding/address-input/address-input.component';
 import { ConnectInstagramComponent } from '~/onboarding/connect-instagram/connect-instagram.component';
 import { NameSurnameComponent } from '~/onboarding/name-surname/name-surname.component';
+import { SalonAddressComponent } from '~/onboarding/salon-address/salon-address.component';
 import { SalonNameComponent } from '~/onboarding/salon-name/salon-name.component';
 import { StylistPhotoComponent } from '~/onboarding/stylist-photo/stylist-photo.component';
+
+import { FieldEditComponent } from '~/onboarding/field-edit/field-edit.component';
 
 /**
  * Define page names in one place to avoid typos if the names are used as
@@ -53,7 +55,6 @@ import { StylistPhotoComponent } from '~/onboarding/stylist-photo/stylist-photo.
 // tslint:disable-next-line:variable-name
 export const PageNames: {[key: string]: Page} = {
   About: AboutComponent,
-  AddressInput: AddressInputComponent,
   AddServicesComponent,
   AllClients: AllClientsComponent,
   AppointmentAdd: AppointmentAddComponent,
@@ -74,6 +75,7 @@ export const PageNames: {[key: string]: Page} = {
   DiscountsFirstBooking: DiscountsFirstBookingComponent,
   DiscountsRevisit: DiscountsRevisitComponent,
   DiscountsWeekday: DiscountsWeekdayComponent,
+  FieldEdit: FieldEditComponent,
   FirstScreen: FirstScreenComponent,
   HomeSlots: HomeSlotsComponent,
   Invitations: InvitationsComponent,
@@ -83,6 +85,7 @@ export const PageNames: {[key: string]: Page} = {
   PushPrimingScreen: PushPrimingScreenComponent,
   RegisterSalon: RegisterSalonComponent,
   RegistrationDone: RegistrationDoneComponent,
+  SalonAddress: SalonAddressComponent,
   SalonName: SalonNameComponent,
   Services: ServicesComponent,
   ServicesCategories: ServicesCategoriesComponent,
