@@ -3,6 +3,7 @@ import { FormControl } from '@angular/forms';
 import { NavController, NavParams } from 'ionic-angular';
 
 import { MapsAPILoader } from '@agm/core';
+import { } from 'googlemaps';
 import Autocomplete = google.maps.places.Autocomplete;
 
 import { Logger } from '~/shared/logger';

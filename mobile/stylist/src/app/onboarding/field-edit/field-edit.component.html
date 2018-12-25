@@ -5,7 +5,7 @@
 
     <ng-container *ngIf="controls" [ngSwitch]="params?.control">
 
-      <ng-container *ngSwitchCase="params.control === 'first_name' || params.control === 'last_name'">
+      <ng-container *ngSwitchCase="params.control === 'first_name' || params.control === 'last_name' ? params.control : ''">
         <div class="Made-h2 Onboarding-h2">
           <span *ngIf="!params?.isRootPage">Hello. </span>What’s <strong>your name</strong>?
         </div>

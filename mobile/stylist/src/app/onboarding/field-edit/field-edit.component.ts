@@ -19,7 +19,7 @@ export interface FieldEditComponentParams {
   templateUrl: 'field-edit.component.html'
 })
 export class FieldEditComponent implements OnInit {
-  static supportedControls = [
+  static supportedControls: RegistrationFormControlName[] = [
     'first_name',
     'last_name',
     'salon_name',
@@ -46,7 +46,7 @@ export class FieldEditComponent implements OnInit {
     }
 
     if (FieldEditComponent.supportedControls.indexOf(this.params.control) === -1) {
-      throw new Error('Control is not supported by FieldEditComponent');
+      throw new Error('Control is not supported');
     }
 
     this.registrationForm.init();

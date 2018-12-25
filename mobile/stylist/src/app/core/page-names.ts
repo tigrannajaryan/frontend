@@ -8,7 +8,6 @@ import { AppointmentCheckoutComponent } from '~/appointment/appointment-checkout
 import { AppointmentServicesComponent } from '~/appointment/appointment-services/appointment-services';
 import { AuthConfirmPageComponent } from '~/auth/auth-confirm/auth-confirm.component';
 import { AuthPageComponent } from '~/auth/auth-start/auth-start.component';
-import { CalendarExampleComponent } from '~/register-salon/calendar-example/calendar-example.component';
 import { CalendarPrimingComponent } from '~/shared/components/calendar-priming/calendar-priming.component';
 import { ChangeGapTimeComponent } from '~/core/popups/change-gap-time/change-gap-time.component';
 import { ChangePercentComponent } from '~/core/popups/change-percent/change-percent.component';
@@ -26,23 +25,20 @@ import { InvitationsComponent } from '~/invitations/invitations.component';
 import { MyClientsComponent } from '~/clients/my-clients/my-clients.component';
 import { ProfileComponent } from '~/profile/profile.component';
 import { PushPrimingScreenComponent } from '~/shared/components/push-priming-screen/push-priming-screen.component';
-import { RegisterSalonComponent } from '~/register-salon/register-salon';
 import { RegistrationDoneComponent } from '~/onboarding/registration-done/registration-done.component';
 import { ServiceItemComponent } from '~/services/services-item/services-item.component';
 import { ServicesCategoriesComponent } from '~/services/services-categories/services-categories.component';
 import { ServicesComponent } from '~/services/services.component';
 import { ServicesListComponent } from '~/services/services-list/services-list.component';
-import { WelcomeToMadeComponent } from '~/discounts/welcome-to-made/welcome-to-made.component';
 import { WorkHoursComponent } from '~/workhours/workhours.component';
 
-// New onboarding
+// Onboarding
+import { CalendarExampleComponent } from '~/onboarding/calendar-example/calendar-example.component';
 import { ConnectInstagramComponent } from '~/onboarding/connect-instagram/connect-instagram.component';
-import { NameSurnameComponent } from '~/onboarding/name-surname/name-surname.component';
-import { SalonAddressComponent } from '~/onboarding/salon-address/salon-address.component';
-import { SalonNameComponent } from '~/onboarding/salon-name/salon-name.component';
-import { StylistPhotoComponent } from '~/onboarding/stylist-photo/stylist-photo.component';
-
 import { FieldEditComponent } from '~/onboarding/field-edit/field-edit.component';
+import { SalonAddressComponent } from '~/onboarding/salon-address/salon-address.component';
+import { StylistPhotoComponent } from '~/onboarding/stylist-photo/stylist-photo.component';
+import { WelcomeToMadeComponent } from '~/onboarding/welcome-to-made/welcome-to-made.component';
 
 /**
  * Define page names in one place to avoid typos if the names are used as
@@ -80,13 +76,10 @@ export const PageNames: {[key: string]: Page} = {
   HomeSlots: HomeSlotsComponent,
   Invitations: InvitationsComponent,
   MyClients: MyClientsComponent,
-  NameSurname: NameSurnameComponent,
   Profile: ProfileComponent,
   PushPrimingScreen: PushPrimingScreenComponent,
-  RegisterSalon: RegisterSalonComponent,
   RegistrationDone: RegistrationDoneComponent,
   SalonAddress: SalonAddressComponent,
-  SalonName: SalonNameComponent,
   Services: ServicesComponent,
   ServicesCategories: ServicesCategoriesComponent,
   ServicesItem: ServiceItemComponent,
@@ -95,3 +88,5 @@ export const PageNames: {[key: string]: Page} = {
   WelcomeToMade: WelcomeToMadeComponent,
   WorkHours: WorkHoursComponent
 };
+
+export const pages = Object.keys(PageNames).map(key => PageNames[key]);

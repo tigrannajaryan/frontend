@@ -10,7 +10,7 @@ import { ServerStatusTracker } from '~/shared/server-status-tracker';
 import { ProfileDataStore } from '~/core/profile.data';
 import { prepareSharedObjectsForTests } from '~/core/test-utils.spec';
 import { TestUtils } from '../../test';
-import { ProfileComponent, ProfileEditableFields, ProfileTabNames } from './profile.component';
+import { ProfileComponent, ProfileTabNames } from './profile.component';
 import { getPhoneNumber } from '~/shared/utils/phone-numbers';
 import { calcProfileCompleteness } from '~/core/utils/stylist-utils';
 import { PageNames } from '~/core/page-names';
@@ -122,25 +122,25 @@ describe('Pages: ProfileComponent', async () => {
     fixture.detectChanges();
     const stylistProfilePreviewPhoto = fixture.nativeElement.querySelector('[data-test-id=stylistProfilePreviewPhoto]');
     stylistProfilePreviewPhoto.click();
-    expect(instance.onFieldEdit).toHaveBeenCalledWith(ProfileEditableFields.profile_photo_url);
+    expect(instance.onFieldEdit).toHaveBeenCalledWith('profile_photo_url');
 
     instance.profile.instagram_url = '';
     fixture.detectChanges();
     const stylistProfilePreviewInstagram = fixture.nativeElement.querySelector('[data-test-id=stylistProfilePreviewInstagram]');
     stylistProfilePreviewInstagram.click();
-    expect(instance.onFieldEdit).toHaveBeenCalledWith(ProfileEditableFields.instagram);
+    expect(instance.onFieldEdit).toHaveBeenCalledWith('instagram_url');
 
     instance.profile.website_url = '';
     fixture.detectChanges();
     const stylistProfilePreviewWebsite = fixture.nativeElement.querySelector('[data-test-id=stylistProfilePreviewWebsite]');
     stylistProfilePreviewWebsite.click();
-    expect(instance.onFieldEdit).toHaveBeenCalledWith(ProfileEditableFields.website_url);
+    expect(instance.onFieldEdit).toHaveBeenCalledWith('website_url');
 
     instance.profile.email = '';
     fixture.detectChanges();
     const stylistProfilePreviewEmail = fixture.nativeElement.querySelector('[data-test-id=stylistProfilePreviewEmail]');
     stylistProfilePreviewEmail.click();
-    expect(instance.onFieldEdit).toHaveBeenCalledWith(ProfileEditableFields.email);
+    expect(instance.onFieldEdit).toHaveBeenCalledWith('email');
   });
 
   xit('should be able to click followers and move to followers page', () => {
@@ -252,35 +252,35 @@ describe('Pages: ProfileComponent', async () => {
 
     const ProfileEditPhoto = fixture.nativeElement.querySelector('[data-test-id=ProfileEditPhoto]');
     ProfileEditPhoto.click();
-    expect(instance.onFieldEdit).toHaveBeenCalledWith(ProfileEditableFields.profile_photo_url);
+    expect(instance.onFieldEdit).toHaveBeenCalledWith('profile_photo_url');
 
     const ProfileEditInstagram = fixture.nativeElement.querySelector('[data-test-id=ProfileEditInstagram]');
     ProfileEditInstagram.click();
-    expect(instance.onFieldEdit).toHaveBeenCalledWith(ProfileEditableFields.instagram);
+    expect(instance.onFieldEdit).toHaveBeenCalledWith('instagram_url');
 
     const ProfileEditName = fixture.nativeElement.querySelector('[data-test-id=ProfileEditName]');
     ProfileEditName.click();
-    expect(instance.onFieldEdit).toHaveBeenCalledWith(ProfileEditableFields.name);
+    expect(instance.onFieldEdit).toHaveBeenCalledWith('first_name');
 
     const ProfileEditSalonName = fixture.nativeElement.querySelector('[data-test-id=ProfileEditSalonName]');
     ProfileEditSalonName.click();
-    expect(instance.onFieldEdit).toHaveBeenCalledWith(ProfileEditableFields.salon_name);
+    expect(instance.onFieldEdit).toHaveBeenCalledWith('salon_name');
 
     const ProfileEditAddress = fixture.nativeElement.querySelector('[data-test-id=ProfileEditAddress]');
     ProfileEditAddress.click();
-    expect(instance.onFieldEdit).toHaveBeenCalledWith(ProfileEditableFields.salon_address);
+    expect(instance.onFieldEdit).toHaveBeenCalledWith('salon_address');
 
     const ProfileEditEmail = fixture.nativeElement.querySelector('[data-test-id=ProfileEditEmail]');
     ProfileEditEmail.click();
-    expect(instance.onFieldEdit).toHaveBeenCalledWith(ProfileEditableFields.email);
+    expect(instance.onFieldEdit).toHaveBeenCalledWith('email');
 
     const ProfileEditWebsite = fixture.nativeElement.querySelector('[data-test-id=ProfileEditWebsite]');
     ProfileEditWebsite.click();
-    expect(instance.onFieldEdit).toHaveBeenCalledWith(ProfileEditableFields.website_url);
+    expect(instance.onFieldEdit).toHaveBeenCalledWith('website_url');
 
     const ProfileEditPublicPhone = fixture.nativeElement.querySelector('[data-test-id=ProfileEditPublicPhone]');
     ProfileEditPublicPhone.click();
-    expect(instance.onFieldEdit).toHaveBeenCalledWith(ProfileEditableFields.public_phone);
+    expect(instance.onFieldEdit).toHaveBeenCalledWith('public_phone');
   });
 
   it('should not be able to click and edit on Phone', () => {

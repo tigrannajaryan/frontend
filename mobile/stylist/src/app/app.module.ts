@@ -64,11 +64,7 @@ import { NotificationsApi } from './shared/push/notifications.api';
 import { MadeMenuComponent } from '~/core/components/made-menu/made-menu.component';
 import { CalendarPickerComponent } from '~/shared/components/calendar-picker/calendar-picker.component';
 
-// New onboarding
-import { ConnectInstagramComponent } from '~/onboarding/connect-instagram/connect-instagram.component';
-import { NameSurnameComponent } from '~/onboarding/name-surname/name-surname.component';
-
-import { PageNames } from '~/core/page-names';
+import { pages } from '~/core/page-names';
 
 initSentry();
 
@@ -107,17 +103,13 @@ if (!ENV.production) {
 }
 
 const declarations = [
-  ...Object.keys(PageNames).map(key => PageNames[key]),
+  ...pages,
 
   CalendarPickerComponent,
   MadeMenuComponent,
   MyAppComponent,
   SuccessErrorPopupComponent,
-  UiKitPreviewComponent,
-
-  // Onboarding
-  ConnectInstagramComponent,
-  NameSurnameComponent
+  UiKitPreviewComponent
 ];
 
 @NgModule({

@@ -8,7 +8,9 @@
   <div class="Made-wp Made-wpContent Onboarding-content">
 
     <div class="Made-h2 Onboarding-h2">
-      Now let’s add a profile <strong (click)="processPhoto()">picture</strong>!
+      <span *ngIf="!params.isRootPage; else elseTpl">Now let’s add</span>
+      <ng-template #elseTpl>Add</ng-template>
+      <span>a profile <strong (click)="processPhoto()">picture</strong>!</span>
     </div>
 
     <ion-row align-items-center justify-content-center (click)="processPhoto()" class="Onboarding-img">
