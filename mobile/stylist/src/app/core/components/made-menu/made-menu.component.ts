@@ -14,6 +14,7 @@ import { PageNames } from '~/core/page-names';
 import { clearAllDataStores } from '~/core/data.module';
 import { ProfileDataStore } from '~/core/profile.data';
 import { calcProfileCompleteness } from '~/core/utils/stylist-utils';
+import { RegistrationForm } from '~/onboarding/registration.form';
 
 interface MenuItem {
   title: string;
@@ -72,6 +73,7 @@ export class MadeMenuComponent implements OnInit {
     private authApiService: AuthService,
     private events: Events,
     private menu: MenuController,
+    private registrationForm: RegistrationForm,
     private store: Store<{}>,
     private zone: NgZone
   ) {
@@ -146,6 +148,9 @@ export class MadeMenuComponent implements OnInit {
 
     // Dismiss user’s state
     this.store.dispatch(new LogoutAction());
+
+    // Clear cached registration form
+    this.registrationForm.init(/* forced */ true);
 
     // Clear cached data
     await clearAllDataStores();

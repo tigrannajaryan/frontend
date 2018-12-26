@@ -3,7 +3,7 @@
 <ion-content no-padding>
   <div class="Made-wp Made-wpContent Onboarding-content">
 
-    <ng-container *ngIf="controls" [ngSwitch]="params?.control">
+    <ng-container [ngSwitch]="params?.control">
 
       <ng-container *ngSwitchCase="params.control === RegistrationFormControl.FirstName || params.control === RegistrationFormControl.LastName ? params.control : ''">
         <div class="Made-h2 Onboarding-h2">
@@ -62,10 +62,10 @@
     </ng-container>
 
   </div>
-
-  <ion-footer class="Footer Onboarding-footer">
-    <button (click)="onContinue()" [disabled]="!isValid()" class="Button" data-test-id="continueBtn">
-      {{ params?.isRootPage ? 'Save' : 'Continue' }}
-    </button>
-  </ion-footer>
 </ion-content>
+
+<ion-footer class="Footer Onboarding-footer">
+  <button (click)="onContinue()" [disabled]="!isValid()" class="Button" data-test-id="continueBtn">
+    {{ params?.isRootPage ? 'Save' : 'Continue' }}
+  </button>
+</ion-footer>

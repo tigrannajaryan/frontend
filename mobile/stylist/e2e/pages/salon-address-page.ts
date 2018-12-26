@@ -1,6 +1,6 @@
 import { $ } from 'protractor';
 
-import { click, waitFor } from '../shared-e2e/utils';
+import { click, waitFor, waitForNot } from '../shared-e2e/utils';
 
 class SalonAddressPage {
   // UI element declarations
@@ -16,6 +16,7 @@ class SalonAddressPage {
 
   async submitForm() {
     await click(this.continueButton);
+    await waitForNot(this.continueButton);
   }
 }
 

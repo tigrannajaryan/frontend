@@ -1,6 +1,7 @@
-import { AfterViewInit, ChangeDetectorRef, Component, NgZone, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, NgZone, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { NavController, NavParams } from 'ionic-angular';
+import { TextInput } from 'ionic-angular/components/input/input';
 
 import { MapsAPILoader } from '@agm/core';
 import { } from 'googlemaps';
@@ -12,7 +13,7 @@ import { StylistServiceProvider } from '~/core/api/stylist.service';
 import { PageNames } from '~/core/page-names';
 import { loading } from '~/core/utils/loading';
 
-import { RegistrationForm } from '~/onboarding/registration.form';
+import { RegistrationForm, RegistrationFormControl } from '~/onboarding/registration.form';
 
 export interface SalonAddressComponentParams {
   isRootPage?: boolean;
@@ -32,6 +33,8 @@ export class SalonAddressComponent implements AfterViewInit, OnInit {
   autocomplete: Autocomplete;
   autocompleteInput: HTMLInputElement;
 
+  @ViewChild(TextInput) addressInput;
+
   constructor(
     private changeDetectorRef: ChangeDetectorRef,
     private logger: Logger,
@@ -44,12 +47,18 @@ export class SalonAddressComponent implements AfterViewInit, OnInit {
   ) {
   }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     this.params = this.navParams.get('params') || {};
 
     const { salon_address } = this.registrationForm.getFormControls();
 
     this.address = salon_address;
+
+    await this.registrationForm.loadFormInitialData(RegistrationFormControl.SalonAddress);
+  }
+
+  ionViewDidEnter(): void {
+    this.autofocus();
   }
 
   async ngAfterViewInit(): Promise<void> {
@@ -167,4 +176,12 @@ export class SalonAddressComponent implements AfterViewInit, OnInit {
       }
     }
   };
+
+  private autofocus(): void {
+    // Using setTimeout is the only way to succeed
+    // in programmatically setting focus on a real device.
+    setTimeout(() => {
+      this.addressInput.setFocus();
+    });
+  }
 }

@@ -63,7 +63,7 @@ export class FieldEditComponent implements OnInit {
     this.registrationForm.init();
     this.controls = this.registrationForm.getFormControls();
 
-    await this.registrationForm.loadFormInitialData();
+    await this.loadFieldInitialData(this.params.control);
   }
 
   ionViewDidEnter(): void {
@@ -73,21 +73,18 @@ export class FieldEditComponent implements OnInit {
   }
 
   isValid(): boolean {
-    const controls: RegistrationFormControl[] = [];
-
     switch (this.params.control) {
       case RegistrationFormControl.FirstName:
       case RegistrationFormControl.LastName:
         // We are using one page to edit first and last names
-        controls.push(RegistrationFormControl.FirstName, RegistrationFormControl.LastName);
-        break;
+        return this.registrationForm.isValid(
+          RegistrationFormControl.FirstName,
+          RegistrationFormControl.LastName
+        );
 
       default:
-        controls.push(this.params.control);
-        break;
+        return this.registrationForm.isValid(this.params.control);
     }
-
-    return this.registrationForm.isValid(...controls);
   }
 
   onNavigateNext(): void {
@@ -97,14 +94,14 @@ export class FieldEditComponent implements OnInit {
     }
 
     switch (this.params.control) {
-      case 'first_name':
-      case 'last_name': {
+      case RegistrationFormControl.FirstName:
+      case RegistrationFormControl.LastName: {
         const params: FieldEditComponentParams = { control: RegistrationFormControl.SalonName };
         this.navCtrl.push(PageNames.FieldEdit, { params });
         break;
       }
 
-      case 'salon_name':
+      case RegistrationFormControl.SalonName:
         this.navCtrl.push(PageNames.SalonAddress);
         break;
 
@@ -128,5 +125,24 @@ export class FieldEditComponent implements OnInit {
     setTimeout(() => {
       this.firstInput.setFocus();
     });
+  }
+
+  /**
+   * Loads only necessary data to prevent deleting of already inputted data.
+   * This could happen in registration flow where we let user input data page by page
+   * and then save the data only after address is set.
+   */
+  private loadFieldInitialData(control: RegistrationFormControl): Promise<void> {
+    switch (control) {
+      case RegistrationFormControl.FirstName:
+      case RegistrationFormControl.LastName:
+        return this.registrationForm.loadFormInitialData(
+          RegistrationFormControl.FirstName,
+          RegistrationFormControl.LastName
+        );
+
+      default:
+        return this.registrationForm.loadFormInitialData(control);
+    }
   }
 }

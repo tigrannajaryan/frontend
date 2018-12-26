@@ -53,12 +53,12 @@ export class RegistrationForm {
     RegistrationForm.guardInitilization = true;
   }
 
-  init(): void {
-    if (this.form) {
+  init(forced = false): void {
+    if (this.form && !forced) {
       return;
     }
 
-    this.form = this.form = this.formBuilder.group({
+    this.form = this.formBuilder.group({
       first_name: ['', [
         Validators.required,
         Validators.maxLength(30)
@@ -93,40 +93,21 @@ export class RegistrationForm {
     });
   }
 
-  async loadFormInitialData(): Promise<void> {
+  async loadFormInitialData(...controls: RegistrationFormControl[]): Promise<void> {
     const { response } = await this.profileData.get();
     if (!response) {
       return;
     }
 
-    const {
-      first_name,
-      last_name,
-      salon_name,
-      salon_address,
-      public_phone,
-      email,
-      website_url,
-      instagram_url,
-      profile_photo_id,
-      profile_photo_url,
-      phone
-    } = response;
+    this.phone = response.phone;
 
-    this.phone = phone;
+    const values = {};
 
-    this.form.patchValue({
-      first_name,
-      last_name,
-      salon_name,
-      salon_address,
-      public_phone,
-      email,
-      website_url,
-      instagram_url,
-      profile_photo_id,
-      profile_photo_url
-    });
+    for (const control of controls) {
+      values[control] = response[control];
+    }
+
+    this.form.patchValue(values);
   }
 
   getFormControls(): FormControls {
@@ -145,6 +126,7 @@ export class RegistrationForm {
 
   async save(): Promise<void> {
     const { ...profile } = this.form.value;
+
     const data = {
       ...profile,
       // use raw phone number (required field, cannot omit):
