@@ -5,8 +5,9 @@ import { WeekdayIso } from '~/shared/weekday';
 import { WorktimeApi } from '~/core/api/worktime.api';
 import { WorktimeApiMock } from '~/core/api/worktime.api.mock';
 
-import { defaultEndTime, defaultStartTime, VisualWeekCard, WorkHoursComponent } from './workhours.component';
 import { prepareSharedObjectsForTests } from '~/core/test-utils.spec';
+import { WorkHoursComponent } from '~/workhours/workhours.component';
+import { defaultEndTime, defaultStartTime, VisualWeekCard } from '~/shared/utils/worktime-utils';
 
 let fixture: ComponentFixture<WorkHoursComponent>;
 let instance: WorkHoursComponent;
