@@ -204,6 +204,14 @@ export class ProfileComponent {
     this.navCtrl.push(PageNames.MyClients);
   }
 
+  onMyHoursClick(): void {
+    const params = {
+      isRootPage: false
+    };
+
+    this.navCtrl.push(PageNames.WorkHours, { params });
+  }
+
   onFieldEdit(control: RegistrationFormControl): void {
     switch (control) {
       case RegistrationFormControl.PhotoId:
