@@ -39,6 +39,7 @@ export class FollowersComponent {
     this.profileDataStore.get();
 
     this.profileDataStore.asObservable()
+      .first()
       .takeUntil(componentUnloaded(this))
       .subscribe(async (apiRes: ApiResponse<ProfileModel>) => {
         const profile: ProfileModel = apiRes.response;
