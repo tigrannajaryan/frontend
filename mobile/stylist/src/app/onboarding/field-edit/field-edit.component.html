@@ -1,0 +1,71 @@
+<ion-header madeMenuHeader></ion-header>
+
+<ion-content no-padding>
+  <div class="Made-wp Made-wpContent Onboarding-content">
+
+    <ng-container [ngSwitch]="params?.control">
+
+      <ng-container *ngSwitchCase="params.control === RegistrationFormControl.FirstName || params.control === RegistrationFormControl.LastName ? params.control : ''">
+        <div class="Made-h2 Onboarding-h2">
+          <span *ngIf="!params?.isRootPage">Hello. </span>What’s <strong>your name</strong>?
+        </div>
+        <ion-item class="Input">
+          <ion-label floating>First name</ion-label>
+          <ion-input [formControl]="controls[RegistrationFormControl.FirstName]" type="text" data-test-id="firstName"></ion-input>
+        </ion-item>
+        <ion-item class="Input">
+          <ion-label floating>Last name</ion-label>
+          <ion-input [formControl]="controls[RegistrationFormControl.LastName]" type="text" data-test-id="lastName"></ion-input>
+        </ion-item>
+      </ng-container>
+
+      <ng-container *ngSwitchCase="RegistrationFormControl.SalonName">
+        <div class="Made-h2 Onboarding-h2">
+          What’s your <strong>salon name</strong>?
+        </div>
+        <ion-item class="Input">
+          <ion-label floating>Salon name</ion-label>
+          <ion-input [formControl]="controls[RegistrationFormControl.SalonName]" type="text" data-test-id="salonName"></ion-input>
+        </ion-item>
+      </ng-container>
+
+      <ng-container *ngSwitchCase="RegistrationFormControl.PublicPhone">
+        <div class="Made-h2 Onboarding-h2">
+          What <strong>phone number</strong> would you like to expose?
+        </div>
+        <ion-item class="Input">
+          <ion-label floating>Public phone number</ion-label>
+          <ion-input [formControl]="controls[RegistrationFormControl.PublicPhone]" type="text" data-test-id="publicPhone"></ion-input>
+        </ion-item>
+      </ng-container>
+
+      <ng-container *ngSwitchCase="RegistrationFormControl.Email">
+        <div class="Made-h2 Onboarding-h2">
+          What’s your <strong>email</strong>?
+        </div>
+        <ion-item class="Input">
+          <ion-label floating>Email</ion-label>
+          <ion-input [formControl]="controls[RegistrationFormControl.Email]" type="text" data-test-id="email"></ion-input>
+        </ion-item>
+      </ng-container>
+
+      <ng-container *ngSwitchCase="RegistrationFormControl.Website">
+        <div class="Made-h2 Onboarding-h2">
+          What’s your <strong>website URL</strong>?
+        </div>
+        <ion-item class="Input">
+          <ion-label floating>Website</ion-label>
+          <ion-input [formControl]="controls[RegistrationFormControl.Website]" type="text" data-test-id="website"></ion-input>
+        </ion-item>
+      </ng-container>
+
+    </ng-container>
+
+  </div>
+</ion-content>
+
+<ion-footer class="Footer Onboarding-footer">
+  <button (click)="onContinue()" [disabled]="!isValid()" class="Button" data-test-id="continueBtn">
+    {{ params?.isRootPage ? 'Save' : 'Continue' }}
+  </button>
+</ion-footer>

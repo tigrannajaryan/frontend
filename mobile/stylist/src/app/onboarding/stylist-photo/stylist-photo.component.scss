@@ -1,0 +1,17 @@
+stylist-photo {
+  .StylistPhoto-img {
+    background-image: url('../assets/imgs/icons/avatar.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    border-radius: 50%;
+  }
+
+  .StylistPhoto-plusBtn {
+    $plus-btn-size: pxtovw(32px);
+
+    width: $plus-btn-size;
+    height: $plus-btn-size;
+    border-radius: 50%;
+  }
+}

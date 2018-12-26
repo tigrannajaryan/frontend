@@ -73,6 +73,22 @@ export class StylistServiceProvider extends BaseService {
   }
 
   /**
+   * Load and populate Google Maps API key from the server.
+   * NOTE: this key is returned in the request for stylist’s profile.
+   */
+  loadGoogleMapsApiKey(): Observable<ApiResponse<string>> {
+    return this.get<StylistProfile>('stylist/profile')
+      .map(({response, error}) => {
+        // Publish event to update gmap key.
+        if (response) {
+          this.events.publish(SharedEventTypes.update_gmap_key, response.google_api_key);
+          return { response: response.google_api_key };
+        }
+        return { response: undefined, error };
+      });
+  }
+
+  /**
    * Get default service Templates. The stylist must be already authenticated as a user.
    */
   getServiceTemplateSetsList(): Observable<ApiResponse<ServiceTemplateSetListResponse>> {
