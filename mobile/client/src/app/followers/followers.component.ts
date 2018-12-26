@@ -1,9 +1,6 @@
 import { AlertController, NavParams } from 'ionic-angular';
 import { Component } from '@angular/core';
 
-import { componentUnloaded } from '~/shared/component-unloaded';
-import { ApiResponse } from '~/shared/api/base.models';
-
 import { FollowersApi } from '~/core/api/followers.api';
 import { FollowersModel } from '~/core/api/followers.models';
 import { PageNames } from '~/core/page-names';
@@ -38,20 +35,16 @@ export class FollowersComponent {
   async ionViewWillEnter(): Promise<void> {
     this.profileDataStore.get();
 
-    this.profileDataStore.asObservable()
-      .takeUntil(componentUnloaded(this))
-      .subscribe(async (apiRes: ApiResponse<ProfileModel>) => {
-        const profile: ProfileModel = apiRes.response;
-        if (profile) {
-          this.profile = profile;
-        }
+    const profileResponse = await loading(this, this.profileDataStore.get());
+    if (profileResponse.response) {
+      this.profile = profileResponse.response;
+    }
 
-        this.stylist = this.navParams.get('stylist');
-        const { response } = await loading(this, this.followersApi.getFollowers(this.stylist.uuid).get());
-        if (response) {
-          this.followers = response.followers;
-        }
-      });
+    this.stylist = this.navParams.get('stylist');
+    const followersResponse = await loading(this, this.followersApi.getFollowers(this.stylist.uuid).get());
+    if (followersResponse.response) {
+      this.followers = followersResponse.response.followers;
+    }
   }
 
   showFollowersPopup(follower: FollowersModel): void {
