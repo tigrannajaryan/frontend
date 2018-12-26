@@ -16,6 +16,8 @@ import { AppModule } from '~/app.module';
 import { createNavHistoryList } from './functions';
 import { PageNames } from './page-names';
 
+import { RegistrationFormControl } from '~/onboarding/registration.form';
+
 let pushNotification: PushNotification;
 
 // Modify platform mock
@@ -54,7 +56,7 @@ describe('Shared functions: profileStatusToPage', () => {
     expect(await createNavHistoryList(undefined))
       .toEqual([
         { page: PageNames.FirstScreen },
-        { page: PageNames.FieldEdit, params: { params: { control: 'first_name' } } }
+        { page: PageNames.FieldEdit, params: { params: { control: RegistrationFormControl.FirstName } } }
       ]);
 
     done();

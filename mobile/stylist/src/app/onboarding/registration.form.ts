@@ -5,22 +5,37 @@ import { emptyOr, instagramValidator } from '~/shared/validators';
 
 import { ProfileDataStore } from '~/core/profile.data';
 
-export type RegistrationFormControlName =
-  | 'first_name'
-  | 'last_name'
-  | 'salon_name'
-  | 'salon_address'
-  | 'public_phone'
-  | 'email'
-  | 'instagram_url'
-  | 'website_url'
-  | 'profile_photo_id'
-  | 'profile_photo_url';
+/**
+ * This enum is used to store all the fields editable in registration process.
+ */
+export enum RegistrationFormControl {
+  FirstName = 'first_name',
+  LastName = 'last_name',
+  SalonName = 'salon_name',
+  SalonAddress = 'salon_address',
+  PublicPhone = 'public_phone',
+  Email = 'email',
+  Instagram = 'instagram_url',
+  Website = 'website_url',
+  PhotoId = 'profile_photo_id',
+  PhotoUrl = 'profile_photo_url'
+}
 
 export interface FormControls {
   [key: string]: FormControl;
 }
 
+/**
+ * This is an abstraction that encapsulates all the form-relative logic:
+ * - initializing and loading initial data,
+ * - validating its controls,
+ * - saving (updating) the form.
+ *
+ * This abstraction makes it easier to split the form between many components:
+ * - get a FormControl (or controls) by name (names);
+ * - validate all or some of the controls;
+ * - trigger save (update) of the form values on the server.
+ */
 @Injectable()
 export class RegistrationForm {
   private static guardInitilization = false;
@@ -89,6 +104,10 @@ export class RegistrationForm {
       last_name,
       salon_name,
       salon_address,
+      public_phone,
+      email,
+      website_url,
+      instagram_url,
       profile_photo_id,
       profile_photo_url,
       phone
@@ -101,6 +120,10 @@ export class RegistrationForm {
       last_name,
       salon_name,
       salon_address,
+      public_phone,
+      email,
+      website_url,
+      instagram_url,
       profile_photo_id,
       profile_photo_url
     });
@@ -110,14 +133,14 @@ export class RegistrationForm {
     return this.form.controls as FormControls;
   }
 
-  isValid(...controlNames: RegistrationFormControlName[]): boolean {
+  isValid(...controls: RegistrationFormControl[]): boolean {
     if (!this.form) {
       return false;
     }
-    if (controlNames.length === 0) {
+    if (controls.length === 0) {
       return this.form.valid;
     }
-    return controlNames.every(controlName => this.form.controls[controlName].valid);
+    return controls.every(control => this.form.controls[control].valid);
   }
 
   async save(): Promise<void> {

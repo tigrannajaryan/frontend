@@ -53,7 +53,13 @@ export class SalonAddressComponent implements AfterViewInit, OnInit {
   }
 
   async ngAfterViewInit(): Promise<void> {
-    // Ensure google map’s key is set up:
+    // Ensure google map’s key is set up.
+    //
+    // Yf you close (unload) the app (or reload it when developing in browser) and open again you are going
+    // to be redirected to the registration page. On this page, the profileData.get() will get the data
+    // from the local storage. In this case, we want to make sure our google config is loaded.
+    // Because of not storing it in local data we will have to call the API for it.
+    //
     await this.stylistApi.loadGoogleMapsApiKey().toPromise();
 
     this.initAutocomplete();

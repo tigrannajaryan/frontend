@@ -19,7 +19,7 @@ import { SetStylistProfileTabEventParams, StylistEventTypes } from '~/core/styli
 import { MadeMenuComponent } from '~/core/components/made-menu/made-menu.component';
 
 import { FieldEditComponentParams } from '~/onboarding/field-edit/field-edit.component';
-import { RegistrationForm, RegistrationFormControlName } from '~/onboarding/registration.form';
+import { RegistrationForm, RegistrationFormControl } from '~/onboarding/registration.form';
 
 export enum ProfileTabs {
   clientView,
@@ -48,6 +48,7 @@ export class ProfileComponent {
   ProfileTabNames = ProfileTabNames;
   ProfileTabs = ProfileTabs;
   PageNames = PageNames;
+  RegistrationFormControl = RegistrationFormControl;
   tabs = [
     {
       name: ProfileTabNames.clientView
@@ -123,18 +124,18 @@ export class ProfileComponent {
     this.navCtrl.push(PageNames.MyClients);
   }
 
-  onFieldEdit(control: RegistrationFormControlName): void {
+  onFieldEdit(control: RegistrationFormControl): void {
     switch (control) {
-      case 'profile_photo_id':
-      case 'profile_photo_url':
+      case RegistrationFormControl.PhotoId:
+      case RegistrationFormControl.PhotoUrl:
         this.navCtrl.push(PageNames.StylistPhoto, { params: { isRootPage: true }});
         return;
 
-      case 'salon_address':
+      case RegistrationFormControl.SalonAddress:
         this.navCtrl.push(PageNames.SalonAddress, { params: { isRootPage: true }});
         return;
 
-      case 'instagram_url':
+      case RegistrationFormControl.Instagram:
         this.navCtrl.push(PageNames.ConnectInstagram, { params: { isRootPage: true }});
         return;
 

@@ -7,11 +7,11 @@ import { PageNames } from '~/core/page-names';
 import {
   FormControls,
   RegistrationForm,
-  RegistrationFormControlName
+  RegistrationFormControl
 } from '~/onboarding/registration.form';
 
 export interface FieldEditComponentParams {
-  control: RegistrationFormControlName;
+  control: RegistrationFormControl;
   isRootPage?: boolean;
 }
 
@@ -20,14 +20,16 @@ export interface FieldEditComponentParams {
   templateUrl: 'field-edit.component.html'
 })
 export class FieldEditComponent implements OnInit {
-  static supportedControls: RegistrationFormControlName[] = [
-    'first_name',
-    'last_name',
-    'salon_name',
-    'public_phone',
-    'email',
-    'website_url'
+  static supportedControls: RegistrationFormControl[] = [
+    RegistrationFormControl.FirstName,
+    RegistrationFormControl.LastName,
+    RegistrationFormControl.SalonName,
+    RegistrationFormControl.PublicPhone,
+    RegistrationFormControl.Email,
+    RegistrationFormControl.Website
   ];
+
+  RegistrationFormControl = RegistrationFormControl;
 
   params: FieldEditComponentParams;
   controls: FormControls;
@@ -44,10 +46,16 @@ export class FieldEditComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     this.params = (this.navParams.get('params') || {}) as FieldEditComponentParams;
 
+    // The params are required but not mandatory in navCtrl.push().
+    // Someone is not well familiar with the component can still omit them accidentally.
     if (this.params.control === undefined) {
       throw new Error('Control is not set in FieldEditComponentParams');
     }
 
+    // We made this component to support editing of a set of fields.
+    // It uses RegistrationFormControl which is a unified way to describe all the form fields present in registration.
+    // A developer who is less familiar with it can try to pass e.g. salon_address to the component which is not supposed
+    // to be edited by it. We need to indicate this situation properly.
     if (FieldEditComponent.supportedControls.indexOf(this.params.control) === -1) {
       throw new Error('Control is not supported');
     }
@@ -65,13 +73,13 @@ export class FieldEditComponent implements OnInit {
   }
 
   isValid(): boolean {
-    const controls: RegistrationFormControlName[] = [];
+    const controls: RegistrationFormControl[] = [];
 
     switch (this.params.control) {
-      case 'first_name':
-      case 'last_name':
+      case RegistrationFormControl.FirstName:
+      case RegistrationFormControl.LastName:
         // We are using one page to edit first and last names
-        controls.push('first_name', 'last_name');
+        controls.push(RegistrationFormControl.FirstName, RegistrationFormControl.LastName);
         break;
 
       default:
@@ -91,7 +99,7 @@ export class FieldEditComponent implements OnInit {
     switch (this.params.control) {
       case 'first_name':
       case 'last_name': {
-        const params: FieldEditComponentParams = { control: 'salon_name' };
+        const params: FieldEditComponentParams = { control: RegistrationFormControl.SalonName };
         this.navCtrl.push(PageNames.FieldEdit, { params });
         break;
       }
@@ -112,5 +120,13 @@ export class FieldEditComponent implements OnInit {
       }
       this.onNavigateNext();
     }
+  }
+
+  private autofocus(): void {
+    // Using setTimeout is the only way to succeed
+    // in programmatically setting focus on a real device.
+    setTimeout(() => {
+      this.firstInput.setFocus();
+    });
   }
 }
