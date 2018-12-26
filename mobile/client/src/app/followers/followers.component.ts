@@ -1,9 +1,6 @@
 import { AlertController, NavParams } from 'ionic-angular';
 import { Component } from '@angular/core';
 
-import { componentUnloaded } from '~/shared/component-unloaded';
-import { ApiResponse } from '~/shared/api/base.models';
-
 import { FollowersApi } from '~/core/api/followers.api';
 import { FollowersModel } from '~/core/api/followers.models';
 import { PageNames } from '~/core/page-names';
