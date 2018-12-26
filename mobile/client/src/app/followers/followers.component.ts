@@ -38,21 +38,16 @@ export class FollowersComponent {
   async ionViewWillEnter(): Promise<void> {
     this.profileDataStore.get();
 
-    this.profileDataStore.asObservable()
-      .first()
-      .takeUntil(componentUnloaded(this))
-      .subscribe(async (apiRes: ApiResponse<ProfileModel>) => {
-        const profile: ProfileModel = apiRes.response;
-        if (profile) {
-          this.profile = profile;
-        }
+    const profileResponse = await loading(this, this.profileDataStore.get());
+    if (profileResponse.response) {
+      this.profile = profileResponse.response;
+    }
 
-        this.stylist = this.navParams.get('stylist');
-        const { response } = await loading(this, this.followersApi.getFollowers(this.stylist.uuid).get());
-        if (response) {
-          this.followers = response.followers;
-        }
-      });
+    this.stylist = this.navParams.get('stylist');
+    const followersResponse = await loading(this, this.followersApi.getFollowers(this.stylist.uuid).get());
+    if (followersResponse.response) {
+      this.followers = followersResponse.response.followers;
+    }
   }
 
   showFollowersPopup(follower: FollowersModel): void {
