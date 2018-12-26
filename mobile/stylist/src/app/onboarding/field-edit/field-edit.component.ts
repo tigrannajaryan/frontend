@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
+import { TextInput } from 'ionic-angular/components/input/input';
 
 import { PageNames } from '~/core/page-names';
 
@@ -31,6 +32,8 @@ export class FieldEditComponent implements OnInit {
   params: FieldEditComponentParams;
   controls: FormControls;
 
+  @ViewChild(TextInput) firstInput;
+
   constructor(
     private navCtrl: NavController,
     private navParams: NavParams,
@@ -53,6 +56,12 @@ export class FieldEditComponent implements OnInit {
     this.controls = this.registrationForm.getFormControls();
 
     await this.registrationForm.loadFormInitialData();
+  }
+
+  ionViewDidEnter(): void {
+    if (!this.controls[this.params.control].value) {
+      this.autofocus();
+    }
   }
 
   isValid(): boolean {
