@@ -41,7 +41,7 @@ export class BookingCompleteComponent {
   }
 
   onReturnHomeClick(): void {
-    this.navCtrl.popToRoot();
+    this.navCtrl.setRoot(PageNames.MainTabs);
     this.events.publish(ClientEventTypes.selectMainTab, MainTabIndex.Home);
   }
 
