@@ -58,7 +58,9 @@ export class SalonAddressComponent implements AfterViewInit, OnInit {
   }
 
   ionViewDidEnter(): void {
-    this.autofocus();
+    if (!this.address.value) {
+      this.autofocus();
+    }
   }
 
   async ngAfterViewInit(): Promise<void> {
