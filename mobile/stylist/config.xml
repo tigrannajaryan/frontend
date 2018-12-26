@@ -148,4 +148,10 @@
         <variable name="APP_ID" value="467418693781904" />
         <variable name="APP_NAME" value="Made Pro" />
     </plugin>
+    <plugin name="ionic-plugin-deeplinks" spec="1.0.17">
+        <variable name="URL_SCHEME" value="madepro" />
+        <variable name="DEEPLINK_SCHEME" value="https" />
+        <variable name="DEEPLINK_HOST" value="madebeauty.com" />
+        <variable name="ANDROID_PATH_PREFIX" value="/getpro/" />
+    </plugin>
 </widget>
