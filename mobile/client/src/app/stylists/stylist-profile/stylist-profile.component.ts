@@ -156,13 +156,13 @@ export class StylistProfileComponent {
     this.externalAppService.openWebPage(this.stylistProfile.website_url);
   }
 
-  onStartBooking(): void {
+  async onStartBooking(): Promise<void> {
     if (!(this.params && this.stylistProfile && this.stylistProfile.is_profile_bookable)) {
       return;
     }
 
     if (!this.stylistProfile.is_preferred) {
-      this.onSaveStylist();
+      await this.onSaveStylist();
     }
 
     this.events.publish(ClientEventTypes.startBooking, this.stylistProfile.uuid);
