@@ -32,6 +32,8 @@ import { StylistProfileApi } from '~/shared/api/stylist-profile.api';
 import { StylistProfileRequestParams, StylistProfileResponse } from '~/shared/api/stylists.models';
 import { UserRole } from '~/shared/api/auth.models';
 import { VisualWeekCard } from '~/shared/utils/worktime-utils';
+import { WorkHoursComponentParams } from '~/workhours/workhours.component';
+import { ClientsCalendarComponentParams } from '~/calendar/clients-calendar/clients-calendar.component';
 
 export enum ProfileTabs {
   clientView,
@@ -179,7 +181,11 @@ export class ProfileComponent {
     if (!this.service) {
       this.onSetAccountInfo(this.servicesPage);
     } else {
-      this.navCtrl.setRoot(PageNames.ClientsCalendar, { params: { isRootPage: true }});
+      const params: ClientsCalendarComponentParams = {
+        isRootPage: false
+      };
+
+      this.navCtrl.setRoot(PageNames.ClientsCalendar, { params });
     }
   }
 
@@ -205,7 +211,7 @@ export class ProfileComponent {
   }
 
   onMyHoursClick(): void {
-    const params = {
+    const params: WorkHoursComponentParams = {
       isRootPage: false
     };
 
