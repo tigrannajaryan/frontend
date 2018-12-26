@@ -94,6 +94,7 @@ import { ServiceItemComponent } from '~/services/services-item/services-item.com
 import { ServicesCategoriesComponent } from '~/services/services-categories/services-categories.component';
 import { ServicesComponent } from '~/services/services.component';
 import { ServicesListComponent } from '~/services/services-list/services-list.component';
+import { UpcomingAndPastComponent } from '~/home/home.component';
 import { WorkHoursComponent } from '~/workhours/workhours.component';
 
 // Onboarding
@@ -172,6 +173,7 @@ const declarations = [
   ServicesCategoriesComponent,
   ServicesComponent,
   ServicesListComponent,
+  UpcomingAndPastComponent,
   WorkHoursComponent,
 
   // Onboarding
