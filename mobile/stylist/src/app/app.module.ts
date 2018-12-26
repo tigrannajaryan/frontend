@@ -32,9 +32,7 @@ import { ExternalAppService } from '~/shared/utils/external-app-service';
 import { AuthInterceptor } from './shared/api/auth.interceptor';
 import { AuthService } from '~/shared/api/auth.api';
 import { PushNotification } from '~/shared/push/push-notification';
-import { PushPrimingScreenComponent } from '~/shared/components/push-priming-screen/push-priming-screen.component';
 import { SuccessErrorPopupComponent } from '~/shared/components/success-error-popup/success-error-popup.component';
-import { CalendarPrimingComponent } from '~/shared/components/calendar-priming/calendar-priming.component';
 import { GoogleSignin } from './shared/google-signin';
 import { IntegrationsApi } from './shared/api/integrations.api';
 import { MadeAnalyticsApi } from './shared/api/made-analytics.api';
@@ -55,50 +53,57 @@ import { ClientDetailsApi } from '~/core/api/client-details.api';
 
 import { CoreModule } from '~/core/core.module';
 import { GoogleMapsConfig } from '~/shared/google-maps-config';
-import { AddServicesComponent } from '~/core/popups/add-services/add-services.component';
-import { ChangePercentComponent } from '~/core/popups/change-percent/change-percent.component';
-import { ConfirmCheckoutComponent } from '~/core/popups/confirm-checkout/confirm-checkout.component';
 import { profileReducer, profileStatePath } from '~/core/components/made-menu-header/profile.reducer';
 import { ProfileEffects } from '~/core/components/made-menu-header/profile.effects';
 import { StylistAppStorage } from './core/stylist-app-storage';
 
+import { UiKitPreviewComponent } from '~/ui-kit-preview/ui-kit-preview.component';
+import { servicesReducer } from '~/appointment/appointment-services/services.reducer';
+import { ServicesEffects } from '~/appointment/appointment-services/services.effects';
+import { NotificationsApi } from './shared/push/notifications.api';
+import { MadeMenuComponent } from '~/core/components/made-menu/made-menu.component';
+import { CalendarPickerComponent } from '~/shared/components/calendar-picker/calendar-picker.component';
+
 import { AboutComponent } from '~/about/about.component';
+import { AddServicesComponent } from '~/core/popups/add-services/add-services.component';
 import { AllClientsComponent } from '~/clients/all-clients/all-clients.component';
 import { AppointmentAddComponent } from '~/appointment/appointment-add/appointment-add';
 import { AppointmentCheckoutComponent } from '~/appointment/appointment-checkout/appointment-checkout.component';
 import { AppointmentServicesComponent } from '~/appointment/appointment-services/appointment-services';
-import { AuthPageComponent } from '~/auth/auth-start/auth-start.component';
 import { AuthConfirmPageComponent } from '~/auth/auth-confirm/auth-confirm.component';
-import { CalendarExampleComponent } from '~/register-salon/calendar-example/calendar-example.component';
+import { AuthPageComponent } from '~/auth/auth-start/auth-start.component';
+import { CalendarPrimingComponent } from '~/shared/components/calendar-priming/calendar-priming.component';
+import { ChangeGapTimeComponent } from '~/core/popups/change-gap-time/change-gap-time.component';
+import { ChangePercentComponent } from '~/core/popups/change-percent/change-percent.component';
+import { ClientDetailsComponent } from '~/clients/client-details/client-details.component';
 import { ClientsCalendarComponent } from '~/calendar/clients-calendar/clients-calendar.component';
-import { DiscountsComponent } from '~/discounts/discounts.component';
+import { ConfirmCheckoutComponent } from '~/core/popups/confirm-checkout/confirm-checkout.component';
 import { DiscountsAlertComponent } from '~/discounts/discounts-alert/discounts-alert.component';
+import { DiscountsComponent } from '~/discounts/discounts.component';
 import { DiscountsFirstBookingComponent } from '~/discounts/discounts-first-booking/discounts-first-booking.component';
 import { DiscountsRevisitComponent } from '~/discounts/discounts-revisit/discounts-revisit.component';
 import { DiscountsWeekdayComponent } from '~/discounts/discounts-weekday/discounts-weekday.component';
-import { UpcomingAndPastComponent } from '~/home/home.component';
 import { FirstScreenComponent } from '~/first-screen/first-screen';
+import { HomeSlotsComponent } from '~/home-slots/home-slots.component';
 import { InvitationsComponent } from '~/invitations/invitations.component';
 import { MyClientsComponent } from '~/clients/my-clients/my-clients.component';
-import { ClientDetailsComponent } from '~/clients/client-details/client-details.component';
-import { RegisterSalonComponent } from '~/register-salon/register-salon';
-import { RegistrationDoneComponent } from '~/onboarding/registration-done/registration-done.component';
 import { ProfileComponent } from '~/profile/profile.component';
-import { ServicesComponent } from '~/services/services.component';
-import { ServicesCategoriesComponent } from '~/services/services-categories/services-categories.component';
-import { ServicesListComponent } from '~/services/services-list/services-list.component';
+import { PushPrimingScreenComponent } from '~/shared/components/push-priming-screen/push-priming-screen.component';
+import { RegistrationDoneComponent } from '~/onboarding/registration-done/registration-done.component';
 import { ServiceItemComponent } from '~/services/services-item/services-item.component';
-import { WelcomeToMadeComponent } from '~/discounts/welcome-to-made/welcome-to-made.component';
-import { UiKitPreviewComponent } from '~/ui-kit-preview/ui-kit-preview.component';
-import { servicesReducer } from '~/appointment/appointment-services/services.reducer';
-import { ServicesEffects } from '~/appointment/appointment-services/services.effects';
+import { ServicesCategoriesComponent } from '~/services/services-categories/services-categories.component';
+import { ServicesComponent } from '~/services/services.component';
+import { ServicesListComponent } from '~/services/services-list/services-list.component';
+import { UpcomingAndPastComponent } from '~/home/home.component';
 import { WorkHoursComponent } from '~/workhours/workhours.component';
-import { NotificationsApi } from './shared/push/notifications.api';
-import { MadeMenuComponent } from '~/core/components/made-menu/made-menu.component';
-import { HomeSlotsComponent } from './home-slots/home-slots.component';
-import { ChangeGapTimeComponent } from '~/core/popups/change-gap-time/change-gap-time.component';
-import { CalendarPickerComponent } from '~/shared/components/calendar-picker/calendar-picker.component';
+
+// Onboarding
+import { CalendarExampleComponent } from '~/onboarding/calendar-example/calendar-example.component';
 import { ConnectInstagramComponent } from '~/onboarding/connect-instagram/connect-instagram.component';
+import { FieldEditComponent } from '~/onboarding/field-edit/field-edit.component';
+import { SalonAddressComponent } from '~/onboarding/salon-address/salon-address.component';
+import { StylistPhotoComponent } from '~/onboarding/stylist-photo/stylist-photo.component';
+import { WelcomeToMadeComponent } from '~/onboarding/welcome-to-made/welcome-to-made.component';
 
 initSentry();
 
@@ -137,6 +142,7 @@ if (!ENV.production) {
 }
 
 const declarations = [
+  // Pages
   AboutComponent,
   AddServicesComponent,
   AllClientsComponent,
@@ -145,39 +151,45 @@ const declarations = [
   AppointmentServicesComponent,
   AuthConfirmPageComponent,
   AuthPageComponent,
-  CalendarExampleComponent,
-  CalendarPickerComponent,
   CalendarPrimingComponent,
   ChangeGapTimeComponent,
   ChangePercentComponent,
   ClientDetailsComponent,
   ClientsCalendarComponent,
   ConfirmCheckoutComponent,
-  ConnectInstagramComponent,
   DiscountsAlertComponent,
   DiscountsComponent,
   DiscountsFirstBookingComponent,
   DiscountsRevisitComponent,
   DiscountsWeekdayComponent,
   FirstScreenComponent,
-  UpcomingAndPastComponent,
   HomeSlotsComponent,
   InvitationsComponent,
-  MadeMenuComponent,
-  MyAppComponent,
   MyClientsComponent,
-  PushPrimingScreenComponent,
-  RegisterSalonComponent,
-  RegistrationDoneComponent,
   ProfileComponent,
+  PushPrimingScreenComponent,
+  RegistrationDoneComponent,
   ServiceItemComponent,
   ServicesCategoriesComponent,
   ServicesComponent,
   ServicesListComponent,
-  SuccessErrorPopupComponent,
-  UiKitPreviewComponent,
+  UpcomingAndPastComponent,
+  WorkHoursComponent,
+
+  // Onboarding
+  CalendarExampleComponent,
+  ConnectInstagramComponent,
+  FieldEditComponent,
+  SalonAddressComponent,
+  StylistPhotoComponent,
   WelcomeToMadeComponent,
-  WorkHoursComponent
+
+  // Components
+  CalendarPickerComponent,
+  MadeMenuComponent,
+  MyAppComponent,
+  SuccessErrorPopupComponent,
+  UiKitPreviewComponent
 ];
 
 @NgModule({

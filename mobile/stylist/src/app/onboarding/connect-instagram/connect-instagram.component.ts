@@ -39,9 +39,9 @@ export class ConnectInstagramComponent implements OnInit {
 
   onNavigateNext(): void {
     if (!this.params.isRootPage) {
-      this.navCtrl.push(PageNames.WelcomeToMade);
+      this.navCtrl.push(PageNames.StylistPhoto);
     } else {
-      this.navCtrl.pop();
+      this.navCtrl.popToRoot();
     }
   }
 

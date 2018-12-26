@@ -1,0 +1,35 @@
+<ion-header madeMenuHeader>
+  <ion-buttons end>
+    <button *ngIf="!params.isRootPage" (click)="onNavigateNext()" class="Onboarding-skip" data-test-id="skipBtn">Later</button>
+  </ion-buttons>
+</ion-header>
+
+<ion-content no-padding>
+  <div class="Made-wp Made-wpContent Onboarding-content">
+
+    <div class="Made-h2 Onboarding-h2">
+      <span *ngIf="!params.isRootPage; else elseTpl">Now let’s add</span>
+      <ng-template #elseTpl>Add</ng-template>
+      <span>a profile <strong (click)="processPhoto()">picture</strong>!</span>
+    </div>
+
+    <ion-row align-items-center justify-content-center (click)="processPhoto()" class="Onboarding-img">
+        <div [style.background-image]="photoUrl.value ? 'url(' + photoUrl.value + ')' : ''" class="StylistPhoto-img"></div>
+      </ion-row>
+      <ion-row align-items-center justify-content-center>
+        <ng-container *ngIf="hasPhoto(); else linkTpl">
+          <div (click)="processPhoto()" class="Link">Change</div>
+        </ng-container>
+        <ng-template #linkTpl>
+          <img (click)="processPhoto()" src="assets/icons/add@3x.png" class="StylistPhoto-plusBtn" />
+        </ng-template>
+      </ion-row>
+
+    <ion-footer class="Footer Onboarding-footer">
+      <button (click)="onContinue()" class="Button">
+        {{ hasPhoto() ? (params.isRootPage ? 'Save' : 'Continue') : 'Upload Photo' }}
+      </button>
+    </ion-footer>
+
+  </div>
+</ion-content>

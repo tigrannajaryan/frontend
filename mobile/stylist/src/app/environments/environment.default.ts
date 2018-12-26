@@ -5,9 +5,6 @@ export const ENV = {
   // Feature flag to enable push notifications
   ffEnablePushNotifications: true,
 
-  // Feature flag to enable instagram integration
-  ffEnableInstagramLinking: false,
-
   // Disable Sentry reporting by default.
   sentryDsn: undefined,
 

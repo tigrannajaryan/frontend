@@ -18,8 +18,6 @@ import { getPhoneNumber } from '~/shared/utils/phone-numbers';
 import { StylistServicesDataStore } from '~/services/services-list/services.data';
 import { DayOffer } from '~/shared/api/price.models';
 
-import { ENV } from '~/environments/environment.default';
-
 import { loading } from '~/core/utils/loading';
 import { PageNames } from '~/core/page-names';
 import { ProfileDataStore } from '~/core/profile.data';
@@ -28,6 +26,8 @@ import { SetStylistProfileTabEventParams, StylistEventTypes } from '~/core/styli
 import { MadeMenuComponent } from '~/core/components/made-menu/made-menu.component';
 import { ClientsApi } from '~/core/api/clients-api';
 
+import { FieldEditComponentParams } from '~/onboarding/field-edit/field-edit.component';
+import { RegistrationForm, RegistrationFormControl } from '~/onboarding/registration.form';
 import { StylistProfileApi } from '~/shared/api/stylist-profile.api';
 import { StylistProfileRequestParams, StylistProfileResponse } from '~/shared/api/stylists.models';
 import { UserRole } from '~/shared/api/auth.models';
@@ -41,17 +41,6 @@ export enum ProfileTabs {
 export enum ProfileTabNames {
   clientView = 'Client View',
   edit = 'Edit'
-}
-
-export enum ProfileEditableFields {
-  name,
-  profile_photo_url,
-  instagram,
-  website_url,
-  email,
-  salon_address,
-  salon_name,
-  public_phone
 }
 
 @Component({
@@ -72,9 +61,9 @@ export class ProfileComponent {
   servicesPage: Page = PageNames.Services;
   refresherEnabled = true;
   ProfileTabNames = ProfileTabNames;
-  ProfileEditableFields = ProfileEditableFields;
   ProfileTabs = ProfileTabs;
   PageNames = PageNames;
+  RegistrationFormControl = RegistrationFormControl;
   tabs = [
     {
       name: ProfileTabNames.clientView
@@ -89,11 +78,17 @@ export class ProfileComponent {
     public navParams: NavParams,
     public profileData: ProfileDataStore,
     private clientsApi: ClientsApi,
-    private servicesData: StylistServicesDataStore,
     private events: Events,
+    private registrationForm: RegistrationForm,
+    private servicesData: StylistServicesDataStore,
     private stylistProfileApi: StylistProfileApi
   ) {
     this.activeTab = this.tabs[ProfileTabs.clientView].name;
+  }
+
+  async ionViewWillLoad(): Promise<void> {
+    this.registrationForm.init();
+    await this.registrationForm.loadFormInitialData();
   }
 
   @loading
@@ -209,12 +204,26 @@ export class ProfileComponent {
     this.navCtrl.push(PageNames.MyClients);
   }
 
-  onFieldEdit(field: ProfileEditableFields): void {
-    if (ENV.ffEnableInstagramLinking && field === ProfileEditableFields.instagram) {
-      this.navCtrl.push(PageNames.ConnectInstagram, { params: { isRootPage: true }});
-      return;
+  onFieldEdit(control: RegistrationFormControl): void {
+    switch (control) {
+      case RegistrationFormControl.PhotoId:
+      case RegistrationFormControl.PhotoUrl:
+        this.navCtrl.push(PageNames.StylistPhoto, { params: { isRootPage: true }});
+        return;
+
+      case RegistrationFormControl.SalonAddress:
+        this.navCtrl.push(PageNames.SalonAddress, { params: { isRootPage: true }});
+        return;
+
+      case RegistrationFormControl.Instagram:
+        this.navCtrl.push(PageNames.ConnectInstagram, { params: { isRootPage: true }});
+        return;
+
+      default:
+        const params: FieldEditComponentParams = { isRootPage: true, control };
+        this.navCtrl.push(PageNames.FieldEdit, { params });
+        return;
     }
-    this.navCtrl.push(PageNames.RegisterSalon, { params: { isRootPage: true }});
   }
 
   onSetAccountInfo(page: Page): void {

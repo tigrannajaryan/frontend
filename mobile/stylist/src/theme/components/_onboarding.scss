@@ -1,0 +1,40 @@
+.Onboarding-skip {
+  font-size: pxtovw(18px);
+  background: none;
+}
+
+.Onboarding-content {
+  min-height: 100%;
+}
+
+.Onboarding-h2 {
+  padding: pxtovw(48px) 0 pxtovw(16px);
+}
+
+.Onboarding-img {
+  $container-size: pxtovw(200px);
+  $img-size: $container-size * 0.65;
+
+  width: $container-size;
+  height: $container-size;
+  margin: pxtovw(24px) auto pxtovw(16px);
+  border: pxtovw(1px) solid color($grayscale, 200);
+  border-radius: 50%;
+
+  > * {
+    width: $img-size;
+    height: $img-size;
+  }
+}
+
+.Onboarding-buttonInline {
+  width: auto;
+  min-width: 0;
+  padding-right: pxtovw(16px);
+  padding-left: pxtovw(16px);
+}
+
+.Onboarding-footer {
+  padding-bottom: 0;
+  margin-bottom: pxtovw(18px);
+}
