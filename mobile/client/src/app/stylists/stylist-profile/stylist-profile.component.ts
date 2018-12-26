@@ -18,6 +18,7 @@ import { PageNames } from '~/core/page-names';
 import { BookingData } from '~/core/api/booking.data';
 import { PreferredStylistsData } from '~/core/api/preferred-stylists.data';
 import { ClientEventTypes } from '~/core/client-event-types';
+import { VisualWeekCard } from '~/shared/utils/worktime-utils';
 
 export enum UpdateStylistStatus {
   save,
@@ -37,6 +38,7 @@ export class StylistProfileComponent {
   UpdateStylistStatus = UpdateStylistStatus;
   params: StylistProfileParams;
   prices: DayOffer[];
+  cards: VisualWeekCard[] = [];
   service: ServiceModel;
   stylistProfile: StylistProfileResponse;
 
@@ -66,6 +68,10 @@ export class StylistProfileComponent {
 
       if (response) {
         this.stylistProfile = response;
+
+        if (this.stylistProfile.working_hours && this.stylistProfile.working_hours.weekdays) {
+          this.cards = VisualWeekCard.worktime2presentation(this.stylistProfile.working_hours);
+        }
 
         if (this.content) {
           // Tell the content to recalculate its dimensions. According to Ionic docs this
@@ -150,13 +156,13 @@ export class StylistProfileComponent {
     this.externalAppService.openWebPage(this.stylistProfile.website_url);
   }
 
-  onStartBooking(): void {
+  async onStartBooking(): Promise<void> {
     if (!(this.params && this.stylistProfile && this.stylistProfile.is_profile_bookable)) {
       return;
     }
 
     if (!this.stylistProfile.is_preferred) {
-      this.onSaveStylist();
+      await this.onSaveStylist();
     }
 
     this.events.publish(ClientEventTypes.startBooking, this.stylistProfile.uuid);

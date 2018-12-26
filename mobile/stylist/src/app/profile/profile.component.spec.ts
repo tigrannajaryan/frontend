@@ -1,8 +1,8 @@
-import { async, ComponentFixture } from '@angular/core/testing';
+import { ComponentFixture } from '@angular/core/testing';
 import { HttpClient, HttpHandler } from '@angular/common/http';
 import { Camera } from '@ionic-native/camera';
 import { ActionSheetController} from 'ionic-angular';
-import { MapsAPILoader } from '@agm/core';
+import { AgmCoreModule, MapsAPILoader } from '@agm/core';
 import { LaunchNavigator } from '@ionic-native/launch-navigator';
 
 import { Logger } from '~/shared/logger';
@@ -39,7 +39,7 @@ describe('Pages: ProfileComponent', async () => {
       LaunchNavigator,
       ProfileDataStore,
       StylistServiceMock
-    ])
+    ], [AgmCoreModule])
     .then(async (compiled) => {
       fixture = compiled.fixture; // https://angular.io/api/core/testing/ComponentFixture
       instance = compiled.instance;

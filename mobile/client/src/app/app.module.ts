@@ -22,6 +22,7 @@ import { Push } from '@ionic-native/push';
 import { GooglePlus } from '@ionic-native/google-plus';
 
 import { GalleryModalHammerConfig, GalleryModalModule } from 'ionic-gallery-modal';
+import { AgmCoreModule, LAZY_MAPS_API_CONFIG } from '@agm/core';
 
 import { META_REDUCERS, StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
@@ -53,6 +54,8 @@ import { CalendarPickerComponent } from '~/shared/components/calendar-picker/cal
 import { CalendarPrimingComponent } from '~/shared/components/calendar-priming/calendar-priming.component';
 import { GoogleSignin } from '~/shared/google-signin';
 import { InstagramGalleryComponent } from '~/shared/components/instagram-gallery/instagram-gallery.component';
+import { IntegrationsApi } from './shared/api/integrations.api';
+import { StylistProfileApi } from '~/shared/api/stylist-profile.api';
 
 import { profilePath, profileReducer } from '~/core/reducers/profile.reducer';
 import { servicesPath, servicesReducer } from '~/core/reducers/services.reducer';
@@ -88,9 +91,8 @@ import { PushPrimingScreenComponent } from './shared/components/push-priming-scr
 import { ClientAppStorage } from './core/client-app-storage';
 import { FirstLastNameComponent } from '~/profile/first-last-name/first-last-name.component';
 import { ClientStartupNavigation } from './core/client-startup-navigation';
-import { IntegrationsApi } from './shared/api/integrations.api';
 import { StylistProfileComponent } from '~/stylists/stylist-profile/stylist-profile.component';
-import { StylistProfileApi } from '~/shared/api/stylist-profile.api';
+import { GoogleMapsConfig } from '~/shared/google-maps-config';
 
 // Init sentry reporting (inits only if ENV.sentryDsn):
 initSentry();
@@ -147,6 +149,8 @@ const declarations = [
     DataModule.forRoot(),
 
     GalleryModalModule,
+
+    AgmCoreModule.forRoot(),
 
     IonicModule.forRoot(ClientAppComponent, {
       backButtonText: '',
@@ -243,6 +247,11 @@ const declarations = [
       // https://www.npmjs.com/package/ionic-gallery-modal
       provide: HAMMER_GESTURE_CONFIG,
       useClass: GalleryModalHammerConfig
+    },
+
+    {
+      // Override google maps config
+      provide: LAZY_MAPS_API_CONFIG, useClass: GoogleMapsConfig
     },
 
     Camera

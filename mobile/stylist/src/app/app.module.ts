@@ -52,7 +52,7 @@ import { InvitationsApi } from '~/core/api/invitations.api';
 import { ClientDetailsApi } from '~/core/api/client-details.api';
 
 import { CoreModule } from '~/core/core.module';
-import { GoogleMapsConfig } from '~/core/google-maps-config';
+import { GoogleMapsConfig } from '~/shared/google-maps-config';
 import { profileReducer, profileStatePath } from '~/core/components/made-menu-header/profile.reducer';
 import { ProfileEffects } from '~/core/components/made-menu-header/profile.effects';
 import { StylistAppStorage } from './core/stylist-app-storage';
