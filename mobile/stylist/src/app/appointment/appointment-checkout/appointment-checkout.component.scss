@@ -1,28 +1,50 @@
 page-checkout {
-  .CheckOut {
-    padding: pxtovw(13px) 0 pxtovw(18px);
-    border-radius: pxtovw(16px);
-    box-shadow: 0 pxtovw(7px) pxtovw(43px) 0 rgba(0, 0, 0, 0.08);
+
+  // Basic card styles
+  // –––––––––––––––––––––
+
+  .CheckOut-card {
+    margin-bottom: pxtovw(16px) 0;
+    border-radius: pxtovw(8px);
+    box-shadow:
+      pxtovw(7px) 0 pxtovw(24px) 0 rgba(black, 0.08),
+      0 pxtovw(7px) pxtovw(24px) 0 rgba(black, 0.08);
   }
 
-  .CheckOut-Header {
-    padding: 0 pxtovw(23px) 0 pxtovw(16px);
+  .CheckOut-card + .CheckOut-card {
+    margin-top: pxtovw(16px);
+    box-shadow:
+      pxtovw(7px) 0 pxtovw(24px) 0 rgba(black, 0.08),
+      0 pxtovw(7px) pxtovw(24px) 0 rgba(black, 0.08);
   }
 
-  .CheckOut-HeaderIcon,
-  .CheckOut-HeaderDate {
+  // Header card
+  // –––––––––––––––––––––
+
+  .Checkout-header {
+    padding: pxtovw(16px);
+
+    .UserName-ava {
+      margin: 0 0 0 pxtovw(8px);
+    }
+  }
+
+  .CheckOut-headerIcon,
+  .CheckOut-headerDate {
     display: inline-block;
     vertical-align: middle;
   }
 
-  .CheckOut-HeaderIcon {
+  .CheckOut-headerIcon {
+    $icon-size: pxtovw(32px);
+
     position: relative;
-    width: pxtovw(32px);
-    height: pxtovw(32px);
-    margin-right: pxtovw(5px);
+    width: $icon-size;
+    height: $icon-size;
+    margin-right: pxtovw(8px);
     font-size: pxtovw(14px);
     color: #358ED7;
-    border: 1px solid #F4F5F4;
+    background: rgba(black, 0.08);
     border-radius: 50%;
 
     i {
@@ -39,41 +61,68 @@ page-checkout {
       font-weight: 700;
     }
 
-    &.isAlreadyCheckedOut {
+    &.is-alreadyCheckedOut {
       color: #FFFFFF;
       background: #68D09B;
       border: 1px solid transparent;
     }
   }
 
-  .CheckOut-HeaderDate {
-    font-size: pxtovw(15px);
+  .CheckOut-headerDate {
+    font-size: pxtovw(13px);
+    font-weight: 600;
     line-height: pxtovw(16px);
+    color: color($colors, warmGrey);
 
     b {
       display: block;
-      font-size: pxtovw(18px);
+      font-size: pxtovw(15px);
       font-weight: 600;
-      line-height: pxtovw(24px);
+      line-height: pxtovw(16px);
+      color: black;
     }
   }
 
-  .CheckOut-Price {
-    margin: pxtovw(43px) 0 pxtovw(40px);
+  // Receipt card
+  // –––––––––––––––––––––
+
+  .CheckOut-price {
+    position: relative;
+    padding: pxtovw(16px);
     text-align: center;
+
+    ion-icon[name="ios-arrow-down"] {
+      $icon-size: pxtovw(32px);
+
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: $icon-size;
+      height: $icon-size;
+      margin: pxtovw(12px);
+      font-size: pxtovw(24px);
+      line-height: pxtovw(32px);
+      color: color($colors, warmGrey);
+    }
   }
 
-  .CheckOut-PriceTitle {
+  .CheckOut-priceTitle {
     margin-bottom: pxtovw(8px);
     font-size: pxtovw(15px);
     line-height: pxtovw(16px);
     color: color($colors, warmGrey);
   }
 
-  .CheckOut-PriceNum {
+  .CheckOut-priceValue {
     line-height: pxtovw(48px);
     letter-spacing: pxtovw(0.8px);
     transform: translateX(pxtovw(-8px));
+
+    b,
+    span {
+      display: inline-block;
+      vertical-align: top;
+    }
 
     b {
       font-size: pxtovw(64px);
@@ -86,42 +135,133 @@ page-checkout {
       line-height: pxtovw(24px);
       transform: translateX(4px);
     }
+  }
 
-    span,
-    b {
-      display: inline-block;
-      vertical-align: top;
+  .CheckOut-controlBtn {
+    position: relative;
+    padding: pxtovw(12px) 0;
+    font-size: pxtovw(16px);
+    font-weight: 500;
+    line-height: pxtovw(24px);
+    text-align: center;
+    background: color($colors, primary);
+
+    &:active {
+      background: darken(color($colors, primary), 5%);
+    }
+
+    &:first-child {
+      border-radius: 0 0 0 pxtovw(8px);
+    }
+
+    &:last-child {
+      border-radius: 0 0 pxtovw(8px) 0;
+    }
+
+    &:after { // separators
+      $width: pxtovw(1px);
+      $height: pxtovw(16px);
+
+      position: absolute;
+      top: 50%;
+      right: 0;
+      width: $width;
+      height: $height;
+      margin: (-1 * $height / 2) ($width / 2) 0 0;
+      content: '';
+      background: black;
+    }
+
+    &:last-child:after {
+      display: none;
     }
   }
 
-  .CheckOut-list {
-    padding: 0 pxtovw(24px);
-  }
-
-  .CheckOut-row {
-    min-height: pxtovw(48px);
-    border-bottom: 1px solid color($grayscale, 200);
-  }
-
-  .CheckOut-col {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0;
+  .CheckOut-details {
+    padding: pxtovw(12px) pxtovw(16px);
     font-size: pxtovw(15px);
     line-height: pxtovw(16px);
+    background: linear-gradient(to bottom, rgba(black, 0.08) 0, white pxtovw(42px));
 
     .mb-icon-trash {
-      margin-right: pxtovw(17px);
+      margin-left: pxtovw(8px);
       font-size: pxtovw(18px);
+      color: color($colors, warmGrey);
     }
 
-    &.havePaddingLeft {
-      padding-left: pxtovw(5px);
+    .row {
+      height: pxtovw(52px);
+    }
+
+    .col {
+      text-align: right;
+
+      &:first-child {
+        text-align: left;
+      }
+
+      i,
+      span {
+        vertical-align: middle;
+      }
+
+      .text-muted {
+        font-size: pxtovw(15px);
+        line-height: pxtovw(16px);
+      }
+    }
+
+    &.is-minified {
+      background: transparent;
+
+      .row,
+      .col {
+        display: none;
+      }
+
+      .row.CheckOut-detailsServices,
+      .col:first-child {
+        display: inline;
+      }
+
+      .row.CheckOut-detailsServices:before {
+        margin-left: pxtovw(-2px);
+        content: ',';
+      }
+
+      .row.CheckOut-detailsServices:first-child:before {
+        display: none;
+      }
     }
   }
 
-  .CheckOut-listBtn {
-    margin-top: pxtovw(18px);
+  // Saved amount block
+  // –––––––––––––––––––––
+
+  .CheckOut-saved {
+    $color-dark-mint: #5DCA91;
+    $color-mint-bg: rgba(93, 202, 145, 0.05);
+
+    padding: pxtovw(8px) pxtovw(12px);
+    margin-top: pxtovw(16px);
+    font-size: pxtovw(18px);
+    font-weight: 500;
+    line-height: pxtovw(24px);
+    color: $color-dark-mint;
+    background: $color-mint-bg;
+    border: pxtovw(1px) solid $color-dark-mint;
+    border-radius: pxtovw(8px);
+
+    .CheckOut-savedAmount {
+      font-size: pxtovw(28px);
+      line-height: pxtovw(32px);
+      text-align: right;
+
+      sup {
+        position: relative;
+        top: pxtovw(-6px);
+        font-size: pxtovw(24px);
+      }
+    }
   }
 }

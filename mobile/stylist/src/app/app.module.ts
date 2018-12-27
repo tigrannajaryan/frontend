@@ -68,7 +68,7 @@ import { AboutComponent } from '~/about/about.component';
 import { AddServicesComponent } from '~/core/popups/add-services/add-services.component';
 import { AllClientsComponent } from '~/clients/all-clients/all-clients.component';
 import { AppointmentAddComponent } from '~/appointment/appointment-add/appointment-add';
-import { AppointmentCheckoutComponent } from '~/appointment/appointment-checkout-new/appointment-checkout.component';
+import { AppointmentCheckoutComponent } from '~/appointment/appointment-checkout/appointment-checkout.component';
 import { AppointmentPriceComponent } from '~/appointment/appointment-price/appointment-price.component';
 import { AppointmentServicesComponent } from '~/appointment/appointment-services/appointment-services';
 import { AuthConfirmPageComponent } from '~/auth/auth-confirm/auth-confirm.component';

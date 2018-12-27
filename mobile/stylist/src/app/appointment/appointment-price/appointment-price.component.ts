@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { NavController, NavParams } from 'ionic-angular';
 import 'rxjs/add/operator/debounceTime';
@@ -13,6 +13,41 @@ import {
 } from '~/core/api/home.models';
 import { HomeService } from '~/core/api/home.service';
 
+export interface Sale {
+  amount: string;
+  percentage: string;
+}
+
+export function getSale(preview: AppointmentPreviewResponse): Sale {
+  if (!preview) {
+    return;
+  }
+
+  let regularPrice = 0;
+  let clientPrice = 0;
+
+  for (const service of preview.services) {
+    regularPrice += service.regular_price;
+    clientPrice += service.client_price;
+  }
+
+  if (regularPrice === 0 || clientPrice === 0) {
+    return;
+  }
+
+  const saleAmount = regularPrice - clientPrice;
+  if (saleAmount < 0) {
+    return;
+  }
+
+  const salePercentage = (saleAmount / regularPrice) * 100;
+
+  return {
+    amount: saleAmount.toString(),
+    percentage: salePercentage.toFixed()
+  };
+}
+
 export interface AppointmentPriceComponentParams {
   appointment: Appointment;
   preview: AppointmentPreviewResponse;
@@ -22,7 +57,9 @@ export interface AppointmentPriceComponentParams {
   selector: 'appointment-price',
   templateUrl: 'appointment-price.component.html'
 })
-export class AppointmentPriceComponent implements OnInit, OnDestroy {
+export class AppointmentPriceComponent implements OnInit {
+  getSale = getSale;
+
   appointment: Appointment;
   preview: AppointmentPreviewResponse;
 

@@ -23,6 +23,10 @@
       </ng-container>
     </div>
 
+    <ion-row *ngIf="getSale(preview) as sale" align-items-center justify-content-center>
+      <div class="AppointmentPrice-discount"><b>{{ sale.percentage }}%</b> Discount Applied</div>
+    </ion-row>
+
   </div>
 </ion-content>
 
