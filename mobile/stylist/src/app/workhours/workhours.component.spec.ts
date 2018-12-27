@@ -36,6 +36,10 @@ describe('Pages: WorktimeComponent', () => {
     instance.params = {
       isRootPage: true
     };
+
+    // Add a card
+    instance.addNewCard();
+
     expect(instance.cards.length).toEqual(1);
 
     expect(instance.cards[0].workStartAt).toEqual(defaultStartTime);
@@ -46,6 +50,8 @@ describe('Pages: WorktimeComponent', () => {
 
     // Make sure it is added
     expect(instance.cards.length).toEqual(2);
+
+    instance.cards[0].weekdays[WeekdayIso.Mon].enabled = true;
 
     // Check that card 0 Mon is set
     expect(instance.cards[0].weekdays[WeekdayIso.Mon].enabled).toEqual(true);
