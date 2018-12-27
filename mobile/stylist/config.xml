@@ -154,4 +154,5 @@
         <variable name="DEEPLINK_HOST" value="madebeauty.com" />
         <variable name="ANDROID_PATH_PREFIX" value="/getpro/" />
     </plugin>
+    <plugin name="cordova-plugin-firebase" spec="2.0.5" />
 </widget>
