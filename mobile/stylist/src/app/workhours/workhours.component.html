@@ -24,7 +24,7 @@
 
     <!--shifts block start -->
     <div *ngFor="let card of cards; let index = index" class="Workingtime" [attr.data-test-id]="index">
-      <button *ngIf="cards.length > 1" (click)="deleteCard(index)" ion-button clear class="Workingtime-delete">
+      <button (click)="deleteCard(index)" ion-button clear class="Workingtime-delete">
         <i class="mb-icon-trash"></i>
       </button>
 

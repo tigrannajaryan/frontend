@@ -123,12 +123,6 @@ export class VisualWeekCard {
       cardsArray.push(card);
     }
 
-    if (cardsArray.length === 0) {
-      // No cards in the input data, but must have at least one card
-      // so create one with all days enabled.
-      cardsArray.push(VisualWeekCard.createCard(true));
-    }
-
     return cardsArray;
   }
 
