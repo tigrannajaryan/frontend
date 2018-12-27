@@ -1,0 +1,24 @@
+{
+    "applinks": {
+        "apps": [],
+        "details": [
+            {
+                "appID": "GJSR473SS4.com.madebeauty.client.production",
+                "paths": [ "/get/*"]
+            },
+            {
+                "appID": "GJSR473SS4.com.madebeauty.client.staging",
+                "paths": [ "/get/*"]
+            },
+            {
+                "appID": "GJSR473SS4.com.madebeauty.stylist.production",
+                "paths": [ "/getpro/*"]
+            },
+            {
+                "appID": "GJSR473SS4.com.madebeauty.stylist.beta",
+                "paths": [ "/getpro/*"]
+            }
+        ]
+    }
+}
+
