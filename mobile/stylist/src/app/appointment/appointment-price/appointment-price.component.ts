@@ -14,8 +14,8 @@ import {
 import { HomeService } from '~/core/api/home.service';
 
 export interface Sale {
-  amount: string;
-  percentage: string;
+  amount: number;
+  percentage: number;
 }
 
 export function getSale(preview: AppointmentPreviewResponse): Sale {
@@ -43,8 +43,8 @@ export function getSale(preview: AppointmentPreviewResponse): Sale {
   const salePercentage = (saleAmount / regularPrice) * 100;
 
   return {
-    amount: saleAmount.toString(),
-    percentage: salePercentage.toFixed()
+    amount: saleAmount,
+    percentage: parseInt(salePercentage.toFixed(), 10)
   };
 }
 
