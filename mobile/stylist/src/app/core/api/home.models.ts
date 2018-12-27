@@ -24,6 +24,7 @@ export interface AppointmentChangeRequest {
   has_tax_included?: boolean;
   has_card_fee_included?: boolean;
   services?: CheckOutService[];
+  price_change_reason?: string;
 }
 
 export interface AppointmentPreviewRequest {
@@ -119,6 +120,7 @@ export interface CheckoutRequest {
 
 export interface CheckOutService {
   service_uuid: string;
+  client_price?: number;
 }
 
 export interface DayAppointmentsResponse {

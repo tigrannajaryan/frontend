@@ -1,0 +1,47 @@
+appointment-price {
+  .AppointmentPrice-formControl,
+  .AppointmentPrice-text {
+    padding: 0;
+
+    .label {
+      color: black;
+    }
+  }
+
+  .AppointmentPrice-formControl .text-input {
+    text-align: right;
+  }
+
+  .AppointmentPrice-title {
+    margin: pxtovw(32px) 0 pxtovw(8px);
+    font-size: pxtovw(15px);
+    line-height: pxtovw(16px);
+    color: color($colors, warmGrey);
+    text-align: center;
+  }
+
+  .AppointmentPrice-price {
+    line-height: pxtovw(48px);
+    text-align: center;
+    letter-spacing: pxtovw(0.8px);
+    transform: translateX(pxtovw(-8px));
+
+    b,
+    span {
+      display: inline-block;
+      vertical-align: top;
+    }
+
+    b {
+      font-size: pxtovw(64px);
+      line-height: pxtovw(48px);
+    }
+
+    span {
+      font-size: pxtovw(20px);
+      font-weight: 600;
+      line-height: pxtovw(24px);
+      transform: translateX(4px);
+    }
+  }
+}
