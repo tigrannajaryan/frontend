@@ -182,7 +182,7 @@ export class ProfileComponent {
       this.onSetAccountInfo(this.servicesPage);
     } else {
       const params: ClientsCalendarComponentParams = {
-        isRootPage: false
+        isRootPage: true
       };
 
       this.navCtrl.setRoot(PageNames.ClientsCalendar, { params });
