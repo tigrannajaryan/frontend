@@ -117,7 +117,6 @@ export class AppointmentPriceComponent implements OnInit {
     const { response } = await this.api.changeAppointment(
       this.appointment.uuid,
       {
-        status: this.appointment.status, // not changed
         services: this.getServicesWithPrices(),
         price_change_reason: this.priceChangeReason.value
       }

@@ -20,7 +20,7 @@ export interface AppointmentParams extends DatesWithAppointmentsParams {
 }
 
 export interface AppointmentChangeRequest {
-  status: AppointmentStatuses;
+  status?: AppointmentStatuses;
   has_tax_included?: boolean;
   has_card_fee_included?: boolean;
   services?: CheckOutService[];

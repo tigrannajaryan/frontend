@@ -5,25 +5,29 @@
 
     <div class="Made-h1">Change Price</div>
 
-    <ion-item *ngFor="let service of appointment.services" class="AppointmentPrice-formControl">
-      <ion-label>{{ service.service_name }}</ion-label>
-      <ion-input [formControl]="form.controls[service.service_uuid]" [placeholder]="'$' + service.client_price"></ion-input>
-    </ion-item>
-
-    <ion-item class="AppointmentPrice-text">
-      <ion-input [formControl]="priceChangeReason" placeholder="Reason for Change (optional)"></ion-input>
-    </ion-item>
-
-    <div class="AppointmentPrice-title">New Price</div>
-    <div class="AppointmentPrice-price">
-      <ion-spinner *ngIf="isLoading" [duration]="500"></ion-spinner>
-      <ng-container *ngIf="!isLoading">
-        <span>$</span>
-        <b>{{ preview.grand_total.toFixed() }}</b>
-      </ng-container>
+    <div data-test-id="services">
+      <ion-item *ngFor="let service of appointment.services" class="AppointmentPrice-formControl">
+        <ion-label>{{ service.service_name }}</ion-label>
+        <ion-input [formControl]="form.controls[service.service_uuid]" [placeholder]="'$' + service.client_price"></ion-input>
+      </ion-item>
     </div>
 
-    <ion-row *ngIf="getSale(preview) as sale" align-items-center justify-content-center>
+    <ion-item class="AppointmentPrice-text">
+      <ion-input [formControl]="priceChangeReason" placeholder="Reason for Change (optional)" data-test-id="reason"></ion-input>
+    </ion-item>
+
+    <div data-test-id="price">
+      <div class="AppointmentPrice-title">New Price</div>
+      <div class="AppointmentPrice-price">
+        <ion-spinner *ngIf="isLoading" [duration]="500"></ion-spinner>
+        <ng-container *ngIf="!isLoading">
+          <span>$</span>
+          <b>{{ preview.grand_total.toFixed() }}</b>
+        </ng-container>
+      </div>
+    </div>
+
+    <ion-row *ngIf="getSale(preview) as sale" align-items-center justify-content-center data-test-id="discount">
       <div class="AppointmentPrice-discount"><b>{{ sale.percentage }}%</b> Discount Applied</div>
     </ion-row>
 
