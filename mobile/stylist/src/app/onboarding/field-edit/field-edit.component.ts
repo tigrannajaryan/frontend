@@ -137,7 +137,17 @@ export class FieldEditComponent implements OnInit {
   private loadFieldInitialData(control: RegistrationFormControl): Promise<void> {
     if (this.params.isRootPage) {
       return this.registrationForm.loadFormInitialData();
+    } else if (this.isFirstRegistrationPageOfOnboarding()) {
+      // Loads the phone to be able to save registration info in onboarding
+      return this.registrationForm.loadFormInitialData();
     }
     return Promise.resolve();
+  }
+
+  private isFirstRegistrationPageOfOnboarding(): boolean {
+    return (
+      !this.params.isRootPage &&
+      [RegistrationFormControl.FirstName, RegistrationFormControl.LastName].indexOf(this.params.control) !== -1
+    );
   }
 }
