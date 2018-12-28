@@ -12,6 +12,7 @@ export interface StylistProfile extends StylistProfileName {
   salon_name: string;
   salon_address: string;
   instagram_url: string;
+  instagram_integrated: boolean;
   website_url: string;
   followers_count: number;
   profile_photo_id?: string;

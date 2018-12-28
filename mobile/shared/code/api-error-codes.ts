@@ -116,6 +116,7 @@ export type NonFieldErrorCode =
   'err_invalid_phone_number' |
   'err_device_not_found' |
   'err_failure_to_setup_oauth' |
+  'err_end_time_greater_than_start_time' |
   'err_stylist_special_availability_date_not_found';
 
 // Mapping of all non-field error codes to human readable messages
@@ -137,6 +138,7 @@ export const nonFieldErrorMsgs = new Map<NonFieldErrorCode, string>([
   ['err_cannot_modify_appointment', 'Cannot modify the appointment.'],
   ['err_invalid_phone_number', 'Phone number is not valid.'],
   ['err_device_not_found', 'Device with given registration_id not found for give user and application type.'],
+  ['err_end_time_greater_than_start_time', 'Start time cannot be after end time!'],
   ['err_failure_to_setup_oauth', 'General problem with setting up oauth credentials.']
 ]);
 

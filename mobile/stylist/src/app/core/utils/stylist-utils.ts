@@ -7,7 +7,6 @@ export function calcProfileCompleteness(fields: StylistProfile): StylistProfileC
     salon_name,
     salon_address,
     profile_photo_url,
-    instagram_url,
     email,
     website_url
   } = fields;
@@ -17,7 +16,6 @@ export function calcProfileCompleteness(fields: StylistProfile): StylistProfileC
     salon_name,
     salon_address,
     profile_photo_url,
-    instagram_url,
     email,
     website_url
   ];

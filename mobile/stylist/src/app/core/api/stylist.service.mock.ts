@@ -38,6 +38,7 @@ export const profileSummaryMock = {
     website_url: faker.internet.url(),
     followers_count: faker.random.number(),
     profile_photo_url: '',
+    instagram_integrated: true,
     email: faker.internet.email()
   },
   services: [
