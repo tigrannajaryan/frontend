@@ -12,7 +12,7 @@ import { showAlert } from '~/shared/utils/alert';
 import { PageNames } from '~/core/page-names';
 import { loading } from '~/core/utils/loading';
 
-import { RegistrationForm, RegistrationFormControl } from '~/onboarding/registration.form';
+import { RegistrationForm } from '~/onboarding/registration.form';
 
 export interface StylistPhotoComponentParams {
   isRootPage?: boolean;

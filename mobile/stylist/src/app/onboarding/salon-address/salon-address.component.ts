@@ -4,6 +4,7 @@ import { NavController, NavParams, Platform } from 'ionic-angular';
 import { TextInput } from 'ionic-angular/components/input/input';
 
 import { MapsAPILoader } from '@agm/core';
+// tslint:disable-next-line
 import { } from 'googlemaps';
 import Autocomplete = google.maps.places.Autocomplete;
 
@@ -14,7 +15,7 @@ import { StylistServiceProvider } from '~/core/api/stylist.service';
 import { PageNames } from '~/core/page-names';
 import { loading } from '~/core/utils/loading';
 
-import { RegistrationForm, RegistrationFormControl } from '~/onboarding/registration.form';
+import { RegistrationForm } from '~/onboarding/registration.form';
 
 export interface SalonAddressComponentParams {
   isRootPage?: boolean;
