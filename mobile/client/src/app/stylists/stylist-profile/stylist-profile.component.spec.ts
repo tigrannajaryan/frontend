@@ -2,6 +2,7 @@ import { async, ComponentFixture } from '@angular/core/testing';
 import { AgmCoreModule } from '@agm/core';
 import { NavParams } from 'ionic-angular';
 
+import { InstagramGalleryComponent } from '~/shared/components/instagram-gallery/instagram-gallery.component';
 import { TestUtils } from '~/../test';
 
 import { StylistsServiceMock } from '~/core/api/stylists.service.mock';
@@ -16,7 +17,10 @@ let instance: StylistProfileComponent;
 describe('StylistProfileComponent', () => {
   beforeEach(
     async(() =>
-      TestUtils.beforeEachCompiler([StylistProfileComponent], [
+      TestUtils.beforeEachCompiler([
+        StylistProfileComponent,
+        InstagramGalleryComponent
+      ], [
         StylistProfileApi,
         StylistProfileApiMock,
         StylistsServiceMock
