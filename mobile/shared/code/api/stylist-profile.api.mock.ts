@@ -26,6 +26,7 @@ export class StylistProfileApiMock extends BaseServiceMock {
             salon_address: faker.address.streetAddress(),
             followers_count: faker.random.number(),
             instagram_url: faker.helpers.slugify(`${name}${lastName}`),
+            instagram_integrated: true,
             website_url: faker.helpers.userCard().website,
             email: faker.internet.email(),
             phone: randomPhone(),
