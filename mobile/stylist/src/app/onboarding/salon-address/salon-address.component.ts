@@ -1,12 +1,13 @@
 import { AfterViewInit, ChangeDetectorRef, Component, NgZone, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, Platform } from 'ionic-angular';
 import { TextInput } from 'ionic-angular/components/input/input';
 
 import { MapsAPILoader } from '@agm/core';
 import { } from 'googlemaps';
 import Autocomplete = google.maps.places.Autocomplete;
 
+import { PlatformNames } from '~/shared/constants';
 import { Logger } from '~/shared/logger';
 
 import { StylistServiceProvider } from '~/core/api/stylist.service';
@@ -42,6 +43,7 @@ export class SalonAddressComponent implements AfterViewInit, OnInit {
     private navCtrl: NavController,
     private navParams: NavParams,
     private ngZone: NgZone,
+    private platform: Platform,
     private registrationForm: RegistrationForm,
     private stylistApi: StylistServiceProvider
   ) {
@@ -58,7 +60,8 @@ export class SalonAddressComponent implements AfterViewInit, OnInit {
   }
 
   ionViewDidEnter(): void {
-    if (!this.address.value) {
+    if (!this.address.value && this.platform.is(PlatformNames.ios)) {
+      // On Android continue btn overlays input on autofocus. The reason why is not clear. Using only for iOS now.
       this.autofocus();
     }
   }
