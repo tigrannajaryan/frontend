@@ -128,21 +128,26 @@ export class FieldEditComponent implements OnInit {
   }
 
   /**
-   * Loads only necessary data to prevent deleting of already inputted data.
-   * This could happen in registration flow where we let user input data page by page
-   * and then save the data only after address is set.
+   * Ensure field’s data is up to date. This is needed to safely save a form
+   * with all the data of other fields be in sync with the server.
+   *
+   * NOTE: loads initial data only if it’s a root page. Do not loads while onboarding.
+   * NOTE 2: it uses a 1h-cached request.
    */
   private loadFieldInitialData(control: RegistrationFormControl): Promise<void> {
-    switch (control) {
-      case RegistrationFormControl.FirstName:
-      case RegistrationFormControl.LastName:
-        return this.registrationForm.loadFormInitialData(
-          RegistrationFormControl.FirstName,
-          RegistrationFormControl.LastName
-        );
-
-      default:
-        return this.registrationForm.loadFormInitialData(control);
+    if (this.params.isRootPage) {
+      return this.registrationForm.loadFormInitialData();
+    } else if (this.isFirstRegistrationPageOfOnboarding()) {
+      // Loads the phone to be able to save registration info in onboarding
+      return this.registrationForm.loadFormInitialData();
     }
+    return Promise.resolve();
+  }
+
+  private isFirstRegistrationPageOfOnboarding(): boolean {
+    return (
+      !this.params.isRootPage &&
+      [RegistrationFormControl.FirstName, RegistrationFormControl.LastName].indexOf(this.params.control) !== -1
+    );
   }
 }

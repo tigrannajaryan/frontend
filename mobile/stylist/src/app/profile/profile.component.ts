@@ -90,7 +90,6 @@ export class ProfileComponent {
 
   async ionViewWillLoad(): Promise<void> {
     this.registrationForm.init();
-    await this.registrationForm.loadFormInitialData();
   }
 
   @loading
@@ -99,6 +98,8 @@ export class ProfileComponent {
     this.events.subscribe(StylistEventTypes.setStylistProfileTab, (params: SetStylistProfileTabEventParams) => {
       this.onTabChange(params.profileTab);
     });
+
+    await this.registrationForm.loadFormInitialData();
 
     await this.getProfile();
 
