@@ -80,9 +80,6 @@ describe('StylistProfileComponent', () => {
     const stylistProfilePreviewAddress = fixture.nativeElement.querySelector('[data-test-id=stylistProfilePreviewAddress]');
     expect(stylistProfilePreviewAddress.innerText).toContain(instance.stylistProfile.salon_address);
 
-    const stylistProfilePreviewInstagram = fixture.nativeElement.querySelector('[data-test-id=stylistProfilePreviewInstagram]');
-    expect(stylistProfilePreviewInstagram.innerText).toContain(instance.stylistProfile.instagram_url);
-
     const stylistProfilePreviewWebsite = fixture.nativeElement.querySelector('[data-test-id=stylistProfilePreviewWebsite]');
     expect(stylistProfilePreviewWebsite.innerText).toContain(instance.stylistProfile.website_url);
 
