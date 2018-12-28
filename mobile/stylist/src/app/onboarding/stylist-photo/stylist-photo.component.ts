@@ -12,7 +12,7 @@ import { showAlert } from '~/shared/utils/alert';
 import { PageNames } from '~/core/page-names';
 import { loading } from '~/core/utils/loading';
 
-import { RegistrationForm, RegistrationFormControl } from '~/onboarding/registration.form';
+import { RegistrationForm } from '~/onboarding/registration.form';
 
 export interface StylistPhotoComponentParams {
   isRootPage?: boolean;
@@ -47,10 +47,9 @@ export class StylistPhotoComponent implements OnInit {
     this.photoId = profile_photo_id;
     this.photoUrl = profile_photo_url;
 
-    await this.registrationForm.loadFormInitialData(
-      RegistrationFormControl.PhotoId,
-      RegistrationFormControl.PhotoUrl
-    );
+    if (this.params.isRootPage) {
+      await this.registrationForm.loadFormInitialData();
+    }
   }
 
   hasPhoto(): boolean {
