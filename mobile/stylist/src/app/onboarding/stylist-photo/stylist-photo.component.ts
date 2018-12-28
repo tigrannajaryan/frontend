@@ -47,10 +47,9 @@ export class StylistPhotoComponent implements OnInit {
     this.photoId = profile_photo_id;
     this.photoUrl = profile_photo_url;
 
-    await this.registrationForm.loadFormInitialData(
-      RegistrationFormControl.PhotoId,
-      RegistrationFormControl.PhotoUrl
-    );
+    if (this.params.isRootPage) {
+      await this.registrationForm.loadFormInitialData();
+    }
   }
 
   hasPhoto(): boolean {

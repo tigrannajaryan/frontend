@@ -56,7 +56,9 @@ export class SalonAddressComponent implements AfterViewInit, OnInit {
 
     this.address = salon_address;
 
-    await this.registrationForm.loadFormInitialData(RegistrationFormControl.SalonAddress);
+    if (this.params.isRootPage) {
+      await this.registrationForm.loadFormInitialData();
+    }
   }
 
   ionViewDidEnter(): void {
