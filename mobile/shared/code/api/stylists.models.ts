@@ -65,6 +65,7 @@ export interface StylistProfileResponse {
   salon_address: string;
   followers_count: number;
   instagram_url: string;
+  instagram_integrated: boolean;
   website_url: string;
   email: string;
   phone: string;

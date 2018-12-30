@@ -1,7 +1,7 @@
 import { ComponentFixture } from '@angular/core/testing';
 import { HttpClient, HttpHandler } from '@angular/common/http';
 import { Camera } from '@ionic-native/camera';
-import { ActionSheetController} from 'ionic-angular';
+import { ActionSheetController, ModalController } from 'ionic-angular';
 import { AgmCoreModule, MapsAPILoader } from '@agm/core';
 import { LaunchNavigator } from '@ionic-native/launch-navigator';
 
@@ -38,7 +38,8 @@ describe('Pages: ProfileComponent', async () => {
       ActionSheetController,
       LaunchNavigator,
       ProfileDataStore,
-      StylistServiceMock
+      StylistServiceMock,
+      ModalController
     ], [AgmCoreModule])
     .then(async (compiled) => {
       fixture = compiled.fixture; // https://angular.io/api/core/testing/ComponentFixture
@@ -99,9 +100,6 @@ describe('Pages: ProfileComponent', async () => {
 
     const stylistProfilePreviewAddress = fixture.nativeElement.querySelector('[data-test-id=stylistProfilePreviewAddress]');
     expect(stylistProfilePreviewAddress.innerText).toContain(instance.profile.salon_address);
-
-    const stylistProfilePreviewInstagram = fixture.nativeElement.querySelector('[data-test-id=stylistProfilePreviewInstagram]');
-    expect(stylistProfilePreviewInstagram.innerText).toContain(instance.profile.instagram_url);
 
     const stylistProfilePreviewWebsite = fixture.nativeElement.querySelector('[data-test-id=stylistProfilePreviewWebsite]');
     expect(stylistProfilePreviewWebsite.innerText).toContain(instance.profile.website_url);

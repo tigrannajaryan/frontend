@@ -31,6 +31,7 @@ export async function createTestStylist(serviceNames: string[], clientPhoneNumbe
     salon_name: faker.commerce.productName(),
     salon_address: faker.address.streetAddress(),
     instagram_url: faker.internet.url(),
+    instagram_integrated: true,
     website_url: faker.internet.url(),
     profile_photo_url: faker.random.image(),
     followers_count: faker.random.number()

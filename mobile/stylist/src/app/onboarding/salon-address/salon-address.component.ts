@@ -1,19 +1,21 @@
 import { AfterViewInit, ChangeDetectorRef, Component, NgZone, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, Platform } from 'ionic-angular';
 import { TextInput } from 'ionic-angular/components/input/input';
 
 import { MapsAPILoader } from '@agm/core';
+// tslint:disable-next-line
 import { } from 'googlemaps';
 import Autocomplete = google.maps.places.Autocomplete;
 
+import { PlatformNames } from '~/shared/constants';
 import { Logger } from '~/shared/logger';
 
 import { StylistServiceProvider } from '~/core/api/stylist.service';
 import { PageNames } from '~/core/page-names';
 import { loading } from '~/core/utils/loading';
 
-import { RegistrationForm, RegistrationFormControl } from '~/onboarding/registration.form';
+import { RegistrationForm } from '~/onboarding/registration.form';
 
 export interface SalonAddressComponentParams {
   isRootPage?: boolean;
@@ -42,6 +44,7 @@ export class SalonAddressComponent implements AfterViewInit, OnInit {
     private navCtrl: NavController,
     private navParams: NavParams,
     private ngZone: NgZone,
+    private platform: Platform,
     private registrationForm: RegistrationForm,
     private stylistApi: StylistServiceProvider
   ) {
@@ -54,11 +57,14 @@ export class SalonAddressComponent implements AfterViewInit, OnInit {
 
     this.address = salon_address;
 
-    await this.registrationForm.loadFormInitialData(RegistrationFormControl.SalonAddress);
+    if (this.params.isRootPage) {
+      await this.registrationForm.loadFormInitialData();
+    }
   }
 
   ionViewDidEnter(): void {
-    if (!this.address.value) {
+    if (!this.address.value && this.platform.is(PlatformNames.ios)) {
+      // On Android continue btn overlays input on autofocus. The reason why is not clear. Using only for iOS now.
       this.autofocus();
     }
   }

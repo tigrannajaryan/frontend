@@ -99,6 +99,11 @@ export class RegistrationForm {
       return;
     }
 
+    if (controls.length === 0) {
+      // If no controls load the data of all controls
+      controls = Object.keys(RegistrationFormControl).map(k => RegistrationFormControl[k]);
+    }
+
     this.phone = response.phone;
 
     const values = {};
