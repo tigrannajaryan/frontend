@@ -66,13 +66,12 @@ describe('Pages: AppointmentCheckoutComponent', () => {
     instance.appointment = (await homeServiceMock.getAppointmentById('').get()).response;
     // Enable tax by default for new booked appointment if it's not `isAlreadyCheckedOut`
     instance.hasTaxIncluded = instance.appointment.has_tax_included;
-    instance.hasCardFeeIncluded = instance.appointment.has_card_fee_included;
     const appointmentPreview: AppointmentPreviewRequest = {
       appointment_uuid: '',
       datetime_start_at: instance.appointment.datetime_start_at,
       services: instance.appointment.services,
       has_tax_included: instance.hasTaxIncluded,
-      has_card_fee_included: instance.hasCardFeeIncluded
+      has_card_fee_included: false
     };
 
     instance.previewResponse = (await homeServiceMock.getAppointmentPreview(appointmentPreview).get()).response;
@@ -99,14 +98,6 @@ describe('Pages: AppointmentCheckoutComponent', () => {
     const appointmentTaxPercentage = fixture.nativeElement.querySelector('[data-test-id=appointmentTaxPercentage]');
     expect(appointmentTaxPercentage.innerText.replace(/\s/g, ''))
       .toContain(`TaxRate(${ decimalPipe.transform(instance.previewResponse.tax_percentage, '1.2')  }%)`);
-    expect(appointmentTaxPercentage.querySelector('ion-toggle').getAttribute('ng-reflect-model'))
-      .toContain(instance.hasTaxIncluded);
-
-    const appointmentCardFeePercentage = fixture.nativeElement.querySelector('[data-test-id=appointmentCardFeePercentage]');
-    expect(appointmentCardFeePercentage.innerText.replace(/\s/g, ''))
-      .toContain(`CardFee(${ decimalPipe.transform(instance.previewResponse.card_fee_percentage, '1.2') }%)`);
-    expect(appointmentCardFeePercentage.querySelector('ion-toggle').getAttribute('ng-reflect-model'))
-      .toContain(instance.hasCardFeeIncluded);
 
     const appointmentAddServiceBtn = fixture.nativeElement.querySelector('[data-test-id=appointmentAddServiceBtn]');
     expect(appointmentAddServiceBtn).toBeDefined();
@@ -134,13 +125,12 @@ describe('Pages: AppointmentCheckoutComponent', () => {
     instance.appointment = (await homeServiceMock.getAppointmentById('').get()).response;
     // Enable tax by default for new booked appointment if it's not `isAlreadyCheckedOut`
     instance.hasTaxIncluded = false;
-    instance.hasCardFeeIncluded = false;
     const appointmentPreview: AppointmentPreviewRequest = {
       appointment_uuid: '',
       datetime_start_at: instance.appointment.datetime_start_at,
       services: instance.appointment.services,
       has_tax_included: instance.hasTaxIncluded,
-      has_card_fee_included: instance.hasCardFeeIncluded
+      has_card_fee_included: false
     };
 
     instance.previewResponse = (await homeServiceMock.getAppointmentPreview(appointmentPreview).get()).response;

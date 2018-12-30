@@ -7,7 +7,6 @@ import {
   AppointmentChangeRequest,
   AppointmentPreviewRequest,
   AppointmentPreviewResponse,
-  AppointmentService,
   AppointmentStatuses,
   CheckOutService
 } from '~/core/api/home.models';
@@ -15,6 +14,8 @@ import { ServiceItem } from '~/shared/api/stylist-app.models';
 
 import { PageNames } from '~/core/page-names';
 import { AddServicesComponentParams } from '~/core/popups/add-services/add-services.component';
+
+import { AppointmentPriceComponentParams, getSale } from '~/appointment/appointment-price/appointment-price.component';
 
 export interface AppointmentCheckoutParams {
   appointmentUuid: string;
@@ -32,6 +33,8 @@ export interface AppointmentCheckoutParams {
   templateUrl: 'appointment-checkout.component.html'
 })
 export class AppointmentCheckoutComponent {
+  getSale = getSale;
+
   // The following field is returned by the server as a result
   // of us asking for a preview of what the appointment will look
   // like if we checkout using provided list of services.
@@ -40,11 +43,13 @@ export class AppointmentCheckoutComponent {
   // The details of the appointment
   appointment: Appointment;
 
-  // The state of 2 toggles for tax and card fee
-  hasTaxIncluded: boolean;
-  hasCardFeeIncluded: boolean;
+  // Tax included by default
+  hasTaxIncluded = true;
 
   subTotalRegularPrice: number;
+
+  // Details show minified as a default to keep more space empty
+  isMinifiedDetails = true;
 
   isLoading = false;
   AppointmentStatuses = AppointmentStatuses;
@@ -72,9 +77,6 @@ export class AppointmentCheckoutComponent {
         this.appointment = (await this.homeService.getAppointmentById(this.params.appointmentUuid).get()).response;
         if (this.appointment) {
           this.selectedServices = this.appointment.services.map(el => ({ service_uuid: el.service_uuid }));
-          // Disable tax by default for new booked appointment if it's not `isAlreadyCheckedOut`
-          this.hasTaxIncluded = this.params.isAlreadyCheckedOut ? this.appointment.has_tax_included : false;
-          this.hasCardFeeIncluded = this.appointment.has_card_fee_included;
         }
       }
       await this.updatePreview();
@@ -101,7 +103,7 @@ export class AppointmentCheckoutComponent {
         datetime_start_at: this.appointment.datetime_start_at,
         services: this.selectedServices,
         has_tax_included: this.hasTaxIncluded,
-        has_card_fee_included: this.hasCardFeeIncluded
+        has_card_fee_included: false
       };
 
       this.previewResponse = (await this.homeService.getAppointmentPreview(appointmentPreview).get()).response;
@@ -111,15 +113,6 @@ export class AppointmentCheckoutComponent {
     } finally {
       this.isLoading = false;
     }
-  }
-
-  removeServiceClick(service: AppointmentService): void {
-    const i = this.selectedServices.findIndex(el => el.service_uuid === service.service_uuid);
-    if (i >= 0) {
-      this.selectedServices.splice(i, 1);
-    }
-
-    this.updatePreview();
   }
 
   addServicesClick(): void {
@@ -147,8 +140,8 @@ export class AppointmentCheckoutComponent {
     const request: AppointmentChangeRequest = {
       status: AppointmentStatuses.checked_out,
       services: this.selectedServices,
-      has_card_fee_included: this.hasCardFeeIncluded,
-      has_tax_included: this.hasTaxIncluded
+      has_tax_included: this.hasTaxIncluded,
+      has_card_fee_included: false
     };
 
     const { response } = await this.homeService.changeAppointment(this.params.appointmentUuid, request).get();
@@ -161,5 +154,14 @@ export class AppointmentCheckoutComponent {
     const current = this.navCtrl.length() - 1;
     this.navCtrl.push(PageNames.ConfirmCheckoutComponent);
     this.navCtrl.remove(current);
+  }
+
+  onChangePrice(appointment: Appointment, preview: AppointmentPreviewResponse): void {
+    const params: AppointmentPriceComponentParams = { appointment, preview };
+    this.navCtrl.push(PageNames.AppointmentPrice, { params });
+  }
+
+  triggerMinifiedDetails(): void {
+    this.isMinifiedDetails = !this.isMinifiedDetails;
   }
 }

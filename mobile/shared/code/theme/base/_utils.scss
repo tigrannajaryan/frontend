@@ -18,3 +18,7 @@
   line-height: pxtovw(24px);
   color: color($colors-shared, warmGrey);
 }
+
+.line-through {
+  text-decoration: line-through;
+}
