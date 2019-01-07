@@ -127,7 +127,8 @@ export class StylistPhotoComponent implements OnInit {
 
       imageData = await this.camera.getPicture(options);
     } catch (e) {
-      showAlert('', 'Cannot take or add photo. Please make sure the App has the neccessary permissions.');
+      const capitalize = e.charAt(0).toUpperCase() + e.slice(1);
+      showAlert('', capitalize);
       return;
     }
 
