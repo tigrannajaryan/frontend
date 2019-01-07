@@ -1,6 +1,6 @@
 import { Component, Input, NgZone, OnInit } from '@angular/core';
 import { Page } from 'ionic-angular/navigation/nav-util';
-import { Content, Events, MenuController, Nav, ViewController } from 'ionic-angular';
+import { AlertController, Content, Events, MenuController, Nav, ViewController } from 'ionic-angular';
 import { Store } from '@ngrx/store';
 
 import { AuthService } from '~/shared/api/auth.api';
@@ -75,6 +75,7 @@ export class MadeMenuComponent implements OnInit {
     private menu: MenuController,
     private registrationForm: RegistrationForm,
     private store: Store<{}>,
+    private alertCtrl: AlertController,
     private zone: NgZone
   ) {
     const redirectParams = { isRootPage: true };
@@ -142,24 +143,24 @@ export class MadeMenuComponent implements OnInit {
     }
   }
 
-  async onLogoutClick(): Promise<void> {
-    // Logout from backend
-    this.authApiService.logout();
-
-    // Dismiss user’s state
-    this.store.dispatch(new LogoutAction());
-
-    // Clear cached registration form
-    this.registrationForm.init(/* forced */ true);
-
-    // Clear cached data
-    await clearAllDataStores();
-
-    // Delete auth stored data
-    await deleteAuthLocalData();
-
-    // Erase all previous navigation history and make FirstScreen the root
-    this.nav.setRoot(PageNames.FirstScreen);
+  onLogoutClick(): void {
+    const prompt = this.alertCtrl.create({
+      title: '',
+      subTitle: 'Are you sure you want to Logout?',
+      buttons: [
+        {
+          text: 'Yes, Logout',
+          handler: () => {
+            this.onLogout();
+          }
+        },
+        {
+          text: 'No',
+          role: 'cancel'
+        }
+      ]
+    });
+    prompt.present();
   }
 
   hasMenu(currentPage: ViewController): boolean {
@@ -192,5 +193,25 @@ export class MadeMenuComponent implements OnInit {
     }
 
     return MadeMenuComponent.showNotice(page, this.profileStatus);
+  }
+
+  private async onLogout(): Promise<void> {
+    // Logout from backend
+    this.authApiService.logout();
+
+    // Dismiss user’s state
+    this.store.dispatch(new LogoutAction());
+
+    // Clear cached registration form
+    this.registrationForm.init(/* forced */ true);
+
+    // Clear cached data
+    await clearAllDataStores();
+
+    // Delete auth stored data
+    await deleteAuthLocalData();
+
+    // Erase all previous navigation history and make FirstScreen the root
+    this.nav.setRoot(PageNames.FirstScreen);
   }
 }
