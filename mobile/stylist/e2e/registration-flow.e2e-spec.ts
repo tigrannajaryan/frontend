@@ -148,11 +148,8 @@ describe('Registration Flow', () => {
     await waitFor(homePage.menuBtn);
     await browser.takeScreenshot();
     await click(homePage.menuBtn);
-    await waitFor(homePage.logoutBtn);
     await browser.takeScreenshot();
-    await click(homePage.logoutBtn);
-    await browser.takeScreenshot();
-    await waitForNot(homePage.logoutBtn);
+    await homePage.logout();
   });
 
   it('should be able to login again', async () => {
