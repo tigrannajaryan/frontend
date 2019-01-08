@@ -1,0 +1,15 @@
+page-add-service {
+
+  // Rewrite Ionic styles
+  .header {
+    box-shadow: 0 7px 43px rgba(black, 0.08);
+
+    .toolbar {
+      padding: 0 pxtovw(24px);
+    }
+  }
+
+  .ServicesPick {
+    margin: pxtovw(36px) pxtovw(24px) pxtovw(57px);
+  }
+}

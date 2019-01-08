@@ -21,8 +21,8 @@
 
   &.button-mini {
     width: auto;
-    height: auto;
     min-width: auto;
+    height: auto;
     min-height: auto;
     padding: 0 pxtovw(8px);
     margin: 0;
@@ -41,6 +41,12 @@
       background: none;
       border: 1px solid color($colors-shared, lightSalmon);
     }
+  }
+
+  &.button-outline {
+    color: color($colors-shared, orange);
+    background: transparent;
+    border: 1px solid color($colors-shared, orange);
   }
 }
 

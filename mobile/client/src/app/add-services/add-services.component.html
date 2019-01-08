@@ -1,0 +1,18 @@
+<ion-header madeHeader>
+  <ion-toolbar>
+    <div class="Made-h1">Select Service</div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div *ngIf="serviceCategories && hasServices">
+    <services-pick
+      [services]="serviceCategories"
+      (serviceAdd)="onServiceAdd($event)">
+    </services-pick>
+  </div>
+</ion-content>
+
+<ion-footer *ngIf="serviceCategories && hasServices" class="Footer">
+  <button (click)="addServicesClick()" ion-button class="Button">Update</button>
+</ion-footer>

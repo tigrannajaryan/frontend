@@ -61,7 +61,9 @@ import { profilePath, profileReducer } from '~/core/reducers/profile.reducer';
 import { servicesPath, servicesReducer } from '~/core/reducers/services.reducer';
 
 import { AboutComponent } from '~/about/about.component';
+import { AddServicesComponent } from '~/add-services/add-services.component';
 import { AppointmentPageComponent } from '~/appointment-page/appointment-page.component';
+import { AppointmentPriceComponent } from '~/appointment-price/appointment-price.component';
 import { AppointmentsHistoryComponent } from '~/appointments-history/appointments-history.component';
 import { AuthPageComponent } from '~/auth/auth-start/auth-start.component';
 import { AuthConfirmPageComponent } from '~/auth/auth-confirm/auth-confirm.component';
@@ -104,7 +106,9 @@ if (ENV.production) {
 
 const declarations = [
   AboutComponent,
+  AddServicesComponent,
   AppointmentPageComponent,
+  AppointmentPriceComponent,
   AppointmentsHistoryComponent,
   AuthConfirmPageComponent,
   AuthPageComponent,

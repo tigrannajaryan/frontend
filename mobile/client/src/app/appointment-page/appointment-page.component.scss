@@ -1,115 +1,284 @@
-.AppointmentPage {
-  .AppointmentPage-padding {
-    padding-top: pxtovw(11px);
+page-appointment {
+  // Basic card styles
+  // –––––––––––––––––––––
 
-    // Fix bottom offset:
-    .ios & {
-      margin-bottom: pxtovw(48px);
+  .CheckOut-card {
+    margin-bottom: pxtovw(16px) 0;
+    border-radius: pxtovw(8px);
+    box-shadow:
+      pxtovw(7px) 0 pxtovw(24px) 0 rgba(black, 0.08),
+      0 pxtovw(7px) pxtovw(24px) 0 rgba(black, 0.08);
+  }
+
+  .CheckOut-card + .CheckOut-card {
+    margin-top: pxtovw(16px);
+    box-shadow:
+      pxtovw(7px) 0 pxtovw(24px) 0 rgba(black, 0.08),
+      0 pxtovw(7px) pxtovw(24px) 0 rgba(black, 0.08);
+  }
+
+  // Header card
+  // –––––––––––––––––––––
+
+  .Checkout-header {
+    padding: pxtovw(16px);
+
+    .UserName-ava {
+      margin: 0 0 0 pxtovw(8px);
     }
   }
 
-  .AppointmentPage-cardGrid {
-    width: 100%;
-    font-size: pxtovw(15px);
-    font-weight: 600;
-  }
-
-  .AppointmentPage-card {
-    margin-top: pxtovw(23px);
-  }
-
-  .AppointmentPage-cardAppDate img {
-    width: pxtovw(32px);
-    height: pxtovw(32px);
-    margin-right: pxtovw(5px);
-  }
-
-  .AppointmentPage-appDate {
+  .CheckOut-headerIcon,
+  .CheckOut-headerDate {
     display: inline-block;
-    line-height: pxtovw(20px);
+    vertical-align: middle;
   }
 
-  .AppointmentPage-cardAppDateTime {
-    font-size: pxtovw(18px);
-    font-weight: bold;
-  }
+  .CheckOut-headerIcon {
+    $icon-size: pxtovw(32px);
 
-  .AppointmentPage-cardAppDateDay {
-    font-size: pxtovw(15px);
-  }
-
-  .AppointmentPage-cardAppPrice {
-    margin: pxtovw(43px) 0 pxtovw(31px);
-    font-size: pxtovw(64px);
-    font-weight: bold;
-    line-height: 1;
-    text-align: center;
-  }
-
-  .AppointmentPage-cardAppPrice .priceEstimated {
-    color: color($grayscale, 500);
-  }
-
-  .AppointmentPage-cardAppPrice .label {
-    font-size: pxtovw(15px);
-    font-weight: normal;
-    color: color($grayscale, 500);
-  }
-
-  .AppointmentPage-cardAppPrice .price {
     position: relative;
-    display: inline-block;
-    margin-top: pxtovw(-9px);
-    line-height: pxtovw(64px);
+    width: $icon-size;
+    height: $icon-size;
+    margin-right: pxtovw(8px);
+    font-size: pxtovw(14px);
+    color: #358ED7;
+    background: rgba(black, 0.08);
+    border-radius: 50%;
 
-    &:before {
+    i {
       position: absolute;
-      top: pxtovw(-10px);
-      left: pxtovw(-10px);
-      font-size: pxtovw(18px);
-      content: '$';
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .mb-icon-check {
+      margin-top: 1px;
+      margin-left: 1px;
+      font-size: pxtovw(26px);
+      font-weight: 700;
+    }
+
+    &.is-alreadyCheckedOut {
+      color: #FFFFFF;
+      background: #68D09B;
+      border: 1px solid transparent;
     }
   }
 
-  .AppointmentPage-redLabel {
-    width: fit-content;
-    padding: pxtovw(3px) pxtovw(4px);
-    margin-top: pxtovw(1px);
-    margin-left: auto;
-    font-size: pxtovw(10px);
-    font-weight: normal;
-    color: white;
-    background: color($colors, warning);
-    border-radius: pxtovw(3px);
+  .CheckOut-headerDate {
+    font-size: pxtovw(13px);
+    font-weight: 600;
+    line-height: pxtovw(16px);
+    color: color($colors, warmGrey);
+
+    b {
+      display: block;
+      font-size: pxtovw(15px);
+      font-weight: 600;
+      line-height: pxtovw(16px);
+      color: black;
+    }
   }
 
-  .AppointmentPage-cardAppService,
-  .AppointmentPage-cardAppServiceFees {
-    padding: pxtovw(15px) pxtovw(3px) pxtovw(15px) pxtovw(8px);
-    font-weight: 400;
-    border-bottom: 1px solid color($grayscale, 300);
+  // Receipt card
+  // –––––––––––––––––––––
+
+  .CheckOut-price {
+    position: relative;
+    padding: pxtovw(16px);
+    text-align: center;
+
+    ion-icon[name="ios-arrow-down"] {
+      $icon-size: pxtovw(32px);
+
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: $icon-size;
+      height: $icon-size;
+      margin: pxtovw(12px);
+      font-size: pxtovw(24px);
+      line-height: pxtovw(32px);
+      color: color($colors, warmGrey);
+    }
   }
 
-  .AppointmentPage-cardAppTip {
-    margin-top: pxtovw(7px);
-    font-weight: 400;
-    color: color($grayscale, 500);
-    text-align: right;
+  .CheckOut-priceTitle {
+    margin-bottom: pxtovw(8px);
+    font-size: pxtovw(15px);
+    line-height: pxtovw(16px);
+    color: color($colors, warmGrey);
   }
 
+  .CheckOut-priceValue {
+    line-height: pxtovw(48px);
+    letter-spacing: pxtovw(0.8px);
+    transform: translateX(pxtovw(-8px));
+
+    b,
+    span {
+      display: inline-block;
+      vertical-align: top;
+    }
+
+    b {
+      font-size: pxtovw(64px);
+      line-height: pxtovw(48px);
+    }
+
+    span {
+      font-size: pxtovw(20px);
+      font-weight: 600;
+      line-height: pxtovw(24px);
+      transform: translateX(4px);
+    }
+  }
+
+  .CheckOut-controlBtn {
+    position: relative;
+    padding: pxtovw(12px) 0;
+    font-size: pxtovw(16px);
+    font-weight: 500;
+    line-height: pxtovw(24px);
+    text-align: center;
+    background: color($colors, primary);
+
+    &:active {
+      background: darken(color($colors, primary), 5%);
+    }
+
+    &:first-child {
+      border-radius: 0 0 0 pxtovw(8px);
+    }
+
+    &:last-child {
+      border-radius: 0 0 pxtovw(8px) 0;
+    }
+
+    &:after { // separators
+      $width: pxtovw(1px);
+      $height: pxtovw(16px);
+
+      position: absolute;
+      top: 50%;
+      right: 0;
+      width: $width;
+      height: $height;
+      margin: (-1 * $height / 2) ($width / 2) 0 0;
+      content: '';
+      background: black;
+    }
+
+    &:last-child:after {
+      display: none;
+    }
+  }
+
+  .CheckOut-details {
+    padding: pxtovw(12px) pxtovw(16px);
+    font-size: pxtovw(15px);
+    line-height: pxtovw(16px);
+    background: linear-gradient(to bottom, rgba(black, 0.08) 0, white pxtovw(42px));
+
+    .mb-icon-trash {
+      margin-left: pxtovw(8px);
+      font-size: pxtovw(18px);
+      color: color($colors, warmGrey);
+    }
+
+    .row {
+      height: pxtovw(52px);
+    }
+
+    .col {
+      text-align: right;
+
+      &:first-child {
+        text-align: left;
+      }
+
+      i,
+      span {
+        vertical-align: middle;
+      }
+
+      .text-muted {
+        font-size: pxtovw(15px);
+        line-height: pxtovw(16px);
+      }
+    }
+
+    &.is-minified {
+      background: transparent;
+
+      .row,
+      .col {
+        display: none;
+      }
+
+      .row.CheckOut-detailsServices,
+      .col:first-child {
+        display: inline;
+      }
+
+      .row.CheckOut-detailsServices:before {
+        margin-left: pxtovw(-2px);
+        content: ',';
+      }
+
+      .row.CheckOut-detailsServices:first-child:before {
+        display: none;
+      }
+    }
+  }
+
+  // Saved amount block
+  // –––––––––––––––––––––
+
+  .CheckOut-saved {
+    $color-dark-mint: #5DCA91;
+    $color-mint-bg: rgba(93, 202, 145, 0.05);
+
+    padding: pxtovw(8px) pxtovw(12px);
+    margin-top: pxtovw(16px);
+    font-size: pxtovw(18px);
+    font-weight: 500;
+    line-height: pxtovw(24px);
+    color: $color-dark-mint;
+    background: $color-mint-bg;
+    border: pxtovw(1px) solid $color-dark-mint;
+    border-radius: pxtovw(8px);
+
+    .CheckOut-savedAmount {
+      font-size: pxtovw(28px);
+      line-height: pxtovw(32px);
+      text-align: right;
+
+      sup {
+        position: relative;
+        top: pxtovw(-6px);
+        font-size: pxtovw(24px);
+      }
+    }
+  }
+
+  // This page only
+  // –––––––––––––––––––––
   .AppointmentPage-actions {
     margin: pxtovw(39px) auto;
     text-align: center;
-  }
 
-  .AppointmentPage-cancelBooking {
-    font-size: pxtovw(16px);
-    color: color($colors, warning);
-  }
+    .AppointmentPage-cancelBooking {
+      font-size: pxtovw(16px);
+      color: color($colors, warning);
+    }
 
-  .AppointmentPage-reBook {
-    font-size: pxtovw(16px);
-    color: color($colors, orange);
-    letter-spacing: pxtovw(0.4px);
+    .AppointmentPage-reBook {
+      font-size: pxtovw(16px);
+      color: color($colors, orange);
+      letter-spacing: pxtovw(0.4px);
+    }
   }
 }

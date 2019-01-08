@@ -1,0 +1,74 @@
+appointment-price {
+  .AppointmentPrice-formControl,
+  .AppointmentPrice-text {
+    &,
+    .item-inner {
+      padding: 0;
+    }
+
+    .label {
+      color: black;
+    }
+
+    .text-input {
+      width: 100%;
+      margin: 0;
+    }
+  }
+
+  .AppointmentPrice-formControl .text-input {
+    text-align: right;
+  }
+
+  .AppointmentPrice-title {
+    margin: pxtovw(32px) 0 pxtovw(8px);
+    font-size: pxtovw(15px);
+    line-height: pxtovw(16px);
+    color: color($colors, warmGrey);
+    text-align: center;
+  }
+
+  .AppointmentPrice-price {
+    line-height: pxtovw(48px);
+    text-align: center;
+    letter-spacing: pxtovw(0.8px);
+    transform: translateX(pxtovw(-8px));
+
+    b,
+    span {
+      display: inline-block;
+      vertical-align: top;
+    }
+
+    b {
+      font-size: pxtovw(64px);
+      line-height: pxtovw(48px);
+    }
+
+    span {
+      font-size: pxtovw(20px);
+      font-weight: 600;
+      line-height: pxtovw(24px);
+      transform: translateX(4px);
+    }
+  }
+
+  .AppointmentPrice-discount {
+    $color-dark-mint: #5DCA91;
+    $color-mint-bg: rgba(93, 202, 145, 0.05);
+
+    padding: pxtovw(8px);
+    margin-top: pxtovw(16px);
+    font-size: pxtovw(13px);
+    line-height: pxtovw(16px);
+    color: $color-dark-mint;
+    background: $color-mint-bg;
+    border: pxtovw(1px) solid $color-dark-mint;
+    border-radius: pxtovw(4px);
+
+    b {
+      font-size: pxtovw(16px);
+      font-weight: bold;
+    }
+  }
+}

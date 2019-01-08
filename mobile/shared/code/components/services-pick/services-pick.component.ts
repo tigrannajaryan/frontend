@@ -1,9 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { AlertController, ModalController, NavController, NavParams } from 'ionic-angular';
 
-import { StylistServiceProvider } from '~/core/api/stylist.service';
-import { ServiceCategory } from '~/shared/api/stylist-app.models';
-import { AppointmentService } from '~/core/api/home.models';
+import { ServiceCategory, ServiceFromAppointment } from '~/shared/api/stylist-app.models';
 
 @Component({
   selector: 'services-pick',
@@ -11,28 +8,19 @@ import { AppointmentService } from '~/core/api/home.models';
 })
 export class ServicesPickComponent {
   @Output() serviceAdd = new EventEmitter();
-  @Input()
-  set services(serviceCategory: ServiceCategory[]) {
+
+  @Input() set services(serviceCategory: ServiceCategory[]) {
     this.serviceCategory = serviceCategory;
     this.onServiceChange();
   }
-  protected serviceCategory: ServiceCategory[];
+  serviceCategory: ServiceCategory[];
 
-  constructor(
-    protected navCtrl: NavController,
-    protected navParams: NavParams,
-    protected modalCtrl: ModalController,
-    protected alertCtrl: AlertController,
-    protected stylistService: StylistServiceProvider
-  ) {
-  }
-
-  protected onServiceChange(service?: AppointmentService): void {
+  onServiceChange(service?: ServiceFromAppointment): void {
     if (service) {
       service.isChecked = !service.isChecked;
     }
 
-    const checkedServices: AppointmentService[] = [];
+    const checkedServices: ServiceFromAppointment[] = [];
     for (const categoryItem of this.serviceCategory) {
       for (const servicesItems of categoryItem.services) {
         if (servicesItems.isChecked) {

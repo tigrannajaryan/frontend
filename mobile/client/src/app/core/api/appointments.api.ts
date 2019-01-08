@@ -7,7 +7,10 @@ import { Logger } from '~/shared/logger';
 import { ServerStatusTracker } from '~/shared/server-status-tracker';
 import { BaseService } from '~/shared/api/base.service';
 import {
+  AppointmentChangeRequest,
   AppointmentModel,
+  AppointmentPreviewRequest,
+  AppointmentPreviewResponse,
   AppointmentsHistoryResponse,
   AppointmentStatus,
   HomeResponse
@@ -37,5 +40,13 @@ export class AppointmentsApi extends BaseService {
       status: AppointmentStatus.cancelled_by_client
     };
     return this.post<AppointmentModel>(`client/appointments/${appointment.uuid}`, data);
+  }
+
+  getAppointmentPreview(data: AppointmentPreviewRequest): Observable<ApiResponse<AppointmentPreviewResponse>> {
+    return this.post<AppointmentPreviewResponse>('client/appointments/preview', data);
+  }
+
+  changeAppointment(appointmentUuid: string, data: AppointmentChangeRequest): Observable<ApiResponse<AppointmentModel>> {
+    return this.post<AppointmentModel>(`client/appointments/${appointmentUuid}`, data);
   }
 }

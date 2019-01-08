@@ -156,8 +156,8 @@ export class AppointmentCheckoutComponent {
     this.navCtrl.remove(current);
   }
 
-  onChangePrice(appointment: Appointment, preview: AppointmentPreviewResponse): void {
-    const params: AppointmentPriceComponentParams = { appointment, preview };
+  onChangePrice(appointment: Appointment): void {
+    const params: AppointmentPriceComponentParams = { appointment };
     this.navCtrl.push(PageNames.AppointmentPrice, { params });
   }
 

@@ -1,95 +1,97 @@
-<ion-header madeHeader [showHome]="true"></ion-header>
+<ion-header madeHeader></ion-header>
 
-<ion-content class="AppointmentPage">
-  <div class="contentSidePadding SelectDate-header">
-    <ng-template [ngIf]="params && params.appointment">
+<ion-content no-padding>
+  <div class="contentSidePadding">
+    <div *ngIf="params?.appointment as appointment" class="CheckOut">
 
-      <h1 class="pageTitle" *ngIf="params.appointment.status === AppointmentStatus.checked_out">Thanks for your visit!</h1>
+      <!-- Header card -->
+      <div class="CheckOut-card">
+        <ion-row align-items-center class="Checkout-header">
 
-      <div class="SharedCard AppointmentPage-card">
-        <ion-grid no-padding class="AppointmentPage-cardGrid">
-          <ion-row>
+          <ion-col col-6 no-padding>
+            <!-- Left icon -->
+            <div [class.isAlreadyCheckedOut]="appointment.status === AppointmentStatus.checked_out" class="CheckOut-headerIcon">
+              <i [class]="appointment.status === AppointmentStatus.checked_out ? 'mb-icon-check' : 'mb-icon-calendar'"></i>
+            </div>
 
-            <ion-col col-6 class="AppointmentPage-cardAppDate">
-              <!-- for new appointments show calendar icon - ToDo Allpng should be changed to font -->
-              <img src="assets/icons/calendar-2x.png" *ngIf="params.appointment.status === AppointmentStatus.new" />
+            <!-- Time and date -->
+            <div class="CheckOut-headerDate" data-test-id="appointmentDateTime">
+              <b>{{ appointment.datetime_start_at | date: 'h:mmaaaaa' }}</b>
+              {{ appointment.datetime_start_at | date: 'E, LLL MM' }}
+            </div>
+          </ion-col>
 
-              <!-- for checked out appointments show checkmark - ToDo Allpng should be changed to font-->
-              <img src="assets/icons/check-2x.png" *ngIf="params.appointment.status === AppointmentStatus.checked_out" />
-
-              <!-- date and time of the appointment -->
-              <div class="AppointmentPage-appDate">
-                <span class="AppointmentPage-cardAppDateTime">{{ formatTimeInZone(params.appointment.datetime_start_at) }}</span>
-                <br/>
-                <span class="AppointmentPage-cardAppDateDay">{{ params.appointment.datetime_start_at | date: 'E, LLL d' }}</span>
-              </div>
-            </ion-col>
-
-            <user-name-photo
-              [firstName]="params.appointment.stylist_first_name"
-              [lastName]="params.appointment.stylist_last_name"
-              [photoUrl]="params.appointment.profile_photo_url"
-              col-6>
-            </user-name-photo>
-          </ion-row>
-
-          <ion-row>
-            <ion-col col-12 class="AppointmentPage-cardAppPrice">
-              <!-- price -->
-              <div [class.priceEstimated]="params.appointment.status === AppointmentStatus.new">
-                <div class="label">{{ params.appointment.status === AppointmentStatus.new ? 'Estimated price' : 'Final price' }}</div>
-                <div class="price">{{ params.appointment.grand_total.toFixed() }}</div>
-              </div>
-            </ion-col>
-          </ion-row>
-          <!-- services, one row per service -->
-          <ion-row *ngFor="let service of params.appointment.services" class="AppointmentPage-cardAppService">
-            <ion-col col-7>{{ service.service_name }}</ion-col>
-            <ion-col col-2>{{ service.client_price | price }}</ion-col>
-            <ion-col col-3>
-              <div class="AppointmentPage-redLabel">
-                <span>WAS</span> {{ service.regular_price | price }}</div>
-            </ion-col>
-          </ion-row>
-
-          <!-- show tax if it is present -->
-          <ion-row *ngIf="params.appointment.total_tax && params.appointment.has_tax_included" class="AppointmentPage-cardAppServiceFees">
-            <ion-col col-7>
-              {{ params.appointment.status === AppointmentStatus.new ? 'Est. tax' : 'Taxes' }}
-              ({{ params.appointment.tax_percentage | number:'1.0-3' }}%)
-            </ion-col>
-            <ion-col col-5>
-              ${{ params.appointment.total_tax | number:'1.2-2' }}
-            </ion-col>
-          </ion-row>
-
-          <!-- show card fee if it is present -->
-          <ion-row *ngIf="params.appointment.total_card_fee && params.appointment.has_card_fee_included" class="AppointmentPage-cardAppServiceFees">
-            <ion-col col-7>
-              Card fee ({{ params.appointment.card_fee_percentage | number:'1.0-3' }}%)
-            </ion-col>
-            <ion-col col-5>
-              ${{ params.appointment.total_card_fee | number:'1.2-2' }}
-            </ion-col>
-          </ion-row>
-
-          <ion-row>
-            <ion-col col-7></ion-col>
-            <ion-col *ngIf="!params.appointment.has_tax_included" col-5 class="AppointmentPage-cardAppTip">Tax and tip not included</ion-col>
-            <ion-col *ngIf="params.appointment.has_tax_included" col-5 class="AppointmentPage-cardAppTip">Tip not included</ion-col>
-          </ion-row>
-        </ion-grid>
+          <user-name-photo
+            [firstName]="appointment.stylist_first_name"
+            [lastName]="appointment.stylist_last_name"
+            [photoUrl]="appointment.stylist_profile_photo_url"
+            col-6>
+          </user-name-photo>
+        </ion-row>
       </div>
 
-      <div class="AppointmentPage-actions">
-        <button ion-button class="Button" *ngIf="params.onConfirmClick" (click)="onConfirmClick()">Confirm Booking</button>
+      <!-- Receipt card -->
+      <div class="CheckOut-card">
 
-        <!-- rebooking link -->
-        <div class="AppointmentPage-reBook" *ngIf="params.hasRebook" (click)="onRebookClick()">Re-book Appointment</div>
+          <!-- Price -->
+          <div (click)="triggerMinifiedDetails()" class="CheckOut-price">
+            <div class="CheckOut-priceTitle" data-test-id="appointmentTitle">Total Price</div>
 
-        <!-- cancelation link -->
-        <a class="AppointmentPage-cancelBooking" *ngIf="params.onCancel" (click)="onCancelClick()">Cancel Booking</a>
-      </div>
-    </ng-template>
+            <div class="CheckOut-priceValue">
+              <span>$</span>
+              <b data-test-id="appointmentPrice">{{ appointment.grand_total.toFixed() }}</b>
+            </div>
+
+            <ion-icon name="ios-arrow-down"></ion-icon>
+          </div>
+
+          <!-- Details -->
+          <div *ngIf="appointment.services.length > 0" [class.is-minified]="isMinifiedDetails" class="CheckOut-details">
+            <ion-row align-items-center *ngFor="let service of appointment.services; let index = index;" class="CheckOut-detailsServices" data-test-id="appointmentServices">
+              <ion-col col-6 no-padding>
+                <span>{{ service.service_name }}</span>
+              </ion-col>
+              <ion-col col-3 no-padding>
+                <span *ngIf="service.regular_price > service.client_price" class="text-muted line-through">{{ service.regular_price | currency }}</span>
+              </ion-col>
+              <ion-col col-3 no-padding>
+                <span>{{ service.client_price | currency }}</span>
+              </ion-col>
+            </ion-row>
+
+            <ion-row align-items-center *ngIf="!params?.isAlreadyCheckedOut || hasTaxIncluded" data-test-id="appointmentTaxPercentage">
+              <ion-col col-9 no-padding>
+                <span class="text-muted">Tax Rate ({{ appointment.tax_percentage | number: '1.2' }}%)</span>
+              </ion-col>
+              <ion-col col-3 no-padding>
+                <span>{{ appointment.total_tax.toFixed(2) | currency }}</span>
+              </ion-col>
+            </ion-row>
+          </div>
+
+          <!-- Bottom controls -->
+          <ion-row>
+            <ion-col (click)="onChangeServices()" class="CheckOut-controlBtn">
+              <span>Change </span>
+              <ng-container *ngIf="appointment.services.length > 1; else oneTpl">Services</ng-container>
+              <ng-template #oneTpl>Service</ng-template>
+            </ion-col>
+
+            <ion-col (click)="onChangePrice(appointment)" class="CheckOut-controlBtn">Change Price</ion-col>
+          </ion-row>
+        </div>
+
+    </div>
   </div>
 </ion-content>
+
+<ion-footer class="Footer">
+  <div class="AppointmentPage-actions">
+    <!-- Confirm booking -->
+    <button ion-button class="Button" *ngIf="params?.onConfirmClick" (click)="onConfirmClick()">Confirm Booking</button>
+    <!-- Rebook-->
+    <div class="AppointmentPage-reBook" *ngIf="params?.hasRebook" (click)="onRebookClick()">Re-book Appointment</div>
+    <!-- Cancelation link -->
+    <a class="AppointmentPage-cancelBooking" *ngIf="params?.onCancel" (click)="onCancelClick()">Cancel Booking</a>
+  </div>
+</ion-footer>

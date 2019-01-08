@@ -1,5 +1,7 @@
 import { AboutComponent } from '~/about/about.component';
+import { AddServicesComponent } from '~/add-services/add-services.component';
 import { AppointmentPageComponent } from '~/appointment-page/appointment-page.component';
+import { AppointmentPriceComponent } from '~/appointment-price/appointment-price.component';
 import { AppointmentsHistoryComponent } from '~/appointments-history/appointments-history.component';
 import { AuthConfirmPageComponent } from '~/auth/auth-confirm/auth-confirm.component';
 import { AuthPageComponent } from '~/auth/auth-start/auth-start.component';
@@ -37,7 +39,9 @@ import { StylistSearchComponent } from '~/stylists/stylists-search/stylists-sear
 // tslint:disable-next-line:variable-name
 export const PageNames = {
   About: AboutComponent,
+  AddServices: AddServicesComponent,
   Appointment: AppointmentPageComponent,
+  AppointmentPrice: AppointmentPriceComponent,
   AppointmentsHistory: AppointmentsHistoryComponent,
   Auth: AuthPageComponent,
   AuthConfirm: AuthConfirmPageComponent,

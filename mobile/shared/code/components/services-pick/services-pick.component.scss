@@ -1,0 +1,32 @@
+services-pick {
+  .ServicesPick-category {
+    padding: pxtovw(12px) 0;
+    border-bottom: 1px solid color($grayscale, 200);
+  }
+
+  .ServicesPick-service {
+    padding: pxtovw(16px) 0 pxtovw(14px);
+    border-bottom: 1px solid color($grayscale, 200);
+
+    .ServicesPick-details {
+      font-size: pxtovw(18px);
+      line-height: pxtovw(24px);
+
+      small {
+        font-size: pxtovw(15px);
+        color: color($colors, warmGrey);
+      }
+    }
+
+    .ServicesPick-button {
+      min-width: 100%;
+      padding-right: pxtovw(8px);
+      padding-left: pxtovw(8px);
+
+      [class^="mb-icon"] {
+        margin-right: pxtovw(4px);
+        font-size: pxtovw(18px);
+      }
+    }
+  }
+}
