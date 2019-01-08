@@ -13,6 +13,7 @@ import { FocusAppointmentEventParams, StylistEventTypes } from '~/core/stylist-e
 import { PageNames } from '~/core/page-names';
 
 import { AppointmentCheckoutParams } from '~/appointment/appointment-checkout/appointment-checkout.component';
+import { ServicesListComponentParams } from '~/services/services-list/services-list.component';
 
 @Component({
   selector: 'push-notifications-tracker',
@@ -74,6 +75,16 @@ export class StylistPushNotificationsTrackerComponent implements OnInit, OnDestr
               StylistEventTypes.focusAppointment,
               { appointment_datetime_start_at } as FocusAppointmentEventParams
             );
+          }
+        };
+      }
+
+      case PushNotificationCode.remind_define_services: {
+        return {
+          buttonText: 'Open',
+          onClick: async (): Promise<void> => {
+            const params: ServicesListComponentParams = { isRootPage: true };
+            await this.nav.setRoot(PageNames.ServicesList, { params });
           }
         };
       }
