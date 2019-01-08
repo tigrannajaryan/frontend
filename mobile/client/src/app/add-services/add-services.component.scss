@@ -15,4 +15,29 @@ page-add-service {
   .ServicesPick {
     margin: pxtovw(36px) pxtovw(24px) pxtovw(57px);
   }
+
+  .Services-footer {
+    padding-top: pxtovw(16px);
+    padding-bottom: pxtovw(16px);
+    border-top: 1px solid color($grayscale, 200);
+
+    &:before {
+      display: none;
+    }
+  }
+
+  .Services-summary {
+    font-size: pxtovw(18px);
+    line-height: pxtovw(24px);
+
+    small {
+      font-size: pxtovw(15px);
+      color: color($colors, warmGrey);
+    }
+  }
+
+  .Services-submit {
+    font-size: pxtovw(18px);
+    font-weight: 500;
+  }
 }

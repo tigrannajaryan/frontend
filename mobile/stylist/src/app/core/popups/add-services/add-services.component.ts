@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { AlertController, NavController, NavParams } from 'ionic-angular';
+import { Component, ViewChild } from '@angular/core';
+import { AlertController, Content, NavController, NavParams } from 'ionic-angular';
 
 import { StylistServiceProvider } from '~/core/api/stylist.service';
 import { ServiceCategory, ServiceItem, StylistServicesList } from '~/shared/api/stylist-app.models';
@@ -24,6 +24,8 @@ export class AddServicesComponentParams {
   templateUrl: 'add-services.component.html'
 })
 export class AddServicesComponent {
+  @ViewChild(Content) content: Content;
+
   hasServices: boolean;
   protected serviceCategories: ServiceCategory[];
   protected addedServices: ServiceItem[];
@@ -49,6 +51,8 @@ export class AddServicesComponent {
       this.serviceCategories = this.filterSelectedServices(response.categories);
 
       this.hasServices = response.categories.some(category => category.services.length > 0);
+
+      this.content.resize();
     }
   }
 
@@ -58,6 +62,12 @@ export class AddServicesComponent {
     };
 
     this.navCtrl.push(PageNames.Services, { params });
+  }
+
+  getServicesCalcPrice(): number {
+    return this.addedServices.reduce((price, service) => {
+      return price + service.regular_price;
+    }, 0);
   }
 
   protected onServiceAdd(services): void {

@@ -57,6 +57,12 @@ export class AddServicesComponent {
     }
   }
 
+  getServicesCalcPrice(): number {
+    return this.addedServices.reduce((price, service) => {
+      return price + service.regular_price;
+    }, 0);
+  }
+
   protected onServiceAdd(services): void {
     this.addedServices = services;
   }
