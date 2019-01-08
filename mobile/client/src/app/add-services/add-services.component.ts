@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { Content, NavParams } from 'ionic-angular';
 
-import { ServiceModel } from '~/shared/api/price.models';
+import { ServiceFromAppointment } from '~/shared/api/stylist-app.models';
 
 import { AppointmentModel, CheckOutService } from '~/core/api/appointments.models';
 import { GetStylistServicesParams, ServiceCategoryModel } from '~/core/api/services.models';
@@ -10,7 +10,7 @@ import { ServicesService } from '~/core/api/services.service';
 export class AddServicesComponentParams {
   appointment: AppointmentModel;
   selectedServices: CheckOutService[];
-  onComplete: (addedServices: ServiceModel[]) => void;
+  onComplete: (addedServices: ServiceFromAppointment[]) => void;
 }
 
 /**
@@ -28,7 +28,7 @@ export class AddServicesComponent {
   hasServices: boolean;
   serviceCategories: ServiceCategoryModel[];
 
-  private addedServices: ServiceModel[];
+  private addedServices: ServiceFromAppointment[];
   private params: AddServicesComponentParams;
 
   constructor(

@@ -1,17 +1,19 @@
 import { Component, ViewChild } from '@angular/core';
 import { AlertController, Content, NavController, NavParams } from 'ionic-angular';
 
-import { StylistServiceProvider } from '~/core/api/stylist.service';
-import { ServiceCategory, ServiceItem, StylistServicesList } from '~/shared/api/stylist-app.models';
+import { ServiceCategory, ServiceFromAppointment, StylistServicesList } from '~/shared/api/stylist-app.models';
+
 import { CheckOutService } from '~/core/api/home.models';
-import { loading } from '~/core/utils/loading';
+import { StylistServiceProvider } from '~/core/api/stylist.service';
 import { PageNames } from '~/core/page-names';
+import { loading } from '~/core/utils/loading';
+
 import { ServicesComponentParams } from '~/services/services.component';
 
 export class AddServicesComponentParams {
   appointmentUuid: string;
   selectedServices: CheckOutService[];
-  onComplete: (addedServices: ServiceItem[]) => void;
+  onComplete: (addedServices: ServiceFromAppointment[]) => void;
 }
 
 /**
@@ -28,7 +30,7 @@ export class AddServicesComponent {
 
   hasServices: boolean;
   protected serviceCategories: ServiceCategory[];
-  protected addedServices: ServiceItem[];
+  protected addedServices: ServiceFromAppointment[];
   protected params: AddServicesComponentParams;
 
   constructor(
