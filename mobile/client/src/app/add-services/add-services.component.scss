@@ -1,11 +1,14 @@
 page-add-service {
+  .Made-h1 {
+    margin: 0;
+  }
 
   // Rewrite Ionic styles
   .header {
     box-shadow: 0 7px 43px rgba(black, 0.08);
 
     .toolbar {
-      padding: 0 pxtovw(24px);
+      padding: pxtovw(8px) pxtovw(24px) pxtovw(16px);
     }
   }
 

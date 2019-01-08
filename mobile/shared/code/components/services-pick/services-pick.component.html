@@ -1,10 +1,11 @@
-<ng-container *ngIf="serviceCategory">
-  <ng-container *ngFor="let category of serviceCategory">
+<div *ngIf="serviceCategory" class="ServicesPick">
 
-    <div *ngIf="category.services.length !== 0" class="ServicesPick">
+  <ng-container *ngFor="let category of serviceCategory">
+    <ng-container *ngIf="category.services.length !== 0">
 
       <!-- Category icon and name -->
       <div class="ServicesPick-category">
+        <div class="ServicesPick-categoryImg" [style.backgroundImage]="'url(' + 'assets/icons/services-categories/' + category.category_code +'.png)'"></div>
         <div class="Made-h2">{{ category.name }}</div>
       </div>
 
@@ -25,7 +26,7 @@
         </ion-col>
       </ion-row>
 
-    </div>
-
+    </ng-container>
   </ng-container>
-</ng-container>
+
+</div>

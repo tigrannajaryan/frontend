@@ -1,12 +1,28 @@
 services-pick {
   .ServicesPick-category {
+    display: flex;
+    align-items: center;
     padding: pxtovw(12px) 0;
     border-bottom: 1px solid color($grayscale, 200);
+  }
+
+  .ServicesPick-categoryImg {
+    $img-size: pxtovw(24px);
+    $img-offset: pxtovw(8px);
+
+    width: $img-size;
+    height: $img-size;
+    margin-right: $img-offset;
+    background-size: cover;
   }
 
   .ServicesPick-service {
     padding: pxtovw(16px) 0 pxtovw(14px);
     border-bottom: 1px solid color($grayscale, 200);
+
+    + .ServicesPick-category {
+      margin-top: pxtovw(32px);
+    }
 
     .ServicesPick-details {
       font-size: pxtovw(18px);
@@ -19,9 +35,16 @@ services-pick {
     }
 
     .ServicesPick-button {
+      $btn-height: pxtovw(32px);
+      $btn-offset: pxtovw(8px);
+      $btn-font-size: pxtovw(16px);
+
       min-width: 100%;
-      padding-right: pxtovw(8px);
-      padding-left: pxtovw(8px);
+      min-height: $btn-height;
+      max-height: $btn-height;
+      padding-right: $btn-offset;
+      padding-left: $btn-offset;
+      font-size: $btn-font-size;
 
       [class^="mb-icon"] {
         margin-right: pxtovw(4px);
