@@ -19,7 +19,7 @@
 <ion-content no-padding>
 
   <ion-fab right bottom>
-    <button ion-fab [madeLink]="[PageNames.AppointmentAdd]">
+    <button (click)="onAppointmentAddClick()" ion-fab>
       <ion-icon name="add"></ion-icon>
     </button>
   </ion-fab>

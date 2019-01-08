@@ -248,6 +248,10 @@ export class UpcomingAndPastComponent {
     this.analytics.trackView(`Home${this.activeTab}`);
   }
 
+  onAppointmentAddClick(): void {
+    this.navCtrl.push(PageNames.AppointmentAdd);
+  }
+
   private async loadAppointments(tabType: TabNames): Promise<void> {
     this.activeTab = tabType || this.tabs[Tabs.upcoming].name;
     const query = this.activeTab.toLowerCase();

@@ -5,7 +5,7 @@
     </ion-title>
 
     <ion-buttons *ngIf="profile?.privacy === PrivacyMode.private" end>
-      <button [madeLink]="[PageNames.Privacy]" ion-button clear class="Link" data-test-id="privacySettings">Privacy Settings</button>
+      <button (click)="onPrivacyClick()" ion-button clear class="Link" data-test-id="privacySettings">Privacy Settings</button>
     </ion-buttons>
   </ion-navbar>
 </ion-header>
