@@ -234,34 +234,4 @@ page-checkout {
       }
     }
   }
-
-  // Saved amount block
-  // –––––––––––––––––––––
-
-  .CheckOut-saved {
-    $color-dark-mint: #5DCA91;
-    $color-mint-bg: rgba(93, 202, 145, 0.05);
-
-    padding: pxtovw(8px) pxtovw(12px);
-    margin-top: pxtovw(16px);
-    font-size: pxtovw(18px);
-    font-weight: 500;
-    line-height: pxtovw(24px);
-    color: $color-dark-mint;
-    background: $color-mint-bg;
-    border: pxtovw(1px) solid $color-dark-mint;
-    border-radius: pxtovw(8px);
-
-    .CheckOut-savedAmount {
-      font-size: pxtovw(28px);
-      line-height: pxtovw(32px);
-      text-align: right;
-
-      sup {
-        position: relative;
-        top: pxtovw(-6px);
-        font-size: pxtovw(24px);
-      }
-    }
-  }
 }

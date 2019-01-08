@@ -88,13 +88,6 @@
         </ion-row>
 
       </div>
-
-      <!-- Saved amount -->
-      <ion-row *ngIf="getSale(previewResponse) as sale" align-items-center justify-content-between class="CheckOut-saved">
-        <ion-col col-7 no-padding>YOU SAVED {{ sale.percentage }}%</ion-col>
-        <ion-col col-5 no-padding class="CheckOut-savedAmount"><sup>$</sup>{{ sale.amount }}</ion-col>
-      </ion-row>
-
     </ng-container>
 
     <ng-template #loadingTpl>

@@ -33,7 +33,6 @@ export interface AppointmentCheckoutParams {
   templateUrl: 'appointment-checkout.component.html'
 })
 export class AppointmentCheckoutComponent {
-  getSale = getSale;
 
   // The following field is returned by the server as a result
   // of us asking for a preview of what the appointment will look
