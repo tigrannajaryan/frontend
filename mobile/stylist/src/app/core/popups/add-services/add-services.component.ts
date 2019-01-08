@@ -43,7 +43,7 @@ export class AddServicesComponent {
 
   async ionViewWillLoad(): Promise<void> {
     this.params = this.navParams.get('data') as AddServicesComponentParams;
-    this.loadInitialData();
+    await this.loadInitialData();
   }
 
   @loading

@@ -9,7 +9,7 @@
         <div class="Made-h2">{{ category.name }}</div>
       </div>
 
-      <ion-row align-items-top *ngFor="let service of category.services" class="ServicesPick-service">
+      <ion-row align-items-top *ngFor="let service of category.services" class="ServicesPick-service" data-test-id="service">
 
         <!-- Service name anp service price -->
         <ion-col col-8 class="ServicesPick-details">
