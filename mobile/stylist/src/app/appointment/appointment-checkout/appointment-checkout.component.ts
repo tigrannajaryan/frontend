@@ -15,7 +15,7 @@ import { ServiceItem } from '~/shared/api/stylist-app.models';
 import { PageNames } from '~/core/page-names';
 import { AddServicesComponentParams } from '~/core/popups/add-services/add-services.component';
 
-import { AppointmentPriceComponentParams, getSale } from '~/appointment/appointment-price/appointment-price.component';
+import { AppointmentPriceComponentParams } from '~/appointment/appointment-price/appointment-price.component';
 
 export interface AppointmentCheckoutParams {
   appointmentUuid: string;
