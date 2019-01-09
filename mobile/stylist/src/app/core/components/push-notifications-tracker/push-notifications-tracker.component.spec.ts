@@ -200,4 +200,57 @@ describe('PushNotificationTracker (client)', () => {
 
     done();
   });
+
+  it('should handle remind_define_services correctly', async done => {
+    const api = fixture.debugElement.injector.get(NotificationsApi);
+    const navCtrl = fixture.debugElement.injector.get(NavController);
+    const pushToast = fixture.debugElement.injector.get(PushNotificationToastService);
+    const toast = fixture.debugElement.injector.get(ToastController);
+
+    // Subscribe to PushNotificationToastService:
+    instance.ngOnInit();
+
+    // Private to public:
+    const getNotificationParams = (pushToast as any).getNotificationParams.bind(pushToast);
+    const getToastOptions = (pushToast as any).getToastOptions.bind(pushToast);
+    const handlePushNotificationEvent = (pushToast as any).handlePushNotificationEvent.bind(pushToast);
+
+    const uuid = faker.random.uuid();
+    const message = 'Don\'t forget! Update your services and pricing in Made Pro so clients can start booking.';
+
+    // Create push-notification details:
+    const details = new PushNotificationEventDetails(
+      /* foreground: */ true,
+      /* coldstart: */ true,
+      /* uuid: */ uuid,
+      /* code: */ PushNotificationCode.remind_define_services,
+      /* message: */ message
+    );
+
+    const handlerParams: PushNotificationHandlerParams = getNotificationParams(details);
+    const toastOptions: ToastOptions = getToastOptions(details, handlerParams);
+
+    expect(toastOptions)
+      .toEqual({
+        ...PushNotificationToastService.defaultToastParams,
+        closeButtonText: 'Open',
+        message
+      });
+
+    spyOn(api, 'ackNotification').and.returnValue(of());
+    await handlePushNotificationEvent(details); // handlerParams.onClick() inside
+
+    expect(toast.create)
+      .toHaveBeenCalledWith(toastOptions);
+    expect(api.ackNotification)
+      .toHaveBeenCalledWith({
+        message_uuids: [uuid]
+      });
+
+    // Test handlerParams.onClick() call:
+    expect(navCtrl.setRoot)
+      .toHaveBeenCalledWith(PageNames.Services);
+
+    done();
+  });
 });
