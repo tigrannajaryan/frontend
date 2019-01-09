@@ -19,7 +19,7 @@ page-add-service {
   .Services-footer {
     padding-top: pxtovw(16px);
     padding-bottom: pxtovw(16px);
-    border-top: 1px solid color($grayscale, 200);
+    border-top: pxtovw(1px) solid color($grayscale, 200);
 
     &:before {
       display: none;
