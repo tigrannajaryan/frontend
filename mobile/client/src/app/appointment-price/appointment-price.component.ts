@@ -78,7 +78,7 @@ export class AppointmentPriceComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const { appointment } = this.navParams.get('params') as AppointmentPriceComponentParams;
+    const { appointment } = this.navParams.get('params') as AppointmentPriceComponentParams || {};
 
     this.appointment = appointment;
 
