@@ -144,7 +144,7 @@ export class AppointmentPageComponent {
       }
 
     } else {
-      // No appointment on the backend, recreate it usiang preview API
+      // No appointment on the backend, recreate it using preview API
       // just as like as at is used in the end of the booking process,
       const { response } = await this.bookingApi.previewAppointment({
         stylist_uuid: this.params.appointment.stylist_uuid,
