@@ -3,7 +3,13 @@ import { Observable } from 'rxjs/Observable';
 import * as faker from 'faker';
 
 import { ApiResponse } from '~/shared/api/base.models';
-import { AppointmentModel, AppointmentsHistoryResponse, AppointmentStatus, HomeResponse } from '~/core/api/appointments.models';
+import {
+  AppointmentChangeRequest,
+  AppointmentModel,
+  AppointmentsHistoryResponse,
+  AppointmentStatus,
+  HomeResponse
+} from '~/core/api/appointments.models';
 
 @Injectable()
 export class AppointmentsApiMock {
@@ -61,6 +67,14 @@ export class AppointmentsApiMock {
     const appointments = AppointmentsApiMock.genFake(historyCount, AppointmentStatus.checked_out);
     return new Observable(observer => {
       observer.next({ response: { appointments } });
+      observer.complete();
+    });
+  }
+
+  changeAppointment(appointmentUuid: string, data: AppointmentChangeRequest): Observable<ApiResponse<AppointmentModel>> {
+    const appointments = AppointmentsApiMock.genFake(1, AppointmentStatus.checked_out);
+    return new Observable(observer => {
+      observer.next({ response: appointments[0] });
       observer.complete();
     });
   }
