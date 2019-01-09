@@ -18,7 +18,7 @@ services-pick {
 
   .ServicesPick-service {
     padding: pxtovw(16px) 0 pxtovw(14px);
-    border-bottom: 1px solid color($grayscale, 200);
+    border-bottom: pxtovw(1px) solid color($grayscale, 200);
 
     + .ServicesPick-category {
       margin-top: pxtovw(32px);
