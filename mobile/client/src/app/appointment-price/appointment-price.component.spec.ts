@@ -7,7 +7,7 @@ import * as moment from 'moment';
 import { TestUtils } from '~/../test';
 
 import { AppointmentsApi } from '~/core/api/appointments.api';
-import { AppointmentModel, AppointmentPreviewResponse, AppointmentStatus } from '~/core/api/appointments.models';
+import { AppointmentModel, AppointmentStatus } from '~/core/api/appointments.models';
 
 import { AppointmentPriceComponent, AppointmentPriceComponentParams } from './appointment-price.component';
 
@@ -51,17 +51,6 @@ const appointmentMock: AppointmentModel = {
   services: servicesMock,
   has_tax_included: false,
   has_card_fee_included: false
-};
-
-const previewMock: AppointmentPreviewResponse = {
-  duration_minutes: faker.random.number(),
-  grand_total: faker.random.number(),
-  total_client_price_before_tax: faker.random.number(),
-  total_tax: faker.random.number(),
-  total_card_fee: faker.random.number(),
-  tax_percentage: faker.random.number(),
-  card_fee_percentage: faker.random.number(),
-  services: servicesMock
 };
 
 describe('Pages: Appointment Price', () => {
