@@ -12,8 +12,8 @@ mkdir -p ~/.android || true
 touch ~/.android/repositories.cfg
 
 # install Java and Gradle
-brew tap caskroom/versions
-brew cask install java8
+brew tap caskroom/versions || true
+brew cask install caskroom/versions/java8
 brew install gradle
 
 # install Android SDK
