@@ -3,7 +3,7 @@ services-pick {
     display: flex;
     align-items: center;
     padding: pxtovw(12px) 0;
-    border-bottom: 1px solid color($grayscale, 200);
+    border-bottom: pxtovw(1px) solid color($grayscale, 200);
   }
 
   .ServicesPick-categoryImg {
