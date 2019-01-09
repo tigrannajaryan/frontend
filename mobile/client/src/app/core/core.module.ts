@@ -12,7 +12,6 @@ import { PricePipe } from '~/shared/pipes/price.pipe';
 import { CheckListComponent } from '~/shared/components/check-list/check-list.component';
 import { CodeInputComponent } from '~/shared/components/code-input/code-input.component';
 import { ContinueFooterComponent } from '~/shared/components/continue-footer/continue-footer.component';
-import { MadeLinkDirective } from '~/shared/directives/made-link.directive';
 import { MbIconsComponent } from '~/shared/components/mb-icons/mb-icons.component';
 import { NoServiceSelectedComponent } from '~/shared/components/no-service-selected/no-service-selected.component';
 import { NumListComponent } from '~/shared/components/num-list/num-list.component';
@@ -51,7 +50,6 @@ const declarations = [
   HasErrorPipe,
   InputNumberDirective,
   MadeHeaderComponent,
-  MadeLinkDirective,
   MbIconsComponent,
   NoServiceSelectedComponent,
   NumListComponent,

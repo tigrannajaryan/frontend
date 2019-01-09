@@ -1,4 +1,4 @@
-import { AlertController, NavParams } from 'ionic-angular';
+import { AlertController, NavController, NavParams } from 'ionic-angular';
 import { Component } from '@angular/core';
 
 import { FollowersApi } from '~/core/api/followers.api';
@@ -28,6 +28,7 @@ export class FollowersComponent {
     public profileDataStore: ProfileDataStore,
     private navParams: NavParams,
     private alertCtrl: AlertController,
+    public navCtrl: NavController,
     private followersApi: FollowersApi
   ) {
   }
@@ -60,5 +61,9 @@ export class FollowersComponent {
       });
       alert.present();
     }
+  }
+
+  onPrivacyClick(): void {
+    this.navCtrl.push(PageNames.Privacy);
   }
 }
