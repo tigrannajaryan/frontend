@@ -13,14 +13,14 @@
   </div>
 </ion-content>
 
-<ion-footer *ngIf="serviceCategories && hasServices" class="Footer Services-footer">
+<ion-footer *ngIf="serviceCategories && hasServices" class="Footer Services-footer" data-test-id="summary">
   <ion-row align-items-center>
     <ion-col col-6 class="Services-summary">
       {{ addedServices.length }} {{ addedServices.length === 1 ? 'Service' : 'Services' }}<br />
       <small>{{ getServicesCalcPrice() | currency }}</small>
     </ion-col>
     <ion-col col-6>
-      <button (click)="addServicesClick()" ion-button class="Button Services-submit">
+      <button (click)="addServicesClick()" ion-button class="Button Services-submit" data-test-id="submit">
         Update
       </button>
     </ion-col>
