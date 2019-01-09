@@ -63,7 +63,7 @@ page-appointment {
     &.is-alreadyCheckedOut {
       color: #FFFFFF;
       background: #68D09B;
-      border: 1px solid transparent;
+      border: pxtovw(1px) solid transparent;
     }
   }
 
