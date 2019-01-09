@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { App } from 'ionic-angular';
+import 'rxjs/add/operator/debounceTime';
 
 import {
   PreferredStylistModel,
@@ -61,6 +62,13 @@ export class StylistSearchComponent {
 
     // Start searching:
     await this.onSearchStylists();
+
+    // watch on valueChanges for search query with debounce
+    this.query.valueChanges
+      .debounceTime(500)
+      .subscribe(() => {
+        this.onSearchStylists();
+      });
   }
 
   async onSearchStylists(): Promise<void> {
