@@ -38,6 +38,7 @@ export enum PushNotificationCode { // (!) in alphabetical order
   prices_increasing = 'prices_increasing',
   profile_incomplete = 'profile_incomplete',
   registration_incomplete = 'registration_incomplete',
+  remind_define_services = 'remind_define_services',
   stylist_ready = 'stylist_ready',
   today_appointments = 'today_appointments',
   tomorrow_appointments = 'tomorrow_appointments',

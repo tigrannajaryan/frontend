@@ -78,6 +78,15 @@ export class StylistPushNotificationsTrackerComponent implements OnInit, OnDestr
         };
       }
 
+      case PushNotificationCode.remind_define_services: {
+        return {
+          buttonText: 'Open',
+          onClick: async (): Promise<void> => {
+            await this.nav.setRoot(PageNames.Services);
+          }
+        };
+      }
+
       default:
         return;
     }
