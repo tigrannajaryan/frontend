@@ -293,7 +293,7 @@ describe('PushNotificationTracker (client)', () => {
     expect(toastOptions)
       .toEqual({
         ...PushNotificationToastService.defaultToastParams,
-        closeButtonText: 'Open',
+        closeButtonText: 'Add Photo',
         message
       });
 
@@ -351,7 +351,7 @@ describe('PushNotificationTracker (client)', () => {
     expect(toastOptions)
       .toEqual({
         ...PushNotificationToastService.defaultToastParams,
-        closeButtonText: 'Open',
+        closeButtonText: 'Update Hours',
         message
       });
 
