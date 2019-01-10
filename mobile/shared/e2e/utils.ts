@@ -154,6 +154,14 @@ export async function takeScreenShot(filename: string) {
   console.log(`screenshot ${fullname}`);
 }
 
+/**
+ * Vertically scroll top-left corner of the given element (y-direction) into viewport.
+ */
+export async function scroll(scrollPanelSelector, scrollToElement): Promise<any> {
+  const location = await scrollToElement.getLocation();
+  return browser.driver.executeScript(`document.querySelector('${scrollPanelSelector}').scrollTo(0, ${location.y});`);
+};
+
 class Globals {
   get alertSubtitle() { return $('ion-alert .alert-sub-title'); }
   alertButton(buttonText: string) { return firstVisible(by.cssContainingText('ion-alert button span', buttonText)); }
