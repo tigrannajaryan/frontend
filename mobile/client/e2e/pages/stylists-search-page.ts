@@ -1,6 +1,6 @@
-import { $, $$, by, element } from 'protractor';
+import { $, $$ } from 'protractor';
 
-import { click, waitFor, waitForNot } from '../shared-e2e/utils';
+import { click, scroll, waitFor, waitForNot } from '../shared-e2e/utils';
 import { stylistProfilePage } from './stylist-profile-page';
 
 class StylistsSearchPage {
@@ -15,7 +15,6 @@ class StylistsSearchPage {
   get addOneMoreStylistBtn() { return $('page-stylists-search stylist-card:nth-child(2) [data-test-id=addStylist]'); }
 
   get addNonBookableCard() { return $$('page-stylists-search stylist-card .StylistCard.is-nonBookable').first(); }
-
 
   async addFirstStylist() {
     await waitFor(this.searchInput);
@@ -36,8 +35,11 @@ class StylistsSearchPage {
   }
 
   async addNonBookableStylist() {
+    const nonBookable = this.addNonBookableCard;
+
     await waitFor(this.searchInput);
-    await click(this.addNonBookableCard);
+    await scroll('page-stylists-search .scroll-content', nonBookable);
+    await click(nonBookable);
     await click(stylistProfilePage.addStylist);
     await click(stylistProfilePage.goBack);
     await waitForNot(stylistProfilePage.addStylist);
