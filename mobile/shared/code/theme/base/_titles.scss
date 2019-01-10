@@ -106,6 +106,29 @@
   line-height: pxtovw(32px);
 }
 
+
+.pac-item {
+  font-size: pxtovw(15px);
+  color: black;
+}
+
+.pac-item-query {
+  font-size: pxtovw(15px);
+}
+
 .pac-matched {
-  font-size: 15px;
+  font-size: pxtovw(15px);
+  font-weight: 600;
+}
+
+.pac-icon {
+  margin-top: pxtovw(2px);
+  background-image: none !important;
+
+  &:after {
+    @extend %mb-icon;
+    color: color($colors-shared, honey);
+    content: "\e926"; // $mb-icon-marker
+    font-size: pxtovw(18px);
+  }
 }
