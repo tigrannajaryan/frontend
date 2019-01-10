@@ -95,7 +95,7 @@ export class StylistPushNotificationsTrackerComponent implements OnInit, OnDestr
 
       case PushNotificationCode.remind_add_photo: {
         return {
-          buttonText: 'Open',
+          buttonText: 'Add Photo',
           onClick: async (): Promise<void> => {
             await this.nav.setRoot(PageNames.Profile);
             this.events.publish(
