@@ -10,7 +10,7 @@ import {
   AppointmentStatuses,
   CheckOutService
 } from '~/core/api/home.models';
-import { ServiceItem } from '~/shared/api/stylist-app.models';
+import { ServiceFromAppointment } from '~/shared/api/stylist-app.models';
 
 import { PageNames } from '~/core/page-names';
 import { AddServicesComponentParams } from '~/core/popups/add-services/add-services.component';
@@ -127,20 +127,32 @@ export class AppointmentCheckoutComponent {
   /**
    * This callback is called by AddServicesComponent when it is about to close.
    */
-  onAddServices(addedServices: ServiceItem[]): void {
+  async onAddServices(addedServices: ServiceFromAppointment[]): Promise<void> {
     // Update list of selected services
-    this.selectedServices = addedServices.map(serviceItem => ({ service_uuid: serviceItem.service_uuid }));
+    this.selectedServices = addedServices.map(service => ({ service_uuid: service.service_uuid }));
+
+    // Save changes to the appointment
+    const { response } = await this.homeService.changeAppointment(
+      this.params.appointmentUuid,
+      this.getChangeAppointmentRequestParams()
+    ).get();
+
+    if (!response) {
+      return;
+    }
+    this.appointment = response;
 
     // Close AddServicesComponent page and show this page
     this.navCtrl.pop();
+
+    // And update preview
+    await this.updatePreview();
   }
 
   async onFinalizeCheckoutClick(): Promise<void> {
     const request: AppointmentChangeRequest = {
-      status: AppointmentStatuses.checked_out,
-      services: this.selectedServices,
-      has_tax_included: this.hasTaxIncluded,
-      has_card_fee_included: false
+      ...this.getChangeAppointmentRequestParams(),
+      status: AppointmentStatuses.checked_out
     };
 
     const { response } = await this.homeService.changeAppointment(this.params.appointmentUuid, request).get();
@@ -165,5 +177,14 @@ export class AppointmentCheckoutComponent {
 
   triggerMinifiedDetails(): void {
     this.isMinifiedDetails = !this.isMinifiedDetails;
+  }
+
+  private getChangeAppointmentRequestParams(): AppointmentChangeRequest {
+    return {
+      status: this.appointment.status,
+      services: this.selectedServices,
+      has_tax_included: this.hasTaxIncluded,
+      has_card_fee_included: false
+    };
   }
 }
