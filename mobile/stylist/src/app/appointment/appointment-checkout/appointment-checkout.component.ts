@@ -15,7 +15,7 @@ import { ServiceItem } from '~/shared/api/stylist-app.models';
 import { PageNames } from '~/core/page-names';
 import { AddServicesComponentParams } from '~/core/popups/add-services/add-services.component';
 
-import { AppointmentPriceComponentParams, getSale } from '~/appointment/appointment-price/appointment-price.component';
+import { AppointmentPriceComponentParams } from '~/appointment/appointment-price/appointment-price.component';
 
 export interface AppointmentCheckoutParams {
   appointmentUuid: string;
@@ -33,7 +33,6 @@ export interface AppointmentCheckoutParams {
   templateUrl: 'appointment-checkout.component.html'
 })
 export class AppointmentCheckoutComponent {
-  getSale = getSale;
 
   // The following field is returned by the server as a result
   // of us asking for a preview of what the appointment will look
@@ -116,13 +115,13 @@ export class AppointmentCheckoutComponent {
   }
 
   addServicesClick(): void {
-    const data: AddServicesComponentParams = {
+    const params: AddServicesComponentParams = {
       appointmentUuid: this.params.appointmentUuid,
       selectedServices: this.selectedServices,
       onComplete: this.onAddServices.bind(this)
     };
 
-    this.navCtrl.push(PageNames.AddServicesComponent, { data });
+    this.navCtrl.push(PageNames.AddServicesComponent, { params });
   }
 
   /**
@@ -156,8 +155,11 @@ export class AppointmentCheckoutComponent {
     this.navCtrl.remove(current);
   }
 
-  onChangePrice(appointment: Appointment, preview: AppointmentPreviewResponse): void {
-    const params: AppointmentPriceComponentParams = { appointment, preview };
+  onChangePrice(appointment: Appointment): void {
+    const params: AppointmentPriceComponentParams = {
+      appointment,
+      preview: this.previewResponse
+    };
     this.navCtrl.push(PageNames.AppointmentPrice, { params });
   }
 

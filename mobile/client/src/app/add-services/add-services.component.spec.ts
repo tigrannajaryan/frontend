@@ -3,9 +3,7 @@ import { NavParams } from 'ionic-angular';
 
 import { TestUtils } from '~/../test';
 
-import { categoryMock, serviceItemsMock } from '~/core/api/stylist.service.mock';
-import { prepareSharedObjectsForTests } from '~/core/test-utils.spec';
-
+import { categoryMock, serviceItemsMock } from '~/core/api/services.service.mock';
 import { AppModule } from '~/app.module';
 
 import { AddServicesComponent } from './add-services.component';
@@ -16,12 +14,10 @@ describe('Pages: AddServicesComponent', () => {
 
   const selectedService = serviceItemsMock[0];
   const params = {
-    appointmentUuid: categoryMock.uuid,
+    appointment: categoryMock,
     selectedServices: [{ service_uuid: selectedService.uuid }],
     onComplete: jasmine.createSpy('onComplete')
   };
-
-  prepareSharedObjectsForTests();
 
   beforeEach(async(() =>
     TestUtils.beforeEachCompiler([AddServicesComponent])

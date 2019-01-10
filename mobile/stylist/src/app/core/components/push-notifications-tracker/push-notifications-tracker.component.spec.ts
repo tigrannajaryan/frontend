@@ -20,10 +20,16 @@ import {
 import { PushNotificationHandlerParams, PushNotificationToastService, ToastDismissedBy } from '~/shared/push/push-notification-toast';
 
 import { PageNames } from '~/core/page-names';
-import { FocusAppointmentEventParams, StylistEventTypes } from '~/core/stylist-event-types';
+import {
+  FocusAppointmentEventParams,
+  SetStylistProfileTabEventParams,
+  StylistEventTypes
+} from '~/core/stylist-event-types';
 
 import { AppointmentCheckoutParams } from '~/appointment/appointment-checkout/appointment-checkout.component';
 import { StylistPushNotificationsTrackerComponent } from './push-notifications-tracker.component';
+import { ProfileTabs } from '~/profile/profile.component';
+import { WorkHoursComponentParams } from '~/workhours/workhours.component';
 
 let instance: StylistPushNotificationsTrackerComponent;
 let fixture: ComponentFixture<StylistPushNotificationsTrackerComponent>;
@@ -250,6 +256,119 @@ describe('PushNotificationTracker (client)', () => {
     // Test handlerParams.onClick() call:
     expect(navCtrl.setRoot)
       .toHaveBeenCalledWith(PageNames.Services);
+
+    done();
+  });
+
+  it('should handle remind_add_photo correctly', async done => {
+    const api = fixture.debugElement.injector.get(NotificationsApi);
+    const events = fixture.debugElement.injector.get(Events);
+    const navCtrl = fixture.debugElement.injector.get(NavController);
+    const pushToast = fixture.debugElement.injector.get(PushNotificationToastService);
+    const toast = fixture.debugElement.injector.get(ToastController);
+
+    // Subscribe to PushNotificationToastService:
+    instance.ngOnInit();
+
+    // Private to public:
+    const getNotificationParams = (pushToast as any).getNotificationParams.bind(pushToast);
+    const getToastOptions = (pushToast as any).getToastOptions.bind(pushToast);
+    const handlePushNotificationEvent = (pushToast as any).handlePushNotificationEvent.bind(pushToast);
+
+    const uuid = faker.random.uuid();
+    const message = 'We noticed that you do not have a photo in Made Pro. Stylists who have a photo have on average about 60% higher chance to get a booking.';
+
+    // Create push-notification details:
+    const details = new PushNotificationEventDetails(
+      /* foreground: */ true,
+      /* coldstart: */ true,
+      /* uuid: */ uuid,
+      /* code: */ PushNotificationCode.remind_add_photo,
+      /* message: */ message
+    );
+
+    const handlerParams: PushNotificationHandlerParams = getNotificationParams(details);
+    const toastOptions: ToastOptions = getToastOptions(details, handlerParams);
+
+    expect(toastOptions)
+      .toEqual({
+        ...PushNotificationToastService.defaultToastParams,
+        closeButtonText: 'Add Photo',
+        message
+      });
+
+    spyOn(api, 'ackNotification').and.returnValue(of());
+    await handlePushNotificationEvent(details); // handlerParams.onClick() inside
+
+    expect(toast.create)
+      .toHaveBeenCalledWith(toastOptions);
+    expect(api.ackNotification)
+      .toHaveBeenCalledWith({
+        message_uuids: [uuid]
+      });
+
+    // Test handlerParams.onClick() call:
+    expect(navCtrl.setRoot)
+      .toHaveBeenCalledWith(PageNames.Profile);
+    expect(events.publish)
+      .toHaveBeenCalledWith(
+        StylistEventTypes.setStylistProfileTab,
+        { profileTab: ProfileTabs.edit } as SetStylistProfileTabEventParams
+      );
+
+    done();
+  });
+
+  it('should handle remind_define_hours correctly', async done => {
+    const api = fixture.debugElement.injector.get(NotificationsApi);
+    const navCtrl = fixture.debugElement.injector.get(NavController);
+    const pushToast = fixture.debugElement.injector.get(PushNotificationToastService);
+    const toast = fixture.debugElement.injector.get(ToastController);
+
+    // Subscribe to PushNotificationToastService:
+    instance.ngOnInit();
+
+    // Private to public:
+    const getNotificationParams = (pushToast as any).getNotificationParams.bind(pushToast);
+    const getToastOptions = (pushToast as any).getToastOptions.bind(pushToast);
+    const handlePushNotificationEvent = (pushToast as any).handlePushNotificationEvent.bind(pushToast);
+
+    const uuid = faker.random.uuid();
+    const message = 'Don\'t forget! Update your hours in Made Pro so clients can start booking.';
+
+    // Create push-notification details:
+    const details = new PushNotificationEventDetails(
+      /* foreground: */ true,
+      /* coldstart: */ true,
+      /* uuid: */ uuid,
+      /* code: */ PushNotificationCode.remind_define_hours,
+      /* message: */ message
+    );
+
+    const handlerParams: PushNotificationHandlerParams = getNotificationParams(details);
+    const toastOptions: ToastOptions = getToastOptions(details, handlerParams);
+
+    expect(toastOptions)
+      .toEqual({
+        ...PushNotificationToastService.defaultToastParams,
+        closeButtonText: 'Update Hours',
+        message
+      });
+
+    spyOn(api, 'ackNotification').and.returnValue(of());
+    await handlePushNotificationEvent(details); // handlerParams.onClick() inside
+
+    expect(toast.create)
+      .toHaveBeenCalledWith(toastOptions);
+    expect(api.ackNotification)
+      .toHaveBeenCalledWith({
+        message_uuids: [uuid]
+      });
+
+    // Test handlerParams.onClick() call:
+    const params: WorkHoursComponentParams = { isRootPage: true };
+    expect(navCtrl.setRoot)
+      .toHaveBeenCalledWith(PageNames.WorkHours, { params });
 
     done();
   });

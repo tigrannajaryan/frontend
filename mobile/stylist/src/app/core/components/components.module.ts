@@ -9,6 +9,7 @@ import { PhoneInputComponent } from '~/shared/components/phone-input/phone-input
 import { CodeInputComponent } from '~/shared/components/code-input/code-input.component';
 import { PricePairComponent } from '~/shared/components/price-pair/price-pair.component';
 import { InstagramGalleryComponent } from '~/shared/components/instagram-gallery/instagram-gallery.component';
+import { ServicesPickComponent } from '~/shared/components/services-pick/services-pick.component';
 
 import { DiscountsApi } from '~/core/api/discounts.api';
 
@@ -16,7 +17,6 @@ import { MadeNavComponent } from './made-nav/made-nav.component';
 import { MadeTableComponent } from './made-table/made-table';
 import { DirectivesModule } from '~/core/directives/directive.module';
 import { IonicModule } from 'ionic-angular';
-import { ServicesPickComponent } from '~/core/components/services-pick/services-pick.component';
 import { AppointmentItemComponent } from '~/core/components/appointment-item/appointment-item.component';
 import { DiscountsListComponent } from '~/core/components/discounts/discounts-list/discounts-list.component';
 import { DiscountsWeekdayShortComponent } from '~/core/components/discounts/discounts-weekday-short/discounts-weekday-short.component';

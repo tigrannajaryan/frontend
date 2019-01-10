@@ -21,6 +21,7 @@ import { PriceCalendarComponent } from '~/shared/components/price-calendar/price
 import { PricePairComponent } from '~/shared/components/price-pair/price-pair.component';
 import { ServerStatusComponent } from '~/shared/server-status/server-status.component';
 import { ServicesHeaderListComponent } from '~/shared/components/services-header-list/services-header-list';
+import { ServicesPickComponent } from '~/shared/components/services-pick/services-pick.component';
 import { UserNamePhotoComponent } from '~/shared/components/user-name-photo/user-name-photo.component';
 
 import { PhoneInputDirective } from '~/shared/directives/phone-input.directive';
@@ -63,6 +64,7 @@ const declarations = [
   ProfileHeaderComponent,
   ServerStatusComponent,
   ServicesHeaderListComponent,
+  ServicesPickComponent,
   StylistCardComponent,
   UserNamePhotoComponent
 ];

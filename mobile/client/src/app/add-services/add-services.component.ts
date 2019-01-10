@@ -1,17 +1,14 @@
 import { Component, ViewChild } from '@angular/core';
-import { AlertController, Content, NavController, NavParams } from 'ionic-angular';
+import { Content, NavParams } from 'ionic-angular';
 
-import { ServiceCategory, ServiceFromAppointment, StylistServicesList } from '~/shared/api/stylist-app.models';
+import { ServiceFromAppointment } from '~/shared/api/stylist-app.models';
 
-import { CheckOutService } from '~/core/api/home.models';
-import { StylistServiceProvider } from '~/core/api/stylist.service';
-import { PageNames } from '~/core/page-names';
-import { loading } from '~/core/utils/loading';
-
-import { ServicesComponentParams } from '~/services/services.component';
+import { AppointmentModel, CheckOutService } from '~/core/api/appointments.models';
+import { GetStylistServicesParams, ServiceCategoryModel } from '~/core/api/services.models';
+import { ServicesService } from '~/core/api/services.service';
 
 export class AddServicesComponentParams {
-  appointmentUuid: string;
+  appointment: AppointmentModel;
   selectedServices: CheckOutService[];
   onComplete: (addedServices: ServiceFromAppointment[]) => void;
 }
@@ -29,26 +26,28 @@ export class AddServicesComponent {
   @ViewChild(Content) content: Content;
 
   hasServices: boolean;
-  protected serviceCategories: ServiceCategory[];
-  protected addedServices: ServiceFromAppointment[];
-  protected params: AddServicesComponentParams;
+  serviceCategories: ServiceCategoryModel[];
+
+  private addedServices: ServiceFromAppointment[];
+  private params: AddServicesComponentParams;
 
   constructor(
-    protected navCtrl: NavController,
-    protected navParams: NavParams,
-    protected alertCtrl: AlertController,
-    protected stylistService: StylistServiceProvider
+    private api: ServicesService,
+    private navParams: NavParams
   ) {
   }
 
   async ionViewWillLoad(): Promise<void> {
     this.params = this.navParams.get('params') as AddServicesComponentParams;
-    await this.loadInitialData();
+    this.loadInitialData();
   }
 
-  @loading
   async loadInitialData(): Promise<void> {
-    const response: StylistServicesList = (await this.stylistService.getStylistServices().get()).response;
+    const params: GetStylistServicesParams = {
+      stylist_uuid: this.params.appointment.stylist_uuid
+    };
+    const { response } = await this.api.getStylistServices(params).toPromise();
+
     if (response) {
       this.serviceCategories = this.filterSelectedServices(response.categories);
 
@@ -56,14 +55,6 @@ export class AddServicesComponent {
 
       this.content.resize();
     }
-  }
-
-  addMyServices(): void {
-    const params: ServicesComponentParams = {
-      isRootPage: false
-    };
-
-    this.navCtrl.push(PageNames.Services, { params });
   }
 
   calcAddedServicesPrice(): number {
@@ -85,7 +76,7 @@ export class AddServicesComponent {
   /**
    * Filter and return only selected services. Keep categories.
    */
-  private filterSelectedServices(serviceCategories: ServiceCategory[]): ServiceCategory[] {
+  private filterSelectedServices(serviceCategories: ServiceCategoryModel[]): ServiceCategoryModel[] {
     const allServices = serviceCategories.reduce((all, category) => [...all, ...category.services], []);
 
     for (const checkoutService of this.params.selectedServices) {

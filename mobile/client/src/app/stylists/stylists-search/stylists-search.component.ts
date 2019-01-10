@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { App } from 'ionic-angular';
+import { App, Content, Header, Keyboard } from 'ionic-angular';
+import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/debounceTime';
 
 import {
@@ -16,13 +17,29 @@ import { PreferredStylistsData } from '~/core/api/preferred-stylists.data';
 import { StylistsService } from '~/core/api/stylists.service';
 import { PageNames } from '~/core/page-names';
 
+enum ScrollDirection {
+  Up = 'up',
+  Down = 'down'
+}
+
+interface IonicScrollEvent { // not defined in Ionic
+  deltaY: number;
+  directionY: string;
+  scrollTop: number;
+
+  domWrite(handler: () => void): void;
+}
+
 @Component({
   selector: 'page-stylists-search',
   templateUrl: 'stylists-search.component.html'
 })
-export class StylistSearchComponent {
+export class StylistSearchComponent implements AfterViewInit {
   static MIN_QUERY_LENGTH = 2;
   static SEARCHING_DELAY = 250;
+
+  static MIN_SCROLL_DELTA = 100;
+  static MIN_SCROLL_TOP_TRIGGER_SIZE = 300;
 
   PageNames = PageNames;
 
@@ -41,15 +58,24 @@ export class StylistSearchComponent {
   isGeolocationInProcess = false;
   isLocationInputFocused = false;
 
+  @ViewChild(Content) content: Content;
+  @ViewChild(Header) header: Header;
+
+  private onScrollSubscription: Subscription;
+
   constructor(
     private app: App,
     private geolocationService: GeolocationService,
+    private keyboard: Keyboard,
     private preferredStylistsData: PreferredStylistsData,
     private stylistsService: StylistsService
   ) {
   }
 
   async ionViewWillLoad(): Promise<void> {
+    // Show keyboard hide btn
+    this.keyboard.hideFormAccessoryBar(false);
+
     // Save preferred stylsits to identify preferred ones in search:
     await this.preferredStylistsData.asObservable().subscribe(async preferredStylistsResponse => {
        if (preferredStylistsResponse.response) {
@@ -69,6 +95,14 @@ export class StylistSearchComponent {
       .subscribe(() => {
         this.onSearchStylists();
       });
+  }
+
+  ngAfterViewInit(): void {
+    if (!this.onScrollSubscription) {
+      this.onScrollSubscription =
+        this.content.ionScroll
+          .subscribe(event => this.resizeHeader(event));
+    }
   }
 
   async onSearchStylists(): Promise<void> {
@@ -106,6 +140,31 @@ export class StylistSearchComponent {
     this.app.getRootNav().push(PageNames.StylistProfile, { params });
   }
 
+  async scrollTop(): Promise<void> {
+    await this.content.scrollTo(0, 0, 400);
+    this.showHeader();
+  }
+
+  showHeader(): void {
+    this.header._elementRef.nativeElement.classList.remove('is-Minified');
+    this.content._elementRef.nativeElement.classList.remove('is-Minified');
+    this.content.resize();
+  }
+
+  hideHeader(): void {
+    if (this.keyboard.isOpen()) {
+      // Ionic has a bug in content resizing on iOS:
+      // if resizing is triggered when scroll in progress the content is going to be resized
+      // only when resizing is done (innertive scrolling stops).
+      // We need to blur activeElement on scroll but we cannot do it because of the bug.
+      // To fix it we can only disallow hiding header when an input is focused and keyboard is open.
+      return;
+    }
+    this.header._elementRef.nativeElement.classList.add('is-Minified');
+    this.content._elementRef.nativeElement.classList.add('is-Minified');
+    this.content.resize();
+  }
+
   private async requestGeolocation(): Promise<void> {
     this.isGeolocationInProcess = true;
     try {
@@ -115,5 +174,49 @@ export class StylistSearchComponent {
     } finally {
       this.isGeolocationInProcess = false;
     }
+  }
+
+  private resizeHeader(event: IonicScrollEvent): void {
+    event.domWrite(() => {
+      const { deltaY, directionY, scrollTop } = event;
+
+      const contentPageHeight =
+        this.content._elementRef.nativeElement.querySelector('.fixed-content').offsetHeight;
+      const stylistsCardsHeight =
+        this.content._elementRef.nativeElement.querySelector('.StylistsPage-stylists').offsetHeight;
+
+      if (stylistsCardsHeight < contentPageHeight + StylistSearchComponent.MIN_SCROLL_TOP_TRIGGER_SIZE) {
+        // No room for any minification work
+        return;
+      }
+
+      switch (directionY) {
+        case ScrollDirection.Down:
+          if (scrollTop < 0) {
+            this.showHeader();
+            return;
+          }
+          if (deltaY < StylistSearchComponent.MIN_SCROLL_DELTA) {
+            // Skip small delta
+            return;
+          }
+          this.hideHeader();
+          break;
+
+        case ScrollDirection.Up:
+          if (
+            scrollTop > StylistSearchComponent.MIN_SCROLL_TOP_TRIGGER_SIZE ||
+            deltaY < StylistSearchComponent.MIN_SCROLL_DELTA
+          ) {
+            // Skip scrolled lots of results or small delta
+            return;
+          }
+          this.showHeader();
+          break;
+
+        default:
+          break;
+      }
+    });
   }
 }

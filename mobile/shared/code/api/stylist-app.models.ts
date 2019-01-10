@@ -108,6 +108,16 @@ export interface ServiceItem extends ServiceTemplateItem {
   photo_samples?: ServicesPhotoSample[];
 }
 
+export interface ServiceFromAppointment {
+  isChecked?: boolean;
+
+  service_uuid: string;
+  service_name: string;
+  client_price: number;
+  regular_price: number;
+  is_original: boolean;
+}
+
 export interface ServicesPhotoSample {
   url: string;
 }

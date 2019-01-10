@@ -15,12 +15,13 @@
     </div>
 
     <ion-row class="H1 StylistsPage-title" align-items-center justify-content-between>
-      <div class="Badge-H1">
+      <div (click)="scrollTop()" class="Badge-H1">
         Search Stylists
         <span *ngIf="stylists?.length > 0" class="Badge">{{ stylists.length }}<span *ngIf="moreStylistsAvailable">+</span></span>
       </div>
       <div *ngIf="isLoading" class="StylistsPage-loader" data-test-id="searchingIndicator">searching…</div>
       <div *ngIf="isGeolocationInProcess" class="StylistsPage-loader">checking location…</div>
+      <ion-icon (click)="showHeader()" name="arrow-down"></ion-icon>
     </ion-row>
 
   </ion-toolbar>

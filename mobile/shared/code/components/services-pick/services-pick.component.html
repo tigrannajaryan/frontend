@@ -1,0 +1,32 @@
+<div *ngIf="serviceCategory" class="ServicesPick">
+
+  <ng-container *ngFor="let category of serviceCategory">
+    <ng-container *ngIf="category.services.length !== 0">
+
+      <!-- Category icon and name -->
+      <div class="ServicesPick-category">
+        <div class="ServicesPick-categoryImg" [style.backgroundImage]="'url(' + 'assets/icons/services-categories/' + category.category_code +'.png)'"></div>
+        <div class="Made-h2">{{ category.name }}</div>
+      </div>
+
+      <ion-row align-items-top *ngFor="let service of category.services" class="ServicesPick-service" data-test-id="service">
+
+        <!-- Service name anp service price -->
+        <ion-col col-8 class="ServicesPick-details">
+          {{ service.name }}<br />
+          <small>{{ service.base_price | currency }}</small>
+        </ion-col>
+
+        <!-- Select or remove actions -->
+        <ion-col (click)="onServiceChange(service)" col-4>
+          <button ion-button [class.button-outline]="!service.isChecked" class="Button ServicesPick-button button-small">
+            <i *ngIf="service.isChecked" class="mb-icon-check"></i>
+            <span>{{ service.isChecked ? 'Selected' : 'Select' }}</span>
+          </button>
+        </ion-col>
+      </ion-row>
+
+    </ng-container>
+  </ng-container>
+
+</div>

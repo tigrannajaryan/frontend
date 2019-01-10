@@ -1,12 +1,12 @@
-<ion-header madeBackHeader></ion-header>
+<ion-header madeHeader></ion-header>
 
 <ion-content no-padding>
-  <div class="Made-wp Made-wpContent">
+  <div class="contentSidePadding">
 
     <div class="Made-h1">Change Price</div>
 
-    <div data-test-id="services">
-      <ion-item *ngFor="let service of appointment.services" class="AppointmentPrice-formControl">
+    <div *ngIf="(preview?.services || appointment.services) as services" data-test-id="services">
+      <ion-item *ngFor="let service of services" class="AppointmentPrice-formControl">
         <ion-label>{{ service.service_name }}</ion-label>
         <ion-input [formControl]="form.controls[service.service_uuid]" [placeholder]="'$' + service.client_price"></ion-input>
       </ion-item>
@@ -22,12 +22,12 @@
         <ion-spinner *ngIf="isLoading" [duration]="500"></ion-spinner>
         <ng-container *ngIf="!isLoading">
           <span>$</span>
-          <b>{{ preview.grand_total.toFixed() }}</b>
+          <b>{{ (preview || appointment).grand_total.toFixed() }}</b>
         </ng-container>
       </div>
     </div>
 
-    <ion-row *ngIf="getDiscountDescr(preview) as discount" align-items-center justify-content-center data-test-id="discount">
+    <ion-row *ngIf="getDiscountDescr(preview || appointment) as discount" align-items-center justify-content-center data-test-id="discount">
       <div class="AppointmentPrice-discount"><b>{{ discount.percentage }}%</b> Discount Applied</div>
     </ion-row>
 

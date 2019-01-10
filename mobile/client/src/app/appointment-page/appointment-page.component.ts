@@ -1,10 +1,22 @@
 import { Component } from '@angular/core';
 import { AlertController, NavController, NavParams } from 'ionic-angular';
 
-import { Logger } from '~/shared/logger';
+import { ServiceFromAppointment } from '~/shared/api/stylist-app.models';
 import { formatTimeInZone } from '~/shared/utils/string-utils';
-import { AppointmentModel, AppointmentStatus } from '~/core/api/appointments.models';
+
 import { AppointmentsApi } from '~/core/api/appointments.api';
+import { PageNames } from '~/core/page-names';
+
+import {
+  AppointmentModel,
+  AppointmentStatus,
+  CheckOutService
+} from '~/core/api/appointments.models';
+import { BookingApi } from '~/core/api/booking.api';
+import { AppointmentsDataStore } from '~/core/api/appointments.datastore';
+
+import { AddServicesComponentParams } from '~/add-services/add-services.component';
+import { AppointmentPriceComponentParams } from '~/appointment-price/appointment-price.component';
 import { confirmRebook, startRebooking } from '~/booking/booking-utils';
 
 export interface AppointmentPageParams {
@@ -25,20 +37,19 @@ export class AppointmentPageComponent {
 
   params: AppointmentPageParams;
 
+  // Details show minified as a default to keep more space empty
+  isMinifiedDetails = true;
+
   constructor(
     private alertCtrl: AlertController,
     private api: AppointmentsApi,
-    private logger: Logger,
+    private appointmentsDataStore: AppointmentsDataStore,
+    private bookingApi: BookingApi,
     private navCtrl: NavController,
     private navParams: NavParams) {
   }
 
-  ionViewDidLoad(): void {
-    this.logger.info('AppointmentPageComponent.ionViewDidLoad');
-  }
-
   ionViewWillEnter(): void {
-    this.logger.info('AppointmentPageComponent.ionViewWillEnter');
     this.params = this.navParams.get('params');
   }
 
@@ -68,7 +79,9 @@ export class AppointmentPageComponent {
         },
         {
           text: 'Yes',
-          handler: data => { this.onDoCancel(); }
+          handler: () => {
+            this.onDoCancel();
+          }
         }
       ]
     });
@@ -86,5 +99,72 @@ export class AppointmentPageComponent {
       // navigate back
       this.navCtrl.pop();
     }
+  }
+
+  onChangeServices(): void {
+    const params: AddServicesComponentParams = {
+      appointment: this.params.appointment,
+      selectedServices: this.params.appointment.services,
+      onComplete: this.onAddServices.bind(this)
+    };
+
+    this.navCtrl.push(PageNames.AddServices, { params });
+  }
+
+  onChangePrice(appointment: AppointmentModel): void {
+    const params: AppointmentPriceComponentParams = { appointment };
+    this.navCtrl.push(PageNames.AppointmentPrice, { params });
+  }
+
+  toggleMinifiedDetails(): void {
+    this.isMinifiedDetails = !this.isMinifiedDetails;
+  }
+
+  private async onAddServices(services: ServiceFromAppointment[]): Promise<void> {
+    const checkoutServices: CheckOutService[] = services.map(service => ({ service_uuid: service.service_uuid }));
+
+    if (this.params.appointment.uuid) {
+      // Update services in the appointment on the backend
+      const { response } = await this.api.changeAppointment(
+        this.params.appointment.uuid, { services: checkoutServices }
+      ).toPromise();
+
+      if (response) {
+        // Update appointment we show to a client
+        this.params.appointment = response;
+
+        this.renewAppointmentsList();
+
+        // Close add services page
+        this.navCtrl.pop();
+      }
+
+    } else {
+      // No appointment on the backend, recreate it using preview API
+      // just as like as at is used in the end of the booking process,
+      const { response } = await this.bookingApi.previewAppointment({
+        stylist_uuid: this.params.appointment.stylist_uuid,
+        datetime_start_at: this.params.appointment.datetime_start_at,
+        services: services.map(({ service_uuid }) => ({ service_uuid }))
+      }).toPromise();
+
+      if (response) {
+        // Update appointment
+        this.params.appointment = response;
+
+        this.renewAppointmentsList();
+
+        // Close add services page
+        this.navCtrl.pop();
+      }
+    }
+  }
+
+  /**
+   * Update appointments list to ensure appointment’s updates are reflected there too.
+   */
+  private renewAppointmentsList(): void {
+    this.appointmentsDataStore.home.get();
+    this.appointmentsDataStore.history.get();
   }
 }

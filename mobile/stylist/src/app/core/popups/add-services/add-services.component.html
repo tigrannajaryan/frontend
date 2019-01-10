@@ -1,31 +1,41 @@
-<ion-header class="ion-bb-header" madeBackHeader></ion-header>
+<ion-header class="ion-bb-header" madeBackHeader>
+  <ion-toolbar>
+    <div class="Made-h1">Select Service</div>
+  </ion-toolbar>
+</ion-header>
 
-<ion-content>
-  <div *ngIf="serviceCategories && hasServices">
-    <services-pick
-      [services]="serviceCategories"
-      (serviceAdd)="onServiceAdd($event)">
-    </services-pick>
-  </div>
+<ion-content no-padding>
+  <div class="Made-wp Made-wpContent">
 
-  <div *ngIf="serviceCategories && !hasServices" class="Made-wp Made-wpContent CenterBlock">
-    <div>
-      <span>You have no services yet, please add ay least one!</span><br>
-      <button (click)="addMyServices()" ion-button full color="bb_skin" class="bb-btn-a MyClients-inviteBtn" data-test-id="inviteClientsBtn">Add Services</button>
+    <div *ngIf="serviceCategories && hasServices">
+      <services-pick
+        [services]="serviceCategories"
+        (serviceAdd)="onServiceAdd($event)">
+      </services-pick>
     </div>
+
+    <div *ngIf="serviceCategories && !hasServices" class="Made-wp Made-wpContent CenterBlock">
+      <div>
+        <span>You have no services yet, please add ay least one!</span><br>
+        <button (click)="addMyServices()" ion-button full color="bb_skin" class="bb-btn-a MyClients-inviteBtn" data-test-id="inviteClientsBtn">Add Services</button>
+      </div>
+    </div>
+
   </div>
 </ion-content>
 
-<ion-footer *ngIf="serviceCategories && hasServices" class="Services-footer">
-  <ion-toolbar>
+<ion-footer *ngIf="serviceCategories && hasServices" class="Services-footer" data-test-id="summary">
+  <ion-toolbar class="Made-wp Made-wpContent">
     <ion-row align-items-center>
-      <ion-col col-4></ion-col>
-      <ion-col col-4>
-        <button (click)="addServicesClick()" ion-button full color="bb_skin" class="bb-btn-a">
-          Add services
+      <ion-col col-6 class="Services-summary">
+        {{ addedServices.length }} {{ addedServices.length === 1 ? 'Service' : 'Services' }}<br />
+        <small>{{ calcAddedServicesPrice() | currency }}</small>
+      </ion-col>
+      <ion-col col-6>
+        <button (click)="addServicesClick()" ion-button full color="bb_skin" class="bb-btn-a Services-submit" data-test-id="submit">
+          Update
         </button>
       </ion-col>
-      <ion-col col-4></ion-col>
     </ion-row>
   </ion-toolbar>
 </ion-footer>

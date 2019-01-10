@@ -9,10 +9,16 @@ import {
 } from '~/shared/push/push-notification';
 import { PushNotificationHandlerParams, PushNotificationToastService } from '~/shared/push/push-notification-toast';
 
-import { FocusAppointmentEventParams, StylistEventTypes } from '~/core/stylist-event-types';
+import {
+  FocusAppointmentEventParams,
+  SetStylistProfileTabEventParams,
+  StylistEventTypes
+} from '~/core/stylist-event-types';
 import { PageNames } from '~/core/page-names';
 
 import { AppointmentCheckoutParams } from '~/appointment/appointment-checkout/appointment-checkout.component';
+import { ProfileTabs } from '~/profile/profile.component';
+import { WorkHoursComponentParams } from '~/workhours/workhours.component';
 
 @Component({
   selector: 'push-notifications-tracker',
@@ -83,6 +89,29 @@ export class StylistPushNotificationsTrackerComponent implements OnInit, OnDestr
           buttonText: 'Open',
           onClick: async (): Promise<void> => {
             await this.nav.setRoot(PageNames.Services);
+          }
+        };
+      }
+
+      case PushNotificationCode.remind_add_photo: {
+        return {
+          buttonText: 'Add Photo',
+          onClick: async (): Promise<void> => {
+            await this.nav.setRoot(PageNames.Profile);
+            this.events.publish(
+              StylistEventTypes.setStylistProfileTab,
+              { profileTab: ProfileTabs.edit } as SetStylistProfileTabEventParams
+            );
+          }
+        };
+      }
+
+      case PushNotificationCode.remind_define_hours: {
+        return {
+          buttonText: 'Update Hours',
+          onClick: async (): Promise<void> => {
+            const params: WorkHoursComponentParams = { isRootPage: true };
+            await this.nav.setRoot(PageNames.WorkHours, { params });
           }
         };
       }

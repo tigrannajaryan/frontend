@@ -1,4 +1,5 @@
 import { ISODate, ISODateTime, ISOTimeOnly } from '~/shared/api/base.models';
+import { ServiceFromAppointment } from '~/shared/api/stylist-app.models';
 import { Weekdays } from '~/shared/api/worktime.models';
 
 export enum AppointmentStatuses {
@@ -43,16 +44,7 @@ export interface AppointmentPreviewResponse {
   total_card_fee: number;
   tax_percentage: number;
   card_fee_percentage: number;
-  services: AppointmentService[];
-}
-
-export interface AppointmentService {
-  service_uuid: string;
-  service_name: string;
-  client_price: number;
-  regular_price: number;
-  is_original: boolean;
-  isChecked?: boolean;
+  services: ServiceFromAppointment[];
 }
 
 export interface AppointmentServiceUuid {
@@ -79,7 +71,7 @@ export interface Appointment {
   datetime_start_at: ISODateTime;
   duration_minutes: number;
   status: AppointmentStatuses;
-  services: AppointmentService[];
+  services: ServiceFromAppointment[];
   client_uuid: string;
   client_profile_photo_url: string;
   grand_total: number;
