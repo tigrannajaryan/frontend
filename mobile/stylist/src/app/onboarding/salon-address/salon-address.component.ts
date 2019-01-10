@@ -1,6 +1,6 @@
 import { AfterViewInit, ChangeDetectorRef, Component, NgZone, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { NavController, NavParams, Platform } from 'ionic-angular';
+import { NavController, NavParams } from 'ionic-angular';
 import { TextInput } from 'ionic-angular/components/input/input';
 
 import { MapsAPILoader } from '@agm/core';
@@ -8,7 +8,6 @@ import { MapsAPILoader } from '@agm/core';
 import { } from 'googlemaps';
 import Autocomplete = google.maps.places.Autocomplete;
 
-import { PlatformNames } from '~/shared/constants';
 import { Logger } from '~/shared/logger';
 
 import { StylistServiceProvider } from '~/core/api/stylist.service';
@@ -35,7 +34,7 @@ export class SalonAddressComponent implements AfterViewInit, OnInit {
   autocomplete: Autocomplete;
   autocompleteInput: HTMLInputElement;
 
-  @ViewChild(TextInput) addressInput;
+  @ViewChild(TextInput) addressInput: TextInput;
 
   constructor(
     private changeDetectorRef: ChangeDetectorRef,
@@ -44,7 +43,6 @@ export class SalonAddressComponent implements AfterViewInit, OnInit {
     private navCtrl: NavController,
     private navParams: NavParams,
     private ngZone: NgZone,
-    private platform: Platform,
     private registrationForm: RegistrationForm,
     private stylistApi: StylistServiceProvider
   ) {
@@ -63,8 +61,7 @@ export class SalonAddressComponent implements AfterViewInit, OnInit {
   }
 
   ionViewDidEnter(): void {
-    if (!this.address.value && this.platform.is(PlatformNames.ios)) {
-      // On Android continue btn overlays input on autofocus. The reason why is not clear. Using only for iOS now.
+    if (!this.address.value) {
       this.autofocus();
     }
   }
@@ -72,7 +69,7 @@ export class SalonAddressComponent implements AfterViewInit, OnInit {
   async ngAfterViewInit(): Promise<void> {
     // Ensure google map’s key is set up.
     //
-    // Yf you close (unload) the app (or reload it when developing in browser) and open again you are going
+    // If you close (unload) the app (or reload it when developing in browser) and open again you are going
     // to be redirected to the registration page. On this page, the profileData.get() will get the data
     // from the local storage. In this case, we want to make sure our google config is loaded.
     // Because of not storing it in local data we will have to call the API for it.
