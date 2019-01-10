@@ -8,6 +8,7 @@
   text-transform: none;  //Added to remove upercase No button in design is upercase
   background-color: color($colors, primary);
   border-radius: pxtovw(10px);
+  box-shadow: none !important;
 
   &.button-small {
     $button-height: pxtovw(40px);

@@ -102,13 +102,13 @@ export class AppointmentPageComponent {
   }
 
   onChangeServices(): void {
-    const data: AddServicesComponentParams = {
+    const params: AddServicesComponentParams = {
       appointment: this.params.appointment,
       selectedServices: this.params.appointment.services,
       onComplete: this.onAddServices.bind(this)
     };
 
-    this.navCtrl.push(PageNames.AddServices, { data });
+    this.navCtrl.push(PageNames.AddServices, { params });
   }
 
   onChangePrice(appointment: AppointmentModel): void {
@@ -116,16 +116,12 @@ export class AppointmentPageComponent {
     this.navCtrl.push(PageNames.AppointmentPrice, { params });
   }
 
-  triggerMinifiedDetails(): void {
+  toggleMinifiedDetails(): void {
     this.isMinifiedDetails = !this.isMinifiedDetails;
   }
 
   private async onAddServices(services: ServiceFromAppointment[]): Promise<void> {
-    const checkoutServices: CheckOutService[] = [];
-
-    for (const service of services) {
-      checkoutServices.push({ service_uuid: service.service_uuid });
-    }
+    const checkoutServices: CheckOutService[] = services.map(service => ({ service_uuid: service.service_uuid }));
 
     if (this.params.appointment.uuid) {
       // Update services in the appointment on the backend

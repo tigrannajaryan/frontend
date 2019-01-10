@@ -38,7 +38,7 @@ export class AddServicesComponent {
   }
 
   async ionViewWillLoad(): Promise<void> {
-    this.params = this.navParams.get('data') as AddServicesComponentParams;
+    this.params = this.navParams.get('params') as AddServicesComponentParams;
     this.loadInitialData();
   }
 
@@ -57,13 +57,13 @@ export class AddServicesComponent {
     }
   }
 
-  getServicesCalcPrice(): number {
+  calcAddedServicesPrice(): number {
     return this.addedServices.reduce((price, service) => {
       return price + service.regular_price;
     }, 0);
   }
 
-  protected onServiceAdd(services): void {
+  protected onServiceAdd(services: ServiceFromAppointment[]): void {
     this.addedServices = services;
   }
 

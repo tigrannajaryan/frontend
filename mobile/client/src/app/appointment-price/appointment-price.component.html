@@ -27,8 +27,8 @@
       </div>
     </div>
 
-    <ion-row *ngIf="getSale(preview || appointment) as sale" align-items-center justify-content-center data-test-id="discount">
-      <div class="AppointmentPrice-discount"><b>{{ sale.percentage }}%</b> Discount Applied</div>
+    <ion-row *ngIf="getDiscountDescr(preview || appointment) as discount" align-items-center justify-content-center data-test-id="discount">
+      <div class="AppointmentPrice-discount"><b>{{ discount.percentage }}%</b> Discount Applied</div>
     </ion-row>
 
   </div>

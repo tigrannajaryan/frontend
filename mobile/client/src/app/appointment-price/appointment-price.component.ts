@@ -14,12 +14,12 @@ import {
 import { AppointmentsApi } from '~/core/api/appointments.api';
 import { AppointmentsDataStore } from '~/core/api/appointments.datastore';
 
-export interface Sale {
+export interface DiscountDescr {
   amount: number;
   percentage: number;
 }
 
-export function getSale(preview: AppointmentPreviewResponse): Sale {
+export function getDiscountDescr(preview: AppointmentPreviewResponse): DiscountDescr {
   if (!preview) {
     return;
   }
@@ -58,7 +58,7 @@ export interface AppointmentPriceComponentParams {
   templateUrl: 'appointment-price.component.html'
 })
 export class AppointmentPriceComponent implements OnInit {
-  getSale = getSale;
+  getDiscountDescr = getDiscountDescr;
 
   appointment: AppointmentModel;
   preview: AppointmentPreviewResponse;
@@ -78,9 +78,8 @@ export class AppointmentPriceComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const { appointment } = this.navParams.get('params') as AppointmentPriceComponentParams || {};
-
-    this.appointment = appointment;
+    const params = this.navParams.get('params') as AppointmentPriceComponentParams;
+    this.appointment = params && params.appointment;
 
     if (this.appointment) {
       // ControlsConfig is a collection of child controls. The key for each child is the name

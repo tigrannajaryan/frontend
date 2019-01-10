@@ -115,13 +115,13 @@ export class AppointmentCheckoutComponent {
   }
 
   addServicesClick(): void {
-    const data: AddServicesComponentParams = {
+    const params: AddServicesComponentParams = {
       appointmentUuid: this.params.appointmentUuid,
       selectedServices: this.selectedServices,
       onComplete: this.onAddServices.bind(this)
     };
 
-    this.navCtrl.push(PageNames.AddServicesComponent, { data });
+    this.navCtrl.push(PageNames.AddServicesComponent, { params });
   }
 
   /**

@@ -31,10 +31,10 @@
       </div>
 
       <!-- Receipt card -->
-      <div class="CheckOut-card">
+      <div class="CheckOut-card" [class.is-minified]="isMinifiedDetails">
 
           <!-- Price -->
-          <div (click)="triggerMinifiedDetails()" class="CheckOut-price">
+          <div (click)="toggleMinifiedDetails()" class="CheckOut-price">
             <div class="CheckOut-priceTitle" data-test-id="appointmentTitle">Total Price</div>
 
             <div class="CheckOut-priceValue">
@@ -42,11 +42,11 @@
               <b data-test-id="appointmentPrice">{{ appointment.grand_total.toFixed() }}</b>
             </div>
 
-            <ion-icon name="ios-arrow-down"></ion-icon>
+            <ion-icon [name]="isMinifiedDetails ? 'ios-arrow-down' : 'ios-arrow-up'"></ion-icon>
           </div>
 
           <!-- Details -->
-          <div *ngIf="appointment.services.length > 0" [class.is-minified]="isMinifiedDetails" class="CheckOut-details">
+          <div *ngIf="appointment.services.length > 0" class="CheckOut-details">
             <ion-row align-items-center *ngFor="let service of appointment.services; let index = index;" class="CheckOut-detailsServices" data-test-id="appointmentServices">
               <ion-col col-6 no-padding>
                 <span>{{ service.service_name }}</span>

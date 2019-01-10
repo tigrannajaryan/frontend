@@ -54,16 +54,15 @@ appointment-price {
   }
 
   .AppointmentPrice-discount {
-    $color-dark-mint: #5DCA91;
     $color-mint-bg: rgba(93, 202, 145, 0.05);
 
     padding: pxtovw(8px);
     margin-top: pxtovw(16px);
     font-size: pxtovw(13px);
     line-height: pxtovw(16px);
-    color: $color-dark-mint;
+    color: color($colors-shared, darkMint);
     background: $color-mint-bg;
-    border: pxtovw(1px) solid $color-dark-mint;
+    border: pxtovw(1px) solid color($colors-shared, darkMint);
     border-radius: pxtovw(4px);
 
     b {

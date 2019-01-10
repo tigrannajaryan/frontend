@@ -32,7 +32,7 @@ describe('Pages: AddServicesComponent', () => {
         AppModule.injector = TestBed;
 
         const navParams = fixture.debugElement.injector.get(NavParams);
-        navParams.data = { data: params };
+        navParams.data = { params };
       })
   ));
 

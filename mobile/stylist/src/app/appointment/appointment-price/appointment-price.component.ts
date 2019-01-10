@@ -13,12 +13,12 @@ import {
 } from '~/core/api/home.models';
 import { HomeService } from '~/core/api/home.service';
 
-export interface Sale {
+export interface DiscountDescr {
   amount: number;
   percentage: number;
 }
 
-export function getSale(preview: AppointmentPreviewResponse): Sale {
+export function getDiscountDescr(preview: AppointmentPreviewResponse): DiscountDescr {
   if (!preview) {
     return;
   }
@@ -58,7 +58,7 @@ export interface AppointmentPriceComponentParams {
   templateUrl: 'appointment-price.component.html'
 })
 export class AppointmentPriceComponent implements OnInit {
-  getSale = getSale;
+  getDiscountDescr = getDiscountDescr;
 
   appointment: Appointment;
   preview: AppointmentPreviewResponse;

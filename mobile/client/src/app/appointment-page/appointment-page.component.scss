@@ -4,6 +4,7 @@ page-appointment {
 
   .CheckOut-card {
     margin-bottom: pxtovw(16px) 0;
+    overflow: hidden;
     border-radius: pxtovw(8px);
     box-shadow:
       pxtovw(7px) 0 pxtovw(24px) 0 rgba(black, 0.08),
@@ -89,8 +90,9 @@ page-appointment {
     position: relative;
     padding: pxtovw(16px);
     text-align: center;
+    box-shadow: 0 pxtovw(7px) pxtovw(24px) 0 rgba(black, 0.08);
 
-    ion-icon[name="ios-arrow-down"] {
+    ion-icon {
       $icon-size: pxtovw(32px);
 
       position: absolute;
@@ -180,7 +182,6 @@ page-appointment {
     padding: pxtovw(12px) pxtovw(16px);
     font-size: pxtovw(15px);
     line-height: pxtovw(16px);
-    background: linear-gradient(to bottom, rgba(black, 0.08) 0, white pxtovw(42px));
 
     .mb-icon-trash {
       margin-left: pxtovw(8px);
@@ -209,8 +210,17 @@ page-appointment {
         line-height: pxtovw(16px);
       }
     }
+  }
 
-    &.is-minified {
+  // Minified
+  // –––––––––––––––––––––
+
+  .CheckOut-card.is-minified {
+    .CheckOut-price {
+      box-shadow: none;
+    }
+
+    .CheckOut-details {
       background: transparent;
 
       .row,
@@ -238,7 +248,6 @@ page-appointment {
   // –––––––––––––––––––––
 
   .CheckOut-saved {
-    $color-dark-mint: #5DCA91;
     $color-mint-bg: rgba(93, 202, 145, 0.05);
 
     padding: pxtovw(8px) pxtovw(12px);
@@ -246,9 +255,9 @@ page-appointment {
     font-size: pxtovw(18px);
     font-weight: 500;
     line-height: pxtovw(24px);
-    color: $color-dark-mint;
+    color: color($colors-shared, darkMint);
     background: $color-mint-bg;
-    border: pxtovw(1px) solid $color-dark-mint;
+    border: pxtovw(1px) solid color($colors-shared, darkMint);
     border-radius: pxtovw(8px);
 
     .CheckOut-savedAmount {
