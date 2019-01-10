@@ -13,11 +13,13 @@ page-add-service {
   }
 
   .ServicesPick {
-    margin: pxtovw(36px) 0 pxtovw(57px);
+    margin: pxtovw(36px) pxtovw(24px) pxtovw(57px);
   }
 
   .Services-footer {
-    background: white;
+    padding-top: pxtovw(16px);
+    padding-bottom: pxtovw(16px);
+    border-top: pxtovw(1px) solid color($grayscale, 200);
 
     &:before {
       display: none;

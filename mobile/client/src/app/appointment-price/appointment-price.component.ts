@@ -7,11 +7,12 @@ import { componentUnloaded } from '~/shared/component-unloaded';
 import { loading } from '~/shared/utils/loading';
 
 import {
-  Appointment,
+  AppointmentModel,
   AppointmentPreviewResponse,
   CheckOutService
-} from '~/core/api/home.models';
-import { HomeService } from '~/core/api/home.service';
+} from '~/core/api/appointments.models';
+import { AppointmentsApi } from '~/core/api/appointments.api';
+import { AppointmentsDataStore } from '~/core/api/appointments.datastore';
 
 export interface DiscountDescr {
   amount: number;
@@ -49,8 +50,7 @@ export function getDiscountDescr(preview: AppointmentPreviewResponse): DiscountD
 }
 
 export interface AppointmentPriceComponentParams {
-  appointment: Appointment;
-  preview: AppointmentPreviewResponse;
+  appointment: AppointmentModel;
 }
 
 @Component({
@@ -60,7 +60,7 @@ export interface AppointmentPriceComponentParams {
 export class AppointmentPriceComponent implements OnInit {
   getDiscountDescr = getDiscountDescr;
 
-  appointment: Appointment;
+  appointment: AppointmentModel;
   preview: AppointmentPreviewResponse;
 
   isLoading = false;
@@ -69,7 +69,8 @@ export class AppointmentPriceComponent implements OnInit {
   priceChangeReason: FormControl = new FormControl('');
 
   constructor(
-    private api: HomeService,
+    private api: AppointmentsApi,
+    private appointmentsDataStore: AppointmentsDataStore,
     private formBuilder: FormBuilder,
     private navCtrl: NavController,
     private navParams: NavParams
@@ -77,12 +78,10 @@ export class AppointmentPriceComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const { appointment, preview } = this.navParams.get('params') as AppointmentPriceComponentParams;
+    const params = this.navParams.get('params') as AppointmentPriceComponentParams;
+    this.appointment = params && params.appointment;
 
-    this.appointment = appointment;
-    this.preview = preview;
-
-    if (this.preview) {
+    if (this.appointment) {
       // ControlsConfig is a collection of child controls. The key for each child is the name
       // under which it is registered. It is supplied to FormBuilder.group(…) call.
       // https://github.com/angular/angular/blob/7.1.4/packages/forms/src/form_builder.ts#L32-L33
@@ -114,15 +113,32 @@ export class AppointmentPriceComponent implements OnInit {
   }
 
   async onSave(): Promise<void> {
-    const { response } = await this.api.changeAppointment(
-      this.appointment.uuid,
-      {
-        services: this.getServicesWithPrices(),
-        price_change_reason: this.priceChangeReason.value
-      }
-    ).toPromise();
+    if (this.appointment.uuid) {
+      // Do update on the backend
+      const { response } = await this.api.changeAppointment(
+        this.appointment.uuid,
+        {
+          services: this.getServicesWithPrices(),
+          price_change_reason: this.priceChangeReason.value
+        }
+      ).toPromise();
 
-    if (response) {
+      if (response) {
+        this.renewAppointmentsList();
+
+        this.navCtrl.pop();
+      }
+
+    } else if (this.preview) {
+      // Update locally based on last preview
+      this.appointment.grand_total = this.preview.grand_total;
+      this.appointment.total_client_price_before_tax = this.preview.total_client_price_before_tax;
+      this.appointment.total_tax = this.preview.total_tax;
+      this.appointment.total_card_fee = this.preview.total_card_fee;
+      this.appointment.tax_percentage = this.preview.tax_percentage;
+      this.appointment.card_fee_percentage = this.preview.card_fee_percentage;
+      this.appointment.services = this.preview.services;
+
       this.navCtrl.pop();
     }
   }
@@ -131,6 +147,7 @@ export class AppointmentPriceComponent implements OnInit {
     const { response } = await loading(this,
       this.api.getAppointmentPreview({
         appointment_uuid: this.appointment.uuid,
+        stylist_uuid: this.appointment.stylist_uuid,
         datetime_start_at: this.appointment.datetime_start_at,
         services: this.getServicesWithPrices(),
         has_tax_included: false,
@@ -155,5 +172,13 @@ export class AppointmentPriceComponent implements OnInit {
     }
 
     return services;
+  }
+
+  /**
+   * Update appointments list to ensure appointment’s updates are reflected there too.
+   */
+  private renewAppointmentsList(): void {
+    this.appointmentsDataStore.home.get();
+    this.appointmentsDataStore.history.get();
   }
 }

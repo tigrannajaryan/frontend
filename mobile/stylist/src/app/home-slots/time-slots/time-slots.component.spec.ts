@@ -2,8 +2,10 @@ import { TestBed } from '@angular/core/testing';
 import * as faker from 'faker';
 import * as moment from 'moment';
 
+import { ServiceFromAppointment } from '~/shared/api/stylist-app.models';
+
 import { prepareSharedObjectsForTests } from '../../core/test-utils.spec';
-import { Appointment, AppointmentService, AppointmentStatuses } from '../../core/api/home.models';
+import { Appointment, AppointmentStatuses } from '../../core/api/home.models';
 import { fullSlotWidthInVw, TimeSlotColumn, TimeSlotItem, TimeSlotLabel, TimeSlotsComponent } from './time-slots.component';
 import {
   formatAppointmentClientName,
@@ -40,7 +42,7 @@ export function createAppointment(): Appointment {
   };
 }
 
-function createService(): AppointmentService {
+function createService(): ServiceFromAppointment {
   return {
     service_name: faker.commerce.product(),
     service_uuid: '',

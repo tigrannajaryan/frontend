@@ -94,11 +94,7 @@ export class StylistServiceMock {
   getStylistServices(): Observable<ApiResponse<StylistServicesListResponse>> {
     return Observable.of({
       response: {
-        categories: [{
-          uuid: faker.random.uuid(),
-          name: faker.commerce.productName(),
-          services: serviceItemsMock
-        }]
+        categories: [categoryMock]
       }
     });
   }

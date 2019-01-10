@@ -15,6 +15,19 @@ import {
 } from '~/core/api/services.models';
 import { ServicesService } from './services.service';
 
+export const serviceItemsMock =
+  Array(5).fill(undefined).map(() => ({
+    uuid: faker.random.uuid(),
+    name: faker.commerce.productName(),
+    base_price: faker.commerce.price()
+  }));
+
+export const categoryMock = {
+  uuid: faker.random.uuid(),
+  name: faker.commerce.department(),
+  services: serviceItemsMock
+};
+
 @Injectable()
 export class ServicesServiceMock extends ServicesService {
 
@@ -29,16 +42,9 @@ export class ServicesServiceMock extends ServicesService {
       Observable.create(observer => {
         observer.next({
           stylist_uuid: params.stylist_uuid,
-          categories: Array(7).fill(undefined).map(() => ({
-            uuid: faker.random.uuid(),
-            name: faker.commerce.department(),
-            services: Array(5).fill(undefined).map(() => ({
-              uuid: faker.random.uuid(),
-              name: faker.commerce.productName(),
-              regular_price: faker.commerce.price()
-            }))
-          }))
+          categories: [categoryMock]
         });
+        observer.complete();
       })
     );
   }
@@ -63,6 +69,7 @@ export class ServicesServiceMock extends ServicesService {
           service_uuid: faker.random.uuid(),
           prices
         });
+        observer.complete();
       })
     );
   }

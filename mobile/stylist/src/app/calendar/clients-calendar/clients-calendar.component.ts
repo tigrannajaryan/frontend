@@ -73,7 +73,7 @@ export class ClientsCalendarComponent {
 
   onAddService(): void {
     this.navCtrl.push(PageNames.AddServicesComponent, {
-      data: {
+      params: {
         selectedServices: this.services.map(service => ({ service_uuid: service.uuid })),
         onComplete: services => {
           this.navCtrl.pop();

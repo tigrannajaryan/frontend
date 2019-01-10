@@ -44,3 +44,36 @@ export interface HomeResponse {
   upcoming: AppointmentModel[];
   last_visited: AppointmentModel;
 }
+
+export interface AppointmentPreviewResponse {
+  duration_minutes: number;
+  grand_total: number;
+  total_client_price_before_tax: number;
+  total_tax: number;
+  total_card_fee: number;
+  tax_percentage: number;
+  card_fee_percentage: number;
+  services: AppointmentServiceModel[];
+}
+
+export interface CheckOutService {
+  service_uuid: string;
+  client_price?: number;
+}
+
+export interface AppointmentPreviewRequest {
+  appointment_uuid?: string;
+  stylist_uuid: string;
+  datetime_start_at: string;
+  services: CheckOutService[];
+  has_tax_included: boolean;
+  has_card_fee_included: boolean;
+}
+
+export interface AppointmentChangeRequest {
+  status?: AppointmentStatus;
+  has_tax_included?: boolean;
+  has_card_fee_included?: boolean;
+  services?: CheckOutService[];
+  price_change_reason?: string;
+}
