@@ -1,0 +1,8 @@
+salon-address {
+  // On Android continue btn overlays input on autofocus. The reason why is because of having a weird padding-bottom
+  // added to push the content up (because of the keyboard that is appearing from the bottom on mobile devices).
+  // More details: https://forum.ionicframework.com/t/weird-padding-showing-up-on-scroll-content/48185/5
+  ion-content.content.content-md[no-padding] .scroll-content {
+    padding-bottom: 0 !important;
+  }
+}
