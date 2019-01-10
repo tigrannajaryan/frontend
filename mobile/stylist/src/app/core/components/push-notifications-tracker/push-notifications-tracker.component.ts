@@ -108,7 +108,7 @@ export class StylistPushNotificationsTrackerComponent implements OnInit, OnDestr
 
       case PushNotificationCode.remind_define_hours: {
         return {
-          buttonText: 'Open',
+          buttonText: 'Update Hours',
           onClick: async (): Promise<void> => {
             const params: WorkHoursComponentParams = { isRootPage: true };
             await this.nav.setRoot(PageNames.WorkHours, { params });
