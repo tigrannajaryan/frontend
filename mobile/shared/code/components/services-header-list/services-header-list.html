@@ -1,20 +1,27 @@
-<div class="ServiciesHeader">
+<div class="Made-wp">
+  <div class="ServiciesHeader">
+    <span *ngIf="!readonly || services?.length > 0" class="ServiciesHeader-title">Services:</span>
 
-  <span *ngIf="!readonly || services?.length > 0" class="ServiciesHeader-title">Services:</span>
+    <div class="ServiciesHeader-container">
+      <div *ngFor="let service of services; let index = index" class="ServiciesHeader-seviceItem" [attr.data-test-id]="'serviceItem'+index">
+        <div class="ServiciesHeader-seviceName" data-test-id="name">{{ service.name }}</div>
+        <ion-icon *ngIf="!readonly" class="ServiciesHeader-serviceItemClose" name="ios-close"
+                  (click)="onDelete(service)" data-test-id="deleteBtn"></ion-icon>
+      </div>
 
-  <div class="ServiciesHeader-container">
-    <div *ngFor="let service of services; let index = index" class="ServiciesHeader-seviceItem" [attr.data-test-id]="'serviceItem'+index">
-      <div class="ServiciesHeader-seviceName" data-test-id="name">{{ service.name }}</div>
-      <ion-icon *ngIf="!readonly" class="ServiciesHeader-serviceItemClose" name="ios-close"
-        (click)="onDelete(service)" data-test-id="deleteBtn"></ion-icon>
+      <div *ngIf="!readonly && services?.length > 0" class="ServiciesHeader-seviceAdd">
+        <ion-icon name="ios-add-circle-outline" (click)="onAdd()" data-test-id="addServiceBtn"></ion-icon>
+      </div>
+
+      <div *ngIf="!readonly && services?.length === 0" class="ServicesHeader-bigAddBtn" (click)="onAdd()">Add Service</div>
+
     </div>
-
-    <div *ngIf="!readonly && services?.length > 0" class="ServiciesHeader-seviceAdd">
-      <ion-icon name="ios-add-circle-outline" (click)="onAdd()" data-test-id="addServiceBtn"></ion-icon>
-    </div>
-
-    <div *ngIf="!readonly && services?.length === 0" class="ServicesHeader-bigAddBtn" (click)="onAdd()">Add Service</div>
-
   </div>
+</div>
 
+<div *ngFor="let item of hints" data-test-id="pricingHints">
+  <div class="ServiciesHeader-hint">
+    <i class="mb-icon-discounts-b"></i>
+    {{ item.hint }}
+  </div>
 </div>

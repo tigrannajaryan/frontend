@@ -1,4 +1,5 @@
 import { DayOffer, ServiceModel } from '~/shared/api/price.models';
+import { PricingHints } from '~/shared/components/services-header-list/services-header-list';
 
 export interface GetStylistServicesParams {
   stylist_uuid: string;
@@ -23,5 +24,6 @@ export interface GetPricelistParams {
 export interface GetPricelistResponse {
   stylist_uuid: string;
   prices: DayOffer[];
+  pricing_hints: PricingHints[];
   service_uuids?: string[];
 }

@@ -73,3 +73,11 @@
     margin: 0 pxtovw(4px);
   }
 }
+
+.ServiciesHeader-hint {
+  padding: pxtovw(7px) 0;
+  font-size: pxtovw(15px);
+  color: white;
+  background: color($colors-shared, warn);
+  text-align: center;
+}

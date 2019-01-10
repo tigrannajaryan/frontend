@@ -2,6 +2,11 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 import { ServiceModel } from '~/shared/api/price.models';
 
+export interface PricingHints {
+  priority: number;
+  hint: string;
+}
+
 /**
  * Generic component to show a list of services as tags in a header
  * which allows adding and removing service items.
@@ -13,6 +18,7 @@ import { ServiceModel } from '~/shared/api/price.models';
 export class ServicesHeaderListComponent {
   // Set to true to disallow deleting or adding services.
   @Input() readonly: boolean;
+  @Input() hints: PricingHints[];
 
   @Input()
   services: ServiceModel[];

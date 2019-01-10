@@ -1,6 +1,6 @@
 <ion-header madeHeader [showHome]="true">
   <ion-toolbar class="SelectDate SelectDate-header">
-    <ion-row justify-content-between>
+    <ion-row class="Made-wp" justify-content-between>
       <div class="SelectDate-title Made-h1">Select Date</div>
 
       <ng-container *ngIf="bookingData?.stylist">
@@ -8,9 +8,11 @@
       </ng-container>
     </ion-row>
 
-    <book-services-header (serviceChange)="onServiceChange()"></book-services-header>
+    <book-services-header (serviceChange)="onServiceChange()" [hints]="hints"></book-services-header>
 
-    <price-pair *ngIf="regularPrice && bookingData?.selectedServices?.length !== 0" [regularPrice]="regularPrice"></price-pair>
+    <div class="Made-wp">
+      <price-pair *ngIf="regularPrice && bookingData?.selectedServices?.length !== 0" [regularPrice]="regularPrice"></price-pair>
+    </div>
   </ion-toolbar>
 </ion-header>
 

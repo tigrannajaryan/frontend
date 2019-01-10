@@ -16,6 +16,7 @@ import { PreferredStylistModel } from '~/shared/api/stylists.models';
 import { isoDateFormat } from '~/shared/api/base.models';
 import { BookServicesHeaderComponent } from '../book-services-header/book-services-header';
 import { ServiceItem } from '~/shared/api/stylist-app.models';
+import { PricingHints } from '~/shared/components/services-header-list/services-header-list';
 
 @Component({
   selector: 'select-date',
@@ -26,6 +27,7 @@ export class SelectDateComponent {
   @ViewChild(BookServicesHeaderComponent) servicesHeader: BookServicesHeaderComponent;
 
   regularPrice: number;
+  hints: PricingHints[];
   isLoading: boolean;
   prices: DayOffer[];
   preferredStylists: Promise<PreferredStylistModel[]>;
@@ -69,6 +71,9 @@ export class SelectDateComponent {
         const { response } = await loading(this, this.bookingData.pricelist.get());
         if (response) {
           this.prices = response.prices;
+          this.hints = response.pricing_hints;
+          // update header after adding hint
+          this.onServiceChange();
 
           // When empty offers or all days of preferred stylist either booked or set to non-working:
           const notTimeslots =

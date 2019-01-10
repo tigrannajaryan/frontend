@@ -3,9 +3,8 @@
 <ion-content no-padding>
   <div class="PhoneBodyWrapper">
 
-    <div class="Made-wp Made-wpContent">
-
-      <ion-row nowrap class="PhoneBodyWrapper-sticky">
+    <div class="Made-wpContent">
+      <ion-row nowrap class="Made-wp PhoneBodyWrapper-sticky">
         <div class="Made-h1">How pricing works</div>
         <user-name-photo [firstName]="profile.first_name" [lastName]="profile.last_name" col-4>
         </user-name-photo>
@@ -16,9 +15,11 @@
       <services-header-list [services]="services" [readonly]="false">
       </services-header-list>
 
-      <price-pair [regularPrice]="200"></price-pair>
+      <div class="Made-wp">
+        <price-pair [regularPrice]="200"></price-pair>
 
-      <price-calendar [prices]="prices"></price-calendar>
+        <price-calendar [prices]="prices"></price-calendar>
+      </div>
     </div>
 
   </div>
