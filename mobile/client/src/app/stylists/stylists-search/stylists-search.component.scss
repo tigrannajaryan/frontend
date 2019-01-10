@@ -1,64 +1,125 @@
-.StylistsPage-header {
-  padding-bottom: pxtovw(8px);
-  box-shadow: 0 pxtovw(2px) pxtovw(16px) white;
+page-stylists-search {
+  $top-bar-height: pxtovw(44px);
+  $header-height: pxtovw(176px);
+  $card-padding: pxtovw(16px);
 
-  .StylistsPage-search {
-    $icon-size: pxtovw(16px);
-    $input-offset: pxtovw(48px);
+  [madeHeader] .toolbar,
+  .madeHeader .toolbar {
+    min-height: pxtovw(41px);
+  }
 
-    position: relative;
+  .StylistsPage-header {
+    max-height: $header-height;
+    padding-top: 0;
+    padding-bottom: 0;
+    box-shadow: 0 pxtovw(2px) pxtovw(16px) white;
+    transition: 0.16s linear height;
+    will-change: height;
 
-    .StylistsPage-searchInput {
-      overflow: hidden;
-      border-radius: pxtovw(10px);
-      box-shadow: 0 pxtovw(2px) pxtovw(8px) rgba(black, 0.1);
+    .toolbar-content {
+      transition: 0.16s linear transform;
+      transform: translateY(0);
+      will-change: transform;
+    }
 
-      .text-input {
-        padding-left: $input-offset;
+    .StylistsPage-search {
+      $icon-size: pxtovw(16px);
+      $input-offset: pxtovw(48px);
 
-        &::placeholder {
-          color: color($grayscale, 500);
+      position: relative;
+
+      &:first-child {
+        margin-top: pxtovw(17px);
+      }
+
+      .StylistsPage-searchInput {
+        overflow: hidden;
+        border-radius: pxtovw(10px);
+        box-shadow: 0 pxtovw(2px) pxtovw(8px) rgba(black, 0.1);
+
+        .text-input {
+          padding-left: $input-offset;
+
+          &::placeholder {
+            color: color($grayscale, 500);
+          }
         }
+      }
+
+      .StylistsPage-locationInput input:not(:focus)::placeholder {
+        color: color($colors, darkSkyBlue);
+        opacity: 1;
+      }
+
+      [class^="mb-icon"] {
+        position: absolute;
+        top: 50%;
+        left: ($input-offset - $icon-size) / 2;
+        z-index: 1;
+        margin: (-1 * $icon-size / 2) 0 0;
+        color: color($colors, orange);
+      }
+
+      + .StylistsPage-search {
+        margin-top: pxtovw(8px);
       }
     }
 
-    .StylistsPage-locationInput input:not(:focus)::placeholder {
-      color: color($colors, darkSkyBlue);
-      opacity: 1;
+    .StylistsPage-title {
+      padding-bottom: pxtovw(8px);
+      margin-top: pxtovw(24px);
+
+      ion-icon {
+        display: none;
+        font-size: pxtovw(24px);
+      }
     }
 
-    [class^="mb-icon"] {
-      position: absolute;
-      top: 50%;
-      left: ($input-offset - $icon-size) / 2;
-      z-index: 1;
-      margin: (-1 * $icon-size / 2) 0 0;
-      color: color($colors, orange);
-    }
-
-    + .StylistsPage-search {
-      margin-top: pxtovw(8px);
+    .StylistsPage-loader {
+      margin-top: pxtovw(4px);
+      font-size: $t-base;
+      font-weight: normal;
     }
   }
 
-  .StylistsPage-title {
-    margin-top: pxtovw(24px);
+  .StylistsPage {
+    .scroll-content {
+      margin-top: 0 !important;
+      transition: 0.16s linear transform;
+      transform: translateY($header-height + $top-bar-height);
+      will-change: transform;
+    }
+
+    .StylistsPage-content {
+      padding-top: 0;
+    }
+
+    .StylistsPage-stylists {
+      padding-bottom: pxtovw(24px);
+      margin-top: pxtovw(18px);
+    }
   }
 
-  .StylistsPage-loader {
-    margin-top: pxtovw(4px);
-    font-size: $t-base;
-    font-weight: normal;
-  }
-}
+  // On scroll
+  .is-Minified {
+    .StylistsPage-header {
+      max-height: 0;
 
-.StylistsPage {
-  .StylistsPage-content {
-    padding-top: 0;
-  }
+      .toolbar-content {
+        transform: translateY(-1 * pxtovw(68px));
+      }
 
-  .StylistsPage-stylists {
-    padding-bottom: pxtovw(24px);
-    margin-top: pxtovw(18px);
+      .StylistsPage-search {
+        visibility: hidden;
+      }
+
+      .StylistsPage-title ion-icon {
+        display: block;
+      }
+    }
+
+    &.StylistsPage .scroll-content {
+      transform: translateY($top-bar-height);
+    }
   }
 }
