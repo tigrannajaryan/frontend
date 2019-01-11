@@ -162,6 +162,7 @@ export class ExternalAppService {
 
   private openLink(link: string): void {
     const options: string[] = this.platform.is('android') ? this.pageOptionsAndroid : [];
-    this.browser.create(link, ...options);
+    const browser = this.browser.create(link, ...options);
+    browser.show();
   }
 }
