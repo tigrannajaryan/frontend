@@ -20,10 +20,7 @@ select-date {
 }
 
 .SelectDate-header {
-  @include content-padding;
-
-  padding-top: pxtovw(2px);
-  padding-bottom: 0;
+  padding: pxtovw(2px) 0 0;
 }
 
 .SelectDate-notAvailablePopup {

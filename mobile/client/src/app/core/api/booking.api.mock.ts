@@ -69,6 +69,10 @@ export class BookingApiMock extends BookingApi {
         price: 123,
         is_fully_booked: false,
         is_working_day: true
+      }],
+      pricing_hints: [{
+        priority: 0,
+        hint: 'some string'
       }]
     };
     return Observable.of({ response });

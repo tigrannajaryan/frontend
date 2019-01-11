@@ -6,6 +6,7 @@ import { TestUtils } from '../../../test';
 import { BookingData } from '~/core/api/booking.data';
 import { SelectDateComponent } from './select-date.component';
 import { stylistsMock } from '~/core/api/stylists.service.mock';
+import { loading } from '~/shared/utils/loading';
 
 let fixture: ComponentFixture<SelectDateComponent>;
 let instance: SelectDateComponent;
@@ -80,5 +81,10 @@ describe('Pages: Select Date', () => {
     const bookingData = fixture.debugElement.injector.get(BookingData);
     const userFullName = fixture.nativeElement.querySelector('[data-test-id=userFullName]');
     expect(userFullName.innerHTML).toContain(bookingData.stylist.first_name);
+  });
+
+  it('should have pricing hints', async () => {
+    const pricingHints = fixture.nativeElement.querySelector('[data-test-id=pricingHints]');
+    expect(pricingHints).toBeDefined();
   });
 });

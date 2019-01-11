@@ -5,8 +5,8 @@
     </div>
   </ion-title>
 
-  <ion-toolbar class="Made-wp Made-wpContent ClientsCalendar-header">
-    <ion-row justify-content-between>
+  <ion-toolbar class="ClientsCalendar-header">
+    <ion-row justify-content-between class="Made-wp">
       <div *ngIf="params?.client" class="Made-h1 ClientsCalendar-title">{{ getNamePossessiveForm(params?.client) }}Calendar Preview</div>
       <div *ngIf="!params?.client" class="ClientsCalendar-small"><span>Calendar view of a new client</span></div>
 
@@ -14,11 +14,12 @@
         <user-name-photo [firstName]="profile?.first_name" [lastName]="profile?.last_name" [photoUrl]="profile?.profile_photo_url"></user-name-photo>
       </ng-container>
     </ion-row>
+
     <services-header-list *ngIf="isLoaded" (addService)="onAddService()" (deleteService)="onDeleteService($event)" [services]="services" [readonly]="false"></services-header-list>
 
-    <ng-container *ngIf="getRegularPrice(services) as regularPrice">
+    <div *ngIf="getRegularPrice(services) as regularPrice" class="Made-wp">
       <price-pair [regularPrice]="regularPrice"></price-pair>
-    </ng-container>
+    </div>
   </ion-toolbar>
 </ion-header>
 

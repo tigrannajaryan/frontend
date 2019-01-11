@@ -1,12 +1,12 @@
 <ion-header madeHeader [showHome]="true">
-  <ion-toolbar *ngIf="isAdditionalService" class="SelectDate SelectDate-header">
-    <div class="SelectDate-title SharedH1">Add additional service:</div>
+  <ion-toolbar *ngIf="isAdditionalService" class="SelectDate" no-padding>
+    <div class="Made-wp SelectDate-title SharedH1">Add additional service:</div>
     <book-services-header [readonly]="isAdditionalService"></book-services-header>
   </ion-toolbar>
 </ion-header>
 
 <ion-content scroll="false">
-  <div class="contentSidePadding SelectDate-header">
+  <div class="Made-wp contentSidePadding">
     <ion-row *ngIf="!isAdditionalService" justify-content-between>
       <div class="Made-h1">Select Category</div>
 

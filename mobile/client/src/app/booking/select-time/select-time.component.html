@@ -1,6 +1,6 @@
 <ion-header madeHeader [showHome]="true">
   <ion-toolbar class="SelectDate SelectDate-header">
-    <ion-row justify-content-between>
+    <ion-row class="Made-wp" justify-content-between>
       <div class="SelectDate-title Made-h1">
         Select Time
         <div class="SelectDate-date">{{ bookingData?.offer?.date | date: 'EE, MMM dd' }}</div>
@@ -13,10 +13,12 @@
 
     <book-services-header (serviceChange)="onServiceChange()"></book-services-header>
 
-    <price-pair
-      *ngIf="bookingData.offer && bookingData?.selectedServices?.length !== 0"
-      [regularPrice]="bookingData.offer?.totalRegularPrice"
-      [clientPrice]="bookingData.offer?.price"></price-pair>
+    <div class="Made-wp">
+      <price-pair
+        *ngIf="bookingData.offer && bookingData?.selectedServices?.length !== 0"
+        [regularPrice]="bookingData.offer?.totalRegularPrice"
+        [clientPrice]="bookingData.offer?.price"></price-pair>
+    </div>
   </ion-toolbar>
 </ion-header>
 
