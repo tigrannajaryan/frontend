@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 import { ServiceModel } from '~/shared/api/price.models';
 
-export interface PricingHints {
+export interface PricingHint {
   priority: number;
   hint: string;
 }
@@ -18,7 +18,7 @@ export interface PricingHints {
 export class ServicesHeaderListComponent {
   // Set to true to disallow deleting or adding services.
   @Input() readonly: boolean;
-  @Input() hints: PricingHints[];
+  @Input() hints: PricingHint[];
 
   @Input()
   services: ServiceModel[];

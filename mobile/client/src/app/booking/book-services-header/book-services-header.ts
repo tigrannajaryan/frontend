@@ -8,7 +8,7 @@ import { BookingData } from '~/core/api/booking.data';
 import { PageNames } from '~/core/page-names';
 
 import { ServicesCategoriesParams } from '~/services-categories-page/services-categories-page.component';
-import { PricingHints } from '~/shared/components/services-header-list/services-header-list';
+import { PricingHint } from '~/shared/components/services-header-list/services-header-list';
 
 /**
  * A component that shows the list of services in the header
@@ -20,7 +20,7 @@ import { PricingHints } from '~/shared/components/services-header-list/services-
 })
 export class BookServicesHeaderComponent {
   @Input() readonly: boolean;
-  @Input() hints: PricingHints[];
+  @Input() hints: PricingHint[];
 
   @Input()
   services: Observable<ServiceModel[]>;

@@ -16,7 +16,7 @@ import { PreferredStylistModel } from '~/shared/api/stylists.models';
 import { isoDateFormat } from '~/shared/api/base.models';
 import { BookServicesHeaderComponent } from '../book-services-header/book-services-header';
 import { ServiceItem } from '~/shared/api/stylist-app.models';
-import { PricingHints } from '~/shared/components/services-header-list/services-header-list';
+import { PricingHint } from '~/shared/components/services-header-list/services-header-list';
 
 @Component({
   selector: 'select-date',
@@ -27,7 +27,7 @@ export class SelectDateComponent {
   @ViewChild(BookServicesHeaderComponent) servicesHeader: BookServicesHeaderComponent;
 
   regularPrice: number;
-  hints: PricingHints[];
+  hints: PricingHint[];
   isLoading: boolean;
   prices: DayOffer[];
   preferredStylists: Promise<PreferredStylistModel[]>;
