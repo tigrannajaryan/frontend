@@ -152,24 +152,10 @@ export class SelectTimeComponent {
     };
 
     // Preview the appointment
-    const { response, error } = await this.bookingApi.previewAppointment(appointmentRequest).get();
-    if (!error) {
-      const params: AppointmentPageParams = {
-        appointment: response,
-        onConfirmClick: () => this.createAppointment(appointmentRequest)
-      };
+    const { response } = await this.bookingApi.previewAppointment(appointmentRequest).get();
+    if (response) {
+      const params: AppointmentPageParams = { appointment: response };
       this.navCtrl.push(PageNames.Appointment, { params });
-    }
-  }
-
-  async createAppointment(appointmentRequest: CreateAppointmentRequest): Promise<void> {
-    const { error } = await this.bookingApi.createAppointment(appointmentRequest).get();
-    if (!error) {
-      // Appointment succesfully created. Refresh Home screen.
-      this.appointmentsData.home.refresh();
-
-      // Show "booking complete" message.
-      this.navCtrl.push(PageNames.BookingComplete);
     }
   }
 

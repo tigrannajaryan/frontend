@@ -2,10 +2,11 @@ import { Component, ViewChild } from '@angular/core';
 import { App, Refresher } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
 
+import { ClientAppointmentModel } from '~/shared/api/appointments.models';
 import { Logger } from '~/shared/logger';
 import { loading } from '~/shared/utils/loading';
 
-import { AppointmentModel, AppointmentsHistoryResponse } from '~/core/api/appointments.models';
+import { AppointmentsHistoryResponse } from '~/core/api/appointments.models';
 import { ApiResponse } from '~/shared/api/base.models';
 import { AppointmentsDataStore } from '~/core/api/appointments.datastore';
 import { PageNames } from '~/core/page-names';
@@ -47,7 +48,7 @@ export class AppointmentsHistoryComponent {
     this.profileDataStore.get({ refresh: invalidateCache });
   }
 
-  onAppointmentClick(appointment: AppointmentModel): void {
+  onAppointmentClick(appointment: ClientAppointmentModel): void {
     const params: AppointmentPageParams = {
       appointment,
       hasRebook: true
@@ -55,7 +56,7 @@ export class AppointmentsHistoryComponent {
     this.app.getRootNav().push(PageNames.Appointment, { params });
   }
 
-  onRebookClick(appointment: AppointmentModel): void {
+  onRebookClick(appointment: ClientAppointmentModel): void {
     this.logger.info('onRebookClick', appointment);
     startRebooking(appointment);
   }

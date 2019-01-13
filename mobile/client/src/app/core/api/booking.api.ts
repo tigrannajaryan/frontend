@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import * as moment from 'moment';
 
 import { ApiResponse, ISODateTime } from '~/shared/api/base.models';
+import { ClientAppointmentModel } from '~/shared/api/appointments.models';
 import { ApiRequestOptions } from '~/shared/api-errors';
 import { Logger } from '~/shared/logger';
 import { ServerStatusTracker } from '~/shared/server-status-tracker';
@@ -11,7 +12,6 @@ import { ServiceModel } from '~/shared/api/price.models';
 
 import { BaseService } from '~/shared/api/base.service';
 import { GetPricelistResponse } from '~/core/api/services.models';
-import { AppointmentModel } from '~/core/api/appointments.models';
 
 interface TimeslotModel {
   start: ISODateTime;
@@ -60,11 +60,11 @@ export class BookingApi extends BaseService {
     return this.post<GetPricelistResponse>('client/services/pricing', data, undefined, options);
   }
 
-  createAppointment(appointment: CreateAppointmentRequest): Observable<ApiResponse<AppointmentModel>> {
-    return this.post<AppointmentModel>('client/appointments', appointment);
+  createAppointment(appointment: CreateAppointmentRequest): Observable<ApiResponse<ClientAppointmentModel>> {
+    return this.post<ClientAppointmentModel>('client/appointments', appointment);
   }
 
-  previewAppointment(appointment: CreateAppointmentRequest): Observable<ApiResponse<AppointmentModel>> {
-    return this.post<AppointmentModel>('client/appointments/preview', appointment);
+  previewAppointment(appointment: CreateAppointmentRequest): Observable<ApiResponse<ClientAppointmentModel>> {
+    return this.post<ClientAppointmentModel>('client/appointments/preview', appointment);
   }
 }

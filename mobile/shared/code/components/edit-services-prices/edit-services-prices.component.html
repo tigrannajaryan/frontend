@@ -1,0 +1,12 @@
+<div *ngIf="services" data-test-id="services">
+  <ion-item *ngFor="let service of services; trackBy: trackByServiceUuid" class="EditServicesPrices-formControl">
+    <ion-label>{{ service.service_name }}</ion-label>
+    <ion-input type="number"
+      ngxInputNumber
+      [formControl]="form.controls[service.service_uuid]"
+      [placeholder]="focusedServiceUuid === service.service_uuid ? '$' : (service.client_price | currency)"
+      (focus)="setFocusedService(service)"
+      (blur)="setFocusedService()">
+    </ion-input>
+  </ion-item>
+</div>

@@ -1,9 +1,13 @@
 import { Component, ViewChild } from '@angular/core';
 import { AlertController, Content, NavController, NavParams } from 'ionic-angular';
 
-import { ServiceCategory, ServiceFromAppointment, StylistServicesList } from '~/shared/api/stylist-app.models';
+import {
+  CheckOutService,
+  ServiceCategory,
+  ServiceFromAppointment,
+  StylistServicesList
+} from '~/shared/api/stylist-app.models';
 
-import { CheckOutService } from '~/core/api/home.models';
 import { StylistServiceProvider } from '~/core/api/stylist.service';
 import { PageNames } from '~/core/page-names';
 import { loading } from '~/core/utils/loading';

@@ -3,10 +3,10 @@ import { ModalController } from 'ionic-angular';
 import { ActionSheetButton } from 'ionic-angular/components/action-sheet/action-sheet-options';
 import * as moment from 'moment';
 
+import { AppointmentStatus, StylistAppointmentModel } from '~/shared/api/appointments.models';
 import { getPhoneNumber } from '~/shared/utils/phone-numbers';
 import { WeekdayIso } from '~/shared/weekday';
 
-import { Appointment, AppointmentStatuses } from '~/core/api/home.models';
 import { PageNames } from '~/core/page-names';
 import { ProfileDataStore } from '~/core/profile.data';
 import { prepareSharedObjectsForTests } from '~/core/test-utils.spec';
@@ -71,7 +71,7 @@ describe('Pages: HomeSlotsComponent', () => {
   it('should select date on month name click', async done => {
     const modal = fixture.debugElement.injector.get(ModalController);
     spyOn(modal, 'create').and.returnValue({
-      present() {}
+      present(): any {}
     });
 
     await instance.onDateAreaClick();
@@ -164,7 +164,7 @@ describe('Pages: HomeSlotsComponent', () => {
   it('should add proper buttons to appointments', async () => {
     const startOfToday = moment().startOf('day').format();
 
-    let appointment: Appointment;
+    let appointment: StylistAppointmentModel;
     let buttons: ActionSheetButton[];
 
     // For today
@@ -173,7 +173,7 @@ describe('Pages: HomeSlotsComponent', () => {
     // New appointment
     appointment = createAppointment();
     appointment.datetime_start_at = startOfToday;
-    appointment.status = AppointmentStatuses.new;
+    appointment.status = AppointmentStatus.new;
     buttons = removeHandlers(
       await instance.getAppointmentActionSheetOptions(appointment)
     );
@@ -191,7 +191,7 @@ describe('Pages: HomeSlotsComponent', () => {
     // New appointment without phone number
     appointment = createAppointment();
     appointment.datetime_start_at = startOfToday;
-    appointment.status = AppointmentStatuses.new;
+    appointment.status = AppointmentStatus.new;
     appointment.client_phone = '';
     buttons = removeHandlers(
       await instance.getAppointmentActionSheetOptions(appointment)
@@ -211,7 +211,7 @@ describe('Pages: HomeSlotsComponent', () => {
     // No Show appointment
     appointment = createAppointment();
     appointment.datetime_start_at = startOfToday;
-    appointment.status = AppointmentStatuses.no_show;
+    appointment.status = AppointmentStatus.no_show;
     buttons = removeHandlers(
       await instance.getAppointmentActionSheetOptions(appointment)
     );
@@ -230,7 +230,7 @@ describe('Pages: HomeSlotsComponent', () => {
     // Canceled by client appointment
     appointment = createAppointment();
     appointment.datetime_start_at = startOfToday;
-    appointment.status = AppointmentStatuses.cancelled_by_client;
+    appointment.status = AppointmentStatus.cancelled_by_client;
     buttons = removeHandlers(
       await instance.getAppointmentActionSheetOptions(appointment)
     );
@@ -250,7 +250,7 @@ describe('Pages: HomeSlotsComponent', () => {
     // Checked out appointment
     appointment = createAppointment();
     appointment.datetime_start_at = startOfToday;
-    appointment.status = AppointmentStatuses.checked_out;
+    appointment.status = AppointmentStatus.checked_out;
     buttons = removeHandlers(
       await instance.getAppointmentActionSheetOptions(appointment)
     );
@@ -268,7 +268,7 @@ describe('Pages: HomeSlotsComponent', () => {
 
     // Blocked slot
     appointment = createAppointment();
-    appointment.status = AppointmentStatuses.new;
+    appointment.status = AppointmentStatus.new;
     appointment.client_uuid = undefined;
     appointment.client_first_name = '';
     appointment.client_last_name = '';
@@ -288,7 +288,7 @@ describe('Pages: HomeSlotsComponent', () => {
     // New appointment
     appointment = createAppointment();
     appointment.datetime_start_at = moment().add(1, 'day').format();
-    appointment.status = AppointmentStatuses.new;
+    appointment.status = AppointmentStatus.new;
     buttons = removeHandlers(
       await instance.getAppointmentActionSheetOptions(appointment)
     );
@@ -306,7 +306,7 @@ describe('Pages: HomeSlotsComponent', () => {
   });
 
   it('should have a button to open change gap time popup', () => {
-    let modalController = fixture.debugElement.injector.get(ModalController);
+    const modalController = fixture.debugElement.injector.get(ModalController);
     spyOn(modalController, 'create');
 
     const onChangeTimeGapClick = fixture.nativeElement.querySelector('[data-test-id=onChangeTimeGapClick]');

@@ -1,115 +1,59 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
-import 'rxjs/add/operator/debounceTime';
 
-import { componentUnloaded } from '~/shared/component-unloaded';
+import { ClientAppointmentModel } from '~/shared/api/appointments.models';
+import { AbstractAppointmentPriceComponent } from '~/shared/components/appointment/abstract-appointment-price.component';
 import { loading } from '~/shared/utils/loading';
 
-import {
-  AppointmentModel,
-  AppointmentPreviewResponse,
-  CheckOutService
-} from '~/core/api/appointments.models';
 import { AppointmentsApi } from '~/core/api/appointments.api';
 import { AppointmentsDataStore } from '~/core/api/appointments.datastore';
 
-export interface DiscountDescr {
-  amount: number;
-  percentage: number;
-}
-
-export function getDiscountDescr(preview: AppointmentPreviewResponse): DiscountDescr {
-  if (!preview) {
-    return;
-  }
-
-  let regularPrice = 0;
-  let clientPrice = 0;
-
-  for (const service of preview.services) {
-    regularPrice += service.regular_price;
-    clientPrice += service.client_price;
-  }
-
-  if (regularPrice === 0 || clientPrice === 0) {
-    return;
-  }
-
-  const saleAmount = regularPrice - clientPrice;
-  if (saleAmount < 0) {
-    return;
-  }
-
-  const salePercentage = (saleAmount / regularPrice) * 100;
-
-  return {
-    amount: saleAmount,
-    percentage: parseInt(salePercentage.toFixed(), 10)
-  };
-}
-
 export interface AppointmentPriceComponentParams {
-  appointment: AppointmentModel;
+  appointment: ClientAppointmentModel;
 }
 
 @Component({
   selector: 'appointment-price',
   templateUrl: 'appointment-price.component.html'
 })
-export class AppointmentPriceComponent implements OnInit {
-  getDiscountDescr = getDiscountDescr;
-
-  appointment: AppointmentModel;
-  preview: AppointmentPreviewResponse;
-
-  isLoading = false;
-  form: FormGroup;
-
-  priceChangeReason: FormControl = new FormControl('');
+export class AppointmentPriceComponent extends AbstractAppointmentPriceComponent {
+  appointment: ClientAppointmentModel;
 
   constructor(
-    private api: AppointmentsApi,
-    private appointmentsDataStore: AppointmentsDataStore,
-    private formBuilder: FormBuilder,
-    private navCtrl: NavController,
-    private navParams: NavParams
+    protected api: AppointmentsApi,
+    protected appointmentsDataStore: AppointmentsDataStore,
+    protected navCtrl: NavController,
+    protected navParams: NavParams
   ) {
+    super();
   }
 
-  ngOnInit(): void {
+  ionViewWillEnter(): void {
     const params = this.navParams.get('params') as AppointmentPriceComponentParams;
+
     this.appointment = params && params.appointment;
 
     if (this.appointment) {
-      // ControlsConfig is a collection of child controls. The key for each child is the name
-      // under which it is registered. It is supplied to FormBuilder.group(…) call.
-      // https://github.com/angular/angular/blob/7.1.4/packages/forms/src/form_builder.ts#L32-L33
-      const controlsConfig: { [key: string]: any; } = {};
-
-      for (const service of this.appointment.services) {
-        controlsConfig[service.service_uuid] = ['', [
-          Validators.pattern(/\d*/)
-        ]];
-      }
-
-      this.form = this.formBuilder.group(controlsConfig);
-
-      this.form.valueChanges
-        .takeUntil(componentUnloaded(this))
-        .debounceTime(500)
-        .subscribe(this.updatePreview);
+      // Get initial preview
+      this.updatePreview();
     }
   }
 
-  getServiceName(serviceUuid: string): string {
-    const service = this.appointment.services.find(
-      ({ service_uuid }) => service_uuid === serviceUuid
+  async updatePreview(): Promise<void> {
+    const { response } = await loading(this,
+      this.api.getAppointmentPreview({
+        appointment_uuid: this.appointment.uuid,
+        stylist_uuid: this.appointment.stylist_uuid,
+        datetime_start_at: this.appointment.datetime_start_at,
+        services: this.getServicesWithPrices(),
+        has_tax_included: false,
+        has_card_fee_included: false
+      })
     );
-    if (service) {
-      return service.service_name;
+
+    if (response) {
+      this.preview = response;
     }
-    return '';
   }
 
   async onSave(): Promise<void> {
@@ -124,7 +68,11 @@ export class AppointmentPriceComponent implements OnInit {
       ).toPromise();
 
       if (response) {
-        this.renewAppointmentsList();
+        this.appointment = response;
+
+        // Update appointments list to ensure appointment’s updates are reflected there too
+        this.appointmentsDataStore.home.get();
+        this.appointmentsDataStore.history.get();
 
         this.navCtrl.pop();
       }
@@ -141,44 +89,5 @@ export class AppointmentPriceComponent implements OnInit {
 
       this.navCtrl.pop();
     }
-  }
-
-  updatePreview = async (): Promise<void> => {
-    const { response } = await loading(this,
-      this.api.getAppointmentPreview({
-        appointment_uuid: this.appointment.uuid,
-        stylist_uuid: this.appointment.stylist_uuid,
-        datetime_start_at: this.appointment.datetime_start_at,
-        services: this.getServicesWithPrices(),
-        has_tax_included: false,
-        has_card_fee_included: false
-      })
-    );
-
-    if (response) {
-      this.preview = response;
-    }
-  };
-
-  private getServicesWithPrices(): CheckOutService[] {
-    const services: CheckOutService[] = [];
-
-    for (const serviceUuid of Object.keys(this.form.value)) {
-      const value = this.form.value[serviceUuid].trim();
-      services.push({
-        service_uuid: serviceUuid,
-        client_price: value ? parseInt(value, 10) : undefined
-      });
-    }
-
-    return services;
-  }
-
-  /**
-   * Update appointments list to ensure appointment’s updates are reflected there too.
-   */
-  private renewAppointmentsList(): void {
-    this.appointmentsDataStore.home.get();
-    this.appointmentsDataStore.history.get();
   }
 }

@@ -6,8 +6,8 @@ import * as moment from 'moment';
 
 import { TestUtils } from '~/../test';
 
+import { AppointmentStatus, ClientAppointmentModel } from '~/shared/api/appointments.models';
 import { AppointmentsApi } from '~/core/api/appointments.api';
-import { AppointmentModel, AppointmentStatus } from '~/core/api/appointments.models';
 
 import { AppointmentPriceComponent, AppointmentPriceComponentParams } from './appointment-price.component';
 
@@ -31,7 +31,7 @@ const servicesMock = [
   }
 ];
 
-const appointmentMock: AppointmentModel = {
+const appointmentMock: ClientAppointmentModel = {
   uuid: faker.random.uuid(),
   stylist_uuid: faker.random.uuid(),
   stylist_first_name: faker.name.firstName(),

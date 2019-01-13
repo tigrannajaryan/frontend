@@ -1,28 +1,25 @@
 import { Component } from '@angular/core';
 import { AlertController, NavController, NavParams } from 'ionic-angular';
 
-import { ServiceFromAppointment } from '~/shared/api/stylist-app.models';
+import { AppointmentStatus, ClientAppointmentModel } from '~/shared/api/appointments.models';
+import { CheckOutService, ServiceFromAppointment } from '~/shared/api/stylist-app.models';
+import { getDiscountDescr } from '~/shared/components/appointment/abstract-appointment-price.component';
 import { formatTimeInZone } from '~/shared/utils/string-utils';
 
 import { AppointmentsApi } from '~/core/api/appointments.api';
 import { PageNames } from '~/core/page-names';
 
-import {
-  AppointmentModel,
-  AppointmentStatus,
-  CheckOutService
-} from '~/core/api/appointments.models';
-import { BookingApi } from '~/core/api/booking.api';
 import { AppointmentsDataStore } from '~/core/api/appointments.datastore';
+import { BookingApi, CreateAppointmentRequest } from '~/core/api/booking.api';
+import { BookingData } from '~/core/api/booking.data';
 
 import { AddServicesComponentParams } from '~/add-services/add-services.component';
 import { AppointmentPriceComponentParams } from '~/appointment-price/appointment-price.component';
 import { confirmRebook, startRebooking } from '~/booking/booking-utils';
 
 export interface AppointmentPageParams {
-  appointment: AppointmentModel;
+  appointment: ClientAppointmentModel;
   onCancel?: Function;
-  onConfirmClick?: Function;
   hasRebook?: boolean;
 }
 
@@ -34,28 +31,61 @@ export class AppointmentPageComponent {
 
   AppointmentStatus = AppointmentStatus;
   formatTimeInZone = formatTimeInZone;
+  getDiscountDescr = getDiscountDescr;
 
   params: AppointmentPageParams;
-
-  // Details show minified as a default to keep more space empty
-  isMinifiedDetails = true;
 
   constructor(
     private alertCtrl: AlertController,
     private api: AppointmentsApi,
     private appointmentsDataStore: AppointmentsDataStore,
     private bookingApi: BookingApi,
+    private bookingData: BookingData,
     private navCtrl: NavController,
     private navParams: NavParams) {
   }
 
-  ionViewWillEnter(): void {
+  async ionViewWillEnter(): Promise<void> {
     this.params = this.navParams.get('params');
+
+    if (this.params.appointment.uuid) { // no uuid if booking in progress
+      const { response } = await this.api.getAppointment(this.params.appointment.uuid).toPromise();
+      if (response) {
+        // Re-new appointment
+        // TODO: pass only appointmentUuid to the component?
+        this.params.appointment = response;
+      }
+    }
   }
 
-  onConfirmClick(): void {
-    if (this.params.onConfirmClick) {
-      this.params.onConfirmClick();
+  async onConfirmClick(): Promise<void> {
+    const appointmentRequest: CreateAppointmentRequest = {
+      stylist_uuid: this.bookingData.stylist.uuid,
+      datetime_start_at: this.bookingData.selectedTime.format(),
+      services: this.bookingData.selectedServices.map(s => ({
+        service_uuid: s.uuid
+      }))
+    };
+
+    // First, create appointment.
+    const { response: createAppointmentResponse } = await this.bookingApi.createAppointment(appointmentRequest).toPromise();
+
+    if (createAppointmentResponse) {
+      // Now add appointment services to it to ensure edited services and prices are saved.
+      const { response: changeAppointmentResponse } = await this.api.changeAppointment(
+          createAppointmentResponse.uuid, { services: this.params.appointment.services }
+        ).toPromise();
+
+      // And hack booking data by updating offer price
+      if (changeAppointmentResponse) {
+        this.bookingData.offer.price = changeAppointmentResponse.grand_total;
+      }
+
+      // Appointment succesfully created. Refresh Home screen.
+      this.appointmentsDataStore.home.refresh();
+
+      // Show "booking complete" message.
+      this.navCtrl.push(PageNames.BookingComplete);
     }
   }
 
@@ -111,13 +141,9 @@ export class AppointmentPageComponent {
     this.navCtrl.push(PageNames.AddServices, { params });
   }
 
-  onChangePrice(appointment: AppointmentModel): void {
+  onChangePrice(appointment: ClientAppointmentModel): void {
     const params: AppointmentPriceComponentParams = { appointment };
     this.navCtrl.push(PageNames.AppointmentPrice, { params });
-  }
-
-  toggleMinifiedDetails(): void {
-    this.isMinifiedDetails = !this.isMinifiedDetails;
   }
 
   private async onAddServices(services: ServiceFromAppointment[]): Promise<void> {
@@ -140,6 +166,15 @@ export class AppointmentPageComponent {
       }
 
     } else {
+      // Update services storred in booking data
+      this.bookingData.setSelectedServices(
+        services.map(service => ({
+          uuid: service.service_uuid,
+          name: service.service_name,
+          base_price: service.regular_price
+        }))
+      );
+
       // No appointment on the backend, recreate it using preview API
       // just as like as at is used in the end of the booking process,
       const { response } = await this.bookingApi.previewAppointment({

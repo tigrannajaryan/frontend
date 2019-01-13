@@ -5,10 +5,10 @@ import * as faker from 'faker';
 import * as moment from 'moment';
 
 import {
-  Appointment,
   AppointmentPreviewResponse,
-  AppointmentStatuses
-} from '~/core/api/home.models';
+  AppointmentStatus,
+  StylistAppointmentModel
+} from '~/shared/appointments.models';
 import { HomeService } from '~/core/api/home.service';
 import { prepareSharedObjectsForTests } from '~/core/test-utils.spec';
 
@@ -35,7 +35,7 @@ const servicesMock = [
   }
 ];
 
-const appointmentMock: Appointment = {
+const appointmentMock: StylistAppointmentModel = {
   uuid: faker.random.uuid(),
   client_first_name: faker.name.firstName(),
   client_last_name: faker.name.lastName(),
@@ -47,7 +47,7 @@ const appointmentMock: Appointment = {
   has_card_fee_included: false,
   datetime_start_at: moment().format(),
   duration_minutes: 0,
-  status: AppointmentStatuses.new,
+  status: AppointmentStatus.new,
   services: servicesMock,
   client_uuid: faker.random.uuid(),
   client_profile_photo_url: faker.image.imageUrl(),

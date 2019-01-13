@@ -17,48 +17,48 @@
             <!-- Time and date -->
             <div class="CheckOut-headerDate" data-test-id="appointmentDateTime">
               <b>{{ appointment.datetime_start_at | date: 'h:mmaaaaa' }}</b>
-              {{ appointment.datetime_start_at | date: 'E, LLL MM' }}
+              {{ appointment.datetime_start_at | date: 'E, MMM d' }}
             </div>
           </ion-col>
 
           <user-name-photo
             [firstName]="appointment.stylist_first_name"
             [lastName]="appointment.stylist_last_name"
-            [photoUrl]="appointment.stylist_profile_photo_url"
+            [photoUrl]="appointment.profile_photo_url"
             col-6>
           </user-name-photo>
         </ion-row>
       </div>
 
       <!-- Receipt card -->
-      <div class="CheckOut-card" [class.is-minified]="isMinifiedDetails">
+      <div class="CheckOut-card">
 
-          <!-- Price -->
-          <div (click)="toggleMinifiedDetails()" class="CheckOut-price">
-            <div class="CheckOut-priceTitle" data-test-id="appointmentTitle">Total Price</div>
+        <!-- Price -->
+        <div class="CheckOut-price">
+          <div class="CheckOut-priceTitle" data-test-id="appointmentTitle">Total Price</div>
 
-            <div class="CheckOut-priceValue">
-              <span>$</span>
-              <b data-test-id="appointmentPrice">{{ appointment.grand_total.toFixed() }}</b>
-            </div>
-
-            <ion-icon [name]="isMinifiedDetails ? 'ios-arrow-down' : 'ios-arrow-up'"></ion-icon>
+          <div class="CheckOut-priceValue">
+            <span>$</span>
+            <b data-test-id="appointmentPrice">{{ appointment.grand_total.toFixed() }}</b>
           </div>
+        </div>
 
-          <!-- Details -->
-          <div *ngIf="appointment.services.length > 0" class="CheckOut-details">
-            <ion-row align-items-center *ngFor="let service of appointment.services; let index = index;" class="CheckOut-detailsServices" data-test-id="appointmentServices">
-              <ion-col col-6 no-padding>
-                <span>{{ service.service_name }}</span>
-              </ion-col>
-              <ion-col col-3 no-padding>
-                <span *ngIf="service.regular_price > service.client_price" class="text-muted line-through">{{ service.regular_price | currency }}</span>
-              </ion-col>
-              <ion-col col-3 no-padding>
-                <span>{{ service.client_price | currency }}</span>
-              </ion-col>
-            </ion-row>
+        <!-- Details -->
+        <div *ngIf="appointment.services.length > 0" class="CheckOut-details">
+          <ion-row align-items-center *ngFor="let service of appointment.services; let index = index;" class="CheckOut-detailsServices" data-test-id="appointmentServices">
+            <ion-col col-6 no-padding>
+              <span>{{ service.service_name }}</span>
+            </ion-col>
+            <ion-col col-3 no-padding>
+              <span *ngIf="service.regular_price > service.client_price" class="text-muted line-through">{{ service.regular_price | currency }}</span>
+            </ion-col>
+            <ion-col col-3 no-padding>
+              <span>{{ service.client_price | currency }}</span>
+            </ion-col>
+          </ion-row>
 
+          <!-- Taxes are temp hidden -->
+          <!--
             <ion-row align-items-center *ngIf="!params?.isAlreadyCheckedOut || hasTaxIncluded" data-test-id="appointmentTaxPercentage">
               <ion-col col-9 no-padding>
                 <span class="text-muted">Tax Rate ({{ appointment.tax_percentage | number: '1.2' }}%)</span>
@@ -67,19 +67,26 @@
                 <span>{{ appointment.total_tax.toFixed(2) | currency }}</span>
               </ion-col>
             </ion-row>
-          </div>
-
-          <!-- Bottom controls -->
-          <ion-row *ngIf="[AppointmentStatus.checked_out, AppointmentStatus.no_show].indexOf(appointment.status) === -1">
-            <ion-col (click)="onChangeServices()" class="CheckOut-controlBtn">
-              <span>Change </span>
-              <ng-container *ngIf="appointment.services.length > 1; else oneTpl">Services</ng-container>
-              <ng-template #oneTpl>Service</ng-template>
-            </ion-col>
-
-            <ion-col (click)="onChangePrice(appointment)" class="CheckOut-controlBtn">Change Price</ion-col>
-          </ion-row>
+          -->
         </div>
+
+        <!-- Bottom controls -->
+        <ion-row *ngIf="[AppointmentStatus.checked_out, AppointmentStatus.no_show].indexOf(appointment.status) === -1">
+          <ion-col (click)="onChangeServices()" class="CheckOut-controlBtn">
+            <span>Change </span>
+            <ng-container *ngIf="appointment.services.length > 1; else oneTpl">Services</ng-container>
+            <ng-template #oneTpl>Service</ng-template>
+          </ion-col>
+
+          <ion-col (click)="onChangePrice(appointment)" class="CheckOut-controlBtn">Change Price</ion-col>
+        </ion-row>
+      </div>
+
+      <!-- Saved amount -->
+      <ion-row *ngIf="getDiscountDescr(previewResponse || appointment) as discount" align-items-center justify-content-between class="CheckOut-saved">
+        <ion-col col-7 no-padding>YOU SAVED {{ discount.percentage }}%</ion-col>
+        <ion-col col-5 no-padding class="CheckOut-savedAmount"><sup>$</sup>{{ discount.amount }}</ion-col>
+      </ion-row>
 
     </div>
   </div>
@@ -88,7 +95,7 @@
 <ion-footer class="Footer">
   <div class="AppointmentPage-actions">
     <!-- Confirm booking -->
-    <button ion-button class="Button" *ngIf="params?.onConfirmClick" (click)="onConfirmClick()">Confirm Booking</button>
+    <button ion-button class="Button" *ngIf="params && !(params.hasRebook || params.onCancel)" (click)="onConfirmClick()">Confirm Booking</button>
     <!-- Rebook-->
     <div class="AppointmentPage-reBook" *ngIf="params?.hasRebook" (click)="onRebookClick()">Re-book Appointment</div>
     <!-- Cancelation link -->

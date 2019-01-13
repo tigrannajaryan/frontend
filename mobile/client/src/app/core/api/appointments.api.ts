@@ -8,13 +8,12 @@ import { ServerStatusTracker } from '~/shared/server-status-tracker';
 import { BaseService } from '~/shared/api/base.service';
 import {
   AppointmentChangeRequest,
-  AppointmentModel,
   AppointmentPreviewRequest,
   AppointmentPreviewResponse,
-  AppointmentsHistoryResponse,
   AppointmentStatus,
-  HomeResponse
-} from '~/core/api/appointments.models';
+  ClientAppointmentModel
+} from '~/shared/api/appointments.models';
+import { AppointmentsHistoryResponse, HomeResponse } from '~/core/api/appointments.models';
 
 @Injectable()
 export class AppointmentsApi extends BaseService {
@@ -35,18 +34,19 @@ export class AppointmentsApi extends BaseService {
     return this.get<AppointmentsHistoryResponse>('client/history');
   }
 
-  cancelAppointment(appointment: AppointmentModel): Observable<ApiResponse<AppointmentModel>> {
-    const data = {
-      status: AppointmentStatus.cancelled_by_client
-    };
-    return this.post<AppointmentModel>(`client/appointments/${appointment.uuid}`, data);
+  getAppointment(appointmentUuid: string): Observable<ApiResponse<ClientAppointmentModel>> {
+    return this.get<ClientAppointmentModel>(`client/appointments/${appointmentUuid}`);
+  }
+
+  changeAppointment(appointmentUuid: string, data: AppointmentChangeRequest): Observable<ApiResponse<ClientAppointmentModel>> {
+    return this.post<ClientAppointmentModel>(`client/appointments/${appointmentUuid}`, data);
+  }
+
+  cancelAppointment(appointment: ClientAppointmentModel): Observable<ApiResponse<ClientAppointmentModel>> {
+    return this.changeAppointment(appointment.uuid, { status: AppointmentStatus.cancelled_by_client });
   }
 
   getAppointmentPreview(data: AppointmentPreviewRequest): Observable<ApiResponse<AppointmentPreviewResponse>> {
     return this.post<AppointmentPreviewResponse>('client/appointments/preview', data);
-  }
-
-  changeAppointment(appointmentUuid: string, data: AppointmentChangeRequest): Observable<ApiResponse<AppointmentModel>> {
-    return this.post<AppointmentModel>(`client/appointments/${appointmentUuid}`, data);
   }
 }

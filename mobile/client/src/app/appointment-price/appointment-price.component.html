@@ -5,14 +5,13 @@
 
     <div class="Made-h1">Change Price</div>
 
-    <div *ngIf="(preview?.services || appointment.services) as services" data-test-id="services">
-      <ion-item *ngFor="let service of services" class="AppointmentPrice-formControl">
-        <ion-label>{{ service.service_name }}</ion-label>
-        <ion-input [formControl]="form.controls[service.service_uuid]" [placeholder]="'$' + service.client_price"></ion-input>
-      </ion-item>
-    </div>
+    <edit-services-prices
+      *ngIf="preview?.services"
+      [services]="preview.services"
+      (servicesChange)="onServicesChange($event)">
+    </edit-services-prices>
 
-    <ion-item class="AppointmentPrice-text">
+    <ion-item class="EditServicesPrices-text">
       <ion-input [formControl]="priceChangeReason" placeholder="Reason for Change (optional)" data-test-id="reason"></ion-input>
     </ion-item>
 
@@ -22,7 +21,7 @@
         <ion-spinner *ngIf="isLoading" [duration]="500"></ion-spinner>
         <ng-container *ngIf="!isLoading">
           <span>$</span>
-          <b>{{ (preview || appointment).grand_total.toFixed() }}</b>
+          <b>{{ (preview || appointment)?.grand_total.toFixed() }}</b>
         </ng-container>
       </div>
     </div>
@@ -36,5 +35,6 @@
 
 <ion-footer
   madeContinueFooter
+  [disabled]="isLoading || changedServices.length === 0"
   (continue)="onSave()"
   title="Update"></ion-footer>

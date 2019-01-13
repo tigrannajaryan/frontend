@@ -1,25 +1,4 @@
 appointment-price {
-  .AppointmentPrice-formControl,
-  .AppointmentPrice-text {
-    &,
-    .item-inner {
-      padding: 0;
-    }
-
-    .label {
-      color: black;
-    }
-
-    .text-input {
-      width: 100%;
-      margin: 0;
-    }
-  }
-
-  .AppointmentPrice-formControl .text-input {
-    text-align: right;
-  }
-
   .AppointmentPrice-title {
     margin: pxtovw(32px) 0 pxtovw(8px);
     font-size: pxtovw(15px);

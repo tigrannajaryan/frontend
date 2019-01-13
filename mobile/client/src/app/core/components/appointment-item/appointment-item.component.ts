@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { AppointmentModel } from '~/core/api/appointments.models';
+import { ClientAppointmentModel } from '~/shared/api/appointments.models';
 import { formatTimeInZone } from '~/shared/utils/string-utils';
 import { confirmRebook } from '~/booking/booking-utils';
 
@@ -13,11 +13,11 @@ import { confirmRebook } from '~/booking/booking-utils';
 export class AppointmentItemComponent {
   formatTimeInZone = formatTimeInZone;
 
-  @Input() appointment: AppointmentModel;
+  @Input() appointment: ClientAppointmentModel;
   @Input() hasRebook: boolean;
 
-  @Output() cardClick = new EventEmitter<AppointmentModel>();
-  @Output() rebookClick = new EventEmitter<AppointmentModel>();
+  @Output() cardClick = new EventEmitter<ClientAppointmentModel>();
+  @Output() rebookClick = new EventEmitter<ClientAppointmentModel>();
 
   getServices(): string {
     return this.appointment.services.map(s => s.service_name).join(', ');
