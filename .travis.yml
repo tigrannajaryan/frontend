@@ -8,8 +8,16 @@ conditions: v1
 
 notifications:
   slack:
-# madebeauty:secret_token
-    secure: vJbc7xWQeNMcIli5cm7kTivKb3usejMW3tpqjG/Y5Mi4h/GBC4zV/TdUUZgLUIDhsRfTu7iODovs4Faw7/Rj8dul/EM6/1DGYvDc2J737T0hTI+GxnWjgp8DfaZ9EGuv/tuRj8/BM8grJt+py4bvD+YBsxUN/mcmnMORnN1zIxtu6MZJH3VejiGmjde0lM1YilI8NP1kOM7JE3d7+1tQ2zTiK4nyJ7cnjhpTJs6T7rQEtwxOshEnkKryMwdNeqc2OPAttx/lPEhG9F6N6z3WETW6iqKsvv5/UebrneL+xXgKEc0ayCjUFtP/HwIiHElOIPutA9hCuWb+RFAxbZMHx6HrmZn+BeyWOAsx/369eCwwpIxTTtLcX6CmmXGR8aqF5bi56pcJOVt1LKHk89iD3SqHW0OZLuz6o2vjPnhhvWAHu+UH4cdPHjlVf7ohe3/Y9NSqo+UpfFGKrTqT8pQi73lgm/uV7YQEjrVpZ5k9bg7ey0oBgjYnhClTpGjJzGvmm4AH9UowU57M5w9rnwVxRCi3CiHjbfHDWkqKb3/bxEUx9QwTOpw+Y+Hux5tyZw8njhn5inFhy3du6fe7XHnTK4N20fupBBeC0sx7KPoN4oNSF+gq2sM1/Af6gXbPSU3mej9NIsgMD1cYqsL7brQhtsfqSLXQRW5uImb/zPmJq1k=
+    rooms:
+      # madebeauty:secret_token
+      - secure: vJbc7xWQeNMcIli5cm7kTivKb3usejMW3tpqjG/Y5Mi4h/GBC4zV/TdUUZgLUIDhsRfTu7iODovs4Faw7/Rj8dul/EM6/1DGYvDc2J737T0hTI+GxnWjgp8DfaZ9EGuv/tuRj8/BM8grJt+py4bvD+YBsxUN/mcmnMORnN1zIxtu6MZJH3VejiGmjde0lM1YilI8NP1kOM7JE3d7+1tQ2zTiK4nyJ7cnjhpTJs6T7rQEtwxOshEnkKryMwdNeqc2OPAttx/lPEhG9F6N6z3WETW6iqKsvv5/UebrneL+xXgKEc0ayCjUFtP/HwIiHElOIPutA9hCuWb+RFAxbZMHx6HrmZn+BeyWOAsx/369eCwwpIxTTtLcX6CmmXGR8aqF5bi56pcJOVt1LKHk89iD3SqHW0OZLuz6o2vjPnhhvWAHu+UH4cdPHjlVf7ohe3/Y9NSqo+UpfFGKrTqT8pQi73lgm/uV7YQEjrVpZ5k9bg7ey0oBgjYnhClTpGjJzGvmm4AH9UowU57M5w9rnwVxRCi3CiHjbfHDWkqKb3/bxEUx9QwTOpw+Y+Hux5tyZw8njhn5inFhy3du6fe7XHnTK4N20fupBBeC0sx7KPoN4oNSF+gq2sM1/Af6gXbPSU3mej9NIsgMD1cYqsL7brQhtsfqSLXQRW5uImb/zPmJq1k=
+    on_success: never
+    on_failure: always
+    template:
+      - "Repo `%{repository_slug}` *%{result}* during build (<%{build_url}|#%{build_number}>) for commit (<%{compare_url}|%{commit}>) on branch `%{branch}`."
+      - "Execution time: *%{duration}*"
+      - "Author: *%{author}*"
+      - "Message: *%{message}*  (cc. <@UARCS62EP> <@UABUR3F2B>)"
 
 # Only run on develop branch and on pull requests against develop
 branches:
