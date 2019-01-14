@@ -15,6 +15,6 @@ export class ConfirmCheckoutComponent {
   }
 
   onReturnToHome(): void {
-    this.navCtrl.setRoot(PageNames.Home);
+    this.navCtrl.setRoot(PageNames.MainTabs);
   }
 }

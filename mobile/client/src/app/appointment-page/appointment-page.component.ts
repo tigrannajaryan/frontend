@@ -160,7 +160,6 @@ export class AppointmentPageComponent {
     if (response) {
       this.navCtrl.push(PageNames.ConfirmCheckout);
     }
-    this.navCtrl.push(PageNames.ConfirmCheckout);
   }
 
   private async onAddServices(services: ServiceFromAppointment[]): Promise<void> {
