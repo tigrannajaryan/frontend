@@ -158,7 +158,9 @@ export class AppointmentPageComponent {
 
   async onCheckout(): Promise<void> {
     const request: AppointmentChangeRequest = {
-      status: AppointmentStatus.checked_out
+      status: AppointmentStatus.checked_out,
+      has_card_fee_included: false,
+      has_tax_included: false
     };
     const { response } = await this.api.changeAppointment(this.params.appointment.uuid, request).toPromise();
     if (response) {

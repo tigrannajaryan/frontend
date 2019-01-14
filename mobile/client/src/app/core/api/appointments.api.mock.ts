@@ -65,8 +65,8 @@ export class AppointmentsApiMock {
           datetime_start_at: faker.date.past().toString(),
           duration_minutes: 0,
           status,
-          has_card_fee_included: true,
-          has_tax_included: true,
+          has_card_fee_included: false,
+          has_tax_included: false,
           services: Array(Math.round(Math.random()) + 1).fill(undefined).map(() => ({
             service_uuid: faker.random.uuid(),
             service_name: faker.commerce.product(),
