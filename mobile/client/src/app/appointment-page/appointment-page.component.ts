@@ -17,6 +17,7 @@ import { BookingData } from '~/core/api/booking.data';
 import { AddServicesComponentParams } from '~/add-services/add-services.component';
 import { AppointmentPriceComponentParams } from '~/appointment-price/appointment-price.component';
 import { confirmRebook, startRebooking } from '~/booking/booking-utils';
+import { BookingCompleteComponentParams } from '~/booking/booking-complete/booking-complete.component';
 
 export interface AppointmentPageParams {
   appointment: ClientAppointmentModel;
@@ -91,7 +92,10 @@ export class AppointmentPageComponent {
       this.appointmentsDataStore.home.refresh();
 
       // Show "booking complete" message.
-      this.navCtrl.push(PageNames.BookingComplete);
+      const params: BookingCompleteComponentParams = {
+        appointment: createAppointmentResponse || changeAppointmentResponse
+      };
+      this.navCtrl.push(PageNames.BookingComplete, { params });
     }
   }
 
