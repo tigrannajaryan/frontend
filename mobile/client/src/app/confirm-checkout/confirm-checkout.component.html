@@ -1,7 +1,7 @@
-<ion-header madeBackHeader></ion-header>
+<ion-header madeHeader [hideBackButton]="true"></ion-header>
 
 <ion-content no-padding>
-  <div class="Made Made-wp">
+  <div class="contentSidePadding">
 
     <ion-row align-items-center justify-content-center class="ConfirmCheckout-img">
       <img src="assets/icons/firework-3x.png" />
@@ -13,7 +13,4 @@
 
 <ion-footer class="Footer">
   <button (click)="onReturnToHome()" ion-button class="Button">Return To Home Screen</button>
-  <ion-row justify-content-center>
-    <div (click)="onInviteClients()" class="Link ConfirmCheckout-invite">Invite Clients</div>
-  </ion-row>
 </ion-footer>

@@ -231,6 +231,12 @@ page-appointment {
     margin: pxtovw(39px) auto;
     text-align: center;
 
+    .AppointmentPage-checkout {
+      display: block;
+      width: 100%;
+      margin-bottom: pxtovw(16px);
+    }
+
     .AppointmentPage-cancelBooking {
       font-size: pxtovw(16px);
       color: color($colors, warning);

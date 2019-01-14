@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { AlertController, NavController, NavParams } from 'ionic-angular';
+import * as moment from 'moment';
 
-import { AppointmentStatus, ClientAppointmentModel } from '~/shared/api/appointments.models';
+import { AppointmentChangeRequest, AppointmentStatus, ClientAppointmentModel } from '~/shared/api/appointments.models';
 import { CheckOutService, ServiceFromAppointment } from '~/shared/api/stylist-app.models';
 import { getDiscountDescr } from '~/shared/components/appointment/abstract-appointment-price.component';
 import { formatTimeInZone } from '~/shared/utils/string-utils';
@@ -56,6 +57,11 @@ export class AppointmentPageComponent {
         this.params.appointment = response;
       }
     }
+  }
+
+  isTodayAppointment(): boolean {
+    const appointment = this.params && this.params.appointment;
+    return Boolean(appointment) && moment().diff(appointment.datetime_start_at, 'days') === 0;
   }
 
   async onConfirmClick(): Promise<void> {
@@ -144,6 +150,17 @@ export class AppointmentPageComponent {
   onChangePrice(appointment: ClientAppointmentModel): void {
     const params: AppointmentPriceComponentParams = { appointment };
     this.navCtrl.push(PageNames.AppointmentPrice, { params });
+  }
+
+  async onCheckout(): Promise<void> {
+    const request: AppointmentChangeRequest = {
+      status: AppointmentStatus.checked_out
+    };
+    const { response } = await this.api.changeAppointment(this.params.appointment.uuid, request).toPromise();
+    if (response) {
+      this.navCtrl.push(PageNames.ConfirmCheckout);
+    }
+    this.navCtrl.push(PageNames.ConfirmCheckout);
   }
 
   private async onAddServices(services: ServiceFromAppointment[]): Promise<void> {

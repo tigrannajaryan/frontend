@@ -11,7 +11,6 @@ import { showAlert } from '~/shared/utils/alert';
 import { PageNames } from '~/core/page-names';
 import { BookingData } from '~/core/api/booking.data';
 import { BookingApi, CreateAppointmentRequest, TimeslotsResponse } from '~/core/api/booking.api';
-import { AppointmentsDataStore } from '~/core/api/appointments.datastore';
 import { AppointmentPageParams } from '~/appointment-page/appointment-page.component';
 import { BookServicesHeaderComponent } from '../book-services-header/book-services-header';
 
@@ -89,7 +88,6 @@ export class SelectTimeComponent {
   }
 
   constructor(
-    private appointmentsData: AppointmentsDataStore,
     private bookingApi: BookingApi,
     protected bookingData: BookingData,
     private logger: Logger,
