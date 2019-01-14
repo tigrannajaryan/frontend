@@ -5,10 +5,40 @@ import * as faker from 'faker';
 import { ApiResponse } from '~/shared/api/base.models';
 import {
   AppointmentChangeRequest,
+  AppointmentPreviewRequest,
+  AppointmentPreviewResponse,
   AppointmentStatus,
   ClientAppointmentModel
 } from '~/shared/api/appointments.models';
 import { AppointmentsHistoryResponse, HomeResponse } from '~/core/api/appointments.models';
+
+export const servicesMock = [
+  {
+    service_uuid: faker.random.uuid(),
+    service_name: faker.commerce.productName(),
+    client_price: 100,
+    regular_price: 200,
+    is_original: false
+  },
+  {
+    service_uuid: faker.random.uuid(),
+    service_name: faker.commerce.productName(),
+    client_price: 300,
+    regular_price: 400,
+    is_original: false
+  }
+];
+
+export const previewMock: AppointmentPreviewResponse = {
+  duration_minutes: faker.random.number(),
+  grand_total: faker.random.number(),
+  total_client_price_before_tax: faker.random.number(),
+  total_tax: faker.random.number(),
+  total_card_fee: faker.random.number(),
+  tax_percentage: faker.random.number(),
+  card_fee_percentage: faker.random.number(),
+  services: servicesMock
+};
 
 @Injectable()
 export class AppointmentsApiMock {
@@ -75,6 +105,13 @@ export class AppointmentsApiMock {
     const appointments = AppointmentsApiMock.genFake(1, AppointmentStatus.checked_out);
     return new Observable(observer => {
       observer.next({ response: appointments[0] });
+      observer.complete();
+    });
+  }
+
+  getAppointmentPreview(data: AppointmentPreviewRequest): Observable<ApiResponse<AppointmentPreviewResponse>> {
+    return new Observable(observer => {
+      observer.next({ response: previewMock });
       observer.complete();
     });
   }
