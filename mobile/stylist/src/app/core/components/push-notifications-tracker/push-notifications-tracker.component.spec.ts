@@ -140,7 +140,7 @@ describe('PushNotificationTracker (client)', () => {
       isReadonly: true
     };
     expect(navCtrl.push)
-      .toHaveBeenCalledWith(PageNames.AppointmentCheckout, { data: checkoutParams });
+      .toHaveBeenCalledWith(PageNames.AppointmentCheckout, { params: checkoutParams });
 
     done();
   });

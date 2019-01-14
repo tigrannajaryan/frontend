@@ -219,13 +219,13 @@ export class UpcomingAndPastComponent {
    * Handler for 'Checkout Client' action.
    */
   checkOutAppointmentClick(appointment: StylistAppointmentModel): void {
-    const data: AppointmentCheckoutParams = {
+    const params: AppointmentCheckoutParams = {
       appointmentUuid: appointment.uuid,
 
       // Allow to checkout any appointment that is not already checked out.
       isAlreadyCheckedOut: appointment.status === AppointmentStatus.checked_out
     };
-    this.navCtrl.push(PageNames.AppointmentCheckout, { data });
+    this.navCtrl.push(PageNames.AppointmentCheckout, { params });
   }
 
   /**

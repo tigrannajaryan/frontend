@@ -2,10 +2,10 @@ import { TestBed } from '@angular/core/testing';
 import * as faker from 'faker';
 import * as moment from 'moment';
 
+import { AppointmentStatus, StylistAppointmentModel } from '~/shared/api/appointments.models';
 import { ServiceFromAppointment } from '~/shared/api/stylist-app.models';
 
 import { prepareSharedObjectsForTests } from '../../core/test-utils.spec';
-import { Appointment, AppointmentStatuses } from '../../core/api/home.models';
 import { fullSlotWidthInVw, TimeSlotColumn, TimeSlotItem, TimeSlotLabel, TimeSlotsComponent } from './time-slots.component';
 import {
   formatAppointmentClientName,
@@ -14,7 +14,7 @@ import {
   isAppointmentPendingCheckout
 } from '../time-slot-content/time-slot-content.component';
 
-export function createAppointment(): Appointment {
+export function createAppointment(): StylistAppointmentModel {
   return {
     uuid: faker.random.uuid(),
     client_uuid: faker.random.uuid(),
@@ -22,6 +22,8 @@ export function createAppointment(): Appointment {
     client_last_name: faker.name.lastName(),
     client_profile_photo_url: undefined,
     client_phone: faker.phone.phoneNumber(),
+    tax_percentage: faker.random.number(),
+    card_fee_percentage: faker.random.number(),
     total_client_price_before_tax: Math.random() * 200,
     total_card_fee: Math.random() * 5,
     total_tax: Math.random() * 15,
@@ -29,7 +31,7 @@ export function createAppointment(): Appointment {
     created_at: faker.date.past().toString(),
     datetime_start_at: faker.date.future().toString(),
     duration_minutes: 0,
-    status: AppointmentStatuses.new,
+    status: AppointmentStatus.new,
     has_card_fee_included: true,
     has_tax_included: true,
     services: Array(Math.round(Math.random()) + 1).fill(undefined).map(() => ({
@@ -93,7 +95,7 @@ describe('TimeSlotsComponent', () => {
   });
 
   it('should formatClientName correctly', () => {
-    const appointment: Appointment = createAppointment();
+    const appointment: StylistAppointmentModel = createAppointment();
 
     appointment.client_first_name = 'Abc';
     appointment.client_last_name = '';
@@ -122,7 +124,7 @@ describe('TimeSlotsComponent', () => {
   });
 
   it('should formatServices correctly', () => {
-    const appointment: Appointment = createAppointment();
+    const appointment: StylistAppointmentModel = createAppointment();
 
     appointment.services = [];
     expect(formatAppointmentServices(appointment)).toEqual('');
@@ -141,7 +143,7 @@ describe('TimeSlotsComponent', () => {
   });
 
   it('should appointmentEndMoment correctly', () => {
-    const appointment: Appointment = createAppointment();
+    const appointment: StylistAppointmentModel = createAppointment();
 
     appointment.datetime_start_at = '2018-11-02T09:00:00-04:00';
     appointment.duration_minutes = 30;
@@ -153,21 +155,21 @@ describe('TimeSlotsComponent', () => {
   });
 
   it('should isAppointmentPendingCheckout correctly', () => {
-    const appointment: Appointment = createAppointment();
+    const appointment: StylistAppointmentModel = createAppointment();
 
     appointment.datetime_start_at = '2018-11-02T09:00:00-04:00';
     appointment.duration_minutes = 30;
-    appointment.status = AppointmentStatuses.new;
+    appointment.status = AppointmentStatus.new;
     expect(isAppointmentPendingCheckout(appointment)).toBeTruthy();
 
     appointment.datetime_start_at = '2018-11-02T09:00:00-04:00';
     appointment.duration_minutes = 30;
-    appointment.status = AppointmentStatuses.checked_out;
+    appointment.status = AppointmentStatus.checked_out;
     expect(isAppointmentPendingCheckout(appointment)).toBeFalsy();
 
     appointment.datetime_start_at = '3018-11-02T09:00:00-04:00';
     appointment.duration_minutes = 30;
-    appointment.status = AppointmentStatuses.new;
+    appointment.status = AppointmentStatus.new;
     expect(isAppointmentPendingCheckout(appointment)).toBeFalsy();
   });
 

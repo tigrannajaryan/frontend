@@ -172,14 +172,14 @@ export class HomeSlotsComponent {
    * Handler for 'Checkout Client' action.
    */
   checkOutOrDetailsClick(appointment: StylistAppointmentModel): void {
-    const data: AppointmentCheckoutParams = {
+    const params: AppointmentCheckoutParams = {
       appointmentUuid: appointment.uuid,
 
       // Allow to checkout any appointment that is not already checked out.
       isAlreadyCheckedOut: appointment.status === AppointmentStatus.checked_out,
       isReadonly: HomeSlotsComponent.isUpcomingAppointment(appointment)
     };
-    this.navCtrl.push(PageNames.AppointmentCheckout, { data });
+    this.navCtrl.push(PageNames.AppointmentCheckout, { params });
   }
 
   /**

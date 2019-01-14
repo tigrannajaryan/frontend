@@ -67,7 +67,7 @@ export class AppointmentCheckoutComponent {
   }
 
   async ionViewWillEnter(): Promise<void> {
-    this.params = this.navParams.get('data') as AppointmentCheckoutParams;
+    this.params = this.navParams.get('params') as AppointmentCheckoutParams;
 
     const { response } = await this.homeService.getAppointmentById(this.params.appointmentUuid).toPromise();
     if (response) {
