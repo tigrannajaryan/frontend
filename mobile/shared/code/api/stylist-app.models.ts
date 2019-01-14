@@ -108,14 +108,21 @@ export interface ServiceItem extends ServiceTemplateItem {
   photo_samples?: ServicesPhotoSample[];
 }
 
-export interface ServiceFromAppointment {
-  isChecked?: boolean;
+export interface CheckOutService {
+  service_uuid: string;
+  client_price?: number;
+}
 
+export interface ServiceFromAppointment extends CheckOutService {
   service_uuid: string;
   service_name: string;
   client_price: number;
   regular_price: number;
   is_original: boolean;
+
+  // Next boolean is used on services edit screen
+  // and is not sent/received to/from the backend.
+  isChecked?: boolean;
 }
 
 export interface ServicesPhotoSample {

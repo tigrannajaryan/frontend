@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 
 import { PageNames } from '~/core/page-names';
-import { InvitationsComponentParams } from '~/invitations/invitations.component';
 
 @Component({
   selector: 'pop-confirm-checkout',
@@ -16,11 +15,6 @@ export class ConfirmCheckoutComponent {
   }
 
   onReturnToHome(): void {
-    this.navCtrl.setRoot(PageNames.HomeSlots);
-  }
-
-  onInviteClients(): void {
-    const params: InvitationsComponentParams = { isRootPage: true };
-    this.navCtrl.setRoot(PageNames.Invitations, { params });
+    this.navCtrl.setRoot(PageNames.Home);
   }
 }

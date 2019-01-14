@@ -1,17 +1,19 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 
-import { HomeService } from '~/core/api/home.service';
 import {
-  Appointment,
   AppointmentChangeRequest,
   AppointmentPreviewRequest,
   AppointmentPreviewResponse,
-  AppointmentStatuses,
-  CheckOutService
-} from '~/core/api/home.models';
-import { ServiceFromAppointment } from '~/shared/api/stylist-app.models';
+  AppointmentStatus,
+  StylistAppointmentModel
+} from '~/shared/api/appointments.models';
+import {
+  CheckOutService,
+  ServiceFromAppointment
+} from '~/shared/api/stylist-app.models';
 
+import { HomeService } from '~/core/api/home.service';
 import { PageNames } from '~/core/page-names';
 import { AddServicesComponentParams } from '~/core/popups/add-services/add-services.component';
 
@@ -40,18 +42,15 @@ export class AppointmentCheckoutComponent {
   previewResponse: AppointmentPreviewResponse;
 
   // The details of the appointment
-  appointment: Appointment;
+  appointment: StylistAppointmentModel;
 
   // Tax included by default
   hasTaxIncluded = true;
 
   subTotalRegularPrice: number;
 
-  // Details show minified as a default to keep more space empty
-  isMinifiedDetails = true;
-
   isLoading = false;
-  AppointmentStatuses = AppointmentStatuses;
+  AppointmentStatus = AppointmentStatus;
 
   // The initial state of this screen that we need to show
   params: AppointmentCheckoutParams;
@@ -68,20 +67,16 @@ export class AppointmentCheckoutComponent {
   }
 
   async ionViewWillEnter(): Promise<void> {
-    try {
-      this.isLoading = true;
-      if (!this.params) {
-        // Entering this view for the first time. Load the data.
-        this.params = this.navParams.get('data') as AppointmentCheckoutParams;
-        this.appointment = (await this.homeService.getAppointmentById(this.params.appointmentUuid).get()).response;
-        if (this.appointment) {
-          this.selectedServices = this.appointment.services.map(el => ({ service_uuid: el.service_uuid }));
-        }
-      }
-      await this.updatePreview();
-    } finally {
-      this.isLoading = false;
+    this.params = this.navParams.get('params') as AppointmentCheckoutParams;
+
+    const { response } = await this.homeService.getAppointmentById(this.params.appointmentUuid).toPromise();
+    if (response) {
+      // Re-new appointment
+      // TODO: pass only appointmentUuid to the component?
+      this.appointment = response;
+      this.selectedServices = this.appointment.services.map(el => ({ service_uuid: el.service_uuid }));
     }
+    await this.updatePreview();
   }
 
   /**
@@ -152,7 +147,7 @@ export class AppointmentCheckoutComponent {
   async onFinalizeCheckoutClick(): Promise<void> {
     const request: AppointmentChangeRequest = {
       ...this.getChangeAppointmentRequestParams(),
-      status: AppointmentStatuses.checked_out
+      status: AppointmentStatus.checked_out
     };
 
     const { response } = await this.homeService.changeAppointment(this.params.appointmentUuid, request).get();
@@ -167,16 +162,9 @@ export class AppointmentCheckoutComponent {
     this.navCtrl.remove(current);
   }
 
-  onChangePrice(appointment: Appointment): void {
-    const params: AppointmentPriceComponentParams = {
-      appointment,
-      preview: this.previewResponse
-    };
+  onChangePrice(appointment: StylistAppointmentModel): void {
+    const params: AppointmentPriceComponentParams = { appointment };
     this.navCtrl.push(PageNames.AppointmentPrice, { params });
-  }
-
-  triggerMinifiedDetails(): void {
-    this.isMinifiedDetails = !this.isMinifiedDetails;
   }
 
   private getChangeAppointmentRequestParams(): AppointmentChangeRequest {

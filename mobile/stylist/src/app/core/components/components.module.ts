@@ -10,6 +10,7 @@ import { CodeInputComponent } from '~/shared/components/code-input/code-input.co
 import { PricePairComponent } from '~/shared/components/price-pair/price-pair.component';
 import { InstagramGalleryComponent } from '~/shared/components/instagram-gallery/instagram-gallery.component';
 import { ServicesPickComponent } from '~/shared/components/services-pick/services-pick.component';
+import { EditServicesPricesComponent } from '~/shared/components/edit-services-prices/edit-services-prices.component';
 
 import { DiscountsApi } from '~/core/api/discounts.api';
 
@@ -52,6 +53,7 @@ const components = [
   DiscountsRevisitShortComponent,
   DiscountsFirstBookingShortComponent,
   DiscountsMaximumShortComponent,
+  EditServicesPricesComponent,
   BackHeaderComponent,
   MbIconsComponent,
   CheckListComponent,

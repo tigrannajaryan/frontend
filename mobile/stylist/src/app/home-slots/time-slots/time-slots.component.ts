@@ -2,8 +2,8 @@ import { AfterViewInit, Component, EventEmitter, Input, NgZone, OnDestroy, Outpu
 import { Scroll } from 'ionic-angular';
 import * as moment from 'moment';
 
+import { AppointmentStatus, StylistAppointmentModel } from '~/shared/api/appointments.models';
 import { getHoursSinceMidnight } from '~/shared/utils/datetime-utils';
-import { Appointment, AppointmentStatuses } from '~/core/api/home.models';
 import { setIntervalOutsideNgZone } from '~/shared/utils/timer-utils';
 import { ISOTimeOnly, isoTimeOnlyFormat } from '~/shared/api/base.models';
 
@@ -32,7 +32,7 @@ export interface TimeSlotItem {
   leftInVw: number;
   widthInVw: number;
 
-  appointment?: Appointment;
+  appointment?: StylistAppointmentModel;
 }
 
 /**
@@ -59,7 +59,7 @@ export const fullSlotWidthInVw = pxtovw(304);
 /**
  * Comparison function to sort appointments by start time
  */
-function compareAppointments(a: Appointment, b: Appointment): number {
+function compareAppointments(a: StylistAppointmentModel, b: StylistAppointmentModel): number {
   const ma = moment(a.datetime_start_at);
   const mb = moment(b.datetime_start_at);
   return ma.diff(mb);
@@ -78,10 +78,10 @@ export interface FreeSlot {
   templateUrl: 'time-slots.component.html'
 })
 export class TimeSlotsComponent implements AfterViewInit, OnDestroy {
-  AppointmentStatuses = AppointmentStatuses;
+  AppointmentStatus = AppointmentStatus;
 
   // List of appointments to show
-  @Input() set appointments(value: Appointment[]) {
+  @Input() set appointments(value: StylistAppointmentModel[]) {
     this._appointments = value;
     this.updateAppointments();
   }
@@ -123,7 +123,7 @@ export class TimeSlotsComponent implements AfterViewInit, OnDestroy {
   }
 
   // Highlight one slot
-  @Input() set highlightedAppointment(value: Appointment) {
+  @Input() set highlightedAppointment(value: StylistAppointmentModel) {
     if (value) {
       this.selectedTimeSlot = this.slotItems.find(({ appointment }) => appointment && appointment.uuid === value.uuid);
     } else {
@@ -142,7 +142,7 @@ export class TimeSlotsComponent implements AfterViewInit, OnDestroy {
   @Output() freeSlotClick = new EventEmitter<FreeSlot>();
 
   // Event fired when a slot with appointment is clicked
-  @Output() appointmentClick = new EventEmitter<Appointment>();
+  @Output() appointmentClick = new EventEmitter<StylistAppointmentModel>();
 
   @ViewChild(Scroll) scroll: Scroll;
 
@@ -162,7 +162,7 @@ export class TimeSlotsComponent implements AfterViewInit, OnDestroy {
 
   protected selectedTimeSlot: TimeSlotItem;
 
-  private _appointments: Appointment[] = [];
+  private _appointments: StylistAppointmentModel[] = [];
   private _selectedDate: moment.Moment = moment().startOf('day');
   private _showCurTimeIndicator: boolean;
   private _startHour = 9;

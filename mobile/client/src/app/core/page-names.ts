@@ -7,6 +7,7 @@ import { AuthConfirmPageComponent } from '~/auth/auth-confirm/auth-confirm.compo
 import { AuthPageComponent } from '~/auth/auth-start/auth-start.component';
 import { BookingCompleteComponent } from '~/booking/booking-complete/booking-complete.component';
 import { CalendarPrimingComponent } from '~/shared/components/calendar-priming/calendar-priming.component';
+import { ConfirmCheckoutComponent } from '~/confirm-checkout/confirm-checkout.component';
 import { FirstLastNameComponent } from '~/profile/first-last-name/first-last-name.component';
 import { FirstScreenComponent } from '~/first-screen/first-screen.component';
 import { FollowersComponent } from '~/followers/followers.component';
@@ -47,6 +48,7 @@ export const PageNames = {
   AuthConfirm: AuthConfirmPageComponent,
   BookingComplete: BookingCompleteComponent,
   CalendarPriming: CalendarPrimingComponent,
+  ConfirmCheckout: ConfirmCheckoutComponent,
   FirstLastName: FirstLastNameComponent,
   FirstScreen: FirstScreenComponent,
   Followers: FollowersComponent,

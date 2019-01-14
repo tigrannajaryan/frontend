@@ -66,7 +66,7 @@ export class StylistPushNotificationsTrackerComponent implements OnInit, OnDestr
               appointmentUuid: appointment_uuid,
               isReadonly: true
             };
-            await this.nav.push(PageNames.AppointmentCheckout, { data: checkoutParams });
+            await this.nav.push(PageNames.AppointmentCheckout, { params: checkoutParams });
           }
         };
       }

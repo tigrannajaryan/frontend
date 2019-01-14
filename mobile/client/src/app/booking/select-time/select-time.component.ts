@@ -11,7 +11,6 @@ import { showAlert } from '~/shared/utils/alert';
 import { PageNames } from '~/core/page-names';
 import { BookingData } from '~/core/api/booking.data';
 import { BookingApi, CreateAppointmentRequest, TimeslotsResponse } from '~/core/api/booking.api';
-import { AppointmentsDataStore } from '~/core/api/appointments.datastore';
 import { AppointmentPageParams } from '~/appointment-page/appointment-page.component';
 import { BookServicesHeaderComponent } from '../book-services-header/book-services-header';
 
@@ -89,7 +88,6 @@ export class SelectTimeComponent {
   }
 
   constructor(
-    private appointmentsData: AppointmentsDataStore,
     private bookingApi: BookingApi,
     protected bookingData: BookingData,
     private logger: Logger,
@@ -152,24 +150,10 @@ export class SelectTimeComponent {
     };
 
     // Preview the appointment
-    const { response, error } = await this.bookingApi.previewAppointment(appointmentRequest).get();
-    if (!error) {
-      const params: AppointmentPageParams = {
-        appointment: response,
-        onConfirmClick: () => this.createAppointment(appointmentRequest)
-      };
+    const { response } = await this.bookingApi.previewAppointment(appointmentRequest).get();
+    if (response) {
+      const params: AppointmentPageParams = { appointment: response };
       this.navCtrl.push(PageNames.Appointment, { params });
-    }
-  }
-
-  async createAppointment(appointmentRequest: CreateAppointmentRequest): Promise<void> {
-    const { error } = await this.bookingApi.createAppointment(appointmentRequest).get();
-    if (!error) {
-      // Appointment succesfully created. Refresh Home screen.
-      this.appointmentsData.home.refresh();
-
-      // Show "booking complete" message.
-      this.navCtrl.push(PageNames.BookingComplete);
     }
   }
 

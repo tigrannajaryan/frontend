@@ -1,0 +1,20 @@
+.EditServicesPrices-formControl,
+.EditServicesPrices-text {
+  &,
+  .item-inner {
+    padding: 0;
+  }
+
+  .label {
+    color: black;
+  }
+
+  .text-input {
+    width: 100%;
+    margin: 0;
+  }
+}
+
+.EditServicesPrices-formControl .text-input {
+  text-align: right;
+}

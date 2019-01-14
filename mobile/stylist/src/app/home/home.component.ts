@@ -10,14 +10,16 @@ import { Subscription } from 'rxjs/Subscription';
 import * as deepEqual from 'fast-deep-equal';
 import { formatNumber } from 'libphonenumber-js';
 
+import { ApiResponse } from '~/shared/api/base.models';
+import { AppointmentStatus, StylistAppointmentModel } from '~/shared/api/appointments.models';
+
 import { Logger } from '~/shared/logger';
 import { AppAnalytics } from '~/shared/app-analytics';
 import { ExternalAppService } from '~/shared/utils/external-app-service';
 import { NumberFormat } from '~/shared/directives/phone-input.directive';
-import { ApiResponse } from '~/shared/api/base.models';
 
 import { PageNames } from '~/core/page-names';
-import { Appointment, AppointmentStatuses, HomeData } from '~/core/api/home.models';
+import { HomeData } from '~/core/api/home.models';
 import { HomeService } from '~/core/api/home.service';
 import { AppointmentCheckoutParams } from '~/appointment/appointment-checkout/appointment-checkout.component';
 import { ProfileDataStore } from '~/core/profile.data';
@@ -128,7 +130,7 @@ export class UpcomingAndPastComponent {
     }
   }
 
-  async onAppointmentClick(appointment: Appointment): Promise<void> {
+  async onAppointmentClick(appointment: StylistAppointmentModel): Promise<void> {
     // if this is past tab => open checkout page immediately
     if (this.activeTab === this.tabs[Tabs.past].name) {
       this.checkOutAppointmentClick(appointment);
@@ -205,9 +207,9 @@ export class UpcomingAndPastComponent {
   /**
    * Handler for 'No-show' action.
    */
-  async markNoShow(appointment: Appointment): Promise<void> {
+  async markNoShow(appointment: StylistAppointmentModel): Promise<void> {
     const { response } = await this.homeService.changeAppointment(appointment.uuid,
-      { status: AppointmentStatuses.no_show }).get();
+      { status: AppointmentStatus.no_show }).get();
     if (response) {
       this.loadAppointments(this.activeTab);
     }
@@ -216,22 +218,22 @@ export class UpcomingAndPastComponent {
   /**
    * Handler for 'Checkout Client' action.
    */
-  checkOutAppointmentClick(appointment: Appointment): void {
-    const data: AppointmentCheckoutParams = {
+  checkOutAppointmentClick(appointment: StylistAppointmentModel): void {
+    const params: AppointmentCheckoutParams = {
       appointmentUuid: appointment.uuid,
 
       // Allow to checkout any appointment that is not already checked out.
-      isAlreadyCheckedOut: appointment.status === AppointmentStatuses.checked_out
+      isAlreadyCheckedOut: appointment.status === AppointmentStatus.checked_out
     };
-    this.navCtrl.push(PageNames.AppointmentCheckout, { data });
+    this.navCtrl.push(PageNames.AppointmentCheckout, { params });
   }
 
   /**
    * Handler for 'Cancel' action.
    */
-  async cancelAppointment(appointment: Appointment): Promise<void> {
+  async cancelAppointment(appointment: StylistAppointmentModel): Promise<void> {
     const { response } = await this.homeService.changeAppointment(appointment.uuid,
-      { status: AppointmentStatuses.cancelled_by_stylist }).get();
+      { status: AppointmentStatus.cancelled_by_stylist }).get();
     if (response) {
       this.loadAppointments(this.activeTab);
     }
