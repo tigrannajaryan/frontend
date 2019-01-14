@@ -1,9 +1,10 @@
 import { AlertController, Events } from 'ionic-angular';
 
+import { ClientAppointmentModel } from '~/shared/api/appointments.models';
+
 import { AppModule } from '~/app.module';
 import { BookingData } from '~/core/api/booking.data';
 import { PreferredStylistsData } from '~/core/api/preferred-stylists.data';
-import { AppointmentModel } from '~/core/api/appointments.models';
 import { PreferredStylistModel } from '~/shared/api/stylists.models';
 import { ServicesService } from '~/core/api/services.service';
 import { ClientEventTypes } from '~/core/client-event-types';
@@ -79,7 +80,7 @@ export async function startBooking(stylistUuid: string): Promise<PreferredStylis
  * PageNames.ServicesCategories (which can happen if services no longer exist)
  * @param appointment the original appointment to use as a model for rebooking
  */
-export async function startRebooking(appointment: AppointmentModel): Promise<void> {
+export async function startRebooking(appointment: ClientAppointmentModel): Promise<void> {
 
   const events = AppModule.injector.get(Events);
 
@@ -170,7 +171,7 @@ export function confirmMakeStylistPreferred(stylistFirstName: string, stylistUui
  * - true means either stylist is a preferred one or confirmed to become,
  * - false means stylist is not a preferred one and not confirmed to become.
  */
-export function confirmRebook(appointment: AppointmentModel): Promise<boolean> {
+export function confirmRebook(appointment: ClientAppointmentModel): Promise<boolean> {
   const preferredStylistsData = AppModule.injector.get(PreferredStylistsData);
 
   return new Promise(async (resolve, reject): Promise<void> => {

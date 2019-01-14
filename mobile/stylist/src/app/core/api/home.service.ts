@@ -4,23 +4,26 @@ import { Observable } from 'rxjs/Observable';
 import * as moment from 'moment';
 
 import { Logger } from '~/shared/logger';
-import { ApiRequestOptions } from '~/shared/api-errors';
 import { ServerStatusTracker } from '~/shared/server-status-tracker';
+
+import { ApiRequestOptions } from '~/shared/api-errors';
 import { BaseService } from '~/shared/api/base.service';
 import { ApiResponse, isoDateFormat } from '~/shared/api/base.models';
-
 import {
-  Appointment,
   AppointmentChangeRequest,
-  AppointmentParams,
   AppointmentPreviewRequest,
   AppointmentPreviewResponse,
+  StylistAppointmentModel
+} from '~/shared/api/appointments.models';
+
+import {
+  AppointmentParams,
   DatesWithAppointmentsParams,
   DatesWithAppointmentsResponse,
   DayAppointmentsResponse,
   HomeData,
   NewAppointmentRequest
-} from './home.models';
+} from '~/core/api/home.models';
 
 @Injectable()
 export class HomeService extends BaseService {
@@ -43,7 +46,7 @@ export class HomeService extends BaseService {
   /**
    * Get all appointments. The stylist must be already authenticated as a user.
    */
-  getAppointments(appointmentParams?: AppointmentParams): Observable<ApiResponse<Appointment[]>> {
+  getAppointments(appointmentParams?: AppointmentParams): Observable<ApiResponse<StylistAppointmentModel[]>> {
     let params = new HttpParams();
     if (appointmentParams) {
       Object.keys(appointmentParams).forEach(key => {
@@ -56,7 +59,7 @@ export class HomeService extends BaseService {
         }
       });
     }
-    return this.get<Appointment[]>('stylist/appointments', params);
+    return this.get<StylistAppointmentModel[]>('stylist/appointments', params);
   }
 
   /**
@@ -97,21 +100,22 @@ export class HomeService extends BaseService {
   /**
    * Creates new appointment. The stylist must be already authenticated as a user.
    */
-  createAppointment(data: NewAppointmentRequest, forced: boolean, options: ApiRequestOptions): Observable<ApiResponse<Appointment>> {
-    return this.post<Appointment>(`stylist/appointments?force_start=${forced}`, data, undefined, options);
+  createAppointment(data: NewAppointmentRequest, forced: boolean, options: ApiRequestOptions
+    ): Observable<ApiResponse<StylistAppointmentModel>> {
+      return this.post<StylistAppointmentModel>(`stylist/appointments?force_start=${forced}`, data, undefined, options);
   }
 
   /**
    * Get appointment by id. The stylist must be already authenticated as a user.
    */
-  getAppointmentById(appointmentUuid: string): Observable<ApiResponse<Appointment>> {
-    return this.get<Appointment>(`stylist/appointments/${appointmentUuid}`);
+  getAppointmentById(appointmentUuid: string): Observable<ApiResponse<StylistAppointmentModel>> {
+    return this.get<StylistAppointmentModel>(`stylist/appointments/${appointmentUuid}`);
   }
 
   /**
    * Change appointment by uuid.
    */
-  changeAppointment(appointmentUuid: string, data: AppointmentChangeRequest): Observable<ApiResponse<Appointment>> {
-    return this.post<Appointment>(`stylist/appointments/${appointmentUuid}`, data);
+  changeAppointment(appointmentUuid: string, data: AppointmentChangeRequest): Observable<ApiResponse<StylistAppointmentModel>> {
+    return this.post<StylistAppointmentModel>(`stylist/appointments/${appointmentUuid}`, data);
   }
 }

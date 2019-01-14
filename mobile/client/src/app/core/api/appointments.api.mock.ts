@@ -5,17 +5,16 @@ import * as faker from 'faker';
 import { ApiResponse } from '~/shared/api/base.models';
 import {
   AppointmentChangeRequest,
-  AppointmentModel,
-  AppointmentsHistoryResponse,
   AppointmentStatus,
-  HomeResponse
-} from '~/core/api/appointments.models';
+  ClientAppointmentModel
+} from '~/shared/api/appointments.models';
+import { AppointmentsHistoryResponse, HomeResponse } from '~/core/api/appointments.models';
 
 @Injectable()
 export class AppointmentsApiMock {
 
-  private static genFake(count: number, status: AppointmentStatus): AppointmentModel[] {
-    const response: AppointmentModel[] =
+  private static genFake(count: number, status: AppointmentStatus): ClientAppointmentModel[] {
+    const response: ClientAppointmentModel[] =
       Array(count).fill(undefined).map(() => {
         const [name, lastName] = [faker.name.firstName(), faker.name.lastName()];
         return {
@@ -32,6 +31,7 @@ export class AppointmentsApiMock {
           tax_percentage: 8.875,
           grand_total: 9,
           card_fee_percentage: 2.75,
+          created_at: faker.date.past().toString(),
           datetime_start_at: faker.date.past().toString(),
           duration_minutes: 0,
           status,
@@ -71,7 +71,7 @@ export class AppointmentsApiMock {
     });
   }
 
-  changeAppointment(appointmentUuid: string, data: AppointmentChangeRequest): Observable<ApiResponse<AppointmentModel>> {
+  changeAppointment(appointmentUuid: string, data: AppointmentChangeRequest): Observable<ApiResponse<ClientAppointmentModel>> {
     const appointments = AppointmentsApiMock.genFake(1, AppointmentStatus.checked_out);
     return new Observable(observer => {
       observer.next({ response: appointments[0] });

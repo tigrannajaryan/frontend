@@ -4,13 +4,14 @@ import { ActionSheetButton } from 'ionic-angular/components/action-sheet/action-
 import * as moment from 'moment';
 import * as deepEqual from 'fast-deep-equal';
 
+import { AppointmentStatus, StylistAppointmentModel } from '~/shared/api/appointments.models';
+import { Workday } from '~/shared/api/worktime.models';
 import { Logger } from '~/shared/logger';
 import { ExternalAppService } from '~/shared/utils/external-app-service';
 import { setIntervalOutsideNgZone } from '~/shared/utils/timer-utils';
 import { getPhoneNumber } from '~/shared/utils/phone-numbers';
-import { Workday } from '~/shared/api/worktime.models';
 
-import { Appointment, AppointmentStatuses, DayAppointmentsResponse } from '~/core/api/home.models';
+import { DayAppointmentsResponse } from '~/core/api/home.models';
 import { HomeService } from '~/core/api/home.service';
 import { WorktimeApi } from '~/core/api/worktime.api';
 import { AppointmentCheckoutParams } from '~/appointment/appointment-checkout/appointment-checkout.component';
@@ -73,14 +74,14 @@ export class HomeSlotsComponent {
   isFullyBlocked = false;
 
   // An appointment we want to highlight:
-  highlightedAppointment: Appointment;
+  highlightedAppointment: StylistAppointmentModel;
 
   // And its components as strings (used in HTML)
   selectedMonthName: string;
   selectedWeekdayName: string;
   selectedDayOfMonth: string;
 
-  private static isUpcomingAppointment(appointment: Appointment): boolean {
+  private static isUpcomingAppointment(appointment: StylistAppointmentModel): boolean {
     return moment(appointment.datetime_start_at).isAfter(moment(), 'day');
   }
 
@@ -150,7 +151,7 @@ export class HomeSlotsComponent {
     }];
   }
 
-  async onAppointmentClick(appointment: Appointment): Promise<void> {
+  async onAppointmentClick(appointment: StylistAppointmentModel): Promise<void> {
     const buttons = await this.getAppointmentActionSheetOptions(appointment);
     const actionSheet = this.actionSheetCtrl.create({ buttons });
     actionSheet.present();
@@ -159,9 +160,9 @@ export class HomeSlotsComponent {
   /**
    * Handler for 'No-show' action.
    */
-  async markNoShow(appointment: Appointment): Promise<void> {
+  async markNoShow(appointment: StylistAppointmentModel): Promise<void> {
     const { response } = await this.homeService.changeAppointment(appointment.uuid,
-      { status: AppointmentStatuses.no_show }).get();
+      { status: AppointmentStatus.no_show }).get();
     if (response) {
       this.loadAppointments();
     }
@@ -170,23 +171,23 @@ export class HomeSlotsComponent {
   /**
    * Handler for 'Checkout Client' action.
    */
-  checkOutOrDetailsClick(appointment: Appointment): void {
-    const data: AppointmentCheckoutParams = {
+  checkOutOrDetailsClick(appointment: StylistAppointmentModel): void {
+    const params: AppointmentCheckoutParams = {
       appointmentUuid: appointment.uuid,
 
       // Allow to checkout any appointment that is not already checked out.
-      isAlreadyCheckedOut: appointment.status === AppointmentStatuses.checked_out,
+      isAlreadyCheckedOut: appointment.status === AppointmentStatus.checked_out,
       isReadonly: HomeSlotsComponent.isUpcomingAppointment(appointment)
     };
-    this.navCtrl.push(PageNames.AppointmentCheckout, { data });
+    this.navCtrl.push(PageNames.AppointmentCheckout, { params });
   }
 
   /**
    * Handler for 'Cancel' action.
    */
-  async cancelAppointment(appointment: Appointment): Promise<void> {
+  async cancelAppointment(appointment: StylistAppointmentModel): Promise<void> {
     const { response } = await this.homeService.changeAppointment(appointment.uuid,
-      { status: AppointmentStatuses.cancelled_by_stylist }).get();
+      { status: AppointmentStatus.cancelled_by_stylist }).get();
     if (response) {
       this.loadAppointments();
     }
@@ -266,15 +267,15 @@ export class HomeSlotsComponent {
   /**
    * Get action sheet buttons for an appointment
    */
-  async getAppointmentActionSheetOptions(appointment: Appointment): Promise<ActionSheetButton[]> {
+  async getAppointmentActionSheetOptions(appointment: StylistAppointmentModel): Promise<ActionSheetButton[]> {
     // Build the list of action buttons to show
     const buttons: ActionSheetButton[] = [];
 
     if (!isBlockedTime(appointment)) {
       // Show "Details" or "Checkout" action for real appointments
-      if (appointment.status !== AppointmentStatuses.cancelled_by_client) {
+      if (appointment.status !== AppointmentStatus.cancelled_by_client) {
 
-        const text = (appointment.status === AppointmentStatuses.checked_out ||
+        const text = (appointment.status === AppointmentStatus.checked_out ||
           HomeSlotsComponent.isUpcomingAppointment(appointment)) ? 'Details' : 'View and Check Out';
 
         buttons.push({
@@ -287,7 +288,7 @@ export class HomeSlotsComponent {
 
       const appointmentEndTime = moment(appointment.datetime_start_at).add(appointment.duration_minutes, 'minutes');
 
-      if (appointmentEndTime.isSameOrBefore(moment()) && appointment.status !== AppointmentStatuses.no_show) {
+      if (appointmentEndTime.isSameOrBefore(moment()) && appointment.status !== AppointmentStatus.no_show) {
         // We are showing today or a past date. Add "no-show" action.
         // We don't want to show it for future dates because it makes no sense
         // to mark someone no-show if it is not yet time for the appointment.
@@ -334,7 +335,7 @@ export class HomeSlotsComponent {
 
       // Add "Cancel appointment" action for real appointments
       buttons.push({
-        text: appointment.status === AppointmentStatuses.cancelled_by_client ? 'Delete Appointment' : 'Cancel Appointment',
+        text: appointment.status === AppointmentStatus.cancelled_by_client ? 'Delete Appointment' : 'Cancel Appointment',
         role: 'destructive',
         handler: () => {
           this.cancelAppointment(appointment);

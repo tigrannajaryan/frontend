@@ -18,7 +18,7 @@
             <!-- Time and date -->
             <div class="CheckOut-headerDate" data-test-id="appointmentDateTime">
               <b>{{ appointment.datetime_start_at | date: 'h:mmaaaaa' }}</b>
-              {{ appointment.datetime_start_at | date: 'E, LLL MM' }}
+              {{ appointment.datetime_start_at | date: 'E, MMM d' }}
             </div>
           </ion-col>
 
@@ -32,10 +32,10 @@
       </div>
 
       <!-- Receipt card -->
-      <div *ngIf="previewResponse" class="CheckOut-card" [class.is-minified]="isMinifiedDetails">
+      <div *ngIf="previewResponse" class="CheckOut-card">
 
         <!-- Price -->
-        <div (click)="triggerMinifiedDetails()" class="CheckOut-price">
+        <div class="CheckOut-price">
           <div class="CheckOut-priceTitle" data-test-id="appointmentTitle">
             <ng-container *ngIf="!params?.isAlreadyCheckedOut; else finalPriceTpl">Total Price</ng-container>
             <ng-template #finalPriceTpl>Final Price</ng-template>
@@ -48,8 +48,6 @@
               <b data-test-id="appointmentPrice">{{ previewResponse.grand_total.toFixed() }}</b>
             </ng-container>
           </div>
-
-          <ion-icon [name]="isMinifiedDetails ? 'ios-arrow-down' : 'ios-arrow-up'"></ion-icon>
         </div>
 
         <!-- Details -->
@@ -66,18 +64,21 @@
             </ion-col>
           </ion-row>
 
-          <ion-row align-items-center *ngIf="!params?.isAlreadyCheckedOut || hasTaxIncluded" data-test-id="appointmentTaxPercentage">
-            <ion-col col-9 no-padding>
-              <span class="text-muted">Tax Rate ({{ previewResponse.tax_percentage | number: '1.2' }}%)</span>
-            </ion-col>
-            <ion-col col-3 no-padding>
-              <span>{{ previewResponse.total_tax.toFixed(2) | currency }}</span>
-            </ion-col>
-          </ion-row>
+          <!-- Taxes are temp hidden -->
+          <!--
+            <ion-row align-items-center *ngIf="!params?.isAlreadyCheckedOut || hasTaxIncluded" data-test-id="appointmentTaxPercentage">
+              <ion-col col-9 no-padding>
+                <span class="text-muted">Tax Rate ({{ previewResponse.tax_percentage | number: '1.2' }}%)</span>
+              </ion-col>
+              <ion-col col-3 no-padding>
+                <span>{{ previewResponse.total_tax.toFixed(2) | currency }}</span>
+              </ion-col>
+            </ion-row>
+          -->
         </div>
 
         <!-- Bottom controls -->
-        <ion-row *ngIf="[AppointmentStatuses.checked_out, AppointmentStatuses.no_show].indexOf(appointment.status) === -1">
+        <ion-row *ngIf="[AppointmentStatus.checked_out, AppointmentStatus.no_show].indexOf(appointment.status) === -1">
           <ion-col (click)="addServicesClick()" class="CheckOut-controlBtn">
             <span>Change </span>
             <ng-container *ngIf="previewResponse.services.length > 1; else oneTpl">Services</ng-container>

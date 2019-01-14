@@ -1,12 +1,13 @@
 import { Component, ViewChild } from '@angular/core';
 import { App, Content, Events, Refresher } from 'ionic-angular';
 
+import { AppointmentStatus, ClientAppointmentModel } from '~/shared/api/appointments.models';
 import { Logger } from '~/shared/logger';
 import { componentUnloaded } from '~/shared/component-unloaded';
 import { loading } from '~/shared/utils/loading';
 import { PreferredStylistsListResponse } from '~/shared/api/stylists.models';
 
-import { AppointmentModel, AppointmentStatus, HomeResponse } from '~/core/api/appointments.models';
+import { HomeResponse } from '~/core/api/appointments.models';
 import { AppointmentsDataStore } from '~/core/api/appointments.datastore';
 import { PageNames } from '~/core/page-names';
 import { ClientEventTypes } from '~/core/client-event-types';
@@ -80,7 +81,7 @@ export class HomePageComponent {
     this.profileDataStore.get({ refresh: invalidateCache });
   }
 
-  onAppointmentClick(appointment: AppointmentModel, type: AppointmentType): void {
+  onAppointmentClick(appointment: ClientAppointmentModel, type: AppointmentType): void {
     const params: AppointmentPageParams = {
       appointment
     };
@@ -100,7 +101,7 @@ export class HomePageComponent {
     this.appointmentsDataStore.home.refresh();
   }
 
-  onRebookClick(appointment: AppointmentModel): void {
+  onRebookClick(appointment: ClientAppointmentModel): void {
     this.logger.info('onRebookClick', appointment);
     startRebooking(appointment);
   }
