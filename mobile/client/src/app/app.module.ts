@@ -20,6 +20,9 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import { Push } from '@ionic-native/push';
 import { GooglePlus } from '@ionic-native/google-plus';
+import { Contacts } from '@ionic-native/contacts';
+import { OpenNativeSettings } from '@ionic-native/open-native-settings';
+import { SMS } from '@ionic-native/sms';
 
 import { GalleryModalHammerConfig, GalleryModalModule } from 'ionic-gallery-modal';
 import { AgmCoreModule, LAZY_MAPS_API_CONFIG } from '@agm/core';
@@ -96,6 +99,8 @@ import { FirstLastNameComponent } from '~/profile/first-last-name/first-last-nam
 import { ClientStartupNavigation } from './core/client-startup-navigation';
 import { StylistProfileComponent } from '~/stylists/stylist-profile/stylist-profile.component';
 import { GoogleMapsConfig } from '~/shared/google-maps-config';
+import { InvitationsComponent } from '~/invitations/invitations.component';
+import { InvitationsApi } from '~/core/api/invitations.api';
 
 // Init sentry reporting (inits only if ENV.sentryDsn):
 initSentry();
@@ -125,6 +130,7 @@ const declarations = [
   HowMadeWorksComponent,
   HowPricingWorksComponent,
   InstagramGalleryComponent,
+  InvitationsComponent,
   MainTabsComponent,
   MyStylistsComponent,
   NonBookableSavePopupComponent,
@@ -260,6 +266,11 @@ const declarations = [
       provide: LAZY_MAPS_API_CONFIG, useClass: GoogleMapsConfig
     },
 
+    InvitationsApi,
+
+    Contacts,
+    OpenNativeSettings,
+    SMS,
     Camera
   ]
 })

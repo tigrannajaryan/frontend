@@ -2,29 +2,16 @@ import {
   async,
   TestBed
 } from '@angular/core/testing';
-
-import {
-  IonicModule,
-  ModalController,
-  NavController,
-  NavParams
-} from 'ionic-angular';
-
 import { Contacts } from '@ionic-native/contacts';
 import { OpenNativeSettings } from '@ionic-native/open-native-settings';
 import { SMS } from '@ionic-native/sms';
-import { HttpClient } from '@angular/common/http';
 
-import { StylistServiceProvider } from '~/core/api/stylist.service';
-import { DiscountsApi } from '~/core/api/discounts.api';
-import { InvitationsApi } from '~/core/api/invitations.api';
 import { InvitationStatus } from '~/shared/api/invitations.models';
-import { ProfileDataStore } from '~/core/profile.data';
 
-import { CoreModule } from '~/core/core.module';
-import { prepareSharedObjectsForTests } from '~/core/test-utils.spec';
 import { InvitationsComponent } from './invitations.component';
 import { DisplayContact } from '~/shared/components/invitations/abstract-invitations.component';
+import { TestUtils } from '../../test';
+import { InvitationsApi } from '~/core/api/invitations.api';
 
 describe('Pages: InvitationsComponent', () => {
   let fixture;
@@ -49,30 +36,24 @@ describe('Pages: InvitationsComponent', () => {
     status: InvitationStatus.New
   };
 
-  prepareSharedObjectsForTests();
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [InvitationsComponent],
-      imports: [
-        IonicModule.forRoot(InvitationsComponent),
-        CoreModule
-      ],
-      providers: [
-        NavController,
-        NavParams,
-        ModalController,
-        InvitationsApi,
-        DiscountsApi,
-        StylistServiceProvider,
-        ProfileDataStore,
-        Contacts,
-        OpenNativeSettings,
-        SMS,
-        { provide: HttpClient, useClass: class { httpClient = jasmine.createSpy('HttpClient'); } }
-      ]
-    });
-  }));
+  beforeEach(
+    async(() =>
+      TestUtils.beforeEachCompiler([InvitationsComponent],
+        [
+          Contacts,
+          SMS,
+          InvitationsApi,
+          OpenNativeSettings
+        ]
+      )
+        .then(compiled => {
+          // Common setup:
+          fixture = TestBed.createComponent(InvitationsComponent);
+          component = fixture.componentInstance;
+        })
+    )
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(InvitationsComponent);

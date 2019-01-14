@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 
+import { InvitationsComponentParams } from '~/shared/components/invitations/abstract-invitations.component';
+
 import { PageNames } from '~/core/page-names';
-import { InvitationsComponentParams } from '~/invitations/invitations.component';
 
 @Component({
   selector: 'pop-confirm-checkout',

@@ -154,6 +154,9 @@
     <edit-config file="*-Info.plist" mode="merge" target="NSLocationWhenInUseUsageDescription">
         <string>We use your location to allow searching for stylists nearby.</string>
     </edit-config>
-    <engine name="ios" spec="4.5.5" />
+    <plugin name="cordova-plugin-contacts" spec="3.0.1" />
+    <plugin name="cordova-open-native-settings" spec="1.5.2" />
+    <plugin name="cordova-sms-plugin" spec="1.0.0" />
     <engine name="android" spec="7.1.0" />
+    <engine name="ios" spec="4.5.5" />
 </widget>

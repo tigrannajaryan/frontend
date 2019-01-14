@@ -160,8 +160,9 @@ describe('PushNotificationTracker (client)', () => {
     // Test handlerParams.onClick() call:
     expect(navCtrl.setRoot)
       .toHaveBeenCalledWith(PageNames.MainTabs);
+    // TODO: change redirect to MainTabIndex.Stylists page when it will be ready
     expect(events.publish)
-      .toHaveBeenCalledWith(ClientEventTypes.selectMainTab, MainTabIndex.Stylists);
+      .toHaveBeenCalledWith(ClientEventTypes.selectMainTab, MainTabIndex.Home);
     expect(navCtrl.push)
       .toHaveBeenCalledWith(PageNames.StylistSearch);
 

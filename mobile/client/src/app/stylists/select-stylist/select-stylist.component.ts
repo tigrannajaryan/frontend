@@ -40,7 +40,8 @@ export class SelectStylistComponent {
       // Cannot proceed if no prefered bookable styllist is selected.
       // Redirecting to Stylists tab and showing a warning popup:
       await this.navCtrl.setRoot(PageNames.MainTabs);
-      this.events.publish(ClientEventTypes.selectMainTab, MainTabIndex.Stylists, this.showNoSelectedStylistWarning);
+      // change redirect to stylists page when it will be ready
+      this.events.publish(ClientEventTypes.selectMainTab, MainTabIndex.Home, this.showNoSelectedStylistWarning);
     }
   }
 

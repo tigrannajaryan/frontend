@@ -40,3 +40,10 @@ moment.updateLocale('en', {
 export function formatTimeInZone(dt: moment.MomentInput): string {
   return moment.parseZone(dt).format('h:mma');
 }
+
+export function trimStr(s?: string): string {
+  if (s) {
+    return s.trim();
+  }
+  return s;
+}

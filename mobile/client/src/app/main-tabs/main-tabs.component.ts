@@ -23,7 +23,7 @@ interface TabsObject {
 export enum MainTabIndex {
   Home = 0,
   History,
-  Stylists,
+  Invitation,
   Profile
 }
 
@@ -45,8 +45,8 @@ export class MainTabsComponent implements OnDestroy {
       params: { isMain: true }
     },
     {
-      name: 'Stylists',
-      link: PageNames.MyStylists,
+      name: 'Invite',
+      link: PageNames.Invitations,
       params: {}
     },
     {

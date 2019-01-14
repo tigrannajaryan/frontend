@@ -26,7 +26,7 @@ ion-header ion-icon.back-button-icon.icon {
 // rewrite ionic main-tabs icons
 ion-icon.tab-button-icon[aria-label^="Home"],
 ion-icon.tab-button-icon[aria-label^="History"],
-ion-icon.tab-button-icon[aria-label^="Stylists"],
+ion-icon.tab-button-icon[aria-label^="Invite"],
 ion-icon.tab-button-icon[aria-label^="Profile"] {
   @extend %mb-icon;
 
@@ -42,8 +42,8 @@ ion-icon.tab-button-icon[aria-label^="History"]:after {
   content: $mb-icon-clock-a;
 }
 
-ion-icon.tab-button-icon[aria-label^="Stylists"]:after {
-  content: $mb-icon-stylists-a;
+ion-icon.tab-button-icon[aria-label^="Invite"]:after {
+  content: $mb-icon-invite-a;
 }
 
 ion-icon.tab-button-icon[aria-label^="Profile"]:after {
@@ -69,8 +69,8 @@ ion-icon.tab-button-icon[aria-label^="Profile"]:after {
     content: $mb-icon-clock;
   }
 
-  ion-icon.tab-button-icon[aria-label^="Stylists"]:after {
-    content: $mb-icon-stylists;
+  ion-icon.tab-button-icon[aria-label^="Invite"]:after {
+    content: $mb-icon-invite;
   }
 
   ion-icon.tab-button-icon[aria-label^="Profile"]:after {

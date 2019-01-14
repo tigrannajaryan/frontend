@@ -8,6 +8,10 @@
 
 .Made-wpContent {
   padding-bottom: pxtovw(16px);
+
+  &.with-FullHeight {
+    height: 100%;
+  }
 }
 
 .flexBetween {

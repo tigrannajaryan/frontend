@@ -28,6 +28,7 @@ import { ServicesPageComponent } from '~/services-page/services-page.component';
 import { StylistComponent } from '~/stylists/stylist/stylist.component';
 import { StylistProfileComponent } from '~/stylists/stylist-profile/stylist-profile.component';
 import { StylistSearchComponent } from '~/stylists/stylists-search/stylists-search.component';
+import { InvitationsComponent } from '~/invitations/invitations.component';
 
 /**
  * Define page names in one place to avoid typos if the names are used as
@@ -57,6 +58,7 @@ export const PageNames = {
   HowPricingWorks: HowPricingWorksComponent,
   MainTabs: MainTabsComponent,
   MyStylists: MyStylistsComponent,
+  Invitations: InvitationsComponent,
   Privacy: PrivacySettingsComponent,
   ProfileEdit: ProfileEditComponent,
   ProfileSummary: ProfileSummaryComponent,

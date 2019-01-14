@@ -57,7 +57,8 @@ export class ClientPushNotificationsTrackerComponent implements OnInit, OnDestro
           buttonText: 'Search',
           onClick: async (): Promise<void> => {
             await this.nav.setRoot(PageNames.MainTabs);
-            this.events.publish(ClientEventTypes.selectMainTab, MainTabIndex.Stylists);
+            // TODO: change redirect to MainTabIndex.Stylists page when it will be ready
+            this.events.publish(ClientEventTypes.selectMainTab, MainTabIndex.Home);
             await this.nav.push(PageNames.StylistSearch);
           }
         };

@@ -1,0 +1,132 @@
+page-invitations {
+  .skip-link {
+    font-size: pxtovw(18px);
+    color: color($grayscale, 800);
+    text-transform: none;
+  }
+
+  .access-denied {
+    margin: pxtovw(24px) 0;
+    font-size: pxtovw(15px);
+  }
+
+  .InvitationSearch {
+    display: flex;
+    align-items: center;
+    padding: pxtovw(15px) pxtovw(13px);
+    background: color($colors, white);
+    border-radius: pxtovw(5px);
+    box-shadow: 0 pxtovw(7px) pxtovw(43px) 0 rgba(0, 0, 0, 0.08);
+
+    input {
+      font-size: pxtovw(15px);
+      margin: 0;
+    }
+
+    i {
+      margin: 0 pxtovw(13px) 0 0;
+      color: color($colors-shared, lightSalmon);
+      font-size: pxtovw(15px);
+    }
+  }
+
+  .InvitationName {
+    border-bottom: 1px solid color($grayscale, 100);
+
+    h3 {
+      padding-bottom: 0;
+      margin: 0;
+      font-size: pxtovw(13px);
+      color: color($grayscale, 300);
+    }
+  }
+
+  .InvitationNoContacts {
+    padding-top: pxtorem10(14);
+    font-size: pxtovw(15px);
+    text-align: center;
+  }
+
+  .InvitationLoading {
+    margin: pxtovw(24px) 0;
+    font-size: pxtovw(15px);
+  }
+
+  .InvitationDetails {
+    padding: 0 pxtovw(5px);
+    font-size: pxtovw(13px);
+    color: color($shared-colors, color1);
+    border-bottom: 1px solid color($grayscale, 100);
+  }
+
+  .InvitationDetails-name {
+    font-size: pxtovw(18px);
+    font-weight: 500;
+    color: black;
+  }
+
+  .InvitationDetails-status {
+    padding-right: pxtovw(10px);
+    text-align: right;
+
+    .invited {
+      font-size: pxtovw(15px);
+      color: color($colors-shared, honey);
+    }
+
+    .accepted {
+      font-size: pxtovw(15px);
+      color: color($colors-shared, lima);
+    }
+
+    .selected {
+      font-size: pxtovw(16px);
+    }
+
+    .check {
+      font-size: pxtovw(22px);
+      color: color($colors-shared, lightSalmon);
+    }
+  }
+
+  .InvitationSearch-input {
+    width: 100%;
+
+    .text-input-md {
+      margin: 0;
+    }
+  }
+
+  .InvitationSearch-inputName {
+    display: inline-block;
+    width: fit-content;
+    padding: pxtovw(4px) pxtovw(3px);
+    margin: 0 3px 3px 0;
+    font-size: pxtovw(18px);
+    background: color($colors-shared, serenade);
+    border-radius: pxtovw(7px) 0 0 pxtovw(7px);
+
+    ion-icon {
+      margin-top: 0;
+      font-size: pxtovw(16px);
+    }
+  }
+
+  .InvitationSearch-icon {
+    max-width: pxtovw(23px);
+  }
+
+  .InvitationPermissions {
+    position: absolute;
+    left: 0;
+    top: 47%;
+    padding: 0 pxtovw(23.61px);
+    color: color($colors-shared, warmGrey);
+    text-align: center;
+    font-size: pxtovw(15px);
+  }
+
+  .InvitationAddBtn {
+    margin: pxtovw(16px) 0;
+  }
+}
