@@ -30,6 +30,7 @@ import { AppointmentCheckoutParams } from '~/appointment/appointment-checkout/ap
 import { StylistPushNotificationsTrackerComponent } from './push-notifications-tracker.component';
 import { ProfileTabs } from '~/profile/profile.component';
 import { WorkHoursComponentParams } from '~/workhours/workhours.component';
+import { ServicesComponentParams } from '~/services/services.component';
 
 let instance: StylistPushNotificationsTrackerComponent;
 let fixture: ComponentFixture<StylistPushNotificationsTrackerComponent>;
@@ -254,8 +255,9 @@ describe('PushNotificationTracker (client)', () => {
       });
 
     // Test handlerParams.onClick() call:
+    const params: ServicesComponentParams = { isRootPage: true };
     expect(navCtrl.setRoot)
-      .toHaveBeenCalledWith(PageNames.Services);
+      .toHaveBeenCalledWith(PageNames.Services, { params });
 
     done();
   });

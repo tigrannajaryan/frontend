@@ -19,6 +19,7 @@ import { PageNames } from '~/core/page-names';
 import { AppointmentCheckoutParams } from '~/appointment/appointment-checkout/appointment-checkout.component';
 import { ProfileTabs } from '~/profile/profile.component';
 import { WorkHoursComponentParams } from '~/workhours/workhours.component';
+import { ServicesComponentParams } from '~/services/services.component';
 
 @Component({
   selector: 'push-notifications-tracker',
@@ -88,7 +89,8 @@ export class StylistPushNotificationsTrackerComponent implements OnInit, OnDestr
         return {
           buttonText: 'Open',
           onClick: async (): Promise<void> => {
-            await this.nav.setRoot(PageNames.Services);
+            const params: ServicesComponentParams = { isRootPage: true };
+            await this.nav.setRoot(PageNames.Services, { params });
           }
         };
       }
