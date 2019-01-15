@@ -78,22 +78,12 @@ export class AppointmentPageComponent {
     const { response: createAppointmentResponse } = await this.bookingApi.createAppointment(appointmentRequest).toPromise();
 
     if (createAppointmentResponse) {
-      // Now add appointment services to it to ensure edited services and prices are saved.
-      const { response: changeAppointmentResponse } = await this.api.changeAppointment(
-          createAppointmentResponse.uuid, { services: this.params.appointment.services }
-        ).toPromise();
-
-      // And hack booking data by updating offer price
-      if (changeAppointmentResponse) {
-        this.bookingData.offer.price = changeAppointmentResponse.grand_total;
-      }
-
       // Appointment succesfully created. Refresh Home screen.
       this.appointmentsDataStore.home.refresh();
 
       // Show "booking complete" message.
       const params: BookingCompleteComponentParams = {
-        appointment: createAppointmentResponse || changeAppointmentResponse
+        appointment: createAppointmentResponse
       };
       this.navCtrl.push(PageNames.BookingComplete, { params });
     }
