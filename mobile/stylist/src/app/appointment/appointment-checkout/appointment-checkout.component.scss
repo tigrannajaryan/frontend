@@ -5,7 +5,6 @@ page-checkout {
 
   .CheckOut-card {
     margin-bottom: pxtovw(16px) 0;
-    overflow: hidden;
     border-radius: pxtovw(8px);
     box-shadow:
       pxtovw(7px) 0 pxtovw(24px) 0 rgba(black, 0.08),
@@ -91,21 +90,6 @@ page-checkout {
     position: relative;
     padding: pxtovw(16px);
     text-align: center;
-    box-shadow: 0 pxtovw(7px) pxtovw(24px) 0 rgba(black, 0.08);
-
-    ion-icon {
-      $icon-size: pxtovw(32px);
-
-      position: absolute;
-      top: 0;
-      right: 0;
-      width: $icon-size;
-      height: $icon-size;
-      margin: pxtovw(12px);
-      font-size: pxtovw(24px);
-      line-height: pxtovw(32px);
-      color: color($colors, warmGrey);
-    }
   }
 
   .CheckOut-priceTitle {
@@ -191,7 +175,7 @@ page-checkout {
     }
 
     .row {
-      height: pxtovw(52px);
+      height: pxtovw(32px);
     }
 
     .col {
@@ -209,38 +193,6 @@ page-checkout {
       .text-muted {
         font-size: pxtovw(15px);
         line-height: pxtovw(16px);
-      }
-    }
-  }
-
-  // Minified
-  // –––––––––––––––––––––
-
-  .CheckOut-card.is-minified {
-    .CheckOut-price {
-      box-shadow: none;
-    }
-
-    .CheckOut-details {
-      background: transparent;
-
-      .row,
-      .col {
-        display: none;
-      }
-
-      .row.CheckOut-detailsServices,
-      .col:first-child {
-        display: inline;
-      }
-
-      .row.CheckOut-detailsServices:before {
-        margin-left: pxtovw(-2px);
-        content: ',';
-      }
-
-      .row.CheckOut-detailsServices:first-child:before {
-        display: none;
       }
     }
   }

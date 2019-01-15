@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 
-import { Appointment } from '~/core/api/home.models';
+import { StylistAppointmentModel } from '~/shared/api/appointments.models';
 import { formatTimeInZone } from '~/shared/utils/string-utils';
 
 @Component({
@@ -10,7 +10,7 @@ import { formatTimeInZone } from '~/shared/utils/string-utils';
 export class AppointmentItemComponent {
   formatTimeInZone = formatTimeInZone;
 
-  @Input() appointment: Appointment;
+  @Input() appointment: StylistAppointmentModel;
   @Input() appointmentTag?: string;
   @Input() hasDate?: boolean;
 

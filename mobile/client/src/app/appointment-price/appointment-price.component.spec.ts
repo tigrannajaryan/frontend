@@ -1,65 +1,20 @@
 import { async, ComponentFixture } from '@angular/core/testing';
 import { NavParams } from 'ionic-angular';
 import { of } from 'rxjs/observable/of';
-import * as faker from 'faker';
-import * as moment from 'moment';
 
 import { TestUtils } from '~/../test';
-
 import { AppointmentsApi } from '~/core/api/appointments.api';
-import { AppointmentModel, AppointmentStatus } from '~/core/api/appointments.models';
+import { appointmentMock, previewMock, servicesMock } from '~/core/api/appointments.api.mock';
 
 import { AppointmentPriceComponent, AppointmentPriceComponentParams } from './appointment-price.component';
 
 let fixture: ComponentFixture<AppointmentPriceComponent>;
 let instance: AppointmentPriceComponent;
 
-const servicesMock = [
-  {
-    service_uuid: faker.random.uuid(),
-    service_name: faker.commerce.productName(),
-    client_price: 100,
-    regular_price: 200,
-    is_original: false
-  },
-  {
-    service_uuid: faker.random.uuid(),
-    service_name: faker.commerce.productName(),
-    client_price: 300,
-    regular_price: 400,
-    is_original: false
-  }
-];
-
-const appointmentMock: AppointmentModel = {
-  uuid: faker.random.uuid(),
-  stylist_uuid: faker.random.uuid(),
-  stylist_first_name: faker.name.firstName(),
-  stylist_last_name: faker.name.lastName(),
-  stylist_photo_url: faker.image.imageUrl(),
-  salon_name: faker.commerce.productName(),
-  total_client_price_before_tax: faker.random.number(),
-  total_card_fee: faker.random.number(),
-  grand_total: faker.random.number(),
-  total_tax: faker.random.number(),
-  tax_percentage: faker.random.number(),
-  card_fee_percentage: faker.random.number(),
-  datetime_start_at: moment().format(),
-  profile_photo_url: faker.image.imageUrl(),
-  duration_minutes: 0,
-  status: AppointmentStatus.new,
-  services: servicesMock,
-  has_tax_included: false,
-  has_card_fee_included: false
-};
-
 describe('Pages: Appointment Price', () => {
-
   beforeEach(
     async(() =>
-      TestUtils.beforeEachCompiler(
-        [AppointmentPriceComponent]
-      )
+      TestUtils.beforeEachCompiler([AppointmentPriceComponent])
         .then(compiled => {
           // Common setup:
           fixture = compiled.fixture;
@@ -72,7 +27,7 @@ describe('Pages: Appointment Price', () => {
           };
           navParams.data = { params };
 
-          instance.ngOnInit();
+          instance.ionViewWillEnter();
           fixture.detectChanges();
         })
     )
@@ -83,87 +38,106 @@ describe('Pages: Appointment Price', () => {
       .toBeTruthy();
   });
 
-  it('should show title', () => {
+  it('should have title', () => {
     expect(fixture.nativeElement.textContent)
       .toContain('Change Price');
   });
 
-  it('should list services', () => {
-    const services = fixture.nativeElement.querySelector('[data-test-id=services]');
+  it('should list changeable services', () => {
+    instance.preview = previewMock;
+    fixture.detectChanges();
 
-    expect(services)
-      .toBeTruthy();
+    const servicesContainer = fixture.nativeElement.querySelector('[data-test-id=services]');
 
     for (const service of servicesMock) {
-      expect(services.textContent)
+      expect(servicesContainer.textContent)
         .toContain(service.service_name);
     }
   });
 
-  it('should show reason to change price input', () => {
-    const reason = fixture.nativeElement.querySelector('[data-test-id=reason] input');
+  it('should have price change reason', () => {
+    const priceChangeInput = fixture.nativeElement.querySelector('[data-test-id=reason] input');
 
-    expect(reason)
+    expect(priceChangeInput)
       .toBeTruthy();
-    expect(reason.placeholder)
+    expect(priceChangeInput.placeholder)
       .toBe('Reason for Change (optional)');
   });
 
-  it('should show price', () => {
-    const price = fixture.nativeElement.querySelector('[data-test-id=price]');
+  it('should show new price when some service’s price is changed', () => {
+    instance.preview = previewMock;
+    fixture.detectChanges();
 
-    expect(price)
-      .toBeTruthy();
-    expect(price.textContent)
+    const priceContainer = fixture.nativeElement.querySelector('[data-test-id=price]');
+
+    expect(priceContainer.textContent)
       .toContain('New Price');
-    expect(price.textContent)
-      .toContain((instance.preview || instance.appointment).grand_total.toFixed());
+    expect(priceContainer.textContent)
+      .toContain(previewMock.grand_total.toFixed());
   });
 
-  it('should show discount', () => {
-    const discount = fixture.nativeElement.querySelector('[data-test-id=discount]');
+  it('should have disabled update btn when prices not changed', () => {
+    const continueBtn = fixture.nativeElement.querySelector('[data-test-id=continueBtn]');
 
-    expect(discount)
+    expect(continueBtn.disabled)
       .toBeTruthy();
 
-    let sum = 0;
-    const saleAmount = servicesMock.reduce((amount, service) => {
-      sum += service.regular_price;
-      return amount + (service.regular_price - service.client_price);
-    }, 0);
+    instance.changedServices = servicesMock;
+    fixture.detectChanges();
 
-    expect(discount.textContent)
-      .toContain(`${parseInt((saleAmount / sum * 100).toFixed(), 10)}%`);
-    expect(discount.textContent)
-      .toContain('Discount Applied');
+    expect(continueBtn.disabled)
+      .toBeFalsy();
   });
 
-  it('should update appointment on submit', () => {
+  it('should update existing appointment', () => {
     const api = fixture.debugElement.injector.get(AppointmentsApi);
-    spyOn(api, 'changeAppointment').and.returnValue(of({}));
 
-    const fakeReason = faker.random.words;
-    const value = {};
+    const changedService = {
+      ...servicesMock[0],
+      client_price: 50
+    };
 
-    for (const service of servicesMock) {
-      value[service.service_uuid] = String(service.client_price - 10);
-    }
+    instance.changedServices = [changedService];
+    fixture.detectChanges();
 
-    instance.form.patchValue(value);
-    instance.priceChangeReason.patchValue(fakeReason);
+    spyOn(api, 'changeAppointment').and.returnValue(of({
+      response: appointmentMock
+    }));
 
-    instance.onSave();
+    fixture.nativeElement.querySelector('[data-test-id=continueBtn]').click();
 
     expect(api.changeAppointment)
       .toHaveBeenCalledWith(
         appointmentMock.uuid,
         {
-          services: servicesMock.map(service => ({
-            service_uuid: service.service_uuid,
-            client_price: service.client_price - 10
-          })),
-          price_change_reason: fakeReason
+          services: [{
+            service_uuid: changedService.service_uuid,
+            client_price: changedService.client_price
+          },
+          {
+            service_uuid: servicesMock[1].service_uuid
+          }],
+          price_change_reason: ''
         }
       );
+  });
+
+  it('should alter new appointment', () => {
+    instance.appointment.uuid = undefined; // new appointment
+    instance.preview = previewMock;
+
+    instance.onSave();
+
+    expect(instance.appointment)
+      .toEqual({
+        ...appointmentMock,
+        grand_total: previewMock.grand_total,
+        total_client_price_before_tax: previewMock.total_client_price_before_tax,
+        total_tax: previewMock.total_tax,
+        total_card_fee: previewMock.total_card_fee,
+        tax_percentage: previewMock.tax_percentage,
+        card_fee_percentage: previewMock.card_fee_percentage,
+        services: previewMock.services
+      });
   });
 });

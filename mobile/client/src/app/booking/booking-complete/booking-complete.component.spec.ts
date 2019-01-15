@@ -1,26 +1,17 @@
 import { async, ComponentFixture } from '@angular/core/testing';
-import { formatNumber } from 'libphonenumber-js';
+import { NavParams } from 'ionic-angular';
+import * as faker from 'faker';
 
 import { TestUtils } from '~/../test';
 
-import { NumberFormat } from '~/shared/directives/phone-input.directive';
-import { getPhoneNumber } from '~/shared/utils/phone-numbers';
-
-import { ProfileApiMock, profileNotCompleate } from '~/core/api/profile-api.mock';
-import { ProfileApi } from '~/core/api/profile-api';
-import { ProfileModel } from '~/core/api/profile.models';
-import { checkProfileCompleteness } from '~/core/utils/user-utils';
-
-import { ApiResponse, ISODate } from '~/shared/api/base.models';
-import { BookingCompleteComponent } from '~/booking/booking-complete/booking-complete.component';
+import { appointmentMock } from '~/core/api/appointments.api.mock';
 import { BookingData } from '~/core/api/booking.data';
 import { offerMock, stylistsMock } from '~/core/api/stylists.service.mock';
-import { DiscountType } from '~/shared/api/price.models';
-import * as faker from "faker";
+
+import { BookingCompleteComponent, BookingCompleteComponentParams } from '~/booking/booking-complete/booking-complete.component';
 
 let fixture: ComponentFixture<BookingCompleteComponent>;
 let instance: BookingCompleteComponent;
-
 
 describe('Pages: Profile summary', () => {
   beforeEach(
@@ -40,6 +31,12 @@ describe('Pages: Profile summary', () => {
         }]);
         bookingData.setOffer(offerMock);
 
+        const navParams = fixture.debugElement.injector.get(NavParams);
+        const params: BookingCompleteComponentParams = {
+          appointment: appointmentMock
+        };
+        navParams.data = { params };
+
         instance.ionViewWillEnter();
         fixture.detectChanges();
       })
@@ -58,10 +55,11 @@ describe('Pages: Profile summary', () => {
 
   it('should have price and totalRegularPrice', async(() => {
     const totalRegularPrice = fixture.nativeElement.querySelector('[data-test-id=totalRegularPrice]');
-    expect(totalRegularPrice.innerText).toContain(instance.bookingData.offer.totalRegularPrice);
+    // NOTE: we use replace(',', '') to remove commas added by currency pipe to numbers bigger than 999
+    expect(totalRegularPrice.innerText.replace(',', '')).toContain(instance.bookingData.offer.totalRegularPrice);
 
     const price = fixture.nativeElement.querySelector('[data-test-id=price]');
-    expect(price.innerText).toContain(instance.bookingData.offer.price);
+    expect(price.innerText.replace(',', '')).toContain(appointmentMock.grand_total.toFixed());
   }));
 
   it('should have two buttons', async(() => {

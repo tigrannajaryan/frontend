@@ -68,6 +68,7 @@ import { AppointmentsHistoryComponent } from '~/appointments-history/appointment
 import { AuthPageComponent } from '~/auth/auth-start/auth-start.component';
 import { AuthConfirmPageComponent } from '~/auth/auth-confirm/auth-confirm.component';
 import { BookingCompleteComponent } from '~/booking/booking-complete/booking-complete.component';
+import { ConfirmCheckoutComponent } from '~/confirm-checkout/confirm-checkout.component';
 import { FirstScreenComponent } from '~/first-screen/first-screen.component';
 import { HomePageComponent } from '~/home-page/home-page.component';
 import { HowMadeWorksComponent } from '~/onboarding/how-made-works/how-made-works.component';
@@ -116,6 +117,7 @@ const declarations = [
   CalendarPickerComponent,
   CalendarPrimingComponent,
   ClientAppComponent,
+  ConfirmCheckoutComponent,
   FirstLastNameComponent,
   FirstScreenComponent,
   FollowersComponent,

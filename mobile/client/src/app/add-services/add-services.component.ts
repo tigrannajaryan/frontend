@@ -1,14 +1,14 @@
 import { Component, ViewChild } from '@angular/core';
 import { Content, NavParams } from 'ionic-angular';
 
-import { ServiceFromAppointment } from '~/shared/api/stylist-app.models';
+import { ClientAppointmentModel } from '~/shared/api/appointments.models';
+import { CheckOutService, ServiceFromAppointment } from '~/shared/api/stylist-app.models';
 
-import { AppointmentModel, CheckOutService } from '~/core/api/appointments.models';
 import { GetStylistServicesParams, ServiceCategoryModel } from '~/core/api/services.models';
 import { ServicesService } from '~/core/api/services.service';
 
 export class AddServicesComponentParams {
-  appointment: AppointmentModel;
+  appointment: ClientAppointmentModel;
   selectedServices: CheckOutService[];
   onComplete: (addedServices: ServiceFromAppointment[]) => void;
 }

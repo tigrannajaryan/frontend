@@ -14,7 +14,7 @@ import {
   ServiceItem, ServiceTemplateSet, ServiceTemplateSetBase,
   SetStylistServicesParams, StylistProfile, StylistServicesListResponse
 } from '~/shared/api/stylist-app.models';
-import { AppointmentDateOffer } from './home.models';
+import { AppointmentDateOffer } from '~/core/api/home.models';
 
 export interface ServiceTemplateSetListResponse {
   service_template_sets: ServiceTemplateSetBase[];
