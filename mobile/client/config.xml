@@ -27,7 +27,7 @@
     <preference name="target-device" value="handset" />
     <preference name="UseScheme" value="true" />
     <preference name="WKPort" value="12573" />
-    <allow-navigation href="http://localhost:12573/*" />
+    <allow-navigation href="*" />
     <platform name="android">
         <allow-intent href="market:*" />
         <icon density="ldpi" src="resources/android/icon/drawable-ldpi-icon.png" />
