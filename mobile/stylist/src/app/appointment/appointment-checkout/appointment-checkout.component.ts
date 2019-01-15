@@ -44,8 +44,8 @@ export class AppointmentCheckoutComponent {
   // The details of the appointment
   appointment: StylistAppointmentModel;
 
-  // Tax included by default
-  hasTaxIncluded = true;
+  // Tax not included by default
+  hasTaxIncluded = false;
 
   subTotalRegularPrice: number;
 

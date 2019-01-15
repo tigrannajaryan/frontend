@@ -17,6 +17,7 @@ import { BookingData } from '~/core/api/booking.data';
 import { AddServicesComponentParams } from '~/add-services/add-services.component';
 import { AppointmentPriceComponentParams } from '~/appointment-price/appointment-price.component';
 import { confirmRebook, startRebooking } from '~/booking/booking-utils';
+import { BookingCompleteComponentParams } from '~/booking/booking-complete/booking-complete.component';
 
 export interface AppointmentPageParams {
   appointment: ClientAppointmentModel;
@@ -91,7 +92,10 @@ export class AppointmentPageComponent {
       this.appointmentsDataStore.home.refresh();
 
       // Show "booking complete" message.
-      this.navCtrl.push(PageNames.BookingComplete);
+      const params: BookingCompleteComponentParams = {
+        appointment: createAppointmentResponse || changeAppointmentResponse
+      };
+      this.navCtrl.push(PageNames.BookingComplete, { params });
     }
   }
 
@@ -154,13 +158,14 @@ export class AppointmentPageComponent {
 
   async onCheckout(): Promise<void> {
     const request: AppointmentChangeRequest = {
-      status: AppointmentStatus.checked_out
+      status: AppointmentStatus.checked_out,
+      has_card_fee_included: false,
+      has_tax_included: false
     };
     const { response } = await this.api.changeAppointment(this.params.appointment.uuid, request).toPromise();
     if (response) {
       this.navCtrl.push(PageNames.ConfirmCheckout);
     }
-    this.navCtrl.push(PageNames.ConfirmCheckout);
   }
 
   private async onAddServices(services: ServiceFromAppointment[]): Promise<void> {

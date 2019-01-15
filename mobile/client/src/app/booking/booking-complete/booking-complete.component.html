@@ -13,10 +13,10 @@
     </h2>
 
     <div class="BookingComplete-final" data-test-id="totalRegularPrice">
-      Final Price <span *ngIf="bookingData?.offer?.totalRegularPrice !== bookingData?.offer?.price">WAS ${{ bookingData?.offer?.totalRegularPrice }}</span>
+      Final Price <span *ngIf="bookingData?.offer?.totalRegularPrice !== appointment?.grand_total">WAS {{ bookingData?.offer?.totalRegularPrice | currency:'USD':true:'2.0' }}</span>
     </div>
     <div class="BookingComplete-price" data-test-id="price">
-      <span>$</span>{{ bookingData?.offer?.price }}
+      {{ appointment?.grand_total.toFixed() | currency:'USD':true:'2.0' }}
     </div>
 
     <button (click)="onReturnHomeClick()" ion-button class="Button" data-test-id="returnHome">Return Home</button>

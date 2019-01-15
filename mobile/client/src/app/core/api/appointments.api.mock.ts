@@ -1,14 +1,70 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+import * as moment from 'moment';
 import * as faker from 'faker';
 
 import { ApiResponse } from '~/shared/api/base.models';
 import {
   AppointmentChangeRequest,
+  AppointmentPreviewRequest,
+  AppointmentPreviewResponse,
   AppointmentStatus,
   ClientAppointmentModel
 } from '~/shared/api/appointments.models';
 import { AppointmentsHistoryResponse, HomeResponse } from '~/core/api/appointments.models';
+
+export const servicesMock = [
+  {
+    service_uuid: faker.random.uuid(),
+    service_name: faker.commerce.productName(),
+    client_price: 100,
+    regular_price: 200,
+    is_original: false
+  },
+  {
+    service_uuid: faker.random.uuid(),
+    service_name: faker.commerce.productName(),
+    client_price: 300,
+    regular_price: 400,
+    is_original: false
+  }
+];
+
+export const appointmentMock: ClientAppointmentModel = {
+  uuid: faker.random.uuid(),
+  created_at: moment().format(),
+  datetime_start_at: moment().format(),
+  duration_minutes: 0,
+  status: AppointmentStatus.new,
+  services: servicesMock,
+  // Price
+  total_client_price_before_tax: faker.random.number(),
+  total_card_fee: faker.random.number(),
+  grand_total: faker.random.number(),
+  total_tax: faker.random.number(),
+  tax_percentage: faker.random.number(),
+  card_fee_percentage: faker.random.number(),
+  has_tax_included: false,
+  has_card_fee_included: false,
+  // Stylist
+  stylist_uuid: faker.random.uuid(),
+  stylist_first_name: faker.name.firstName(),
+  stylist_last_name: faker.name.lastName(),
+  stylist_photo_url: faker.image.imageUrl(),
+  profile_photo_url: faker.image.imageUrl(),
+  salon_name: faker.commerce.productName()
+};
+
+export const previewMock: AppointmentPreviewResponse = {
+  duration_minutes: faker.random.number(),
+  grand_total: faker.random.number(),
+  total_client_price_before_tax: faker.random.number(),
+  total_tax: faker.random.number(),
+  total_card_fee: faker.random.number(),
+  tax_percentage: faker.random.number(),
+  card_fee_percentage: faker.random.number(),
+  services: servicesMock
+};
 
 @Injectable()
 export class AppointmentsApiMock {
@@ -35,8 +91,8 @@ export class AppointmentsApiMock {
           datetime_start_at: faker.date.past().toString(),
           duration_minutes: 0,
           status,
-          has_card_fee_included: true,
-          has_tax_included: true,
+          has_card_fee_included: false,
+          has_tax_included: false,
           services: Array(Math.round(Math.random()) + 1).fill(undefined).map(() => ({
             service_uuid: faker.random.uuid(),
             service_name: faker.commerce.product(),
@@ -75,6 +131,13 @@ export class AppointmentsApiMock {
     const appointments = AppointmentsApiMock.genFake(1, AppointmentStatus.checked_out);
     return new Observable(observer => {
       observer.next({ response: appointments[0] });
+      observer.complete();
+    });
+  }
+
+  getAppointmentPreview(data: AppointmentPreviewRequest): Observable<ApiResponse<AppointmentPreviewResponse>> {
+    return new Observable(observer => {
+      observer.next({ response: previewMock });
       observer.complete();
     });
   }
