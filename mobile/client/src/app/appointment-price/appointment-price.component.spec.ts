@@ -1,40 +1,12 @@
 import { async, ComponentFixture } from '@angular/core/testing';
 import { NavParams } from 'ionic-angular';
 import { of } from 'rxjs/observable/of';
-import * as faker from 'faker';
-import * as moment from 'moment';
 
 import { TestUtils } from '~/../test';
-import { AppointmentStatus, ClientAppointmentModel } from '~/shared/api/appointments.models';
 import { AppointmentsApi } from '~/core/api/appointments.api';
-import { previewMock, servicesMock } from '~/core/api/appointments.api.mock';
+import { appointmentMock, previewMock, servicesMock } from '~/core/api/appointments.api.mock';
 
 import { AppointmentPriceComponent, AppointmentPriceComponentParams } from './appointment-price.component';
-
-const appointmentMock: ClientAppointmentModel = {
-  uuid: faker.random.uuid(),
-  created_at: moment().format(),
-  datetime_start_at: moment().format(),
-  duration_minutes: 0,
-  status: AppointmentStatus.new,
-  services: servicesMock,
-  // Price
-  total_client_price_before_tax: faker.random.number(),
-  total_card_fee: faker.random.number(),
-  grand_total: faker.random.number(),
-  total_tax: faker.random.number(),
-  tax_percentage: faker.random.number(),
-  card_fee_percentage: faker.random.number(),
-  has_tax_included: false,
-  has_card_fee_included: false,
-  // Stylist
-  stylist_uuid: faker.random.uuid(),
-  stylist_first_name: faker.name.firstName(),
-  stylist_last_name: faker.name.lastName(),
-  stylist_photo_url: faker.image.imageUrl(),
-  profile_photo_url: faker.image.imageUrl(),
-  salon_name: faker.commerce.productName()
-};
 
 let fixture: ComponentFixture<AppointmentPriceComponent>;
 let instance: AppointmentPriceComponent;
@@ -138,7 +110,13 @@ describe('Pages: Appointment Price', () => {
       .toHaveBeenCalledWith(
         appointmentMock.uuid,
         {
-          services: [changedService, servicesMock[1]],
+          services: [{
+            service_uuid: changedService.service_uuid,
+            client_price: changedService.client_price
+          },
+          {
+            service_uuid: servicesMock[1].service_uuid
+          }],
           price_change_reason: ''
         }
       );

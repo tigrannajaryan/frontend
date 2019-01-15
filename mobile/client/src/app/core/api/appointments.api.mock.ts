@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+import * as moment from 'moment';
 import * as faker from 'faker';
 
 import { ApiResponse } from '~/shared/api/base.models';
@@ -28,6 +29,31 @@ export const servicesMock = [
     is_original: false
   }
 ];
+
+export const appointmentMock: ClientAppointmentModel = {
+  uuid: faker.random.uuid(),
+  created_at: moment().format(),
+  datetime_start_at: moment().format(),
+  duration_minutes: 0,
+  status: AppointmentStatus.new,
+  services: servicesMock,
+  // Price
+  total_client_price_before_tax: faker.random.number(),
+  total_card_fee: faker.random.number(),
+  grand_total: faker.random.number(),
+  total_tax: faker.random.number(),
+  tax_percentage: faker.random.number(),
+  card_fee_percentage: faker.random.number(),
+  has_tax_included: false,
+  has_card_fee_included: false,
+  // Stylist
+  stylist_uuid: faker.random.uuid(),
+  stylist_first_name: faker.name.firstName(),
+  stylist_last_name: faker.name.lastName(),
+  stylist_photo_url: faker.image.imageUrl(),
+  profile_photo_url: faker.image.imageUrl(),
+  salon_name: faker.commerce.productName()
+};
 
 export const previewMock: AppointmentPreviewResponse = {
   duration_minutes: faker.random.number(),

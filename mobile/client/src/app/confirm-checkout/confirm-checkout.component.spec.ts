@@ -39,6 +39,6 @@ describe('Pages: Confirm Checkout', () => {
     fixture.nativeElement.querySelector('[data-test-id=backToHome]').click();
 
     expect(navCtrl.setRoot)
-      .toHaveBeenCalledWith(PageNames.Home);
+      .toHaveBeenCalledWith(PageNames.MainTabs);
   });
 });
