@@ -14,6 +14,10 @@ touch ~/.android/repositories.cfg
 # install Java and Gradle
 brew tap caskroom/versions || true
 brew cask install caskroom/versions/java8
+
+# set the java version
+export JAVA_HOME=`/usr/libexec/java_home -v 1.8`
+
 brew install gradle
 
 # install Android SDK
