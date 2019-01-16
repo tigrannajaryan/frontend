@@ -58,6 +58,7 @@ export const appointmentMock: ClientAppointmentModel = {
 };
 
 export const previewMock: AppointmentPreviewResponse = {
+  datetime_start_at: moment().format(),
   duration_minutes: faker.random.number(),
   grand_total: faker.random.number(),
   total_client_price_before_tax: faker.random.number(),
@@ -67,7 +68,9 @@ export const previewMock: AppointmentPreviewResponse = {
   total_discount_amount: faker.random.number(),
   total_discount_percentage: faker.random.number(),
   card_fee_percentage: faker.random.number(),
-  services: servicesMock
+  services: servicesMock,
+  has_card_fee_included: false,
+  has_tax_included: false
 };
 
 @Injectable()

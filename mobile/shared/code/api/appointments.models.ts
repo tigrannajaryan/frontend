@@ -15,24 +15,30 @@ export enum AppointmentStatus {
 /**
  * Common fields for stylist’s and client’s appointment model.
  */
-export interface BaseAppointmentModel {
-  uuid: string;
-  status: AppointmentStatus;
-  created_at: ISODateTime;
+export interface BaseAppointmentPreviewModel {
   datetime_start_at: ISODateTime;
   duration_minutes: number;
   services: ServiceFromAppointment[];
   // Everything about the price:
-  total_client_price_before_tax: number;
-  total_card_fee: number;
-  grand_total: number;
-  total_tax: number;
-  tax_percentage: number;
   card_fee_percentage: number;
-  total_discount_amount: number;
-  total_discount_percentage: number;
+  grand_total: number;
   has_card_fee_included: boolean;
   has_tax_included: boolean;
+  tax_percentage: number;
+  total_card_fee: number;
+  total_client_price_before_tax: number;
+  total_discount_amount: number;
+  total_discount_percentage: number;
+  total_tax: number;
+}
+
+/**
+ * Almost all fields from the preview plus additional fields from created appointment.
+ */
+export interface BaseAppointmentModel extends BaseAppointmentPreviewModel {
+  uuid: string;
+  status: AppointmentStatus;
+  created_at: ISODateTime;
 }
 
 /**
@@ -71,27 +77,28 @@ export interface ClientAppointmentModel extends BaseAppointmentModel {
 // - modify services’ prices by passing modified services.
 
 export interface AppointmentPreviewRequest {
-  appointment_uuid?: string; // empty if it’s a new appointment
-  stylist_uuid?: string;     // used only in the Client App
   datetime_start_at: ISODateTime;
   services: CheckOutService[];
   has_tax_included: boolean;
   has_card_fee_included: boolean;
+
+  appointment_uuid?: string; // empty if it’s a new appointment
+  stylist_uuid?: string;     // used only in the Client App
 }
 
-export interface AppointmentPreviewResponse {
-  duration_minutes: number;
-  grand_total: number;
-  total_client_price_before_tax: number;
-  total_tax: number;
-  total_card_fee: number;
-  tax_percentage: number;
-  total_discount_amount: number;
-  total_discount_percentage: number;
-  card_fee_percentage: number;
-  services: ServiceFromAppointment[];
-}
+/**
+ * In fact, the AppointmentPreviewResponse also includes fields
+ * from StylistAppointmentModel or ClientAppointmentModel depending
+ * on in which app this model is used. But in the code they are not
+ * widely used, and for unification we extend BaseAppointmentModel.
+ */
+export type AppointmentPreviewResponse = BaseAppointmentPreviewModel;
 
+/**
+ * Usually the 2 change-cases are used:
+ * - new status is supplied
+ * - or services with updated prices and taxes are passed.
+ */
 export interface AppointmentChangeRequest {
   status?: AppointmentStatus;
   has_tax_included?: boolean;

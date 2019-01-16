@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+import * as moment from 'moment';
 import 'rxjs/add/observable/of';
 
 import { ApiRequestOptions } from '~/shared/api-errors';
@@ -55,6 +56,7 @@ export class HomeServiceMock {
   getAppointmentPreview(data: AppointmentPreviewRequest): Observable<ApiResponse<AppointmentPreviewResponse>> {
     return Observable.of({
       response: {
+        datetime_start_at: moment().format(),
         duration_minutes: 0,
         grand_total: 0,
         total_client_price_before_tax: 0,
@@ -64,6 +66,8 @@ export class HomeServiceMock {
         card_fee_percentage: 0,
         total_discount_amount: 0,
         total_discount_percentage: 0,
+        has_tax_included: false,
+        has_card_fee_included: false,
         services: [
             {
                 service_uuid: '',
