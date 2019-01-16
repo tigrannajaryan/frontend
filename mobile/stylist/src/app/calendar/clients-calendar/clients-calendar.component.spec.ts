@@ -101,7 +101,7 @@ describe('Pages: Client’s Calendar ', () => {
 
     expect(fixture.nativeElement.textContent)
       .toContain('Regular price');
-    expect(fixture.nativeElement.textContent)
+    expect(fixture.nativeElement.textContent.replace(',', ''))
       .toContain(`$${regularPrice}`);
 
     done();
