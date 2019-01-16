@@ -36,15 +36,12 @@ export abstract class AbstractAppointmentPriceComponent {
   protected getServicesWithPrices(): CheckOutService[] {
     return this.appointment.services.map(service => {
       const changedService = this.getChangedService(service);
-      if (changedService) {
-        return {
-          service_uuid: changedService.service_uuid,
-          // NOTE: the client_price must only be supplied if this price is actually edited
-          client_price: changedService.client_price
-        };
-      }
       return {
-        service_uuid: service.service_uuid
+        service_uuid: service.service_uuid,
+        // NOTE: the price must only be supplied if edited.
+        // We supply regular_price as client_price because the CheckOutService is a completely diff model.
+        // In terms of CheckOutService’s model the client_price is a new price submitted by an API user (client).
+        client_price: changedService && changedService.regular_price
       };
     });
   }
