@@ -46,6 +46,8 @@ export const appointmentMock: ClientAppointmentModel = {
   card_fee_percentage: faker.random.number(),
   has_tax_included: false,
   has_card_fee_included: false,
+  total_discount_amount: faker.random.number(),
+  total_discount_percentage: faker.random.number(),
   // Stylist
   stylist_uuid: faker.random.uuid(),
   stylist_first_name: faker.name.firstName(),
@@ -56,14 +58,19 @@ export const appointmentMock: ClientAppointmentModel = {
 };
 
 export const previewMock: AppointmentPreviewResponse = {
+  datetime_start_at: moment().format(),
   duration_minutes: faker.random.number(),
   grand_total: faker.random.number(),
   total_client_price_before_tax: faker.random.number(),
   total_tax: faker.random.number(),
   total_card_fee: faker.random.number(),
   tax_percentage: faker.random.number(),
+  total_discount_amount: faker.random.number(),
+  total_discount_percentage: faker.random.number(),
   card_fee_percentage: faker.random.number(),
-  services: servicesMock
+  services: servicesMock,
+  has_card_fee_included: false,
+  has_tax_included: false
 };
 
 @Injectable()
@@ -84,6 +91,8 @@ export class AppointmentsApiMock {
           total_client_price_before_tax: Math.random() * 200,
           total_card_fee: Math.random() * 5,
           total_tax: Math.random() * 15,
+          total_discount_amount: faker.random.number(),
+          total_discount_percentage: faker.random.number(),
           tax_percentage: 8.875,
           grand_total: 9,
           card_fee_percentage: 2.75,

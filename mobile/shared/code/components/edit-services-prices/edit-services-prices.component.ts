@@ -61,8 +61,8 @@ export class EditServicesPricesComponent implements OnInit {
         .filter(serviceUuid => this.form.controls[serviceUuid].valid)
         .map(serviceUuid => ({
           ...this.services.find(service => service.service_uuid === serviceUuid),
-          // Keep regular price, change client price to what user typed
-          client_price: parseFloat(this.form.controls[serviceUuid].value)
+          // Keep client price, change regular price to what user typed
+          regular_price: parseFloat(this.form.controls[serviceUuid].value)
         }));
     this.servicesChange.emit(changedServices);
   }

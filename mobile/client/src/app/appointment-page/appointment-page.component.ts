@@ -4,7 +4,6 @@ import * as moment from 'moment';
 
 import { AppointmentChangeRequest, AppointmentStatus, ClientAppointmentModel } from '~/shared/api/appointments.models';
 import { CheckOutService, ServiceFromAppointment } from '~/shared/api/stylist-app.models';
-import { getDiscountDescr } from '~/shared/components/appointment/abstract-appointment-price.component';
 import { formatTimeInZone } from '~/shared/utils/string-utils';
 
 import { AppointmentsApi } from '~/core/api/appointments.api';
@@ -33,7 +32,6 @@ export class AppointmentPageComponent {
 
   AppointmentStatus = AppointmentStatus;
   formatTimeInZone = formatTimeInZone;
-  getDiscountDescr = getDiscountDescr;
 
   params: AppointmentPageParams;
 

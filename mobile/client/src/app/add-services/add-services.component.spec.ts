@@ -55,7 +55,7 @@ describe('Pages: AddServicesComponent', () => {
 
       expect(textContent)
         .toContain(service.name);
-      expect(textContent)
+      expect(textContent.replace(',', ''))
         .toContain(`$${service.base_price}`);
 
       if (idx === serviceItemsMock.indexOf(selectedService)) {
@@ -71,7 +71,7 @@ describe('Pages: AddServicesComponent', () => {
 
     expect(summary.textContent)
       .toContain('1 Service');
-    expect(summary.textContent)
+    expect(summary.textContent.replace(',', ''))
       .toContain(`$${selectedService.base_price}`);
     expect(summary.textContent)
       .toContain('Update');

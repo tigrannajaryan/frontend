@@ -4,7 +4,7 @@
     <ion-input type="number"
       ngxInputNumber
       [formControl]="form.controls[service.service_uuid]"
-      [placeholder]="focusedServiceUuid === service.service_uuid ? '$' : (service.client_price | currency)"
+      [placeholder]="focusedServiceUuid === service.service_uuid ? '$' : (service.regular_price | currency)"
       (focus)="setFocusedService(service)"
       (blur)="setFocusedService()">
     </ion-input>

@@ -49,6 +49,8 @@ const appointmentMock: StylistAppointmentModel = {
   card_fee_percentage: faker.random.number(),
   has_tax_included: false,
   has_card_fee_included: false,
+  total_discount_amount: faker.random.number(),
+  total_discount_percentage: faker.random.number(),
   // Client
   client_uuid: faker.random.uuid(),
   client_first_name: faker.name.firstName(),
@@ -58,14 +60,19 @@ const appointmentMock: StylistAppointmentModel = {
 };
 
 const previewMock: AppointmentPreviewResponse = {
+  datetime_start_at: moment().format(),
   duration_minutes: faker.random.number(),
   grand_total: faker.random.number(),
   total_client_price_before_tax: faker.random.number(),
   total_tax: faker.random.number(),
   total_card_fee: faker.random.number(),
+  total_discount_amount: faker.random.number(),
+  total_discount_percentage: faker.random.number(),
   tax_percentage: faker.random.number(),
   card_fee_percentage: faker.random.number(),
-  services: servicesMock
+  services: servicesMock,
+  has_tax_included: false,
+  has_card_fee_included: false
 };
 
 describe('Pages: Appointment Price', () => {
@@ -143,14 +150,8 @@ describe('Pages: Appointment Price', () => {
     expect(discount)
       .toBeTruthy();
 
-    let sum = 0;
-    const saleAmount = servicesMock.reduce((amount, service) => {
-      sum += service.regular_price;
-      return amount + (service.regular_price - service.client_price);
-    }, 0);
-
     expect(discount.textContent)
-      .toContain(`${parseInt((saleAmount / sum * 100).toFixed(), 10)}%`);
+      .toContain(previewMock.total_discount_percentage);
     expect(discount.textContent)
       .toContain('Discount Applied');
   });

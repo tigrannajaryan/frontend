@@ -113,7 +113,8 @@ export interface CheckOutService {
   client_price?: number;
 }
 
-export interface ServiceFromAppointment extends CheckOutService {
+// NOTE: ServiceFromAppointment not extends CheckOutService (2 diff models), CheckOutService used in requests.
+export interface ServiceFromAppointment {
   service_uuid: string;
   service_name: string;
   client_price: number;

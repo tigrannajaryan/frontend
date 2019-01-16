@@ -3,44 +3,7 @@ import { FormControl } from '@angular/forms';
 import { AppointmentPreviewResponse, BaseAppointmentModel } from '~/shared/api/appointments.models';
 import { CheckOutService, ServiceFromAppointment } from '~/shared/api/stylist-app.models';
 
-export interface DiscountDescr {
-  amount: number;
-  percentage: number;
-}
-
-export function getDiscountDescr(preview: AppointmentPreviewResponse): DiscountDescr {
-  if (!preview) {
-    return;
-  }
-
-  let regularPrice = 0;
-  let clientPrice = 0;
-
-  for (const service of preview.services) {
-    regularPrice += service.regular_price;
-    clientPrice += service.client_price;
-  }
-
-  if (regularPrice === 0 || clientPrice === 0) {
-    return;
-  }
-
-  const discountAmount = regularPrice - clientPrice;
-  if (discountAmount < 0) {
-    return;
-  }
-
-  const salePercentage = (discountAmount / regularPrice) * 100;
-
-  return {
-    amount: discountAmount,
-    percentage: parseInt(salePercentage.toFixed(), 10)
-  };
-}
-
 export abstract class AbstractAppointmentPriceComponent {
-  getDiscountDescr = getDiscountDescr;
-
   appointment: BaseAppointmentModel;
   preview: AppointmentPreviewResponse;
 
@@ -73,15 +36,12 @@ export abstract class AbstractAppointmentPriceComponent {
   protected getServicesWithPrices(): CheckOutService[] {
     return this.appointment.services.map(service => {
       const changedService = this.getChangedService(service);
-      if (changedService) {
-        return {
-          service_uuid: changedService.service_uuid,
-          // NOTE: the client_price must only be supplied if this price is actually edited
-          client_price: changedService.client_price
-        };
-      }
       return {
-        service_uuid: service.service_uuid
+        service_uuid: service.service_uuid,
+        // NOTE: the price must only be supplied if edited.
+        // We supply regular_price as client_price because the CheckOutService is a completely diff model.
+        // In terms of CheckOutService’s model the client_price is a new price submitted by an API user (client).
+        client_price: changedService && changedService.regular_price
       };
     });
   }

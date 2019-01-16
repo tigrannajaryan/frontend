@@ -94,7 +94,7 @@ describe('Pages: Appointment Price', () => {
 
     const changedService = {
       ...servicesMock[0],
-      client_price: 50
+      regular_price: 50
     };
 
     instance.changedServices = [changedService];
@@ -112,10 +112,11 @@ describe('Pages: Appointment Price', () => {
         {
           services: [{
             service_uuid: changedService.service_uuid,
-            client_price: changedService.client_price
+            client_price: changedService.regular_price
           },
           {
-            service_uuid: servicesMock[1].service_uuid
+            service_uuid: servicesMock[1].service_uuid,
+            client_price: undefined
           }],
           price_change_reason: ''
         }
