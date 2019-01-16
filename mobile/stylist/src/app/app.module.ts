@@ -105,6 +105,8 @@ import { FieldEditComponent } from '~/onboarding/field-edit/field-edit.component
 import { SalonAddressComponent } from '~/onboarding/salon-address/salon-address.component';
 import { StylistPhotoComponent } from '~/onboarding/stylist-photo/stylist-photo.component';
 import { WelcomeToMadeComponent } from '~/onboarding/welcome-to-made/welcome-to-made.component';
+import { SettingsComponent } from '~/settings/settings.component';
+import { SettingsFieldComponent } from '~/settings/settings-field/settings-field.component';
 
 initSentry();
 
@@ -167,6 +169,7 @@ const declarations = [
   FirstScreenComponent,
   HomeSlotsComponent,
   InvitationsComponent,
+  SettingsFieldComponent,
   MyClientsComponent,
   ProfileComponent,
   PushPrimingScreenComponent,
@@ -175,6 +178,7 @@ const declarations = [
   ServicesCategoriesComponent,
   ServicesComponent,
   ServicesListComponent,
+  SettingsComponent,
   UpcomingAndPastComponent,
   WorkHoursComponent,
 

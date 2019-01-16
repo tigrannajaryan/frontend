@@ -1,0 +1,16 @@
+page-settings {
+  .DiscountsList-row {
+    font-size: $t-h4;
+  }
+
+  .SettingsTitleMargin {
+    margin: 0;
+    margin-top: pxtovw(16px);
+    border-bottom: none;
+  }
+
+  .SettingsLink {
+    color: color($colors-shared, lightSalmon);
+    text-transform: none;
+  }
+}

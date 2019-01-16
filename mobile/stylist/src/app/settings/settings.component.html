@@ -1,0 +1,76 @@
+<ion-header madeMenuHeader [hideBackButton]="true">
+  <ion-title>
+    <div class="Made-h1">Settings</div>
+  </ion-title>
+</ion-header>
+
+
+<ion-content no-padding>
+  <div class="Settings Made-wp Made-wpContent">
+    <ion-list class="ServicesLis-item">
+      <ion-row class="DiscountsList-row" data-test-id="settingsGoogleCalendar">
+        <ion-col no-padding col-8 class="DiscountsList-col">
+          Google Calendar
+        </ion-col>
+
+        <ion-col col-4 no-padding class="DiscountsList-col DiscountsList-colIcon">
+          <span></span>
+          <div *ngIf="!settings?.google_calendar_integrated" (click)="goTo(PageNames.CalendarPriming)" class="SettingsLink">Link</div>
+          <div *ngIf="settings?.google_calendar_integrated">Linked</div>
+        </ion-col>
+      </ion-row>
+
+      <div class="ServicesLis-title without-border SettingsTitleMargin" data-test-id="settingsTaxTitle">Taxes and Fees</div>
+
+      <ion-row (click)="goToTaxRate()" data-test-id="settingsTaxRate" class="DiscountsList-row">
+        <ion-col no-padding col-8 class="DiscountsList-col">
+          Tax Rate
+        </ion-col>
+
+        <ion-col col-4 no-padding class="DiscountsList-col DiscountsList-colIcon">
+          <div>{{ settings?.tax_percentage || 0 }}%</div>
+          <ion-icon name="ios-arrow-forward-outline"></ion-icon>
+        </ion-col>
+      </ion-row>
+
+      <ion-row (click)="goToCardFee()" data-test-id="settingsCardFee" class="DiscountsList-row">
+        <ion-col no-padding col-8 class="DiscountsList-col">
+          Card Fee
+        </ion-col>
+
+        <ion-col col-4 no-padding class="DiscountsList-col DiscountsList-colIcon">
+          <div>{{ settings?.card_fee_percentage || 0 }}%</div>
+          <ion-icon name="ios-arrow-forward-outline"></ion-icon>
+        </ion-col>
+      </ion-row>
+
+      <div class="ServicesLis-title without-border SettingsTitleMargin" data-test-id="settingsAboutTitle">About MADE</div>
+
+      <ion-row (click)="goTo(PageNames.CalendarExample, {params: {isRootPage: true}})" data-test-id="settingsCalendarExample" class="DiscountsList-row">
+        <ion-col no-padding col-8 class="DiscountsList-col">
+          How MADE applies discounts
+        </ion-col>
+
+        <ion-col col-4 no-padding class="DiscountsList-col DiscountsList-colIcon">
+          <span></span>
+          <ion-icon name="ios-arrow-forward-outline"></ion-icon>
+        </ion-col>
+      </ion-row>
+
+      <ion-row (click)="goTo(PageNames.WelcomeToMade, {params: {isRootPage: true}})" data-test-id="settingsWelcomeToMade" class="DiscountsList-row">
+        <ion-col no-padding col-8 class="DiscountsList-col">
+          How MADE works
+        </ion-col>
+
+        <ion-col col-4 no-padding class="DiscountsList-col DiscountsList-colIcon">
+          <span></span>
+          <ion-icon name="ios-arrow-forward-outline"></ion-icon>
+        </ion-col>
+      </ion-row>
+
+      <div (click)="onContactByEmail('faq@madebeauty.com')" data-test-id="settingsEmail" class="Email">
+        FAQ@madebeauty.com
+      </div>
+    </ion-list>
+  </div>
+</ion-content>

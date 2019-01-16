@@ -53,7 +53,7 @@ export class CalendarPrimingComponent {
 
       this.logger.info(`Preparing for Google Signin using webClientId=${webClientId}`);
 
-        // Ask user to login to their Google account and give us access to their calendar
+      // Ask user to login to their Google account and give us access to their calendar
       loginResponse = await this.gs.login(webClientId, [GoogleOAuthScope.CalendarEvents]);
       if (!loginResponse) {
         this.showError();

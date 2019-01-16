@@ -136,3 +136,15 @@ export interface SetStylistServicesParams {
 }
 
 export type StylistServicesListResponse = StylistServicesList;
+
+export interface StylistSettings {
+  tax_percentage?: number;
+  card_fee_percentage?: number;
+  google_calendar_integrated?: boolean;
+}
+
+export enum StylistSettingsKeys {
+  tax_percentage = 'tax_percentage',
+  card_fee_percentage = 'card_fee_percentage',
+  google_calendar_integrated = 'google_calendar_integrated'
+}
