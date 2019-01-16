@@ -29,6 +29,8 @@ export interface BaseAppointmentModel {
   total_tax: number;
   tax_percentage: number;
   card_fee_percentage: number;
+  total_discount_amount: number;
+  total_discount_percentage: number;
   has_card_fee_included: boolean;
   has_tax_included: boolean;
 }
@@ -84,6 +86,8 @@ export interface AppointmentPreviewResponse {
   total_tax: number;
   total_card_fee: number;
   tax_percentage: number;
+  total_discount_amount: number;
+  total_discount_percentage: number;
   card_fee_percentage: number;
   services: ServiceFromAppointment[];
 }

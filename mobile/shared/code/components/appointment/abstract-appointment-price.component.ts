@@ -3,44 +3,7 @@ import { FormControl } from '@angular/forms';
 import { AppointmentPreviewResponse, BaseAppointmentModel } from '~/shared/api/appointments.models';
 import { CheckOutService, ServiceFromAppointment } from '~/shared/api/stylist-app.models';
 
-export interface DiscountDescr {
-  amount: number;
-  percentage: number;
-}
-
-export function getDiscountDescr(preview: AppointmentPreviewResponse): DiscountDescr {
-  if (!preview) {
-    return;
-  }
-
-  let regularPrice = 0;
-  let clientPrice = 0;
-
-  for (const service of preview.services) {
-    regularPrice += service.regular_price;
-    clientPrice += service.client_price;
-  }
-
-  if (regularPrice === 0 || clientPrice === 0) {
-    return;
-  }
-
-  const discountAmount = regularPrice - clientPrice;
-  if (discountAmount < 0) {
-    return;
-  }
-
-  const salePercentage = (discountAmount / regularPrice) * 100;
-
-  return {
-    amount: discountAmount,
-    percentage: parseInt(salePercentage.toFixed(), 10)
-  };
-}
-
 export abstract class AbstractAppointmentPriceComponent {
-  getDiscountDescr = getDiscountDescr;
-
   appointment: BaseAppointmentModel;
   preview: AppointmentPreviewResponse;
 
