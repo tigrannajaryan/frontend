@@ -27,6 +27,8 @@ export function createAppointment(): StylistAppointmentModel {
     total_client_price_before_tax: Math.random() * 200,
     total_card_fee: Math.random() * 5,
     total_tax: Math.random() * 15,
+    total_discount_amount: faker.random.number(),
+    total_discount_percentage: faker.random.number(),
     grand_total: 9,
     created_at: faker.date.past().toString(),
     datetime_start_at: faker.date.future().toString(),

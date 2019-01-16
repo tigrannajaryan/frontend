@@ -62,6 +62,8 @@ export class HomeServiceMock {
         total_card_fee: 0,
         tax_percentage: 0,
         card_fee_percentage: 0,
+        total_discount_amount: 0,
+        total_discount_percentage: 0,
         services: [
             {
                 service_uuid: '',
@@ -95,6 +97,8 @@ export class HomeServiceMock {
         client_last_name: 'string',
         client_phone: 'string',
         total_client_price_before_tax: 0,
+        total_discount_amount: 0,
+        total_discount_percentage: 0,
         total_tax: 0,
         total_card_fee: 0,
         tax_percentage: 0,
