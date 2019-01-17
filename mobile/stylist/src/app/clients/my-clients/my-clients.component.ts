@@ -9,7 +9,7 @@ import { ClientModel, GetMyClientsResponse } from '~/core/api/clients-api.models
 import { MyClientsDataStore } from '~/clients/my-clients/my-clients.data';
 
 import { PageNames } from '~/core/page-names';
-import { InvitationsComponentParams } from '~/invitations/invitations.component';
+import { InvitationsComponentParams } from '~/shared/components/invitations/abstract-invitations.component';
 
 export interface MyClientsComponentParams {
   isRootPage?: boolean;

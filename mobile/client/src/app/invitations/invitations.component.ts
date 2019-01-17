@@ -1,29 +1,24 @@
 import {
   AlertController,
-  NavController,
   NavParams
 } from 'ionic-angular';
 
 import { Component } from '@angular/core';
 import { SMS, SmsOptions } from '@ionic-native/sms';
-import { Contacts } from '@ionic-native/contacts';
 
 import { normalizePhoneNumber } from '~/shared/utils/phone-numbers';
-import { Discounts } from '~/core/api/discounts.models';
-import { DiscountsApi } from '~/core/api/discounts.api';
-import { StylistProfile, StylistProfileStatus } from '~/shared/api/stylist-app.models';
 import { ClientInvitation, InvitationStatus } from '~/shared/api/invitations.models';
-import { InvitationsApi } from '~/core/api/invitations.api';
-import { ApiResponse } from '~/shared/api/base.models';
 import { showAlert } from '~/shared/utils/alert';
-import { getProfileStatus, updateProfileStatus } from '~/shared/storage/token-utils';
 
 import { PageNames } from '~/core/page-names';
-import { ProfileDataStore } from '~/core/profile.data';
+import { InvitationsApi } from '~/core/api/invitations.api';
+import { ProfileDataStore } from '~/profile/profile.data';
+import { ProfileModel } from '~/core/api/profile.models';
 import {
   AbstractInvitationsComponent, defaultCountry,
   InvitationsComponentParams
 } from '~/shared/components/invitations/abstract-invitations.component';
+import { Contacts } from '@ionic-native/contacts';
 import { OpenNativeSettings } from '@ionic-native/open-native-settings';
 
 class ErrorWrapper {
@@ -38,43 +33,29 @@ export class InvitationsComponent extends AbstractInvitationsComponent {
   // Expose to html template
   PageNames = PageNames;
 
-  // Preloaded stylist profile and discounts promises
-  private stylistProfile: Promise<ApiResponse<StylistProfile>>;
-  private discounts: Promise<ApiResponse<Discounts>>;
+  private profile: ProfileModel;
 
   constructor(
     protected contacts: Contacts,
     protected openNativeSettings: OpenNativeSettings,
     protected sms: SMS,
     protected alertCtrl: AlertController,
-    private discountsApi: DiscountsApi,
     private invitationsApi: InvitationsApi,
-    private navCtrl: NavController,
     private navParams: NavParams,
-    private profileData: ProfileDataStore
+    private profileDataStore: ProfileDataStore
   ) {
     super();
   }
 
-  protected async ionViewWillLoad(): Promise<void> {
-    // After it’s visited set has_invited_clients to true. It indicates
-    // that a stylist has seen the inivitations screen.
-    const profileStatus = await getProfileStatus() as StylistProfileStatus;
-    if (profileStatus && !profileStatus.has_invited_clients) {
-      await updateProfileStatus({
-        ...profileStatus,
-        has_invited_clients: true
-      });
-    }
-  }
-
-  protected ionViewWillEnter(): void {
+  protected async ionViewWillEnter(): Promise<void> {
     this.params = this.navParams.get('params') as InvitationsComponentParams;
     this.loadContacts();
 
-    // Preload stylist profile and discounts that we will need later
-    this.stylistProfile = this.profileData.get();
-    this.discounts = this.discountsApi.getDiscounts().get();
+    // Preload user profile that we will need later
+    const profileResponse = await this.profileDataStore.get();
+    if (profileResponse.response) {
+      this.profile = profileResponse.response;
+    }
   }
 
   /**
@@ -96,7 +77,6 @@ export class InvitationsComponent extends AbstractInvitationsComponent {
 
     // Initiate asynchronously in parallel reading local contacts and reading invitations from backend
     const localContactsPromise = this.getLocalContacts();
-    const invitationsPromise = this.invitationsApi.getInvitations().get();
 
     // Set both promises to resolve or error. We catch the errors and wrap them in a proxy ErrorWrapper class
     // to be able to differentiate from success case later. Note: if we don't catch here then by default
@@ -104,10 +84,9 @@ export class InvitationsComponent extends AbstractInvitationsComponent {
     // not what we want. This is why we catch here, see explanation here:
     // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/all
     Promise.all([
-      localContactsPromise.catch(e => new ErrorWrapper(e)),
-      invitationsPromise.catch(e => new ErrorWrapper(e))
+      localContactsPromise.catch(e => new ErrorWrapper(e))
     ])
-      .then(([localContacts, invitations]) => {
+      .then(([localContacts]) => {
         // Now we have the result of both promises (either success or failure).
 
         if (localContacts instanceof ErrorWrapper) {
@@ -117,13 +96,6 @@ export class InvitationsComponent extends AbstractInvitationsComponent {
           // Local contacts resolved successfully, load them.
           this.canReadPhoneContacts = true;
           this.loadLocalContacts(localContacts);
-        }
-
-        if (invitations instanceof ErrorWrapper || !invitations.response) {
-          this.loadingContacts = false;
-          throw invitations.error;
-        } else {
-          this.loadInvitations(invitations.response);
         }
 
         // Build the displayedContacts array. Use empty search term to display all contacts.
@@ -177,11 +149,7 @@ export class InvitationsComponent extends AbstractInvitationsComponent {
       } catch (e) {
         // SMS is not sent. Most likely cancelled by the user.
         const alert = this.alertCtrl.create({
-          title: '', subTitle: 'Not all invitations are sent. You can try again later.',
-          buttons: [{
-            text: 'Dismiss',
-            handler: () => this.sendingFinished()
-          }]
+          title: '', subTitle: 'Not all invitations are sent. You can try again later.'
         });
         alert.present();
         return;
@@ -200,36 +168,16 @@ export class InvitationsComponent extends AbstractInvitationsComponent {
     }
 
     const alert = this.alertCtrl.create({
-      title: '', subTitle: 'All invitations are sent.',
-      buttons: [{
-        text: 'Dismiss',
-        handler: () => this.sendingFinished()
-      }]
+      title: '', subTitle: 'All invitations are sent.'
     });
     alert.present();
   }
 
-  /**
-   * Action to perform when sending invitation is finished (successfully or not).
-   */
-  private sendingFinished(): void {
-    if (this.params && this.params.isRootPage) {
-      // Do nothing if this is a regular view from Main screen.
-      return;
-    }
-
-    // This is during registation.
-    this.navCtrl.push(PageNames.HomeSlots);
-  }
-
   private async composeInvitationText(): Promise<string> {
-    const stylistProfile = (await this.stylistProfile).response;
-    const discounts = (await this.discounts).response;
+    let defaultInvitationText = `Hi, it's ${this.profile.first_name}. I'm using the MADE app to find and book stylists.`;
 
-    let defaultInvitationText = `Hi, it's ${stylistProfile.first_name}. I'm now using the Made app to book`;
-    defaultInvitationText = defaultInvitationText + (discounts.first_booking > 0 ? ' and I discounted your next visit on the app.' : '.');
-
-    defaultInvitationText = `${defaultInvitationText} You can get it at https://madebeauty.com/get/`;
+    defaultInvitationText = `${defaultInvitationText} You can book using dynamic pricing
+ and find some great deals! Check it out https://madebeauty.com/get/`;
 
     return defaultInvitationText;
   }

@@ -79,13 +79,6 @@ export function isRegistrationComplete(profileStatus: StylistProfileStatus): boo
   return profileStatus.has_personal_data;
 }
 
-export function trimStr(s?: string): string {
-  if (s) {
-    return s.trim();
-  }
-  return s;
-}
-
 /**
  * Perform one-level deep comparison of arrays
  */
