@@ -18,11 +18,13 @@ page-calendar-example {
     position: sticky;
     top: 0;
     z-index: 2;
+    padding: 0 pxtovw(14px);
+    margin: 0 pxtovw(10px);
     background: white;
   }
 
   .CalendarExample-Subtitle {
-    margin: pxtovw(8px) 0;
+    margin: pxtovw(8px) pxtovw(25px);
     font-size: pxtovw(16px);
     font-weight: map-get($fontWeights, semibold);
     line-height: pxtovw(24px);
