@@ -565,6 +565,7 @@ $mb-icon-settings-a: "\e938";
 
 .mb-icon-settings-a {
   @extend %mb-icon;
+  
   &:before {
     content: $mb-icon-settings-a;
   }
