@@ -1,0 +1,115 @@
+home-page {
+  ion-refresher {
+    padding-top: pxtovw(16px);
+    text-align: center;
+  }
+
+  .Home-toolbar {
+    padding: 0;
+  }
+
+  .Home-title {
+    @include content-padding;
+
+    padding-bottom: 0;
+  }
+
+  .Home-nav {
+    @include content-padding;
+
+    border-bottom: pxtovw(1px) solid color($grayscale-shared, 200);
+
+    > .Link {
+      flex: 1;
+      font-weight: 500;
+      color: color($colors-shared, warmGrey);
+      text-align: center;
+
+      &.is-active {
+        color: color($colors-shared, honey);
+        transition: color 0.1s ease-in-out;
+      }
+    }
+  }
+
+  .Home-navCarret {
+    position: absolute;
+    bottom: 0;
+    width: calc(50% - #{pxtovw(24px)});
+    height: pxtovw(3px);
+    background: color($colors-shared, honey);
+    transform: translateX(0%);
+    will-change: transform;
+  }
+
+  .Home-allStylists {
+    margin-bottom: pxtovw(24px);
+    font-weight: 500;
+  }
+
+  .Home-stylist {
+    $btn-size: pxtovw(48px);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: $btn-size;
+    height: $btn-size;
+    margin: pxtovw(8px) pxtovw(8px) 0 0;
+    overflow: hidden;
+    background-color: color($colors-shared, honey);
+    border-radius: $btn-size;
+    box-shadow: 0 pxtovw(2px) pxtovw(4px) rgba(black, 0.16);
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    [class^="mb-icon"]:before {
+      $icon-size: pxtovw(24px);
+
+      width: $icon-size;
+      height: $icon-size;
+      color: white;
+    }
+  }
+
+  .Home-appointment {
+    + .Link {
+      margin: pxtovw(16px) 0;
+    }
+  }
+
+  .Home-slides {
+    height: auto;
+
+    .swiper-container {
+      overflow: initial;
+    }
+
+    .swiper-slide {
+      @include content-padding;
+
+      display: block;
+      padding-top: pxtovw(16px);
+    }
+  }
+
+  .Home-noUpcoming {
+    margin-top: pxtovw(120px);
+    font-size: $shared-h4;
+    color: color($colors-shared, warmGrey);
+  }
+
+  .Home-bookBtn {
+    position: sticky;
+    bottom: pxtovw(16px);
+    margin: pxtovw(16px) auto;
+    // important overwrites .Button box-shadow: none !important
+    box-shadow:
+      0 pxtovw(2px) pxtovw(4px) rgba(black, 0.16),
+      0 0 pxtovw(30px) pxtovw(10px) white !important;
+  }
+}

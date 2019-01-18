@@ -11,7 +11,7 @@ import { ConfirmCheckoutComponent } from '~/confirm-checkout/confirm-checkout.co
 import { FirstLastNameComponent } from '~/profile/first-last-name/first-last-name.component';
 import { FirstScreenComponent } from '~/first-screen/first-screen.component';
 import { FollowersComponent } from '~/followers/followers.component';
-import { HomePageComponent } from '~/home-page/home-page.component';
+import { HomeComponent } from '~/home/home.component';
 import { HowMadeWorksComponent } from '~/onboarding/how-made-works/how-made-works.component';
 import { HowPricingWorksComponent } from '~/onboarding/how-pricing-works/how-pricing-works.component';
 import { MainTabsComponent } from '~/main-tabs/main-tabs.component';
@@ -53,7 +53,7 @@ export const PageNames = {
   FirstLastName: FirstLastNameComponent,
   FirstScreen: FirstScreenComponent,
   Followers: FollowersComponent,
-  Home: HomePageComponent,
+  Home: HomeComponent,
   HowMadeWorks: HowMadeWorksComponent,
   HowPricingWorks: HowPricingWorksComponent,
   MainTabs: MainTabsComponent,
