@@ -3,13 +3,15 @@ import { FormControl, ValidatorFn } from '@angular/forms';
 import { AbstractControlOptions } from '@angular/forms/src/model';
 import { NavController, NavParams } from 'ionic-angular';
 
-import { StylistServiceProvider } from '~/core/api/stylist.service';
 import { StylistSettings, StylistSettingsKeys } from '~/shared/api/stylist-app.models';
+import { InputTypes } from '~/shared/api/base.models';
+
+import { StylistServiceProvider } from '~/core/api/stylist.service';
 
 export interface SettingsFieldComponentParams {
   title: string;
   name: StylistSettingsKeys;
-  inputType: string;
+  inputType: InputTypes;
   value: [any, ValidatorFn | ValidatorFn[] | AbstractControlOptions | null];
 }
 

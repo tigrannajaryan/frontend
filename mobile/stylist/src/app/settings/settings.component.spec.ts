@@ -59,9 +59,9 @@ describe('Pages: SettingsComponent', () => {
   });
 
   xit('should have all links', () => {
-    spyOn(instance, 'goToTaxRate');
-    spyOn(instance, 'goToCardFee');
-    spyOn(instance, 'goTo');
+    spyOn(instance, 'navigateToTaxRate');
+    spyOn(instance, 'navigateToCardFee');
+    spyOn(instance, 'navigateTo');
     spyOn(instance, 'onContactByEmail');
 
     const settingsGoogleCalendar = fixture.nativeElement.querySelector('[data-test-id=settingsGoogleCalendar]');
@@ -72,25 +72,25 @@ describe('Pages: SettingsComponent', () => {
     expect(settingsTaxRate.outerText.trim())
       .toContain('Tax Rate');
     settingsTaxRate.click();
-    expect(instance.goToTaxRate).toHaveBeenCalled();
+    expect(instance.navigateToTaxRate).toHaveBeenCalled();
 
     const settingsCardFee = fixture.nativeElement.querySelector('[data-test-id=settingsCardFee]');
     expect(settingsCardFee.outerText.trim())
       .toContain('Card Fee');
     settingsCardFee.click();
-    expect(instance.goToCardFee).toHaveBeenCalled();
+    expect(instance.navigateToCardFee).toHaveBeenCalled();
 
     const settingsCalendarExample = fixture.nativeElement.querySelector('[data-test-id=settingsCalendarExample]');
     expect(settingsCalendarExample.outerText.trim())
       .toContain('How MADE applies discounts');
     settingsCalendarExample.click();
-    expect(instance.goTo).toHaveBeenCalledWith(PageNames.CalendarExample, {params: {isRootPage: true}});
+    expect(instance.navigateTo).toHaveBeenCalledWith(PageNames.CalendarExample, {params: {isRootPage: true}});
 
     const settingsWelcomeToMade = fixture.nativeElement.querySelector('[data-test-id=settingsWelcomeToMade]');
     expect(settingsWelcomeToMade.outerText.trim())
       .toContain('How MADE works');
     settingsWelcomeToMade.click();
-    expect(instance.goTo).toHaveBeenCalledWith(PageNames.WelcomeToMade, {params: {isRootPage: true}});
+    expect(instance.navigateTo).toHaveBeenCalledWith(PageNames.WelcomeToMade, {params: {isRootPage: true}});
 
     const settingsEmail = fixture.nativeElement.querySelector('[data-test-id=settingsEmail]');
     expect(settingsEmail.outerText.trim())

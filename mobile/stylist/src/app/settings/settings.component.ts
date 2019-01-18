@@ -1,13 +1,14 @@
 import { Component } from '@angular/core';
+import { Validators } from '@angular/forms';
 import { NavController } from 'ionic-angular';
 import { Page } from 'ionic-angular/navigation/nav-util';
 
 import { ExternalAppService } from '~/shared/utils/external-app-service';
+import { InputTypes } from '~/shared/api/base.models';
 
 import { PageNames } from '~/core/page-names';
 import { StylistSettings, StylistSettingsKeys } from '~/shared/api/stylist-app.models';
 import { StylistServiceProvider } from '~/core/api/stylist.service';
-import { Validators } from '@angular/forms';
 
 @Component({
   selector: 'page-settings',
@@ -31,11 +32,11 @@ export class SettingsComponent {
     }
   }
 
-  goToTaxRate(): void {
+  navigateToTaxRate(): void {
     const params: any = {
       title: 'Tax Rate Percentage',
       name: StylistSettingsKeys.tax_percentage,
-      inputType: 'tel',
+      inputType: InputTypes.tel,
       value: [
         this.settings.tax_percentage,
         [Validators.required, Validators.max(99.99), Validators.pattern(/^[0-9]*$/)]
@@ -44,11 +45,11 @@ export class SettingsComponent {
     this.navCtrl.push(PageNames.SettingsField, { params });
   }
 
-  goToCardFee(): void {
+  navigateToCardFee(): void {
     const params: any = {
       title: 'Card Fee Percentage',
       name: StylistSettingsKeys.card_fee_percentage,
-      inputType: 'tel',
+      inputType: InputTypes.tel,
       value: [
         this.settings.card_fee_percentage,
         [Validators.required, Validators.max(99.99), Validators.pattern(/^[0-9]*$/)]
@@ -57,7 +58,7 @@ export class SettingsComponent {
     this.navCtrl.push(PageNames.SettingsField, { params });
   }
 
-  goTo(page: Page, params?: any): void {
+  navigateTo(page: Page, params?: any): void {
     this.navCtrl.push(page, params);
   }
 

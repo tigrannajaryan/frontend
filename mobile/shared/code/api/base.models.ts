@@ -20,3 +20,10 @@ export type ISOTimeOnly = string; // Time in HH:mm:ss format
 
 export const isoDateFormat = 'YYYY-MM-DD';
 export const isoTimeOnlyFormat = 'HH:mm:ss';
+
+export enum InputTypes {
+  tel = 'tel',
+  text = 'text',
+  email = 'email'
+}
+

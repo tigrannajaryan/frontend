@@ -15,14 +15,14 @@
 
         <ion-col col-4 no-padding class="DiscountsList-col DiscountsList-colIcon">
           <span></span>
-          <div *ngIf="!settings?.google_calendar_integrated" (click)="goTo(PageNames.CalendarPriming)" class="SettingsLink">Link</div>
-          <div *ngIf="settings?.google_calendar_integrated">Linked</div>
+          <div *ngIf="!settings?.google_calendar_integrated; else integratedTpl" (click)="navigateTo(PageNames.CalendarPriming)" class="SettingsLink">Link</div>
+          <ng-template #integratedTpl>Linked</ng-template>
         </ion-col>
       </ion-row>
 
       <div class="ServicesLis-title without-border SettingsTitleMargin" data-test-id="settingsTaxTitle">Taxes and Fees</div>
 
-      <ion-row (click)="goToTaxRate()" data-test-id="settingsTaxRate" class="DiscountsList-row">
+      <ion-row (click)="navigateToTaxRate()" data-test-id="settingsTaxRate" class="DiscountsList-row">
         <ion-col no-padding col-8 class="DiscountsList-col">
           Tax Rate
         </ion-col>
@@ -33,7 +33,7 @@
         </ion-col>
       </ion-row>
 
-      <ion-row (click)="goToCardFee()" data-test-id="settingsCardFee" class="DiscountsList-row">
+      <ion-row (click)="navigateToCardFee()" data-test-id="settingsCardFee" class="DiscountsList-row">
         <ion-col no-padding col-8 class="DiscountsList-col">
           Card Fee
         </ion-col>
@@ -46,7 +46,7 @@
 
       <div class="ServicesLis-title without-border SettingsTitleMargin" data-test-id="settingsAboutTitle">About MADE</div>
 
-      <ion-row (click)="goTo(PageNames.CalendarExample, {params: {isRootPage: true}})" data-test-id="settingsCalendarExample" class="DiscountsList-row">
+      <ion-row (click)="navigateTo(PageNames.CalendarExample, {params: {isRootPage: true}})" data-test-id="settingsCalendarExample" class="DiscountsList-row">
         <ion-col no-padding col-8 class="DiscountsList-col">
           How MADE applies discounts
         </ion-col>
@@ -57,7 +57,7 @@
         </ion-col>
       </ion-row>
 
-      <ion-row (click)="goTo(PageNames.WelcomeToMade, {params: {isRootPage: true}})" data-test-id="settingsWelcomeToMade" class="DiscountsList-row">
+      <ion-row (click)="navigateTo(PageNames.WelcomeToMade, {params: {isRootPage: true}})" data-test-id="settingsWelcomeToMade" class="DiscountsList-row">
         <ion-col no-padding col-8 class="DiscountsList-col">
           How MADE works
         </ion-col>
