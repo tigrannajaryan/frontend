@@ -138,8 +138,8 @@ export interface SetStylistServicesParams {
 export type StylistServicesListResponse = StylistServicesList;
 
 export interface StylistSettings {
-  tax_percentage?: number;
-  card_fee_percentage?: number;
+  tax_percentage: number;
+  card_fee_percentage: number;
   google_calendar_integrated?: boolean;
 }
 

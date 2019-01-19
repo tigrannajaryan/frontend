@@ -9,6 +9,7 @@ import { InputTypes } from '~/shared/api/base.models';
 import { PageNames } from '~/core/page-names';
 import { StylistSettings, StylistSettingsKeys } from '~/shared/api/stylist-app.models';
 import { StylistServiceProvider } from '~/core/api/stylist.service';
+import { SettingsFieldComponentParams } from '~/settings/settings-field/settings-field.component';
 
 @Component({
   selector: 'page-settings',
@@ -33,27 +34,35 @@ export class SettingsComponent {
   }
 
   navigateToTaxRate(): void {
-    const params: any = {
+    const params: SettingsFieldComponentParams = {
       title: 'Tax Rate Percentage',
       name: StylistSettingsKeys.tax_percentage,
       inputType: InputTypes.tel,
       value: [
         this.settings.tax_percentage,
         [Validators.required, Validators.max(99.99), Validators.pattern(/^[0-9]*$/)]
-      ]
+      ],
+      onSave: async (val: number) => {
+        this.settings.tax_percentage = val;
+        await this.stylistService.setStylistSettings(this.settings).toPromise();
+      }
     };
     this.navCtrl.push(PageNames.SettingsField, { params });
   }
 
   navigateToCardFee(): void {
-    const params: any = {
+    const params: SettingsFieldComponentParams = {
       title: 'Card Fee Percentage',
       name: StylistSettingsKeys.card_fee_percentage,
       inputType: InputTypes.tel,
       value: [
         this.settings.card_fee_percentage,
         [Validators.required, Validators.max(99.99), Validators.pattern(/^[0-9]*$/)]
-      ]
+      ],
+      onSave: async (val: number) => {
+        this.settings.card_fee_percentage = val;
+        await this.stylistService.setStylistSettings(this.settings).toPromise();
+      }
     };
     this.navCtrl.push(PageNames.SettingsField, { params });
   }

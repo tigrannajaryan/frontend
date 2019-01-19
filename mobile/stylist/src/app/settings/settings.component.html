@@ -8,14 +8,14 @@
 <ion-content no-padding>
   <div class="Settings Made-wp Made-wpContent">
     <ion-list class="ServicesLis-item">
-      <ion-row class="DiscountsList-row" data-test-id="settingsGoogleCalendar">
+      <ion-row (click)="!settings?.google_calendar_integrated && navigateTo(PageNames.CalendarPriming)" class="DiscountsList-row" data-test-id="settingsGoogleCalendar">
         <ion-col no-padding col-8 class="DiscountsList-col">
           Google Calendar
         </ion-col>
 
         <ion-col col-4 no-padding class="DiscountsList-col DiscountsList-colIcon">
           <span></span>
-          <div *ngIf="!settings?.google_calendar_integrated; else integratedTpl" (click)="navigateTo(PageNames.CalendarPriming)" class="SettingsLink">Link</div>
+          <div *ngIf="!settings?.google_calendar_integrated; else integratedTpl" class="SettingsLink">Link</div>
           <ng-template #integratedTpl>Linked</ng-template>
         </ion-col>
       </ion-row>

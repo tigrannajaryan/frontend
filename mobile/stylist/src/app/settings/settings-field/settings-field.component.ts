@@ -3,16 +3,15 @@ import { FormControl, ValidatorFn } from '@angular/forms';
 import { AbstractControlOptions } from '@angular/forms/src/model';
 import { NavController, NavParams } from 'ionic-angular';
 
-import { StylistSettings, StylistSettingsKeys } from '~/shared/api/stylist-app.models';
+import { StylistSettingsKeys } from '~/shared/api/stylist-app.models';
 import { InputTypes } from '~/shared/api/base.models';
-
-import { StylistServiceProvider } from '~/core/api/stylist.service';
 
 export interface SettingsFieldComponentParams {
   title: string;
   name: StylistSettingsKeys;
   inputType: InputTypes;
   value: [any, ValidatorFn | ValidatorFn[] | AbstractControlOptions | null];
+  onSave(val: number): void;
 }
 
 @Component({
@@ -25,7 +24,6 @@ export class SettingsFieldComponent {
 
   constructor(
     private navCtrl: NavController,
-    private stylistService: StylistServiceProvider,
     private navParams: NavParams
   ) {
   }
@@ -42,11 +40,7 @@ export class SettingsFieldComponent {
 
   async onSave(): Promise<void> {
     if (this.control.valid) {
-      const data: StylistSettings = {
-        [this.params.name]: this.control.value
-      };
-
-      await this.stylistService.setStylistSettings(data);
+      this.params.onSave(Number(this.control.value));
 
       this.navCtrl.pop();
     } else {
