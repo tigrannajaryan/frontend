@@ -1,6 +1,9 @@
 import { Component, ViewChild } from '@angular/core';
 import { Page } from 'ionic-angular/navigation/nav-util';
+import { Camera, CameraOptions } from '@ionic-native/camera';
 import {
+  ActionSheetController,
+  ActionSheetOptions,
   Events,
   NavController,
   NavParams, Slides
@@ -17,6 +20,15 @@ import { getProfileStatus, updateProfileStatus } from '~/shared/storage/token-ut
 import { getPhoneNumber } from '~/shared/utils/phone-numbers';
 import { StylistServicesDataStore } from '~/services/services-list/services.data';
 import { DayOffer } from '~/shared/api/price.models';
+import { StylistProfileApi } from '~/shared/api/stylist-profile.api';
+import { StylistProfileRequestParams, StylistProfileResponse } from '~/shared/api/stylists.models';
+import { UserRole } from '~/shared/api/auth.models';
+import { VisualWeekCard } from '~/shared/utils/worktime-utils';
+import { PhotoSourceType } from '~/shared/constants';
+import { showAlert } from '~/shared/utils/alert';
+import { downscalePhoto, urlToFile } from '~/shared/image-utils';
+import { Logger } from '~/shared/logger';
+import { BaseService } from '~/shared/api/base.service';
 
 import { loading } from '~/core/utils/loading';
 import { PageNames } from '~/core/page-names';
@@ -28,10 +40,6 @@ import { ClientsApi } from '~/core/api/clients-api';
 
 import { FieldEditComponentParams } from '~/onboarding/field-edit/field-edit.component';
 import { RegistrationForm, RegistrationFormControl } from '~/onboarding/registration.form';
-import { StylistProfileApi } from '~/shared/api/stylist-profile.api';
-import { StylistProfileRequestParams, StylistProfileResponse } from '~/shared/api/stylists.models';
-import { UserRole } from '~/shared/api/auth.models';
-import { VisualWeekCard } from '~/shared/utils/worktime-utils';
 import { WorkHoursComponentParams } from '~/workhours/workhours.component';
 import { ClientsCalendarComponentParams } from '~/calendar/clients-calendar/clients-calendar.component';
 
@@ -79,10 +87,14 @@ export class ProfileComponent {
     public navCtrl: NavController,
     public navParams: NavParams,
     public profileData: ProfileDataStore,
+    private actionSheetCtrl: ActionSheetController,
     private clientsApi: ClientsApi,
     private events: Events,
     private registrationForm: RegistrationForm,
     private servicesData: StylistServicesDataStore,
+    private logger: Logger,
+    private camera: Camera,
+    private baseService: BaseService,
     private stylistProfileApi: StylistProfileApi
   ) {
     this.activeTab = this.tabs[ProfileTabs.clientView].name;
@@ -221,11 +233,6 @@ export class ProfileComponent {
 
   onFieldEdit(control: RegistrationFormControl): void {
     switch (control) {
-      case RegistrationFormControl.PhotoId:
-      case RegistrationFormControl.PhotoUrl:
-        this.navCtrl.push(PageNames.StylistPhoto, { params: { isRootPage: true }});
-        return;
-
       case RegistrationFormControl.SalonAddress:
         this.navCtrl.push(PageNames.SalonAddress, { params: { isRootPage: true }});
         return;
@@ -255,5 +262,82 @@ export class ProfileComponent {
     }
 
     return MadeMenuComponent.showNotice(page, this.profileStatus);
+  }
+
+  hasPhoto(): boolean {
+    return Boolean(this.profile.profile_photo_id) || Boolean(this.profile.profile_photo_url);
+  }
+
+  processPhoto(): void {
+    this.logger.info('processPhoto()');
+    const opts: ActionSheetOptions = {
+      buttons: [
+        {
+          text: 'Take Photo',
+          handler: () => {
+            this.takePhoto(PhotoSourceType.camera);
+          }
+        }, {
+          text: 'Add Photo',
+          handler: () => {
+            this.takePhoto(PhotoSourceType.photoLibrary);
+          }
+        }, {
+          text: 'Cancel',
+          role: 'cancel'
+        }
+      ]
+    };
+
+    if (this.hasPhoto()) {
+      opts.buttons.splice(-1, 0, {
+        text: 'Remove Photo',
+        role: 'destructive',
+        handler: () => {
+          this.profile.profile_photo_url = '';
+        }
+      });
+    }
+
+    const actionSheet = this.actionSheetCtrl.create(opts);
+    actionSheet.present();
+  }
+
+  @loading
+  private async takePhoto(sourceType: PhotoSourceType): Promise<void> {
+    let imageData;
+    try {
+      const options: CameraOptions = {
+        quality: 50,
+        destinationType: this.camera.DestinationType.DATA_URL,
+        encodingType: this.camera.EncodingType.JPEG,
+        mediaType: this.camera.MediaType.PICTURE,
+        correctOrientation: true,
+        sourceType // PHOTOLIBRARY = 0, CAMERA = 1
+      };
+
+      imageData = await this.camera.getPicture(options);
+    } catch (e) {
+      const capitalize = e.charAt(0).toUpperCase() + e.slice(1);
+      showAlert('', capitalize);
+      return;
+    }
+
+    // imageData is either a base64 encoded string or a file URI
+    // If it's base64:
+    const originalBase64Image = `data:image/jpeg;base64,${imageData}`;
+
+    const downscaledBase64Image = await downscalePhoto(originalBase64Image);
+
+    // set image preview
+    this.profile.profile_photo_url = downscaledBase64Image;
+
+    // convert base64 to File after to formData and send it to server
+    const file = await urlToFile(downscaledBase64Image, 'file.png');
+    const formData = new FormData();
+    formData.append('file', file);
+
+    const { response } = await this.baseService.uploadFile<{ uuid: string }>(formData).toPromise();
+    this.profile.profile_photo_id = response.uuid;
   }
 }
