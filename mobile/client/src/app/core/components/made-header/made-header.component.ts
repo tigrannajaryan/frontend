@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { NavController } from 'ionic-angular';
+
 import { PageNames } from '~/core/page-names';
 
 @Component({

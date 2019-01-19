@@ -24,7 +24,7 @@ page-calendar-example {
   }
 
   .CalendarExample-Subtitle {
-    margin: pxtovw(8px) pxtovw(25px);
+    margin: pxtovw(8px) 0;
     font-size: pxtovw(16px);
     font-weight: map-get($fontWeights, semibold);
     line-height: pxtovw(24px);

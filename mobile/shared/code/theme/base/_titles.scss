@@ -107,6 +107,19 @@
 }
 
 
+.Email {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: pxtovw(48px);
+  padding: pxtovw(12px) 0;
+  font-size: pxtovw(15px);
+  font-weight: 700;
+  text-align: center;
+  color: color($colors-shared, lightSalmon);
+}
+
+// google autocomplete
 .pac-item {
   font-size: pxtovw(15px);
   color: black;

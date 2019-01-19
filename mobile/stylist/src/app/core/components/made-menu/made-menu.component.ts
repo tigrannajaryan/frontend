@@ -94,7 +94,8 @@ export class MadeMenuComponent implements OnInit {
       { title: 'Calendar', redirectToPage: PageNames.ClientsCalendar, redirectParams, icon: 'calendar-add' },
       { title: 'Hours', redirectToPage: PageNames.WorkHours, redirectParams, icon: 'clock-a' },
       this.servicesMenuItem, // by ref
-      { title: 'Invite Clients', redirectToPage: PageNames.Invitations, redirectParams, icon: 'invite-a' }
+      { title: 'Invite Clients', redirectToPage: PageNames.Invitations, redirectParams, icon: 'invite-a' },
+      { title: 'Settings', redirectToPage: PageNames.Settings, redirectParams: {}, icon: 'settings-a' }
     ];
   }
 
