@@ -30,7 +30,7 @@
         <ng-container *ngIf="isActiveTab(tabIdx) || !tab.appointments">
 
           <div class="Home-allStylists"
-            *ngIf="tab.name === 'Upcoming' && stylists">
+            *ngIf="tab.name === HomeTabName.Upcoming && stylists">
               <ion-row justify-content-between>
                 <span>Your Stylists</span>
                 <span class="Link"
@@ -59,14 +59,14 @@
                 (click)="onAppointmentClick(appointment)"></appointment-item>
 
               <div class="Link"
-                *ngIf="tab.name === 'Past'"
+                *ngIf="tab.name === HomeTabName.Past"
                 (click)="onRebookAppointmentClick(appointment)">
                   Re-book appointment
               </div>
             </ng-container>
 
             <div class="Home-noUpcoming"
-              *ngIf="tab.name === 'Upcoming' && tab.appointments.length === 0">
+              *ngIf="tab.name === HomeTabName.Upcoming && tab.appointments.length === 0">
                 You have no upcoming appointments
             </div>
 

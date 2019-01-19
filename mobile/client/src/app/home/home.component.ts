@@ -15,7 +15,10 @@ import { AppointmentPageParams } from '~/appointment-page/appointment-page.compo
 import { startRebooking } from '~/booking/booking-utils';
 import { StylistProfileParams } from '~/stylists/stylist-profile/stylist-profile.component';
 
-export type HomeTabName = 'Upcoming' | 'Past';
+export enum HomeTabName {
+  Upcoming = 'Upcoming',
+  Past = 'Past'
+}
 
 export interface HomeTab {
   name: HomeTabName;
@@ -27,9 +30,11 @@ export interface HomeTab {
   templateUrl: 'home.component.html'
 })
 export class HomeComponent {
+  HomeTabName = HomeTabName;
+
   tabs: HomeTab[] = [
-    { name: 'Upcoming' },
-    { name: 'Past' }
+    { name: HomeTabName.Upcoming },
+    { name: HomeTabName.Past }
   ];
   stylists: PreferredStylistModel[];
 
@@ -57,7 +62,8 @@ export class HomeComponent {
   }
 
   ionViewWillEnter(): void {
-    this.loadTabData(0);
+    const firstTabIdx = 0;
+    this.loadTabData(firstTabIdx);
 
     this.slides.ionSlideProgress
       .takeUntil(componentUnloaded(this))
@@ -99,6 +105,7 @@ export class HomeComponent {
     } else {
       // Scrolled beyond the right bound. Get back to the last slide.
       // Bug: https://github.com/ionic-team/ionic/issues/12297.
+      // NOTE: we use 0-speed of sliding to slide without animation.
       this.slides.slidePrev(0);
     }
   }
@@ -135,7 +142,7 @@ export class HomeComponent {
       if (appointment.status === AppointmentStatus.new) {
         params.onCancel = () => this.onAppointmentCancel();
       }
-      if (tab.name === 'Past') {
+      if (tab.name === HomeTabName.Past) {
         params.hasRebook = true;
       }
       this.navCtrl.push(PageNames.Appointment, { params });
@@ -169,13 +176,13 @@ export class HomeComponent {
     const tab = this.tabs[tabIdx];
     if (tab) {
       switch (tab.name) {
-        case 'Upcoming': {
+        case HomeTabName.Upcoming: {
           const { response: homeResponse } = await this.appointmentsDataStore.home.get({ refresh: true });
           tab.appointments = homeResponse.upcoming;
           break;
         }
 
-        case 'Past': {
+        case HomeTabName.Past: {
           const { response: historyResponse } = await this.appointmentsDataStore.history.get({ refresh: true });
           tab.appointments = historyResponse.appointments;
           break;
