@@ -58,7 +58,6 @@ describe('Authentication flows for invited client with app reloads', () => {
     await howPricingWorksPage.continue();
     await pushPrimingPage.allow();
     await waitFor(mainTabsPage.homeTab);
-    await waitForNot(homePage.searchBtn);
     await waitFor(homePage.bookBtn);
     await homePage.startBooking();
   });
@@ -66,7 +65,6 @@ describe('Authentication flows for invited client with app reloads', () => {
   it('Can restore auth on reload to mainTabsPage', async () => {
     await browser.get('');
     await waitFor(mainTabsPage.homeTab);
-    await waitForNot(homePage.searchBtn);
     await waitFor(homePage.bookBtn);
   });
 

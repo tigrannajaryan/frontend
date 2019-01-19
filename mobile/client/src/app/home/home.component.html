@@ -33,7 +33,7 @@
             *ngIf="tab.name === HomeTabName.Upcoming && stylists">
               <ion-row justify-content-between>
                 <span>Your Stylists</span>
-                <span class="Link"
+                <span class="Link" data-test-id="searchBtn"
                   (click)="onSearchStylistsClick()">
                     Details
                 </span>
@@ -70,7 +70,7 @@
                 You have no upcoming appointments
             </div>
 
-            <button ion-button large class="Button Home-bookBtn"
+            <button ion-button large class="Button Home-bookBtn" data-test-id="bookLink"
               (click)="onBookClick()">
                 Book
             </button>

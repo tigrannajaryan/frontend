@@ -26,7 +26,7 @@ export interface HomeTab {
 }
 
 @Component({
-  selector: 'home-page',
+  selector: 'page-home',
   templateUrl: 'home.component.html'
 })
 export class HomeComponent {
