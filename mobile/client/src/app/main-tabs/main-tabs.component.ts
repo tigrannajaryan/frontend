@@ -13,6 +13,8 @@ import { checkProfileCompleteness } from '~/core/utils/user-utils';
 import { ProfileModel } from '~/core/api/profile.models';
 import { ProfileDataStore } from '~/profile/profile.data';
 
+import { StylistSearchParams } from '~/stylists/stylists-search/stylists-search.component';
+
 interface TabsObject {
   name: string;
   link: Page; // should be PageNames when we will have all pages
@@ -22,6 +24,7 @@ interface TabsObject {
 
 export enum MainTabIndex {
   Home = 0,
+  StylistSearch,
   Invitation,
   Profile
 }
@@ -36,7 +39,12 @@ export class MainTabsComponent implements OnDestroy {
     {
       name: 'Home',
       link: PageNames.Home,
-      params: { isMain: true }
+      params: {}
+    },
+    {
+      name: 'Search',
+      link: PageNames.StylistSearch,
+      params: { params: ({ isMain: true } as StylistSearchParams) }
     },
     {
       name: 'Invite',

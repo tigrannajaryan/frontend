@@ -1,11 +1,11 @@
-import * as faker from 'faker';
-
 import { async, ComponentFixture } from '@angular/core/testing';
+import { NavParams } from 'ionic-angular';
+import * as faker from 'faker';
 
 import { TestUtils } from '~/../test';
 
 import { stylistsMock } from '~/core/api/stylists.service.mock';
-import { StylistSearchComponent } from '~/stylists/stylists-search/stylists-search.component';
+import { StylistSearchComponent, StylistSearchParams } from '~/stylists/stylists-search/stylists-search.component';
 
 // Monkey patch SEARCHING_DELAY to 0 to avoid slowing down the tests:
 StylistSearchComponent.SEARCHING_DELAY = 0;
@@ -80,5 +80,18 @@ describe('Pages: Stylists Search', () => {
     const textContent = fixture.nativeElement.textContent;
     expect(textContent)
       .toContain('No stylists found');
+  });
+
+  it('should show no back btn when is a main page', () => {
+    const navParams = fixture.debugElement.injector.get(NavParams);
+    const params: StylistSearchParams = { isMain: true };
+    navParams.data = { params };
+
+    instance.ionViewWillLoad();
+    fixture.detectChanges();
+
+    // NOTE: .is-hiddenBackButton hides the back btn
+    expect(fixture.nativeElement.querySelector('ion-navbar.is-hiddenBackButton [ion-button].back-button'))
+      .toBeTruthy();
   });
 });

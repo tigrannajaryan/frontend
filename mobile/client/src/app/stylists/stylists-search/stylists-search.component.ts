@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { App, Content, Header, Keyboard } from 'ionic-angular';
+import { App, Content, Header, Keyboard, NavParams } from 'ionic-angular';
 import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/debounceTime';
 
@@ -30,6 +30,10 @@ interface IonicScrollEvent { // not defined in Ionic
   domWrite(handler: () => void): void;
 }
 
+export interface StylistSearchParams {
+  isMain: boolean;
+}
+
 @Component({
   selector: 'page-stylists-search',
   templateUrl: 'stylists-search.component.html'
@@ -53,6 +57,8 @@ export class StylistSearchComponent implements AfterViewInit {
   moreStylistsAvailable = false;
   isLoading = false;
 
+  isBackBtnDisabled = false;
+
   preferredStylists: PreferredStylistModel[] = [];
 
   isGeolocationInProcess = false;
@@ -67,12 +73,16 @@ export class StylistSearchComponent implements AfterViewInit {
     private app: App,
     private geolocationService: GeolocationService,
     private keyboard: Keyboard,
+    private params: NavParams,
     private preferredStylistsData: PreferredStylistsData,
     private stylistsService: StylistsService
   ) {
   }
 
   async ionViewWillLoad(): Promise<void> {
+    const params = (this.params.get('params') || {}) as StylistSearchParams;
+    this.isBackBtnDisabled = Boolean(params.isMain);
+
     // Show keyboard hide btn
     this.keyboard.hideFormAccessoryBar(false);
 
