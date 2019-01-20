@@ -56,12 +56,9 @@ export class HomeComponent {
   ) {
   }
 
-  async ionViewWillLoad(): Promise<void> {
-    const allStylists = await this.preferredStylistsData.get();
-    this.stylists = allStylists.filter(stylist => stylist.is_profile_bookable);
-  }
-
   async ionViewWillEnter(): Promise<void> {
+    await this.loadStylists();
+
     const firstTabIdx = 0;
     await this.loadTabData(firstTabIdx);
 

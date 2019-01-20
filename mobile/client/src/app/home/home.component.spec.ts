@@ -20,11 +20,8 @@ describe('Pages: Home', () => {
           instance = compiled.instance;
         })
         .then(async () => {
-          await instance.ionViewWillLoad();
           await instance.ionViewWillEnter();
-
           spyOn(instance.slides, 'getActiveIndex').and.returnValue(0);
-
           fixture.detectChanges();
         })
     )
