@@ -46,7 +46,7 @@
                 <div class="Home-stylist"
                   *ngFor="let stylist of stylists"
                   (click)="onStylistClick(stylist)">
-                    <img [src]="stylist.profile_photo_url" />
+                    <img [src]="stylist.profile_photo_url || 'assets/icons/stylist-avatar.png'" />
                 </div>
               </ion-row>
             </div>
