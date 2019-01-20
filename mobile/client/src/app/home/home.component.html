@@ -2,7 +2,7 @@
   <ion-toolbar class="Home-toolbar">
     <div class="Made-h1 Home-title">Home</div>
 
-    <ion-row class="Home-nav">
+    <ion-row class="Home-nav" data-test-id="tabs">
       <div class="Link"
         *ngFor="let tab of tabs; index as tabIdx"
         [class.is-active]="isActiveTab(tabIdx)"
@@ -29,7 +29,7 @@
       <ion-slide *ngFor="let tab of tabs; index as tabIdx">
         <ng-container *ngIf="isActiveTab(tabIdx) || !tab.appointments">
 
-          <div class="Home-allStylists"
+          <div class="Home-allStylists" data-test-id="stylists"
             *ngIf="tab.name === HomeTabName.Upcoming && stylists">
               <ion-row justify-content-between>
                 <span>Your Stylists</span>

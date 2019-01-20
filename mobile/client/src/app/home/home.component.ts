@@ -61,9 +61,9 @@ export class HomeComponent {
     this.stylists = allStylists.filter(stylist => stylist.is_profile_bookable);
   }
 
-  ionViewWillEnter(): void {
+  async ionViewWillEnter(): Promise<void> {
     const firstTabIdx = 0;
-    this.loadTabData(firstTabIdx);
+    await this.loadTabData(firstTabIdx);
 
     this.slides.ionSlideProgress
       .takeUntil(componentUnloaded(this))
