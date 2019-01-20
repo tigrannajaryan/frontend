@@ -67,13 +67,12 @@ import { AboutComponent } from '~/about/about.component';
 import { AddServicesComponent } from '~/add-services/add-services.component';
 import { AppointmentPageComponent } from '~/appointment-page/appointment-page.component';
 import { AppointmentPriceComponent } from '~/appointment-price/appointment-price.component';
-import { AppointmentsHistoryComponent } from '~/appointments-history/appointments-history.component';
 import { AuthPageComponent } from '~/auth/auth-start/auth-start.component';
 import { AuthConfirmPageComponent } from '~/auth/auth-confirm/auth-confirm.component';
 import { BookingCompleteComponent } from '~/booking/booking-complete/booking-complete.component';
 import { ConfirmCheckoutComponent } from '~/confirm-checkout/confirm-checkout.component';
 import { FirstScreenComponent } from '~/first-screen/first-screen.component';
-import { HomePageComponent } from '~/home-page/home-page.component';
+import { HomeComponent } from '~/home/home.component';
 import { HowMadeWorksComponent } from '~/onboarding/how-made-works/how-made-works.component';
 import { HowPricingWorksComponent } from '~/onboarding/how-pricing-works/how-pricing-works.component';
 import { MainTabsComponent } from '~/main-tabs/main-tabs.component';
@@ -115,7 +114,6 @@ const declarations = [
   AddServicesComponent,
   AppointmentPageComponent,
   AppointmentPriceComponent,
-  AppointmentsHistoryComponent,
   AuthConfirmPageComponent,
   AuthPageComponent,
   BookingCompleteComponent,
@@ -126,7 +124,7 @@ const declarations = [
   FirstLastNameComponent,
   FirstScreenComponent,
   FollowersComponent,
-  HomePageComponent,
+  HomeComponent,
   HowMadeWorksComponent,
   HowPricingWorksComponent,
   InstagramGalleryComponent,

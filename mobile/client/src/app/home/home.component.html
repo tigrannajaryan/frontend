@@ -1,0 +1,87 @@
+<ion-header madeHeader [hideBackButton]="true">
+  <ion-toolbar class="Home-toolbar">
+    <div class="Made-h1 Home-title">Home</div>
+
+    <ion-row class="Home-nav" data-test-id="tabs">
+      <div class="Link"
+        *ngFor="let tab of tabs; index as tabIdx"
+        [class.is-active]="isActiveTab(tabIdx)"
+        (click)="onSelectTab(tabIdx)">
+          {{ tab.name }}
+      </div>
+      <div class="Home-navCarret" #carret></div>
+    </ion-row>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-refresher
+    [enabled]="isRefresherEnabled"
+    (ionRefresh)="onRefresh($event)">
+      <ion-spinner></ion-spinner>
+  </ion-refresher>
+
+  <ion-slides no-padding class="Home-slides"
+    (ionSlideDrag)="onEnableRefresher(false)"
+    (touchend)="onEnableRefresher(true)"
+    (ionSlideDidChange)="onTabChange()">
+
+      <ion-slide *ngFor="let tab of tabs; index as tabIdx">
+        <ng-container *ngIf="isActiveTab(tabIdx) || !tab.appointments">
+
+          <div class="Home-allStylists" data-test-id="stylists"
+            *ngIf="tab.name === HomeTabName.Upcoming && stylists">
+              <ion-row justify-content-between>
+                <span>Your Stylists</span>
+                <span class="Link"
+                  (click)="onMyStylistsClick()">
+                    Details
+                </span>
+              </ion-row>
+              <ion-row>
+                <div class="Home-stylist" data-test-id="searchBtn"
+                  (click)="onSearchStylistsClick()">
+                    <i class="mb-icon-plus"></i>
+                </div>
+                <div class="Home-stylist"
+                  *ngFor="let stylist of stylists"
+                  (click)="onStylistClick(stylist)">
+                    <img [src]="stylist.profile_photo_url" />
+                </div>
+              </ion-row>
+            </div>
+
+          <ng-container *ngIf="tab.appointments; else loader">
+
+            <ng-container *ngFor="let appointment of tab.appointments">
+              <appointment-item class="Home-appointment"
+                [appointment]="appointment"
+                (click)="onAppointmentClick(appointment)"></appointment-item>
+
+              <div class="Link"
+                *ngIf="tab.name === HomeTabName.Past"
+                (click)="onRebookAppointmentClick(appointment)">
+                  Re-book appointment
+              </div>
+            </ng-container>
+
+            <div class="Home-noUpcoming"
+              *ngIf="tab.name === HomeTabName.Upcoming && tab.appointments.length === 0">
+                You have no upcoming appointments
+            </div>
+
+            <button ion-button large class="Button Home-bookBtn" data-test-id="bookLink"
+              (click)="onBookClick()">
+                Book
+            </button>
+          </ng-container>
+
+          <ng-template #loader>
+            <ion-spinner></ion-spinner>
+          </ng-template>
+
+        </ng-container>
+      </ion-slide>
+
+  </ion-slides>
+</ion-content>
