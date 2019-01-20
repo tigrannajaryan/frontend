@@ -16,9 +16,7 @@ export enum RegistrationFormControl {
   PublicPhone = 'public_phone',
   Email = 'email',
   Instagram = 'instagram_url',
-  Website = 'website_url',
-  PhotoId = 'profile_photo_id',
-  PhotoUrl = 'profile_photo_url'
+  Website = 'website_url'
 }
 
 export interface FormControls {
