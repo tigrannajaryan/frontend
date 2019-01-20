@@ -84,7 +84,7 @@ describe('Pages: Stylists Search', () => {
 
   it('should show no back btn when is a main page', () => {
     const navParams = fixture.debugElement.injector.get(NavParams);
-    const params: StylistSearchParams = { isMain: true };
+    const params: StylistSearchParams = { isRootPage: true };
     navParams.data = { params };
 
     instance.ionViewWillLoad();

@@ -44,7 +44,7 @@ export class MainTabsComponent implements OnDestroy {
     {
       name: 'Search',
       link: PageNames.StylistSearch,
-      params: { params: ({ isMain: true } as StylistSearchParams) }
+      params: { params: ({ isRootPage: true } as StylistSearchParams) }
     },
     {
       name: 'Invite',

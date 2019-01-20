@@ -31,7 +31,7 @@ interface IonicScrollEvent { // not defined in Ionic
 }
 
 export interface StylistSearchParams {
-  isMain: boolean;
+  isRootPage: boolean;
 }
 
 @Component({
@@ -81,7 +81,7 @@ export class StylistSearchComponent implements AfterViewInit {
 
   async ionViewWillLoad(): Promise<void> {
     const params = (this.params.get('params') || {}) as StylistSearchParams;
-    this.isBackBtnDisabled = Boolean(params.isMain);
+    this.isBackBtnDisabled = Boolean(params.isRootPage);
 
     // Show keyboard hide btn
     this.keyboard.hideFormAccessoryBar(false);
