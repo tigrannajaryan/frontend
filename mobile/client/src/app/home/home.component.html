@@ -33,13 +33,13 @@
             *ngIf="tab.name === HomeTabName.Upcoming && stylists">
               <ion-row justify-content-between>
                 <span>Your Stylists</span>
-                <span class="Link" data-test-id="searchBtn"
-                  (click)="onSearchStylistsClick()">
+                <span class="Link"
+                  (click)="onMyStylistsClick()">
                     Details
                 </span>
               </ion-row>
               <ion-row>
-                <div class="Home-stylist"
+                <div class="Home-stylist" data-test-id="searchBtn"
                   (click)="onSearchStylistsClick()">
                     <i class="mb-icon-plus"></i>
                 </div>

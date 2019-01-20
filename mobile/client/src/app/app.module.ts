@@ -67,7 +67,6 @@ import { AboutComponent } from '~/about/about.component';
 import { AddServicesComponent } from '~/add-services/add-services.component';
 import { AppointmentPageComponent } from '~/appointment-page/appointment-page.component';
 import { AppointmentPriceComponent } from '~/appointment-price/appointment-price.component';
-import { AppointmentsHistoryComponent } from '~/appointments-history/appointments-history.component';
 import { AuthPageComponent } from '~/auth/auth-start/auth-start.component';
 import { AuthConfirmPageComponent } from '~/auth/auth-confirm/auth-confirm.component';
 import { BookingCompleteComponent } from '~/booking/booking-complete/booking-complete.component';
@@ -115,7 +114,6 @@ const declarations = [
   AddServicesComponent,
   AppointmentPageComponent,
   AppointmentPriceComponent,
-  AppointmentsHistoryComponent,
   AuthConfirmPageComponent,
   AuthPageComponent,
   BookingCompleteComponent,

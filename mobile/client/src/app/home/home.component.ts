@@ -1,5 +1,5 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { Content, DomController, Events, NavController, Refresher, Slides } from 'ionic-angular';
+import { App, Content, DomController, Events, Refresher, Slides } from 'ionic-angular';
 
 import { AppointmentStatus, ClientAppointmentModel } from '~/shared/api/appointments.models';
 import { PreferredStylistModel } from '~/shared/api/stylists.models';
@@ -47,11 +47,11 @@ export class HomeComponent {
   isRefresherEnabled = true;
 
   constructor(
+    private app: App,
     private appointmentsDataStore: AppointmentsDataStore,
     private domCtrl: DomController,
     private events: Events,
     private logger: Logger,
-    private navCtrl: NavController,
     private preferredStylistsData: PreferredStylistsData
   ) {
   }
@@ -128,11 +128,15 @@ export class HomeComponent {
 
   onStylistClick(stylist: PreferredStylistModel): void {
     const params: StylistProfileParams = { stylist };
-    this.navCtrl.push(PageNames.StylistProfile, { params });
+    this.app.getRootNav().push(PageNames.StylistProfile, { params });
+  }
+
+  onMyStylistsClick(): void {
+    this.app.getRootNav().push(PageNames.MyStylists);
   }
 
   onSearchStylistsClick(): void {
-    this.navCtrl.push(PageNames.StylistSearch);
+    this.app.getRootNav().push(PageNames.StylistSearch);
   }
 
   onAppointmentClick(appointment: ClientAppointmentModel): void {
@@ -145,7 +149,7 @@ export class HomeComponent {
       if (tab.name === HomeTabName.Past) {
         params.hasRebook = true;
       }
-      this.navCtrl.push(PageNames.Appointment, { params });
+      this.app.getRootNav().push(PageNames.Appointment, { params });
     }
   }
 
