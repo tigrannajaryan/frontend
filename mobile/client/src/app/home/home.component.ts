@@ -80,7 +80,10 @@ export class HomeComponent {
   }
 
   async onRefresh(refresher: Refresher): Promise<void> {
-    await this.loadTabData(this.slides.getActiveIndex());
+    await Promise.all([
+      this.loadStylists(),
+      this.loadTabData(this.slides.getActiveIndex())
+    ]);
     refresher.complete();
   }
 
@@ -181,6 +184,11 @@ export class HomeComponent {
       await this.content.scrollToTop(300);
       this.isScrolling = false;
     }
+  }
+
+  private async loadStylists(): Promise<void> {
+    const allStylists = await this.preferredStylistsData.get();
+    this.stylists = allStylists.filter(stylist => stylist.is_profile_bookable);
   }
 
   private async loadTabData(tabIdx: number): Promise<void> {
