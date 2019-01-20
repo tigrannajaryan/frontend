@@ -85,6 +85,16 @@ export class MainTabsComponent implements OnDestroy {
     this.events.subscribe(ClientEventTypes.selectMainTab, (idx: MainTabIndex, callback?: (tab: Tab) => void) => {
       this.onTabSelectedFromOutside(idx, callback);
     });
+
+    // Trigger ionViewWillEnter of tab’s child View (see https://github.com/ionic-team/ionic-v3/issues/159).
+    const tab = this.tabs.getSelected();
+    if (tab) {
+      const views = this.tabs.getSelected().getViews();
+      const view = views[views.length - 1].instance;
+      if (view.ionViewWillEnter) {
+        view.ionViewWillEnter();
+      }
+    }
   }
 
   ionViewWillLeave(): void {

@@ -94,6 +94,7 @@ page-home {
 
       display: block;
       padding-top: pxtovw(16px);
+      padding-bottom: pxtovw(102px); // for fixed btn
     }
   }
 
@@ -103,13 +104,14 @@ page-home {
     color: color($colors-shared, warmGrey);
   }
 
+  .Home-fab {
+    display: flex;
+    width: 100%;
+  }
+
   .Home-bookBtn {
-    position: sticky;
-    bottom: pxtovw(16px);
     margin: pxtovw(16px) auto;
     // important overwrites .Button box-shadow: none !important
-    box-shadow:
-      0 pxtovw(2px) pxtovw(4px) rgba(black, 0.16),
-      0 0 pxtovw(30px) pxtovw(10px) white !important;
+    box-shadow: 0 pxtovw(2px) pxtovw(4px) rgba(black, 0.16) !important;
   }
 }

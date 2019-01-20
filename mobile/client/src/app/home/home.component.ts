@@ -56,12 +56,9 @@ export class HomeComponent {
   ) {
   }
 
-  async ionViewWillLoad(): Promise<void> {
-    const allStylists = await this.preferredStylistsData.get();
-    this.stylists = allStylists.filter(stylist => stylist.is_profile_bookable);
-  }
-
   async ionViewWillEnter(): Promise<void> {
+    await this.loadStylists();
+
     const firstTabIdx = 0;
     await this.loadTabData(firstTabIdx);
 
@@ -80,7 +77,10 @@ export class HomeComponent {
   }
 
   async onRefresh(refresher: Refresher): Promise<void> {
-    await this.loadTabData(this.slides.getActiveIndex());
+    await Promise.all([
+      this.loadStylists(),
+      this.loadTabData(this.slides.getActiveIndex())
+    ]);
     refresher.complete();
   }
 
@@ -153,8 +153,15 @@ export class HomeComponent {
     }
   }
 
-  onRebookAppointmentClick(appointment: ClientAppointmentModel): void {
+  async onRebookAppointmentClick(appointment: ClientAppointmentModel): Promise<void> {
     this.logger.info('onRebookClick', appointment);
+    if (!this.stylists.some(stylist => stylist.uuid === appointment.stylist_uuid)) {
+      const { response } = await this.preferredStylistsData.addStylist({ uuid: appointment.stylist_uuid });
+      if (!response) {
+        // Error should already be reported, just return
+        return;
+      }
+    }
     startRebooking(appointment);
   }
 
@@ -174,6 +181,11 @@ export class HomeComponent {
       await this.content.scrollToTop(300);
       this.isScrolling = false;
     }
+  }
+
+  private async loadStylists(): Promise<void> {
+    const allStylists = await this.preferredStylistsData.get();
+    this.stylists = allStylists.filter(stylist => stylist.is_profile_bookable);
   }
 
   private async loadTabData(tabIdx: number): Promise<void> {
