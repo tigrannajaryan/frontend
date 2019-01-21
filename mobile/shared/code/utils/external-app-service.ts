@@ -71,12 +71,15 @@ export class ExternalAppService {
   /**
    * Simply open a browser page
    */
-  openWebPage(url: string): void {
-    const validLink = /^(http|\/\/)/;
-    if (!validLink.test(url)) {
-      url = `//${url}`;
+  openWebPage(link: string): void {
+    if (!link.match(/^https?:\/\//i)) {
+      // IF link have no http or https
+      // we should add it
+      // otherwise we will have a bug (white screen)
+      // because if we open google.com without http/s
+      link = `http://${ link }`;
     }
-    this.openLink(url);
+    this.openLink(link);
   }
 
   /**
@@ -99,8 +102,8 @@ export class ExternalAppService {
    * Make a call with phone app
    */
   doPhoneCall(phone: string): void {
-    // Open phone app using a deep link:
-    this.openLink(`tel:${phone}`);
+    // Open phone app:
+    window.open(`tel:${phone}`);
   }
 
   /**

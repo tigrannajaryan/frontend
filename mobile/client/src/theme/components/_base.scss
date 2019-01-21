@@ -1,5 +1,8 @@
+$content-x-offset: pxtovw(24px);
+$content-y-offset: pxtovw(17px);
+
 @mixin content-padding {
-  padding: pxtovw(17px) pxtovw(24px);
+  padding: $content-y-offset $content-x-offset;
 }
 
 .contentSidePadding {
@@ -10,5 +13,5 @@
 }
 
 .contentVerticalPadding {
-  padding: pxtovw(17px) 0;
+  padding: $content-y-offset 0;
 }

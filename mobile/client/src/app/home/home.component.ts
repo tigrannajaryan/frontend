@@ -92,6 +92,11 @@ export class HomeComponent {
     this.isRefresherEnabled = isRefresherEnabled;
   }
 
+  onScrollStylists(isScrollInProgress: boolean): void {
+    this.onEnableRefresher(!isScrollInProgress);
+    this.slides.lockSwipes(isScrollInProgress);
+  }
+
   /**
    * Listen ionSlideDidChange and call onTabChange to activate
    * a tab and load all it’s data.
@@ -185,7 +190,8 @@ export class HomeComponent {
 
   private async loadStylists(): Promise<void> {
     const allStylists = await this.preferredStylistsData.get();
-    this.stylists = allStylists.filter(stylist => stylist.is_profile_bookable);
+    // Sort by making bookable profiles go first:
+    this.stylists = allStylists.sort((s1, s2) => Number(s2.is_profile_bookable) - Number(s1.is_profile_bookable));
   }
 
   private async loadTabData(tabIdx: number): Promise<void> {

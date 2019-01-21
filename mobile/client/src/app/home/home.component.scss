@@ -1,4 +1,7 @@
 page-home {
+  $stylist-size: pxtovw(48px);
+  $stylist-offset: pxtovw(8px);
+
   ion-refresher {
     padding-top: pxtovw(16px);
     text-align: center;
@@ -43,22 +46,25 @@ page-home {
   }
 
   .Home-allStylists {
-    margin-bottom: pxtovw(24px);
+    padding: pxtovw(16px) $content-x-offset 0;
     font-weight: 500;
+
+    span {
+      font-size: $shared-h4;
+    }
   }
 
   .Home-stylist {
-    $btn-size: pxtovw(48px);
-
     display: flex;
     align-items: center;
     justify-content: center;
-    width: $btn-size;
-    height: $btn-size;
-    margin: pxtovw(8px) pxtovw(8px) 0 0;
+    width: $stylist-size;
+    min-width: $stylist-size;
+    height: $stylist-size;
+    margin: $stylist-offset $stylist-offset 0 0;
     overflow: hidden;
     background-color: color($colors-shared, honey);
-    border-radius: $btn-size;
+    border-radius: 50%;
     box-shadow: 0 pxtovw(2px) pxtovw(4px) rgba(black, 0.16);
 
     img {
@@ -73,6 +79,22 @@ page-home {
       width: $icon-size;
       height: $icon-size;
       color: white;
+    }
+  }
+
+  .Home-stylistsScrollable {
+    padding-bottom: $stylist-offset;
+    margin: 0 -1 * $content-x-offset;
+    overflow-x: scroll;
+    -webkit-overflow-scrolling: touch;
+
+    .Home-stylist:first-child {
+      margin-left: $content-x-offset;
+    }
+
+    // An offset after the last stylist
+    .Home-stylistsScrollableBorder {
+      min-width: $content-x-offset - $stylist-offset;
     }
   }
 
@@ -93,7 +115,6 @@ page-home {
       @include content-padding;
 
       display: block;
-      padding-top: pxtovw(16px);
       padding-bottom: pxtovw(102px); // for fixed btn
     }
   }

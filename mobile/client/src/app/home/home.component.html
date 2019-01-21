@@ -21,6 +21,32 @@
       <ion-spinner></ion-spinner>
   </ion-refresher>
 
+  <div class="Home-allStylists" data-test-id="stylists"
+    *ngIf="isActiveTab(0) && stylists">
+      <ion-row justify-content-between>
+        <span>Your Stylists</span>
+        <span class="Link"
+          (click)="onMyStylistsClick()">
+            Details
+        </span>
+      </ion-row>
+      <ion-row nowrap class="Home-stylistsScrollable"
+        (touchstart)="onScrollStylists(true)"
+        (touchmove)="onScrollStylists(true)"
+        (touchend)="onScrollStylists(false)">
+          <div class="Home-stylist" data-test-id="searchBtn"
+            (click)="onSearchStylistsClick()">
+              <i class="mb-icon-plus"></i>
+          </div>
+          <div class="Home-stylist"
+            *ngFor="let stylist of stylists"
+            (click)="onStylistClick(stylist)">
+              <img [src]="stylist.profile_photo_url || 'assets/icons/stylist-avatar.png'" />
+          </div>
+          <div class="Home-stylistsScrollableBorder"></div>
+      </ion-row>
+    </div>
+
   <ion-slides no-padding class="Home-slides"
     (ionSlideDrag)="onEnableRefresher(false)"
     (touchend)="onEnableRefresher(true)"
@@ -28,28 +54,6 @@
 
       <ion-slide *ngFor="let tab of tabs; index as tabIdx">
         <ng-container *ngIf="isActiveTab(tabIdx) || !tab.appointments">
-
-          <div class="Home-allStylists" data-test-id="stylists"
-            *ngIf="tab.name === HomeTabName.Upcoming && stylists">
-              <ion-row justify-content-between>
-                <span>Your Stylists</span>
-                <span class="Link"
-                  (click)="onMyStylistsClick()">
-                    Details
-                </span>
-              </ion-row>
-              <ion-row>
-                <div class="Home-stylist" data-test-id="searchBtn"
-                  (click)="onSearchStylistsClick()">
-                    <i class="mb-icon-plus"></i>
-                </div>
-                <div class="Home-stylist"
-                  *ngFor="let stylist of stylists"
-                  (click)="onStylistClick(stylist)">
-                    <img [src]="stylist.profile_photo_url || 'assets/icons/stylist-avatar.png'" />
-                </div>
-              </ion-row>
-            </div>
 
           <ng-container *ngIf="tab.appointments; else loader">
 
