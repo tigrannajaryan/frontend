@@ -85,8 +85,8 @@ export const profileSummaryMock = {
 };
 
 export const profileSettingsMock = {
-  tax_percentage: faker.random.number({min: 0, max: 99}),
-  card_fee_percentage: faker.random.number({min: 0, max: 99}),
+  tax_percentage: Number(faker.finance.amount(0, 99.99, 4)),
+  card_fee_percentage: Number(faker.finance.amount(0, 99.99, 4)),
   google_calendar_integrated: true
 };
 
