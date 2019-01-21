@@ -295,6 +295,9 @@ export class ProfileComponent {
         role: 'destructive',
         handler: () => {
           this.profile.profile_photo_url = '';
+          // tslint:disable-next-line:no-null-keyword
+          this.profile.profile_photo_id = null;
+          this.updateProfile();
         }
       });
     }
@@ -339,5 +342,17 @@ export class ProfileComponent {
 
     const { response } = await this.baseService.uploadFile<{ uuid: string }>(formData).toPromise();
     this.profile.profile_photo_id = response.uuid;
+
+    this.updateProfile();
+  }
+
+  private async updateProfile(): Promise<void> {
+    const { response } = await this.profileData.set(this.profile);
+    if (response) {
+      this.profile = response;
+      this.profile.phone = getPhoneNumber(response.phone);
+      this.profile.public_phone = getPhoneNumber(response.public_phone);
+      this.stylistProfileCompleteness = calcProfileCompleteness(response);
+    }
   }
 }
