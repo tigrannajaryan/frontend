@@ -92,6 +92,11 @@ export class HomeComponent {
     this.isRefresherEnabled = isRefresherEnabled;
   }
 
+  onScrollStylists(isScrollInProgress: boolean): void {
+    this.onEnableRefresher(!isScrollInProgress);
+    this.slides.lockSwipes(isScrollInProgress);
+  }
+
   /**
    * Listen ionSlideDidChange and call onTabChange to activate
    * a tab and load all it’s data.
