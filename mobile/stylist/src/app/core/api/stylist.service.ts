@@ -12,7 +12,7 @@ import { ApiResponse } from '~/shared/api/base.models';
 import {
   ServiceCategory,
   ServiceItem, ServiceTemplateSet, ServiceTemplateSetBase,
-  SetStylistServicesParams, StylistProfile, StylistServicesListResponse
+  SetStylistServicesParams, StylistProfile, StylistServicesListResponse, StylistSettings
 } from '~/shared/api/stylist-app.models';
 import { AppointmentDateOffer } from '~/core/api/home.models';
 
@@ -151,5 +151,19 @@ export class StylistServiceProvider extends BaseService {
    */
   setInstagramAccessToken(token: string): Observable<ApiResponse<StylistProfile>> {
     return this.patch('stylist/profile', { instagram_access_token: token });
+  }
+
+  /**
+   * Get stylist settings
+   */
+  getStylistSettings(): Observable<ApiResponse<StylistSettings>> {
+    return this.get('stylist/common-settings');
+  }
+
+  /**
+   * Set stylist settings
+   */
+  setStylistSettings(data: StylistSettings): Observable<ApiResponse<StylistSettings>> {
+    return this.post('stylist/common-settings', data);
   }
 }

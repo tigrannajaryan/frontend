@@ -39,7 +39,8 @@ export class NonBookableSavePopupComponent implements OnInit {
   async onRedirectToSavedStylists(): Promise<void> {
     this.onClose();
     await this.app.getRootNav().popToRoot();
-    this.events.publish(ClientEventTypes.selectMainTab, MainTabIndex.Stylists);
+    // change redirect to stylists page when it will be ready
+    this.events.publish(ClientEventTypes.selectMainTab, MainTabIndex.Home);
     this.events.publish(ClientEventTypes.selectStylistTab, MyStylistsTabs.savedStylists);
   }
 }

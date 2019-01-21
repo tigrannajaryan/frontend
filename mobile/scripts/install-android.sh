@@ -14,6 +14,13 @@ touch ~/.android/repositories.cfg
 # install Java and Gradle
 brew tap caskroom/versions || true
 brew cask install caskroom/versions/java8
+
+# The code below should set up the proper JAVA_HOME path but for some reason
+# when we do `cordova build android --release` we see
+# JAVA_HOME=/Library/Java/JavaVirtualMachines/openjdk-11.0.1.jdk/Contents/Home.
+# TODO: investigate and understand why it doesn’t work.
+# export JAVA_HOME=`/usr/libexec/java_home -v 1.8`
+
 brew install gradle
 
 # install Android SDK

@@ -71,7 +71,7 @@
         </div>
 
         <!-- Bottom controls -->
-        <ion-row *ngIf="[AppointmentStatus.checked_out, AppointmentStatus.no_show].indexOf(appointment.status) === -1">
+        <ion-row *ngIf="appointment.uuid && [AppointmentStatus.checked_out, AppointmentStatus.no_show].indexOf(appointment.status) === -1">
           <ion-col (click)="onChangeServices()" class="CheckOut-controlBtn">
             <span>Change </span>
             <ng-container *ngIf="appointment.services.length > 1; else oneTpl">Services</ng-container>
@@ -83,9 +83,9 @@
       </div>
 
       <!-- Saved amount -->
-      <ion-row *ngIf="getDiscountDescr(previewResponse || appointment) as discount" align-items-center justify-content-between class="CheckOut-saved">
-        <ion-col col-7 no-padding>YOU SAVED {{ discount.percentage }}%</ion-col>
-        <ion-col col-5 no-padding class="CheckOut-savedAmount"><sup>$</sup>{{ discount.amount }}</ion-col>
+      <ion-row *ngIf="(previewResponse || appointment).total_discount_percentage as discount_percentage" align-items-center justify-content-between class="CheckOut-saved">
+        <ion-col col-7 no-padding>YOU SAVED {{ discount_percentage }}%</ion-col>
+        <ion-col col-5 no-padding class="CheckOut-savedAmount"><sup>$</sup>{{ (previewResponse || appointment).total_discount_amount }}</ion-col>
       </ion-row>
 
     </div>

@@ -49,12 +49,12 @@ cache:
 # global env variables, common to each build's environment
 env:
   global:
-    - APP_VERSION_NUMBER=1.2.7
+    - APP_VERSION_NUMBER=1.2.8
     - IOS_SDK="iphoneos12.1"
     - ANDROID_SDK=android_sdk
     - ANDROID_BUILD_TOOLS_VERSION="28.0.1"
     - ANDROID_HOME="$TRAVIS_BUILD_DIR/$ANDROID_SDK"
-    - JAVA_HOME="/Library/Java/JavaVirtualMachines/jdk1.8.0_192.jdk/Contents/Home"
+    - JAVA_HOME="/Library/Java/JavaVirtualMachines/jdk1.8.0_202.jdk/Contents/Home"
     - >-
         IOS_CODE_SIGN_IDENTITY="iPhone Distribution: BetterBeauty, Inc"
     - SENTRY_ORGANIZATION="madebeauty"

@@ -18,6 +18,8 @@ page-calendar-example {
     position: sticky;
     top: 0;
     z-index: 2;
+    padding: 0 pxtovw(14px);
+    margin: 0 pxtovw(10px);
     background: white;
   }
 

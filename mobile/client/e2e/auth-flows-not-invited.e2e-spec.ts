@@ -36,8 +36,7 @@ describe('Authentication flows for non-invited client with app reloads', () => {
     await howPricingWorksPage.continue();
     await pushPrimingPage.allow();
     await waitFor(mainTabsPage.homeTab);
-    await waitFor(homePage.searchBtn);
-    await waitForNot(homePage.bookBtn);
+    await waitFor(homePage.bookBtn);
   });
 
   it('Can logout', async () => {
@@ -87,8 +86,7 @@ describe('Authentication flows for non-invited client with app reloads', () => {
   it('Can restore auth on reload to mainTabsPage', async () => {
     await browser.get('');
     await waitFor(mainTabsPage.homeTab);
-    await waitFor(homePage.searchBtn);
-    await waitForNot(homePage.bookBtn);
+    await waitFor(homePage.bookBtn);
   });
 
   it('Can logout', async () => {

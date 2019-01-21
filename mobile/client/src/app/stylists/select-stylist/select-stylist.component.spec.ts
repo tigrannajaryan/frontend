@@ -63,8 +63,9 @@ describe('Pages: Select Stylist', () => {
     fixture.detectChanges();
 
     const events = fixture.debugElement.injector.get(Events);
+    // change redirect to stylists page when it will be ready
     expect(events.publish)
-      .toHaveBeenCalledWith(ClientEventTypes.selectMainTab, MainTabIndex.Stylists, instance.showNoSelectedStylistWarning);
+      .toHaveBeenCalledWith(ClientEventTypes.selectMainTab, MainTabIndex.Home, instance.showNoSelectedStylistWarning);
 
     done();
   });

@@ -115,12 +115,13 @@ describe('Pages: ProfileComponent', async () => {
     instance.activeTab = ProfileTabNames.clientView;
     fixture.detectChanges();
     spyOn(instance, 'onFieldEdit');
+    spyOn(instance, 'processPhoto');
 
     instance.profile.profile_photo_url = '';
     fixture.detectChanges();
     const stylistProfilePreviewPhoto = fixture.nativeElement.querySelector('[data-test-id=stylistProfilePreviewPhoto]');
     stylistProfilePreviewPhoto.click();
-    expect(instance.onFieldEdit).toHaveBeenCalledWith('profile_photo_url');
+    expect(instance.processPhoto).toHaveBeenCalled();
 
     instance.profile.instagram_url = '';
     fixture.detectChanges();
@@ -247,10 +248,11 @@ describe('Pages: ProfileComponent', async () => {
     fixture.detectChanges();
 
     spyOn(instance, 'onFieldEdit');
+    spyOn(instance, 'processPhoto');
 
     const ProfileEditPhoto = fixture.nativeElement.querySelector('[data-test-id=ProfileEditPhoto]');
     ProfileEditPhoto.click();
-    expect(instance.onFieldEdit).toHaveBeenCalledWith('profile_photo_url');
+    expect(instance.processPhoto).toHaveBeenCalled();
 
     const ProfileEditInstagram = fixture.nativeElement.querySelector('[data-test-id=ProfileEditInstagram]');
     ProfileEditInstagram.click();

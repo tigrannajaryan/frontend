@@ -2,10 +2,11 @@
 
 
 <ion-content no-padding>
-  <made-nav [activePage]="PageNames.WelcomeToMade"></made-nav>
+  <made-nav *ngIf="!params?.isRootPage" [activePage]="PageNames.WelcomeToMade"></made-nav>
 
   <div class="Made-wp Made-wpContent">
-    <div class="WelcomeTitle">Welcome To MADE!</div>
+    <div *ngIf="!params?.isRootPage" class="WelcomeTitle">Welcome To MADE!</div>
+    <div *ngIf="params?.isRootPage" class="WelcomeTitle">How MADE works?</div>
 
     <div class="WelcomeTitle-icon">
       <img src="assets/imgs/icons/discount.png" alt="">
@@ -16,4 +17,4 @@
 </ion-content>
 
 
-<ion-footer madeContinueFooter (continue)="onContinue()"></ion-footer>
+<ion-footer *ngIf="!params?.isRootPage" madeContinueFooter (continue)="onContinue()"></ion-footer>
