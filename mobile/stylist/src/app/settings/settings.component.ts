@@ -40,7 +40,10 @@ export class SettingsComponent {
       inputType: InputTypes.tel,
       value: [
         this.settings.tax_percentage,
-        [Validators.required, Validators.max(99.99), Validators.pattern(/^[0-9]*$/)]
+        [
+          Validators.required,
+          Validators.pattern(/^(\d{1,2})(\.\d{1,2})?$/)
+        ]
       ],
       onSave: async (val: number) => {
         this.settings.tax_percentage = val;
@@ -57,7 +60,10 @@ export class SettingsComponent {
       inputType: InputTypes.tel,
       value: [
         this.settings.card_fee_percentage,
-        [Validators.required, Validators.max(99.99), Validators.pattern(/^[0-9]*$/)]
+        [
+          Validators.required,
+          Validators.pattern(/^(\d{1,2})(\.\d{1,2})?$/)
+        ]
       ],
       onSave: async (val: number) => {
         this.settings.card_fee_percentage = val;

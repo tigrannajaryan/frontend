@@ -28,7 +28,7 @@
         </ion-col>
 
         <ion-col col-4 no-padding class="DiscountsList-col DiscountsList-colIcon">
-          <div>{{ settings?.tax_percentage || 0 }}%</div>
+          <div>{{ (settings?.tax_percentage || 0) | number: '1.2' }}%</div>
           <ion-icon name="ios-arrow-forward-outline"></ion-icon>
         </ion-col>
       </ion-row>
@@ -39,7 +39,7 @@
         </ion-col>
 
         <ion-col col-4 no-padding class="DiscountsList-col DiscountsList-colIcon">
-          <div>{{ settings?.card_fee_percentage || 0 }}%</div>
+          <div>{{ (settings?.card_fee_percentage || 0) | number: '1.2' }}%</div>
           <ion-icon name="ios-arrow-forward-outline"></ion-icon>
         </ion-col>
       </ion-row>

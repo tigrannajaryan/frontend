@@ -21,6 +21,8 @@ export type FieldErrorCode =
   'max_length' |
   'max_value' |
   'min_value' |
+  'max_digits' |
+  'max_decimal_places' |
   'invalid_choice' |
   'empty' |
   'invalid_image' |
@@ -62,6 +64,8 @@ export const fieldErrorMsgs = new Map<FieldErrorCode, string>([
   ['max_length', '{0} is too long.'],
   ['max_value', '{0} is too small.'],
   ['min_value', '{0} is too large.'],
+  ['max_digits', '{0} is too large.'],
+  ['max_decimal_places', '{0} decimal number is too large.'],
   ['invalid_choice', '{0} is invalid.'],
   ['empty', '{0} cannot be empty.'],
   ['invalid_image', 'Image is invalid.'],
