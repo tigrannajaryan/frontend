@@ -99,8 +99,8 @@ export class ExternalAppService {
    * Make a call with phone app
    */
   doPhoneCall(phone: string): void {
-    // Open phone app using a deep link:
-    this.openLink(`tel:${phone}`);
+    // Open phone app:
+    window.open(`tel:${phone}`);
   }
 
   /**
