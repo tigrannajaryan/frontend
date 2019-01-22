@@ -96,7 +96,7 @@
   <div class="AppointmentPage-actions">
     <!-- Confirm booking -->
     <button ion-button
-      *ngIf="params && !(params.hasRebook || params.onCancel); else existingAppointmentTpl"
+      *ngIf="params && !params?.appointment.uuid; else existingAppointmentTpl"
       (click)="onConfirmClick()"
       class="Button">
         Confirm Booking
