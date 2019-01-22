@@ -304,7 +304,7 @@ export class HomeSlotsComponent {
       if (profile && !profile.google_calendar_integrated) {
         // Google Calendar is not integrated, show action to do it.
         const params: CalendarPrimingParams = {
-          // refresh profile status on success, so that we don't show "Add to Calendar"
+          // Refresh profile status on success, so that we don't show "Add to Calendar"
           // action anymore.
           onSuccess: () => this.profileDataStore.refresh()
         };
