@@ -10,7 +10,6 @@ import { ScreenOrientation } from '@ionic-native/screen-orientation';
 import { AppVersion } from '@ionic-native/app-version';
 import { StatusBar } from '@ionic-native/status-bar';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { AppAvailability } from '@ionic-native/app-availability';
 import { Contacts } from '@ionic-native/contacts';
 import { OpenNativeSettings } from '@ionic-native/open-native-settings';
@@ -233,7 +232,6 @@ const declarations = [
     AppVersion,
     StylistAppStorage,
     ScreenOrientation,
-    InAppBrowser,
     AppAvailability,
     Clipboard,
     EmailComposer,
