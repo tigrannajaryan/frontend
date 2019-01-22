@@ -35,7 +35,7 @@ class ErrorWrapper {
   templateUrl: 'invitations.component.html'
 })
 export class InvitationsComponent extends AbstractInvitationsComponent {
-  // Expose to html template
+  // Expose to the view
   PageNames = PageNames;
 
   // Preloaded stylist profile and discounts promises
