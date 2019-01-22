@@ -74,7 +74,6 @@ import { GoogleAnalytics } from '@ionic-native/google-analytics';
 import { AppAvailability } from '@ionic-native/app-availability';
 import { Clipboard } from '@ionic-native/clipboard';
 import { EmailComposer } from '@ionic-native/email-composer';
-import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { DatePicker } from '@ionic-native/date-picker';
 
 import { StoreModule } from '@ngrx/store';
@@ -161,14 +160,6 @@ export class TestUtils {
         { provide: GoogleAnalytics, useClass: GoogleAnalyticsMock },
         { provide: StylistAppStorage, useClass: StylistAppStorageMock },
         ExternalAppService, GoogleSignin,
-        {
-          provide: InAppBrowser,
-          useClass: class InAppBrowserMock {
-            create = jasmine.createSpy('create').and.returnValue(
-              jasmine.createSpyObj('instance', { show: Promise.resolve() })
-            );
-          }
-        },
         {
           provide: AppAvailability,
           useClass: class AppAvailabilityMock {
