@@ -12,8 +12,14 @@ export interface ClientInvitation {
   name?: string;
   phone: string;
   status?: InvitationStatus;
+  invite_target?: InviteTarget;
 }
 
 export interface InvitationsResponse {
   invitations: ClientInvitation[];
+}
+
+export enum InviteTarget {
+  stylist = 'stylist',
+  client = 'client'
 }
