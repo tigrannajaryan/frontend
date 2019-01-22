@@ -34,6 +34,9 @@ export class ExternalAppService {
       link = `http://${ link }`;
     }
 
+    // open default system browser or popup where user can select needed browser
+    // this app will collapse
+    // and browser will show new page with this link
     window.open(link, '_system');
   }
 
