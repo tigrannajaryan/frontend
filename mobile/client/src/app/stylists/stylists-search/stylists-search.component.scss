@@ -119,7 +119,7 @@ page-stylists-search {
     }
 
     &.StylistsPage .scroll-content {
-      transform: translateY($top-bar-height);
+      transform: translateY($top-bar-height + pxtovw(40px)); // + navbar height
     }
   }
 }
