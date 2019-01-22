@@ -4,7 +4,6 @@ import { AlertController, Platform } from 'ionic-angular';
 import { AppAvailability } from '@ionic-native/app-availability';
 import { Clipboard } from '@ionic-native/clipboard';
 import { EmailComposer } from '@ionic-native/email-composer';
-import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { LaunchNavigator, LaunchNavigatorOptions } from '@ionic-native/launch-navigator';
 
 export interface ExternalAppDeepLinkConfig {
@@ -26,14 +25,24 @@ export enum MapsApp {
 @Injectable()
 export class ExternalAppService {
 
-  // Fixes InAppBrowser’s page creation in Android. Without these options the app craches in production.
-  // See https://forum.ionicframework.com/t/inappbrowser-crash-on-android-device/82993/2 for more info.
-  private pageOptionsAndroid: string[] = ['_blank', 'location=no'];
+  private static openLink(link: string): void {
+    if (!link.match(/^https?:\/\//i)) {
+      // IF link have no http or https
+      // we should add it
+      // otherwise we will have a bug (white screen)
+      // because if we open google.com without http/s
+      link = `http://${ link }`;
+    }
+
+    // open default system browser or popup where user can select needed browser
+    // this app will collapse
+    // and browser will show new page with this link
+    window.open(link, '_system');
+  }
 
   constructor(
     private alertCtrl: AlertController,
     private appAvailability: AppAvailability,
-    private browser: InAppBrowser,
     private clipboard: Clipboard,
     private emailComposer: EmailComposer,
     private platform: Platform
@@ -54,17 +63,17 @@ export class ExternalAppService {
 
     if (!app) {
       // Just show in browser:
-      this.openLink(config.httpUrl);
+      ExternalAppService.openLink(config.httpUrl);
       return;
     }
 
     try {
       await this.appAvailability.check(app);
       // Open url in the app (deeplink):
-      this.openLink(config.appUrl);
+      ExternalAppService.openLink(config.appUrl);
     } catch {
       // Show in browser in case of no app:
-      this.openLink(config.httpUrl);
+      ExternalAppService.openLink(config.httpUrl);
     }
   }
 
@@ -72,14 +81,7 @@ export class ExternalAppService {
    * Simply open a browser page
    */
   openWebPage(link: string): void {
-    if (!link.match(/^https?:\/\//i)) {
-      // IF link have no http or https
-      // we should add it
-      // otherwise we will have a bug (white screen)
-      // because if we open google.com without http/s
-      link = `http://${ link }`;
-    }
-    this.openLink(link);
+    ExternalAppService.openLink(link);
   }
 
   /**
@@ -127,7 +129,7 @@ export class ExternalAppService {
 
     if (!this.platform.is('cordova')) {
       // Show an address on a google map in browser as a fallback:
-      this.openLink(`https://maps.google.com/?q=${address}`);
+      ExternalAppService.openLink(`https://maps.google.com/?q=${address}`);
       return;
     }
 
@@ -161,11 +163,5 @@ export class ExternalAppService {
       buttons: [{ text: 'Dismiss', role: 'cancel' }]
     });
     alert.present();
-  }
-
-  private openLink(link: string): void {
-    const options: string[] = this.platform.is('android') ? this.pageOptionsAndroid : [];
-    const browser = this.browser.create(link, ...options);
-    browser.show();
   }
 }

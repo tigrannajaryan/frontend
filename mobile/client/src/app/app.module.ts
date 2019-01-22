@@ -12,7 +12,6 @@ import { Clipboard } from '@ionic-native/clipboard';
 import { Diagnostic } from '@ionic-native/diagnostic';
 import { EmailComposer } from '@ionic-native/email-composer';
 import { Geolocation } from '@ionic-native/geolocation';
-import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { IonicStorageModule } from '@ionic/storage';
 import { LaunchNavigator } from '@ionic-native/launch-navigator';
 import { ScreenOrientation } from '@ionic-native/screen-orientation';
@@ -211,7 +210,6 @@ const declarations = [
     Diagnostic,
     EmailComposer,
     Geolocation,
-    InAppBrowser,
     LaunchNavigator,
     SplashScreen,
     StatusBar,

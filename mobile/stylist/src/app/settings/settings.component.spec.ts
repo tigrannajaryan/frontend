@@ -1,7 +1,6 @@
-import { async, ComponentFixture } from '@angular/core/testing';
+import { ComponentFixture } from '@angular/core/testing';
 import { NavController } from 'ionic-angular';
 import { AppAvailability } from '@ionic-native/app-availability';
-import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { Clipboard } from '@ionic-native/clipboard';
 import { EmailComposer } from '@ionic-native/email-composer';
 import { HttpClient, HttpHandler } from '@angular/common/http';
@@ -28,7 +27,6 @@ describe('Pages: SettingsComponent', () => {
     [
       NavController,
       AppAvailability,
-      InAppBrowser,
       Clipboard,
       EmailComposer,
       HttpHandler,
