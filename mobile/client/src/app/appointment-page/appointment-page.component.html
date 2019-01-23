@@ -102,16 +102,18 @@
         Confirm Booking
     </button>
     <ng-template #existingAppointmentTpl>
-      <button ion-button
-        *ngIf="params?.appointment.status !== AppointmentStatus.checked_out && isTodayAppointment()"
-        (click)="onCheckout()"
-        class="AppointmentPage-checkout">
-          Checkout {{ previewResponse ? (previewResponse.grand_total.toFixed() | currency) : '' }}
-      </button>
-      <!-- Rebook-->
-      <div class="AppointmentPage-reBook" *ngIf="params?.hasRebook" (click)="onRebookClick()">Re-book Appointment</div>
-      <!-- Cancelation link -->
-      <a class="AppointmentPage-cancelBooking" *ngIf="params?.onCancel" (click)="onCancelClick()">Cancel Booking</a>
+      <ng-container *ngIf="params?.appointment.status !== AppointmentStatus.no_show">
+        <button ion-button
+          *ngIf="params?.appointment.status !== AppointmentStatus.checked_out && isTodayAppointment()"
+          (click)="onCheckout()"
+          class="AppointmentPage-checkout">
+            Checkout {{ previewResponse ? (previewResponse.grand_total.toFixed() | currency) : '' }}
+        </button>
+        <!-- Rebook-->
+        <div class="AppointmentPage-reBook" *ngIf="params?.hasRebook" (click)="onRebookClick()">Re-book Appointment</div>
+        <!-- Cancelation link -->
+        <a class="AppointmentPage-cancelBooking" *ngIf="params?.onCancel" (click)="onCancelClick()">Cancel Booking</a>
+      </ng-container>
     </ng-template>
   </div>
 </ion-footer>
