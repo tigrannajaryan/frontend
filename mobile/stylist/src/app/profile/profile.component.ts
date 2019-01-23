@@ -1,3 +1,4 @@
+import { FormControl } from '@angular/forms';
 import { Component, ViewChild } from '@angular/core';
 import { Page } from 'ionic-angular/navigation/nav-util';
 import { Camera, CameraOptions } from '@ionic-native/camera';
@@ -83,6 +84,9 @@ export class ProfileComponent {
     }
   ];
 
+  private photoId: FormControl;
+  private photoUrl: FormControl;
+
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
@@ -111,6 +115,11 @@ export class ProfileComponent {
       this.onTabChange(params.profileTab);
     });
 
+    const { profile_photo_id, profile_photo_url } = this.registrationForm.getFormControls();
+
+    this.photoId = profile_photo_id;
+    this.photoUrl = profile_photo_url;
+
     await this.registrationForm.loadFormInitialData();
 
     await this.getProfile();
@@ -129,6 +138,9 @@ export class ProfileComponent {
       this.profile.phone = getPhoneNumber(response.phone);
       this.profile.public_phone = getPhoneNumber(response.public_phone);
       this.stylistProfileCompleteness = calcProfileCompleteness(response);
+
+      this.photoUrl.setValue(response.profile_photo_url);
+      this.photoId.setValue(response.profile_photo_id);
     }
   }
 
@@ -265,7 +277,7 @@ export class ProfileComponent {
   }
 
   hasPhoto(): boolean {
-    return Boolean(this.profile.profile_photo_id) || Boolean(this.profile.profile_photo_url);
+    return Boolean(this.photoId.value) || Boolean(this.photoUrl.value);
   }
 
   processPhoto(): void {
@@ -294,9 +306,10 @@ export class ProfileComponent {
         text: 'Remove Photo',
         role: 'destructive',
         handler: () => {
-          this.profile.profile_photo_url = '';
+          this.photoUrl.setValue('');
           // tslint:disable-next-line:no-null-keyword
-          this.profile.profile_photo_id = null;
+          this.photoId.setValue(null);
+
           this.updateProfile();
         }
       });
@@ -333,7 +346,7 @@ export class ProfileComponent {
     const downscaledBase64Image = await downscalePhoto(originalBase64Image);
 
     // set image preview
-    this.profile.profile_photo_url = downscaledBase64Image;
+    this.photoUrl.setValue(downscaledBase64Image);
 
     // convert base64 to File after to formData and send it to server
     const file = await urlToFile(downscaledBase64Image, 'file.png');
@@ -341,17 +354,16 @@ export class ProfileComponent {
     formData.append('file', file);
 
     const { response } = await this.baseService.uploadFile<{ uuid: string }>(formData).toPromise();
-    this.profile.profile_photo_id = response.uuid;
+    this.photoId.setValue(response.uuid);
 
     this.updateProfile();
   }
 
   private async updateProfile(): Promise<void> {
-    const { response } = await this.profileData.set(this.profile);
+    await this.registrationForm.save();
+
+    const { response } = await this.profileData.get();
     if (response) {
-      this.profile = response;
-      this.profile.phone = getPhoneNumber(response.phone);
-      this.profile.public_phone = getPhoneNumber(response.public_phone);
       this.stylistProfileCompleteness = calcProfileCompleteness(response);
     }
   }

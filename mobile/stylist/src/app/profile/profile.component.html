@@ -52,7 +52,7 @@
           </div>
 
           <div (click)="processPhoto()" class="StylistProfilePreview-photo" data-test-id="stylistProfilePreviewPhoto">
-            <img [src]="profile.profile_photo_url  || 'assets/icons/stylist-avatar.png'" alt="">
+            <img [src]="photoUrl?.value  || 'assets/icons/stylist-avatar.png'" alt="">
           </div>
 
           <div class="Made-wp">
@@ -241,11 +241,11 @@
 
           <div class="ProfilePage-blockItem" data-test-id="ProfileEditPhoto">
             <div class="ProfilePage-blockItemName">
-              <span>Image <img *ngIf="!profile.profile_photo_url" class="ProfilePage-blockItemNameNotice" src="assets/icons/!@2x.png" /></span>
+              <span>Image <img *ngIf="!photoUrl?.value" class="ProfilePage-blockItemNameNotice" src="assets/icons/!@2x.png" /></span>
             </div>
             <div (click)="processPhoto()" class="ProfilePage-blockItemPictureWp">
-              <div *ngIf="profile.profile_photo_url" class="ProfilePage-blockItemPicture"><img [src]="profile.profile_photo_url" alt=""></div>
-              <div *ngIf="!profile.profile_photo_url" class="ProfilePage-blockItemPicture"><img src="assets/icons/stylist-avatar.png" alt=""></div>
+              <div *ngIf="photoUrl?.value" class="ProfilePage-blockItemPicture"><img [src]="photoUrl?.value" alt=""></div>
+              <div *ngIf="!photoUrl?.value" class="ProfilePage-blockItemPicture"><img src="assets/icons/stylist-avatar.png" alt=""></div>
 
               <div class="ProfilePage-blockItemPictureEdit"><i class="mb-icon-pencil"></i></div>
             </div>
