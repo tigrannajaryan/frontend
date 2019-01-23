@@ -62,7 +62,7 @@
             <string>Need camera access to take pictures for your profile</string>
         </edit-config>
         <edit-config file="*-Info.plist" mode="merge" target="NSContactsUsageDescription">
-          <string>Need contacts access to invite clients</string>
+          <string>Need contacts access to invite friends</string>
         </edit-config>
         <allow-intent href="itms:*" />
         <allow-intent href="itms-apps:*" />
