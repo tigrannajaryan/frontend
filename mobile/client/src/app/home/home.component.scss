@@ -88,6 +88,10 @@ page-home {
     overflow-x: scroll;
     -webkit-overflow-scrolling: touch;
 
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
     .Home-stylist:first-child {
       margin-left: $content-x-offset;
     }
