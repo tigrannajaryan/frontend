@@ -123,3 +123,14 @@ page-stylists-search {
     }
   }
 }
+
+/* iphone X and t */
+@media only screen and (min-device-height: 812px) and (-webkit-device-pixel-ratio: 3) {
+  page-stylists-search {
+    .StylistsPage {
+      .scroll-content {
+        transform: translateY(pxtovw(264px));
+      }
+    }
+  }
+}
