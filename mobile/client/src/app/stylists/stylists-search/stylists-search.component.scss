@@ -124,7 +124,7 @@ page-stylists-search {
   }
 }
 
-/* iphone X and t */
+/* iphoneX-specific scroll-content offset fix */
 @media only screen and (min-device-height: 812px) and (-webkit-device-pixel-ratio: 3) {
   page-stylists-search {
     .StylistsPage {
