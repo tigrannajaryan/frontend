@@ -71,7 +71,8 @@ describe('Shared functions: profileStatusToPage', () => {
       has_personal_data: true,
       has_picture_set: true,
       has_services_set: true,
-      has_weekday_discounts_set: true
+      has_weekday_discounts_set: true,
+      has_deal_of_week_set: true
     };
 
     spyOn(pushNotification, 'needToShowPermissionScreen').and.returnValue(
