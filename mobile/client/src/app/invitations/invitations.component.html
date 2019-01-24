@@ -4,7 +4,7 @@
 <ion-content no-padding>
   <div class="Made-wp Made-wpContent with-FullHeight">
     <div class="titleBox">
-      <h1 class="AppHistoryPage-h1 pageTitle">Invite Friends</h1>
+      <h1 class="AppHistoryPage-h1 pageTitle">Invite {{ params?.inClientToStylistInvitation ? 'Your Stylist': 'Friends' }}</h1>
     </div>
 
     <!-- This is shown while we are loading the data. It should appear briefly only -->
@@ -89,4 +89,4 @@
 </ion-content>
 
 
-<ion-footer (continue)="onInviteClients()" [title]="'Invite Friends'" madeContinueFooter></ion-footer>
+<ion-footer (continue)="onInviteClients()" title="Invite {{ params?.inClientToStylistInvitation ? 'Your Stylist': 'Friends' }}" madeContinueFooter></ion-footer>

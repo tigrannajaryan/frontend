@@ -91,12 +91,28 @@ page-stylists-search {
     }
 
     .StylistsPage-content {
-      padding-top: 0;
+      padding-top: pxtovw(10px);
     }
 
     .StylistsPage-stylists {
       padding-bottom: pxtovw(24px);
       margin-top: pxtovw(18px);
+    }
+  }
+
+  .StylistsPage-invite {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: pxtovw(16px) pxtovw(24px);
+    font-size: $shared-h4;
+    background: white;
+    border-radius: pxtovw(16px);
+    box-shadow: 0 pxtovw(7px) pxtovw(43px) 0 rgba(0, 0, 0, 0.08);
+
+    i {
+      font-size: pxtovw(17px);
+      color: color($colors-shared, lightSalmon);
     }
   }
 

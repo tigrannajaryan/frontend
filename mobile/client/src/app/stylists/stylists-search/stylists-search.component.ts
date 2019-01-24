@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { App, Content, Header, Keyboard, NavParams } from 'ionic-angular';
+import { App, Content, Header, Keyboard, NavController, NavParams } from 'ionic-angular';
 import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/debounceTime';
 
@@ -12,6 +12,7 @@ import {
 import { loading } from '~/shared/utils/loading';
 import { GeolocationService, LatLng } from '~/shared/utils/geolocation.service';
 import { StylistProfileParams } from '~/stylists/stylist-profile/stylist-profile.component';
+import { InvitationsComponentParams } from '~/shared/components/invitations/abstract-invitations.component';
 
 import { PreferredStylistsData } from '~/core/api/preferred-stylists.data';
 import { StylistsService } from '~/core/api/stylists.service';
@@ -75,6 +76,7 @@ export class StylistSearchComponent implements AfterViewInit {
     private keyboard: Keyboard,
     private params: NavParams,
     private preferredStylistsData: PreferredStylistsData,
+    private navCtrl: NavController,
     private stylistsService: StylistsService
   ) {
   }
@@ -173,6 +175,13 @@ export class StylistSearchComponent implements AfterViewInit {
     this.header._elementRef.nativeElement.classList.add('is-Minified');
     this.content._elementRef.nativeElement.classList.add('is-Minified');
     this.content.resize();
+  }
+
+  onInviteStylistClick(): void {
+    const params: InvitationsComponentParams = {
+      inClientToStylistInvitation: true
+    };
+    this.navCtrl.push(PageNames.Invitations, { params });
   }
 
   private async requestGeolocation(): Promise<void> {

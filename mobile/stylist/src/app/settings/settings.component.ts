@@ -37,12 +37,12 @@ export class SettingsComponent {
     const params: SettingsFieldComponentParams = {
       title: 'Tax Rate Percentage',
       name: StylistSettingsKeys.tax_percentage,
-      inputType: InputTypes.tel,
+      inputType: InputTypes.number,
       value: [
         this.settings.tax_percentage,
         [
           Validators.required,
-          Validators.pattern(/^(\d{1,2})(\.\d{1,2})?$/)
+          Validators.pattern(/^(\d{1,2})(\.\d{1,3})?$/)
         ]
       ],
       onSave: async (val: number) => {
@@ -57,12 +57,12 @@ export class SettingsComponent {
     const params: SettingsFieldComponentParams = {
       title: 'Card Fee Percentage',
       name: StylistSettingsKeys.card_fee_percentage,
-      inputType: InputTypes.tel,
+      inputType: InputTypes.number,
       value: [
         this.settings.card_fee_percentage,
         [
           Validators.required,
-          Validators.pattern(/^(\d{1,2})(\.\d{1,2})?$/)
+          Validators.pattern(/^(\d{1,2})(\.\d{1,3})?$/)
         ]
       ],
       onSave: async (val: number) => {
