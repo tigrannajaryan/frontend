@@ -55,7 +55,7 @@ export class MadeMenuComponent implements OnInit {
 
     switch (page) {
       case PageNames.Discounts:
-        return !profileStatus.has_weekday_discounts_set;
+        return !profileStatus.has_weekday_discounts_set || !profileStatus.has_deal_of_week_set;
       case PageNames.Invitations:
         return !profileStatus.has_invited_clients;
       case PageNames.Services:

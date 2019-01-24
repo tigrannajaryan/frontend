@@ -25,11 +25,13 @@ export class DiscountsRevisitComponent {
       .filter(key => key.match('rebook_within'))
       .map(key => {
         const keyStrings: string[] = key.split('_'); // key = `rebook_within_1_week`
+        const weekdayIso = +keyStrings[RebookWeek.num];
         return {
-          weekday: +keyStrings[RebookWeek.num],
+          weekday: weekdayIso,
           weekday_verbose: `${+keyStrings[RebookWeek.num]} ${keyStrings[RebookWeek.word]}`,
           discount_percent: discounts[key],
-          is_working_day: true
+          is_working_day: true,
+          is_deal_of_week: discounts.deal_of_week_weekday === weekdayIso
         };
       })
       .sort((a, b) => a.weekday - b.weekday); // from 1 (Monday) to 7 (Sunday)

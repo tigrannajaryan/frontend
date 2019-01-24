@@ -31,7 +31,7 @@
 
     <ion-slides (ionSlideDidChange)="onSlideChanged()" no-padding>
       <ion-slide>
-        <discounts-weekday-short [discounts]="weekdays" (weekdayChange)="onWeekdayChange()"></discounts-weekday-short>
+        <discounts-weekday-short [discounts]="weekdays" [dealOfTheWeek]="dealOfTheWeek" (weekdayChange)="onWeekdayChange()" (updateWeekdayDiscounts)="onUpdateWeekdayDiscounts()"></discounts-weekday-short>
       </ion-slide>
 
       <ion-slide>

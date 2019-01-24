@@ -36,6 +36,7 @@ import { GoogleSignin } from './shared/google-signin';
 import { IntegrationsApi } from './shared/api/integrations.api';
 import { MadeAnalyticsApi } from './shared/api/made-analytics.api';
 import { InstagramOAuthService } from '~/shared/utils/instagram-oauth-service';
+import { ListPickerPopupComponent } from '~/shared/components/list-picker-popup/list-picker-popup.component';
 
 import { ENV } from '~/environments/environment.default';
 
@@ -168,6 +169,7 @@ const declarations = [
   FirstScreenComponent,
   HomeSlotsComponent,
   InvitationsComponent,
+  ListPickerPopupComponent,
   SettingsFieldComponent,
   MyClientsComponent,
   ProfileComponent,

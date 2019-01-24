@@ -1,0 +1,19 @@
+<div class="ListPickerPopup-wrap">
+  <div class="ListPickerPopup-content">
+    <ion-list radio-group class="ListPickerPopup-list">
+      <ion-list-header class="ListPickerPopup-title"
+        *ngIf="params?.title as title">{{ title }}</ion-list-header>
+      <ng-container *ngIf="params?.options as options">
+        <ion-item class="ListPickerPopup-listItem"
+          *ngFor="let option of options">
+            <ion-label>{{ option.label }}</ion-label>
+            <ion-radio
+              [disabled]="option.disabled"
+              [checked]="option.selected"
+              [value]="option.value"
+              (ionSelect)="onSelect(option)"></ion-radio>
+        </ion-item>
+      </ng-container>
+    </ion-list>
+  </div>
+</div>

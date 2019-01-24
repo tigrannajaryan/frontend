@@ -1,10 +1,33 @@
-<div class="Made-text">
-  <div class="Made-textItem">
-    Set your discounts on typically slower days. We will automatically steadily increase your prices to the full price as clients book.
-  </div>
-  <div class="Made-textItem">
-    You can update your discounts at any time.
-  </div>
+<div class="DiscountsWeekday-text">
+  MADE will steadily increase prices to the full price automatically as clients book and your day fills up!
 </div>
+
+<ion-row class="DiscountsList-row DiscountsWeekday-firstRow"
+  (click)="selectDealOfTheWeek()">
+
+    <ng-container *ngIf="dealOfTheWeek; else notSelectedTpl">
+      <ion-col col-8 no-padding class="DiscountsList-col">
+        Deal of the Week
+      </ion-col>
+      <ion-col col-4 no-padding class="DiscountsList-col DiscountsList-colIcon">
+        <span>{{ moment().isoWeekday(dealOfTheWeek).format('dddd') }}</span>
+        <ion-icon name="ios-arrow-forward-outline"></ion-icon>
+      </ion-col>
+    </ng-container>
+
+    <ng-template #notSelectedTpl>
+      <ion-col col-7 no-padding class="DiscountsList-col">
+        Deal of the Week
+      </ion-col>
+      <ion-col col-5 no-padding class="DiscountsList-col DiscountsList-colIcon">
+        <button ion-button small class="Button">Select a day</button>
+      </ion-col>
+    </ng-template>
+
+    <ion-col col-12 no-padding class="DiscountsWeekday-text DiscountsWeekday-text--danger"
+      *ngIf="!dealOfTheWeek">
+        Must select Deal of the Week to complete set up.
+    </ion-col>
+</ion-row>
 
 <discounts-list [list]="discounts" [header]="{ left: 'Day', right: 'Discount'}" (discountChange)="onDiscountChange()"></discounts-list>
