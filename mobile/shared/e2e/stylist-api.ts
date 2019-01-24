@@ -54,6 +54,19 @@ class StylistApi {
   }
 
   /**
+   * Set discounts of stylist. The stylist must be already authenticated as a user.
+   */
+  setDealOfTheWeek(): Promise<any> {
+    return this.patch('stylist/discounts', {
+      weekdays: [{
+        weekday: 5,
+        discount_percent: 30
+      }],
+      deal_of_week_weekday: 5
+    });
+  }
+
+  /**
    * Sets the working hours of the stylist. The stylist must be already authenticated as a user.
    */
   setWorktime(data: Worktime): Promise<Worktime> {
@@ -66,6 +79,10 @@ class StylistApi {
 
   post<ResponseType>(url: string, body: any): Promise<ResponseType> {
     return this.request<ResponseType>('POST', url, body);
+  }
+
+  patch<ResponseType>(url: string, body: any): Promise<ResponseType> {
+    return this.request<ResponseType>('PATCH', url, body);
   }
 
   async request<ResponseType>(method: string, url: string, body: any): Promise<ResponseType> {
