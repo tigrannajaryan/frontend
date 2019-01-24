@@ -6,7 +6,7 @@
 
   <div *ngIf="data?.categories" class="SharedCategories-categories">
     <div *ngFor="let category of data.categories" (click)="selectCategory(category)" class="SharedCategories-card SharedCard">
-      <div class="SharedCategories-cardImg" [style.backgroundImage]="'url(' + 'assets/icons/services-categories/' + category.category_code +'.svg)'"></div>
+      <div class="SharedCategories-cardImg" [style.backgroundImage]="'url(' + 'assets/icons/services-categories/' + category.category_code +'.png)'"></div>
       <div>
         <div class="SharedCategories-cardTitle">{{ category.name }}</div>
         <div class="SharedCategories-cardSubtitle">{{ category.services.length }} services</div>
