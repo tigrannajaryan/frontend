@@ -29,6 +29,11 @@
 
 <ion-content class="StylistsPage">
   <div class="contentSidePadding StylistsPage-content">
+    <div (click)="onInviteStylistClick()" class="StylistsPage-invite">
+      Invite Your Stylist
+
+      <i class="mb-icon-mail"></i>
+    </div>
 
     <!-- Showing loading cards -->
     <div *ngIf="isLoading" class="StylistsPage-stylists">

@@ -57,6 +57,7 @@ export const defaultCountry = 'US';
 
 export interface InvitationsComponentParams {
     isRootPage?: boolean;
+    inClientToStylistInvitation?: boolean;
 }
 
 export abstract class AbstractInvitationsComponent {
