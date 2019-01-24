@@ -24,5 +24,6 @@ export const isoTimeOnlyFormat = 'HH:mm:ss';
 export enum InputTypes {
   tel = 'tel',
   text = 'text',
-  email = 'email'
+  email = 'email',
+  number = 'number'
 }
