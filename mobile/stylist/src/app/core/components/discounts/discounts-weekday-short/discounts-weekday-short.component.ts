@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ModalController } from 'ionic-angular';
 import * as moment from 'moment';
 
@@ -19,7 +19,7 @@ import { WeekdayDiscount } from '~/core/api/discounts.models';
   selector: 'discounts-weekday-short',
   templateUrl: 'discounts-weekday-short.component.html'
 })
-export class DiscountsWeekdayShortComponent implements OnInit {
+export class DiscountsWeekdayShortComponent {
   moment = moment;
 
   @Input() discounts: WeekdayDiscount[];
