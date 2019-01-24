@@ -25,10 +25,10 @@ export class DiscountsRevisitComponent {
       .filter(key => key.match('rebook_within'))
       .map(key => {
         const keyStrings: string[] = key.split('_'); // key = `rebook_within_1_week`
-        const weekdayIso = +keyStrings[RebookWeek.num];
+        const weekdayIso = Number(keyStrings[RebookWeek.num]);
         return {
           weekday: weekdayIso,
-          weekday_verbose: `${+keyStrings[RebookWeek.num]} ${keyStrings[RebookWeek.word]}`,
+          weekday_verbose: `${weekdayIso} ${keyStrings[RebookWeek.word]}`,
           discount_percent: discounts[key],
           is_working_day: true,
           is_deal_of_week: discounts.deal_of_week_weekday === weekdayIso

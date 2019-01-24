@@ -10,7 +10,7 @@ list-picker-popup {
 
   .ListPickerPopup-content {
     background: white;
-    box-shadow: 0 -4px 20px rgba(black, 0.18);
+    box-shadow: 0 pxtovw(-4px) pxtovw(20px) rgba(black, 0.18);
   }
 
   .ListPickerPopup-list {
