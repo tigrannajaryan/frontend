@@ -11,6 +11,9 @@ class SalonAddressPage {
   // Operations
   async fillForm(salonAddress) {
     await waitFor(this.salonAddress);
+    // we need this click function before sendKeys
+    // it's fix bug. when sometimes `Selenium sendKeys(string) method only sending part of string`
+    await click(this.salonAddress);
     await this.salonAddress.sendKeys(salonAddress);
   }
 
