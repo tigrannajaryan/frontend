@@ -7,7 +7,7 @@ import { Component } from '@angular/core';
 import { SMS, SmsOptions } from '@ionic-native/sms';
 
 import { normalizePhoneNumber } from '~/shared/utils/phone-numbers';
-import { ClientInvitation, InvitationStatus } from '~/shared/api/invitations.models';
+import { ClientInvitation, InvitationStatus, InviteTarget } from '~/shared/api/invitations.models';
 import { showAlert } from '~/shared/utils/alert';
 
 import { PageNames } from '~/core/page-names';
@@ -132,9 +132,13 @@ export class InvitationsComponent extends AbstractInvitationsComponent {
         continue;
       }
 
+      const inviteTarget = this.params && this.params.inClientToStylistInvitation
+        ? InviteTarget.stylist : InviteTarget.client;
+
       const invitation: ClientInvitation = {
         name: contact.displayName,
-        phone: phoneNumber
+        phone: phoneNumber,
+        invite_target: inviteTarget
       };
 
       try {
@@ -174,10 +178,17 @@ export class InvitationsComponent extends AbstractInvitationsComponent {
   }
 
   private async composeInvitationText(): Promise<string> {
-    let defaultInvitationText = `Hi, it's ${this.profile.first_name}. I'm using the MADE app to find and book stylists.`;
+    let defaultInvitationText = '';
 
-    defaultInvitationText = `${defaultInvitationText} You can book using dynamic pricing
+    if (this.params && this.params.inClientToStylistInvitation) {
+      defaultInvitationText = `Hi, it's ${this.profile.first_name}. I saw this cool app to find
+ and book stylists called MADE Pro. Check it out and see if you would be interested
+ in creating a stylist profile! Check it out https://madebeauty.com/get/`;
+    } else {
+      defaultInvitationText = `Hi, it's ${this.profile.first_name}. I'm using the MADE app to find
+ and book stylists. You can book using dynamic pricing
  and find some great deals! Check it out https://madebeauty.com/get/`;
+    }
 
     return defaultInvitationText;
   }
