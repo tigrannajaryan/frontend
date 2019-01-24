@@ -37,23 +37,24 @@ describe('Stylists add/remove flow', () => {
     await waitFor(mainTabsPage.homeTab);
   });
 
-  it('Can navigate to my stylists tab', async () => {
+  // TODO: fix all xit tests when we will have new home page
+  xit('Can navigate to my stylists tab', async () => {
     await mainTabsPage.goToMyStylists();
   });
 
-  it('Can navigate to search stylists page and add one more stylist', async () => {
+  xit('Can navigate to search stylists page and add one more stylist', async () => {
     await myStylistsPage.goToStylistSearch();
     await stylistsSearchPage.addFirstStylist();
   });
 
-  it('Can navigate to search stylists page and add one nonBookable stylist', async () => {
+  xit('Can navigate to search stylists page and add one nonBookable stylist', async () => {
     // NOTE: this code has potential problem, it assumes that non-bookable stylist exists
     await stylistsSearchPage.addNonBookableStylist();
     await click(stylistsSearchPage.goBack);
     await waitFor(mainTabsPage.stylsitsTab);
   });
 
-  it('Can navigate to my saved stylists tab and remove first stylist', async () => {
+  xit('Can navigate to my saved stylists tab and remove first stylist', async () => {
     await myStylistsPage.changeTabToSavedStylists();
     await myStylistsPage.selectFirstSavedStylistAndRemoveIt();
   });

@@ -119,7 +119,22 @@ page-stylists-search {
     }
 
     &.StylistsPage .scroll-content {
-      transform: translateY($top-bar-height);
+      transform: translateY($top-bar-height + pxtovw(40px)); // + navbar height
+    }
+  }
+}
+
+// This is an iphoneX-only scroll-content offset fix.
+//
+// This solution is kind of a tricky one and can be considered only  as a rude temp fix.
+// If there are some more offset problems appear on other devices in future we should
+// do more detailed investigation.
+@media only screen and (min-device-height: 812px) and (-webkit-device-pixel-ratio: 3) {
+  page-stylists-search {
+    .StylistsPage {
+      .scroll-content {
+        transform: translateY(pxtovw(264px));
+      }
     }
   }
 }

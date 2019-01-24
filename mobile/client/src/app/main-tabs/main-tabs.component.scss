@@ -25,8 +25,8 @@ ion-header ion-icon.back-button-icon.icon {
 
 // rewrite ionic main-tabs icons
 ion-icon.tab-button-icon[aria-label^="Home"],
-ion-icon.tab-button-icon[aria-label^="History"],
-ion-icon.tab-button-icon[aria-label^="Stylists"],
+ion-icon.tab-button-icon[aria-label^="Search"],
+ion-icon.tab-button-icon[aria-label^="Invite"],
 ion-icon.tab-button-icon[aria-label^="Profile"] {
   @extend %mb-icon;
 
@@ -38,12 +38,12 @@ ion-icon.tab-button-icon[aria-label^="Home"]:after {
   content: $mb-icon-home-a;
 }
 
-ion-icon.tab-button-icon[aria-label^="History"]:after {
-  content: $mb-icon-clock-a;
+ion-icon.tab-button-icon[aria-label^="Search"]:after {
+  content: $mb-icon-search;
 }
 
-ion-icon.tab-button-icon[aria-label^="Stylists"]:after {
-  content: $mb-icon-stylists-a;
+ion-icon.tab-button-icon[aria-label^="Invite"]:after {
+  content: $mb-icon-invite-a;
 }
 
 ion-icon.tab-button-icon[aria-label^="Profile"]:after {
@@ -54,7 +54,7 @@ ion-icon.tab-button-icon[aria-label^="Profile"]:after {
 .has-icon ion-badge.badge-md-Profile,
 .has-icon ion-badge.badge-wp-Profile {
   @extend %Indicator;
-  
+
   right: calc(50% - 17px);
   font-size: 0;
   background: none;
@@ -65,12 +65,13 @@ ion-icon.tab-button-icon[aria-label^="Profile"]:after {
     content: $mb-icon-home;
   }
 
-  ion-icon.tab-button-icon[aria-label^="History"]:after {
-    content: $mb-icon-clock;
+  ion-icon.tab-button-icon[aria-label^="Search"]:after {
+    text-shadow: pxtovw(0.5px) pxtovw(0.5px); // makes icon bolder
+    content: $mb-icon-search;
   }
 
-  ion-icon.tab-button-icon[aria-label^="Stylists"]:after {
-    content: $mb-icon-stylists;
+  ion-icon.tab-button-icon[aria-label^="Invite"]:after {
+    content: $mb-icon-invite;
   }
 
   ion-icon.tab-button-icon[aria-label^="Profile"]:after {

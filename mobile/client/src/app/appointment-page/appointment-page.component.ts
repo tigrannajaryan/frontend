@@ -4,6 +4,7 @@ import * as moment from 'moment';
 
 import { AppointmentChangeRequest, AppointmentStatus, ClientAppointmentModel } from '~/shared/api/appointments.models';
 import { CheckOutService, ServiceFromAppointment } from '~/shared/api/stylist-app.models';
+import { isoDateFormat } from '~/shared/api/base.models';
 import { formatTimeInZone } from '~/shared/utils/string-utils';
 
 import { AppointmentsApi } from '~/core/api/appointments.api';
@@ -60,7 +61,10 @@ export class AppointmentPageComponent {
 
   isTodayAppointment(): boolean {
     const appointment = this.params && this.params.appointment;
-    return Boolean(appointment) && moment().diff(appointment.datetime_start_at, 'days') === 0;
+    return (
+      Boolean(appointment) &&
+      moment().format(isoDateFormat) === moment(appointment.datetime_start_at).format(isoDateFormat)
+    );
   }
 
   async onConfirmClick(): Promise<void> {

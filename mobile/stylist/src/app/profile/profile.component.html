@@ -51,8 +51,8 @@
             </div>
           </div>
 
-          <div (click)="!profile.profile_photo_url && onFieldEdit(RegistrationFormControl.PhotoUrl)" class="StylistProfilePreview-photo" data-test-id="stylistProfilePreviewPhoto">
-            <img [src]="profile.profile_photo_url  || 'assets/icons/stylist-avatar.png'" alt="">
+          <div (click)="processPhoto()" class="StylistProfilePreview-photo" data-test-id="stylistProfilePreviewPhoto">
+            <img [src]="photoUrl?.value  || 'assets/icons/stylist-avatar.png'" alt="">
           </div>
 
           <div class="Made-wp">
@@ -239,13 +239,16 @@
             Photos
           </div>
 
-          <div (click)="onFieldEdit(RegistrationFormControl.PhotoUrl)" class="ProfilePage-blockItem" data-test-id="ProfileEditPhoto">
+          <div class="ProfilePage-blockItem" data-test-id="ProfileEditPhoto">
             <div class="ProfilePage-blockItemName">
-              <span>Image <img *ngIf="!profile.profile_photo_url" class="ProfilePage-blockItemNameNotice" src="assets/icons/!@2x.png" /></span>
-              <i class="mb-icon-right-arrow"></i>
+              <span>Image <img *ngIf="!photoUrl?.value" class="ProfilePage-blockItemNameNotice" src="assets/icons/!@2x.png" /></span>
             </div>
-            <div *ngIf="profile.profile_photo_url" class="ProfilePage-blockItemPicture"><img [src]="profile.profile_photo_url" alt=""></div>
-            <div *ngIf="!profile.profile_photo_url" class="ProfilePage-blockItemPicture"><img src="assets/icons/stylist-avatar.png" alt=""></div>
+            <div (click)="processPhoto()" class="ProfilePage-blockItemPictureWp">
+              <div *ngIf="photoUrl?.value" class="ProfilePage-blockItemPicture"><img [src]="photoUrl?.value" alt=""></div>
+              <div *ngIf="!photoUrl?.value" class="ProfilePage-blockItemPicture"><img src="assets/icons/stylist-avatar.png" alt=""></div>
+
+              <div class="ProfilePage-blockItemPictureEdit"><i class="mb-icon-pencil"></i></div>
+            </div>
           </div>
 
           <div (click)="onFieldEdit(RegistrationFormControl.Instagram)" class="ProfilePage-blockItem" data-test-id="ProfileEditInstagram">

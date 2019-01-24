@@ -2,7 +2,6 @@ import { AboutComponent } from '~/about/about.component';
 import { AddServicesComponent } from '~/add-services/add-services.component';
 import { AppointmentPageComponent } from '~/appointment-page/appointment-page.component';
 import { AppointmentPriceComponent } from '~/appointment-price/appointment-price.component';
-import { AppointmentsHistoryComponent } from '~/appointments-history/appointments-history.component';
 import { AuthConfirmPageComponent } from '~/auth/auth-confirm/auth-confirm.component';
 import { AuthPageComponent } from '~/auth/auth-start/auth-start.component';
 import { BookingCompleteComponent } from '~/booking/booking-complete/booking-complete.component';
@@ -11,7 +10,7 @@ import { ConfirmCheckoutComponent } from '~/confirm-checkout/confirm-checkout.co
 import { FirstLastNameComponent } from '~/profile/first-last-name/first-last-name.component';
 import { FirstScreenComponent } from '~/first-screen/first-screen.component';
 import { FollowersComponent } from '~/followers/followers.component';
-import { HomePageComponent } from '~/home-page/home-page.component';
+import { HomeComponent } from '~/home/home.component';
 import { HowMadeWorksComponent } from '~/onboarding/how-made-works/how-made-works.component';
 import { HowPricingWorksComponent } from '~/onboarding/how-pricing-works/how-pricing-works.component';
 import { MainTabsComponent } from '~/main-tabs/main-tabs.component';
@@ -28,6 +27,7 @@ import { ServicesPageComponent } from '~/services-page/services-page.component';
 import { StylistComponent } from '~/stylists/stylist/stylist.component';
 import { StylistProfileComponent } from '~/stylists/stylist-profile/stylist-profile.component';
 import { StylistSearchComponent } from '~/stylists/stylists-search/stylists-search.component';
+import { InvitationsComponent } from '~/invitations/invitations.component';
 
 /**
  * Define page names in one place to avoid typos if the names are used as
@@ -43,7 +43,6 @@ export const PageNames = {
   AddServices: AddServicesComponent,
   Appointment: AppointmentPageComponent,
   AppointmentPrice: AppointmentPriceComponent,
-  AppointmentsHistory: AppointmentsHistoryComponent,
   Auth: AuthPageComponent,
   AuthConfirm: AuthConfirmPageComponent,
   BookingComplete: BookingCompleteComponent,
@@ -52,11 +51,12 @@ export const PageNames = {
   FirstLastName: FirstLastNameComponent,
   FirstScreen: FirstScreenComponent,
   Followers: FollowersComponent,
-  Home: HomePageComponent,
+  Home: HomeComponent,
   HowMadeWorks: HowMadeWorksComponent,
   HowPricingWorks: HowPricingWorksComponent,
   MainTabs: MainTabsComponent,
   MyStylists: MyStylistsComponent,
+  Invitations: InvitationsComponent,
   Privacy: PrivacySettingsComponent,
   ProfileEdit: ProfileEditComponent,
   ProfileSummary: ProfileSummaryComponent,

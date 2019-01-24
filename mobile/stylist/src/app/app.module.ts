@@ -10,7 +10,6 @@ import { ScreenOrientation } from '@ionic-native/screen-orientation';
 import { AppVersion } from '@ionic-native/app-version';
 import { StatusBar } from '@ionic-native/status-bar';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { AppAvailability } from '@ionic-native/app-availability';
 import { Contacts } from '@ionic-native/contacts';
 import { OpenNativeSettings } from '@ionic-native/open-native-settings';
@@ -105,6 +104,8 @@ import { FieldEditComponent } from '~/onboarding/field-edit/field-edit.component
 import { SalonAddressComponent } from '~/onboarding/salon-address/salon-address.component';
 import { StylistPhotoComponent } from '~/onboarding/stylist-photo/stylist-photo.component';
 import { WelcomeToMadeComponent } from '~/onboarding/welcome-to-made/welcome-to-made.component';
+import { SettingsComponent } from '~/settings/settings.component';
+import { SettingsFieldComponent } from '~/settings/settings-field/settings-field.component';
 
 initSentry();
 
@@ -167,6 +168,7 @@ const declarations = [
   FirstScreenComponent,
   HomeSlotsComponent,
   InvitationsComponent,
+  SettingsFieldComponent,
   MyClientsComponent,
   ProfileComponent,
   PushPrimingScreenComponent,
@@ -175,6 +177,7 @@ const declarations = [
   ServicesCategoriesComponent,
   ServicesComponent,
   ServicesListComponent,
+  SettingsComponent,
   UpcomingAndPastComponent,
   WorkHoursComponent,
 
@@ -229,7 +232,6 @@ const declarations = [
     AppVersion,
     StylistAppStorage,
     ScreenOrientation,
-    InAppBrowser,
     AppAvailability,
     Clipboard,
     EmailComposer,

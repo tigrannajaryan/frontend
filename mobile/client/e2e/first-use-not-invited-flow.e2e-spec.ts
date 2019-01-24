@@ -66,8 +66,7 @@ describe('First use flow for not invited client', () => {
   it('Can navigate to mainTabs', async () => {
     await pushPrimingPage.allow();
     await waitFor(mainTabsPage.homeTab);
-    await waitFor(homePage.searchBtn);
-    await waitForNot(homePage.bookBtn);
+    await waitFor(homePage.bookBtn);
   });
 
   it('Can logout', async () => {

@@ -147,8 +147,6 @@
         <variable name="WEB_APPLICATION_CLIENT_ID" value="17636556416-l518l3bkc3pev82sl9d2dq6vrd1th7hc.apps.googleusercontent.com" />
     </plugin>
     <plugin name="cordova-plugin-datepicker" spec="0.9.3" />
-    <engine name="android" spec="7.1.0" />
-    <engine name="ios" spec="4.5.5" />
     <plugin name="cordova-plugin-facebook4" spec="3.2.0">
         <variable name="APP_ID" value="467418693781904" />
         <variable name="APP_NAME" value="Made Pro" />
@@ -159,4 +157,6 @@
         <variable name="DEEPLINK_HOST" value="madebeauty.com" />
         <variable name="ANDROID_PATH_PREFIX" value="/getpro/" />
     </plugin>
+    <engine name="android" spec="7.1.0" />
+    <engine name="ios" spec="4.5.5" />
 </widget>

@@ -119,7 +119,9 @@ export class DiscountsComponent {
   }
 
   onRevisitChange(): void {
-    this.discountsApi.setDiscounts(DiscountsRevisitComponent.transformDiscountsToRebook(this.rebook)).get();
+    if (this.rebook) {
+      this.discountsApi.setDiscounts(DiscountsRevisitComponent.transformDiscountsToRebook(this.rebook)).get();
+    }
   }
 
   onFirstVisitChange(): void {
@@ -135,7 +137,7 @@ export class DiscountsComponent {
 
   private async performInitialSaving(): Promise<void> {
     const profileStatus = await getProfileStatus() as StylistProfileStatus;
-    if (profileStatus && !profileStatus.has_weekday_discounts_set) {
+    if (profileStatus && !profileStatus.has_weekday_discounts_set && this.rebook) {
       // Perform initial saving of the discounts and mark them checked.
       const responses = await Promise.all([
         this.discountsApi.setDiscounts({

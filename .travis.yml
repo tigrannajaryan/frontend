@@ -27,6 +27,13 @@ branches:
 # Chrome is needed for E2E Protractor tests
 addons:
   chrome: beta
+  artifacts:
+    target_paths: "$TRAVIS_BUILD_NUMBER/$APP_TYPE/$MB_ENV"
+    bucket: made-frontend-test-results
+    s3_region: us-east-1
+    paths:
+      - mobile/$APP_TYPE/coverage/
+      - mobile/$APP_TYPE/TESTS.xml
 
 # cache packages after each build, and restore on next builds
 # if a change is detected after build finishes - update cache
@@ -42,7 +49,7 @@ cache:
 # global env variables, common to each build's environment
 env:
   global:
-    - APP_VERSION_NUMBER=1.2.7
+    - APP_VERSION_NUMBER=1.2.9
     - IOS_SDK="iphoneos12.1"
     - ANDROID_SDK=android_sdk
     - ANDROID_BUILD_TOOLS_VERSION="28.0.1"
@@ -60,6 +67,12 @@ env:
     - secure: "s3VJowr8313rTyyeCzSW5qbUUivpysa7UrVwksEngqA8RuqkcxmTqUJNsK+zO/fNvdTQ8Lky/rGq/snf0LX62ekBPUT9QgDv0D/fNwNxc7MVt4lTpw0NdtoXlCsATpj1zOcozpkq84GoQlFHew9CLZxddHawN7od0jCop99C6qjDsqtDymJqGvCeJdu6ICJXz7SAoEZeuNUal4lL3LnxsOGfi20dNJKg4Rf2tYMSH/ygbPO8LvqNpXSw+XLveO71n3Jk6djbifNPZPOvwo5g09BPOMkbnxyeGKSqbF8zk8wXlDHv8OAX2CukjVrYqTk10WC5+a3vt9BJaIXtYuZ/6pOBH44RYTMIqI9hFP33H3jBlUDXb/AFujG0u/l1sLKpoyCU0MiwYB+dXZc/FTuiEfsVCCf1cAypjIRvbJVC5GQxlCB0/JVGIGGbdcNiqmmkPEFyg0SmWgmxPnhT+pM/LvHGehsYtRMRvNFsKHGFRBreAxI+MdfePZ4QQabS7QGh5YXB2lMKgKIL45hwHhWaorovQ+yDUnqxm0pGnsW4Y2RZtlWV4nJXbzfygKgSJhC3OxClPNc3NE3yUpWDE7mvTeLIGziyRwI0RhL/vdXhuq+XRnF0lmQj2yPHOEI1psd1+afs6NpV4rgJDHZ4xsiblN01riuktKQKHvENByCqyFs="
     # $SENTRY_AUTH_TOKEN; expands to SENTRY_AUTH_TOKEN=token
     - secure: "M58uRd5J8WXlKyupoNTJUovF2cZxV6CRKl15V9i8oobBiqkd5dgh8bfreuLtKh+lOlxJ6vHUzaWJpgHfgdd1LxIBgbyAK+5FJFC1KeuyRwIJCSAD4MMi0BsJeWXPCpPnDT6lUypoFE3VNE9HPYkqouJCorTAlSL6P/6w2Iv9YZOAkJMeqwmM8EvayNYx0rr/0/1DrHIbn+klRzDSf6lCXpqlnN88vNSnu9RsI8oDmr7RsDr/kK2+I8B9uKPR//O+HzbIo7Jhx0j2kiXmHcNmUFXGHirOAn6dRhqpR0J4w1dZENYojlBGk5KICyJ9+nFl75vDy0po/Q3llVuEjkURQv3zuHKB+Hhe5R13qsCoK0bxAS+42CA1HxYPckodcViUMnBDwMf4irhw12CQScr91no+YCrO0yNgUMoKLV/WC7AaIq8pqfW/eow6ZmSuCBla1ZzyRzIYJqbGTOwKMgGYcfB4l2SNWHFssJOu2BZbyaqK4FBTeLM5Ux4dS85tCpV5crvz79nRsPUshxRGTGrHy/Hlb1tMGQOTA5JXL7sO9N3FwsjJfvLNxa5W99zTLAGwPrtC4v+Q9hpie6P78nYB5PIjWTV8BJ2MYk9q0CJDctGYh3A+kWAhFwGoWdLsCs9Qjnp0HIzct/lInujIxeKTKkmEWrAUf/IBj0eS5gZPfSg="
+    # expands to AWS_ACCESS_KEY=key
+    - secure: "sy+WwwsxXPDgZbYSDhbNZ9IL04e6KVWaoqp1qwPSOsvQiaYXJ1zq+9MMukBWHIjUaIpBTKMNDQi//6bMxuI4ArxYQd1zRS+zbhWlgr7woyMiy2bI4PHuhUh5NDbKA8nyD4FDrzlhmv3rGLQV4wtAOC8OCC/eWiRA3/E8JAho4n5CbBMJ/qSfAztFwNTTv5CfjOpbWYvOT67A7dTv2baZBgFpXMSVnYesPZFOtQUkLEM/rWSJqFE3VmL6eaVNFsXtn7qRcXvdZ+utFVDBqZrkPnlwb+Df2JI9lStS8g9PH84gYrjUcnnTIRQB+UjzK96XrYLuil7ZfnVZZSS3dTAJfmbjObgN1BmB2ID786GXqy3Xwswo0vXIhMGIn8/gAQ/6mgHn1KFN9ZidfIVDfCGKAXGB87AMVCSOIj6/AC4w/gkQf3Nd+csSq8ZuhKaox5vYpkdsTEglGBS9TXNvvPMbdO5njdHh6EQbuqrFAb6bPKLCCYfVCwm4MlyDmUg/V/CY0lViexbkCuQUFPOZ1ZUyxz3RCHYm78Nq9SUr0fru/Yv1vhkXS/a2OYyxe7vHeh00+m3+cu+u7Q6LzKfvh9rA7LSgZ6m9oon8R3YNZFhAeClHnPpAgc+EJUZjdA4ET2n8K536M3AHZE80Twom/sKX2vGMEP67wrJ4Ekq7BWdMsq4="
+    # expands to AWS_SECURE_KEY=secure_key
+    - secure: "w4xpoyuiPA8e2zXJir7QIIcypF9OAu7Gna7x/7EM53dwZbZzFqn01MIgaL4TdkM3IIcSGMJNo5Cp+YNG2EekyPxENN3dc/mg9Ve4EEOOSNLoZKkA+ggPKykyKEFE84ngyY/m5+vdpk7KnFzV0/Oik2gmM6CY2grq/TKVo5/37hVRQR9NUGSEqKoiILjroYorm88Hb3CjI/uY3zvha/baa7KY40DDPS+yPRgdqMVMNsaoDkKyGzYCQCCqqDcR60OM7q7uuCii4ABwSn4QrwWW+ZFTzwMJhMyCZB76+am3kmDL0ieGyNGEUAGzz+B/QyPUAUT6/hgEma6pCRdbgDJdV/l1k7e0USJ3KaiH3pt4TKY7TuahvYBpM7ESRaUwqbLb8d1RaTHCWcetvwanW1tvaSyT5zjkfEurYKgZ0T36WDu2SshKhMTfZJdqrYBiqrpJX1hOQ06ZKjFrXabs+bdWL8suWmcP8pRcEsXKHIM+mae0lBnGMuAOiHiBDWUQjoSIn/ge438Jf1ENxZEH96ytBTMN7+gW2uej5/0XR3qh6O8VRxRghzccAcp+o2rdkAon7w+JNkxCifWhB3B5V2IUJcyFxnHxBAAn57tPr9OtviJPF7QJNMWKEzhn6u9c2//Pwfy9q7ZTBMIQh3ayyj0IwHkngvFJXVhO+MjkuW2b4eA="
+    - ARTIFACTS_AWS_ACCESS_KEY="$AWS_ACCESS_KEY"
+    - ARTIFACTS_AWS_SECRET_KEY="$AWS_SECURE_KEY"
 
 jobs:
   fast_finish: true

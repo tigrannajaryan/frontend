@@ -23,7 +23,8 @@ import { ProfileDataStore } from '~/core/profile.data';
 
 import { CoreModule } from '~/core/core.module';
 import { prepareSharedObjectsForTests } from '~/core/test-utils.spec';
-import { DisplayContact, InvitationsComponent } from './invitations.component';
+import { InvitationsComponent } from './invitations.component';
+import { DisplayContact } from '~/shared/components/invitations/abstract-invitations.component';
 
 describe('Pages: InvitationsComponent', () => {
   let fixture;

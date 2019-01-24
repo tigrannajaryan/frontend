@@ -1,0 +1,26 @@
+<ion-header madeMenuHeader></ion-header>
+
+
+<ion-content no-padding>
+  <div *ngIf="params" class="Made-wp Made-wpContent Onboarding-content">
+    <div class="Made-h2 Onboarding-h2">
+      Edit your <strong>{{ params.title }}</strong>
+    </div>
+
+    <ion-item class="Input">
+      <ion-label floating>Tax Rate</ion-label>
+      <ion-input [formControl]="control" [type]="params.inputType"></ion-input>
+    </ion-item>
+  </div>
+
+  <div *ngIf="!params" class="CenterBlock">
+    <ion-spinner></ion-spinner>
+  </div>
+</ion-content>
+
+
+<ion-footer *ngIf="params" class="Footer Onboarding-footer">
+  <button (click)="onSave()" [disabled]="control?.invalid" class="Button">
+    Save
+  </button>
+</ion-footer>

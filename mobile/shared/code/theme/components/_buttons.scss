@@ -3,21 +3,30 @@
 
   width: 100%;
   min-height: $button-height;
-  font-size: $t-base;
+  font-size: $shared-base;
   line-height: $button-height;
   text-transform: none;  //Added to remove upercase No button in design is upercase
   background-color: color($colors, primary);
   border-radius: pxtovw(10px);
   box-shadow: none !important;
 
+  [small],
   &.button-small {
     $button-height: pxtovw(40px);
 
     width: auto;
     min-height: $button-height;
     padding: 0 pxtovw(40px);
-    font-size: $t-base;
+    font-size: $shared-base;
     line-height: $button-height;
+  }
+
+  [large],
+  &.button-large {
+    width: auto;
+    padding: 0 pxtovw(60px);
+    font-size: $shared-h4;
+    font-weight: 500;
   }
 
   &.button-mini {

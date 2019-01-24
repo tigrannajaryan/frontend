@@ -54,7 +54,6 @@ import { AppAvailability } from '@ionic-native/app-availability';
 import { Camera } from '@ionic-native/camera';
 import { Clipboard } from '@ionic-native/clipboard';
 import { EmailComposer } from '@ionic-native/email-composer';
-import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { LaunchNavigator } from '@ionic-native/launch-navigator';
 import { StatusBar } from '@ionic-native/status-bar';
 import { Storage } from '@ionic/storage';
@@ -185,14 +184,6 @@ export class TestUtils {
         { provide: AuthProcessState, useClass: AuthProcessStateMock },
         LaunchNavigator, ExternalAppService,
         { provide: GeolocationService, useClass: GeolocationServiceMock },
-        {
-          provide: InAppBrowser,
-          useClass: class InAppBrowserMock {
-            create = jasmine.createSpy('create').and.returnValue(
-              jasmine.createSpyObj('instance', { show: Promise.resolve() })
-            );
-          }
-        },
         {
           provide: AppAvailability,
           useClass: class AppAvailabilityMock {

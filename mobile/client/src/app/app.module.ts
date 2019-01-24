@@ -12,7 +12,6 @@ import { Clipboard } from '@ionic-native/clipboard';
 import { Diagnostic } from '@ionic-native/diagnostic';
 import { EmailComposer } from '@ionic-native/email-composer';
 import { Geolocation } from '@ionic-native/geolocation';
-import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { IonicStorageModule } from '@ionic/storage';
 import { LaunchNavigator } from '@ionic-native/launch-navigator';
 import { ScreenOrientation } from '@ionic-native/screen-orientation';
@@ -20,6 +19,9 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import { Push } from '@ionic-native/push';
 import { GooglePlus } from '@ionic-native/google-plus';
+import { Contacts } from '@ionic-native/contacts';
+import { OpenNativeSettings } from '@ionic-native/open-native-settings';
+import { SMS } from '@ionic-native/sms';
 
 import { GalleryModalHammerConfig, GalleryModalModule } from 'ionic-gallery-modal';
 import { AgmCoreModule, LAZY_MAPS_API_CONFIG } from '@agm/core';
@@ -64,13 +66,12 @@ import { AboutComponent } from '~/about/about.component';
 import { AddServicesComponent } from '~/add-services/add-services.component';
 import { AppointmentPageComponent } from '~/appointment-page/appointment-page.component';
 import { AppointmentPriceComponent } from '~/appointment-price/appointment-price.component';
-import { AppointmentsHistoryComponent } from '~/appointments-history/appointments-history.component';
 import { AuthPageComponent } from '~/auth/auth-start/auth-start.component';
 import { AuthConfirmPageComponent } from '~/auth/auth-confirm/auth-confirm.component';
 import { BookingCompleteComponent } from '~/booking/booking-complete/booking-complete.component';
 import { ConfirmCheckoutComponent } from '~/confirm-checkout/confirm-checkout.component';
 import { FirstScreenComponent } from '~/first-screen/first-screen.component';
-import { HomePageComponent } from '~/home-page/home-page.component';
+import { HomeComponent } from '~/home/home.component';
 import { HowMadeWorksComponent } from '~/onboarding/how-made-works/how-made-works.component';
 import { HowPricingWorksComponent } from '~/onboarding/how-pricing-works/how-pricing-works.component';
 import { MainTabsComponent } from '~/main-tabs/main-tabs.component';
@@ -96,6 +97,8 @@ import { FirstLastNameComponent } from '~/profile/first-last-name/first-last-nam
 import { ClientStartupNavigation } from './core/client-startup-navigation';
 import { StylistProfileComponent } from '~/stylists/stylist-profile/stylist-profile.component';
 import { GoogleMapsConfig } from '~/shared/google-maps-config';
+import { InvitationsComponent } from '~/invitations/invitations.component';
+import { InvitationsApi } from '~/core/api/invitations.api';
 
 // Init sentry reporting (inits only if ENV.sentryDsn):
 initSentry();
@@ -110,7 +113,6 @@ const declarations = [
   AddServicesComponent,
   AppointmentPageComponent,
   AppointmentPriceComponent,
-  AppointmentsHistoryComponent,
   AuthConfirmPageComponent,
   AuthPageComponent,
   BookingCompleteComponent,
@@ -121,10 +123,11 @@ const declarations = [
   FirstLastNameComponent,
   FirstScreenComponent,
   FollowersComponent,
-  HomePageComponent,
+  HomeComponent,
   HowMadeWorksComponent,
   HowPricingWorksComponent,
   InstagramGalleryComponent,
+  InvitationsComponent,
   MainTabsComponent,
   MyStylistsComponent,
   NonBookableSavePopupComponent,
@@ -207,7 +210,6 @@ const declarations = [
     Diagnostic,
     EmailComposer,
     Geolocation,
-    InAppBrowser,
     LaunchNavigator,
     SplashScreen,
     StatusBar,
@@ -260,6 +262,11 @@ const declarations = [
       provide: LAZY_MAPS_API_CONFIG, useClass: GoogleMapsConfig
     },
 
+    InvitationsApi,
+
+    Contacts,
+    OpenNativeSettings,
+    SMS,
     Camera
   ]
 })

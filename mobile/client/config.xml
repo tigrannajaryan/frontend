@@ -61,6 +61,9 @@
         <edit-config file="*-Info.plist" mode="merge" target="NSCameraUsageDescription">
             <string>Need camera access to take pictures for your profile</string>
         </edit-config>
+        <edit-config file="*-Info.plist" mode="merge" target="NSContactsUsageDescription">
+          <string>Need contacts access to invite friends</string>
+        </edit-config>
         <allow-intent href="itms:*" />
         <allow-intent href="itms-apps:*" />
         <icon height="57" src="resources/ios/icon/icon.png" width="57" />
@@ -154,6 +157,9 @@
     <edit-config file="*-Info.plist" mode="merge" target="NSLocationWhenInUseUsageDescription">
         <string>We use your location to allow searching for stylists nearby.</string>
     </edit-config>
-    <engine name="ios" spec="4.5.5" />
+    <plugin name="cordova-plugin-contacts" spec="3.0.1" />
+    <plugin name="cordova-open-native-settings" spec="1.5.2" />
+    <plugin name="cordova-sms-plugin" spec="1.0.0" />
     <engine name="android" spec="7.1.0" />
+    <engine name="ios" spec="4.5.5" />
 </widget>

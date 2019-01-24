@@ -9,7 +9,7 @@ import {
   ServiceItem,
   SetStylistServicesParams,
   StylistProfile,
-  StylistServicesListResponse
+  StylistServicesListResponse, StylistSettings
 } from '~/shared/api/stylist-app.models';
 import { randomPhone } from '~/shared/utils/test-utils';
 
@@ -84,6 +84,12 @@ export const profileSummaryMock = {
   }
 };
 
+export const profileSettingsMock = {
+  tax_percentage: Number(faker.finance.amount(0, 99.99, 4)),
+  card_fee_percentage: Number(faker.finance.amount(0, 99.99, 4)),
+  google_calendar_integrated: true
+};
+
 @Injectable()
 export class StylistServiceMock {
 
@@ -126,5 +132,11 @@ export class StylistServiceMock {
         }))
       )
     ), []);
+  }
+
+  getStylistSettings(): Observable<ApiResponse<StylistSettings>> {
+    return Observable.of({
+      response: profileSettingsMock
+    });
   }
 }

@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { Content, NavController } from 'ionic-angular';
+import { Content, NavController, NavParams } from 'ionic-angular';
 import * as moment from 'moment';
 
 import { UserRole } from '~/shared/api/auth.models';
@@ -9,6 +9,10 @@ import { PageNames } from '~/core/page-names';
 import { DayOffer, ServiceModel } from '~/shared/api/price.models';
 import { StylistProfile } from '~/shared/api/stylist-app.models';
 import { ProfileDataStore } from '~/core/profile.data';
+
+export interface CalendarExampleComponentParams {
+  isRootPage: boolean;
+}
 
 // Some nice looking fake prices
 const fakePrices = [
@@ -39,9 +43,11 @@ export class CalendarExampleComponent {
   prices: DayOffer[] = [];
 
   profile: StylistProfile;
+  params: CalendarExampleComponentParams;
 
   constructor(
     private navCtrl: NavController,
+    private navParams: NavParams,
     private profileData: ProfileDataStore,
     private pushNotification: PushNotification
   ) {
@@ -57,6 +63,8 @@ export class CalendarExampleComponent {
   }
 
   async ionViewWillLoad(): Promise<void> {
+    this.params = this.navParams.get('params') as CalendarExampleComponentParams;
+
     const { response } = await this.profileData.get();
     if (!response) {
       return;

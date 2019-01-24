@@ -84,6 +84,7 @@ page-profile {
     padding-top: pxtovw(16px);
     padding-bottom: pxtovw(18px);
     border-bottom: 1px solid rgb(236, 236, 236);
+    text-align: left;
 
     &:last-child {
       margin: 0 0 pxtovw(15px);
@@ -114,6 +115,26 @@ page-profile {
     img {
       width: pxtovw(104px);
     }
+  }
+
+  .ProfilePage-blockItemPictureWp {
+    position: relative;
+    display: inline-block;
+  }
+
+  .ProfilePage-blockItemPictureEdit {
+    position: absolute;
+    right: pxtovw(-8px);
+    bottom: pxtovw(-8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: pxtovw(32px);
+    height: pxtovw(32px);
+    font-size: pxtovw(16px);
+    color: white;
+    background: color($colors-shared, lightSalmon);
+    border-radius: 50%;
   }
 
   .ProfilePage-blockItemValue {
