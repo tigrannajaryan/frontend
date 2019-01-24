@@ -1,6 +1,5 @@
-
 import { $ } from 'protractor';
-import { click, waitForNot } from '../shared-e2e/utils';
+import { click, waitFor, waitForNot } from '../shared-e2e/utils';
 
 /**
  * First page definition.
@@ -19,6 +18,7 @@ class FirstPage {
 
   // Operations
   async getStarted() {
+    await waitFor(this.getStartedBtn);
     await click(this.getStartedBtn);
     await waitForNot(this.getStartedBtn);
   }
