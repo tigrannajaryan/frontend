@@ -2,7 +2,7 @@
   <ion-buttons *ngIf="hideBackAndMenuButtons ? false : hideBackButton" left>
     <button class="madeMenuHeader-menuBtn" data-test-id="menuToggleBtn" menuToggle>
       <i class="mb-icon-menu"></i>
-      <img *ngIf="!isProfileComplete()" class="madeMenuHeader-notice" src="assets/icons/!@2x.png" />
+      <img *ngIf="isNoticeShown()" class="madeMenuHeader-notice" src="assets/icons/!@2x.png" />
     </button>
   </ion-buttons>
 

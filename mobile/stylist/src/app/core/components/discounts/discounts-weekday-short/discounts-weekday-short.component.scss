@@ -1,2 +1,23 @@
-page-discounts-weekday {
+discounts-weekday-short {
+  .DiscountsWeekday-text {
+    font-size: $shared-base;
+    color: color($colors-shared, warmGrey);
+
+    &.DiscountsWeekday-text--danger {
+      padding: pxtovw(4px) 0;
+      color: color($colors-shared, danger);
+    }
+  }
+
+  .DiscountsWeekday-firstRow {
+    margin: pxtovw(13px) 0 pxtovw(24px);
+
+    .Button {
+      $height: pxtovw(32px);
+
+      min-height: height;
+      max-height: height;
+      font-size: $shared-h4;
+    }
+  }
 }

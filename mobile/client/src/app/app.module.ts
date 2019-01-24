@@ -56,7 +56,8 @@ import { CalendarPickerComponent } from '~/shared/components/calendar-picker/cal
 import { CalendarPrimingComponent } from '~/shared/components/calendar-priming/calendar-priming.component';
 import { GoogleSignin } from '~/shared/google-signin';
 import { InstagramGalleryComponent } from '~/shared/components/instagram-gallery/instagram-gallery.component';
-import { IntegrationsApi } from './shared/api/integrations.api';
+import { IntegrationsApi } from '~/shared/api/integrations.api';
+import { ListPickerPopupComponent } from '~/shared/components/list-picker-popup/list-picker-popup.component';
 import { StylistProfileApi } from '~/shared/api/stylist-profile.api';
 
 import { profilePath, profileReducer } from '~/core/reducers/profile.reducer';
@@ -128,6 +129,7 @@ const declarations = [
   HowPricingWorksComponent,
   InstagramGalleryComponent,
   InvitationsComponent,
+  ListPickerPopupComponent,
   MainTabsComponent,
   MyStylistsComponent,
   NonBookableSavePopupComponent,

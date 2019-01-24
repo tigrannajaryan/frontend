@@ -39,6 +39,8 @@ export async function createTestStylist(serviceNames: string[], clientPhoneNumbe
   const profileResponse = await stylistApi.setProfile(stylistProfile);
   expect(profileResponse.uuid).toBeDefined();
 
+  await stylistApi.setDealOfTheWeek(); // makes profile bookable
+
   // Create invitation for the client
   const invitation: ClientInvitation = {
     phone: clientPhoneNumberToInvite

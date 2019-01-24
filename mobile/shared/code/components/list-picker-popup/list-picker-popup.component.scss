@@ -1,0 +1,43 @@
+list-picker-popup {
+  .ListPickerPopup-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-end;
+    min-height: 100%;
+    overflow-y: scroll;
+  }
+
+  .ListPickerPopup-content {
+    background: white;
+    box-shadow: 0 pxtovw(-4px) pxtovw(20px) rgba(black, 0.18);
+  }
+
+  .ListPickerPopup-list {
+    padding-bottom: pxtovw(16px);
+    margin: 0;
+
+    > .item-block:last-child {
+      border: 0;
+    }
+  }
+
+  .ListPickerPopup-title {
+    padding: pxtovw(16px) pxtovw(24px) pxtovw(8px);
+    font-family: inherit;
+    font-size: $shared-h4;
+    color: black;
+    text-decoration: none;
+    text-transform: none;
+    letter-spacing: 0;
+    border-bottom: 0;
+  }
+
+  .ListPickerPopup-listItem {
+    padding: 0;
+
+    > .item-inner {
+      padding: 0 pxtovw(24px);
+    }
+  }
+}

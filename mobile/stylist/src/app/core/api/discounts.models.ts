@@ -1,8 +1,11 @@
+import { WeekdayIso } from '~/shared/weekday';
+
 export interface WeekdayDiscount {
   weekday: number;
   weekday_verbose: string;
   discount_percent: number;
   is_working_day: boolean;
+  is_deal_of_week: boolean;
 }
 
 export interface Discounts {
@@ -14,6 +17,7 @@ export interface Discounts {
   rebook_within_5_weeks?: number;
   rebook_within_6_weeks?: number;
   weekdays?: WeekdayDiscount[];
+  deal_of_week_weekday?: WeekdayIso;
 }
 
 export interface MaximumDiscounts {

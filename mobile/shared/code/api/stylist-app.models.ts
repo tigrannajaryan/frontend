@@ -36,6 +36,7 @@ export interface StylistProfileStatus {
   has_weekday_discounts_set: boolean;
   has_other_discounts_set: boolean;
   has_invited_clients: boolean;
+  has_deal_of_week_set: boolean;
 }
 
 // Weekday discounts

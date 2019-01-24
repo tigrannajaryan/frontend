@@ -2,13 +2,14 @@ import { Component, ViewChild } from '@angular/core';
 import { Content, NavParams, Slides } from 'ionic-angular';
 
 import { DiscountsApi } from '~/core/api/discounts.api';
-import { MaximumDiscounts, MaximumDiscountsWithVars, WeekdayDiscount } from '~/core/api/discounts.models';
+import { Discounts, MaximumDiscounts, MaximumDiscountsWithVars, WeekdayDiscount } from '~/core/api/discounts.models';
 import { PageNames } from '~/core/page-names';
 import { loading } from '~/core/utils/loading';
 import { FirstBooking } from '~/discounts/discounts-first-booking/discounts-first-booking.component';
 import { DiscountsRevisitComponent } from '~/discounts/discounts-revisit/discounts-revisit.component';
 import { getProfileStatus, updateProfileStatus } from '~/shared/storage/token-utils';
 import { StylistProfileStatus } from '~/shared/api/stylist-app.models';
+import { WeekdayIso } from '~/shared/weekday';
 
 export enum DiscountTabNames {
   weekday,
@@ -42,6 +43,7 @@ export class DiscountsComponent {
     maximum_discount: 0,
     is_maximum_discount_enabled: false
   };
+  dealOfTheWeek: WeekdayIso;
   discountTabs = [
     { name: 'Daily' },
     { name: 'Loyalty' },
@@ -69,14 +71,15 @@ export class DiscountsComponent {
 
   @loading
   async loadInitialData(): Promise<void> {
-    const discounts = (await this.discountsApi.getDiscounts().get()).response;
+    const discounts: Discounts = (await this.discountsApi.getDiscounts().get()).response;
     if (!discounts) {
       return;
     }
 
-    const { first_booking, weekdays, ...rebook } = discounts;
+    const { first_booking, weekdays, deal_of_week_weekday, ...rebook } = discounts;
     this.firstBooking.percentage = first_booking;
     this.weekdays = weekdays.sort((a, b) => a.weekday - b.weekday); // from 1 (Monday) to 7 (Sunday)
+    this.dealOfTheWeek = deal_of_week_weekday;
     this.rebook = DiscountsRevisitComponent.transformRebookToDiscounts(rebook);
 
     const maximumDiscounts: MaximumDiscounts = (await this.discountsApi.getMaximumDiscounts().get()).response;
@@ -116,6 +119,13 @@ export class DiscountsComponent {
 
   onWeekdayChange(): void {
     this.discountsApi.setDiscounts({ weekdays: this.weekdays }).get();
+  }
+
+  async onUpdateWeekdayDiscounts(): Promise<void> {
+    const discounts: Discounts = (await this.discountsApi.getDiscounts().get()).response;
+    if (discounts) {
+      this.weekdays = discounts.weekdays.sort((a, b) => a.weekday - b.weekday); // from 1 (Monday) to 7 (Sunday)
+    }
   }
 
   onRevisitChange(): void {
