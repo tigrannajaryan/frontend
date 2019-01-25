@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { GoogleAnalytics } from '@ionic-native/google-analytics';
+import { GoogleAnalytics } from '@ionic-native/google-analytics/ngx';
 import { ViewController } from 'ionic-angular';
 import * as camelcase from 'camelcase';
 

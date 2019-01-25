@@ -1,6 +1,6 @@
 import { ApplicationRef, Injectable, Injector } from '@angular/core';
 import { AlertButton, AlertController } from 'ionic-angular';
-import { GoogleAnalytics } from '@ionic-native/google-analytics';
+import { GoogleAnalytics } from '@ionic-native/google-analytics/ngx';
 
 import { ApiError } from '~/shared/api-errors';
 import { Logger } from '~/shared/logger';

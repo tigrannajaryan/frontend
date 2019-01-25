@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { HttpParams } from '@angular/common/http/src/params';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import 'rxjs/add/operator/first';
 
 import { ENV } from '~/environments/environment.default';
@@ -13,6 +13,7 @@ import { Logger } from '~/shared/logger';
 
 import config from '~/auth/config.json';
 import { UserRole } from './auth.models';
+import { catchError, map } from 'rxjs/operators';
 
 @Injectable()
 export class BaseService {
@@ -63,21 +64,23 @@ export class BaseService {
 
     return (
       httpResponse
-        .map(response => ({ response }))
-        .catch(err => {
+        .pipe(
+          map(response => ({ response })),
+          catchError(err => {
 
-          this.logger.error(`Error in response to API request ${method.toUpperCase()} ${url} failed:`, JSON.stringify(err));
+            this.logger.error(`Error in response to API request ${method.toUpperCase()} ${url} failed:`, JSON.stringify(err));
 
-          const { error, notifyTracker } = processApiResponseError(err, options);
+            const { error, notifyTracker } = processApiResponseError(err, options);
 
-          if (notifyTracker) {
-            // there is a server status error, notify status tracker about it
-            this.serverStatus.notify(error);
-          }
+            if (notifyTracker) {
+              // there is a server status error, notify status tracker about it
+              this.serverStatus.notify(error);
+            }
 
-          // and return the error for callers to process if they are interested
-          return Observable.of({ response: undefined, error });
-        })
+            // and return the error for callers to process if they are interested
+            return Observable.of({ response: undefined, error });
+          })
+        )
     );
   }
 
@@ -134,7 +137,7 @@ function get<T>(this: Observable<T>): Promise<T> {
 // Add get() function to Observable prototype.
 Observable.prototype.get = get;
 
-declare module 'rxjs/Observable' {
+declare module 'rxjs/internal/Observable' {
   interface Observable<T> {
     get: typeof get;
   }

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import * as moment from 'moment';
 import * as deepEqual from 'fast-deep-equal';
 
@@ -10,6 +10,7 @@ import { BaseService } from '~/shared/api/base.service';
 import { ApiResponse, isoDateFormat } from '~/shared/api/base.models';
 import { WorkdayAvailability, Worktime } from '~/shared/api/worktime.models';
 import { ApiClientError, ApiRequestOptions, HttpStatus } from '~/shared/api-errors';
+import { map } from 'rxjs/operators';
 
 /**
  * WorktimeApi allows getting and setting the working time for stylist.
@@ -64,18 +65,20 @@ export class WorktimeApi extends BaseService {
 
     return (
       this.get<WorkdayAvailability>(`stylist/availability/special/${isoDate}`, undefined, options)
-        .map(({ response, error }) => {
+        .pipe(
+          map(({ response, error }) => {
 
-          const suppressError =
-            error && WorktimeApi.specialAvailabilityNotSetError.isLike(error) &&
-            deepEqual(WorktimeApi.specialAvailabilityNotSetError.errorBody, (error as ApiClientError).errorBody);
+            const suppressError =
+              error && WorktimeApi.specialAvailabilityNotSetError.isLike(error) &&
+              deepEqual(WorktimeApi.specialAvailabilityNotSetError.errorBody, (error as ApiClientError).errorBody);
 
-          if (suppressError) {
-            // Return no error if special avilabilty remains avilable:
-            return { response: { is_available: true }, error: undefined };
-          }
-          return { response, error };
-        })
+            if (suppressError) {
+              // Return no error if special avilabilty remains avilable:
+              return { response: { is_available: true }, error: undefined };
+            }
+            return { response, error };
+          })
+        )
     );
   }
 }

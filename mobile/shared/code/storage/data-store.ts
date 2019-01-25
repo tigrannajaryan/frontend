@@ -1,6 +1,6 @@
 import { Storage } from '@ionic/storage';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/first';
 

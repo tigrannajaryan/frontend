@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { AlertController, Platform } from 'ionic-angular';
 
-import { AppAvailability } from '@ionic-native/app-availability';
-import { Clipboard } from '@ionic-native/clipboard';
-import { EmailComposer } from '@ionic-native/email-composer';
-import { LaunchNavigator, LaunchNavigatorOptions } from '@ionic-native/launch-navigator';
+import { AppAvailability } from '@ionic-native/app-availability/ngx';
+import { Clipboard } from '@ionic-native/clipboard/ngx';
+import { EmailComposer } from '@ionic-native/email-composer/ngx';
+import { LaunchNavigator, LaunchNavigatorOptions } from '@ionic-native/launch-navigator/ngx';
 
 export interface ExternalAppDeepLinkConfig {
   // Will be used to identify that app exists on the device.

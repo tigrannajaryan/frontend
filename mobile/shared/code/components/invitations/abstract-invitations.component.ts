@@ -1,6 +1,6 @@
-import { Contact, Contacts, IContactFindOptions } from '@ionic-native/contacts';
-import { SMS } from '@ionic-native/sms';
-import { OpenNativeSettings } from '@ionic-native/open-native-settings';
+import { Contact, Contacts, IContactFindOptions } from '@ionic-native/contacts/ngx';
+import { SMS } from '@ionic-native/sms/ngx';
+import { OpenNativeSettings } from '@ionic-native/open-native-settings/ngx';
 import { AlertController } from 'ionic-angular';
 
 import * as Fuse from 'fuse.js/dist/fuse';

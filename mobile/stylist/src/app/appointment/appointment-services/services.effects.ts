@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Actions, Effect } from '@ngrx/effects';
-import { Observable } from 'rxjs';
+import { Actions, Effect, ofType } from '@ngrx/effects';
+import { map, switchMap } from 'rxjs/operators';
+import { defer } from 'rxjs';
 
 import { StylistServiceProvider } from '~/core/api/stylist.service';
 import { withLoader } from '~/core/utils/loading';
@@ -20,9 +21,10 @@ import {
 export class ServicesEffects {
 
   @Effect() load = this.actions
-    .ofType(servicesActionTypes.LOAD)
-    .map((action: LoadAction) => action)
-    .switchMap(() => Observable.defer(withLoader(async () => {
+    .pipe(
+      ofType(servicesActionTypes.LOAD),
+      map((action: LoadAction) => action),
+      switchMap(() => defer(withLoader(async () => {
       const { response, error } = (await this.stylistService.getStylistServices().get());
       if (response) {
         return new LoadSuccessAction(response.categories);
@@ -39,7 +41,7 @@ export class ServicesEffects {
         logger.error(error);
         return new LoadErrorAction(error);
       }
-    })));
+    }))));
 
   constructor(
     private actions: Actions,

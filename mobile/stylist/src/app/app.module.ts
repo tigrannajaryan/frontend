@@ -1,27 +1,27 @@
 import { AgmCoreModule, LAZY_MAPS_API_CONFIG } from '@agm/core';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
-import { SplashScreen } from '@ionic-native/splash-screen';
 import { BrowserModule, HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
 import { ErrorHandler, Injector, NgModule } from '@angular/core';
 import { META_REDUCERS, StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { IonicApp, IonicModule } from 'ionic-angular';
-import { ScreenOrientation } from '@ionic-native/screen-orientation';
-import { AppVersion } from '@ionic-native/app-version';
-import { StatusBar } from '@ionic-native/status-bar';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { AppAvailability } from '@ionic-native/app-availability';
-import { Contacts } from '@ionic-native/contacts';
-import { OpenNativeSettings } from '@ionic-native/open-native-settings';
-import { SMS } from '@ionic-native/sms';
-import { Camera } from '@ionic-native/camera';
-import { Clipboard } from '@ionic-native/clipboard';
-import { EmailComposer } from '@ionic-native/email-composer';
-import { Push } from '@ionic-native/push';
-import { DatePicker } from '@ionic-native/date-picker';
-import { GooglePlus } from '@ionic-native/google-plus';
-import { LaunchNavigator } from '@ionic-native/launch-navigator';
 import { GalleryModalHammerConfig, GalleryModalModule } from 'ionic-gallery-modal';
+
+import { SplashScreen } from '@ionic-native/splash-screen/ngx';
+import { StatusBar } from '@ionic-native/status-bar/ngx';
+import { AppVersion } from '@ionic-native/app-version/ngx';
+import { AppAvailability } from '@ionic-native/app-availability/ngx';
+import { Clipboard } from '@ionic-native/clipboard/ngx';
+import { EmailComposer } from '@ionic-native/email-composer/ngx';
+import { GooglePlus } from '@ionic-native/google-plus/ngx';
+import { Push } from '@ionic-native/push/ngx';
+import { OpenNativeSettings } from '@ionic-native/open-native-settings/ngx';
+import { LaunchNavigator } from '@ionic-native/launch-navigator/ngx';
+import { Contacts } from '@ionic-native/contacts/ngx';
+import { SMS } from '@ionic-native/sms/ngx';
+import { Camera } from '@ionic-native/camera/ngx';
+import { DatePicker } from '@ionic-native/date-picker/ngx';
 
 import { UnhandledErrorHandler } from '~/shared/unhandled-error-handler';
 import { initSentry } from '~/shared/sentry';
@@ -237,16 +237,17 @@ const declarations = [
     AppAvailability,
     Clipboard,
     EmailComposer,
-
     GooglePlus,
     GoogleSignin,
-
     InstagramOAuthService,
-
     Push,
     PushNotification,
-
     LaunchNavigator,
+    OpenNativeSettings,
+    SMS,
+    Camera,
+    DatePicker,
+    Contacts,
 
     { // Add auth token to all requests
       provide: HTTP_INTERCEPTORS,
@@ -287,13 +288,7 @@ const declarations = [
     IntegrationsApi,
     MadeAnalyticsApi,
 
-    ExternalAppService,
-
-    Contacts,
-    OpenNativeSettings,
-    SMS,
-    Camera,
-    DatePicker
+    ExternalAppService
   ]
 })
 export class AppModule {

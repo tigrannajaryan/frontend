@@ -1,7 +1,7 @@
 import { FormControl } from '@angular/forms';
 import { Component, ViewChild } from '@angular/core';
 import { Page } from 'ionic-angular/navigation/nav-util';
-import { Camera, CameraOptions } from '@ionic-native/camera';
+import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 import {
   ActionSheetController,
   ActionSheetOptions,

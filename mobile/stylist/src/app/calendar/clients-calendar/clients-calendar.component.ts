@@ -1,6 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { Content, NavController, NavParams } from 'ionic-angular';
-import { Observable } from 'rxjs/Observable';
+import { combineLatest } from 'rxjs';
 import * as moment from 'moment';
 
 import { componentUnloaded } from '~/shared/component-unloaded';
@@ -15,6 +15,7 @@ import { PageNames } from '~/core/page-names';
 import { loading } from '~/core/utils/loading';
 import { ProfileDataStore } from '~/core/profile.data';
 import { isoDateFormat } from '~/shared/api/base.models';
+import { map, takeUntil } from 'rxjs/operators';
 
 export interface ClientsCalendarComponentParams {
   isRootPage?: boolean;
@@ -112,10 +113,12 @@ export class ClientsCalendarComponent {
       this.services = [];
 
     } else {
-      await this.clientsApi.getPricing(this.params && this.params.client && this.params.client.uuid, serviceUuids)
-        .combineLatest(Observable.from(this.servicesData.get()))
-        .takeUntil(componentUnloaded(this))
-        .map(([pricing, services]) => {
+      await combineLatest(
+        this.clientsApi.getPricing(this.params && this.params.client && this.params.client.uuid, serviceUuids),
+        this.servicesData.get()
+      ).pipe(
+        takeUntil(componentUnloaded(this)),
+        map(([pricing, services]) => {
           if (pricing.response) {
             this.prices = pricing.response.prices;
 
@@ -127,7 +130,8 @@ export class ClientsCalendarComponent {
             }
           }
         })
-        .toPromise();
+      )
+      .toPromise();
     }
 
     // Tell the content to recalculate its dimensions. According to Ionic docs this

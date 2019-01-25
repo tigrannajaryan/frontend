@@ -2,7 +2,7 @@ import * as faker from 'faker';
 import * as moment from 'moment';
 
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 
 import { randomPhone } from '~/shared/utils/test-utils';
 

@@ -5,8 +5,9 @@ import {
 } from 'ionic-angular';
 
 import { Component } from '@angular/core';
-import { SMS, SmsOptions } from '@ionic-native/sms';
-import { Contacts } from '@ionic-native/contacts';
+import { SMS, SmsOptions } from '@ionic-native/sms/ngx';
+import { Contacts } from '@ionic-native/contacts/ngx';
+import { OpenNativeSettings } from '@ionic-native/open-native-settings/ngx';
 
 import { normalizePhoneNumber } from '~/shared/utils/phone-numbers';
 import { Discounts } from '~/core/api/discounts.models';
@@ -24,7 +25,6 @@ import {
   AbstractInvitationsComponent, defaultCountry,
   InvitationsComponentParams
 } from '~/shared/components/invitations/abstract-invitations.component';
-import { OpenNativeSettings } from '@ionic-native/open-native-settings';
 
 class ErrorWrapper {
   constructor(readonly error) { }

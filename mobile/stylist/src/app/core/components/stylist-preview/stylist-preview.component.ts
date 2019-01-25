@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { LaunchNavigator } from '@ionic-native/launch-navigator';
+import { LaunchNavigator } from '@ionic-native/launch-navigator/ngx';
 import { NavController } from 'ionic-angular';
 
 import { ExternalAppService } from '~/shared/utils/external-app-service';

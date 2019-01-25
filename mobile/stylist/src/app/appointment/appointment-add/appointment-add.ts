@@ -5,6 +5,8 @@ import { Component } from '@angular/core';
 import { AlertController, NavController, NavParams } from 'ionic-angular';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
+import { map } from 'rxjs/operators';
+
 import { componentUnloaded } from '~/shared/component-unloaded';
 import { ServiceItem } from '~/shared/api/stylist-app.models';
 import { HomeService as AppointmentService } from '~/core/api/home.service';
@@ -129,28 +131,28 @@ export class AppointmentAddComponent {
   private subscribeToIsBlockedChanges(): void {
     this.isBlockedSlot.valueChanges
       .takeUntil(componentUnloaded(this))
-      .map((isBlockedSlot: boolean) => {
+      .pipe(map((isBlockedSlot: boolean) => {
         // Only one toggled can exist:
         if (isBlockedSlot && this.isBlockedFullDay.value) {
           this.isBlockedFullDay.patchValue(false);
         }
-      })
+      }))
       .subscribe();
 
     this.isBlockedFullDay.valueChanges
       .takeUntil(componentUnloaded(this))
-      .map((isBlockedFullDay: boolean) => {
+      .pipe(map((isBlockedFullDay: boolean) => {
         // Time is not required if full day is blocked, remove validation:
         this.form.controls.time.setValidators(isBlockedFullDay ? [] : [Validators.required]);
         this.form.controls.time.updateValueAndValidity();
         return isBlockedFullDay;
-      })
-      .map((isBlockedFullDay: boolean) => {
+      }))
+      .pipe(map((isBlockedFullDay: boolean) => {
         // Only one toggled can exist:
         if (isBlockedFullDay && this.isBlockedSlot.value) {
           this.isBlockedSlot.patchValue(false);
         }
-      })
+      }))
       .subscribe();
   }
 

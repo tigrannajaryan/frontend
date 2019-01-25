@@ -1,5 +1,4 @@
-import { LoadingController } from 'ionic-angular';
-import { Loading } from 'ionic-angular/components/loading/loading';
+import { Loading, LoadingController } from 'ionic-angular';
 import { AppModule } from '~/app.module';
 
 type AsyncFunction = (...args: any[]) => Promise<any>;

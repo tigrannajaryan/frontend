@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { Camera, CameraOptions } from '@ionic-native/camera';
+import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 import { ActionSheetController, ActionSheetOptions, NavController, NavParams } from 'ionic-angular';
 
 import { BaseService } from '~/shared/api/base.service';

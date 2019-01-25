@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { NotificationEventResponse, Push, PushObject, PushOptions, RegistrationEventResponse } from '@ionic-native/push';
+import { NotificationEventResponse, Push, PushObject, PushOptions, RegistrationEventResponse } from '@ionic-native/push/ngx';
 import { Events, Platform } from 'ionic-angular';
 import * as moment from 'moment';
 

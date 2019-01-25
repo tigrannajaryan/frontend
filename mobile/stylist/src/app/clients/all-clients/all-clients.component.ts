@@ -1,6 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { Refresher } from 'ionic-angular';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { composeRequest, loading, withRefresher } from '~/shared/utils/request-utils';
 
@@ -24,7 +25,10 @@ export class AllClientsComponent {
   }
 
   ionViewWillLoad(): Promise<ApiResponse<GetNearbyClientsResponse>> {
-    this.clients = this.clientsData.asObservable().map(({ response }) => response && response.clients);
+    this.clients = this.clientsData.asObservable()
+      .pipe(
+        map(({ response }) => response && response.clients)
+      );
     return this.requestClients(false);
   }
 

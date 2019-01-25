@@ -1,8 +1,8 @@
 import { Component, ViewChild } from '@angular/core';
 import { Events, Nav, Platform } from 'ionic-angular';
-import { StatusBar } from '@ionic-native/status-bar';
-import { SplashScreen } from '@ionic-native/splash-screen';
 import { ScreenOrientation } from '@ionic-native/screen-orientation';
+import { SplashScreen } from '@ionic-native/splash-screen/ngx';
+import { StatusBar } from '@ionic-native/status-bar/ngx';
 
 import { async_all } from '~/shared/async-helpers';
 import { Logger } from '~/shared/logger';

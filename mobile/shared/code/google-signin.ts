@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Platform } from 'ionic-angular';
-import { GooglePlus } from '@ionic-native/google-plus';
+import { GooglePlus } from '@ionic-native/google-plus/ngx';
 
 import { Logger } from '~/shared/logger';
 import { reportToSentry } from '~/shared/sentry';

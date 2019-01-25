@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { Events } from 'ionic-angular';
 
 import { Logger } from '~/shared/logger';
@@ -15,6 +15,7 @@ import {
   SetStylistServicesParams, StylistProfile, StylistServicesListResponse, StylistSettings
 } from '~/shared/api/stylist-app.models';
 import { AppointmentDateOffer } from '~/core/api/home.models';
+import { map } from 'rxjs/operators';
 
 export interface ServiceTemplateSetListResponse {
   service_template_sets: ServiceTemplateSetBase[];
@@ -63,13 +64,15 @@ export class StylistServiceProvider extends BaseService {
    */
   getProfile(): Observable<ApiResponse<StylistProfile>> {
     return this.get<StylistProfile>('stylist/profile')
-      .map(response => {
-        // Publish event to update gmap key.
-        if (response.response) {
-          this.events.publish(SharedEventTypes.update_gmap_key, response.response.google_api_key);
-        }
-        return response;
-      });
+      .pipe(
+        map(response => {
+          // Publish event to update gmap key.
+          if (response.response) {
+            this.events.publish(SharedEventTypes.update_gmap_key, response.response.google_api_key);
+          }
+          return response;
+        })
+      );
   }
 
   /**
@@ -78,14 +81,16 @@ export class StylistServiceProvider extends BaseService {
    */
   loadGoogleMapsApiKey(): Observable<ApiResponse<string>> {
     return this.get<StylistProfile>('stylist/profile')
-      .map(({response, error}) => {
-        // Publish event to update gmap key.
-        if (response) {
-          this.events.publish(SharedEventTypes.update_gmap_key, response.google_api_key);
-          return { response: response.google_api_key };
-        }
-        return { response: undefined, error };
-      });
+      .pipe(
+        map(({response, error}) => {
+          // Publish event to update gmap key.
+          if (response) {
+            this.events.publish(SharedEventTypes.update_gmap_key, response.google_api_key);
+            return { response: response.google_api_key };
+          }
+          return { response: undefined, error };
+        })
+      );
   }
 
   /**

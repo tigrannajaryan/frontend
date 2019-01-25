@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 
 import { ApiResponse } from '~/shared/api/base.models';
 import { BaseService } from '~/shared/api/base.service';
@@ -15,6 +15,7 @@ import { ApiFieldAndNonFieldErrors, ApiRequestOptions, FieldErrorItem, NonFieldE
 import { Logger } from '~/shared/logger';
 import { ServerStatusTracker } from '~/shared/server-status-tracker';
 import { UserContext } from '~/shared/user-context';
+import { map } from 'rxjs/operators';
 
 @Injectable()
 export class AuthService extends BaseService {
@@ -45,13 +46,15 @@ export class AuthService extends BaseService {
     };
     return (
       this.post<GetCodeResponse>('auth/get-code', params, undefined, options)
-        .map(({ response, error }) => {
-          if (error && AuthService.waitNewCodeError.isLike(error)) {
-            // Return no error on code re-request timeout error:
-            return { response: {}, error: undefined };
-          }
-          return { response, error };
-        })
+        .pipe(
+          map(({ response, error }) => {
+            if (error && AuthService.waitNewCodeError.isLike(error)) {
+              // Return no error on code re-request timeout error:
+              return { response: {}, error: undefined };
+            }
+            return { response, error };
+          })
+        )
     );
   }
 
@@ -84,16 +87,18 @@ export class AuthService extends BaseService {
    */
   private processAuthResponse(apiCall: () => Observable<ApiResponse<AuthResponse>>): Observable<ApiResponse<AuthResponse>> {
     return apiCall()
-      .map(response => {
-        if (!response.error) {
-          this.handleAuthResponse(response.response);
-        } else {
-          // Failed authentication. Clear previously saved successfull response (if any).
-          this.handleAuthResponse(undefined);
-          this.logger.error('Authentication failed:', response.error.getMessage());
-        }
-        return response;
-      });
+      .pipe(
+        map(response => {
+          if (!response.error) {
+            this.handleAuthResponse(response.response);
+          } else {
+            // Failed authentication. Clear previously saved successfull response (if any).
+            this.handleAuthResponse(undefined);
+            this.logger.error('Authentication failed:', response.error.getMessage());
+          }
+          return response;
+        })
+      );
   }
 
   /**

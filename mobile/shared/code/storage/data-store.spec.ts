@@ -1,7 +1,7 @@
 import { Injector } from '@angular/core';
 import { async, inject, TestBed } from '@angular/core/testing';
 import { Storage } from '@ionic/storage';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import 'rxjs/add/observable/of';
 
 import { ApiResponse } from '~/shared/api/base.models';

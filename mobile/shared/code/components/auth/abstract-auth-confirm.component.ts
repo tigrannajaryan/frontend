@@ -1,6 +1,6 @@
 import { ViewChild } from '@angular/core';
 import { Events, NavParams } from 'ionic-angular';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 
 import { AuthService } from '~/shared/api/auth.api';
 import { ConfirmCodeResponse, GetCodeResponse } from '~/shared/api/auth.models';

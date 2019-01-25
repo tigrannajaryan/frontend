@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { IonicModule } from 'ionic-angular';
-import { GoogleAnalytics } from '@ionic-native/google-analytics';
+import { GoogleAnalytics } from '@ionic-native/google-analytics/ngx';
 import { IonicStorageModule } from '@ionic/storage';
 import { InlineSVGModule } from 'ng-inline-svg';
 

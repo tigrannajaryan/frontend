@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 
 import { ApiResponse } from '~/shared/api/base.models';
 import { AckNotificationRequest, RegUnregDeviceRequest } from './notifications.api';

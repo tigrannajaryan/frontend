@@ -1,6 +1,6 @@
 import * as faker from 'faker';
 import * as moment from 'moment';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import 'rxjs/add/observable/of';
 import { async, ComponentFixture } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';

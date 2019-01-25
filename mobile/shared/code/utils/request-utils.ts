@@ -1,5 +1,6 @@
 import { Refresher } from 'ionic-angular';
-import { Observable } from 'rxjs/Observable';
+import { from, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { ApiResponse } from '~/shared/api/base.models';
 import { LOADING_DELAY } from '~/shared/api/request.models';
@@ -30,7 +31,7 @@ export function composeRequest<T>(...extensions): Promise<ApiResponse<T>> {
 
   // In case of using it with ApiDataStore.get or any other promise-based requests:
   if (request && request instanceof Promise) {
-    request = Observable.from(request);
+    request = from(request);
   }
 
   if (!request || !(request instanceof Observable)) {
@@ -64,34 +65,40 @@ export const loading = <T>(setLoading: (isLoading: boolean) => any) => (request:
   }, LOADING_DELAY);
 
   // Calling Observable.map works and looks very alike calling Promise.then:
-  return request.map(response => {
-    // Clear timeout to not change isLoading after request done:
-    clearTimeout(loadingTimeout);
-    setLoading(false);
+  return request.pipe(
+    map(response => {
+      // Clear timeout to not change isLoading after request done:
+      clearTimeout(loadingTimeout);
+      setLoading(false);
 
-    return response;
-  });
+      return response;
+    })
+  );
 };
 
 /**
  * Complete refreshing on request done extension.
  */
 export const withRefresher = <T>(refresher: Refresher) => (request: Request<T>): Request<T> =>
-  request.map(response => {
-    if (refresher && refresher.state === 'refreshing') {
-      refresher.complete();
-    }
-    return response;
-  });
+  request.pipe(
+    map(response => {
+      if (refresher && refresher.state === 'refreshing') {
+        refresher.complete();
+      }
+      return response;
+    })
+  );
 
 /**
  * If the response is an ApiError that is not handled globally then show an alert
  * with the error message.
  */
 export const alertError = <T>() => (request: Request<T>): Request<T> =>
-  request.map(response => {
-    if (response.error && !response.error.handleGlobally()) {
-      showAlert('', response.error.getMessage());
-    }
-    return response;
-  });
+  request.pipe(
+    map(response => {
+      if (response.error && !response.error.handleGlobally()) {
+        showAlert('', response.error.getMessage());
+      }
+      return response;
+    })
+  );

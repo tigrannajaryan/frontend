@@ -4,8 +4,7 @@ import { NavController, NavParams } from 'ionic-angular';
 import { TextInput } from 'ionic-angular/components/input/input';
 
 import { MapsAPILoader } from '@agm/core';
-// tslint:disable-next-line
-import { } from 'googlemaps';
+import google from 'googlemaps'; // tslint:disable-line
 import Autocomplete = google.maps.places.Autocomplete;
 
 import { Logger } from '~/shared/logger';

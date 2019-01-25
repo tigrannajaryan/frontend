@@ -1,6 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { NavController, NavParams, Refresher } from 'ionic-angular';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 
 import { composeRequest, loading, withRefresher } from '~/shared/utils/request-utils';
 
@@ -10,6 +10,7 @@ import { MyClientsDataStore } from '~/clients/my-clients/my-clients.data';
 
 import { PageNames } from '~/core/page-names';
 import { InvitationsComponentParams } from '~/shared/components/invitations/abstract-invitations.component';
+import { map } from 'rxjs/operators';
 
 export interface MyClientsComponentParams {
   isRootPage?: boolean;
@@ -36,7 +37,10 @@ export class MyClientsComponent {
   ionViewWillLoad(): Promise<ApiResponse<GetMyClientsResponse>> {
     this.params = this.navParams.get('params') as MyClientsComponentParams;
 
-    this.clients = this.clientsData.asObservable().map(({ response }) => response && response.clients);
+    this.clients = this.clientsData.asObservable()
+      .pipe(
+        map(({ response }) => response && response.clients)
+      );
     return this.requestClients(false);
   }
 

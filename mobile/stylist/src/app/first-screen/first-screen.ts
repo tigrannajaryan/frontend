@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 import { NavController, Platform } from 'ionic-angular';
-import { StatusBar } from '@ionic-native/status-bar';
+import { StatusBar } from '@ionic-native/status-bar/ngx';
 
 import { AppStoreWebPage, PlatformNames } from '~/shared/constants';
-import { ExternalAppService } from '~/shared/utils/external-app-service';
 
 import { PageNames } from '~/core/page-names';
+import { ExternalAppService } from '~/shared/utils/external-app-service';
 
 @Component({
   selector: 'page-first-screen',

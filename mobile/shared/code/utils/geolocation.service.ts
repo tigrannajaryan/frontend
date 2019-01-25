@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AlertController, Platform } from 'ionic-angular';
-import { Diagnostic } from '@ionic-native/diagnostic';
-import { Geolocation, Geoposition } from '@ionic-native/geolocation';
+import { Diagnostic } from '@ionic-native/diagnostic/ngx';
+import { Geolocation, Geoposition } from '@ionic-native/geolocation/ngx';
 
 export interface LatLng {
   latitude: number;
