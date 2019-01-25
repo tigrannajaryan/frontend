@@ -196,4 +196,24 @@ page-checkout {
       }
     }
   }
+
+  .CheckOut-tax {
+    font-size: pxtovw(13px);
+    color: color($colors, warmGrey);
+
+    .col {
+      .text-muted {
+        font-size: pxtovw(13px);
+        line-height: pxtovw(14px);
+      }
+    }
+
+    button {
+      display: inline-block;
+      margin: 0 0 0 pxtovw(7px);
+      font-size: pxtovw(16px);
+      vertical-align: middle;
+      background: none;
+    }
+  }
 }
