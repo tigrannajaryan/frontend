@@ -26,7 +26,9 @@
     </ion-item>
     <ion-item (click)="openCategoryModal()" class="ServiceItem-input withPrefix">
       <span item-left class="ServiceItem-inputPrefix">
-        <i class="mb-icon-{{form.value.category.category_code}}"></i>
+        <img
+          *ngIf="form.value.category.category_code"
+          [src]="'assets/icons/services-categories/' + form.value.category.category_code + '.png'">
       </span>
       <!--this input we need for reactive form - for save/update category object-->
       <ion-input formControlName="category" hidden type="text"></ion-input>

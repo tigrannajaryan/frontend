@@ -25,7 +25,7 @@
            [hidden]="category.services.length === 0"
            [attr.data-test-id]="'categorySection'+index">
         <div class="ServicesLis-title" data-test-id="categoryName">
-          <i class="mb-icon-{{category.category_code}}"></i>
+          <img [src]="'assets/icons/services-categories/' + category.category_code + '.png'">
           {{ category.name }}
         </div>
 

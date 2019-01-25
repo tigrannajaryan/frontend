@@ -101,13 +101,6 @@ export const selectRequestedStylistUuid = createSelector(
   (state: ServicesState): string | undefined => state.stylistUuid
 );
 
-// Adding `category_code` to categories to show icons.
-// This should be done on the backend side later.
-const getCategoryWithCategoryCode = (category: ServiceCategoryModel) => ({
-  ...category,
-  category_code: category.name.toLowerCase().replace(/\s/g, '_')
-});
-
 export const selectStylistServiceCategories = (stylistUuid: string) => createSelector(
   selectServicesFromState,
   (state: ServicesState): ServiceCategoryModel[] | undefined => {
@@ -118,7 +111,6 @@ export const selectStylistServiceCategories = (stylistUuid: string) => createSel
       state.serviceCategories &&
       state.serviceCategories
         .filter((category: ServiceCategoryModel) => category.services.length > 0)
-        .map(getCategoryWithCategoryCode) // TODO: remove after adding `category_code` on the backend
     );
   }
 );

@@ -14,6 +14,7 @@ import { ProfileModel } from '~/core/api/profile.models';
 import { ProfileDataStore } from '~/profile/profile.data';
 
 import { StylistSearchParams } from '~/stylists/stylists-search/stylists-search.component';
+import { InvitationsComponentParams } from '~/shared/components/invitations/abstract-invitations.component';
 
 interface TabsObject {
   name: string;
@@ -49,7 +50,7 @@ export class MainTabsComponent implements OnDestroy {
     {
       name: 'Invite',
       link: PageNames.Invitations,
-      params: {}
+      params: { params: ({ isRootPage: true } as InvitationsComponentParams) }
     },
     {
       name: 'Profile',

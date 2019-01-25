@@ -181,12 +181,12 @@ export class InvitationsComponent extends AbstractInvitationsComponent {
     let defaultInvitationText = '';
 
     if (this.params && this.params.inClientToStylistInvitation) {
-      defaultInvitationText = `Hi, it's ${this.profile.first_name}. I saw this cool app to find
- and book stylists called MADE Pro. Check it out and see if you would be interested
- in creating a stylist profile! Check it out https://madebeauty.com/get/`;
+      defaultInvitationText = `Hi, it's ${this.profile.first_name}. I saw this cool app to find \
+ and book stylists called MADE Pro. Check it out and see if you would be interested \
+ in creating a stylist profile! Check it out https://madebeauty.com/getpro/`;
     } else {
-      defaultInvitationText = `Hi, it's ${this.profile.first_name}. I'm using the MADE app to find
- and book stylists. You can book using dynamic pricing
+      defaultInvitationText = `Hi, it's ${this.profile.first_name}. I'm using the MADE app to find \
+ and book stylists. You can book using dynamic pricing \
  and find some great deals! Check it out https://madebeauty.com/get/`;
     }
 

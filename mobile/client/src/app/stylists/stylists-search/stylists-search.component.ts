@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { App, Content, Header, Keyboard, NavController, NavParams } from 'ionic-angular';
+import { App, Content, Header, Keyboard, NavParams } from 'ionic-angular';
 import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/debounceTime';
 
@@ -76,7 +76,6 @@ export class StylistSearchComponent implements AfterViewInit {
     private keyboard: Keyboard,
     private params: NavParams,
     private preferredStylistsData: PreferredStylistsData,
-    private navCtrl: NavController,
     private stylistsService: StylistsService
   ) {
   }
@@ -179,9 +178,11 @@ export class StylistSearchComponent implements AfterViewInit {
 
   onInviteStylistClick(): void {
     const params: InvitationsComponentParams = {
+      isRootPage: false,
       inClientToStylistInvitation: true
     };
-    this.navCtrl.push(PageNames.Invitations, { params });
+
+    this.app.getRootNav().push(PageNames.Invitations, { params });
   }
 
   private async requestGeolocation(): Promise<void> {
