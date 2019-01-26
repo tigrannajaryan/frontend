@@ -160,7 +160,7 @@ describe('Pages: ProfileComponent', async () => {
       has_picture_set: false,
       has_services_set: false,
       has_weekday_discounts_set: false,
-      has_deal_of_week_set: false
+      must_select_deal_of_week: true
     };
     fixture.detectChanges();
 
@@ -193,7 +193,7 @@ describe('Pages: ProfileComponent', async () => {
       has_picture_set: true,
       has_services_set: true,
       has_weekday_discounts_set: true,
-      has_deal_of_week_set: true
+      must_select_deal_of_week: false
     };
     fixture.detectChanges();
 
@@ -226,7 +226,7 @@ describe('Pages: ProfileComponent', async () => {
       has_picture_set: true,
       has_services_set: true,
       has_weekday_discounts_set: true,
-      has_deal_of_week_set: true
+      must_select_deal_of_week: false
     };
     instance.servicesPage = PageNames.ServicesList;
     fixture.detectChanges();

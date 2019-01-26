@@ -28,6 +28,16 @@ export class DiscountsWeekdayShortComponent {
   @Output() weekdayChange = new EventEmitter();
   @Output() updateWeekdayDiscounts = new EventEmitter();
 
+  static async updateProfileStatus(): Promise<void> {
+    const profileStatus = await getProfileStatus() as StylistProfileStatus;
+    if (profileStatus.must_select_deal_of_week) {
+      await updateProfileStatus({
+        ...profileStatus,
+        must_select_deal_of_week: false
+      });
+    }
+  }
+
   constructor(
     private discountsApi: DiscountsApi,
     private modalCtrl: ModalController

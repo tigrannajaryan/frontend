@@ -13,46 +13,46 @@ export enum HighLevelErrorCode {
  * it in fieldErrorMsgs map below.
  */
 export type FieldErrorCode =
-  'required' |
-  'invalid' |
-  'null' |
-  'blank' |
-  'min_length' |
-  'max_length' |
-  'max_value' |
-  'min_value' |
-  'max_digits' |
-  'max_decimal_places' |
-  'invalid_choice' |
-  'empty' |
-  'invalid_image' |
-  'date' |
-  'datetime' |
-  'err_email_already_taken' |
-  'err_incorrect_user_role' |
-  'err_unique_stylist_phone' |
-  'err_unique_client_phone' |
-  'err_unique_client_name' |
-  'err_invalid_query_for_home' |
-  'err_appointment_in_the_past' |
-  'err_appointment_intersection' |
-  'err_appointment_outside_working_hours' |
-  'err_appointment_non_working_day' |
-  'err_service_does_not_exist' |
-  'err_service_required' |
-  'err_non_addon_service_required' |
-  'err_client_does_not_exist' |
-  'err_status_not_allowed' |
-  'err_no_second_checkout' |
-  'err_appointment_does_not_exist' |
-  'err_stylist_is_already_in_preference' |
-  'err_invalid_stylist_uuid' |
-  'err_invalid_sms_code' |
-  'err_unique_client_email' |
-  'err_duplicate_push_token' |
-  'err_notification_not_found' |
-  'err_bad_notification_type' |
-  'err_bad_integration_type';
+  | 'required'
+  | 'invalid'
+  | 'null'
+  | 'blank'
+  | 'min_length'
+  | 'max_length'
+  | 'max_value'
+  | 'min_value'
+  | 'max_digits'
+  | 'max_decimal_places'
+  | 'invalid_choice'
+  | 'empty'
+  | 'invalid_image'
+  | 'date'
+  | 'datetime'
+  | 'err_email_already_taken'
+  | 'err_incorrect_user_role'
+  | 'err_unique_stylist_phone'
+  | 'err_unique_client_phone'
+  | 'err_unique_client_name'
+  | 'err_invalid_query_for_home'
+  | 'err_appointment_in_the_past'
+  | 'err_appointment_intersection'
+  | 'err_appointment_outside_working_hours'
+  | 'err_appointment_non_working_day'
+  | 'err_service_does_not_exist'
+  | 'err_service_required'
+  | 'err_non_addon_service_required'
+  | 'err_client_does_not_exist'
+  | 'err_status_not_allowed'
+  | 'err_no_second_checkout'
+  | 'err_appointment_does_not_exist'
+  | 'err_stylist_is_already_in_preference'
+  | 'err_invalid_stylist_uuid'
+  | 'err_invalid_sms_code'
+  | 'err_unique_client_email'
+  | 'err_duplicate_push_token'
+  | 'err_notification_not_found'
+  | 'err_bad_notification_type'
+  | 'err_bad_integration_type';
 
 // Mapping of all field error codes to human readable messages
 export const fieldErrorMsgs = new Map<FieldErrorCode, string>([
@@ -105,23 +105,24 @@ export const fieldErrorMsgs = new Map<FieldErrorCode, string>([
  * it in nonFieldErrorMsgs map below.
  */
 export type NonFieldErrorCode =
-  'err_signature_expired' |
-  'err_invalid_access_token' |
-  'err_auth_account_disabled' |
-  'err_auth_unable_to_login_with_credentials' |
-  'err_refresh_expired' |
-  'err_orig_iat_is_required' |
-  'err_wait_to_rerequest_new_code' |
-  'err_available_time_not_set' |
-  'err_stylist_location_unavailable' |
-  'err_stylist_does_not_exist' |
-  'err_privacy_setting_private' |
-  'err_cannot_modify_appointment' |
-  'err_invalid_phone_number' |
-  'err_device_not_found' |
-  'err_failure_to_setup_oauth' |
-  'err_end_time_greater_than_start_time' |
-  'err_stylist_special_availability_date_not_found';
+  | 'err_signature_expired'
+  | 'err_invalid_access_token'
+  | 'err_auth_account_disabled'
+  | 'err_auth_unable_to_login_with_credentials'
+  | 'err_refresh_expired'
+  | 'err_orig_iat_is_required'
+  | 'err_wait_to_rerequest_new_code'
+  | 'err_available_time_not_set'
+  | 'err_stylist_location_unavailable'
+  | 'err_stylist_does_not_exist'
+  | 'err_privacy_setting_private'
+  | 'err_cannot_modify_appointment'
+  | 'err_invalid_phone_number'
+  | 'err_device_not_found'
+  | 'err_failure_to_setup_oauth'
+  | 'err_end_time_greater_than_start_time'
+  | 'err_stylist_special_availability_date_not_found'
+  | 'err_date_too_close';
 
 // Mapping of all non-field error codes to human readable messages
 export const nonFieldErrorMsgs = new Map<NonFieldErrorCode, string>([
@@ -143,7 +144,8 @@ export const nonFieldErrorMsgs = new Map<NonFieldErrorCode, string>([
   ['err_invalid_phone_number', 'Phone number is not valid.'],
   ['err_device_not_found', 'Device with given registration_id not found for give user and application type.'],
   ['err_end_time_greater_than_start_time', 'Start time cannot be after end time.'],
-  ['err_failure_to_setup_oauth', 'General problem with setting up oauth credentials.']
+  ['err_failure_to_setup_oauth', 'General problem with setting up oauth credentials.'],
+  ['err_date_too_close', 'The date is too close and cannot be set as Deal of the Week.']
 ]);
 
 /**
