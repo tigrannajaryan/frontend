@@ -203,7 +203,7 @@ page-checkout {
 
     .col {
       .text-muted {
-        font-size: pxtovw(13px);
+        font-size: $shared-small;
         line-height: pxtovw(14px);
       }
     }
