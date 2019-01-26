@@ -1,6 +1,9 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ModalController } from 'ionic-angular';
 
+import { dealOfTheWeekMinDiscount } from '~/shared/constants';
+import { WeekdayIso } from '~/shared/weekday';
+
 import { PercentageSliderSettings } from '~/core/popups/change-percent/change-percent.component';
 import { PageNames } from '~/core/page-names';
 import { WeekdayDiscount } from '~/core/api/discounts.models';
@@ -20,6 +23,7 @@ export class DiscountsListComponent implements OnInit {
     left: string,
     right: string
   };
+  @Input() dealOfTheWeek: WeekdayIso;
   @Input() symbol: DiscountSymbol;
   @Input() errorMsg: string;
   @Output() discountChange = new EventEmitter();
@@ -42,8 +46,12 @@ export class DiscountsListComponent implements OnInit {
    */
   onDiscountChange(index: number): void {
     let prevDiscountPercent: number;
-    if (this.errorMsg && this.list[index - 1]) {
-      prevDiscountPercent = this.list[index - 1].discount_percent;
+
+    const discount: WeekdayDiscount = this.list[index];
+    const prevDiscount: WeekdayDiscount = this.list[index - 1];
+
+    if (this.errorMsg && prevDiscount) {
+      prevDiscountPercent = prevDiscount.discount_percent;
     }
 
     const curWeekday: WeekdayDiscount = this.list[index];
@@ -51,6 +59,10 @@ export class DiscountsListComponent implements OnInit {
       label: curWeekday.weekday_verbose,
       percentage: curWeekday.discount_percent
     };
+
+    if (discount && discount.weekday === this.dealOfTheWeek) {
+      data.min = dealOfTheWeekMinDiscount;
+    }
 
     if (this.errorMsg) {
       data.errorMsg = this.errorMsg;

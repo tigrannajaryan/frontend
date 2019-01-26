@@ -45,13 +45,12 @@ export class MadeMenuHeaderComponent implements OnDestroy, OnInit {
     const allCompleted =
       [
         'has_weekday_discounts_set',
-        'has_deal_of_week_set',
         'has_invited_clients',
         'has_services_set',
         'has_business_hours_set'
       ].every(key => this.profileStatus[key]) &&
       calcProfileCompleteness(this.profile).isProfileComplete;
 
-    return !allCompleted;
+    return !allCompleted || this.profileStatus.must_select_deal_of_week;
   }
 }

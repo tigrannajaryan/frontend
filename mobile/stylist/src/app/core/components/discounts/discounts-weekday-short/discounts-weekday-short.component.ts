@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ModalController } from 'ionic-angular';
 import * as moment from 'moment';
 
+import { dealOfTheWeekMinDiscount } from '~/shared/constants';
 import { StylistProfileStatus } from '~/shared/api/stylist-app.models';
 import {
   ListPickerOption,
@@ -28,22 +29,33 @@ export class DiscountsWeekdayShortComponent {
   @Output() weekdayChange = new EventEmitter();
   @Output() updateWeekdayDiscounts = new EventEmitter();
 
+  profileStatus: StylistProfileStatus;
+
   constructor(
     private discountsApi: DiscountsApi,
     private modalCtrl: ModalController
   ) {
   }
 
+  async ionViewWillEnter(): Promise<void> {
+    this.profileStatus = await getProfileStatus() as StylistProfileStatus;
+  }
+
   selectDealOfTheWeek(): void {
     const params: ListPickerPopupParams = {
-      options: moment.weekdays().map(weekday => {
-        const weekdayIso: WeekdayIso = moment().isoWeekday(weekday).isoWeekday() as WeekdayIso;
-        return {
-          label: weekday,
-          value: weekdayIso,
-          selected: this.dealOfTheWeek && this.dealOfTheWeek === weekdayIso
-        };
-      }),
+      options: moment.weekdays()
+        .map(weekday => {
+          const weekdayIso: WeekdayIso = moment().isoWeekday(weekday).isoWeekday() as WeekdayIso;
+          return {
+            label: weekday,
+            value: weekdayIso,
+            selected: this.dealOfTheWeek && this.dealOfTheWeek === weekdayIso
+          };
+        })
+        .filter(option => {
+          const weekday = this.discounts.find(discount => discount.weekday === option.value);
+          return weekday && weekday.is_working_day;
+        }),
       onSelect: async (option: ListPickerOption): Promise<void> => {
         if (option.value) {
           const oldValue = this.dealOfTheWeek;
@@ -52,7 +64,6 @@ export class DiscountsWeekdayShortComponent {
           this.dealOfTheWeek = option.value;
 
           // We will force the discount to be at least 30%
-          const dealOfTheWeekMinDiscount = 30;
           const weekday = this.discounts.find(discount => discount.weekday === option.value);
           const modifiedWeekdays = weekday.discount_percent < dealOfTheWeekMinDiscount ? [{
               ...weekday,
@@ -90,12 +101,18 @@ export class DiscountsWeekdayShortComponent {
     this.weekdayChange.emit();
   }
 
+  dealOfTheWeekSet(): boolean {
+    return (
+      this.dealOfTheWeek && this.discounts &&
+      this.discounts.find(discount => discount.weekday === this.dealOfTheWeek).is_working_day
+    );
+  }
+
   private async updateProfileStatus(): Promise<void> {
-    const profileStatus = await getProfileStatus() as StylistProfileStatus;
-    if (profileStatus.has_deal_of_week_set !== Boolean(this.dealOfTheWeek)) {
+    if (this.profileStatus && this.profileStatus.must_select_deal_of_week) {
       await updateProfileStatus({
-        ...profileStatus,
-        has_deal_of_week_set: Boolean(this.dealOfTheWeek)
+        ...this.profileStatus,
+        must_select_deal_of_week: false
       });
     }
   }
