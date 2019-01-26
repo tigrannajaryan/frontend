@@ -29,20 +29,16 @@ export class DiscountsWeekdayShortComponent {
   @Output() weekdayChange = new EventEmitter();
   @Output() updateWeekdayDiscounts = new EventEmitter();
 
-  static async updateProfileStatus(): Promise<void> {
-    const profileStatus = await getProfileStatus() as StylistProfileStatus;
-    if (profileStatus.must_select_deal_of_week) {
-      await updateProfileStatus({
-        ...profileStatus,
-        must_select_deal_of_week: false
-      });
-    }
-  }
+  profileStatus: StylistProfileStatus;
 
   constructor(
     private discountsApi: DiscountsApi,
     private modalCtrl: ModalController
   ) {
+  }
+
+  async ionViewWillEnter(): Promise<void> {
+    this.profileStatus = await getProfileStatus() as StylistProfileStatus;
   }
 
   selectDealOfTheWeek(): void {
@@ -88,7 +84,7 @@ export class DiscountsWeekdayShortComponent {
               showAlert('', 'Deal of the Week discount is 30% or more.');
             }
 
-            DiscountsWeekdayShortComponent.updateProfileStatus();
+            this.updateProfileStatus();
           } else {
             // Rollback to prev value in case of error
             this.dealOfTheWeek = oldValue;
@@ -110,5 +106,14 @@ export class DiscountsWeekdayShortComponent {
       this.dealOfTheWeek && this.discounts &&
       this.discounts.find(discount => discount.weekday === this.dealOfTheWeek).is_working_day
     );
+  }
+
+  private async updateProfileStatus(): Promise<void> {
+    if (this.profileStatus && this.profileStatus.must_select_deal_of_week) {
+      await updateProfileStatus({
+        ...this.profileStatus,
+        must_select_deal_of_week: false
+      });
+    }
   }
 }

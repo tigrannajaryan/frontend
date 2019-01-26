@@ -25,7 +25,7 @@
     </ng-template>
 
     <ion-col col-12 no-padding class="DiscountsWeekday-text DiscountsWeekday-text--danger"
-      *ngIf="!dealOfTheWeekSet()">
+      *ngIf="profileStatus?.must_select_deal_of_week">
         Must select Deal of the Week to complete set up.
     </ion-col>
 </ion-row>
