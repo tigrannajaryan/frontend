@@ -199,7 +199,7 @@ page-checkout {
 
   .CheckOut-tax {
     font-size: $shared-small;
-    color: color($colors, warmGrey);
+    color: color($colors-shared, warmGrey);
 
     .col {
       .text-muted {
