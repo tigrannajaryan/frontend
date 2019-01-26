@@ -198,7 +198,7 @@ page-checkout {
   }
 
   .CheckOut-tax {
-    font-size: pxtovw(13px);
+    font-size: $shared-small;
     color: color($colors, warmGrey);
 
     .col {
