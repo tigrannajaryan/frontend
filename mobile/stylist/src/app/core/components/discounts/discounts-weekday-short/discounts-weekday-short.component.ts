@@ -46,14 +46,19 @@ export class DiscountsWeekdayShortComponent {
 
   selectDealOfTheWeek(): void {
     const params: ListPickerPopupParams = {
-      options: moment.weekdays().map(weekday => {
-        const weekdayIso: WeekdayIso = moment().isoWeekday(weekday).isoWeekday() as WeekdayIso;
-        return {
-          label: weekday,
-          value: weekdayIso,
-          selected: this.dealOfTheWeek && this.dealOfTheWeek === weekdayIso
-        };
-      }),
+      options: moment.weekdays()
+        .map(weekday => {
+          const weekdayIso: WeekdayIso = moment().isoWeekday(weekday).isoWeekday() as WeekdayIso;
+          return {
+            label: weekday,
+            value: weekdayIso,
+            selected: this.dealOfTheWeek && this.dealOfTheWeek === weekdayIso
+          };
+        })
+        .filter(option => {
+          const weekday = this.discounts.find(discount => discount.weekday === option.value);
+          return weekday && weekday.is_working_day;
+        }),
       onSelect: async (option: ListPickerOption): Promise<void> => {
         if (option.value) {
           const oldValue = this.dealOfTheWeek;
