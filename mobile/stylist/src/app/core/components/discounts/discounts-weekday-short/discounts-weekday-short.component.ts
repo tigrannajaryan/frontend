@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ModalController } from 'ionic-angular';
 import * as moment from 'moment';
 
+import { dealOfTheWeekMinDiscount } from '~/shared/constants';
 import { StylistProfileStatus } from '~/shared/api/stylist-app.models';
 import {
   ListPickerOption,
@@ -67,7 +68,6 @@ export class DiscountsWeekdayShortComponent {
           this.dealOfTheWeek = option.value;
 
           // We will force the discount to be at least 30%
-          const dealOfTheWeekMinDiscount = 30;
           const weekday = this.discounts.find(discount => discount.weekday === option.value);
           const modifiedWeekdays = weekday.discount_percent < dealOfTheWeekMinDiscount ? [{
               ...weekday,
@@ -88,7 +88,7 @@ export class DiscountsWeekdayShortComponent {
               showAlert('', 'Deal of the Week discount is 30% or more.');
             }
 
-            this.updateProfileStatus();
+            DiscountsWeekdayShortComponent.updateProfileStatus();
           } else {
             // Rollback to prev value in case of error
             this.dealOfTheWeek = oldValue;
@@ -105,13 +105,10 @@ export class DiscountsWeekdayShortComponent {
     this.weekdayChange.emit();
   }
 
-  private async updateProfileStatus(): Promise<void> {
-    const profileStatus = await getProfileStatus() as StylistProfileStatus;
-    if (profileStatus.has_deal_of_week_set !== Boolean(this.dealOfTheWeek)) {
-      await updateProfileStatus({
-        ...profileStatus,
-        has_deal_of_week_set: Boolean(this.dealOfTheWeek)
-      });
-    }
+  dealOfTheWeekSet(): boolean {
+    return (
+      this.dealOfTheWeek && this.discounts &&
+      this.discounts.find(discount => discount.weekday === this.dealOfTheWeek).is_working_day
+    );
   }
 }

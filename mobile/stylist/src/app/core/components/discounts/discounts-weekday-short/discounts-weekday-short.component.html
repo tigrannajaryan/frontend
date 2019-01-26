@@ -5,7 +5,7 @@
 <ion-row class="DiscountsList-row DiscountsWeekday-firstRow"
   (click)="selectDealOfTheWeek()">
 
-    <ng-container *ngIf="dealOfTheWeek; else notSelectedTpl">
+    <ng-container *ngIf="dealOfTheWeekSet(); else notSelectedTpl">
       <ion-col col-8 no-padding class="DiscountsList-col">
         Deal of the Week
       </ion-col>
@@ -25,9 +25,9 @@
     </ng-template>
 
     <ion-col col-12 no-padding class="DiscountsWeekday-text DiscountsWeekday-text--danger"
-      *ngIf="!dealOfTheWeek">
+      *ngIf="!dealOfTheWeekSet()">
         Must select Deal of the Week to complete set up.
     </ion-col>
 </ion-row>
 
-<discounts-list [list]="discounts" [header]="{ left: 'Day', right: 'Discount'}" (discountChange)="onDiscountChange()"></discounts-list>
+<discounts-list [list]="discounts" [header]="{ left: 'Day', right: 'Discount'}" [dealOfTheWeek]="dealOfTheWeek" (discountChange)="onDiscountChange()"></discounts-list>
