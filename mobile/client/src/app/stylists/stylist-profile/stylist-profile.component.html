@@ -164,7 +164,7 @@
           <i class="mb-icon-phone-a"></i>
         </div>
         <div class="StylistProfilePreview-itemText">
-          {{ stylistProfile.phone }}
+          <phone-link [phone]="stylistProfile.phone" [readonly]="true" [shortForm]="true"></phone-link>
         </div>
       </div>
     </div>
