@@ -1,5 +1,6 @@
 import { async, ComponentFixture } from '@angular/core/testing';
 import { NavController } from 'ionic-angular';
+import { of } from 'rxjs/observable/of';
 
 import { TestUtils } from '~/../test';
 
@@ -112,7 +113,7 @@ describe('Pages: Auth Phone', () => {
   it('should call the API when submitting', () => {
     const authService = fixture.debugElement.injector.get(AuthService);
 
-    spyOn(authService, 'getCode');
+    spyOn(authService, 'getCode').and.returnValue(of({ response: {} }));
 
     instance.phone = testPhone;
     instance.submit();

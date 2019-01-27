@@ -2,10 +2,12 @@ import { async, TestBed } from '@angular/core/testing';
 import { Events, IonicModule, Platform } from 'ionic-angular';
 import { EventsMock, PlatformMock } from 'ionic-mocks';
 import { Push, RegistrationEventResponse } from '@ionic-native/push';
+import { of } from 'rxjs/observable/of';
 import * as faker from 'faker';
 
 import { isDevelopmentBuild } from '~/shared/get-build-info';
 import { Logger } from '~/shared/logger';
+import { LoggerMock } from '~/shared/logger.mock';
 import { NotificationsApi, RegUnregDeviceRequest } from '~/shared/push/notifications.api';
 import { NotificationsApiMock } from '~/shared/push/notifications.api.mock';
 import { PushNotification } from '~/shared/push/push-notification';
@@ -27,8 +29,8 @@ describe('PushNotification', () => {
     TestBed
       .configureTestingModule({
         providers: [
-          Logger,
           Push, PushNotification,
+          { provide: Logger, useClass: LoggerMock },
           { provide: NotificationsApi, useClass: NotificationsApiMock },
           // Ionic mocks:
           { provide: Events, useFactory: () => EventsMock.instance() },
@@ -51,8 +53,8 @@ describe('PushNotification', () => {
 
   it('should register/unregister correctly', async () => {
     const api = TestBed.get(NotificationsApi);
-    spyOn(api, 'registerDevice');
-    spyOn(api, 'unregisterDevice');
+    spyOn(api, 'registerDevice').and.returnValue(of());
+    spyOn(api, 'unregisterDevice').and.returnValue(of());
 
     // Initiate device registration
     const registration: RegistrationEventResponse = {
