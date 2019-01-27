@@ -11,28 +11,43 @@ const RESEND_CODE_TIMEOUT_SECONDS = 120; // 2min
  */
 @Injectable()
 export class AuthProcessState {
+  private interval: any; // Timer
   private rerequestCodeTimeout = new BehaviorSubject<number>(0);
 
-  constructor(private ngZone: NgZone) {
-    // We must run this repetitive action outside Angular Zone otherwise
-    // Protractor thinks that Angular is always busy, which results in Protractor
-    // waiting infinitely for Angular and tests timing out.
-    this.ngZone.runOutsideAngular(() => {
-      setInterval(() => {
-        this.ngZone.run(() => {
-          if (this.rerequestCodeTimeout.value > 0) {
-            this.rerequestCodeTimeout.next(this.rerequestCodeTimeout.value - 1);
-          }
-        });
-      }, 1000);
-    });
+  constructor(
+    private ngZone: NgZone
+  ) {
+    this.startCountdown();
   }
 
   beginRerequestCountdown(): void {
-    this.rerequestCodeTimeout.next(RESEND_CODE_TIMEOUT_SECONDS);
+    if (this.rerequestCodeTimeout.value === 0) {
+      this.rerequestCodeTimeout.next(RESEND_CODE_TIMEOUT_SECONDS);
+    }
+    this.startCountdown();
   }
 
   rerequestCodeTimeoutAsObservable(): Observable<number> {
     return this.rerequestCodeTimeout.asObservable();
+  }
+
+  private startCountdown(): void {
+    // We must run this repetitive action outside Angular Zone otherwise
+    // Protractor thinks that Angular is always busy, which results in Protractor
+    // waiting infinitely for Angular and tests timing out.
+    this.ngZone.runOutsideAngular(() => {
+      if (!this.interval) {
+        this.interval = setInterval(() => {
+          this.ngZone.run(() => {
+            if (this.rerequestCodeTimeout.value > 0) {
+              this.rerequestCodeTimeout.next(this.rerequestCodeTimeout.value - 1);
+            } else {
+              clearInterval(this.interval);
+              this.interval = undefined;
+            }
+          });
+        }, 1000);
+      }
+    });
   }
 }
