@@ -54,7 +54,9 @@ export const appointmentMock: ClientAppointmentModel = {
   stylist_last_name: faker.name.lastName(),
   stylist_photo_url: faker.image.imageUrl(),
   profile_photo_url: faker.image.imageUrl(),
-  salon_name: faker.commerce.productName()
+  salon_name: faker.commerce.productName(),
+  rating: 1,
+  comment: faker.lorem.text()
 };
 
 export const previewMock: AppointmentPreviewResponse = {
@@ -105,7 +107,9 @@ export function genFake(count: number, status: AppointmentStatus): ClientAppoint
           client_price: Math.random() * 50,
           regular_price: Math.random() * 50,
           is_original: Math.random() < 0.5
-        }))
+        })),
+        rating: 1,
+        comment: faker.lorem.text()
       };
     });
   return response;

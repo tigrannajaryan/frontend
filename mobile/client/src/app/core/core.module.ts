@@ -5,10 +5,8 @@ import { GoogleAnalytics } from '@ionic-native/google-analytics';
 import { AppAnalytics } from '~/shared/app-analytics';
 import { PushNotificationToastService } from '~/shared/push/push-notification-toast';
 import { UserContext } from '~/shared/user-context';
-
 import { HasErrorPipe } from '~/shared/pipes/has-error.pipe';
 import { PricePipe } from '~/shared/pipes/price.pipe';
-
 import { CheckListComponent } from '~/shared/components/check-list/check-list.component';
 import { CodeInputComponent } from '~/shared/components/code-input/code-input.component';
 import { ContinueFooterComponent } from '~/shared/components/continue-footer/continue-footer.component';
@@ -24,19 +22,21 @@ import { ServerStatusComponent } from '~/shared/server-status/server-status.comp
 import { ServicesHeaderListComponent } from '~/shared/components/services-header-list/services-header-list';
 import { ServicesPickComponent } from '~/shared/components/services-pick/services-pick.component';
 import { UserNamePhotoComponent } from '~/shared/components/user-name-photo/user-name-photo.component';
-
+import { MadeAutosizeDirective } from '~/shared/directives/made-autosize.directive';
+import { MadeAnalyticsApi } from '~/shared/api/made-analytics.api';
 import { PhoneInputDirective } from '~/shared/directives/phone-input.directive';
 
 import { AppointmentItemComponent } from '~/core/components/appointment-item/appointment-item.component';
 import { MadeHeaderComponent } from '~/core/components/made-header/made-header.component';
 import { ProfileHeaderComponent } from '~/core/components/profile-header/profile-header.component';
 import { ClientPushNotificationsTrackerComponent } from '~/core/components/push-notifications-tracker/push-notifications-tracker.component';
-import { MadeAnalyticsApi } from '~/shared/api/made-analytics.api';
-
 import { InputNumberDirective } from '~/core/directives/input-number.directive';
 
 import { BookServicesHeaderComponent } from '~/booking/book-services-header/book-services-header';
 import { StylistCardComponent } from '~/stylists/stylist-card/stylist-card.component';
+import { MadeThumbsComponent } from '~/core/components/made-thumbs/made-thumbs.component';
+import { MadeThumbComponent } from '~/shared/components/made-thumb/made-thumb.component';
+import { MadeUserCommentComponent } from '~/shared/components/made-user-comment/made-user-comment.component';
 
 export enum DefaultImage {
   User = 'assets/icons/stylist-avatar.png'
@@ -68,7 +68,11 @@ const declarations = [
   ServicesHeaderListComponent,
   ServicesPickComponent,
   StylistCardComponent,
-  UserNamePhotoComponent
+  UserNamePhotoComponent,
+  MadeAutosizeDirective,
+  MadeThumbsComponent,
+  MadeUserCommentComponent,
+  MadeThumbComponent
 ];
 
 @NgModule({

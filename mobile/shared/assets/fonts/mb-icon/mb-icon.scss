@@ -69,6 +69,8 @@ $mb-icon-menu: "\e935";
 $mb-icon-settings: "\e936";
 $mb-icon-pencil: "\e937";
 $mb-icon-settings-a: "\e938";
+$mb-icon-thumbsDown: "\e939";
+$mb-icon-thumbsUp: "\e93a";
 
 @font-face {
   font-family: '#{$icomoon-font-family}';
@@ -568,5 +570,20 @@ $mb-icon-settings-a: "\e938";
   
   &:before {
     content: $mb-icon-settings-a;
+  }
+}
+
+.mb-icon-thumbsDown {
+  @extend %mb-icon;
+  &:before {
+    content: $mb-icon-thumbsDown;
+  }
+}
+
+.mb-icon-thumbsUp {
+  @extend %mb-icon;
+
+  &:before {
+    content: $mb-icon-thumbsUp;
   }
 }

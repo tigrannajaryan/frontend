@@ -15,6 +15,9 @@ import { PriceCalendarComponent } from '~/shared/components/price-calendar/price
 import { PushNotificationToastService } from '~/shared/push/push-notification-toast';
 import { ServicesHeaderListComponent } from '~/shared/components/services-header-list/services-header-list';
 import { UserNamePhotoComponent } from '~/shared/components/user-name-photo/user-name-photo.component';
+import { MadeUserCommentComponent } from '~/shared/components/made-user-comment/made-user-comment.component';
+import { MadeThumbComponent } from '~/shared/components/made-thumb/made-thumb.component';
+import { MadeAutosizeDirective } from '~/shared/directives/made-autosize.directive';
 
 import { DirectivesModule } from '~/core/directives/directive.module';
 import { ComponentsModule } from './components/components.module';
@@ -27,6 +30,9 @@ const declarations = [
   PricePipe,
   ServicesHeaderListComponent,
   UserNamePhotoComponent,
+  MadeUserCommentComponent,
+  MadeThumbComponent,
+  MadeAutosizeDirective,
   TimeSlotsComponent
 ];
 
