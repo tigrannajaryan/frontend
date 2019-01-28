@@ -196,24 +196,4 @@ page-checkout {
       }
     }
   }
-
-  .CheckOut-tax {
-    font-size: $shared-small;
-    color: color($colors-shared, warmGrey);
-
-    .col {
-      .text-muted {
-        font-size: $shared-small;
-        line-height: pxtovw(14px);
-      }
-    }
-
-    button {
-      display: inline-block;
-      margin: 0 0 0 pxtovw(7px);
-      font-size: pxtovw(16px);
-      vertical-align: middle;
-      background: none;
-    }
-  }
 }

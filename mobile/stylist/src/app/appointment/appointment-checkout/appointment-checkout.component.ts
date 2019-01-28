@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
-import { Validators } from '@angular/forms';
 
 import {
   AppointmentChangeRequest,
@@ -11,17 +10,14 @@ import {
 } from '~/shared/api/appointments.models';
 import {
   CheckOutService,
-  ServiceFromAppointment, StylistSettings, StylistSettingsKeys
+  ServiceFromAppointment
 } from '~/shared/api/stylist-app.models';
-import { InputTypes } from '~/shared/api/base.models';
 
 import { HomeService } from '~/core/api/home.service';
 import { PageNames } from '~/core/page-names';
 import { AddServicesComponentParams } from '~/core/popups/add-services/add-services.component';
 
 import { AppointmentPriceComponentParams } from '~/appointment/appointment-price/appointment-price.component';
-import { SettingsFieldComponentParams } from '~/settings/settings-field/settings-field.component';
-import { StylistServiceProvider } from '~/core/api/stylist.service';
 
 export interface AppointmentCheckoutParams {
   appointmentUuid: string;
@@ -66,8 +62,7 @@ export class AppointmentCheckoutComponent {
   constructor(
     private navCtrl: NavController,
     private navParams: NavParams,
-    private homeService: HomeService,
-    private stylistService: StylistServiceProvider
+    private homeService: HomeService
   ) {
   }
 
@@ -170,31 +165,6 @@ export class AppointmentCheckoutComponent {
   onChangePrice(appointment: StylistAppointmentModel): void {
     const params: AppointmentPriceComponentParams = { appointment };
     this.navCtrl.push(PageNames.AppointmentPrice, { params });
-  }
-
-  onTaxEdit(): void {
-    const params: SettingsFieldComponentParams = {
-      title: 'Tax Rate Percentage',
-      name: StylistSettingsKeys.tax_percentage,
-      inputType: InputTypes.number,
-      value: [
-        this.previewResponse.tax_percentage,
-        [
-          Validators.required,
-          Validators.pattern(/^(\d{1,2})(\.\d{1,3})?$/)
-        ]
-      ],
-      onSave: async (val: number) => {
-        this.previewResponse.tax_percentage = val;
-
-        const settings: StylistSettings = {
-          tax_percentage: val,
-          card_fee_percentage: this.previewResponse.card_fee_percentage
-        };
-        await this.stylistService.setStylistSettings(settings).toPromise();
-      }
-    };
-    this.navCtrl.push(PageNames.SettingsField, { params });
   }
 
   private getChangeAppointmentRequestParams(): AppointmentChangeRequest {

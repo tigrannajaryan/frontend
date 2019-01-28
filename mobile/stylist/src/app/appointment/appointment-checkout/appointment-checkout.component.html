@@ -64,20 +64,17 @@
             </ion-col>
           </ion-row>
 
-          <ion-row
-            (click)="onTaxEdit()"
-            *ngIf="!params?.isAlreadyCheckedOut || hasTaxIncluded"
-            align-items-center
-            class="CheckOut-tax"
-            data-test-id="appointmentTaxPercentage">
-            <ion-col col-9 no-padding>
-              <span class="text-muted">Tax Rate ({{ previewResponse.tax_percentage | number: '1.2' }}%)</span>
-              <button class="Link">Edit</button>
-            </ion-col>
-            <ion-col col-3 no-padding>
-              <span>{{ previewResponse.total_tax.toFixed(2) | currency }}</span>
-            </ion-col>
-          </ion-row>
+          <!-- Taxes are temp hidden -->
+          <!--
+            <ion-row align-items-center *ngIf="!params?.isAlreadyCheckedOut || hasTaxIncluded" data-test-id="appointmentTaxPercentage">
+              <ion-col col-9 no-padding>
+                <span class="text-muted">Tax Rate ({{ previewResponse.tax_percentage | number: '1.2' }}%)</span>
+              </ion-col>
+              <ion-col col-3 no-padding>
+                <span>{{ previewResponse.total_tax.toFixed(2) | currency }}</span>
+              </ion-col>
+            </ion-row>
+          -->
         </div>
 
         <!-- Bottom controls -->
