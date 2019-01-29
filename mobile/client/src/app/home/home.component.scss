@@ -135,6 +135,7 @@ page-home {
   }
 
   .Home-bookBtn {
+    width: pxtovw(160px);
     margin: pxtovw(16px) auto;
     // important overwrites .Button box-shadow: none !important
     box-shadow: 0 pxtovw(2px) pxtovw(4px) rgba(black, 0.16) !important;

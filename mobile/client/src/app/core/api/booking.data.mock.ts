@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
-import { BookingData } from './booking.data';
+
+import { LoggerMock } from '~/shared/logger.mock';
+
 import { BookingApiMock } from './booking.api.mock';
+import { BookingData } from './booking.data';
 import { ServicesServiceMock } from './services.service.mock';
 
 /**
@@ -9,6 +12,10 @@ import { ServicesServiceMock } from './services.service.mock';
 @Injectable()
 export class BookingDataMock extends BookingData {
   constructor() {
-    super(new BookingApiMock(), new ServicesServiceMock());
+    super(
+      new BookingApiMock(),
+      new ServicesServiceMock(),
+      new LoggerMock()
+    );
   }
 }

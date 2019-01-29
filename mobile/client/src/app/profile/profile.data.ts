@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import * as moment from 'moment';
 
-import { DataStore } from '~/shared/storage/data-store';
 import { ApiResponse } from '~/shared/api/base.models';
+import { Logger } from '~/shared/logger';
+import { DataStore } from '~/shared/storage/data-store';
 
 import { ProfileModel } from '~/core/api/profile.models';
 import { ProfileApi } from '~/core/api/profile-api';
@@ -29,12 +30,15 @@ export class ProfileDataStore extends DataStore<ProfileModel> {
     await saveAuthLocalData(authLocalData);
   }
 
-  constructor(private profileApi: ProfileApi) {
+  constructor(
+    private profileApi: ProfileApi,
+    protected logger: Logger
+  ) {
     super('profile', () => this.profileApi.getProfile(),
       { cacheTtlMilliseconds: moment.duration(1, 'hour').asMilliseconds() }); // Amazon requires to update an image URL after one hour.
 
     if (ProfileDataStore.guardInitilization) {
-      console.error('ProfileDataStore initialized twice. Only include it in providers array of DataModule.');
+      logger.error('ProfileDataStore initialized twice. Only include it in providers array of DataModule.');
     }
     ProfileDataStore.guardInitilization = true;
   }

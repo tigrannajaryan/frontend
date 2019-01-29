@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 
 import { DataStore } from '~/shared/storage/data-store';
+import { Logger } from '~/shared/logger';
+
 import { AppointmentsHistoryResponse, HomeResponse } from '~/core/api/appointments.models';
 import { AppointmentsApi } from '~/core/api/appointments.api';
 
@@ -14,10 +16,12 @@ export class AppointmentsDataStore {
   readonly history: DataStore<AppointmentsHistoryResponse>;
   readonly home: DataStore<HomeResponse>;
 
-  constructor(api: AppointmentsApi) {
-
+  constructor(
+    api: AppointmentsApi,
+    logger: Logger
+  ) {
     if (AppointmentsDataStore.guardInitilization) {
-      console.error('AppointmentsDataStore initialized twice. Only include it in providers array of DataModule.');
+      logger.error('AppointmentsDataStore initialized twice. Only include it in providers array of DataModule.');
     }
     AppointmentsDataStore.guardInitilization = true;
 

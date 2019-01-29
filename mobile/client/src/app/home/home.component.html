@@ -92,7 +92,7 @@
 
   <ion-fab bottom class="Home-fab"
     *ngIf="tabs[slides.getActiveIndex()] as tab">
-      <button ion-button large class="Button Home-bookBtn" data-test-id="bookLink"
+      <button ion-fab large class="Button Home-bookBtn" data-test-id="bookLink"
         *ngIf="tab.name === HomeTabName.Past || tab.appointments?.length !== 0"
         (click)="onBookClick()">
           Book
