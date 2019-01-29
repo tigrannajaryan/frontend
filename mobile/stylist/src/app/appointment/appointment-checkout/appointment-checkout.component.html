@@ -81,7 +81,7 @@
         </div>
 
         <!-- Bottom controls -->
-        <ion-row *ngIf="[AppointmentStatus.checked_out, AppointmentStatus.no_show].indexOf(appointment.status) === -1">
+        <ion-row *ngIf="AppointmentStatus.checked_out.indexOf(appointment.status) === -1">
           <ion-col (click)="addServicesClick()" class="CheckOut-controlBtn">
             <span>Change </span>
             <ng-container *ngIf="previewResponse.services.length > 1; else oneTpl">Services</ng-container>
