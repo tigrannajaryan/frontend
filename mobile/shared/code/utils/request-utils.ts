@@ -3,6 +3,7 @@ import { Observable } from 'rxjs/Observable';
 
 import { ApiResponse } from '~/shared/api/base.models';
 import { LOADING_DELAY } from '~/shared/api/request.models';
+import { Logger } from '~/shared/logger';
 import { showAlert } from '~/shared/utils/alert';
 
 export type Request<T> = Observable<ApiResponse<T>>;
@@ -38,7 +39,7 @@ export function composeRequest<T>(...extensions): Promise<ApiResponse<T>> {
   }
 
   if (extensions.length === 0) {
-    console.warn('You are using composeRequest without additional extensions. Consider just calling the request as is.');
+    (new Logger()).warn('You are using composeRequest without additional extensions. Consider just calling the request as is.');
   }
 
   // extension[1]( extension[0]( request ) ):

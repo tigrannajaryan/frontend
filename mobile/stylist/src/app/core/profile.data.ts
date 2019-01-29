@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import * as moment from 'moment';
 
+import { Logger } from '~/shared/logger';
 import { DataStore } from '~/shared/storage/data-store';
 
 import { StylistProfile } from '~/shared/api/stylist-app.models';
@@ -13,9 +14,12 @@ export class ProfileDataStore extends DataStore<StylistProfile> {
   private static guardInitilization = false;
   private api: StylistServiceProvider;
 
-  constructor(api: StylistServiceProvider) {
+  constructor(
+    api: StylistServiceProvider,
+    logger: Logger
+  ) {
     if (ProfileDataStore.guardInitilization) {
-      console.error('ProfileDataStore initialized twice. Only include it in providers array of DataModule.');
+      logger.error('ProfileDataStore initialized twice. Only include it in providers array of DataModule.');
     }
     ProfileDataStore.guardInitilization = true;
 

@@ -1,4 +1,5 @@
 import { Storage } from '@ionic/storage';
+import { Logger } from '~/shared/logger';
 import { AppModule } from '~/app.module';
 import { AuthResponse, UserProfileStatus } from '../api/auth.models';
 
@@ -56,8 +57,11 @@ export async function saveAuthLocalData(authLocalData: AuthLocalData): Promise<v
 export async function getAuthLocalData(): Promise<AuthLocalData> {
   const storage = await getStorage();
   const token = await storage.get(TOKEN_KEY);
-  const authLocalData = JSON.parse(token);
-  return authLocalData;
+  try {
+    return JSON.parse(token);
+  } catch {
+    // In tests token = ”value1” and error is shown.
+  }
 }
 
 /**
@@ -74,7 +78,7 @@ export async function deleteAuthLocalData(): Promise<void> {
 export async function updateProfileStatus(newProfileStatus: UserProfileStatus): Promise<UserProfileStatus> {
   const data = await getAuthLocalData();
   if (!data) {
-    console.warn('updateProfileStatus: data is empty');
+    (new Logger()).warn('updateProfileStatus: data is empty');
     return; // no initial data found, cannot update
   }
   const updatedProfileStatus = {

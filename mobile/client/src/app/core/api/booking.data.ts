@@ -6,6 +6,7 @@ import { Subscription } from 'rxjs/Subscription';
 
 import { DayOffer, ServiceModel } from '~/shared/api/price.models';
 import { StylistModel } from '~/shared/api/stylists.models';
+import { Logger } from '~/shared/logger';
 import { DataStore } from '~/shared/storage/data-store';
 import { BookingApi, TimeslotsResponse } from '~/core/api/booking.api';
 import { GetPricelistResponse } from '~/core/api/services.models';
@@ -37,10 +38,11 @@ export class BookingData implements OnDestroy {
 
   constructor(
     private api: BookingApi,
-    private servicesApi: ServicesService
+    private servicesApi: ServicesService,
+    protected logger: Logger
   ) {
     if (BookingData.guardInitilization) {
-      console.error('BookingData initialized twice. Only include it in providers array of DataModule.');
+      logger.error('BookingData initialized twice. Only include it in providers array of DataModule.');
     }
     BookingData.guardInitilization = true;
 

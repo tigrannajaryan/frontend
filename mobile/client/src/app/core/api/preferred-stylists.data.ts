@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
 import { ApiResponse } from '~/shared/api/base.models';
+import { Logger } from '~/shared/logger';
 import { DataStore, GetOptions } from '~/shared/storage/data-store';
 import { StylistsService } from '~/core/api/stylists.service';
 import {
@@ -32,10 +33,11 @@ export class PreferredStylistsData {
   }
 
   constructor(
-    private api: StylistsService
+    private api: StylistsService,
+    protected logger: Logger
   ) {
     if (PreferredStylistsData.guardInitilization) {
-      console.error('PreferredStylistsData initialized twice. Only include it in providers array of DataModule.');
+      logger.error('PreferredStylistsData initialized twice. Only include it in providers array of DataModule.');
     }
     PreferredStylistsData.guardInitilization = true;
 
