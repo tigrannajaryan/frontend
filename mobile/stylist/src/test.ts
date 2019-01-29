@@ -96,6 +96,7 @@ import { MadeAnalyticsApiMock } from './app/shared/api/made-analytics.api.mock';
 
 import { ExternalAppService } from '~/shared/utils/external-app-service';
 import { Logger } from '~/shared/logger';
+import { LoggerMock } from '~/shared/logger.mock';
 
 import { GoogleSignin } from '~/shared/google-signin';
 
@@ -107,6 +108,9 @@ import { HomeServiceMock } from '~/core/api/home.service.mock';
 import { AppModule } from '~/app.module';
 
 declare const require: any;
+declare const console: any;
+
+console.warn = jasmine.createSpy('console.warn');
 
 // First, initialize the Angular testing environment.
 getTestBed()
@@ -147,6 +151,7 @@ export class TestUtils {
         NavParams, GestureController, AlertControllerMock, LoadingControllerMock,
         Clipboard, EmailComposer, Logger, ActionSheetController,
         { provide: App, useClass: AppMock },
+        { provide: Logger, useClass: LoggerMock },
         { provide: Platform, useFactory: () => PlatformMock.instance() },
         { provide: StatusBar, useFactory: () => StatusBarMock.instance() },
         { provide: Config, useFactory: () => ConfigMock.instance() },
