@@ -82,6 +82,7 @@ import { CoreModule } from './app/core/core.module';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { Logger } from './app/shared/logger';
+import { LoggerMock } from './app/shared/logger.mock';
 
 import { AppModule } from './app/app.module';
 
@@ -166,7 +167,7 @@ export class TestUtils {
         ...components
       ],
       providers: [
-        App, Form, Keyboard, DomController, Logger, MenuController, NavController,
+        App, Form, Keyboard, DomController, MenuController, NavController,
         NavParams, GestureController, AlertControllerMock, LoadingControllerMock,
         Clipboard, EmailComposer, ProfileApiMock, ActionSheetController, BaseService,
         PushNotification, Push, ClientStartupNavigation,
@@ -190,6 +191,7 @@ export class TestUtils {
             check = jasmine.createSpy('check').and.returnValue(Promise.resolve(true));
           }
         },
+        { provide: Logger, useClass: LoggerMock },
         // API
         { provide: AuthService, useClass: AuthServiceMock },
         { provide: AppointmentsApi, useClass: AppointmentsApiMock },
