@@ -40,7 +40,7 @@
     "@ionic-native/clipboard": "4.15.0",
     "@ionic-native/contacts": "4.19.0",
     "@ionic-native/core": "4.6.0",
-    "@ionic-native/deeplinks": "4.18.0",
+    "@ionic-native/deeplinks": "4.20.0",
     "@ionic-native/diagnostic": "4.15.0",
     "@ionic-native/email-composer": "4.15.0",
     "@ionic-native/facebook": "4.7.0",
@@ -193,15 +193,15 @@
         "WEB_APPLICATION_CLIENT_ID": "17636556416-l518l3bkc3pev82sl9d2dq6vrd1th7hc.apps.googleusercontent.com",
         "PLAY_SERVICES_VERSION": "11.0.1"
       },
+      "cordova-plugin-contacts": {},
+      "cordova-open-native-settings": {},
+      "cordova-sms-plugin": {},
       "ionic-plugin-deeplinks": {
         "URL_SCHEME": "madebeauty",
         "DEEPLINK_SCHEME": "https",
         "DEEPLINK_HOST": "madebeauty.com",
         "ANDROID_PATH_PREFIX": "/get/"
-      },
-      "cordova-plugin-contacts": {},
-      "cordova-open-native-settings": {},
-      "cordova-sms-plugin": {}
+      }
     },
     "platforms": [
       "android",
