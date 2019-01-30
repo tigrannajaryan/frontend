@@ -19,8 +19,8 @@ export function getPhoneNumber(phone: string, format: NumberFormat = NumberForma
     return phone;
   }
 
-  if (/^\+1\s/.test(phone)) { // US, Canada
-    return phone.replace(/^\+1\s/, '').replace(/\s/g, '-');
+  if (/^\+1\s?/.test(phone)) { // US, Canada
+    return phone.replace(/^\+1\s?/, '').replace(/\s/g, '-');
   }
   return phone;
 }
