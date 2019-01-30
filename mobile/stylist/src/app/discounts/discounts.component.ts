@@ -52,6 +52,7 @@ export class DiscountsComponent {
   ];
   activeTab: DiscountTabNames;
   params: DiscountsComponentParams;
+  profileStatus: StylistProfileStatus;
 
   constructor(
     public navParams: NavParams,
@@ -146,8 +147,8 @@ export class DiscountsComponent {
   }
 
   private async performInitialSaving(): Promise<void> {
-    const profileStatus = await getProfileStatus() as StylistProfileStatus;
-    if (profileStatus && !profileStatus.has_weekday_discounts_set && this.rebook) {
+    this.profileStatus = await getProfileStatus() as StylistProfileStatus;
+    if (this.profileStatus && !this.profileStatus.has_weekday_discounts_set && this.rebook) {
       // Perform initial saving of the discounts and mark them checked.
       const responses = await Promise.all([
         this.discountsApi.setDiscounts({
@@ -162,10 +163,10 @@ export class DiscountsComponent {
       ]);
       // If succeded and return no errors mark discounts checked.
       if (responses.every(({ error }) => !error)) {
-        await updateProfileStatus({
-          ...profileStatus,
+        this.profileStatus = await updateProfileStatus({
+          ...this.profileStatus,
           has_weekday_discounts_set: true
-        });
+        }) as StylistProfileStatus;
       }
     }
   }

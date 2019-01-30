@@ -9,7 +9,7 @@ import {
   ListPickerPopupComponent,
   ListPickerPopupParams
 } from '~/shared/components/list-picker-popup/list-picker-popup.component';
-import { getProfileStatus, updateProfileStatus } from '~/shared/storage/token-utils';
+import { updateProfileStatus } from '~/shared/storage/token-utils';
 import { showAlert } from '~/shared/utils/alert';
 import { WeekdayIso } from '~/shared/weekday';
 
@@ -23,22 +23,17 @@ import { WeekdayDiscount } from '~/core/api/discounts.models';
 export class DiscountsWeekdayShortComponent {
   moment = moment;
 
+  @Input() profileStatus: StylistProfileStatus;
   @Input() discounts: WeekdayDiscount[];
   @Input() dealOfTheWeek: WeekdayIso;
 
   @Output() weekdayChange = new EventEmitter();
   @Output() updateWeekdayDiscounts = new EventEmitter();
 
-  profileStatus: StylistProfileStatus;
-
   constructor(
     private discountsApi: DiscountsApi,
     private modalCtrl: ModalController
   ) {
-  }
-
-  async ionViewWillEnter(): Promise<void> {
-    this.profileStatus = await getProfileStatus() as StylistProfileStatus;
   }
 
   selectDealOfTheWeek(): void {
@@ -84,7 +79,7 @@ export class DiscountsWeekdayShortComponent {
               showAlert('', 'Deal of the Week discount is 30% or more.');
             }
 
-            this.updateProfileStatus();
+            await this.updateProfileStatus();
           } else {
             // Rollback to prev value in case of error
             this.dealOfTheWeek = oldValue;
@@ -110,10 +105,10 @@ export class DiscountsWeekdayShortComponent {
 
   private async updateProfileStatus(): Promise<void> {
     if (this.profileStatus && this.profileStatus.must_select_deal_of_week) {
-      await updateProfileStatus({
+      this.profileStatus = await updateProfileStatus({
         ...this.profileStatus,
         must_select_deal_of_week: false
-      });
+      }) as StylistProfileStatus;
     }
   }
 }
