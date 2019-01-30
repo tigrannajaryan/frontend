@@ -1,4 +1,12 @@
 page-profile {
+  .Tabs-slides {
+    height: 100%;
+
+    .slide-zoom {
+      height: 100%;
+    }
+  }
+
   .ProfilePage-pic {
     $image-size: pxtovw(120px);
 

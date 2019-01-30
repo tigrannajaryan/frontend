@@ -38,297 +38,301 @@
 <ion-content no-padding>
   <ion-slides (ionSlideDrag)="onEnableRefresher(false)" (touchend)="onEnableRefresher(true)" (ionSlideDidChange)="onTabSwipe()" no-padding class="Tabs-slides">
     <ion-slide>
-      <div class="Tabs-slide">
-        <div *ngIf="profile">
-          <div class="Made-wp">
-            <div class="StylistProfilePreview-name" data-test-id="stylistProfilePreviewName">{{ profile.first_name }}</div>
+      <ion-content>
+        <div class="Tabs-slide">
+          <div *ngIf="profile">
+            <div class="Made-wp">
+              <div class="StylistProfilePreview-name" data-test-id="stylistProfilePreviewName">{{ profile.first_name }}</div>
 
-            <div class="StylistProfilePreview-salon" data-test-id="stylistProfilePreviewSalon">{{ profile.salon_name }}</div>
+              <div class="StylistProfilePreview-salon" data-test-id="stylistProfilePreviewSalon">{{ profile.salon_name }}</div>
 
-            <div *ngIf="profile.followers_count" (click)="onMyClientsClick()" class="StylistProfilePreview-clients"
-                 data-test-id="stylistProfilePreviewClients">
-              <i class="mb-icon-heart-a"></i> <b>{{ profile.followers_count }}</b>&nbsp;MADE Clients
+              <div *ngIf="profile.followers_count" (click)="onMyClientsClick()" class="StylistProfilePreview-clients"
+                    data-test-id="stylistProfilePreviewClients">
+                <i class="mb-icon-heart-a"></i> <b>{{ profile.followers_count }}</b>&nbsp;MADE Clients
+              </div>
             </div>
-          </div>
 
-          <div (click)="processPhoto()" class="StylistProfilePreview-photo" data-test-id="stylistProfilePreviewPhoto">
-            <img [src]="photoUrl?.value  || 'assets/icons/stylist-avatar.png'" alt="">
-          </div>
+            <div (click)="processPhoto()" class="StylistProfilePreview-photo" data-test-id="stylistProfilePreviewPhoto">
+              <img [src]="photoUrl?.value  || 'assets/icons/stylist-avatar.png'" alt="">
+            </div>
 
-          <div class="Made-wp">
-            <div
-              (click)="onFieldEdit(RegistrationFormControl.SalonAddress)"
-              class="StylistProfilePreview-item"
-              data-test-id="stylistProfilePreviewAddress">
-              <div class="StylistProfilePreview-itemTitle">
-                <span>Address</span>
+            <div class="Made-wp">
+              <div
+                (click)="onFieldEdit(RegistrationFormControl.SalonAddress)"
+                class="StylistProfilePreview-item"
+                data-test-id="stylistProfilePreviewAddress">
+                <div class="StylistProfilePreview-itemTitle">
+                  <span>Address</span>
 
-                <i class="mb-icon-marker"></i>
-              </div>
-              <div class="StylistProfilePreview-itemText">
-                {{ profile.salon_address }}
-              </div>
+                  <i class="mb-icon-marker"></i>
+                </div>
+                <div class="StylistProfilePreview-itemText">
+                  {{ profile.salon_address }}
+                </div>
 
-              <agm-map
-                *ngIf="stylistProfile?.location"
-                [latitude]="stylistProfile.location?.lat"
-                [longitude]="stylistProfile.location?.lng"
-                [zoom]="13"
-                [disableDefaultUI]="true"
-                [zoomControl]="false"
-                [mapDraggable]="false"
-                class="StylistProfilePreview-map">
-                <agm-marker
+                <agm-map
+                  *ngIf="stylistProfile?.location"
                   [latitude]="stylistProfile.location?.lat"
                   [longitude]="stylistProfile.location?.lng"
-                  [markerDraggable]="false"
-                  [iconUrl]="'assets/icons/marker.png'"></agm-marker>
-              </agm-map>
-            </div>
-
-            <div
-              *ngIf="cards?.length > 0"
-              (click)="onMyHoursClick()"
-              class="StylistProfilePreview-item">
-              <div class="StylistProfilePreview-itemTitle">
-                <span>Hours</span>
-
-                <i class="mb-icon-clock-a"></i>
+                  [zoom]="13"
+                  [disableDefaultUI]="true"
+                  [zoomControl]="false"
+                  [mapDraggable]="false"
+                  class="StylistProfilePreview-map">
+                  <agm-marker
+                    [latitude]="stylistProfile.location?.lat"
+                    [longitude]="stylistProfile.location?.lng"
+                    [markerDraggable]="false"
+                    [iconUrl]="'assets/icons/marker.png'"></agm-marker>
+                </agm-map>
               </div>
 
-              <div *ngFor="let card of cards" class="StylistProfilePreview-itemText">
-                {{ card.getSummaryStr() }}
-              </div>
-            </div>
+              <div
+                *ngIf="cards?.length > 0"
+                (click)="onMyHoursClick()"
+                class="StylistProfilePreview-item">
+                <div class="StylistProfilePreview-itemTitle">
+                  <span>Hours</span>
 
-            <div (click)="onFieldEdit(RegistrationFormControl.Instagram)" class="StylistProfilePreview-item" data-test-id="stylistProfilePreviewInstagram">
-              <div class="StylistProfilePreview-itemTitle">
-                <span>Instagram</span>
-
-                <i class="mb-icon-instagram"></i>
-              </div>
-
-
-              <div *ngIf="!profile.instagram_url && !profile.instagram_integrated" class="StylistProfilePreview-itemLink">
-                Add Instagram
-              </div>
-              <div class="StylistProfilePreview-itemText">
-                <instagram-gallery *ngIf="profile.instagram_integrated; else instaNameTpl" [stylist]="profile"></instagram-gallery>
-                <ng-template #instaNameTpl>{{ profile.instagram_url }}</ng-template>
-              </div>
-            </div>
-
-            <div
-              (click)="onCalendarClick()"
-              class="StylistProfilePreview-item">
-              <div class="StylistProfilePreview-itemTitle">
-                <span>Calendar</span>
-
-                <i class="mb-icon-calendar"></i>
-              </div>
-
-              <div *ngIf="!service" class="StylistProfilePreview-itemLink" data-test-id="stylistProfilePreviewNoCalendar">
-                Add Services
-              </div>
-              <div *ngIf="service" data-test-id="stylistProfilePreviewCalendar">
-                <div *ngIf="!(service.name && prices)" class="text-center">
-                  <div class="Spinner"><ion-spinner></ion-spinner></div>
+                  <i class="mb-icon-clock-a"></i>
                 </div>
 
-                <div *ngIf="service.name && prices">
-                  <ion-row no-padding justify-content-between align-items-center="">
-                    <div class="ServiciesHeader-seviceItem">
-                      <div class="ServiciesHeader-seviceName" data-test-id="name">{{ service.name }}</div>
-                      <ion-icon class="ServiciesHeader-serviceItemClose" name="ios-close"></ion-icon>
-                    </div>
-
-                    <button class="Button button-mini is-inHeader" ion-button>Add Service</button>
-                  </ion-row>
-
-                  <price-calendar [prices]="prices" [showOneMonth]="true"></price-calendar>
+                <div *ngFor="let card of cards" class="StylistProfilePreview-itemText">
+                  {{ card.getSummaryStr() }}
                 </div>
               </div>
-            </div>
 
-            <div (click)="onFieldEdit(RegistrationFormControl.Website)" class="StylistProfilePreview-item" data-test-id="stylistProfilePreviewWebsite">
-              <div class="StylistProfilePreview-itemTitle">
-                <span>Website</span>
+              <div (click)="onFieldEdit(RegistrationFormControl.Instagram)" class="StylistProfilePreview-item" data-test-id="stylistProfilePreviewInstagram">
+                <div class="StylistProfilePreview-itemTitle">
+                  <span>Instagram</span>
 
-                <i class="mb-icon-globe"></i>
+                  <i class="mb-icon-instagram"></i>
+                </div>
+
+
+                <div *ngIf="!profile.instagram_url && !profile.instagram_integrated" class="StylistProfilePreview-itemLink">
+                  Add Instagram
+                </div>
+                <div class="StylistProfilePreview-itemText">
+                  <instagram-gallery *ngIf="profile.instagram_integrated; else instaNameTpl" [stylist]="profile"></instagram-gallery>
+                  <ng-template #instaNameTpl>{{ profile.instagram_url }}</ng-template>
+                </div>
               </div>
 
-              <div *ngIf="!profile.website_url" class="StylistProfilePreview-itemLink">
-                Add Website
-              </div>
-              <div *ngIf="profile.website_url" class="StylistProfilePreview-itemText">
-                {{ profile.website_url }}
-              </div>
-            </div>
+              <div
+                (click)="onCalendarClick()"
+                class="StylistProfilePreview-item">
+                <div class="StylistProfilePreview-itemTitle">
+                  <span>Calendar</span>
 
-            <div (click)="onFieldEdit(RegistrationFormControl.Email)" class="StylistProfilePreview-item" data-test-id="stylistProfilePreviewEmail">
-              <div class="StylistProfilePreview-itemTitle">
-                <span>Email</span>
+                  <i class="mb-icon-calendar"></i>
+                </div>
 
-                <i class="mb-icon-mail"></i>
+                <div *ngIf="!service" class="StylistProfilePreview-itemLink" data-test-id="stylistProfilePreviewNoCalendar">
+                  Add Services
+                </div>
+                <div *ngIf="service" data-test-id="stylistProfilePreviewCalendar">
+                  <div *ngIf="!(service.name && prices)" class="text-center">
+                    <div class="Spinner"><ion-spinner></ion-spinner></div>
+                  </div>
+
+                  <div *ngIf="service.name && prices">
+                    <ion-row no-padding justify-content-between align-items-center="">
+                      <div class="ServiciesHeader-seviceItem">
+                        <div class="ServiciesHeader-seviceName" data-test-id="name">{{ service.name }}</div>
+                        <ion-icon class="ServiciesHeader-serviceItemClose" name="ios-close"></ion-icon>
+                      </div>
+
+                      <button class="Button button-mini is-inHeader" ion-button>Add Service</button>
+                    </ion-row>
+
+                    <price-calendar [prices]="prices" [showOneMonth]="true"></price-calendar>
+                  </div>
+                </div>
               </div>
 
-              <div *ngIf="!profile.email" class="StylistProfilePreview-itemLink">
-                Add Email
-              </div>
-              <div *ngIf="profile.email" class="StylistProfilePreview-itemText">
-                {{ profile.email }}
-              </div>
-            </div>
+              <div (click)="onFieldEdit(RegistrationFormControl.Website)" class="StylistProfilePreview-item" data-test-id="stylistProfilePreviewWebsite">
+                <div class="StylistProfilePreview-itemTitle">
+                  <span>Website</span>
 
-            <div
-              *ngIf="profile.phone"
-              (click)="onFieldEdit(RegistrationFormControl.PublicPhone)"
-              class="StylistProfilePreview-item"
-              data-test-id="stylistProfilePreviewPhone">
-              <div class="StylistProfilePreview-itemTitle">
-                <span>Phone</span>
+                  <i class="mb-icon-globe"></i>
+                </div>
 
-                <i class="mb-icon-phone-a"></i>
+                <div *ngIf="!profile.website_url" class="StylistProfilePreview-itemLink">
+                  Add Website
+                </div>
+                <div *ngIf="profile.website_url" class="StylistProfilePreview-itemText">
+                  {{ profile.website_url }}
+                </div>
               </div>
-              <div class="StylistProfilePreview-itemText">
-                {{ profile.phone }}
+
+              <div (click)="onFieldEdit(RegistrationFormControl.Email)" class="StylistProfilePreview-item" data-test-id="stylistProfilePreviewEmail">
+                <div class="StylistProfilePreview-itemTitle">
+                  <span>Email</span>
+
+                  <i class="mb-icon-mail"></i>
+                </div>
+
+                <div *ngIf="!profile.email" class="StylistProfilePreview-itemLink">
+                  Add Email
+                </div>
+                <div *ngIf="profile.email" class="StylistProfilePreview-itemText">
+                  {{ profile.email }}
+                </div>
+              </div>
+
+              <div
+                *ngIf="profile.phone"
+                (click)="onFieldEdit(RegistrationFormControl.PublicPhone)"
+                class="StylistProfilePreview-item"
+                data-test-id="stylistProfilePreviewPhone">
+                <div class="StylistProfilePreview-itemTitle">
+                  <span>Phone</span>
+
+                  <i class="mb-icon-phone-a"></i>
+                </div>
+                <div class="StylistProfilePreview-itemText">
+                  {{ profile.phone }}
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      </ion-content>
     </ion-slide>
 
     <ion-slide>
-      <div *ngIf="profile" class="Tabs-slide">
-        <div class="ProfilePage-block">
-          <div class="ProfilePage-blockTitle">
-            Account Info
+      <ion-content>
+        <div *ngIf="profile" class="Tabs-slide">
+          <div class="ProfilePage-block">
+            <div class="ProfilePage-blockTitle">
+              Account Info
+            </div>
+
+            <div (click)="onSetAccountInfo(PageNames.WorkHours)" class="ProfilePage-blockItem" data-test-id="ProfileEditAccountInfoHours">
+              <div class="ProfilePage-blockItemName">
+                <span>Hours <img *ngIf="shouldShowNotice(PageNames.WorkHours)" class="ProfilePage-blockItemNameNotice" src="assets/icons/!@2x.png" /></span>
+                <i class="mb-icon-right-arrow"></i>
+              </div>
+              <div *ngIf="shouldShowNotice(PageNames.WorkHours)" class="ProfilePage-blockItemValue">Add Info</div>
+              <div *ngIf="!shouldShowNotice(PageNames.WorkHours)" class="ProfilePage-blockItemValue">Complete</div>
+            </div>
+
+            <div (click)="onSetAccountInfo(servicesPage)" class="ProfilePage-blockItem" data-test-id="ProfileEditAccountInfoService">
+              <div class="ProfilePage-blockItemName">
+                <span>Service <img *ngIf="shouldShowNotice(PageNames.ServicesList)" class="ProfilePage-blockItemNameNotice" src="assets/icons/!@2x.png" /></span>
+                <i class="mb-icon-right-arrow"></i>
+              </div>
+              <div *ngIf="shouldShowNotice(PageNames.ServicesList)" class="ProfilePage-blockItemValue">Add Info</div>
+              <div *ngIf="!shouldShowNotice(PageNames.ServicesList)" class="ProfilePage-blockItemValue">Complete</div>
+            </div>
+
+            <div (click)="onSetAccountInfo(PageNames.Discounts)" class="ProfilePage-blockItem" data-test-id="ProfileEditAccountInfoDiscounts">
+              <div class="ProfilePage-blockItemName">
+                <span>Discounts <img *ngIf="shouldShowNotice(PageNames.Discounts)" class="ProfilePage-blockItemNameNotice" src="assets/icons/!@2x.png" /></span>
+                <i class="mb-icon-right-arrow"></i>
+              </div>
+              <div *ngIf="shouldShowNotice(PageNames.Discounts)" class="ProfilePage-blockItemValue">Add Info</div>
+              <div *ngIf="!shouldShowNotice(PageNames.Discounts)" class="ProfilePage-blockItemValue">Complete</div>
+            </div>
           </div>
 
-          <div (click)="onSetAccountInfo(PageNames.WorkHours)" class="ProfilePage-blockItem" data-test-id="ProfileEditAccountInfoHours">
-            <div class="ProfilePage-blockItemName">
-              <span>Hours <img *ngIf="shouldShowNotice(PageNames.WorkHours)" class="ProfilePage-blockItemNameNotice" src="assets/icons/!@2x.png" /></span>
-              <i class="mb-icon-right-arrow"></i>
+          <div class="ProfilePage-block">
+            <div class="ProfilePage-blockTitle">
+              Photos
             </div>
-            <div *ngIf="shouldShowNotice(PageNames.WorkHours)" class="ProfilePage-blockItemValue">Add Info</div>
-            <div *ngIf="!shouldShowNotice(PageNames.WorkHours)" class="ProfilePage-blockItemValue">Complete</div>
+
+            <div class="ProfilePage-blockItem" data-test-id="ProfileEditPhoto">
+              <div class="ProfilePage-blockItemName">
+                <span>Image <img *ngIf="!photoUrl?.value" class="ProfilePage-blockItemNameNotice" src="assets/icons/!@2x.png" /></span>
+              </div>
+              <div (click)="processPhoto()" class="ProfilePage-blockItemPictureWp">
+                <div *ngIf="photoUrl?.value" class="ProfilePage-blockItemPicture"><img [src]="photoUrl?.value" alt=""></div>
+                <div *ngIf="!photoUrl?.value" class="ProfilePage-blockItemPicture"><img src="assets/icons/stylist-avatar.png" alt=""></div>
+
+                <div class="ProfilePage-blockItemPictureEdit"><i class="mb-icon-pencil"></i></div>
+              </div>
+            </div>
+
+            <div (click)="onFieldEdit(RegistrationFormControl.Instagram)" class="ProfilePage-blockItem" data-test-id="ProfileEditInstagram">
+              <div class="ProfilePage-blockItemName">
+                <span>Instagram <img *ngIf="!profile.instagram_integrated" class="ProfilePage-blockItemNameNotice" src="assets/icons/!@2x.png" /></span>
+                <i class="mb-icon-right-arrow"></i>
+              </div>
+              <div *ngIf="profile.instagram_integrated" class="ProfilePage-blockItemValue">Connected</div>
+              <div *ngIf="!profile.instagram_integrated" class="ProfilePage-blockItemValue">Connect your profile</div>
+            </div>
           </div>
 
-          <div (click)="onSetAccountInfo(servicesPage)" class="ProfilePage-blockItem" data-test-id="ProfileEditAccountInfoService">
-            <div class="ProfilePage-blockItemName">
-              <span>Service <img *ngIf="shouldShowNotice(PageNames.ServicesList)" class="ProfilePage-blockItemNameNotice" src="assets/icons/!@2x.png" /></span>
-              <i class="mb-icon-right-arrow"></i>
+          <div class="ProfilePage-block">
+            <div class="ProfilePage-blockTitle">
+              Basic Info
             </div>
-            <div *ngIf="shouldShowNotice(PageNames.ServicesList)" class="ProfilePage-blockItemValue">Add Info</div>
-            <div *ngIf="!shouldShowNotice(PageNames.ServicesList)" class="ProfilePage-blockItemValue">Complete</div>
+
+            <div (click)="onFieldEdit(RegistrationFormControl.FirstName)" class="ProfilePage-blockItem" data-test-id="ProfileEditName">
+              <div class="ProfilePage-blockItemName">
+                <span>Name</span>
+                <i class="mb-icon-right-arrow"></i>
+              </div>
+              <div class="ProfilePage-blockItemValue">{{ profile.first_name }} {{ profile.last_name }}</div>
+            </div>
+
+            <div (click)="onFieldEdit(RegistrationFormControl.SalonName)" class="ProfilePage-blockItem" data-test-id="ProfileEditSalonName">
+              <div class="ProfilePage-blockItemName">
+                <span>Salon Name</span>
+                <i class="mb-icon-right-arrow"></i>
+              </div>
+              <div class="ProfilePage-blockItemValue">{{ profile.salon_name }}</div>
+            </div>
           </div>
 
-          <div (click)="onSetAccountInfo(PageNames.Discounts)" class="ProfilePage-blockItem" data-test-id="ProfileEditAccountInfoDiscounts">
-            <div class="ProfilePage-blockItemName">
-              <span>Discounts <img *ngIf="shouldShowNotice(PageNames.Discounts)" class="ProfilePage-blockItemNameNotice" src="assets/icons/!@2x.png" /></span>
-              <i class="mb-icon-right-arrow"></i>
+          <div class="ProfilePage-block">
+            <div class="ProfilePage-blockTitle">
+              Contact Info
             </div>
-            <div *ngIf="shouldShowNotice(PageNames.Discounts)" class="ProfilePage-blockItemValue">Add Info</div>
-            <div *ngIf="!shouldShowNotice(PageNames.Discounts)" class="ProfilePage-blockItemValue">Complete</div>
+
+            <div (click)="onFieldEdit(RegistrationFormControl.SalonAddress)" class="ProfilePage-blockItem" data-test-id="ProfileEditAddress">
+              <div class="ProfilePage-blockItemName">
+                <span>Address</span>
+                <i class="mb-icon-right-arrow"></i>
+              </div>
+              <div class="ProfilePage-blockItemValue">{{ profile.salon_address }}</div>
+            </div>
+
+            <div (click)="onFieldEdit(RegistrationFormControl.Email)" class="ProfilePage-blockItem" data-test-id="ProfileEditEmail">
+              <div class="ProfilePage-blockItemName">
+                <span>Email <img *ngIf="!profile.email" class="ProfilePage-blockItemNameNotice" src="assets/icons/!@2x.png" /></span>
+                <i class="mb-icon-right-arrow"></i>
+              </div>
+              <div *ngIf="profile.email" class="ProfilePage-blockItemValue">{{ profile.email }}</div>
+              <div *ngIf="!profile.email" class="ProfilePage-blockItemValue">Add Info</div>
+            </div>
+
+            <div (click)="onFieldEdit(RegistrationFormControl.Website)" class="ProfilePage-blockItem" data-test-id="ProfileEditWebsite">
+              <div class="ProfilePage-blockItemName">
+                <span>Website <img *ngIf="!profile.website_url" class="ProfilePage-blockItemNameNotice" src="assets/icons/!@2x.png" /></span>
+                <i class="mb-icon-right-arrow"></i>
+              </div>
+              <div *ngIf="profile.website_url" class="ProfilePage-blockItemValue">{{ profile.website_url }}</div>
+              <div *ngIf="!profile.website_url" class="ProfilePage-blockItemValue">Add Info</div>
+            </div>
+
+            <div (click)="onFieldEdit(RegistrationFormControl.PublicPhone)" class="ProfilePage-blockItem" data-test-id="ProfileEditPublicPhone">
+              <div class="ProfilePage-blockItemName">
+                <span>Public Phone <img *ngIf="!profile.public_phone" class="ProfilePage-blockItemNameNotice" src="assets/icons/!@2x.png" /></span>
+                <i class="mb-icon-right-arrow"></i>
+              </div>
+              <div *ngIf="profile.public_phone" class="ProfilePage-blockItemValue">{{ profile.public_phone }}</div>
+              <div *ngIf="!profile.public_phone" class="ProfilePage-blockItemValue">Add Info</div>
+            </div>
+
+            <div class="ProfilePage-blockItem" data-test-id="ProfileEditPhone">
+              <div class="ProfilePage-blockItemName">Registered Phone</div>
+              <div class="ProfilePage-blockItemValue">{{ profile.phone }}</div>
+            </div>
           </div>
         </div>
-
-        <div class="ProfilePage-block">
-          <div class="ProfilePage-blockTitle">
-            Photos
-          </div>
-
-          <div class="ProfilePage-blockItem" data-test-id="ProfileEditPhoto">
-            <div class="ProfilePage-blockItemName">
-              <span>Image <img *ngIf="!photoUrl?.value" class="ProfilePage-blockItemNameNotice" src="assets/icons/!@2x.png" /></span>
-            </div>
-            <div (click)="processPhoto()" class="ProfilePage-blockItemPictureWp">
-              <div *ngIf="photoUrl?.value" class="ProfilePage-blockItemPicture"><img [src]="photoUrl?.value" alt=""></div>
-              <div *ngIf="!photoUrl?.value" class="ProfilePage-blockItemPicture"><img src="assets/icons/stylist-avatar.png" alt=""></div>
-
-              <div class="ProfilePage-blockItemPictureEdit"><i class="mb-icon-pencil"></i></div>
-            </div>
-          </div>
-
-          <div (click)="onFieldEdit(RegistrationFormControl.Instagram)" class="ProfilePage-blockItem" data-test-id="ProfileEditInstagram">
-            <div class="ProfilePage-blockItemName">
-              <span>Instagram <img *ngIf="!profile.instagram_integrated" class="ProfilePage-blockItemNameNotice" src="assets/icons/!@2x.png" /></span>
-              <i class="mb-icon-right-arrow"></i>
-            </div>
-            <div *ngIf="profile.instagram_integrated" class="ProfilePage-blockItemValue">Connected</div>
-            <div *ngIf="!profile.instagram_integrated" class="ProfilePage-blockItemValue">Connect your profile</div>
-          </div>
-        </div>
-
-        <div class="ProfilePage-block">
-          <div class="ProfilePage-blockTitle">
-            Basic Info
-          </div>
-
-          <div (click)="onFieldEdit(RegistrationFormControl.FirstName)" class="ProfilePage-blockItem" data-test-id="ProfileEditName">
-            <div class="ProfilePage-blockItemName">
-              <span>Name</span>
-              <i class="mb-icon-right-arrow"></i>
-            </div>
-            <div class="ProfilePage-blockItemValue">{{ profile.first_name }} {{ profile.last_name }}</div>
-          </div>
-
-          <div (click)="onFieldEdit(RegistrationFormControl.SalonName)" class="ProfilePage-blockItem" data-test-id="ProfileEditSalonName">
-            <div class="ProfilePage-blockItemName">
-              <span>Salon Name</span>
-              <i class="mb-icon-right-arrow"></i>
-            </div>
-            <div class="ProfilePage-blockItemValue">{{ profile.salon_name }}</div>
-          </div>
-        </div>
-
-        <div class="ProfilePage-block">
-          <div class="ProfilePage-blockTitle">
-            Contact Info
-          </div>
-
-          <div (click)="onFieldEdit(RegistrationFormControl.SalonAddress)" class="ProfilePage-blockItem" data-test-id="ProfileEditAddress">
-            <div class="ProfilePage-blockItemName">
-              <span>Address</span>
-              <i class="mb-icon-right-arrow"></i>
-            </div>
-            <div class="ProfilePage-blockItemValue">{{ profile.salon_address }}</div>
-          </div>
-
-          <div (click)="onFieldEdit(RegistrationFormControl.Email)" class="ProfilePage-blockItem" data-test-id="ProfileEditEmail">
-            <div class="ProfilePage-blockItemName">
-              <span>Email <img *ngIf="!profile.email" class="ProfilePage-blockItemNameNotice" src="assets/icons/!@2x.png" /></span>
-              <i class="mb-icon-right-arrow"></i>
-            </div>
-            <div *ngIf="profile.email" class="ProfilePage-blockItemValue">{{ profile.email }}</div>
-            <div *ngIf="!profile.email" class="ProfilePage-blockItemValue">Add Info</div>
-          </div>
-
-          <div (click)="onFieldEdit(RegistrationFormControl.Website)" class="ProfilePage-blockItem" data-test-id="ProfileEditWebsite">
-            <div class="ProfilePage-blockItemName">
-              <span>Website <img *ngIf="!profile.website_url" class="ProfilePage-blockItemNameNotice" src="assets/icons/!@2x.png" /></span>
-              <i class="mb-icon-right-arrow"></i>
-            </div>
-            <div *ngIf="profile.website_url" class="ProfilePage-blockItemValue">{{ profile.website_url }}</div>
-            <div *ngIf="!profile.website_url" class="ProfilePage-blockItemValue">Add Info</div>
-          </div>
-
-          <div (click)="onFieldEdit(RegistrationFormControl.PublicPhone)" class="ProfilePage-blockItem" data-test-id="ProfileEditPublicPhone">
-            <div class="ProfilePage-blockItemName">
-              <span>Public Phone <img *ngIf="!profile.public_phone" class="ProfilePage-blockItemNameNotice" src="assets/icons/!@2x.png" /></span>
-              <i class="mb-icon-right-arrow"></i>
-            </div>
-            <div *ngIf="profile.public_phone" class="ProfilePage-blockItemValue">{{ profile.public_phone }}</div>
-            <div *ngIf="!profile.public_phone" class="ProfilePage-blockItemValue">Add Info</div>
-          </div>
-
-          <div class="ProfilePage-blockItem" data-test-id="ProfileEditPhone">
-            <div class="ProfilePage-blockItemName">Registered Phone</div>
-            <div class="ProfilePage-blockItemValue">{{ profile.phone }}</div>
-          </div>
-        </div>
-      </div>
+      </ion-content>
     </ion-slide>
   </ion-slides>
 </ion-content>
