@@ -95,7 +95,7 @@ page-stylists-search {
     }
 
     .StylistsPage-stylists {
-      padding-bottom: pxtovw(24px);
+      padding-bottom: $top-bar-height + pxtovw(40px);
       margin-top: pxtovw(18px);
     }
   }
