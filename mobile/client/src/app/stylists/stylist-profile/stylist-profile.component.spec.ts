@@ -10,6 +10,7 @@ import { StylistsService } from '~/core/api/stylists.service';
 import { StylistProfileComponent } from '~/stylists/stylist-profile/stylist-profile.component';
 import { StylistProfileApi } from '~/shared/api/stylist-profile.api';
 import { StylistProfileApiMock } from '~/shared/api/stylist-profile.api.mock';
+import { getPhoneNumber } from '~/shared/utils/phone-numbers';
 
 let fixture: ComponentFixture<StylistProfileComponent>;
 let instance: StylistProfileComponent;
@@ -87,7 +88,7 @@ describe('StylistProfileComponent', () => {
     expect(stylistProfilePreviewEmail.innerText).toContain(instance.stylistProfile.email);
 
     const stylistProfilePreviewPhone = fixture.nativeElement.querySelector('[data-test-id=stylistProfilePreviewPhone]');
-    expect(stylistProfilePreviewPhone.innerText).toContain(instance.stylistProfile.phone);
+    expect(stylistProfilePreviewPhone.innerText).toContain(getPhoneNumber(instance.stylistProfile.phone));
   }));
 
   it('should have footer with book button for bookable stylist', () => {
