@@ -104,6 +104,8 @@ page-home {
 
   .Home-appointment {
     + .Link {
+      position: relative;
+      z-index: 1;
       margin: pxtovw(16px) 0;
     }
   }
