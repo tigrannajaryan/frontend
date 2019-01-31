@@ -1,4 +1,4 @@
-<div class="InstaGallery">
+<div *ngIf="hasInstagramImages">
   <ion-slides *ngIf="mediaObjects" [pager]="true" paginationType="bullets">
     <ion-slide *ngFor="let slide of Array(Math.ceil(mediaObjects.length / 9) || 1).fill(''); index as i">
       <ion-row>
@@ -10,4 +10,12 @@
       </ion-row>
     </ion-slide>
   </ion-slides>
+</div>
+
+<div *ngIf="!hasInstagramImages" class="InstaGallery-empty">
+  Your gallery is empty.
+  <br>
+  You can add some of your works
+  <br>
+  so the clients will see it.
 </div>

@@ -1,4 +1,4 @@
-.InstaGallery {
+:host {
   $img-size: pxtovw(108px);
 
   .swiper-container {
@@ -24,5 +24,11 @@
     background-position: center;
     background-size: cover;
     border: 0.5px solid white;
+  }
+
+  .InstaGallery-empty {
+    margin: pxtovw(16px) 0 0;
+    text-align: center;
+    font-size: $shared-small;
   }
 }

@@ -14,6 +14,7 @@ export class InstagramGalleryComponent {
   Math = Math;
 
   mediaObjects: InstagramMedia[];
+  hasInstagramImages = false;
 
   @Input() set stylist(stylist: StylistUuidModel) {
     this.loadInstagramImages(stylist);
@@ -40,6 +41,7 @@ export class InstagramGalleryComponent {
     const { response } = await this.stylistApi.getStylistInstagramImages(stylist).toPromise();
     if (response) {
       this.mediaObjects = response.instagram_media;
+      this.hasInstagramImages = response.instagram_media.length > 0;
     }
   }
 }
