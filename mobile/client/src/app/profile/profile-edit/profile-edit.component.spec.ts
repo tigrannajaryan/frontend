@@ -1,10 +1,11 @@
-import { NavParams } from 'ionic-angular';
 import { async, ComponentFixture } from '@angular/core/testing';
 
 import { TestUtils } from '~/../test';
 
 import { profileNotCompleate } from '~/core/api/profile-api.mock';
 import { ProfileEditComponent } from '~/profile/profile-edit/profile-edit.component';
+import { ProfileDataStore } from '~/profile/profile.data';
+import { of } from 'rxjs/observable/of';
 
 let fixture: ComponentFixture<ProfileEditComponent>;
 let instance: ProfileEditComponent;
@@ -13,13 +14,16 @@ describe('Pages: Profile edit', () => {
   beforeEach(
     async(() =>
       TestUtils.beforeEachCompiler([ProfileEditComponent])
-        .then(compiled => {
+        .then(async compiled => {
           // Common setup:
           fixture = compiled.fixture;
           instance = compiled.instance;
 
-          const navParams = fixture.debugElement.injector.get(NavParams);
-          navParams.data.profile = profileNotCompleate;
+          const profileDataStore = fixture.debugElement.injector.get(ProfileDataStore);
+          spyOn(profileDataStore, 'asObservable').and.returnValue(of({
+            response: profileNotCompleate
+          }));
+
           instance.ionViewWillLoad();
         })
     )
@@ -32,7 +36,6 @@ describe('Pages: Profile edit', () => {
 
   it('should have filled all required fields', () => {
     fixture.detectChanges();
-
     const first_name = fixture.nativeElement.querySelector('[data-test-id=first_name] input');
     expect(first_name.value).toBe('First');
 

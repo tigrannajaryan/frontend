@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActionSheetController, ActionSheetOptions, NavController, NavParams } from 'ionic-angular';
+import { ActionSheetController, ActionSheetOptions, NavController } from 'ionic-angular';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 
 import { PhotoSourceType } from '~/shared/constants';
@@ -35,17 +35,12 @@ export class ProfileEditComponent {
     private baseService: BaseService,
     private camera: Camera,
     private formBuilder: FormBuilder,
-    private navCtrl: NavController,
-    private navParams: NavParams
+    private navCtrl: NavController
   ) {
   }
 
-  ionViewCanEnter(): boolean {
-    return Boolean(this.navParams.get('profile'));
-  }
-
-  ionViewWillLoad(): void {
-    const profile: ProfileModel = this.navParams.get('profile');
+  async ionViewWillLoad(): Promise<void> {
+    const profile: ProfileModel = (await this.profileDataStore.asObservable().get()).response;
 
     this.form = this.formBuilder.group({
       first_name: [profile.first_name, [
