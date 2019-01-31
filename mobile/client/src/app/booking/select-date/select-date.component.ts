@@ -132,7 +132,18 @@ export class SelectDateComponent {
         role: 'cancel',
         handler: () => {
           setTimeout(async () => {
+            const preferredStylists = await this.preferredStylists;
+
             await this.navCtrl.setRoot(PageNames.MainTabs);
+
+            // Start booking and show stylists selector if more than 1 stylist remains.
+            const otherBookableStylists = preferredStylists.filter(stylist =>
+              stylist.is_profile_bookable &&
+              stylist.uuid !== this.bookingData.stylist.uuid
+            );
+            if (otherBookableStylists.length > 0) {
+              this.events.publish(ClientEventTypes.startBooking);
+            }
           });
         }
       }]
