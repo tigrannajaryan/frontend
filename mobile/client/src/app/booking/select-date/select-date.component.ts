@@ -133,7 +133,6 @@ export class SelectDateComponent {
         handler: () => {
           setTimeout(async () => {
             await this.navCtrl.setRoot(PageNames.MainTabs);
-            this.events.publish(ClientEventTypes.startBooking);
           });
         }
       }]
