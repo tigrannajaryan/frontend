@@ -17,6 +17,7 @@ import { isoDateFormat } from '~/shared/api/base.models';
 import { BookServicesHeaderComponent } from '../book-services-header/book-services-header';
 import { ServiceItem } from '~/shared/api/stylist-app.models';
 import { PricingHint } from '~/shared/components/services-header-list/services-header-list';
+import { MainTabIndex } from '~/main-tabs/main-tabs.component';
 
 @Component({
   selector: 'select-date',
@@ -121,19 +122,32 @@ export class SelectDateComponent {
     }
   }
 
-  private showNoTimeSlotsPopup(): void {
+  private async showNoTimeSlotsPopup(): Promise<void> {
+    const preferredStylists = await this.preferredStylists;
+    const otherBookableStylists = preferredStylists.filter(stylist =>
+      stylist.is_profile_bookable &&
+      stylist.uuid !== this.bookingData.stylist.uuid
+    );
+    const hasMoreAvailableStylists = otherBookableStylists.length > 0;
+
     const popup = this.alertCtrl.create({
       cssClass: 'SelectDate-notAvailablePopup',
       title: 'No time slots',
       subTitle: '🤦‍♀️',
       message: 'Unfortunately, your stylist does not have any open slots right now.',
       buttons: [{
-        text: 'Show available stylists',
+        text: hasMoreAvailableStylists ? 'Show available stylists' : 'Search for available stylists',
         role: 'cancel',
         handler: () => {
           setTimeout(async () => {
             await this.navCtrl.setRoot(PageNames.MainTabs);
-            this.events.publish(ClientEventTypes.startBooking);
+
+            // Start booking and show stylists selector if more than 1 stylist remains.
+            if (hasMoreAvailableStylists) {
+              this.events.publish(ClientEventTypes.startBooking);
+            } else {
+              this.events.publish(ClientEventTypes.selectMainTab, MainTabIndex.StylistSearch);
+            }
           });
         }
       }]
