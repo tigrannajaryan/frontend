@@ -151,6 +151,16 @@
         <variable name="APP_ID" value="467418693781904" />
         <variable name="APP_NAME" value="Made Pro" />
     </plugin>
+    <config-file parent="com.apple.developer.associated-domains" target="*-Debug.plist">
+        <array>
+            <string>applinks:madebeauty.com</string>
+        </array>
+    </config-file>
+    <config-file parent="com.apple.developer.associated-domains" target="*-Release.plist">
+        <array>
+            <string>applinks:madebeauty.com</string>
+        </array>
+    </config-file>
     <plugin name="ionic-plugin-deeplinks" spec="1.0.17">
         <variable name="URL_SCHEME" value="madepro" />
         <variable name="DEEPLINK_SCHEME" value="https" />

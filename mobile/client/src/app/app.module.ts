@@ -9,6 +9,7 @@ import { AppAvailability } from '@ionic-native/app-availability';
 import { AppVersion } from '@ionic-native/app-version';
 import { Camera } from '@ionic-native/camera';
 import { Clipboard } from '@ionic-native/clipboard';
+import { Deeplinks } from '@ionic-native/deeplinks';
 import { Diagnostic } from '@ionic-native/diagnostic';
 import { EmailComposer } from '@ionic-native/email-composer';
 import { Geolocation } from '@ionic-native/geolocation';
@@ -209,6 +210,7 @@ const declarations = [
     AppAvailability,
     AppVersion,
     Clipboard,
+    Deeplinks,
     Diagnostic,
     EmailComposer,
     Geolocation,

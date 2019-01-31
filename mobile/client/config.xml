@@ -160,6 +160,16 @@
     <plugin name="cordova-plugin-contacts" spec="3.0.1" />
     <plugin name="cordova-open-native-settings" spec="1.5.2" />
     <plugin name="cordova-sms-plugin" spec="1.0.0" />
+    <config-file parent="com.apple.developer.associated-domains" target="*-Debug.plist">
+        <array>
+            <string>applinks:madebeauty.com</string>
+        </array>
+    </config-file>
+    <config-file parent="com.apple.developer.associated-domains" target="*-Release.plist">
+        <array>
+            <string>applinks:madebeauty.com</string>
+        </array>
+    </config-file>
     <engine name="android" spec="7.1.0" />
     <engine name="ios" spec="4.5.5" />
 </widget>

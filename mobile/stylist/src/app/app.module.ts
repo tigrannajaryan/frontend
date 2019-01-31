@@ -21,6 +21,7 @@ import { Push } from '@ionic-native/push';
 import { DatePicker } from '@ionic-native/date-picker';
 import { GooglePlus } from '@ionic-native/google-plus';
 import { LaunchNavigator } from '@ionic-native/launch-navigator';
+import { Deeplinks } from '@ionic-native/deeplinks';
 import { GalleryModalHammerConfig, GalleryModalModule } from 'ionic-gallery-modal';
 
 import { UnhandledErrorHandler } from '~/shared/unhandled-error-handler';
@@ -237,6 +238,7 @@ const declarations = [
     AppAvailability,
     Clipboard,
     EmailComposer,
+    Deeplinks,
 
     GooglePlus,
     GoogleSignin,
