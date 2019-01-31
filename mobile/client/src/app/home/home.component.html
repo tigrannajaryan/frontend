@@ -69,9 +69,16 @@
               </div>
             </ng-container>
 
-            <ng-container *ngIf="tab.name === HomeTabName.Upcoming && tab.appointments.length === 0">
+            <ng-container *ngIf="tab.appointments.length === 0">
               <div class="Home-noUpcoming">
-                You have no upcoming appointments
+                <ng-container [ngSwitch]="tab.name">
+                  <ng-container *ngSwitchCase="HomeTabName.Upcoming">
+                    You have no upcoming appointments
+                  </ng-container>
+                  <ng-container *ngSwitchCase="HomeTabName.Past">
+                    You have no past appointments
+                  </ng-container>
+                </ng-container>
               </div>
               <button ion-button large class="Button Home-bookBtn" data-test-id="bookLink"
                 (click)="onBookClick()">
@@ -93,7 +100,7 @@
   <ion-fab bottom class="Home-fab"
     *ngIf="tabs[slides.getActiveIndex()] as tab">
       <button ion-fab large class="Button Home-bookBtn" data-test-id="bookLink"
-        *ngIf="tab.name === HomeTabName.Past || tab.appointments?.length !== 0"
+        *ngIf="tab.appointments && tab.appointments.length !== 0"
         (click)="onBookClick()">
           Book
       </button>
