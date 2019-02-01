@@ -249,6 +249,10 @@ export class ProfileComponent {
         this.navCtrl.push(PageNames.SalonAddress, { params: { isRootPage: true }});
         return;
 
+      case RegistrationFormControl.Instagram:
+        this.navCtrl.push(PageNames.ConnectInstagram, { params: { isRootPage: true }});
+        return;
+
       default:
         const params: FieldEditComponentParams = { isRootPage: true, control };
         this.navCtrl.push(PageNames.FieldEdit, { params });

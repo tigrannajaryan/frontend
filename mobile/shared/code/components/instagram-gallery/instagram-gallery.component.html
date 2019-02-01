@@ -12,10 +12,14 @@
   </ion-slides>
 </div>
 
-<div *ngIf="!hasInstagramImages" class="InstaGallery-empty">
+<div *ngIf="!hasInstagramImages && isStylistApp" class="InstaGallery-empty">
   Your gallery is empty.
   <br>
   You can add some of your works
   <br>
   so the clients will see it.
+</div>
+
+<div *ngIf="!hasInstagramImages && !isStylistApp" class="InstaGallery-empty">
+  This stylist have no publications.
 </div>

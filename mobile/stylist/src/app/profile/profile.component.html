@@ -114,7 +114,7 @@
                   Add Instagram
                 </div>
                 <div class="StylistProfilePreview-itemText">
-                  <instagram-gallery *ngIf="profile.instagram_integrated; else instaNameTpl" [stylist]="profile"></instagram-gallery>
+                  <instagram-gallery *ngIf="profile.instagram_integrated; else instaNameTpl" [stylist]="profile" [isStylistApp]="true"></instagram-gallery>
                   <ng-template #instaNameTpl>{{ profile.instagram_url }}</ng-template>
                 </div>
               </div>

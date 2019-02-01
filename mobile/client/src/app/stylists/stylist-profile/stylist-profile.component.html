@@ -104,7 +104,7 @@
           <span *ngIf="!stylistProfile.instagram_integrated; else galleryTpl" (click)="onInstagramClick()">{{ stylistProfile.instagram_url }}</span>
 
           <ng-template #galleryTpl>
-            <instagram-gallery [stylist]="stylistProfile"></instagram-gallery>
+            <instagram-gallery [stylist]="stylistProfile" [isStylistApp]="false"></instagram-gallery>
           </ng-template>
         </div>
       </div>
