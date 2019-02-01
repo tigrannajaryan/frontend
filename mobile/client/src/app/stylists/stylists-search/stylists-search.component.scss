@@ -95,7 +95,7 @@ page-stylists-search {
     }
 
     .StylistsPage-stylists {
-      padding-bottom: $top-bar-height + pxtovw(40px);
+      padding-bottom: pxtovw(222px);
       margin-top: pxtovw(18px);
     }
   }
@@ -132,6 +132,10 @@ page-stylists-search {
       .StylistsPage-title ion-icon {
         display: block;
       }
+    }
+
+    .StylistsPage-stylists {
+      padding-bottom: pxtovw(86px);
     }
 
     &.StylistsPage .scroll-content {
