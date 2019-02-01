@@ -1,0 +1,29 @@
+page-feedback {
+  .FeedBack-box {
+    min-height: pxtovw(286px);
+    padding-top: pxtovw(20px);
+    overflow: hidden;
+    text-align: center;
+
+
+    i[class^=mb-icon-thumb] {
+      display: inline-block;
+      margin: 0 0 pxtovw(23px);
+      font-size: pxtovw(48px);
+      color: color($colors-shared, lightSalmon);
+    }
+  }
+
+  .FeedBack-title {
+    font-size: $shared-h4;
+    line-height: pxtovw(24px);
+
+    &.is-gray {
+      color: color($colors-shared, warmGrey);
+    }
+  }
+
+  .Made-h1 {
+    margin: pxtovw(24px) 0 pxtovw(22px);
+  }
+}

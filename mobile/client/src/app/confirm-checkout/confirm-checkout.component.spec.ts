@@ -41,4 +41,10 @@ describe('Pages: Confirm Checkout', () => {
     expect(navCtrl.setRoot)
       .toHaveBeenCalledWith(PageNames.MainTabs);
   });
+
+  it('should have made-thumbs component', () => {
+    const made_thumbs = fixture.nativeElement.querySelector('[data-test-id=made_thumbs]');
+    expect(made_thumbs).toBeDefined();
+  });
+
 });

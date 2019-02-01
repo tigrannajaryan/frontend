@@ -1,0 +1,15 @@
+made-thumb {
+  display: flex;
+  align-items: center;
+
+  span {
+    margin-right: pxtovw(4px);
+    font-size: $shared-small;
+    color: black;
+  }
+
+  i {
+    font-size: pxtovw(16px);
+    color: color($colors-shared, lightSalmon);
+  }
+}

@@ -33,7 +33,11 @@
     <div class="Made-wp">
       <div class="StylistProfilePreview-name" data-test-id="stylistProfilePreviewName">{{ stylistProfile.first_name }}</div>
 
-      <div class="StylistProfilePreview-salon" data-test-id="stylistProfilePreviewSalon">{{ stylistProfile.salon_name }}</div>
+      <div class="StylistProfilePreview-salon" data-test-id="stylistProfilePreviewSalon">
+        {{ stylistProfile.salon_name }}
+
+        <made-thumb [percentage]="50" [isThumbsUp]="true"></made-thumb>
+      </div>
 
       <div class="StylistProfilePreview-clients"
            (click)="stylistProfile.is_profile_bookable && onFollowersClick()"
@@ -166,6 +170,26 @@
         <div class="StylistProfilePreview-itemText">
           <phone-link [phone]="stylistProfile.phone" [readonly]="true" [shortForm]="true"></phone-link>
         </div>
+      </div>
+
+
+
+
+
+
+      <div class="StylistProfilePreview-item">
+        <div class="StylistProfilePreview-itemTitle">
+          85% of Clients Love This Stylist!
+        </div>
+
+        <made-user-comment
+          *ngFor="let i of [0,1,2,3,4,5]"
+          [userAva]="'../assets/icons/stylist-avatar.png'"
+          [userName]="'Elizabeth H'"
+          [isThumbsUp]="i % 2"
+          [comment]="'After years of wearing startup  shorts, I left the startup scene and joined a corporation where there is an unspoken dress code and shorts are frowned upon. The new job came with a nice pay bump so I figured ll dress nicer. '"
+          [date]="'2019-01-23'"
+        ></made-user-comment>
       </div>
     </div>
   </div>

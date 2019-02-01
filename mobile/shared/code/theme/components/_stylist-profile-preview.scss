@@ -6,6 +6,8 @@
 }
 
 .StylistProfilePreview-salon {
+  display: flex;
+  justify-content: space-between;
   margin-bottom: pxtovw(28px);
   font-size: $shared-h4;
   font-variant: small-caps;

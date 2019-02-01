@@ -1,0 +1,45 @@
+made-user-comment {
+  display: block;
+  margin-bottom: pxtovw(16px);
+  text-align: left;
+
+  .CommentUser {
+    display: flex;
+    align-content: center;
+    align-items: center;
+    justify-content: flex-start;
+  }
+
+  .CommentUser-ava {
+    display: inline-block;
+    width: pxtovw(32px);
+    height: pxtovw(32px);
+    margin: 0 pxtovw(8px) pxtovw(8px) 0;
+    background-image: url('../assets/icons/stylist-avatar.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    border-radius: 50%;
+  }
+
+  .CommentUser-name {
+    display: inline-block;
+    font-size: $shared-base;
+    font-weight: 600;
+    line-height: pxtovw(16px);
+  }
+
+  .CommentUser-thumb {
+    margin-left: auto;
+  }
+
+  .Comment-text {
+    margin-bottom: pxtovw(8px);
+    font-size: $shared-base;
+    line-height: pxtovw(16px);
+  }
+
+  .Comment-date {
+    font-size: $shared-small;
+    color: color($colors-shared, warmGrey);
+  }
+}

@@ -8,6 +8,15 @@
     </ion-row>
 
     <div class="Made-h1 ConfirmCheckout-h1">Congratulations, your check out is complete!</div>
+
+
+    <div *ngIf="params?.appointment?.stylist_uuid" class="ConfirmCheckout-how">
+      <made-thumbs
+        [appointment]="params?.appointment"
+        [popAfterSubmit]="false"
+        data-test-id="made_thumbs">
+      </made-thumbs>
+    </div>
   </div>
 </ion-content>
 

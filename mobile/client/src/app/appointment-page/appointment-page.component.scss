@@ -3,6 +3,7 @@ page-appointment {
   // –––––––––––––––––––––
 
   .CheckOut-card {
+    position: relative;
     margin-bottom: pxtovw(16px) 0;
     border-radius: pxtovw(8px);
     box-shadow:
@@ -193,6 +194,25 @@ page-appointment {
         font-size: pxtovw(15px);
         line-height: pxtovw(16px);
       }
+    }
+  }
+
+  .CheckOut-thumbs {
+    margin: pxtovw(22px) 0 pxtovw(6px);
+  }
+
+  .CheckOut-userComment {
+    margin: pxtovw(16px) 0 0;
+  }
+
+  .CheckOut-thumb {
+    position: absolute;
+    top: pxtovw(15px);
+    right: pxtovw(15px);
+    color: color($colors-shared, lightSalmon);
+
+    i {
+      font-size: pxtovw(24px);
     }
   }
 

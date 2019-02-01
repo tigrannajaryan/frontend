@@ -1,0 +1,43 @@
+<ion-header madeHeader></ion-header>
+
+
+<ion-content no-padding>
+  <div *ngIf="params" class="Made-wp Made-wpContent">
+    <div class="FeedBack-box">
+      <ng-container *ngIf="!!params.appointment.rating; else thumbsDown">
+        <i class="mb-icon-thumbsUp" data-test-id="feedBack_thumbsUp"></i>
+
+        <div class="FeedBack-title is-gray" data-test-id="feedBack_title">Good Experience</div>
+
+        <div class="Made-h1 text-center" data-test-id="feedBack_subTitle">Thanks for the great feedback!</div>
+
+        <div class="FeedBack-title">Do you want to leave comment about your stylist?</div>
+      </ng-container>
+
+
+      <ng-template #thumbsDown>
+        <i class="mb-icon-thumbsDown" data-test-id="feedBack_thumbsDown"></i>
+
+        <div class="FeedBack-title is-gray" data-test-id="feedBack_title">Bad Experience</div>
+
+        <div class="Made-h1 text-center" data-test-id="feedBack_subTitle">Let us know what happened?</div>
+      </ng-template>
+    </div>
+
+
+    <ion-item class="Input">
+      <ion-label floating>Type your feedback here</ion-label>
+      <ion-textarea [(ngModel)]="comment" rows="1" madeAutosize data-test-id="feedBack_comment"></ion-textarea>
+      <div class="InputWarn" item-end>
+        Your feedback will be visible to the stylist and other clients.
+      </div>
+    </ion-item>
+  </div>
+
+  <div *ngIf="!params" class="CenterBlock">
+    <ion-spinner></ion-spinner>
+  </div>
+</ion-content>
+
+
+<ion-footer (continue)="onSubmit()" [disabled]="!comment" madeContinueFooter title="Submit"></ion-footer>

@@ -1,0 +1,12 @@
+<div class="Comment">
+  <div *ngIf="userAva && userName" class="CommentUser">
+    <div class="CommentUser-ava" [style.backgroundImage]="'url(' + userAva + ')'"></div>
+    <div class="CommentUser-name">{{ userName }}</div>
+
+    <made-thumb [isThumbsUp]="isThumbsUp" class="CommentUser-thumb"></made-thumb>
+  </div>
+
+  <div *ngIf="comment" class="Comment-text">{{ comment }}</div>
+
+  <div *ngIf="_date" class="Comment-date">{{ _date }}</div>
+</div>
