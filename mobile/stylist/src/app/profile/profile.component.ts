@@ -22,7 +22,7 @@ import { getPhoneNumber } from '~/shared/utils/phone-numbers';
 import { StylistServicesDataStore } from '~/services/services-list/services.data';
 import { DayOffer } from '~/shared/api/price.models';
 import { StylistProfileApi } from '~/shared/api/stylist-profile.api';
-import { StylistProfileRequestParams, StylistProfileResponse } from '~/shared/api/stylists.models';
+import { Rating, StylistProfileRequestParams, StylistProfileResponse } from '~/shared/api/stylists.models';
 import { UserRole } from '~/shared/api/auth.models';
 import { VisualWeekCard } from '~/shared/utils/worktime-utils';
 import { PhotoSourceType } from '~/shared/constants';
@@ -75,6 +75,7 @@ export class ProfileComponent {
   ProfileTabs = ProfileTabs;
   PageNames = PageNames;
   RegistrationFormControl = RegistrationFormControl;
+  stylistRating: Rating[];
   tabs = [
     {
       name: ProfileTabNames.clientView
@@ -115,14 +116,9 @@ export class ProfileComponent {
       this.onTabChange(params.profileTab);
     });
 
-    const { profile_photo_id, profile_photo_url } = this.registrationForm.getFormControls();
-
-    this.photoId = profile_photo_id;
-    this.photoUrl = profile_photo_url;
-
-    await this.registrationForm.loadFormInitialData();
-
     await this.getProfile();
+
+    await this.getClientsFeedBack();
 
     await this.getStylistProfile();
 
@@ -132,6 +128,13 @@ export class ProfileComponent {
   }
 
   async getProfile(): Promise<void> {
+    const { profile_photo_id, profile_photo_url } = this.registrationForm.getFormControls();
+
+    this.photoId = profile_photo_id;
+    this.photoUrl = profile_photo_url;
+
+    await this.registrationForm.loadFormInitialData();
+
     const { response } = await this.profileData.get({refresh: true});
     if (response) {
       this.profile = response;
@@ -144,11 +147,19 @@ export class ProfileComponent {
     }
   }
 
+  async getClientsFeedBack(): Promise<void> {
+    const { rating } = (await this.stylistProfileApi.getClientsFeedBack(this.profile.uuid).get()).response;
+    if (rating) {
+      this.stylistRating = rating;
+    }
+  }
+
   async getStylistProfile(): Promise<void> {
     const params: StylistProfileRequestParams = {
       role: UserRole.stylist,
       stylistUuid: this.profile.uuid
     };
+
     const stylistProfileResponse = await this.stylistProfileApi.getStylistProfile(params).toPromise();
     if (stylistProfileResponse.response) {
       this.stylistProfile = stylistProfileResponse.response;

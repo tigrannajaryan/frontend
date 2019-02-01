@@ -5,7 +5,7 @@ import * as faker from 'faker';
 import { ApiResponse } from '~/shared/api/base.models';
 import { BaseServiceMock } from '~/shared/api/base.service.mock';
 import { randomPhone } from '~/shared/utils/test-utils';
-import { StylistProfileResponse } from './stylists.models';
+import { RatingResponse, StylistProfileResponse } from './stylists.models';
 
 @Injectable()
 export class StylistProfileApiMock extends BaseServiceMock {
@@ -33,7 +33,33 @@ export class StylistProfileApiMock extends BaseServiceMock {
             is_profile_bookable: true,
             working_hours: {
               weekdays: []
-            }
+            },
+            rating_percentage: faker.random.number({min: 0, max: 1})
+          });
+        })
+    );
+  }
+
+  getClientsFeedBack(): Observable<ApiResponse<RatingResponse>> {
+    return this.mockRequest<RatingResponse>(
+        Observable.create(observer => {
+          observer.next({
+            rating: [
+              {
+                client_name: faker.name.firstName(),
+                client_photo_url: undefined,
+                rating: faker.random.number({min: 0, max: 1}),
+                appointment_datetime: faker.date.recent(),
+                comment: faker.lorem.paragraph()
+              },
+              {
+                client_name: faker.name.firstName(),
+                client_photo_url: undefined,
+                rating: faker.random.number({min: 0, max: 1}),
+                appointment_datetime: faker.date.recent(),
+                comment: faker.lorem.paragraph()
+              }
+            ]
           });
         })
     );

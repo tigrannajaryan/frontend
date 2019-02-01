@@ -8,13 +8,14 @@ made-user-comment {
     align-content: center;
     align-items: center;
     justify-content: flex-start;
+    margin-bottom: pxtovw(8px);
   }
 
   .CommentUser-ava {
     display: inline-block;
     width: pxtovw(32px);
     height: pxtovw(32px);
-    margin: 0 pxtovw(8px) pxtovw(8px) 0;
+    margin-right: pxtovw(8px);
     background-image: url('../assets/icons/stylist-avatar.png');
     background-repeat: no-repeat;
     background-size: cover;

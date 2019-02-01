@@ -36,7 +36,11 @@
       <div class="StylistProfilePreview-salon" data-test-id="stylistProfilePreviewSalon">
         {{ stylistProfile.salon_name }}
 
-        <made-thumb [percentage]="50" [isThumbsUp]="true"></made-thumb>
+        <made-thumb
+          *ngIf="stylistProfile?.rating_percentage"
+          [percentage]="stylistProfile?.rating_percentage"
+          [isThumbsUp]="true">
+        </made-thumb>
       </div>
 
       <div class="StylistProfilePreview-clients"
@@ -172,23 +176,18 @@
         </div>
       </div>
 
-
-
-
-
-
-      <div class="StylistProfilePreview-item">
+      <div *ngIf="stylistRating?.length > 0" class="StylistProfilePreview-item">
         <div class="StylistProfilePreview-itemTitle">
           85% of Clients Love This Stylist!
         </div>
 
         <made-user-comment
-          *ngFor="let i of [0,1,2,3,4,5]"
-          [userAva]="'../assets/icons/stylist-avatar.png'"
-          [userName]="'Elizabeth H'"
-          [isThumbsUp]="i % 2"
-          [comment]="'After years of wearing startup  shorts, I left the startup scene and joined a corporation where there is an unspoken dress code and shorts are frowned upon. The new job came with a nice pay bump so I figured ll dress nicer. '"
-          [date]="'2019-01-23'"
+          *ngFor="let item of stylistRating"
+          [userAva]="item.client_photo_url"
+          [userName]="item.client_name"
+          [isThumbsUp]="item.rating"
+          [comment]="item.comment"
+          [date]="item.appointment_datetime"
         ></made-user-comment>
       </div>
     </div>

@@ -1,5 +1,6 @@
 import { LatLng } from '~/shared/utils/geolocation.service';
 import { UserRole } from '~/shared/api/auth.models';
+import { ISODateTime } from '~/shared/api/base.models';
 
 /**
  * Stylist models used in Client App API.
@@ -77,6 +78,7 @@ export interface StylistProfileResponse {
     lat: string;
     lng: string;
   };
+  rating_percentage: number;
 }
 
 export interface WorkingHours {
@@ -106,4 +108,16 @@ export interface InstagramMedia {
 
 export interface StylistInstagramImagesResponse {
   instagram_media: InstagramMedia[];
+}
+
+export interface RatingResponse {
+  rating: Rating[];
+}
+
+export interface Rating {
+  client_name: string;
+  client_photo_url: string;
+  rating: number;
+  appointment_datetime: ISODateTime;
+  comment: string;
 }
