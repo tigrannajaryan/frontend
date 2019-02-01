@@ -16,6 +16,7 @@ export class InstagramGalleryComponent {
   mediaObjects: InstagramMedia[];
   hasInstagramImages = false;
 
+  @Input() isStylistApp: boolean;
   @Input() set stylist(stylist: StylistUuidModel) {
     this.loadInstagramImages(stylist);
   }

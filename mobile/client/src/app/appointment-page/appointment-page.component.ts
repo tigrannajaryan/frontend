@@ -18,6 +18,7 @@ import { AddServicesComponentParams } from '~/add-services/add-services.componen
 import { AppointmentPriceComponentParams } from '~/appointment-price/appointment-price.component';
 import { confirmRebook, startRebooking } from '~/booking/booking-utils';
 import { BookingCompleteComponentParams } from '~/booking/booking-complete/booking-complete.component';
+import { ConfirmCheckoutComponentParams } from '~/confirm-checkout/confirm-checkout.component';
 
 export interface AppointmentPageParams {
   appointment: ClientAppointmentModel;
@@ -156,7 +157,11 @@ export class AppointmentPageComponent {
     };
     const { response } = await this.api.changeAppointment(this.params.appointment.uuid, request).toPromise();
     if (response) {
-      this.navCtrl.push(PageNames.ConfirmCheckout);
+      const params: ConfirmCheckoutComponentParams = {
+        appointment: this.params.appointment
+      };
+
+      this.navCtrl.push(PageNames.ConfirmCheckout, { params });
     }
   }
 

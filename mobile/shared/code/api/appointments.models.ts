@@ -64,6 +64,8 @@ export interface ClientAppointmentModel extends BaseAppointmentModel {
   stylist_photo_url: string;
   salon_name: string;
   profile_photo_url: string; // client’s photo
+  rating: number;
+  comment: string;
 }
 
 // Next you find shared (between 2 apps) requests and responses.
@@ -95,9 +97,10 @@ export interface AppointmentPreviewRequest {
 export type AppointmentPreviewResponse = BaseAppointmentPreviewModel;
 
 /**
- * Usually the 2 change-cases are used:
+ * Usually the 3 change-cases are used:
  * - new status is supplied
  * - or services with updated prices and taxes are passed.
+ * - raging and/or comment
  */
 export interface AppointmentChangeRequest {
   status?: AppointmentStatus;
@@ -105,6 +108,8 @@ export interface AppointmentChangeRequest {
   has_card_fee_included?: boolean;
   services?: CheckOutService[];
   price_change_reason?: string;
+  rating?: number; // (0|1) thumbsUp/Down
+  comment?: string;
 }
 
 export type AppointmentChangeResponse =

@@ -101,6 +101,7 @@ import { StylistProfileComponent } from '~/stylists/stylist-profile/stylist-prof
 import { GoogleMapsConfig } from '~/shared/google-maps-config';
 import { InvitationsComponent } from '~/invitations/invitations.component';
 import { InvitationsApi } from '~/core/api/invitations.api';
+import { FeedBackComponent } from '~/feed-back/feed-back.component';
 
 // Init sentry reporting (inits only if ENV.sentryDsn):
 initSentry();
@@ -147,7 +148,8 @@ const declarations = [
   StylistProfileComponent,
   StylistSearchComponent,
   SuccessErrorPopupComponent,
-  UiKitPreviewComponent
+  UiKitPreviewComponent,
+  FeedBackComponent
 ];
 
 @NgModule({
