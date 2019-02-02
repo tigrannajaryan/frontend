@@ -81,7 +81,8 @@ export const profileSummaryMock = {
   location: {
     lat: 0,
     lng: 0
-  }
+  },
+  rating_percentage: faker.random.number({min: 0, max: 1})
 };
 
 export const profileSettingsMock = {

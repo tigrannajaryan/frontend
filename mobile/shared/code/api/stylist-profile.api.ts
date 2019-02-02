@@ -9,6 +9,7 @@ import { BaseService } from '~/shared/api/base.service';
 
 import { UserContext } from '~/shared/user-context';
 import {
+  RatingResponse,
   StylistInstagramImagesResponse,
   StylistProfileRequestParams,
   StylistProfileResponse,
@@ -36,5 +37,12 @@ export class StylistProfileApi extends BaseService {
    */
   getStylistInstagramImages(stylist: StylistUuidModel): Observable<ApiResponse<StylistInstagramImagesResponse>> {
     return this.get<StylistInstagramImagesResponse>(`common/stylist/${stylist.uuid}/instagram-photos`);
+  }
+
+  /**
+   * Get client's feedback.
+   */
+  getClientsFeedBack(stylistUuid: string): Observable<ApiResponse<RatingResponse>> {
+    return this.get<RatingResponse>(`common/stylist-profile/${stylistUuid}/rating`);
   }
 }

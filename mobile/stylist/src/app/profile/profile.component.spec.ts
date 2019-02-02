@@ -16,6 +16,8 @@ import { calcProfileCompleteness } from '~/core/utils/stylist-utils';
 import { PageNames } from '~/core/page-names';
 import { StylistServiceMock } from '~/core/api/stylist.service.mock';
 import { StylistServiceProvider } from '~/core/api/stylist.service';
+import { StylistProfileApi } from '~/shared/api/stylist-profile.api';
+import { StylistProfileApiMock } from '~/shared/api/stylist-profile.api.mock';
 
 let fixture: ComponentFixture<ProfileComponent>;
 let instance: ProfileComponent;
@@ -39,6 +41,7 @@ describe('Pages: ProfileComponent', async () => {
       LaunchNavigator,
       ProfileDataStore,
       StylistServiceMock,
+      StylistProfileApiMock,
       ModalController
     ], [AgmCoreModule])
     .then(async (compiled) => {
@@ -46,13 +49,22 @@ describe('Pages: ProfileComponent', async () => {
       instance = compiled.instance;
       instance.ionViewWillEnter();
 
-      const stylistProfileApi = fixture.debugElement.injector.get(StylistServiceProvider);
-      const stylistProfileApiMock = fixture.debugElement.injector.get(StylistServiceMock);
-      spyOn(stylistProfileApi, 'getProfile').and.returnValue(
-        stylistProfileApiMock.getProfile()
+      const stylistServiceProvider = fixture.debugElement.injector.get(StylistServiceProvider);
+      const stylistServiceMock = fixture.debugElement.injector.get(StylistServiceMock);
+      spyOn(stylistServiceProvider, 'getProfile').and.returnValue(
+        stylistServiceMock.getProfile()
       );
 
-      const stylistProfileApiRes = await stylistProfileApiMock.getProfile().get();
+      const stylistProfileApi = fixture.debugElement.injector.get(StylistProfileApi);
+      const stylistProfileApiMock = fixture.debugElement.injector.get(StylistProfileApiMock);
+      spyOn(stylistProfileApi, 'getClientsFeedBack').and.returnValue(
+        stylistProfileApiMock.getClientsFeedBack()
+      );
+      spyOn(stylistProfileApi, 'getStylistProfile').and.returnValue(
+        stylistProfileApiMock.getStylistProfile()
+      );
+
+      const stylistProfileApiRes = await stylistServiceMock.getProfile().get();
 
       if (stylistProfileApiRes.response) {
         instance.profile = stylistProfileApiRes.response;
@@ -60,6 +72,12 @@ describe('Pages: ProfileComponent', async () => {
         instance.profile.public_phone = getPhoneNumber(instance.profile.public_phone);
 
         instance.stylistProfileCompleteness = calcProfileCompleteness(instance.profile);
+      }
+
+
+      const stylistProfileResponse = await stylistProfileApiMock.getStylistProfile().get();
+      if (stylistProfileResponse.response) {
+        instance.stylistProfile = stylistProfileResponse.response;
       }
 
       fixture.detectChanges();
@@ -295,5 +313,14 @@ describe('Pages: ProfileComponent', async () => {
     const ProfileEditPhone = fixture.nativeElement.querySelector('[data-test-id=ProfileEditPhone]');
     ProfileEditPhone.click();
     expect(instance.onFieldEdit).not.toHaveBeenCalled();
+  });
+
+  xit('should have rating percentage and user comments', () => {
+    const stylistProfilePreview_MadeThumb = fixture.nativeElement.querySelector('[data-test-id=stylistProfilePreview_MadeThumb]');
+    expect(stylistProfilePreview_MadeThumb.innerText).toContain(instance.stylistProfile.rating_percentage);
+
+    const stylistProfilePreview_MadeUserComment = fixture.nativeElement.querySelector('[data-test-id=stylistProfilePreview_MadeUserComment]');
+    expect(stylistProfilePreview_MadeUserComment.innerText).toContain(instance.stylistRating[0].comment);
+    expect(stylistProfilePreview_MadeUserComment.innerText).toContain(instance.stylistRating[1].comment);
   });
 });
