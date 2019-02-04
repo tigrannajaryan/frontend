@@ -26,6 +26,8 @@ export class FeedBackComponent {
 
   ionViewDidEnter(): void {
     this.params = this.navParams.get('params') as FeedbackComponentParams;
+    // from the backend we have a string, we need to convert it to boolean
+    this.params.appointment.rating = !!Number(this.params.appointment.rating);
   }
 
   async onSubmit(): Promise<void> {
