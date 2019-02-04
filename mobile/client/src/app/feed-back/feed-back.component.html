@@ -4,7 +4,7 @@
 <ion-content no-padding>
   <div *ngIf="params" class="Made-wp Made-wpContent">
     <div class="FeedBack-box">
-      <ng-container *ngIf="params.appointment.rating; else thumbsDown">
+      <ng-container *ngIf="thumbsUp; else thumbsDown">
         <i class="mb-icon-thumbsUp" data-test-id="feedBack_thumbsUp"></i>
 
         <div class="FeedBack-title is-gray" data-test-id="feedBack_title">Good Experience</div>
