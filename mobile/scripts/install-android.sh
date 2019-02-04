@@ -13,6 +13,12 @@ touch ~/.android/repositories.cfg
 
 # install Java and Gradle
 brew tap caskroom/versions || true
+
+# Tmp fix java8 cask. Remove after https://github.com/Homebrew/homebrew-cask-versions/pull/6934 is merged.
+rm /usr/local/Homebrew/Library/Taps/caskroom/homebrew-versions/Casks/java8.rb
+mv $TRAVIS_BUILD_DIR/mobile/scripts/java8.rb /usr/local/Homebrew/Library/Taps/caskroom/homebrew-versions/Casks/java8.rb
+chmod 644 /usr/local/Homebrew/Library/Taps/caskroom/homebrew-versions/Casks/java8.rb
+
 brew cask install caskroom/versions/java8
 
 # The code below should set up the proper JAVA_HOME path but for some reason
