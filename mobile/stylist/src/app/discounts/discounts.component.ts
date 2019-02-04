@@ -80,6 +80,7 @@ export class DiscountsComponent {
     const { first_booking, weekdays, deal_of_week_weekday, ...rebook } = discounts;
     this.firstBooking.percentage = first_booking;
     this.weekdays = weekdays.sort((a, b) => a.weekday - b.weekday); // from 1 (Monday) to 7 (Sunday)
+    this.weekdays.unshift(this.weekdays.pop()); // Sunday should be first
     this.dealOfTheWeek = deal_of_week_weekday;
     this.rebook = DiscountsRevisitComponent.transformRebookToDiscounts(rebook);
 
