@@ -5,8 +5,7 @@
 </ion-header>
 
 <ion-content no-padding>
-
-  <ion-fab right bottom>
+  <ion-fab *ngIf="!isLoading" right bottom>
     <button (click)="openServiceModal()" ion-fab>
       <ion-icon name="add"></ion-icon>
     </button>
@@ -14,73 +13,80 @@
 
 
   <div class="Made-wp Made-wpContent">
-    <div class="Made-text">
-      <div class="Made-textItem">
-        This is your current list of services. Click to edit or delete any of the services below.
-      </div>
+    <!-- Show spinner if loading is in progress -->
+    <div *ngIf="isLoading; else loaded" class="Spinner">
+      <ion-spinner></ion-spinner>
     </div>
 
-    <div *ngIf="categories" class="ServicesLis-offset">
-      <div *ngFor="let category of categories; let index = index"
-           [hidden]="category.services.length === 0"
-           [attr.data-test-id]="'categorySection'+index">
-        <div class="ServicesLis-title" data-test-id="categoryName">
-          <img [src]="'assets/icons/services-categories/' + category.category_code + '.png'">
-          {{ category.name }}
+    <ng-template #loaded>
+      <div class="Made-text">
+        <div class="Made-textItem">
+          This is your current list of services. Click to edit or delete any of the services below.
+        </div>
+      </div>
+
+      <div *ngIf="categories" class="ServicesLis-offset">
+        <div *ngFor="let category of categories; let index = index"
+             [hidden]="category.services.length === 0"
+             [attr.data-test-id]="'categorySection'+index">
+          <div class="ServicesLis-title" data-test-id="categoryName">
+            <img [src]="'assets/icons/services-categories/' + category.category_code + '.png'">
+            {{ category.name }}
+          </div>
+
+
+          <ion-list class="ServicesLis">
+            <ion-row class="ServicesLis-head">
+              <ion-col no-padding col-9 class="ServicesLis-rowCol">
+                Services
+              </ion-col>
+              <ion-col no-padding col-3 class="ServicesLis-rowCol">
+                Pricing
+              </ion-col>
+            </ion-row>
+
+
+            <div class="ServicesLis-item">
+              <ion-item-sliding *ngFor="let service of category.services; let i = index" data-test-id="serviceList">
+                <ion-item no-padding>
+                  <ion-row no-padding class="ServicesLis-row">
+                    <ion-col (click)="deleteConfirm(category, i)" no-padding col-2 class="ServicesLis-rowCol">
+                      <button ion-button color="dark" clear class="ServicesLis-rowColDel">
+                        <i class="mb-icon-trash"></i>
+                      </button>
+                    </ion-col>
+                    <ion-col (click)="openServiceModal(category, service)" no-padding col-7 class="ServicesLis-rowCol">
+                      {{ service.name }}
+                    </ion-col>
+                    <ion-col (click)="openServiceModal(category, service)" no-padding col-3 class="ServicesLis-rowCol">
+                      ${{ service.base_price }}
+                      <i class="mb-icon-right-arrow"></i>
+                    </ion-col>
+                  </ion-row>
+                </ion-item>
+                <ion-item-options side="right" class="ServicesLis-swipe">
+                  <button (click)="deleteConfirm(category, i)" ion-button color="danger">Delete</button>
+                </ion-item-options>
+              </ion-item-sliding>
+            </div>
+          </ion-list>
         </div>
 
 
-        <ion-list class="ServicesLis">
-          <ion-row class="ServicesLis-head">
-            <ion-col no-padding col-9 class="ServicesLis-rowCol">
-              Services
-            </ion-col>
-            <ion-col no-padding col-3 class="ServicesLis-rowCol">
-              Pricing
-            </ion-col>
-          </ion-row>
 
+        <div *ngIf="!isEmptyCategories" class="ServicesGap">
+          <i class="mb-icon-timer ServicesGap-icon"></i>
 
-          <div class="ServicesLis-item">
-            <ion-item-sliding *ngFor="let service of category.services; let i = index" data-test-id="serviceList">
-              <ion-item no-padding>
-                <ion-row no-padding class="ServicesLis-row">
-                  <ion-col (click)="deleteConfirm(category, i)" no-padding col-2 class="ServicesLis-rowCol">
-                    <button ion-button color="dark" clear class="ServicesLis-rowColDel">
-                      <i class="mb-icon-trash"></i>
-                    </button>
-                  </ion-col>
-                  <ion-col (click)="openServiceModal(category, service)" no-padding col-7 class="ServicesLis-rowCol">
-                    {{ service.name }}
-                  </ion-col>
-                  <ion-col (click)="openServiceModal(category, service)" no-padding col-3 class="ServicesLis-rowCol">
-                    ${{ service.base_price }}
-                    <i class="mb-icon-right-arrow"></i>
-                  </ion-col>
-                </ion-row>
-              </ion-item>
-              <ion-item-options side="right" class="ServicesLis-swipe">
-                <button (click)="deleteConfirm(category, i)" ion-button color="danger">Delete</button>
-              </ion-item-options>
-            </ion-item-sliding>
-          </div>
-        </ion-list>
+          <div class="ServicesGap-title">How many minutes between client bookings?</div>
+
+          <ion-range (ionChange)="saveRequest()" [debounce]="1000" [min]="15" [max]="120" [step]="5" [(ngModel)]="timeGap" color="dark" class="ion-bb-range">
+            <div range-right>
+              {{ timeGap }} min
+            </div>
+          </ion-range>
+        </div>
       </div>
-
-
-
-      <div *ngIf="!isEmptyCategories" class="ServicesGap">
-        <i class="mb-icon-timer ServicesGap-icon"></i>
-
-        <div class="ServicesGap-title">How many minutes between client bookings?</div>
-
-        <ion-range (ionChange)="saveRequest()" [debounce]="1000" [min]="15" [max]="120" [step]="5" [(ngModel)]="timeGap" color="dark" class="ion-bb-range">
-          <div range-right>
-            {{ timeGap }} min
-          </div>
-        </ion-range>
-      </div>
-    </div>
+    </ng-template>
   </div>
 </ion-content>
 
