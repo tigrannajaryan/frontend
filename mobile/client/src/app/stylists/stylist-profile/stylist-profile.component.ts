@@ -6,7 +6,7 @@ import { formatNumber } from 'libphonenumber-js';
 import { StylistProfileApi } from '~/shared/api/stylist-profile.api';
 import { UserRole } from '~/shared/api/auth.models';
 import {
-  PreferredStylistModel,
+  PreferredStylistModel, Rating,
   StylistProfileRequestParams,
   StylistProfileResponse
 } from '~/shared/api/stylists.models';
@@ -41,6 +41,7 @@ export class StylistProfileComponent {
   cards: VisualWeekCard[] = [];
   service: ServiceModel;
   stylistProfile: StylistProfileResponse;
+  stylistRating: Rating[];
 
   constructor(
     private events: Events,
@@ -59,6 +60,8 @@ export class StylistProfileComponent {
     this.params = this.navParams.get('params') as StylistProfileParams;
 
     if (this.params && this.params.stylist) {
+      await this.getClientsFeedBack(this.params.stylist.uuid);
+
       const params: StylistProfileRequestParams = {
         role: UserRole.client,
         stylistUuid: this.params.stylist.uuid
@@ -83,6 +86,13 @@ export class StylistProfileComponent {
     }
 
     this.getPrice();
+  }
+
+  async getClientsFeedBack(uuid: string): Promise<void> {
+    const { rating } = (await this.stylistProfileApi.getClientsFeedBack(uuid).get()).response;
+    if (rating) {
+      this.stylistRating = rating;
+    }
   }
 
   async getPrice(): Promise<void> {

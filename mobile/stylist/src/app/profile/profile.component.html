@@ -44,7 +44,16 @@
             <div class="Made-wp">
               <div class="StylistProfilePreview-name" data-test-id="stylistProfilePreviewName">{{ profile.first_name }}</div>
 
-              <div class="StylistProfilePreview-salon" data-test-id="stylistProfilePreviewSalon">{{ profile.salon_name }}</div>
+            <div class="StylistProfilePreview-salon" data-test-id="stylistProfilePreviewSalon">
+              {{ profile.salon_name }}
+
+              <made-thumb
+                *ngIf="stylistProfile?.rating_percentage"
+                [percentage]="stylistProfile?.rating_percentage"
+                [isThumbsUp]="true"
+                data-test-id="stylistProfilePreview_MadeThumb">
+              </made-thumb>
+            </div>
 
               <div *ngIf="profile.followers_count" (click)="onMyClientsClick()" class="StylistProfilePreview-clients"
                     data-test-id="stylistProfilePreviewClients">
@@ -194,6 +203,22 @@
                 <div class="StylistProfilePreview-itemText">
                   {{ profile.phone }}
                 </div>
+              </div>
+
+              <div *ngIf="stylistRating?.length > 0" class="StylistProfilePreview-item">
+                <div class="StylistProfilePreview-itemTitle">
+                  85% of Clients Love This Stylist!
+                </div>
+
+                <made-user-comment
+                  *ngFor="let item of stylistRating"
+                  [userAva]="item.client_photo_url"
+                  [userName]="item.client_name"
+                  [isThumbsUp]="item.rating"
+                  [comment]="item.comment"
+                  [date]="item.appointment_datetime"
+                  data-test-id="stylistProfilePreview_MadeUserComment">
+                </made-user-comment>
               </div>
             </div>
           </div>
