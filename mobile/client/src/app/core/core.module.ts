@@ -25,6 +25,9 @@ import { UserNamePhotoComponent } from '~/shared/components/user-name-photo/user
 import { MadeAutosizeDirective } from '~/shared/directives/made-autosize.directive';
 import { MadeAnalyticsApi } from '~/shared/api/made-analytics.api';
 import { PhoneInputDirective } from '~/shared/directives/phone-input.directive';
+import { MadeThumbComponent } from '~/shared/components/made-thumb/made-thumb.component';
+import { MadeUserCommentComponent } from '~/shared/components/made-user-comment/made-user-comment.component';
+import { MadeScrollTopDirective } from '~/shared/directives/made-scroll-top.directive';
 
 import { AppointmentItemComponent } from '~/core/components/appointment-item/appointment-item.component';
 import { MadeHeaderComponent } from '~/core/components/made-header/made-header.component';
@@ -35,8 +38,6 @@ import { InputNumberDirective } from '~/core/directives/input-number.directive';
 import { BookServicesHeaderComponent } from '~/booking/book-services-header/book-services-header';
 import { StylistCardComponent } from '~/stylists/stylist-card/stylist-card.component';
 import { MadeThumbsComponent } from '~/core/components/made-thumbs/made-thumbs.component';
-import { MadeThumbComponent } from '~/shared/components/made-thumb/made-thumb.component';
-import { MadeUserCommentComponent } from '~/shared/components/made-user-comment/made-user-comment.component';
 
 export enum DefaultImage {
   User = 'assets/icons/stylist-avatar.png'
@@ -52,7 +53,12 @@ const declarations = [
   EditServicesPricesComponent,
   HasErrorPipe,
   InputNumberDirective,
+  MadeAutosizeDirective,
   MadeHeaderComponent,
+  MadeScrollTopDirective,
+  MadeThumbComponent,
+  MadeThumbsComponent,
+  MadeUserCommentComponent,
   MbIconsComponent,
   NoServiceSelectedComponent,
   NumListComponent,
@@ -68,11 +74,7 @@ const declarations = [
   ServicesHeaderListComponent,
   ServicesPickComponent,
   StylistCardComponent,
-  UserNamePhotoComponent,
-  MadeAutosizeDirective,
-  MadeThumbsComponent,
-  MadeUserCommentComponent,
-  MadeThumbComponent
+  UserNamePhotoComponent
 ];
 
 @NgModule({
