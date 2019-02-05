@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { AlertController, Content, Events, NavController } from 'ionic-angular';
+import { AlertController, Content, Events, NavController, NavParams } from 'ionic-angular';
 import * as moment from 'moment';
 
 import { Logger } from '~/shared/logger';
@@ -18,6 +18,11 @@ import { BookServicesHeaderComponent } from '../book-services-header/book-servic
 import { ServiceItem } from '~/shared/api/stylist-app.models';
 import { PricingHint } from '~/shared/components/services-header-list/services-header-list';
 import { MainTabIndex } from '~/main-tabs/main-tabs.component';
+import { SelectTimeComponentParams } from '~/booking/select-time/select-time.component';
+
+export interface SelectDateComponentParams {
+  isRescheduling?: boolean;
+}
 
 @Component({
   selector: 'select-date',
@@ -27,6 +32,7 @@ export class SelectDateComponent {
   @ViewChild(Content) content: Content;
   @ViewChild(BookServicesHeaderComponent) servicesHeader: BookServicesHeaderComponent;
 
+  params: SelectDateComponentParams;
   regularPrice: number;
   hints: PricingHint[];
   isLoading: boolean;
@@ -43,12 +49,15 @@ export class SelectDateComponent {
     private events: Events,
     private logger: Logger,
     private navCtrl: NavController,
-    private preferredStylistsData: PreferredStylistsData
+    private preferredStylistsData: PreferredStylistsData,
+    private navParams: NavParams
   ) {
   }
 
   async ionViewWillEnter(): Promise<void> {
     this.logger.info('SelectDateComponent.ionViewWillEnter');
+
+    this.params = this.navParams.get('params') as SelectDateComponentParams;
 
     this.bookingData.selectedServicesObservable
       .takeWhile(componentIsActive(this))
@@ -110,7 +119,11 @@ export class SelectDateComponent {
     }
 
     this.bookingData.setOffer(offer);
-    this.navCtrl.push(PageNames.SelectTime);
+
+    const params: SelectTimeComponentParams = {
+      isRescheduling: this.params.isRescheduling
+    };
+    this.navCtrl.push(PageNames.SelectTime, { params });
   }
 
   onServiceChange(): void {

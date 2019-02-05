@@ -11,6 +11,28 @@ page-appointment {
       0 pxtovw(7px) pxtovw(24px) 0 rgba(black, 0.08);
   }
 
+  .CheckOut-buttons {
+    display: flex;
+    flex-flow: row;
+    justify-content: space-between;
+    margin-top: pxtovw(16px);
+  }
+
+  .CheckOut-button {
+    width: 49%;
+    padding: pxtovw(14px) 0;
+    font-size: pxtovw(16px);
+    color: color($colors, lightSalmon);
+    text-align: center;
+    border: pxtovw(1px) solid color($colors, lightSalmon);
+    border-radius: pxtovw(10px);
+
+    &.is-cancel {
+      color: color($colors, warning);
+      border-color: color($colors, warning);
+    }
+  }
+
   .CheckOut-card + .CheckOut-card {
     margin-top: pxtovw(16px);
     box-shadow:

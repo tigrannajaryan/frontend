@@ -34,6 +34,7 @@ import { ClientStartupNavigation } from './core/client-startup-navigation';
 import { StylistModel } from './shared/api/stylists.models';
 import { ApiClientError, ApiFieldAndNonFieldErrors } from './shared/api-errors';
 import { clearAllDataStores } from './core/api/data.module';
+import { SelectDateComponentParams } from '~/booking/select-date/select-date.component';
 
 interface RefreshAuthResult {
   authLocalData: AuthLocalData;
@@ -112,7 +113,7 @@ export class ClientAppComponent implements OnInit, OnDestroy {
     // Subscribe to some interesting global events
     this.events.subscribe(SharedEventTypes.afterLogout, () => this.onAfterLogout());
     this.events.subscribe(ClientEventTypes.startBooking, (stylistUuid?: string) => this.onStartBooking(stylistUuid));
-    this.events.subscribe(ClientEventTypes.startRebooking, () => this.onStartRebooking());
+    this.events.subscribe(ClientEventTypes.startRebooking, (isRescheduling?: boolean) => this.onStartRebooking(isRescheduling));
 
     // All done, measure the loading time and report to GA
     const loadTime = Date.now() - startTime;
@@ -192,9 +193,13 @@ export class ClientAppComponent implements OnInit, OnDestroy {
     }
   }
 
-  onStartRebooking(): void {
+  onStartRebooking(isRescheduling?: boolean): void {
+    const params: SelectDateComponentParams = {
+      isRescheduling
+    };
+
     // Begin booking process by showing date selection (since services are already known)
-    this.nav.push(PageNames.SelectDate);
+    this.nav.push(PageNames.SelectDate, { params });
   }
 
   private async refreshAuth(authLocalData: AuthLocalData): Promise<RefreshAuthResult> {
