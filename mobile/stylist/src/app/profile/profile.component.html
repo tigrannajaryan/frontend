@@ -38,7 +38,7 @@
 <ion-content no-padding>
   <ion-slides (ionSlideDrag)="onEnableRefresher(false)" (touchend)="onEnableRefresher(true)" (ionSlideDidChange)="onTabSwipe()" no-padding class="Tabs-slides">
     <ion-slide>
-      <ion-content>
+      <ion-content #tabContent>
         <div class="Tabs-slide">
           <div *ngIf="profile">
             <div class="Made-wp">
@@ -226,6 +226,13 @@
             </div>
           </div>
         </div>
+
+
+        <ion-fab right bottom>
+          <button [madeScrollTop]="tabContent" ion-fab>
+            <ion-icon name="arrow-up"></ion-icon>
+          </button>
+        </ion-fab>
       </ion-content>
     </ion-slide>
 
