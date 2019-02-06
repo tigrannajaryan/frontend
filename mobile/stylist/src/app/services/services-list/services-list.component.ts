@@ -31,7 +31,7 @@ export class ServicesListComponent {
   protected isEmptyCategories = false;
   params: ServicesListComponentParams;
   protected timeGap = 30;
-  isLoading = false;
+  isLoading = true;
 
   static checkIfEmptyCategories(categories: ServiceCategory[]): boolean {
     return categories.every((cat: ServiceCategory) => {

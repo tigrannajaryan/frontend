@@ -63,6 +63,13 @@
   }
 }
 
+.StylistProfilePreview-subTitle {
+  margin-bottom: pxtovw(5px);
+  font-size: $shared-small;
+  text-align: left;
+  color: color($colors-shared, warmGrey);
+}
+
 .StylistProfilePreview-itemText {
   font-size: $shared-h4;
   font-weight: 300;

@@ -207,7 +207,10 @@
 
               <div *ngIf="stylistRating?.length > 0" class="StylistProfilePreview-item">
                 <div class="StylistProfilePreview-itemTitle">
-                  85% of Clients Love This Stylist!
+                  {{ stylistProfile?.rating_percentage }}% of Clients Love This Stylist!
+                </div>
+                <div class="StylistProfilePreview-subTitle">
+                  {{ stylistRating?.length }} Ratings
                 </div>
 
                 <made-user-comment

@@ -72,6 +72,12 @@ stylist-card {
   white-space: nowrap;
 }
 
+.StylistCard-footer {
+  display: flex;
+  flex-flow: row;
+  justify-content: space-between;
+}
+
 .StylistCard-followers {
   display: flex;
   align-items: center;
@@ -93,4 +99,8 @@ stylist-card {
     line-height: pxtovw(15px);
     color: color($colors, orange);
   }
+}
+
+.StylistCard-rating {
+  font-size: $t-small;
 }

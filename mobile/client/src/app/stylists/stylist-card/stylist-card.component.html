@@ -14,12 +14,21 @@
 
     <div class="StylistCard-name">{{ stylist.first_name }} {{ stylist.last_name }}</div>
 
-    <div
-      *ngIf="stylist.followers_count"
-      [class.is-notBookable]="!stylist.is_profile_bookable"
-      class="StylistCard-followers"
-      data-test-id="stylistFollowers">
-      <i class="mb-icon-heart-a"></i>&nbsp;<span><b>{{ stylist.followers_count }}</b> MADE Clients</span>
+    <div class="StylistCard-footer">
+      <div
+        *ngIf="stylist.followers_count"
+        [class.is-notBookable]="!stylist.is_profile_bookable"
+        class="StylistCard-followers"
+        data-test-id="stylistFollowers">
+        <i class="mb-icon-heart-a"></i>&nbsp;<span><b>{{ stylist.followers_count }}</b> MADE Clients</span>
+      </div>
+
+      <made-thumb
+        *ngIf="stylist?.rating_percentage"
+        [percentage]="stylist?.rating_percentage"
+        [isThumbsUp]="true"
+        class="StylistCard-rating">
+      </made-thumb>
     </div>
   </div>
 </div>

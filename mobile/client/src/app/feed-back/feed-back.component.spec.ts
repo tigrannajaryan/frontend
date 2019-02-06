@@ -23,6 +23,7 @@ describe('Pages: FeedBack', () => {
             popAfterSubmit: false
           } as FeedbackComponentParams;
           instance.comment = 'Good stylist';
+          instance.thumbsUp = true;
 
           fixture.detectChanges();
         })
@@ -45,7 +46,7 @@ describe('Pages: FeedBack', () => {
   });
 
   it('should have thumbsDown and appropriate titles', () => {
-    instance.params.appointment.rating = 0;
+    instance.thumbsUp = false;
     fixture.detectChanges();
 
     const feedBack_thumbsUp = fixture.nativeElement.querySelector('[data-test-id=feedBack_thumbsUp]');
