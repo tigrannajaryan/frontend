@@ -18,6 +18,7 @@ import { UserNamePhotoComponent } from '~/shared/components/user-name-photo/user
 import { MadeUserCommentComponent } from '~/shared/components/made-user-comment/made-user-comment.component';
 import { MadeThumbComponent } from '~/shared/components/made-thumb/made-thumb.component';
 import { MadeAutosizeDirective } from '~/shared/directives/made-autosize.directive';
+import { MadeScrollTopDirective } from '~/shared/directives/made-scroll-top.directive';
 
 import { DirectivesModule } from '~/core/directives/directive.module';
 import { ComponentsModule } from './components/components.module';
@@ -25,15 +26,16 @@ import { TimeSlotsComponent } from '~/home-slots/time-slots/time-slots.component
 
 const declarations = [
   HasErrorPipe,
+  MadeAutosizeDirective,
+  MadeScrollTopDirective,
+  MadeThumbComponent,
+  MadeUserCommentComponent,
   NoServiceSelectedComponent,
   PriceCalendarComponent,
   PricePipe,
   ServicesHeaderListComponent,
-  UserNamePhotoComponent,
-  MadeUserCommentComponent,
-  MadeThumbComponent,
-  MadeAutosizeDirective,
-  TimeSlotsComponent
+  TimeSlotsComponent,
+  UserNamePhotoComponent
 ];
 
 @NgModule({

@@ -33,12 +33,14 @@ export class FeedBackComponent {
   }
 
   async onSubmit(): Promise<void> {
-    const data: AppointmentChangeRequest = {
-      rating: Number(this.params.appointment.rating),
-      comment: this.comment
-    };
+    if (this.comment) {
+      const data: AppointmentChangeRequest = {
+        rating: Number(this.params.appointment.rating),
+        comment: this.comment
+      };
 
-    await this.api.changeAppointment(this.params.appointment.uuid, data).toPromise();
+      await this.api.changeAppointment(this.params.appointment.uuid, data).toPromise();
+    }
 
     if (this.params.popAfterSubmit) {
       // pop to previous page

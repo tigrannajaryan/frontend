@@ -16,6 +16,9 @@ export class MadeUserCommentComponent {
   @Input() comment: string;
   @Input('date')
   set allowDay(value: ISODate) {
-    this._date = moment(value).fromNow();
+    // hide future date
+    if (moment().diff(value) > 0) {
+      this._date = moment(value).fromNow();
+    }
   }
 }
