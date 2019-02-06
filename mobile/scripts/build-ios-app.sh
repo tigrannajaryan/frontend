@@ -65,7 +65,8 @@ IOS_DISTRIBUTION_CERT_PASSWORD="$IOS_DISTRIBUTION_CERT_PASSWORD" $TRAVIS_BUILD_D
 
 # actually build ios app
 EXTRA_CONFIG_FILE=$TRAVIS_BUILD_DIR/mobile/$APP_TYPE/platforms/ios/cordova/build-release.xcconfig
-xcodebuild -workspace "$TRAVIS_BUILD_DIR/mobile/$APP_TYPE/platforms/ios/$IOS_APP_NAME.xcworkspace" -scheme "$IOS_APP_NAME" archive -sdk $IOS_SDK -configuration Release -archivePath "$TRAVIS_BUILD_DIR/mobile/$APP_TYPE/ios_build/$IOS_SDK/$IOS_APP_NAME" CODE_SIGN_STYLE=Manual CODE_SIGN_IDENTITY="$IOS_CODE_SIGN_IDENTITY" PROVISIONING_PROFILE=$IOS_PROVISIONING_PROFILE_ID -xcconfig $EXTRA_CONFIG_FILE
+echo "Building mobile app (quietly)"
+xcodebuild -quiet -workspace "$TRAVIS_BUILD_DIR/mobile/$APP_TYPE/platforms/ios/$IOS_APP_NAME.xcworkspace" -scheme "$IOS_APP_NAME" archive -sdk $IOS_SDK -configuration Release -archivePath "$TRAVIS_BUILD_DIR/mobile/$APP_TYPE/ios_build/$IOS_SDK/$IOS_APP_NAME" CODE_SIGN_STYLE=Manual CODE_SIGN_IDENTITY="$IOS_CODE_SIGN_IDENTITY" PROVISIONING_PROFILE=$IOS_PROVISIONING_PROFILE_ID -xcconfig $EXTRA_CONFIG_FILE
 
 # create export config and embed provisioning profile
 /usr/libexec/PlistBuddy -c "Clear" _XcodeTaskExportOptions.plist
@@ -75,7 +76,8 @@ xcodebuild -workspace "$TRAVIS_BUILD_DIR/mobile/$APP_TYPE/platforms/ios/$IOS_APP
 /usr/libexec/PlistBuddy -c "Add provisioningProfiles:$IOS_APP_BUNDLE_ID string $IOS_PROVISIONING_PROFILE" _XcodeTaskExportOptions.plist
 
 # export app
-xcodebuild -exportArchive -archivePath "$TRAVIS_BUILD_DIR/mobile/$APP_TYPE/ios_build/$IOS_SDK/$IOS_APP_NAME.xcarchive" -exportPath "$TRAVIS_BUILD_DIR/mobile/$APP_TYPE/ios_build/$IOS_SDK/$IOS_APP_NAME-export" -exportOptionsPlist _XcodeTaskExportOptions.plist
+echo "Exporting mobile app binary (quietly)"
+xcodebuild -quiet -exportArchive -archivePath "$TRAVIS_BUILD_DIR/mobile/$APP_TYPE/ios_build/$IOS_SDK/$IOS_APP_NAME.xcarchive" -exportPath "$TRAVIS_BUILD_DIR/mobile/$APP_TYPE/ios_build/$IOS_SDK/$IOS_APP_NAME-export" -exportOptionsPlist _XcodeTaskExportOptions.plist
 
 # save collected plugins for future use
 $TRAVIS_BUILD_DIR/mobile/scripts/save-plugins.sh
