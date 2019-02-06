@@ -248,7 +248,7 @@ page-appointment {
   // This page only
   // –––––––––––––––––––––
   .AppointmentPage-actions {
-    margin: pxtovw(39px) auto;
+    margin: pxtovw(19px) auto;
     text-align: center;
 
     .AppointmentPage-checkout {
@@ -266,6 +266,33 @@ page-appointment {
       font-size: pxtovw(16px);
       color: color($colors, orange);
       letter-spacing: pxtovw(0.4px);
+    }
+  }
+
+  .AppointmentPage-paymentLabel {
+    margin-bottom: pxtovw(8px);
+    font-size: $shared-small;
+    font-weight: 500;
+    text-align: left;
+  }
+
+  .AppointmentPage-paymentSelect {
+    padding: pxtovw(12px);
+    margin-bottom: pxtovw(16px);
+    background: color($grayscale-shared, 200);
+    border-radius: pxtovw(8px);
+
+    [class^="mb-icon"] {
+      color: color($colors-shared, warmGrey);
+    }
+  }
+
+  ion-footer {
+    padding: 0 $content-x-offset;
+    border-top: pxtovw(1px) solid rgba(black, 0.1);
+
+    .Button {
+      margin: 0;
     }
   }
 }

@@ -1,22 +1,29 @@
 import { ModuleWithProviders, NgModule } from '@angular/core';
 import { IonicModule } from 'ionic-angular';
 
+import { StripeService } from '~/payment/stripe.service';
+
+import { AuthProcessState } from '~/shared/storage/auth-process-state';
+import { DataStore } from '~/shared/storage/data-store';
+
+import { AuthService } from '~/shared/api/auth.api';
+import { NotificationsApi } from '~/shared/push/notifications.api';
+
 import { AppointmentsApi } from '~/core/api/appointments.api';
 import { AppointmentsDataStore } from '~/core/api/appointments.datastore';
-import { AuthProcessState } from '~/shared/storage/auth-process-state';
-import { AuthService } from '~/shared/api/auth.api';
-import { BookingData } from '~/core/api/booking.data';
+
 import { BookingApi } from '~/core/api/booking.api';
 import { BookingApiMock } from '~/core/api/booking.api.mock';
-import { ServicesService } from '~/core/api/services.service';
-import { StylistsService } from '~/core/api/stylists.service';
+import { BookingData } from '~/core/api/booking.data';
+import { FollowersApi } from '~/core/api/followers.api';
+import { PaymentsApi } from '~/core/api/payments.api';
 import { PreferredStylistsData } from '~/core/api/preferred-stylists.data';
 import { ProfileApi } from '~/core/api/profile-api';
-import { ProfileDataStore } from '~/profile/profile.data';
-import { FollowersApi } from '~/core/api/followers.api';
-import { NotificationsApi } from '~/shared/push/notifications.api';
+import { ServicesService } from '~/core/api/services.service';
+import { StylistsService } from '~/core/api/stylists.service';
+
 import { AppModule } from '~/app.module';
-import { DataStore } from '~/shared/storage/data-store';
+import { ProfileDataStore } from '~/profile/profile.data';
 
 /**
  * Common data module that includes singletons for the entire app.
@@ -33,11 +40,12 @@ import { DataStore } from '~/shared/storage/data-store';
     AuthService,
     BookingApi,
     BookingApiMock,
-    ProfileApi,
-    StylistsService,
     FollowersApi,
+    NotificationsApi,
+    PaymentsApi,
+    ProfileApi,
     ServicesService,
-    NotificationsApi
+    StylistsService
   ]
 })
 export class DataModule {
@@ -48,11 +56,13 @@ export class DataModule {
       // 'providers' property of any other module, otherwise you will have duplicate objects instead
       // of singletons.
       providers: [
+        StripeService,
+
         AppointmentsDataStore,
         AuthProcessState,
+        BookingData,
         PreferredStylistsData,
-        ProfileDataStore,
-        BookingData
+        ProfileDataStore
       ]
     };
   }

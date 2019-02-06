@@ -68,6 +68,10 @@ export class AppointmentPageComponent {
     );
   }
 
+  onAddPaymentClick(): void {
+    this.navCtrl.push(PageNames.AddCard);
+  }
+
   async onConfirmClick(): Promise<void> {
     const appointmentRequest: CreateAppointmentRequest = {
       stylist_uuid: this.bookingData.stylist.uuid,

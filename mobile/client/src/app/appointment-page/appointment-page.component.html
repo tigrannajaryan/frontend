@@ -99,8 +99,16 @@
   </div>
 </ion-content>
 
-<ion-footer class="Footer">
+<ion-footer>
   <div class="AppointmentPage-actions">
+    <!-- Payment Method -->
+    <div class="text-muted AppointmentPage-paymentLabel">Payment Method</div>
+    <ion-row align-items-center justify-content-between class="AppointmentPage-paymentSelect"
+      (click)="onAddPaymentClick()">
+        <span>Add Payment Method</span>
+        <i class="mb-icon-right-arrow"></i>
+    </ion-row>
+
     <!-- Confirm booking -->
     <button ion-button
       *ngIf="params && !params?.appointment.uuid; else existingAppointmentTpl"
@@ -108,17 +116,23 @@
       class="Button">
         Confirm Booking
     </button>
+
+    <!-- Other actions -->
     <ng-template #existingAppointmentTpl>
       <ng-container *ngIf="params?.appointment.status !== AppointmentStatus.no_show">
+
+        <!-- Check out -->
         <button ion-button
           *ngIf="params?.appointment.status !== AppointmentStatus.checked_out && isTodayAppointment()"
           (click)="onCheckout()"
           class="AppointmentPage-checkout">
             Checkout {{ previewResponse ? (previewResponse.grand_total.toFixed() | currency) : '' }}
         </button>
+
         <!-- Rebook-->
         <div class="AppointmentPage-reBook" *ngIf="params?.hasRebook" (click)="onRebookClick()">Re-book Appointment</div>
-        <!-- Cancelation link -->
+
+        <!-- Cancel -->
         <a class="AppointmentPage-cancelBooking" *ngIf="params?.onCancel" (click)="onCancelClick()">Cancel Booking</a>
       </ng-container>
     </ng-template>

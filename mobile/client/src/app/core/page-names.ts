@@ -1,4 +1,5 @@
 import { AboutComponent } from '~/about/about.component';
+import { AddCardComponent } from '~/payment/add-card/add-card.component';
 import { AddServicesComponent } from '~/add-services/add-services.component';
 import { AppointmentPageComponent } from '~/appointment-page/appointment-page.component';
 import { AppointmentPriceComponent } from '~/appointment-price/appointment-price.component';
@@ -41,6 +42,7 @@ import { FeedBackComponent } from '~/feed-back/feed-back.component';
 // tslint:disable-next-line:variable-name
 export const PageNames = {
   About: AboutComponent,
+  AddCard: AddCardComponent,
   AddServices: AddServicesComponent,
   Appointment: AppointmentPageComponent,
   AppointmentPrice: AppointmentPriceComponent,
