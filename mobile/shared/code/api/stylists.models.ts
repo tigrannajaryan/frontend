@@ -20,6 +20,7 @@ export interface StylistModel extends StylistUuidModel {
   email: string;
   followers_count: number;
   is_profile_bookable: boolean;
+  rating_percentage: number;
   instagram_url?: string;
   website_url?: string;
   profile_photo_url?: string;

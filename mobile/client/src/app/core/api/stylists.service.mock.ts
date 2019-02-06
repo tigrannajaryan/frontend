@@ -28,6 +28,7 @@ export const stylistsMock: StylistModel[] = Array(25).fill(undefined).map((val, 
     instagram_url: faker.helpers.slugify(`${name}${lastName}`),
     followers_count: faker.random.number(),
     is_profile_bookable: !!(index % 2),
+    rating_percentage: faker.random.number({min: 1, max: 100}),
     specialities: []
   };
 });
