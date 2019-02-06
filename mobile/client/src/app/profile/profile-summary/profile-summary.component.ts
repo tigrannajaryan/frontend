@@ -59,7 +59,7 @@ export class ProfileSummaryComponent {
   }
 
   onEdit(): void {
-    this.app.getRootNav().push(PageNames.ProfileEdit, { profile: this.profile });
+    this.app.getRootNav().push(PageNames.ProfileEdit);
   }
 
   goTo(page: Page, params: any): void {

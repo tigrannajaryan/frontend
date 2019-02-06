@@ -9,6 +9,7 @@ import { ClientEventTypes } from '~/core/client-event-types';
 import { PageNames } from '~/core/page-names';
 
 import { MainTabIndex } from '~/main-tabs/main-tabs.component';
+import { InvitationsComponentParams } from '~/shared/components/invitations/abstract-invitations.component';
 
 @Component({
   selector: 'push-notifications-tracker',
@@ -60,6 +61,27 @@ export class ClientPushNotificationsTrackerComponent implements OnInit, OnDestro
             // TODO: change redirect to MainTabIndex.Stylists page when it will be ready
             this.events.publish(ClientEventTypes.selectMainTab, MainTabIndex.Home);
             await this.nav.push(PageNames.StylistSearch);
+          }
+        };
+
+      case PushNotificationCode.profile_incomplete:
+        return {
+          buttonText: 'Open',
+          onClick: async (): Promise<void> => {
+            await this.nav.push(PageNames.ProfileEdit);
+          }
+        };
+
+      case PushNotificationCode.invite_your_stylist:
+        return {
+          buttonText: 'Open',
+          onClick: async (): Promise<void> => {
+            const params: InvitationsComponentParams = {
+              isRootPage: false,
+              inClientToStylistInvitation: true
+            };
+
+            await this.nav.push(PageNames.Invitations, { params });
           }
         };
 

@@ -31,6 +31,7 @@ export enum PushNotificationCode { // (!) in alphabetical order
   hint_to_rebook = 'hint_to_rebook',
   hint_to_select_stylist = 'hint_to_select_stylist',
   invitation_accepted = 'invitation_accepted',
+  invite_your_stylist = 'invite_your_stylist',
   low_price_hint = 'low_price_hint',
   new_appointment = 'new_appointment',
   new_stylists_available = 'new_stylists_available',

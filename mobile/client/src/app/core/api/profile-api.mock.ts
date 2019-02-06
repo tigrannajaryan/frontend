@@ -12,7 +12,7 @@ export const profileNotCompleate = {
   phone: randomPhone(),
   first_name: 'First',
   last_name: 'Last',
-  zip_code: Number(Math.random() * Math.pow(10, 6)),
+  zip_code: faker.random.number({min: 10000, max: 999999}),
   email: `test_profile+${faker.name.firstName()}@madebeauty.com`,
   city: '',
   state: '',

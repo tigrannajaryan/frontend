@@ -4,7 +4,7 @@
       <i class="mb-icon-logo"></i>
     </ion-title>
     <ion-buttons end>
-      <button (click)="onSubmit()" [disabled]="!form.valid" class="ProfilePage-submit" ion-button clear data-test-id="submit">
+      <button (click)="onSubmit()" [disabled]="!form?.valid" class="ProfilePage-submit" ion-button clear data-test-id="submit">
         Done
       </button>
     </ion-buttons>
@@ -12,7 +12,7 @@
 </ion-header>
 
 <ion-content no-padding class="ProfilePage">
-  <div class="contentSidePadding ProfilePage-editWp">
+  <div *ngIf="form" class="contentSidePadding ProfilePage-editWp">
     <div class="Made-h1 ProfilePage-h1">Edit Profile</div>
 
     <div (click)="onProcessPhoto()" [style.backgroundImage]="'url(' + (this.form.value.profile_photo_url || DEFAULT_IMAGE) + ')'" class="ProfilePage-pic is-profile" data-test-id="profile_photo">
