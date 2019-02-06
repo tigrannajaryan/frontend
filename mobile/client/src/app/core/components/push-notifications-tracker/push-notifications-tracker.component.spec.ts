@@ -19,6 +19,7 @@ import { PageNames } from '~/core/page-names';
 import { MainTabIndex } from '~/main-tabs/main-tabs.component';
 
 import { ClientPushNotificationsTrackerComponent } from './push-notifications-tracker.component';
+import { InvitationsComponentParams } from '~/shared/components/invitations/abstract-invitations.component';
 
 let instance: ClientPushNotificationsTrackerComponent;
 let fixture: ComponentFixture<ClientPushNotificationsTrackerComponent>;
@@ -165,6 +166,102 @@ describe('PushNotificationTracker (client)', () => {
       .toHaveBeenCalledWith(ClientEventTypes.selectMainTab, MainTabIndex.Home);
     expect(navCtrl.push)
       .toHaveBeenCalledWith(PageNames.StylistSearch);
+
+    done();
+  });
+
+  it('should handle profile_incomplete correctly', async done => {
+    const api = fixture.debugElement.injector.get(NotificationsApi);
+    const navCtrl = fixture.debugElement.injector.get(NavController);
+    const pushToast = fixture.debugElement.injector.get(PushNotificationToastService);
+    const toast = fixture.debugElement.injector.get(ToastController);
+
+    // Subscribe to PushNotificationToastService:
+    instance.ngOnInit();
+
+    // Private to public:
+    const getNotificationParams = (pushToast as any).getNotificationParams.bind(pushToast);
+    const getToastOptions = (pushToast as any).getToastOptions.bind(pushToast);
+    const handlePushNotificationEvent = (pushToast as any).handlePushNotificationEvent.bind(pushToast);
+
+    const uuid = faker.random.uuid();
+    const message =
+      '?????';
+
+    const details = new PushNotificationEventDetails(
+      /* foreground: */ true,
+      /* coldstart: */ false,
+      /* uuid: */ uuid,
+      /* code: */ PushNotificationCode.profile_incomplete,
+      /* message: */ message
+    );
+
+    const handlerParams: PushNotificationHandlerParams = getNotificationParams(details);
+    const toastOptions: ToastOptions = getToastOptions(details, handlerParams);
+
+    spyOn(api, 'ackNotification').and.returnValue(of());
+    await handlePushNotificationEvent(details); // handlerParams.onClick() inside
+
+    expect(toast.create)
+      .toHaveBeenCalledWith(toastOptions);
+    expect(api.ackNotification)
+      .toHaveBeenCalledWith({
+        message_uuids: [uuid]
+      });
+
+    // Test handlerParams.onClick() call:
+    expect(navCtrl.push)
+      .toHaveBeenCalledWith(PageNames.ProfileEdit);
+
+    done();
+  });
+
+  it('should handle invite_your_stylist correctly', async done => {
+    const api = fixture.debugElement.injector.get(NotificationsApi);
+    const navCtrl = fixture.debugElement.injector.get(NavController);
+    const pushToast = fixture.debugElement.injector.get(PushNotificationToastService);
+    const toast = fixture.debugElement.injector.get(ToastController);
+
+    // Subscribe to PushNotificationToastService:
+    instance.ngOnInit();
+
+    // Private to public:
+    const getNotificationParams = (pushToast as any).getNotificationParams.bind(pushToast);
+    const getToastOptions = (pushToast as any).getToastOptions.bind(pushToast);
+    const handlePushNotificationEvent = (pushToast as any).handlePushNotificationEvent.bind(pushToast);
+
+    const uuid = faker.random.uuid();
+    const message =
+      '?????';
+
+    const details = new PushNotificationEventDetails(
+      /* foreground: */ true,
+      /* coldstart: */ false,
+      /* uuid: */ uuid,
+      /* code: */ PushNotificationCode.invite_your_stylist,
+      /* message: */ message
+    );
+
+    const handlerParams: PushNotificationHandlerParams = getNotificationParams(details);
+    const toastOptions: ToastOptions = getToastOptions(details, handlerParams);
+
+    spyOn(api, 'ackNotification').and.returnValue(of());
+    await handlePushNotificationEvent(details); // handlerParams.onClick() inside
+
+    expect(toast.create)
+      .toHaveBeenCalledWith(toastOptions);
+    expect(api.ackNotification)
+      .toHaveBeenCalledWith({
+        message_uuids: [uuid]
+      });
+
+    const params: InvitationsComponentParams = {
+      isRootPage: false,
+      inClientToStylistInvitation: true
+    };
+    // Test handlerParams.onClick() call:
+    expect(navCtrl.push)
+      .toHaveBeenCalledWith(PageNames.Invitations, { params });
 
     done();
   });
