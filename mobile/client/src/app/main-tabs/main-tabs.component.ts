@@ -42,13 +42,17 @@ export class MainTabsComponent implements OnDestroy {
       link: PageNames.Home,
       params: {}
     },
+    // TODO: remove in production, only for testing Stripe API
     {
       name: 'Search',
       link: PageNames.AddCard,
       params: {}
-      // link: PageNames.StylistSearch,
-      // params: { params: ({ isRootPage: true } as StylistSearchParams) }
     },
+    // {
+    //   name: 'Search',
+    //   link: PageNames.StylistSearch,
+    //   params: { params: ({ isRootPage: true } as StylistSearchParams) }
+    // },
     {
       name: 'Invite',
       link: PageNames.Invitations,

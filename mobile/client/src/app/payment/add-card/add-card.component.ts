@@ -8,7 +8,7 @@ import { invalidFor } from '~/shared/validators/invalid-for.validator';
 
 import { PaymentsApi } from '~/core/api/payments.api';
 
-import { StripeError, StripeTokenID } from '~/payment/stripe.models';
+import { StripeError } from '~/payment/stripe.models';
 import { StripeService } from '~/payment/stripe.service.ts';
 
 @Component({
@@ -40,7 +40,8 @@ export class AddCardComponent implements OnInit {
     private navCtrl: NavController,
     private stripe: StripeService,
     private zone: NgZone
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
     this.form = this.formBuilder.group({
@@ -65,8 +66,14 @@ export class AddCardComponent implements OnInit {
     await this.stripe.setPublishableKey('pk_test_DopSOGBZm9USK4nl8L0HOXoH');
 
     try {
-      const token = await this.stripe.createToken(card);
-      const { response } = await this.api.addPaymentMethod({ stripe_token: token as StripeTokenID }).toPromise();
+      const stripeResponse = await this.stripe.createToken(card);
+      const { response } = await this.api.addPaymentMethod({
+        stripe_token: stripeResponse.id,
+
+        // TODO: remove in production, only for testing Stripe API
+        brand: stripeResponse.card.brand,
+        last4: stripeResponse.card.last4
+      }).toPromise();
 
       if (response) {
         this.navCtrl.pop();
@@ -89,7 +96,7 @@ export class AddCardComponent implements OnInit {
       default:
         reportToSentry(error);
         this.toggleGeneralError(true);
-        // TODO: suggest to re-try or skip adding card and continue with booking (?)
+        // TODO: suggest to re-try or skip (?) adding card and continue with booking
         break;
     }
   }

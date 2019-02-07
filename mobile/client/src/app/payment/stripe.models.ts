@@ -8,12 +8,23 @@ export interface StripeCardRequest {
   exp_year: string;
 }
 
+export enum StripeCardBrand {
+  AmericanExpress = 'American Express',
+  DinersClub = 'Diners Club',
+  Discover = 'Discover',
+  JCB = 'JCB',
+  MasterCard = 'MasterCard',
+  UnionPay = 'UnionPay',
+  Visa = 'Visa',
+  Unknown = 'Unknown'
+}
+
 export interface StripeCardDetails {
   country: string;    // 2 uppercased letters
   exp_month: number;
   exp_year: number;
   last4: string;      // last 4 digits of card
-  brand: string;      // e.g. 'Visa'
+  brand: StripeCardBrand;      // e.g. 'Visa'
   // ...
   // see more on https://stripe.com/docs/stripe-js/v2
 }

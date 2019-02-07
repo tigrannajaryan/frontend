@@ -119,6 +119,9 @@ export interface AppointmentChangeRequest {
   price_change_reason?: string;
   rating?: number; // (0|1) thumbsUp/Down
   comment?: string;
+  // The uuid of selected payment method. Set null or undefined
+  // to indicate payment in salon.
+  payment_method_uuid?: string;
 }
 
 export type AppointmentChangeResponse =

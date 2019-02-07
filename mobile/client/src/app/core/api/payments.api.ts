@@ -7,7 +7,11 @@ import { ServerStatusTracker } from '~/shared/server-status-tracker';
 import { ApiResponse } from '~/shared/api/base.models';
 import { BaseService } from '~/shared/api/base.service';
 
-import { AddPaymentMethodRequest, PaymentMethod } from './payments.models';
+import {
+  AddPaymentMethodRequest,
+  GetPaymentMethodsResponse,
+  PaymentMethod
+} from '~/core/api/payments.models';
 
 @Injectable()
 export class PaymentsApi extends BaseService {
@@ -20,8 +24,8 @@ export class PaymentsApi extends BaseService {
     super(http, logger, serverStatus);
   }
 
-  getPaymentMethods(): Observable<ApiResponse<PaymentMethod[]>> {
-    return this.get<PaymentMethod[]>('client/payment-methods');
+  getPaymentMethods(): Observable<ApiResponse<GetPaymentMethodsResponse>> {
+    return this.get<GetPaymentMethodsResponse>('client/payment-methods');
   }
 
   addPaymentMethod(data: AddPaymentMethodRequest): Observable<ApiResponse<PaymentMethod>> {

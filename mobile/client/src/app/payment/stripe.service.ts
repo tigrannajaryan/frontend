@@ -34,13 +34,7 @@ export class StripeService {
       script.src = StripeService.STRIPE_SRC;
       document.head.appendChild(script);
 
-      // TODO: test with disabled network
-
-      // TDOO: show nice error:
-      //         Sorry, payment is not available now.
-      //         Please, try again later.
-      //       or
-      //         Please, enable network to receive payments.
+      // TODO: test with disabled network ”Please, enable network to receive payments”
 
       const timeout = setTimeout(() => {
         reject(new Error(`Stripe doesn’t load after ${StripeService.WAIT_UNTIL_REJECT / 1000}s`));
@@ -58,13 +52,13 @@ export class StripeService {
     Stripe.setPublishableKey(key);
   }
 
-  async createToken(card: StripeCardRequest): Promise<StripeTokenID | StripeError> {
+  async createToken(card: StripeCardRequest): Promise<StripeResponse> {
     await this.loaded;
     return new Promise((resolve, reject) => {
       Stripe.card.createToken(card,
         (status: StripeHttpStatus, response: StripeResponse) => {
           if (/2\d{2}/.test(String(status))) { // 2xx
-            resolve(response.id);
+            resolve(response);
           } else { // 4xx
             reject(response && response.error);
           }

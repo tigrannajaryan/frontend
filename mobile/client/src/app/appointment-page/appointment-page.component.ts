@@ -13,6 +13,8 @@ import { PageNames } from '~/core/page-names';
 import { AppointmentsDataStore } from '~/core/api/appointments.datastore';
 import { BookingApi, CreateAppointmentRequest } from '~/core/api/booking.api';
 import { BookingData } from '~/core/api/booking.data';
+import { PaymentsApi } from '~/core/api/payments.api';
+import { PaymentMethod, PaymentType } from '~/core/api/payments.models';
 
 import { AddServicesComponentParams } from '~/add-services/add-services.component';
 import { AppointmentPriceComponentParams } from '~/appointment-price/appointment-price.component';
@@ -31,11 +33,13 @@ export interface AppointmentPageParams {
   templateUrl: 'appointment-page.component.html'
 })
 export class AppointmentPageComponent {
-
   AppointmentStatus = AppointmentStatus;
   formatTimeInZone = formatTimeInZone;
+  PaymentType = PaymentType;
 
   params: AppointmentPageParams;
+
+  payment: PaymentMethod;
 
   constructor(
     private alertCtrl: AlertController,
@@ -44,7 +48,9 @@ export class AppointmentPageComponent {
     private bookingApi: BookingApi,
     private bookingData: BookingData,
     private navCtrl: NavController,
-    private navParams: NavParams) {
+    private navParams: NavParams,
+    private paymentsApi: PaymentsApi
+  ) {
   }
 
   async ionViewWillEnter(): Promise<void> {
@@ -58,6 +64,20 @@ export class AppointmentPageComponent {
         this.params.appointment = response;
       }
     }
+
+    const { response: paymentsResponse } = await this.paymentsApi.getPaymentMethods().toPromise();
+    if (paymentsResponse) {
+      // Assuming there can be only one payment method which is a payment by card
+      this.payment = paymentsResponse.payment_methods[0];
+    }
+  }
+
+  isAppointmentInBooking(): boolean {
+    return (
+      this.params &&
+      this.params.appointment &&
+      !this.params.appointment.uuid
+    );
   }
 
   isTodayAppointment(): boolean {
@@ -66,6 +86,19 @@ export class AppointmentPageComponent {
       Boolean(appointment) &&
       moment().format(isoDateFormat) === moment(appointment.datetime_start_at).format(isoDateFormat)
     );
+  }
+
+  isAbleToCheckoutAppointment(): boolean {
+    return (
+      this.params &&
+      this.params.appointment &&
+      this.params.appointment.status !== AppointmentStatus.checked_out &&
+      this.isTodayAppointment()
+    );
+  }
+
+  isPaymentShown(): boolean {
+    return this.isAppointmentInBooking() || this.isAbleToCheckoutAppointment();
   }
 
   onAddPaymentClick(): void {
@@ -153,11 +186,17 @@ export class AppointmentPageComponent {
     this.navCtrl.push(PageNames.AppointmentPrice, { params });
   }
 
-  async onCheckout(): Promise<void> {
+  async onCheckoutAndPay(): Promise<void> {
+    this.onCheckout(this.payment);
+  }
+
+  async onCheckout(payment: PaymentMethod): Promise<void> {
     const request: AppointmentChangeRequest = {
       status: AppointmentStatus.checked_out,
       has_card_fee_included: false,
-      has_tax_included: false
+      has_tax_included: false,
+      // tslint:disable-next-line:no-null-keyword
+      payment_method_uuid: payment ? payment.uuid : null
     };
     const { response } = await this.api.changeAppointment(this.params.appointment.uuid, request).toPromise();
     if (response) {
