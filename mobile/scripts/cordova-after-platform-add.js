@@ -69,13 +69,14 @@ module.exports = function (ctx) {
     path = ctx.requireCordovaModule('path'),
     deferral = ctx.requireCordovaModule('q').defer();
 
-  if (ctx.opts.platforms.indexOf('android') >= 0) {
+  if (ctx.opts.platforms.indexOf('android@7.1.0') >= 0) {
     // Patches for Android builds
     var buildGradle = path.join(ctx.opts.projectRoot, 'platforms/android/build.gradle');
     patchBuildGradle(fs, buildGradle);
-
+    var buildType = (process.env.MB_ENV || '').trim();
+    var gradleFileName = (buildType == 'prod' ? 'prod-build.gradle': 'android-build.gradle');
     var cordovaSupportBuildGradle = path.join(
-      ctx.opts.projectRoot, 'platforms/android/cordova-support-google-services/android-build.gradle'
+      ctx.opts.projectRoot, `platforms/android/cordova-support-google-services/${gradleFileName}`
     );
     patchCordovaSupportBuildGradle(fs, cordovaSupportBuildGradle);
 

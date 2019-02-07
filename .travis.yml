@@ -1,10 +1,13 @@
-os: osx
-osx_image: xcode10.1
-
-language: node_js
-node_js:
-  - "8.11.1"
 conditions: v1
+
+# Only run on develop branch and on pull requests against develop
+branches:
+  only:
+    - develop
+
+# Chrome is needed for E2E Protractor tests
+addons:
+  chrome: beta
 
 notifications:
   slack:
@@ -19,42 +22,12 @@ notifications:
       - "Author: *%{author}*"
       - "Message: *%{message}*  (cc. <@UARCS62EP> <@UABUR3F2B>)"
 
-# Only run on develop branch and on pull requests against develop
-branches:
-  only:
-    - develop
-
-# Chrome is needed for E2E Protractor tests
-addons:
-  chrome: beta
-  artifacts:
-    target_paths: "$TRAVIS_BUILD_NUMBER/$APP_TYPE/$MB_ENV"
-    bucket: made-frontend-test-results
-    s3_region: us-east-1
-    paths:
-      - mobile/$APP_TYPE/coverage/
-      - mobile/$APP_TYPE/TESTS.xml
-
-# cache packages after each build, and restore on next builds
-# if a change is detected after build finishes - update cache
-
-before_cache:
-  - rm -rf $HOME/.gradle/caches || true
-
-cache:
-  directories:
-    - mobile/stylist/node_modules
-    - mobile/client/node_modules
-
 # global env variables, common to each build's environment
 env:
   global:
     - APP_VERSION_NUMBER=1.3.1
     - IOS_SDK="iphoneos12.1"
-    - ANDROID_SDK=android_sdk
-    - ANDROID_BUILD_TOOLS_VERSION="28.0.1"
-    - ANDROID_HOME="$TRAVIS_BUILD_DIR/$ANDROID_SDK"
-    - JAVA_HOME="/Library/Java/JavaVirtualMachines/jdk1.8.0_202.jdk/Contents/Home"
+    - ANDROID_BUILD_TOOLS_VERSION="27.0.1"
     - >-
         IOS_CODE_SIGN_IDENTITY="iPhone Distribution: BetterBeauty, Inc"
     - SENTRY_ORGANIZATION="madebeauty"
@@ -73,94 +46,166 @@ env:
     - secure: "w4xpoyuiPA8e2zXJir7QIIcypF9OAu7Gna7x/7EM53dwZbZzFqn01MIgaL4TdkM3IIcSGMJNo5Cp+YNG2EekyPxENN3dc/mg9Ve4EEOOSNLoZKkA+ggPKykyKEFE84ngyY/m5+vdpk7KnFzV0/Oik2gmM6CY2grq/TKVo5/37hVRQR9NUGSEqKoiILjroYorm88Hb3CjI/uY3zvha/baa7KY40DDPS+yPRgdqMVMNsaoDkKyGzYCQCCqqDcR60OM7q7uuCii4ABwSn4QrwWW+ZFTzwMJhMyCZB76+am3kmDL0ieGyNGEUAGzz+B/QyPUAUT6/hgEma6pCRdbgDJdV/l1k7e0USJ3KaiH3pt4TKY7TuahvYBpM7ESRaUwqbLb8d1RaTHCWcetvwanW1tvaSyT5zjkfEurYKgZ0T36WDu2SshKhMTfZJdqrYBiqrpJX1hOQ06ZKjFrXabs+bdWL8suWmcP8pRcEsXKHIM+mae0lBnGMuAOiHiBDWUQjoSIn/ge438Jf1ENxZEH96ytBTMN7+gW2uej5/0XR3qh6O8VRxRghzccAcp+o2rdkAon7w+JNkxCifWhB3B5V2IUJcyFxnHxBAAn57tPr9OtviJPF7QJNMWKEzhn6u9c2//Pwfy9q7ZTBMIQh3ayyj0IwHkngvFJXVhO+MjkuW2b4eA="
     - ARTIFACTS_AWS_ACCESS_KEY="$AWS_ACCESS_KEY"
     - ARTIFACTS_AWS_SECRET_KEY="$AWS_SECURE_KEY"
+    - FASTLANE_SKIP_WAITING=true
+    - FASTLANE_DISTRIBUTE_EXTERNAL=false
 
 jobs:
-  fast_finish: true
+# declare aliases for job and os/environment configuration. We will combine them
+# to define actual jobs
+  job_aliases:
+    - &build_test_config
+      stage: test
+      os: linux
+      language: node_js
+      node_js:
+        - "8.11.1"
+      install: mobile/scripts/should-skip-build.sh || mobile/scripts/travis_install.sh
+      script: true
+      artifacts:
+        if: branch = develop AND type = push
+        target_paths: "$TRAVIS_BUILD_NUMBER/$APP_TYPE/$MB_ENV"
+        bucket: made-frontend-test-results
+        s3_region: us-east-1
+        paths:
+          - mobile/$APP_TYPE/coverage/
+          - mobile/$APP_TYPE/TESTS.xml
+
+    - &build_mobile_config
+      stage: build-mobile-apps
+      before_install: nvm install v8.11.1 && nvm use v8.11.1
+      before_deploy:
+        # install fastlane - a tool which allows uploads to appStoreConnect
+        # upload procedure uses proprietary Apple's protocol; fastlane is a
+        # wide-known solution for handling this procedure
+        - mobile/scripts/should-skip-build.sh || gem install fastlane --no-ri --no-rdoc --no-document
+
+    - &build_android_config
+      <<: *build_mobile_config
+      os: linux
+      language: android
+      android:
+        components:
+          - android-27
+          - build-tools-27.0.1
+      script: mobile/scripts/should-skip-build.sh || mobile/scripts/build-android-app.sh
+      after_script:
+        - rm -f $TRAVIS_BUILD_DIR/mobile/android-cert/*
+      deploy:
+        skip_cleanup: true
+        on:
+          branch: develop
+          condition: $TRAVIS_PULL_REQUEST = false
+        provider: script
+        script: mobile/scripts/should-skip-build.sh || mobile/scripts/deploy-android-app.sh
+
+    - &build_ios_config
+      <<: *build_mobile_config
+      os: osx
+      osx_image: xcode10.1
+      language: objective-c
+      script: mobile/scripts/should-skip-build.sh || mobile/scripts/build-ios-app.sh
+      after_script:
+        - mobile/scripts/remove-apple-profile.sh
+        - mobile/scripts/remove-apple-certificate.sh
+      deploy:
+        skip_cleanup: true
+        on:
+          branch: develop
+          condition: $TRAVIS_PULL_REQUEST = false
+        provider: script
+        script: mobile/scripts/should-skip-build.sh || mobile/scripts/deploy-ios-app.sh
+# environment-dependant configurations
+    - &stylist_staging_config
+      env:
+        - APP_TYPE=stylist
+        - MB_ENV=staging
+        - IOS_APP_BUNDLE_ID="com.madebeauty.stylist.beta"
+        - ANDROID_APP_BUNDLE_ID="com.madebeauty.stylist.staging.android"
+        - IOS_APP_NAME="Made Pro Staging"
+        - IOS_APP_DESCRIPTION="Fill up your days. Earn more."
+        - IOS_PROVISIONING_PROFILE="made-stylist-staging"
+        - IOS_PROVISIONING_PROFILE_ID="f8fcd84f-5865-45f4-bcca-1491cb649e60"
+        - SENTRY_PROJECT=mobile-stylist-staging
+    - &client_staging_config
+      env:
+        - APP_TYPE=client
+        - MB_ENV=staging
+        - IOS_APP_BUNDLE_ID="com.madebeauty.client.staging"
+        - ANDROID_APP_BUNDLE_ID="com.madebeauty.client.staging.android"
+        - IOS_APP_NAME="MadeBeauty Staging"
+        - IOS_APP_DESCRIPTION="MadeBeauty Staging"
+        - IOS_PROVISIONING_PROFILE="made-client-staging"
+        - IOS_PROVISIONING_PROFILE_ID="c7f161c8-94fa-431e-89c5-2f57a545a72c"
+        - SENTRY_PROJECT=mobile-client-staging
+    - &stylist_production_config
+      if: branch = develop AND type = push  # run this stage only if it's not a PR
+      env:
+        - APP_TYPE=stylist
+        - MB_ENV=prod
+        - IOS_APP_BUNDLE_ID="com.madebeauty.stylist.production"
+        - ANDROID_APP_BUNDLE_ID="com.madebeauty.stylist.prod"
+        - IOS_APP_NAME="Made Pro"
+        - IOS_APP_DESCRIPTION="Fill up your days. Earn more."
+        - IOS_PROVISIONING_PROFILE="made-stylist-production"
+        - IOS_PROVISIONING_PROFILE_ID="791b1ad7-cd4c-4aa6-888f-a6ea9e168741"
+        - SENTRY_PROJECT=mobile-stylist-production
+    - &client_production_config
+      if: branch = develop AND type = push  # run this stage only if it's not a PR
+      env:
+        - APP_TYPE=client
+        - MB_ENV=prod
+        - IOS_APP_BUNDLE_ID="com.madebeauty.client.production"
+        - ANDROID_APP_BUNDLE_ID="com.madebeauty.client.prod"
+        - IOS_APP_NAME="MadeBeauty"
+        - IOS_APP_DESCRIPTION="MadeBeauty"
+        - IOS_PROVISIONING_PROFILE="made-client-production"
+        - IOS_PROVISIONING_PROFILE_ID="e657791c-e603-495c-8f9a-710751ed946b"
+        - SENTRY_PROJECT=mobile-client-production
+
   include:
-    - name: Client Staging Build
-      env:
-        APP_TYPE=client
-        MB_ENV=staging
-        IOS_APP_BUNDLE_ID="com.madebeauty.client.staging"
-        ANDROID_APP_BUNDLE_ID="com.madebeauty.client.staging.android"
-        IOS_APP_NAME="MadeBeauty Staging"
-        IOS_APP_DESCRIPTION="MadeBeauty Staging"
-        IOS_PROVISIONING_PROFILE="made-client-staging"
-        IOS_PROVISIONING_PROFILE_ID="c7f161c8-94fa-431e-89c5-2f57a545a72c"
-        FASTLANE_SKIP_WAITING=true
-        FASTLANE_DISTRIBUTE_EXTERNAL=false
-        SENTRY_PROJECT=mobile-client-staging
-    - name: Stylist Staging Build
-      env:
-        APP_TYPE=stylist
-        MB_ENV=staging
-        IOS_APP_BUNDLE_ID="com.madebeauty.stylist.beta"
-        ANDROID_APP_BUNDLE_ID="com.madebeauty.stylist.staging.android"
-        IOS_APP_NAME="Made Pro Staging"
-        IOS_APP_DESCRIPTION="Fill up your days. Earn more."
-        IOS_PROVISIONING_PROFILE="made-stylist-staging"
-        IOS_PROVISIONING_PROFILE_ID="f8fcd84f-5865-45f4-bcca-1491cb649e60"
-        FASTLANE_SKIP_WAITING=true
-        FASTLANE_DISTRIBUTE_EXTERNAL=false
-        SENTRY_PROJECT=mobile-stylist-staging
-    - name: Client Production Build
-      if: branch = develop AND type = push  # run this stage only if it's not a PR
-      env:
-        APP_TYPE=client
-        MB_ENV=prod
-        IOS_APP_BUNDLE_ID="com.madebeauty.client.production"
-        ANDROID_APP_BUNDLE_ID="com.madebeauty.client.prod"
-        IOS_APP_NAME="MadeBeauty"
-        IOS_APP_DESCRIPTION="MadeBeauty"
-        IOS_PROVISIONING_PROFILE="made-client-production"
-        IOS_PROVISIONING_PROFILE_ID="e657791c-e603-495c-8f9a-710751ed946b"
-        FASTLANE_SKIP_WAITING=true
-        FASTLANE_DISTRIBUTE_EXTERNAL=false
-        SENTRY_PROJECT=mobile-client-production
-    - name: Stylist Production Build
-      if: branch = develop AND type = push  # run this stage only if it's not a PR
-      env:
-        APP_TYPE=stylist
-        MB_ENV=prod
-        IOS_APP_BUNDLE_ID="com.madebeauty.stylist.production"
-        ANDROID_APP_BUNDLE_ID="com.madebeauty.stylist.prod"
-        IOS_APP_NAME="Made Pro"
-        IOS_APP_DESCRIPTION="Fill up your days. Earn more."
-        IOS_PROVISIONING_PROFILE="made-stylist-production"
-        IOS_PROVISIONING_PROFILE_ID="791b1ad7-cd4c-4aa6-888f-a6ea9e168741"
-        FASTLANE_SKIP_WAITING=true
-        FASTLANE_DISTRIBUTE_EXTERNAL=false
-        SENTRY_PROJECT=mobile-stylist-production
+# actually define build stages based on configuration templates above
 
-# run basic node / angular build and test
-install: mobile/scripts/should-skip-build.sh || mobile/scripts/travis_install.sh
+# Test stages - on a Linux machine, install node modules, run tests and e2e tests
+    - <<: *build_test_config
+      <<: *stylist_staging_config
+      name: "Install NPM and test Stylist Staging"
 
-# prepare and build iOS app
-script: mobile/scripts/should-skip-build.sh || mobile/scripts/travis_script.sh
+    - <<: *build_test_config
+      <<: *stylist_production_config
+      name: "Install NPM and test Stylist Production"
 
-before_deploy:
-  # install fastlane - a tool which allows uploads to appStoreConnect
-  # upload procedure uses proprietary Apple's protocol; fastlane is a
-  # wide-known solution for handling this procedure
-  - mobile/scripts/should-skip-build.sh || gem install fastlane --no-ri --no-rdoc --no-document
+    - <<: *build_test_config
+      <<: *client_staging_config
+      name: "Install NPM and test Client Staging"
 
-deploy:
-  skip_cleanup: true
-  # run deploy only if this is a merge to develop (e.g. branch is
-  # `develop` and it's not a pull request validation build). Travis would set
-  # `branch` variable to `develop` also in case if it's a PR build agains `develop`
-  # branch, so we need an extra check against commit type
-  on:
-    branch: develop
-    condition: $TRAVIS_PULL_REQUEST = false
-  provider: script # indicates we'll run a bash script here
-  # actually upload resulting Android and iOS app to Google.Play and appStoreConnect using fastlane
-  script: mobile/scripts/should-skip-build.sh || mobile/scripts/deploy-mobile-apps.sh
+    - <<: *build_test_config
+      <<: *client_production_config
+      name: "Install NPM and test Client Production"
 
-after_script:
-  # teardown and remove distribution certificate and provisioning profile
-  - cd $TRAVIS_BUILD_DIR
-  - mobile/scripts/remove-apple-profile.sh
-  - mobile/scripts/remove-apple-certificate.sh
-  - rm -f mobile/android-cert/*
+# Build stages - android - run on Linux machines
+    - <<: *build_android_config
+      <<: *client_staging_config
+      name: "Build Client Staging for Android"
+    - <<: *build_android_config
+      <<: *stylist_staging_config
+      name: "Build Stylist Staging for Android"
+    - <<: *build_android_config
+      <<: *client_production_config
+      name: "Build Client Production for Android"
+    - <<: *build_android_config
+      <<: *stylist_production_config
+      name: "Build Stylist Production for Android"
 
+# Build stages - iOS - run on OSX machines
+    - <<: *build_ios_config
+      <<: *client_staging_config
+      name: "Build Client Staging for iOS"
+    - <<: *build_ios_config
+      <<: *stylist_staging_config
+      name: "Build Stylist Staging for iOS"
+    - <<: *build_ios_config
+      <<: *client_production_config
+      name: "Build Client Production for iOS"
+    - <<: *build_ios_config
+      <<: *stylist_production_config
+      name: "Build Stylist Production for iOS"
