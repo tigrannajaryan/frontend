@@ -42,15 +42,10 @@ export class MainTabsComponent implements OnDestroy {
       link: PageNames.Home,
       params: {}
     },
-    // {
-    //   name: 'Search',
-    //   link: PageNames.StylistSearch,
-    //   params: { params: ({ isRootPage: true } as StylistSearchParams) }
-    // },
     {
       name: 'Search',
-      link: PageNames.AddCard,
-      params: {}
+      link: PageNames.StylistSearch,
+      params: { params: ({ isRootPage: true } as StylistSearchParams) }
     },
     {
       name: 'Invite',
