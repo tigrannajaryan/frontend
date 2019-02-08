@@ -61,7 +61,7 @@ export class PaymentsApiMock extends BaseServiceMock {
           error: {
             code: 'err_api_exception',
             non_field_errors: [{
-              code: 'billing_error',
+              code: 'err_actionable_billing_error_with_message',
               message: 'some verbose message'
             }]
           }

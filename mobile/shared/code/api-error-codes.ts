@@ -123,7 +123,8 @@ export type NonFieldErrorCode =
   | 'err_end_time_greater_than_start_time'
   | 'err_stylist_special_availability_date_not_found'
   | 'err_date_too_close'
-  | 'billing_error';
+  | 'err_unrecoverable_billing_error'
+  | 'err_actionable_billing_error_with_message';
 
 // Mapping of all non-field error codes to human readable messages
 export const nonFieldErrorMsgs = new Map<NonFieldErrorCode, string>([
@@ -147,7 +148,8 @@ export const nonFieldErrorMsgs = new Map<NonFieldErrorCode, string>([
   ['err_end_time_greater_than_start_time', 'Start time cannot be after end time.'],
   ['err_failure_to_setup_oauth', 'General problem with setting up oauth credentials.'],
   ['err_date_too_close', 'The date is too close and cannot be set as Deal of the Week.'],
-  ['billing_error', 'Payment is not available.']
+  ['err_unrecoverable_billing_error', 'Payment service is not available.'],
+  ['err_actionable_billing_error_with_message', 'Payment service is not available.']
 ]);
 
 /**
@@ -156,7 +158,7 @@ export const nonFieldErrorMsgs = new Map<NonFieldErrorCode, string>([
 export interface NonFieldErrorModel {
   code: NonFieldErrorCode;
 
-  // Optional human-readable message. First introduced in billing_error where
+  // Optional human-readable message. First introduced in err_actionable_stripe_error_with_message where
   // an error message is returned directly from POS.
   message?: string;
 }

@@ -22,7 +22,7 @@ export class AddCardComponent {
 
   static billingError =
     new ApiFieldAndNonFieldErrors(
-      [new NonFieldErrorItem({ code: 'billing_error' })]
+      [new NonFieldErrorItem({ code: 'err_actionable_billing_error_with_message' })]
     );
 
   form: FormGroup;
@@ -110,7 +110,7 @@ export class AddCardComponent {
     // Custom handling of billing non-fields errors.
     if (error && error instanceof ApiFieldAndNonFieldErrors) {
       const billingError = error.errors.find(
-        err => err.isEqual(new NonFieldErrorItem({ code: 'billing_error' }))
+        err => err.isEqual(new NonFieldErrorItem({ code: 'err_actionable_billing_error_with_message' }))
       );
       if (billingError) {
         this.isLoading = false;
