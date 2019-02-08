@@ -22,9 +22,6 @@ import { ProfileApi } from '~/core/api/profile-api';
 import { ServicesService } from '~/core/api/services.service';
 import { StylistsService } from '~/core/api/stylists.service';
 
-// TODO: remove in production
-import { PaymentsApiMock } from '~/core/api/payments.api.mock';
-
 import { AppModule } from '~/app.module';
 import { ProfileDataStore } from '~/profile/profile.data';
 
@@ -45,8 +42,7 @@ import { ProfileDataStore } from '~/profile/profile.data';
     BookingApiMock,
     FollowersApi,
     NotificationsApi,
-    // TODO: use real API in production
-    { provide: PaymentsApi, useClass: PaymentsApiMock },
+    PaymentsApi,
     ProfileApi,
     ServicesService,
     StylistsService

@@ -22,6 +22,8 @@ import { confirmRebook, startRebooking } from '~/booking/booking-utils';
 import { BookingCompleteComponentParams } from '~/booking/booking-complete/booking-complete.component';
 import { ConfirmCheckoutComponentParams } from '~/confirm-checkout/confirm-checkout.component';
 
+import { ENV } from '~/environments/environment.default';
+
 export interface AppointmentPageParams {
   appointment: ClientAppointmentModel;
   onCancel?: Function;
@@ -33,6 +35,8 @@ export interface AppointmentPageParams {
   templateUrl: 'appointment-page.component.html'
 })
 export class AppointmentPageComponent {
+  ffEnableIncomplete = ENV.ffEnableIncomplete;
+
   AppointmentStatus = AppointmentStatus;
   formatTimeInZone = formatTimeInZone;
   PaymentType = PaymentType;
@@ -98,7 +102,13 @@ export class AppointmentPageComponent {
   }
 
   isPaymentShown(): boolean {
-    return this.isAppointmentInBooking() || this.isAbleToCheckoutAppointment();
+    return (
+      ENV.ffEnableIncomplete &&
+      (
+        this.isAppointmentInBooking() ||
+        this.isAbleToCheckoutAppointment()
+      )
+    );
   }
 
   onAddPaymentClick(): void {

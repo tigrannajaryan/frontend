@@ -47,7 +47,7 @@ export class PaymentIconComponent {
 
     } else if (this.paymentMethod && this.paymentMethod.type === PaymentType.Card) {
       // We only support cards now.
-      switch (this.paymentMethod.card_brand) {
+      switch (this.paymentMethod.card_brand.toLowerCase()) {
         case StripeCardBrand.AmericanExpress:
           return PaymentIconComponent.iconPath('american_express');
 

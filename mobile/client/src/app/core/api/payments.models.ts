@@ -2,10 +2,6 @@ import { StripeCardBrand, StripeTokenID } from '~/payment/stripe.models';
 
 export interface AddPaymentMethodRequest {
   stripe_token: StripeTokenID;
-
-  // TODO: remove in production, only for testing Stripe API
-  brand?: string;
-  last4?: string;
 }
 
 export enum PaymentType {

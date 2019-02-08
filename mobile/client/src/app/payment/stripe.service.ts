@@ -64,7 +64,7 @@ export class StripeService {
 
   async createToken(card: StripeCardRequest): Promise<StripeResponse> {
     await this.loaded;
-    return new Promise((resolve, reject) => {
+    return new Promise<StripeResponse>((resolve, reject) => {
       global.Stripe.card.createToken(card,
         (status: StripeHttpStatus, response: StripeResponse) => {
           if (/2\d{2}/.test(String(status))) { // 2xx

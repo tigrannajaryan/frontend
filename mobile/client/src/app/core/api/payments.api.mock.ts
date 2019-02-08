@@ -15,14 +15,14 @@ import {
   PaymentType
 } from '~/core/api//payments.models';
 
-// import { StripeCardBrand } from '~/payment/stripe.models';
+import { StripeCardBrand } from '~/payment/stripe.models';
 
-// export const paymentMethodMock = {
-//   uuid: faker.random.uuid,
-//   type: PaymentType.Card,
-//   card_brand: StripeCardBrand.Unknown,
-//   card_last4: '1234'
-// };
+export const paymentMethodMock = {
+  uuid: faker.random.uuid,
+  type: PaymentType.Card,
+  card_brand: StripeCardBrand.Visa,
+  card_last4: '4242'
+};
 
 @Injectable()
 export class PaymentsApiMock extends BaseServiceMock {
@@ -42,12 +42,8 @@ export class PaymentsApiMock extends BaseServiceMock {
   }
 
   addPaymentMethod(data: AddPaymentMethodRequest, options: ApiRequestOptions = {}): Observable<ApiResponse<PaymentMethod>> {
-    PaymentsApiMock.testPaymentMethod = {
-      uuid: faker.random.uuid(),
-      type: PaymentType.Card,
-      card_brand: data.brand,
-      card_last4: data.last4
-    };
+    // Simulate adding payment method
+    PaymentsApiMock.testPaymentMethod = paymentMethodMock;
 
     return this.mockRequest<PaymentMethod>(
       Observable.create(observer => {

@@ -127,12 +127,20 @@
   <div class="AppointmentPage-actions">
 
     <!-- Confirm booking -->
-    <button ion-button
-      *ngIf="isAppointmentInBooking(); else existingAppointmentTpl"
-      (click)="payment ? onConfirmClick() : onAddPaymentClick()"
-      class="Button AppointmentPage-checkout">
-        {{ payment ? 'Confirm Booking' : 'Add Payment Method' }}
-    </button>
+    <ng-container *ngIf="isAppointmentInBooking(); else existingAppointmentTpl">
+      <button ion-button class="Button AppointmentPage-checkout"
+        *ngIf="isPaymentShown(); else simpleBookingTpl"
+        (click)="payment ? onConfirmClick() : onAddPaymentClick()">
+          {{ payment ? 'Confirm Booking' : 'Add Payment Method' }}
+      </button>
+
+      <ng-template #simpleBookingTpl>
+        <button ion-button class="Button AppointmentPage-checkout"
+          (click)="onConfirmClick()">
+            Confirm Booking
+        </button>
+      </ng-template>
+    </ng-container>
 
     <!-- Other actions -->
     <ng-template #existingAppointmentTpl>
@@ -140,15 +148,26 @@
 
         <!-- Check out -->
         <ng-container *ngIf="isAbleToCheckoutAppointment(); else otherOptionsTpl">
-          <button ion-button class="Button AppointmentPage-checkout"
-            (click)="payment ? onCheckoutAndPay() : onAddPaymentClick()">
-              <i class="mb-icon-credit-card"></i>
-              {{ payment ? 'Checkout: Pay via MADE App' : 'Add Payment Method' }}
-          </button>
-          <button ion-button outline class="Button AppointmentPage-checkout"
-            (click)="onCheckout()">
-              Checkout: Paid In-Salon
-          </button>
+
+          <ng-container *ngIf="isPaymentShown(); else simpleCheckoutTpl">
+            <button ion-button class="Button AppointmentPage-checkout"
+              (click)="payment ? onCheckoutAndPay() : onAddPaymentClick()">
+                <i class="mb-icon-credit-card"></i>
+                {{ payment ? 'Checkout: Pay via MADE App' : 'Add Payment Method' }}
+            </button>
+            <button ion-button outline class="Button AppointmentPage-checkout"
+              (click)="onCheckout()">
+                Checkout: Paid In-Salon
+            </button>
+          </ng-container>
+
+          <ng-template #simpleCheckoutTpl>
+            <button ion-button class="Button AppointmentPage-checkout"
+              (click)="onCheckout()">
+                Checkout
+            </button>
+          </ng-template>
+
         </ng-container>
 
         <ng-template #otherOptionsTpl>

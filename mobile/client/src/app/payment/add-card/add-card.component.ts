@@ -60,10 +60,6 @@ export class AddCardComponent {
     });
 
     const { response } = await this.profileData.get();
-
-    // TODO: remove in production, added for Stripe API testing
-    response.stripe_public_key = 'pk_test_DopSOGBZm9USK4nl8L0HOXoH';
-
     if (response) {
       if (!response.stripe_public_key) {
         throw new Error('The stripe_public_key is not received from the profile');
@@ -99,11 +95,7 @@ export class AddCardComponent {
     }
 
     const { response, error } = await this.api.addPaymentMethod({
-      stripe_token: stripeResponse.id,
-
-      // TODO: remove in production, only for testing Stripe API
-      brand: stripeResponse.card.brand,
-      last4: stripeResponse.card.last4
+      stripe_token: stripeResponse.id
     }, {
       // For consistency show billing errors in the same place where Stripe errors are shown.
       hideGenericAlertOnErrorsLike: [AddCardComponent.billingError]

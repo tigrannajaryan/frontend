@@ -9,14 +9,14 @@ export interface StripeCardRequest {
 }
 
 export enum StripeCardBrand {
-  AmericanExpress = 'American Express',
-  DinersClub = 'Diners Club',
-  Discover = 'Discover',
-  JCB = 'JCB',
-  MasterCard = 'MasterCard',
-  UnionPay = 'UnionPay',
-  Visa = 'Visa',
-  Unknown = 'Unknown'
+  AmericanExpress = 'american express',
+  DinersClub = 'diners club',
+  Discover = 'discover',
+  JCB = 'jcb',
+  MasterCard = 'mastercard',
+  UnionPay = 'unionpay',
+  Visa = 'visa',
+  Unknown = 'unknown'
 }
 
 export interface StripeCardDetails {
