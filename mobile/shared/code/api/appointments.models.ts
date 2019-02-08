@@ -66,15 +66,6 @@ export interface ClientAppointmentModel extends BaseAppointmentModel {
   profile_photo_url: string; // client’s photo
   rating: number;
   comment: string;
-
-  // Next field is needed setup payment method used in an appointment.
-  // E.g. a client added his/her card and we should tell the backend
-  // to charge money from the card on checkout.
-  // If there is no payment method selected (e.g. when a client wants
-  // to pay in the salon) null or undefined have to be provided.
-  // NOTE: it’s used only in POST/PATCH and currently not returned back.
-  // If you want to know payment methods of a client use PaymentsApi.
-  payment_method_uuid?: string;
 }
 
 // Next you find shared (between 2 apps) requests and responses.
@@ -119,8 +110,13 @@ export interface AppointmentChangeRequest {
   price_change_reason?: string;
   rating?: number; // (0|1) thumbsUp/Down
   comment?: string;
-  // The uuid of selected payment method. Set null or undefined
-  // to indicate payment in salon.
+  // Next field is needed to add payment method used in an appointment.
+  // E.g. a client added his/her card and we should tell the backend
+  // to charge money from the card on checkout.
+  // If there is no payment method selected (e.g. when a client wants
+  // to pay in the salon) null or undefined have to be provided.
+  // NOTE: it’s used only in POST/PATCH and currently not returned back.
+  // If you want to know payment methods of a client use PaymentsApi.
   payment_method_uuid?: string;
 }
 
