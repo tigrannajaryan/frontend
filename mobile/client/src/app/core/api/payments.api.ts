@@ -2,10 +2,11 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 
-import { Logger } from '~/shared/logger';
-import { ServerStatusTracker } from '~/shared/server-status-tracker';
 import { ApiResponse } from '~/shared/api/base.models';
 import { BaseService } from '~/shared/api/base.service';
+import { ApiRequestOptions } from '~/shared/api-errors';
+import { Logger } from '~/shared/logger';
+import { ServerStatusTracker } from '~/shared/server-status-tracker';
 
 import {
   AddPaymentMethodRequest,
@@ -28,7 +29,7 @@ export class PaymentsApi extends BaseService {
     return this.get<GetPaymentMethodsResponse>('client/payment-methods');
   }
 
-  addPaymentMethod(data: AddPaymentMethodRequest): Observable<ApiResponse<PaymentMethod>> {
-    return this.put<PaymentMethod>('client/payment-methods', data);
+  addPaymentMethod(data: AddPaymentMethodRequest, options: ApiRequestOptions = {}): Observable<ApiResponse<PaymentMethod>> {
+    return this.put<PaymentMethod>('client/payment-methods', data, undefined, options);
   }
 }

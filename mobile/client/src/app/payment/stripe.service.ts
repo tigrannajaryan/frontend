@@ -5,11 +5,12 @@ import {
   StripeError,
   StripeHttpStatus,
   StripeResponse,
-  StripeTokenID,
   StripeV2
 } from './stripe.models';
 
-declare const Stripe: StripeV2;
+declare const global: {
+  Stripe: StripeV2
+};
 
 @Injectable()
 export class StripeService {
@@ -20,6 +21,8 @@ export class StripeService {
 
   // Indicates Stripe JS is loaded
   private loaded: Promise<void>;
+
+  private publishableKey: string;
 
   // Async Stripe JS loading
   static loadStripeJS(): Promise<void> {
@@ -47,20 +50,28 @@ export class StripeService {
     this.loaded = StripeService.loadStripeJS();
   }
 
-  async setPublishableKey(key: string): Promise<void> {
-    await this.loaded;
-    Stripe.setPublishableKey(key);
+  setPublishableKey(key: string): void {
+    this.publishableKey = key;
+    if (global.Stripe) {
+      global.Stripe.setPublishableKey(key);
+    } else {
+      this.loaded.then(() => global.Stripe.setPublishableKey(key));
+    }
+  }
+
+  isSetPublishableKey(): boolean {
+    return Boolean(this.publishableKey);
   }
 
   async createToken(card: StripeCardRequest): Promise<StripeResponse> {
     await this.loaded;
     return new Promise((resolve, reject) => {
-      Stripe.card.createToken(card,
+      global.Stripe.card.createToken(card,
         (status: StripeHttpStatus, response: StripeResponse) => {
           if (/2\d{2}/.test(String(status))) { // 2xx
             resolve(response);
           } else { // 4xx
-            reject(response && response.error);
+            reject(response);
           }
         }
       );

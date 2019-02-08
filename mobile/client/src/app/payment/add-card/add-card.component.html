@@ -4,8 +4,8 @@
   <form autocomplete="off" class="contentSidePadding"
     [formGroup]="form">
       <ion-row align-items-center justify-content-between class="AddCard-errorPopup"
-        [class.is-shown]="hasError">
-        <span>{{ errorText }}</span>
+        [class.is-shown]="hasGeneralError">
+        <span>{{ generalErrorText }}</span>
         <i class="mb-icon-cross" (click)="toggleGeneralError(false)"></i>
       </ion-row>
 
@@ -59,6 +59,6 @@
   </ion-row>
 
   <button ion-button class="Button AddCard-submit"
-    [disabled]="!form.valid"
-    (click)="onSaveClick()">Save</button>
+    [disabled]="!stripe.isSetPublishableKey() || !form.valid || isLoading"
+    (click)="onSaveClick()">{{ isLoading ? 'Saving…' : 'Save' }}</button>
 </ion-footer>

@@ -66,13 +66,13 @@ export class BaseService {
         .map(response => ({ response }))
         .catch(err => {
 
-          this.logger.error(`Error in response to API request ${method.toUpperCase()} ${url} failed:`, JSON.stringify(err));
+          // this.logger.error(`Error in response to API request ${method.toUpperCase()} ${url} failed:`, JSON.stringify(err));
 
           const { error, notifyTracker } = processApiResponseError(err, options);
 
           if (notifyTracker) {
             // there is a server status error, notify status tracker about it
-            this.serverStatus.notify(error);
+            // this.serverStatus.notify(error);
           }
 
           // and return the error for callers to process if they are interested

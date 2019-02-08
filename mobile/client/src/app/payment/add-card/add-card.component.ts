@@ -1,24 +1,32 @@
-import { Component, NgZone, OnInit } from '@angular/core';
+import { Component, NgZone } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NavController } from 'ionic-angular';
 import * as moment from 'moment';
 
+import { ApiFieldAndNonFieldErrors, NonFieldErrorItem } from '~/shared/api-errors';
 import { reportToSentry } from '~/shared/sentry';
 import { invalidFor } from '~/shared/validators/invalid-for.validator';
 
 import { PaymentsApi } from '~/core/api/payments.api';
+import { ProfileDataStore } from '~/profile/profile.data';
 
-import { StripeError } from '~/payment/stripe.models';
+import { StripeError, StripeResponse } from '~/payment/stripe.models';
 import { StripeService } from '~/payment/stripe.service.ts';
 
 @Component({
   selector: 'add-card',
   templateUrl: 'add-card.component.html'
 })
-export class AddCardComponent implements OnInit {
+export class AddCardComponent {
   static SHOW_GENERAL_ERROR_MS = 7000;
 
+  static billingError =
+    new ApiFieldAndNonFieldErrors(
+      [new NonFieldErrorItem({ code: 'billing_error' })]
+    );
+
   form: FormGroup;
+  isLoading = false;
 
   /**
    * This field can contain Stripe’s non-field API Error
@@ -38,21 +46,38 @@ export class AddCardComponent implements OnInit {
     private api: PaymentsApi,
     private formBuilder: FormBuilder,
     private navCtrl: NavController,
-    private stripe: StripeService,
+    private profileData: ProfileDataStore,
+    protected stripe: StripeService,
     private zone: NgZone
   ) {
   }
 
-  ngOnInit(): void {
+  async ionViewWillLoad(): Promise<void> {
     this.form = this.formBuilder.group({
       cardNumber: ['', [Validators.required]],
       cardExp: ['', [Validators.required]],
       cardCvv: ['', [Validators.required]]
     });
+
+    const { response } = await this.profileData.get();
+
+    // TODO: remove in production, added for Stripe API testing
+    response.stripe_public_key = 'pk_test_DopSOGBZm9USK4nl8L0HOXoH';
+
+    if (response) {
+      if (!response.stripe_public_key) {
+        throw new Error('The stripe_public_key is not received from the profile');
+      }
+      this.stripe.setPublishableKey(response.stripe_public_key);
+    } else {
+      // An error received from the profile, we can only react with a general error
+      this.toggleGeneralError(true);
+    }
   }
 
   async onSaveClick(): Promise<void> {
     this.stripeError = undefined;
+    this.isLoading = true;
 
     const { cardNumber, cardExp, cardCvv: cvc } = this.form.value;
     const [ expMonth, yearEnd ] = cardExp.split('/');
@@ -63,30 +88,55 @@ export class AddCardComponent implements OnInit {
       exp_month: expMonth, exp_year: expYear, cvc
     };
 
-    await this.stripe.setPublishableKey('pk_test_DopSOGBZm9USK4nl8L0HOXoH');
+    let stripeResponse: StripeResponse;
 
     try {
-      const stripeResponse = await this.stripe.createToken(card);
-      const { response } = await this.api.addPaymentMethod({
-        stripe_token: stripeResponse.id,
-
-        // TODO: remove in production, only for testing Stripe API
-        brand: stripeResponse.card.brand,
-        last4: stripeResponse.card.last4
-      }).toPromise();
-
-      if (response) {
-        this.navCtrl.pop();
-      }
+      stripeResponse = (await this.stripe.createToken(card)) as StripeResponse;
     } catch (error) {
-      this.handleError(error);
+      this.isLoading = false;
+      this.handleStripeError(error);
+      return;
     }
+
+    const { response, error } = await this.api.addPaymentMethod({
+      stripe_token: stripeResponse.id,
+
+      // TODO: remove in production, only for testing Stripe API
+      brand: stripeResponse.card.brand,
+      last4: stripeResponse.card.last4
+    }, {
+      // For consistency show billing errors in the same place where Stripe errors are shown.
+      hideGenericAlertOnErrorsLike: [AddCardComponent.billingError]
+    }).toPromise();
+
+    if (response) {
+      this.isLoading = false;
+      this.navCtrl.pop();
+      return;
+    }
+
+    // Custom handling of billing non-fields errors.
+    if (error && error instanceof ApiFieldAndNonFieldErrors) {
+      const billingError = error.errors.find(
+        err => err.isEqual(new NonFieldErrorItem({ code: 'billing_error' }))
+      );
+      if (billingError) {
+        this.isLoading = false;
+        this.stripeError = billingError.getMessage();
+        return;
+      }
+    }
+
+    this.isLoading = false;
+    this.toggleGeneralError(true);
   }
 
   /**
    * Show nice error message in an error container.
    */
-  private handleError(error: StripeError): void {
+  private handleStripeError(response: StripeResponse): void {
+    const error: StripeError = response && response.error;
+
     switch (error && error.type) {
       case 'card_error':
       case 'validation_error':

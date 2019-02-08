@@ -122,7 +122,8 @@ export type NonFieldErrorCode =
   | 'err_failure_to_setup_oauth'
   | 'err_end_time_greater_than_start_time'
   | 'err_stylist_special_availability_date_not_found'
-  | 'err_date_too_close';
+  | 'err_date_too_close'
+  | 'billing_error';
 
 // Mapping of all non-field error codes to human readable messages
 export const nonFieldErrorMsgs = new Map<NonFieldErrorCode, string>([
@@ -145,7 +146,8 @@ export const nonFieldErrorMsgs = new Map<NonFieldErrorCode, string>([
   ['err_device_not_found', 'Device with given registration_id not found for give user and application type.'],
   ['err_end_time_greater_than_start_time', 'Start time cannot be after end time.'],
   ['err_failure_to_setup_oauth', 'General problem with setting up oauth credentials.'],
-  ['err_date_too_close', 'The date is too close and cannot be set as Deal of the Week.']
+  ['err_date_too_close', 'The date is too close and cannot be set as Deal of the Week.'],
+  ['billing_error', 'Payment is not available.']
 ]);
 
 /**
@@ -153,6 +155,10 @@ export const nonFieldErrorMsgs = new Map<NonFieldErrorCode, string>([
  */
 export interface NonFieldErrorModel {
   code: NonFieldErrorCode;
+
+  // Optional human-readable message. First introduced in billing_error where
+  // an error message is returned directly from POS.
+  message?: string;
 }
 
 /**
