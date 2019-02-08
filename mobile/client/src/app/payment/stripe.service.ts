@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 
 import {
   StripeCardRequest,
-  StripeError,
   StripeHttpStatus,
   StripeResponse,
   StripeV2
