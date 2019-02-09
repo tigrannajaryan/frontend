@@ -166,7 +166,7 @@ export class SelectTimeComponent {
       }
 
       const params: AppointmentPageComponentParams = {
-        isRescheduling: this.params.isRescheduling,
+        isRescheduling: this.params && this.params.isRescheduling,
         appointment
       };
       this.navCtrl.push(PageNames.Appointment, { params });

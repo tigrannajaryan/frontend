@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { Validators } from '@angular/forms';
+import * as moment from 'moment';
 
 import {
   AppointmentChangeRequest,
@@ -13,7 +14,7 @@ import {
   CheckOutService,
   ServiceFromAppointment, StylistSettings, StylistSettingsKeys
 } from '~/shared/api/stylist-app.models';
-import { InputTypes } from '~/shared/api/base.models';
+import { InputTypes, isoDateFormat } from '~/shared/api/base.models';
 
 import { HomeService } from '~/core/api/home.service';
 import { PageNames } from '~/core/page-names';
@@ -51,6 +52,10 @@ export class AppointmentCheckoutComponent {
   // Tax not included by default
   hasTaxIncluded = false;
 
+  // Change Services/Price true should be only for
+  // not checked_out and isTodayAppointment appointment
+  hasServicesPriceBtn = false;
+
   subTotalRegularPrice: number;
 
   isLoading = false;
@@ -80,6 +85,9 @@ export class AppointmentCheckoutComponent {
       // TODO: pass only appointmentUuid to the component?
       this.appointment = response;
       this.selectedServices = this.appointment.services.map(el => ({ service_uuid: el.service_uuid }));
+      this.hasServicesPriceBtn =
+        AppointmentStatus.checked_out.indexOf(this.appointment.status) === -1
+        && this.isTodayAppointment();
     }
     await this.updatePreview();
   }
@@ -195,6 +203,14 @@ export class AppointmentCheckoutComponent {
       }
     };
     this.navCtrl.push(PageNames.SettingsField, { params });
+  }
+
+  private isTodayAppointment(): boolean {
+    const appointment = this.appointment;
+    return (
+      Boolean(appointment) &&
+      moment().format(isoDateFormat) === moment(appointment.datetime_start_at).format(isoDateFormat)
+    );
   }
 
   private getChangeAppointmentRequestParams(): AppointmentChangeRequest {
