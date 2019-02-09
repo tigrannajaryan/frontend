@@ -42,6 +42,10 @@ export class AppointmentsApi extends BaseService {
     return this.post<ClientAppointmentModel>(`client/appointments/${appointmentUuid}`, data);
   }
 
+  updateAppointment(appointmentUuid: string, data: AppointmentChangeRequest): Observable<ApiResponse<ClientAppointmentModel>> {
+    return this.patch<ClientAppointmentModel>(`client/appointments/${appointmentUuid}`, data);
+  }
+
   cancelAppointment(appointment: ClientAppointmentModel): Observable<ApiResponse<ClientAppointmentModel>> {
     return this.changeAppointment(appointment.uuid, { status: AppointmentStatus.cancelled_by_client });
   }

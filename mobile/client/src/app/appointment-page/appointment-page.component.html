@@ -33,7 +33,7 @@
       <!-- Receipt card -->
       <div class="CheckOut-card">
         <made-thumb
-          *ngIf="appointment.rating && params?.appointment.status === AppointmentStatus.checked_out"
+          *ngIf="hasAttribute(AppointmentAttribute.withRating)"
           [isThumbsUp]="+appointment.rating"
           class="CheckOut-thumb">
         </made-thumb>
@@ -63,14 +63,14 @@
           </ion-row>
 
           <made-thumbs
-            *ngIf="appointment.rating === null && appointment.comment === null && params?.appointment.status === AppointmentStatus.checked_out"
+            *ngIf="hasAttribute(AppointmentAttribute.withoutRating)"
             [appointment]="appointment"
             [popAfterSubmit]="true"
             class="CheckOut-thumbs">
           </made-thumbs>
 
           <made-user-comment
-            *ngIf="appointment.comment && params?.appointment.status === AppointmentStatus.checked_out"
+            *ngIf="hasAttribute(AppointmentAttribute.withComment)"
             [comment]="appointment.comment"
             [date]="appointment.datetime_start_at"
             class="CheckOut-userComment"
@@ -78,49 +78,85 @@
         </div>
 
         <!-- Bottom controls -->
-        <ion-row *ngIf="appointment.uuid && [AppointmentStatus.checked_out, AppointmentStatus.no_show].indexOf(appointment.status) === -1">
-          <ion-col (click)="onChangeServices()" class="CheckOut-controlBtn">
+        <ion-row *ngIf="hasAttribute(AppointmentAttribute.editAppointmentButtons)">
+          <ion-col (click)="onChangeServices()" class="CheckOut-controlBtn" data-test-id="appointment_change_services">
             <span>Change </span>
             <ng-container *ngIf="appointment.services.length > 1; else oneTpl">Services</ng-container>
             <ng-template #oneTpl>Service</ng-template>
           </ion-col>
 
-          <ion-col (click)="onChangePrice(appointment)" class="CheckOut-controlBtn">Change Price</ion-col>
+          <ion-col (click)="onChangePrice(appointment)" class="CheckOut-controlBtn" data-test-id="appointment_change_price">Change Price</ion-col>
         </ion-row>
       </div>
 
       <!-- Saved amount -->
-      <ion-row *ngIf="(previewResponse || appointment).total_discount_percentage as discount_percentage" align-items-center justify-content-between class="CheckOut-saved">
+      <ion-row *ngIf="appointment.total_discount_percentage as discount_percentage" align-items-center justify-content-between class="CheckOut-saved">
         <ion-col col-7 no-padding>YOU SAVED {{ discount_percentage }}%</ion-col>
-        <ion-col col-5 no-padding class="CheckOut-savedAmount"><sup>$</sup>{{ (previewResponse || appointment).total_discount_amount }}</ion-col>
+        <ion-col col-5 no-padding class="CheckOut-savedAmount"><sup>$</sup>{{ appointment.total_discount_amount }}</ion-col>
       </ion-row>
 
+      <ng-container *ngIf="hasAttribute(AppointmentAttribute.futureAppointment)">
+        <div class="CheckOut-buttons">
+          <a (click)="onCancelClick()" class="CheckOut-button is-cancel" data-test-id="appointment_cancel_booking">Cancel Booking</a>
+          <a (click)="onReUseAppointmentClick(true)" class="CheckOut-button" data-test-id="appointment_re_schedule">Re-Schedule</a>
+        </div>
+      </ng-container>
     </div>
   </div>
 </ion-content>
 
+
 <ion-footer class="Footer">
   <div class="AppointmentPage-actions">
-    <!-- Confirm booking -->
-    <button ion-button
-      *ngIf="params && !params?.appointment.uuid; else existingAppointmentTpl"
-      (click)="onConfirmClick()"
-      class="Button">
-        Confirm Booking
-    </button>
-    <ng-template #existingAppointmentTpl>
-      <ng-container *ngIf="params?.appointment.status !== AppointmentStatus.no_show">
-        <button ion-button
-          *ngIf="params?.appointment.status !== AppointmentStatus.checked_out && isTodayAppointment()"
-          (click)="onCheckout()"
-          class="AppointmentPage-checkout">
-            Checkout {{ previewResponse ? (previewResponse.grand_total.toFixed() | currency) : '' }}
+    <ng-container *ngIf="params?.appointment as appointment">
+      <!--booking-->
+      <ng-container *ngIf="hasAttribute(AppointmentAttribute.booking)">
+        <button
+          (click)="onConfirmClick()"
+          ion-button
+          class="Button"
+          data-test-id="appointment_confirm_booking">
+          Confirm Booking
         </button>
-        <!-- Rebook-->
-        <div class="AppointmentPage-reBook" *ngIf="params?.hasRebook" (click)="onRebookClick()">Re-book Appointment</div>
-        <!-- Cancelation link -->
-        <a class="AppointmentPage-cancelBooking" *ngIf="params?.onCancel" (click)="onCancelClick()">Cancel Booking</a>
       </ng-container>
-    </ng-template>
+
+      <!--rescheduling-->
+      <ng-container *ngIf="hasAttribute(AppointmentAttribute.rescheduling)">
+        <button
+          (click)="onConfirmClick()"
+          ion-button
+          class="Button">
+          Confirm Rescheduling
+        </button>
+      </ng-container>
+
+      <!--reBook-->
+      <ng-container *ngIf="hasAttribute(AppointmentAttribute.reBook)">
+        <button
+          (click)="onReUseAppointmentClick(false)"
+          ion-button
+          class="Button">
+          Re-book Appointment
+        </button>
+      </ng-container>
+
+      <!--checkout-->
+      <ng-container *ngIf="hasAttribute(AppointmentAttribute.checkout)">
+        <button
+          (click)="onCheckout()"
+          ion-button
+          class="Button"
+          data-test-id="appointment_checkout_with_currency">
+          Checkout {{ appointment ? (appointment.grand_total.toFixed() | currency) : '' }}
+        </button>
+
+        <a
+          *ngIf="isTodayAppointment() && params?.onCancel"
+          (click)="onCancelClick()"
+          class="AppointmentPage-cancelBooking">
+          Cancel Booking
+        </a>
+      </ng-container>
+    </ng-container>
   </div>
 </ion-footer>

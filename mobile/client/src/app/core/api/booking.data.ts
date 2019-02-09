@@ -32,6 +32,7 @@ export class BookingData implements OnDestroy {
   private _offer: DayOfferWithTotalRegularPrice;
   private _pricelist: DataStore<GetPricelistResponse>;
   private _timeslots: DataStore<TimeslotsResponse>;
+  private _appointmentUuid: string;
 
   private servicesSubject: BehaviorSubject<ServiceModel[]>;
   private servicesSubscription: Subscription;
@@ -191,6 +192,14 @@ export class BookingData implements OnDestroy {
       ...offer,
       totalRegularPrice: this._selectedServices.reduce((sum, service) => sum + service.base_price, 0)
     };
+  }
+
+  seAppointmentUuid(uuid: string): void {
+    this._appointmentUuid = uuid;
+  }
+
+  get appointmentUuid(): string {
+    return this._appointmentUuid;
   }
 
   get stylist(): StylistModel {

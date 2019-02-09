@@ -15,6 +15,7 @@ import { BookingData } from '~/core/api/booking.data';
 
 export interface BookingCompleteComponentParams {
   appointment: ClientAppointmentModel;
+  isRescheduling?: boolean;
 }
 
 @Component({
@@ -22,6 +23,7 @@ export interface BookingCompleteComponentParams {
   templateUrl: 'booking-complete.component.html'
 })
 export class BookingCompleteComponent {
+  isRescheduling: boolean;
   appointment: ClientAppointmentModel;
 
   protected subscription: Subscription;
@@ -40,6 +42,7 @@ export class BookingCompleteComponent {
     const params = this.navParams.get('params') as BookingCompleteComponentParams;
 
     this.appointment = params && params.appointment;
+    this.isRescheduling = params && params.isRescheduling;
 
     // Subscribe to profile to know if Google Calendar is not integrated and to show the "Add to Calendar" action.
     this.subscription = this.profileDataStore.asObservable()

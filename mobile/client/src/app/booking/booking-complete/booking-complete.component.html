@@ -6,23 +6,39 @@
       <img src="assets/icons/bookingComplete.png" alt="">
     </div>
 
-    <h2 class="BookingComplete-h2" data-test-id="bookingCompleteTitle">
-      Congratulations,
-      <br/>
-      your booking is complete!
-    </h2>
+    <ng-container *ngIf="isRescheduling">
+      <h2 class="BookingComplete-h2" data-test-id="bookingCompleteTitle">
+        Your rescheduled appointment is confirmed!
+      </h2>
+    </ng-container>
 
-    <div class="BookingComplete-final" data-test-id="totalRegularPrice">
-      Final Price <span *ngIf="bookingData?.offer?.totalRegularPrice !== appointment?.grand_total">WAS {{ bookingData?.offer?.totalRegularPrice | currency:'USD':true:'2.0' }}</span>
-    </div>
-    <div class="BookingComplete-price" data-test-id="price">
-      {{ appointment?.grand_total.toFixed() | currency:'USD':true:'2.0' }}
-    </div>
 
-    <button (click)="onReturnHomeClick()" ion-button class="Button" data-test-id="returnHome">Return Home</button>
+    <ng-container *ngIf="!isRescheduling">
+      <h2 class="BookingComplete-h2" data-test-id="bookingCompleteTitle">
+        Congratulations,
+        <br/>
+        your booking is complete!
+      </h2>
 
-    <div *ngIf="!calendarIntegrated">
-      <button (click)="onAddToCalendarClick()" ion-button class="Link is-button BookingComplete-addToCalendar" data-test-id="addToCalendar">Add to Calendar</button>
-    </div>
+      <div class="BookingComplete-final" data-test-id="totalRegularPrice">
+        Final Price <span *ngIf="bookingData?.offer?.totalRegularPrice !== appointment?.grand_total">WAS {{ bookingData?.offer?.totalRegularPrice | currency:'USD':true:'2.0' }}</span>
+      </div>
+      <div class="BookingComplete-price" data-test-id="price">
+        {{ appointment?.grand_total.toFixed() | currency:'USD':true:'2.0' }}
+      </div>
+
+      <button (click)="onReturnHomeClick()" ion-button class="Button" data-test-id="returnHome">Return Home</button>
+
+      <div *ngIf="!calendarIntegrated">
+        <button (click)="onAddToCalendarClick()" ion-button class="Link is-button BookingComplete-addToCalendar" data-test-id="addToCalendar">Add to Calendar</button>
+      </div>
+    </ng-container>
   </div>
 </ion-content>
+
+
+<ion-footer
+  madeContinueFooter
+  *ngIf="isRescheduling"
+  (continue)="onReturnHomeClick()"
+  title="Return Home"></ion-footer>
