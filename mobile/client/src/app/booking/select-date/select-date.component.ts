@@ -121,7 +121,7 @@ export class SelectDateComponent {
     this.bookingData.setOffer(offer);
 
     const params: SelectTimeComponentParams = {
-      isRescheduling: this.params.isRescheduling
+      isRescheduling: this.params && this.params.isRescheduling
     };
     this.navCtrl.push(PageNames.SelectTime, { params });
   }
