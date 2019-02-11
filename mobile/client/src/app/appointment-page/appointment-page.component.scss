@@ -249,7 +249,6 @@ page-appointment {
     margin: pxtovw(8px) 0;
     font-size: pxtovw(18px);
     font-weight: 500;
-    //line-height: pxtovw(24px);
     color: color($colors-shared, darkMint);
     background: $color-mint-bg;
     border: pxtovw(1px) solid color($colors-shared, darkMint);
@@ -257,7 +256,6 @@ page-appointment {
 
     .CheckOut-savedAmount {
       font-size: pxtovw(24px);
-      //line-height: pxtovw(32px);
       text-align: right;
 
       sup {
