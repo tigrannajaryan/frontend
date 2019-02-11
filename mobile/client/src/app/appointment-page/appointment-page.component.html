@@ -30,6 +30,12 @@
         </ion-row>
       </div>
 
+      <!-- Saved amount -->
+      <ion-row *ngIf="appointment.total_discount_percentage as discount_percentage" align-items-center justify-content-between class="CheckOut-saved">
+        <ion-col col-7 no-padding>YOU SAVED {{ discount_percentage }}%</ion-col>
+        <ion-col col-5 no-padding class="CheckOut-savedAmount"><sup>$</sup>{{ appointment.total_discount_amount }}</ion-col>
+      </ion-row>
+
       <!-- Receipt card -->
       <div class="CheckOut-card">
         <made-thumb
@@ -88,12 +94,6 @@
           <ion-col (click)="onChangePrice(appointment)" class="CheckOut-controlBtn" data-test-id="appointment_change_price">Change Price</ion-col>
         </ion-row>
       </div>
-
-      <!-- Saved amount -->
-      <ion-row *ngIf="appointment.total_discount_percentage as discount_percentage" align-items-center justify-content-between class="CheckOut-saved">
-        <ion-col col-7 no-padding>YOU SAVED {{ discount_percentage }}%</ion-col>
-        <ion-col col-5 no-padding class="CheckOut-savedAmount"><sup>$</sup>{{ appointment.total_discount_amount }}</ion-col>
-      </ion-row>
 
       <ng-container *ngIf="hasAttribute(AppointmentAttribute.futureAppointment)">
         <div class="CheckOut-buttons">
