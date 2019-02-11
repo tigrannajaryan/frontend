@@ -34,6 +34,7 @@ import { MadeHeaderComponent } from '~/core/components/made-header/made-header.c
 import { ProfileHeaderComponent } from '~/core/components/profile-header/profile-header.component';
 import { ClientPushNotificationsTrackerComponent } from '~/core/components/push-notifications-tracker/push-notifications-tracker.component';
 import { InputNumberDirective } from '~/core/directives/input-number.directive';
+import { PaymentIconComponent } from '~/core/components/payment-icon/payment-icon.component';
 
 import { BookServicesHeaderComponent } from '~/booking/book-services-header/book-services-header';
 import { StylistCardComponent } from '~/stylists/stylist-card/stylist-card.component';
@@ -63,6 +64,7 @@ const declarations = [
   NoServiceSelectedComponent,
   NumListComponent,
   NumListComponent,
+  PaymentIconComponent,
   PhoneInputComponent,
   PhoneInputDirective,
   PhoneLinkComponent,

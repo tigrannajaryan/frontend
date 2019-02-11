@@ -71,6 +71,7 @@ $mb-icon-pencil: "\e937";
 $mb-icon-settings-a: "\e938";
 $mb-icon-thumbsDown: "\e939";
 $mb-icon-thumbsUp: "\e93a";
+$mb-icon-credit-card: "\e93c";
 
 @font-face {
   font-family: '#{$icomoon-font-family}';
@@ -567,7 +568,7 @@ $mb-icon-thumbsUp: "\e93a";
 
 .mb-icon-settings-a {
   @extend %mb-icon;
-  
+
   &:before {
     content: $mb-icon-settings-a;
   }
@@ -585,5 +586,13 @@ $mb-icon-thumbsUp: "\e93a";
 
   &:before {
     content: $mb-icon-thumbsUp;
+  }
+}
+
+.mb-icon-credit-card {
+  @extend %mb-icon;
+
+  &:before {
+    content: $mb-icon-credit-card;
   }
 }

@@ -13,6 +13,8 @@ import { PageNames } from '~/core/page-names';
 import { AppointmentsDataStore } from '~/core/api/appointments.datastore';
 import { BookingApi, CreateAppointmentRequest } from '~/core/api/booking.api';
 import { BookingData } from '~/core/api/booking.data';
+import { PaymentsApi } from '~/core/api/payments.api';
+import { PaymentMethod, PaymentType } from '~/core/api/payments.models';
 
 import { AddServicesComponentParams } from '~/add-services/add-services.component';
 import { AppointmentPriceComponentParams } from '~/appointment-price/appointment-price.component';
@@ -20,7 +22,9 @@ import { confirmRebook, reUseAppointment } from '~/booking/booking-utils';
 import { BookingCompleteComponentParams } from '~/booking/booking-complete/booking-complete.component';
 import { ConfirmCheckoutComponentParams } from '~/confirm-checkout/confirm-checkout.component';
 
-export interface AppointmentPageComponentParams {
+import { ENV } from '~/environments/environment.default';
+
+export interface AppointmentPageParams {
   appointment: ClientAppointmentModel;
   onCancel?: Function;
   hasRebook?: boolean;
@@ -87,14 +91,19 @@ export enum AppointmentAttribute {
   templateUrl: 'appointment-page.component.html'
 })
 export class AppointmentPageComponent {
+  ffEnableIncomplete = ENV.ffEnableIncomplete;
+
   AppointmentAttribute = AppointmentAttribute;
   AppointmentStatus = AppointmentStatus;
   formatTimeInZone = formatTimeInZone;
+  PaymentType = PaymentType;
 
-  params: AppointmentPageComponentParams;
+  params: AppointmentPageParams;
 
   isRescheduling = false;
   rescheduledTime: ISODate;
+
+  payment: PaymentMethod;
 
   constructor(
     private api: AppointmentsApi,
@@ -103,11 +112,13 @@ export class AppointmentPageComponent {
     private bookingApi: BookingApi,
     private bookingData: BookingData,
     private navCtrl: NavController,
-    private navParams: NavParams) {
+    private navParams: NavParams,
+    private paymentsApi: PaymentsApi
+  ) {
   }
 
   async ionViewWillEnter(): Promise<void> {
-    this.params = this.navParams.get('params') as AppointmentPageComponentParams;
+    this.params = this.navParams.get('params') as AppointmentPageParams;
 
     if (this.params.appointment.uuid && !this.params.isRescheduling) {
       // no uuid if booking in progress
@@ -118,6 +129,20 @@ export class AppointmentPageComponent {
         this.params.appointment = response;
       }
     }
+
+    const { response: paymentsResponse } = await this.paymentsApi.getPaymentMethods().toPromise();
+    if (paymentsResponse) {
+      // Assuming there can be only one payment method which is a payment by card
+      this.payment = paymentsResponse.payment_methods[0];
+    }
+  }
+
+  isAppointmentInBooking(): boolean {
+    return (
+      this.params &&
+      this.params.appointment &&
+      !this.params.appointment.uuid
+    );
   }
 
   hasAttribute(appointmentTmpType: AppointmentAttribute): boolean {
@@ -188,6 +213,29 @@ export class AppointmentPageComponent {
       Boolean(appointment) &&
       moment().format(isoDateFormat) === moment(appointment.datetime_start_at).format(isoDateFormat)
     );
+  }
+
+  isAbleToCheckoutAppointment(): boolean {
+    return (
+      this.params &&
+      this.params.appointment &&
+      this.params.appointment.status !== AppointmentStatus.checked_out &&
+      this.isTodayAppointment()
+    );
+  }
+
+  isPaymentShown(): boolean {
+    return (
+      ENV.ffEnableIncomplete &&
+      (
+        this.isAppointmentInBooking() ||
+        this.isAbleToCheckoutAppointment()
+      )
+    );
+  }
+
+  onAddPaymentClick(): void {
+    this.navCtrl.push(PageNames.AddCard);
   }
 
   async onConfirmClick(): Promise<void> {
@@ -289,11 +337,18 @@ export class AppointmentPageComponent {
     this.navCtrl.push(PageNames.AppointmentPrice, { params });
   }
 
-  async onCheckout(): Promise<void> {
+  async onCheckoutAndPay(): Promise<void> {
+    this.onCheckout(this.payment);
+  }
+
+  async onCheckout(payment: PaymentMethod): Promise<void> {
     const request: AppointmentChangeRequest = {
       status: AppointmentStatus.checked_out,
       has_card_fee_included: false,
-      has_tax_included: false
+      has_tax_included: true,
+      // tslint:disable-next-line:no-null-keyword
+      payment_method_uuid: payment ? payment.uuid : null,
+      pay_via_made: Boolean(payment)
     };
     const { response } = await this.api.changeAppointment(this.params.appointment.uuid, request).toPromise();
     if (response) {

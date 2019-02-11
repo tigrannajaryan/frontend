@@ -18,6 +18,7 @@ export interface ProfileModel extends ProfileImageModel {
   google_calendar_integrated?: boolean;
   has_seen_educational_screens?: boolean;
   google_api_key?: string;
+  stripe_public_key?: string;
 }
 
 export interface ProfileCompleteness {
