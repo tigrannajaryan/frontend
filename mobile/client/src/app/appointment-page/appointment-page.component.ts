@@ -345,7 +345,7 @@ export class AppointmentPageComponent {
     const request: AppointmentChangeRequest = {
       status: AppointmentStatus.checked_out,
       has_card_fee_included: false,
-      has_tax_included: false,
+      has_tax_included: true,
       // tslint:disable-next-line:no-null-keyword
       payment_method_uuid: payment ? payment.uuid : null,
       pay_via_made: Boolean(payment)
