@@ -68,6 +68,17 @@
             </ion-col>
           </ion-row>
 
+          <!-- Taxes -->
+          <ion-row align-items-center class="CheckOut-tax text-muted" data-test-id="appointmentTaxPercentage"
+            *ngIf="!params?.isAlreadyCheckedOut || hasTaxIncluded">
+              <ion-col col-9 no-padding>
+                <span>Tax Rate ({{ appointment.tax_percentage | number: '1.1-2' }}%)</span>
+              </ion-col>
+              <ion-col col-3 no-padding>
+                <span>{{ appointment.total_tax.toFixed(2) | currency }}</span>
+              </ion-col>
+          </ion-row>
+
           <made-thumbs
             *ngIf="hasAttribute(AppointmentAttribute.withoutRating)"
             [appointment]="appointment"
