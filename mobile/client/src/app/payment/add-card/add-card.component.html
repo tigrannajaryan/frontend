@@ -28,7 +28,7 @@
           <ion-item class="FormControl AddCard-formControl AddCard-formControl--exp"
             [class.is-invalid]="!form.controls.cardExp.pristine && form.controls.cardExp.invalid">
               <ion-label floating>Exp. Date</ion-label>
-              <ion-input formControlName="cardExp" type="tel" placeholder="••/••" autocomplete="false"
+              <ion-input formControlName="cardExp" type="tel" placeholder="mm/yy" autocomplete="false"
                 [brmasker]="{mask: '00/00', type: 'num'}"></ion-input>
           </ion-item>
         </ion-col>
