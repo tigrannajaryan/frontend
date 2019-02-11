@@ -9,7 +9,7 @@ import { appointmentMock } from '~/core/api/appointments.api.mock';
 import {
   AppointmentAttribute,
   AppointmentPageComponent,
-  AppointmentPageComponentParams
+  AppointmentPageParams
 } from '~/appointment-page/appointment-page.component';
 import { PageNames } from '~/core/page-names';
 import { AppointmentPriceComponentParams } from '~/appointment-price/appointment-price.component';
@@ -36,7 +36,7 @@ describe('Pages: Appointment Page', () => {
         })
         .then(() => {
           const navParams = fixture.debugElement.injector.get(NavParams);
-          const params: AppointmentPageComponentParams = {
+          const params: AppointmentPageParams = {
             appointment: appointmentMock
           };
           navParams.data = { params };

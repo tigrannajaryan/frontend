@@ -249,7 +249,7 @@ export class NonFieldErrorItem extends FieldOrNonFieldErrorItem {
    * Return human-readable description of the error.
    */
   getMessage(): string {
-    return nonFieldErrorMsgs.get(this.error.code);
+    return this.error.message || nonFieldErrorMsgs.get(this.error.code);
   }
 }
 

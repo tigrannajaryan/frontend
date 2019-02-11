@@ -110,6 +110,15 @@ export interface AppointmentChangeRequest {
   price_change_reason?: string;
   rating?: number; // (0|1) thumbsUp/Down
   comment?: string;
+  // Next fields are needed to add payment method used in an appointment.
+  // E.g. a client added his/her card and we should tell the backend
+  // to charge money from the card on checkout.
+  // If there is no payment method selected (e.g. when a client wants
+  // to pay in the salon) null or undefined have to be provided.
+  // NOTE: it’s used only in POST/PATCH and currently not returned back.
+  // If you want to know payment methods of a client use PaymentsApi.
+  payment_method_uuid?: string;
+  pay_via_made?: boolean;
 }
 
 export type AppointmentChangeResponse =
