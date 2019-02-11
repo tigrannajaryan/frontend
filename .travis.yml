@@ -4,6 +4,7 @@ conditions: v1
 branches:
   only:
     - develop
+    - alexei/restart-build
 
 # Chrome is needed for E2E Protractor tests
 addons:
@@ -62,7 +63,7 @@ jobs:
       install: mobile/scripts/should-skip-build.sh || mobile/scripts/travis_install.sh
       script: true
       artifacts:
-        if: branch = develop AND type = push
+        if: branch = alexei/restart-build AND type = push
         target_paths: "$TRAVIS_BUILD_NUMBER/$APP_TYPE/$MB_ENV"
         bucket: made-frontend-test-results
         s3_region: us-east-1
@@ -93,7 +94,7 @@ jobs:
       deploy:
         skip_cleanup: true
         on:
-          branch: develop
+          branch: alexei/restart-build
           condition: $TRAVIS_PULL_REQUEST = false
         provider: script
         script: mobile/scripts/should-skip-build.sh || mobile/scripts/deploy-android-app.sh
@@ -110,7 +111,7 @@ jobs:
       deploy:
         skip_cleanup: true
         on:
-          branch: develop
+          branch: alexei/restart-build
           condition: $TRAVIS_PULL_REQUEST = false
         provider: script
         script: mobile/scripts/should-skip-build.sh || mobile/scripts/deploy-ios-app.sh
@@ -138,7 +139,7 @@ jobs:
         - IOS_PROVISIONING_PROFILE_ID="c7f161c8-94fa-431e-89c5-2f57a545a72c"
         - SENTRY_PROJECT=mobile-client-staging
     - &stylist_production_config
-      if: branch = develop AND type = push  # run this stage only if it's not a PR
+      if: branch = alexei/restart-build AND type = push  # run this stage only if it's not a PR
       env:
         - APP_TYPE=stylist
         - MB_ENV=prod
@@ -150,7 +151,7 @@ jobs:
         - IOS_PROVISIONING_PROFILE_ID="791b1ad7-cd4c-4aa6-888f-a6ea9e168741"
         - SENTRY_PROJECT=mobile-stylist-production
     - &client_production_config
-      if: branch = develop AND type = push  # run this stage only if it's not a PR
+      if: branch = alexei/restart-build AND type = push  # run this stage only if it's not a PR
       env:
         - APP_TYPE=client
         - MB_ENV=prod

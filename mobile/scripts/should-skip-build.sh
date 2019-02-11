@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+return 1
+
 # This script checks files changed in $TRAVIS_COMMIT_RANGE against
 # shared folders and $APP_TYPE env variable (which is either "client" or "stylist".
 # If a file in the commit range belongs to shared folder or build's folder - the
