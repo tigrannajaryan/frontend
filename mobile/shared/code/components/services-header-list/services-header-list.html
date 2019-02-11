@@ -1,5 +1,5 @@
 <div class="Made-wp">
-  <div class="ServiciesHeader">
+  <div [class.is-readonly]="readonly" class="ServiciesHeader">
     <span *ngIf="!readonly || services?.length > 0" class="ServiciesHeader-title">Services:</span>
 
     <div class="ServiciesHeader-container">
