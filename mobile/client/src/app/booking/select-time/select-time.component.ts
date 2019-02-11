@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { Content, NavController } from 'ionic-angular';
+import { Content, NavController, NavParams } from 'ionic-angular';
 import * as moment from 'moment';
 
 import { Logger } from '~/shared/logger';
@@ -31,6 +31,10 @@ interface TimeslotSection {
   slots: DisplayTimeslot[];
 }
 
+export interface SelectTimeComponentParams {
+  isRescheduling?: boolean;
+}
+
 @Component({
   selector: 'page-select-time',
   templateUrl: 'select-time.component.html'
@@ -39,6 +43,7 @@ export class SelectTimeComponent {
   @ViewChild(Content) content: Content;
   @ViewChild(BookServicesHeaderComponent) servicesHeader: BookServicesHeaderComponent;
 
+  params: SelectTimeComponentParams;
   slotSections: TimeslotSection[];
   isLoading: boolean;
 
@@ -91,11 +96,14 @@ export class SelectTimeComponent {
     private bookingApi: BookingApi,
     protected bookingData: BookingData,
     private logger: Logger,
-    protected navCtrl: NavController) {
+    protected navCtrl: NavController,
+    private navParams: NavParams) {
   }
 
   ionViewDidLoad(): void {
     this.logger.info('SelectTimeComponent.ionViewDidLoad');
+
+    this.params = this.navParams.get('params') as SelectTimeComponentParams;
   }
 
   async ionViewWillEnter(): Promise<void> {
@@ -150,9 +158,17 @@ export class SelectTimeComponent {
     };
 
     // Preview the appointment
-    const { response } = await this.bookingApi.previewAppointment(appointmentRequest).get();
-    if (response) {
-      const params: AppointmentPageParams = { appointment: response };
+    const { response: appointment } = await this.bookingApi.previewAppointment(appointmentRequest).get();
+    if (appointment) {
+      if (this.bookingData.appointmentUuid && this.params.isRescheduling) {
+        // we need uuid for rescheduling
+        appointment.uuid = this.bookingData.appointmentUuid;
+      }
+
+      const params: AppointmentPageParams = {
+        isRescheduling: this.params && this.params.isRescheduling,
+        appointment
+      };
       this.navCtrl.push(PageNames.Appointment, { params });
     }
   }

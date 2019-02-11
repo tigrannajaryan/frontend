@@ -12,7 +12,7 @@ import { ClientEventTypes } from '~/core/client-event-types';
 import { PageNames } from '~/core/page-names';
 
 import { AppointmentPageParams } from '~/appointment-page/appointment-page.component';
-import { startRebooking } from '~/booking/booking-utils';
+import { reUseAppointment } from '~/booking/booking-utils';
 import { StylistProfileParams } from '~/stylists/stylist-profile/stylist-profile.component';
 
 export enum HomeTabName {
@@ -159,7 +159,7 @@ export class HomeComponent {
   }
 
   async onRebookAppointmentClick(appointment: ClientAppointmentModel): Promise<void> {
-    this.logger.info('onRebookClick', appointment);
+    this.logger.info('onReUseAppointmentClick', appointment);
     if (!this.stylists.some(stylist => stylist.uuid === appointment.stylist_uuid)) {
       const { response } = await this.preferredStylistsData.addStylist({ uuid: appointment.stylist_uuid });
       if (!response) {
@@ -167,7 +167,8 @@ export class HomeComponent {
         return;
       }
     }
-    startRebooking(appointment);
+
+    reUseAppointment(appointment, false);
   }
 
   private onAppointmentCancel(): void {

@@ -78,9 +78,10 @@ export async function startBooking(stylistUuid: string): Promise<PreferredStylis
  * will proceed to appropriate first screen of booking process. The first screen is
  * PageNames.SelectDate if services are known, otherwise the first screen is
  * PageNames.ServicesCategories (which can happen if services no longer exist)
- * @param appointment the original appointment to use as a model for rebooking
+ * @param appointment the original appointment to use as a model for rebooking or reScheduling
+ * @param isRescheduling rebooking or reScheduling
  */
-export async function startRebooking(appointment: ClientAppointmentModel): Promise<void> {
+export async function reUseAppointment(appointment: ClientAppointmentModel, isRescheduling: boolean): Promise<void> {
 
   const events = AppModule.injector.get(Events);
 
@@ -112,20 +113,26 @@ export async function startRebooking(appointment: ClientAppointmentModel): Promi
   if (!foundAll) {
     // Some of the selected services are no longer found. Just start the booking process from fresh.
     events.publish(ClientEventTypes.startBooking, appointment.stylist_uuid);
-  } else {
-    // All services still exist. Start booking process.
-    await startBooking(appointment.stylist_uuid);
+    return;
+  }
 
-    // Preselect services
-    const bookingData = AppModule.injector.get(BookingData);
-    bookingData.setSelectedServices(appointment.services.map(s => ({
-      uuid: s.service_uuid,
-      name: s.service_name,
-      base_price: s.regular_price
-    })));
+  // All services still exist. Start booking process.
+  await startBooking(appointment.stylist_uuid);
 
-    // Services are now selected, we can now start rebooking.
-    events.publish(ClientEventTypes.startRebooking);
+  // Preselect services
+  const bookingData = AppModule.injector.get(BookingData);
+  bookingData.setSelectedServices(appointment.services.map(s => ({
+    uuid: s.service_uuid,
+    name: s.service_name,
+    base_price: s.regular_price
+  })));
+
+  // Services are now selected, we can now start reusing this appointment.
+  events.publish(ClientEventTypes.startRebooking, isRescheduling);
+
+  if (appointment.uuid) {
+    // we need to save appointmentUuid for reScheduling
+    bookingData.seAppointmentUuid(appointment.uuid);
   }
 }
 

@@ -31,15 +31,15 @@
       </div>
 
       <!-- Saved amount -->
-      <ion-row *ngIf="(previewResponse || appointment).total_discount_percentage as discount_percentage" align-items-center justify-content-between class="CheckOut-saved">
+      <ion-row *ngIf="appointment.total_discount_percentage as discount_percentage" align-items-center justify-content-between class="CheckOut-saved">
         <ion-col col-7 no-padding>YOU SAVED {{ discount_percentage }}%</ion-col>
-        <ion-col col-5 no-padding class="CheckOut-savedAmount"><sup>$</sup>{{ (previewResponse || appointment).total_discount_amount }}</ion-col>
+        <ion-col col-5 no-padding class="CheckOut-savedAmount"><sup>$</sup>{{ appointment.total_discount_amount }}</ion-col>
       </ion-row>
 
       <!-- Receipt card -->
       <div class="CheckOut-card">
         <made-thumb
-          *ngIf="appointment.rating && params?.appointment.status === AppointmentStatus.checked_out"
+          *ngIf="hasAttribute(AppointmentAttribute.withRating)"
           [isThumbsUp]="+appointment.rating"
           class="CheckOut-thumb">
         </made-thumb>
@@ -69,14 +69,14 @@
           </ion-row>
 
           <made-thumbs
-            *ngIf="appointment.rating === null && appointment.comment === null && params?.appointment.status === AppointmentStatus.checked_out"
+            *ngIf="hasAttribute(AppointmentAttribute.withoutRating)"
             [appointment]="appointment"
             [popAfterSubmit]="true"
             class="CheckOut-thumbs">
           </made-thumbs>
 
           <made-user-comment
-            *ngIf="appointment.comment && params?.appointment.status === AppointmentStatus.checked_out"
+            *ngIf="hasAttribute(AppointmentAttribute.withComment)"
             [comment]="appointment.comment"
             [date]="appointment.datetime_start_at"
             class="CheckOut-userComment"
@@ -84,14 +84,14 @@
         </div>
 
         <!-- Bottom controls -->
-        <ion-row *ngIf="appointment.uuid && [AppointmentStatus.checked_out, AppointmentStatus.no_show].indexOf(appointment.status) === -1">
-          <ion-col (click)="onChangeServices()" class="CheckOut-controlBtn">
+        <ion-row *ngIf="hasAttribute(AppointmentAttribute.editAppointmentButtons)">
+          <ion-col (click)="onChangeServices()" class="CheckOut-controlBtn" data-test-id="appointment_change_services">
             <span>Change </span>
             <ng-container *ngIf="appointment.services.length > 1; else oneTpl">Services</ng-container>
             <ng-template #oneTpl>Service</ng-template>
           </ion-col>
 
-          <ion-col (click)="onChangePrice(appointment)" class="CheckOut-controlBtn">Change Price</ion-col>
+          <ion-col (click)="onChangePrice(appointment)" class="CheckOut-controlBtn" data-test-id="appointment_change_price">Change Price</ion-col>
         </ion-row>
       </div>
 
@@ -119,66 +119,92 @@
         </ion-row>
       </ng-container>
 
+      <ng-container *ngIf="hasAttribute(AppointmentAttribute.futureAppointment)">
+        <div class="CheckOut-buttons">
+          <a (click)="onCancelClick()" class="CheckOut-button is-cancel" data-test-id="appointment_cancel_booking">Cancel Booking</a>
+          <a (click)="onReUseAppointmentClick(true)" class="CheckOut-button" data-test-id="appointment_re_schedule">Re-Schedule</a>
+        </div>
+      </ng-container>
     </div>
   </div>
 </ion-content>
 
-<ion-footer [class.AppointmentPage-footerBorder]="isPaymentShown()">
-  <div class="AppointmentPage-actions">
+<ion-footer>
+  <div class="AppointmentPage-actions" *ngIf="params?.appointment as appointment">
 
     <!-- Confirm booking -->
-    <ng-container *ngIf="isAppointmentInBooking(); else existingAppointmentTpl">
+    <ng-container *ngIf="hasAttribute(AppointmentAttribute.booking)">
+
+      <!-- Pay and confirm -->
       <button ion-button class="Button AppointmentPage-checkout"
         *ngIf="isPaymentShown(); else simpleBookingTpl"
         (click)="payment ? onConfirmClick() : onAddPaymentClick()">
           {{ payment ? 'Confirm Booking' : 'Add Payment Method' }}
       </button>
 
+      <!-- Just confirm -->
       <ng-template #simpleBookingTpl>
-        <button ion-button class="Button AppointmentPage-checkout"
+        <button ion-button class="Button AppointmentPage-checkout" data-test-id="appointment_confirm_booking"
           (click)="onConfirmClick()">
             Confirm Booking
         </button>
       </ng-template>
+
     </ng-container>
 
-    <!-- Other actions -->
-    <ng-template #existingAppointmentTpl>
-      <ng-container *ngIf="params?.appointment.status !== AppointmentStatus.no_show">
+      <!--Re-schedule-->
+      <ng-container *ngIf="hasAttribute(AppointmentAttribute.rescheduling)">
+        <button
+          (click)="onConfirmClick()"
+          ion-button
+          class="Button">
+          Confirm Rescheduling
+        </button>
+      </ng-container>
 
-        <!-- Check out -->
-        <ng-container *ngIf="isAbleToCheckoutAppointment(); else otherOptionsTpl">
+      <!--Re-book-->
+      <ng-container *ngIf="hasAttribute(AppointmentAttribute.reBook)">
+        <button
+          (click)="onReUseAppointmentClick(false)"
+          ion-button
+          class="Button">
+          Re-book Appointment
+        </button>
+      </ng-container>
 
-          <ng-container *ngIf="isPaymentShown(); else simpleCheckoutTpl">
-            <button ion-button class="Button AppointmentPage-checkout"
-              (click)="payment ? onCheckoutAndPay() : onAddPaymentClick()">
-                <i class="mb-icon-credit-card"></i>
-                {{ payment ? 'Checkout: Pay via MADE App' : 'Add Payment Method' }}
-            </button>
-            <button ion-button outline class="Button AppointmentPage-checkout"
-              (click)="onCheckout()">
-                Checkout: Paid In-Salon
-            </button>
-          </ng-container>
+      <!--Checkout-->
+      <ng-container *ngIf="hasAttribute(AppointmentAttribute.checkout)">
 
-          <ng-template #simpleCheckoutTpl>
-            <button ion-button class="Button AppointmentPage-checkout"
-              (click)="onCheckout()">
-                Checkout
-            </button>
-          </ng-template>
+        <ng-container *ngIf="isPaymentShown(); else simpleCheckoutTpl">
 
+          <!-- Pay and checkout -->
+          <button ion-button class="Button AppointmentPage-checkout"
+            (click)="payment ? onCheckoutAndPay() : onAddPaymentClick()">
+              <i class="mb-icon-credit-card"></i>
+              {{ payment ? 'Checkout: Pay via MADE App' : 'Add Payment Method' }}
+          </button>
+
+          <!-- Just checkout (paid in salon) -->
+          <button ion-button outline class="Button AppointmentPage-checkout"
+            (click)="onCheckout()">
+              Checkout: Paid In-Salon
+          </button>
         </ng-container>
 
-        <ng-template #otherOptionsTpl>
-          <!-- Rebook-->
-          <div class="AppointmentPage-reBook" *ngIf="params?.hasRebook" (click)="onRebookClick()">Re-book Appointment</div>
-
-          <!-- Cancel -->
-          <a class="AppointmentPage-cancelBooking" *ngIf="params?.onCancel" (click)="onCancelClick()">Cancel Booking</a>
+        <!-- Simple checkout -->
+        <ng-template #simpleCheckoutTpl>
+          <button ion-button class="Button AppointmentPage-checkout"
+            (click)="onCheckout()">
+              Checkout
+          </button>
         </ng-template>
 
+        <a
+          *ngIf="!isPaymentShown() && isTodayAppointment() && params?.onCancel"
+          (click)="onCancelClick()"
+          class="AppointmentPage-cancelBooking">
+          Cancel Booking
+        </a>
       </ng-container>
-    </ng-template>
   </div>
 </ion-footer>
