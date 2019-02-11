@@ -4,6 +4,10 @@
   padding: pxtovw(5px) 0 pxtovw(3px) 0;
   border-bottom: 1px solid color($grayscale, 300);
 
+  &.is-readonly {
+    border-bottom: none;
+  }
+
   .ServiciesHeader-title {
     font-size: pxtovw(15px);
     font-weight: bold;
