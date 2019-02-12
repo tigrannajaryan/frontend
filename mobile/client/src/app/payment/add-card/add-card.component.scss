@@ -74,6 +74,10 @@ add-card {
 
   .AddCard-formControl--cvc {
     padding-left: pxtovw(12px);
+
+    input { // hide what was typed
+      -webkit-text-security: disc;
+    }
   }
 
   .AddCard-submit {
