@@ -1,4 +1,4 @@
-import { AlertController, Events } from 'ionic-angular';
+import { AlertButton, AlertController, Events } from 'ionic-angular';
 
 import { ClientAppointmentModel } from '~/shared/api/appointments.models';
 
@@ -8,6 +8,7 @@ import { PreferredStylistsData } from '~/core/api/preferred-stylists.data';
 import { PreferredStylistModel } from '~/shared/api/stylists.models';
 import { ServicesService } from '~/core/api/services.service';
 import { ClientEventTypes } from '~/core/client-event-types';
+import { DayOffer } from '~/shared/api/price.models';
 
 //
 // Possible cases of booking and re-booking processes
@@ -190,4 +191,66 @@ export function confirmRebook(appointment: ClientAppointmentModel): Promise<bool
     // Not preferred, show warning popup:
     return resolve(confirmMakeStylistPreferred(appointment.stylist_first_name, appointment.stylist_uuid));
   });
+}
+
+/**
+ * Check if offers or all days empty of preferred stylist
+ * - true means that this stylist have no available date/time,
+ */
+export async function checkStylistAvailability(stylistUuid?: string): Promise<boolean> {
+  const bookingData = AppModule.injector.get(BookingData);
+
+  // we need a price to check stylist availability
+  if (!bookingData.pricelist && stylistUuid) {
+    await startBooking(stylistUuid);
+
+    await bookingData.selectMostPopularService();
+  }
+
+  // we already may have booking data
+  const { response } = await bookingData.pricelist.get();
+  let prices: DayOffer[];
+  if (response) {
+    prices = response.prices;
+
+    return prices.length === 0
+      || prices.every(offer => offer.is_fully_booked || !offer.is_working_day);
+  }
+
+  return false;
+}
+
+/**
+ * Check if we have more available stylists
+ * - true means that we have more available preferred stylists
+ */
+export async function hasMoreAvailableStylists(): Promise<boolean> {
+  const bookingData = AppModule.injector.get(BookingData);
+  const preferredStylistsData = AppModule.injector.get(PreferredStylistsData);
+
+  const preferredStylists = await preferredStylistsData.get();
+  const otherBookableStylists = preferredStylists.filter(stylist =>
+    stylist.is_profile_bookable &&
+    stylist.uuid !== bookingData.stylist.uuid
+  );
+  return otherBookableStylists.length > 0;
+}
+
+/**
+ * Show no time slots popup with dynamic buttons
+ * currently we show this alert in two places:
+ * 1. appointment page - before redirect user to rebooking or rescheduling
+ * 2. select date - in booking process
+ */
+export async function showNoTimeSlotsPopup(buttons: Array<AlertButton | string>): Promise<void> {
+  const alertCtrl = AppModule.injector.get(AlertController);
+
+  const popup = alertCtrl.create({
+    cssClass: 'SelectDate-notAvailablePopup',
+    title: 'No time slots',
+    subTitle: '🤦🏽‍♀️️',
+    message: 'Unfortunately, your stylist does not have any open slots right now.',
+    buttons
+  });
+  popup.present();
 }
