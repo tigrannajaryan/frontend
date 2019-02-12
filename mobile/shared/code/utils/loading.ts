@@ -61,3 +61,46 @@ export async function loading<T>(
     }
   }
 }
+
+type MadeDisableOnClickFunction = ($event: MouseEvent, ...args: any[]) => Promise<any>;
+type MadeDisableOnClickDescriptor = TypedPropertyDescriptor<MadeDisableOnClickFunction>;
+/**
+ * This function is used as a component’s async method decorator.
+ * It will disable button on click to prevent user from double clicking
+ * Usage:
+ * ```
+ *   @MadeDisableOnClick
+ *   async someOnClickFunction(): Promise<void> {
+ * ```
+ */
+export function MadeDisableOnClick(target: any, name: string, descriptor: MadeDisableOnClickDescriptor): MadeDisableOnClickDescriptor {
+  const original = descriptor.value;
+
+  // Some of tslint rules are disabled because a context should be bound when the function is called.
+  // tslint:disable:only-arrow-functions, no-invalid-this
+  descriptor.value = async function(...args): Promise<any> {
+    const [ event ] = args;
+
+    const currentTarget: HTMLElement = event && event.currentTarget;
+
+    if (currentTarget instanceof HTMLElement) {
+      // set button to disabled state immediately on click function fire
+      currentTarget.setAttribute('madeDisableOnClickDisabled', '');
+
+      args.push(madeDisableOnClickCallBack => {
+        // remove attribute after function done
+        currentTarget.removeAttribute('madeDisableOnClickDisabled');
+      });
+    } else {
+      throw new Error(`@MadeDisableOnClick should have $event parameter, but got ${typeof currentTarget} instead`);
+    }
+    try {
+      return await original.call(this, ...args);
+    } finally {
+      // trigger madeDisableOnClickCallBack
+      args[args.length - 1]();
+    }
+  };
+
+  return descriptor;
+}

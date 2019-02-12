@@ -23,6 +23,7 @@ import { BookingCompleteComponentParams } from '~/booking/booking-complete/booki
 import { ConfirmCheckoutComponentParams } from '~/confirm-checkout/confirm-checkout.component';
 
 import { ENV } from '~/environments/environment.default';
+import { MadeDisableOnClick } from '~/shared/utils/loading';
 
 export interface AppointmentPageParams {
   appointment: ClientAppointmentModel;
@@ -281,7 +282,8 @@ export class AppointmentPageComponent {
     this.appointmentsDataStore.home.refresh();
   }
 
-  async onReUseAppointmentClick(isRescheduling: boolean): Promise<void> {
+  @MadeDisableOnClick
+  async onReUseAppointmentClick($event: MouseEvent, isRescheduling: boolean): Promise<void> {
     const isConfirmed = await confirmRebook(this.params.appointment);
     if (isConfirmed) {
       // remove this view from navigation stack
