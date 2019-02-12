@@ -347,8 +347,8 @@ export class AppointmentPageComponent {
       has_card_fee_included: false,
       has_tax_included: true,
       // tslint:disable-next-line:no-null-keyword
-      payment_method_uuid: payment ? payment.uuid : null,
-      pay_via_made: Boolean(payment)
+      payment_method_uuid: payment ? payment.uuid : undefined,
+      pay_via_made: payment ? true : undefined
     };
     const { response } = await this.api.changeAppointment(this.params.appointment.uuid, request).toPromise();
     if (response) {
