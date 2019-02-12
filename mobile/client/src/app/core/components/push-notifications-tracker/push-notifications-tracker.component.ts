@@ -64,7 +64,7 @@ export class ClientPushNotificationsTrackerComponent implements OnInit, OnDestro
           }
         };
 
-      case PushNotificationCode.profile_incomplete:
+      case PushNotificationCode.client_registration_incomplete:
         return {
           buttonText: 'Open',
           onClick: async (): Promise<void> => {
