@@ -1,6 +1,6 @@
 import { Component, NgZone } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { NavController } from 'ionic-angular';
+import { Keyboard, NavController } from 'ionic-angular';
 import * as moment from 'moment';
 
 import { ApiFieldAndNonFieldErrors, NonFieldErrorItem } from '~/shared/api-errors';
@@ -45,6 +45,7 @@ export class AddCardComponent {
   constructor(
     private api: PaymentsApi,
     private formBuilder: FormBuilder,
+    private keyboard: Keyboard,
     private navCtrl: NavController,
     private profileData: ProfileDataStore,
     protected stripe: StripeService,
@@ -53,6 +54,9 @@ export class AddCardComponent {
   }
 
   async ionViewWillLoad(): Promise<void> {
+    // Show keyboard nav btns
+    this.keyboard.hideFormAccessoryBar(false);
+
     this.form = this.formBuilder.group({
       cardNumber: ['', [Validators.required]],
       cardExp: ['', [Validators.required]],

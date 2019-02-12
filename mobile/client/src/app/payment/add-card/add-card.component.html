@@ -11,9 +11,7 @@
 
       <div class="Made-h1">Add Card</div>
       <div class="text-muted AddCard-note">
-        Your card will not be charged until you check out of your visit.
-        You will have the option at the end of your visit to pay with
-        the card on file or pay directly to the salon.
+        You won't be charged until your visit is complete. Pay with card or in-salon at the end of your visit.
       </div>
 
       <ion-item class="FormControl AddCard-formControl AddCard-formControl--card"
@@ -37,7 +35,7 @@
           <ion-item class="FormControl AddCard-formControl AddCard-formControl--cvc"
             [class.is-invalid]="!form.controls.cardCvv.pristine && form.controls.cardCvv.invalid">
               <ion-label floating>CVV</ion-label>
-              <ion-input formControlName="cardCvv" type="password" pattern="[0-9]*" inputmode="numeric" placeholder="•••" autocomplete="new-password"
+              <ion-input formControlName="cardCvv" type="tel" placeholder="•••" autocomplete="new-password"
                 [brmasker]="{type: 'num'}"></ion-input>
           </ion-item>
         </ion-col>
