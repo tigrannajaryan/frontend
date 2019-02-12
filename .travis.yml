@@ -72,6 +72,7 @@ jobs:
 
     - &build_mobile_config
       stage: build-mobile-apps
+      if: branch = develop AND type = push  # run this stage only if it's not a PR
       before_install: nvm install v8.11.1 && nvm use v8.11.1
       before_deploy:
         # install fastlane - a tool which allows uploads to appStoreConnect
