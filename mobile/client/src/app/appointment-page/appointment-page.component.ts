@@ -346,7 +346,6 @@ export class AppointmentPageComponent {
       status: AppointmentStatus.checked_out,
       has_card_fee_included: false,
       has_tax_included: true,
-      // tslint:disable-next-line:no-null-keyword
       payment_method_uuid: payment ? payment.uuid : undefined,
       pay_via_made: payment ? true : undefined
     };
