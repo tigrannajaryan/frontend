@@ -295,6 +295,8 @@ page-appointment {
     }
 
     .AppointmentPage-cancelBooking {
+      display: inline-block;
+      margin-top: pxtovw(12px);
       font-size: pxtovw(16px);
       color: color($colors, warning);
     }

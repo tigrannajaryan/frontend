@@ -170,7 +170,7 @@ describe('PushNotificationTracker (client)', () => {
     done();
   });
 
-  it('should handle profile_incomplete correctly', async done => {
+  it('should handle client_registration_incomplete correctly', async done => {
     const api = fixture.debugElement.injector.get(NotificationsApi);
     const navCtrl = fixture.debugElement.injector.get(NavController);
     const pushToast = fixture.debugElement.injector.get(PushNotificationToastService);
@@ -192,7 +192,7 @@ describe('PushNotificationTracker (client)', () => {
       /* foreground: */ true,
       /* coldstart: */ false,
       /* uuid: */ uuid,
-      /* code: */ PushNotificationCode.profile_incomplete,
+      /* code: */ PushNotificationCode.client_registration_incomplete,
       /* message: */ message
     );
 
