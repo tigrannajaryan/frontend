@@ -311,7 +311,6 @@ export class AppointmentPageComponent {
       this.navCtrl.pop();
       reUseAppointment(this.params.appointment, isRescheduling);
     }
-    console.warn(4);
   }
 
   onCancelClick(): void {
