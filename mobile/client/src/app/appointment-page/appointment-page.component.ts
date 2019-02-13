@@ -18,7 +18,12 @@ import { PaymentMethod, PaymentType } from '~/core/api/payments.models';
 
 import { AddServicesComponentParams } from '~/add-services/add-services.component';
 import { AppointmentPriceComponentParams } from '~/appointment-price/appointment-price.component';
-import { confirmRebook, reUseAppointment } from '~/booking/booking-utils';
+import {
+  checkStylistAvailability,
+  confirmRebook,
+  reUseAppointment,
+  showNoTimeSlotsPopup
+} from '~/booking/booking-utils';
 import { BookingCompleteComponentParams } from '~/booking/booking-complete/booking-complete.component';
 import { ConfirmCheckoutComponentParams } from '~/confirm-checkout/confirm-checkout.component';
 
@@ -286,6 +291,24 @@ export class AppointmentPageComponent {
   async onReUseAppointmentClick($event: MouseEvent, isRescheduling: boolean): Promise<void> {
     const isConfirmed = await confirmRebook(this.params.appointment);
     if (isConfirmed) {
+
+      if (isRescheduling && await checkStylistAvailability(this.params.appointment.stylist_uuid)) {
+        // if this is rescheduling click and current stylist have NO available slots
+        showNoTimeSlotsPopup([{
+          text: 'Keep Appointment',
+          cssClass: 'notAvailablePopup-btn'
+        }, {
+          text: 'Cancel Appointment',
+          cssClass: 'notAvailablePopup-btn is-warn',
+          handler: () => {
+            this.onCancelClick();
+          }
+        }]);
+
+        // do nothing
+        return;
+      }
+
       // remove this view from navigation stack
       this.navCtrl.pop();
       reUseAppointment(this.params.appointment, isRescheduling);
