@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
 
 import { Discounts, WeekdayDiscount } from '~/core/api/discounts.models';
 import { DiscountsApi } from '~/core/api/discounts.api';
@@ -12,10 +11,10 @@ enum RebookWeek {
 }
 
 @Component({
-  selector: 'page-discounts-revisit',
-  templateUrl: 'discounts-revisit.component.html'
+  selector: 'page-discounts-loyalty',
+  templateUrl: 'discounts-loyalty.component.html'
 })
-export class DiscountsRevisitComponent {
+export class DiscountsLoyaltyComponent {
   protected PageNames = PageNames;
   protected discounts: WeekdayDiscount[];
   isLoading = false;
@@ -45,7 +44,6 @@ export class DiscountsRevisitComponent {
   }
 
   constructor(
-    private navCtrl: NavController,
     private discountsApi: DiscountsApi
   ) {
     this.loadInitialData();
@@ -54,18 +52,14 @@ export class DiscountsRevisitComponent {
   async loadInitialData(): Promise<void> {
     const discounts: Discounts = (await loading(this, this.discountsApi.getDiscounts())).response;
     if (discounts) {
-      this.discounts = DiscountsRevisitComponent.transformRebookToDiscounts(discounts);
+      this.discounts = DiscountsLoyaltyComponent.transformRebookToDiscounts(discounts);
     }
   }
 
-  protected onContinue(): void {
-    this.navCtrl.push(PageNames.DiscountsFirstBooking);
-  }
-
-  protected onRevisitChange(): void {
+  onSave(): void {
     if (this.discounts) {
       this.discountsApi.setDiscounts(
-        DiscountsRevisitComponent.transformDiscountsToRebook(this.discounts)).get();
+        DiscountsLoyaltyComponent.transformDiscountsToRebook(this.discounts)).get();
     }
   }
 }

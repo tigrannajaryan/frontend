@@ -82,3 +82,64 @@
   color: color($colors-shared, warmGrey);
   transition: opacity 100ms linear;
 }
+
+.Input-radio {
+
+  input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+
+    + .Input-radioLabel {
+      width: pxtovw(26px);
+      height: pxtovw(26px);
+      display: inline-block;
+
+      &:before {
+        content: '';
+        background: white;
+        border-radius: 100%;
+        border: pxtovw(1px) solid darken(white, 25%);
+        display: inline-block;
+        width: pxtovw(24px);
+        height: pxtovw(24px);
+        position: relative;
+        vertical-align: top;
+        cursor: pointer;
+        text-align: center;
+        transition: all 250ms ease;
+      }
+    }
+    &:checked {
+      + .Input-radioLabel {
+        &:before {
+          background-color: color($colors-shared, lightSalmon);
+          box-shadow: inset 0 0 0 pxtovw(4px) white;
+        }
+      }
+    }
+    &:focus {
+      + .Input-radioLabel {
+        &:before {
+          outline: none;
+          border-color: color($colors-shared, lightSalmon);
+        }
+      }
+    }
+    &:disabled {
+      + .Input-radioLabel {
+        &:before {
+          box-shadow: inset 0 0 0 pxtovw(4px) white;
+          border-color: darken(white, 25%);
+          background: darken(white, 25%);
+        }
+      }
+    }
+    + .Input-radioLabel {
+      &:empty {
+        &:before {
+          margin-right: 0;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,67 @@
+<ion-header class="madeBackHeader">
+  <ion-navbar class="Made-wp BackHeader-backBtn">
+    <ion-buttons end>
+      <button *ngIf="oldWeekDay" (click)="onSetDeal()" id="submitBtn" ion-button icon-only color="dark" class="RightButton">
+        Done
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content no-padding>
+  <div class="Made-wp Made-wpContent">
+    <div class="Made-h1">Deal of the Week</div>
+
+    <div class="Made-text">
+      <div class="Made-textItem">
+        Set one day per week with a special 30% or more promotion. Help drive traffic and bring in new clients!
+      </div>
+    </div>
+
+    <!-- Show spinner if loading is in progress -->
+    <div class="Spinner">
+      <ion-spinner *ngIf="isLoading"></ion-spinner>
+    </div>
+
+    <ng-container *ngIf="oldWeekDay">
+      <ion-row (click)="onDealClick(oldWeekDay)" class="MadeBigList-row">
+        <div class="MadeBigList-rowHeader">
+          <div class="MadeBigList-title">
+            Discount
+          </div>
+
+          <div class="MadeBigList-value">
+            <ng-container *ngIf="oldWeekDay.discount_percent > 0; else discountIsZero">{{ oldWeekDay.discount_percent }}%</ng-container>
+            <ng-template #discountIsZero>None</ng-template>
+          </div>
+
+          <i class="MadeBigList-icon mb-icon-right-arrow"></i>
+        </div>
+
+        <div class="MadeBigList-text">
+          Amount can’t be less than {{ dealOfTheWeekMinDiscount }}%.
+        </div>
+      </ion-row>
+
+      <div class="Made-h2 DiscountsDeal-titleMargin">Select a Day</div>
+
+      <ion-row *ngFor="let weekday of weekdays" class="MadeBigList-row">
+        <div class="MadeBigList-rowHeader">
+          <div class="MadeBigList-title">
+            {{ weekday.weekday_verbose }}
+          </div>
+
+          <div (click)="onSelectWeekday(weekday)" class="Input-radio">
+            <input
+              id="radio-{{ weekday.weekday }}"
+              [value]="weekday.weekday"
+              [attr.checked]="weekday.weekday === newWeekDay?.weekday ? '' : null"
+              name="deal"
+              type="radio">
+            <label for="radio-{{ weekday.weekday }}" class="Input-radioLabel"></label>
+          </div>
+        </div>
+      </ion-row>
+    </ng-container>
+  </div>
+</ion-content>

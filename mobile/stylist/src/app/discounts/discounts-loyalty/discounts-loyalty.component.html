@@ -1,0 +1,24 @@
+<ion-header madeBackHeader></ion-header>
+
+
+<ion-content no-padding>
+  <div class="Made-wp Made-wpContent">
+    <div class="Made-h1">Loyalty Discounts</div>
+
+    <div class="Made-text">
+      <div class="Made-textItem">
+        Reward clients if they come back sooner.
+      </div>
+    </div>
+
+    <!-- Show spinner if loading is in progress -->
+    <div class="Spinner">
+      <ion-spinner *ngIf="isLoading"></ion-spinner>
+    </div>
+
+    <discounts-list
+      [list]="discounts"
+      [errorMsg]="'We recommend you to set this discount lower than previous week discount.'"
+      (discountChange)="onSave()"></discounts-list>
+  </div>
+</ion-content>
