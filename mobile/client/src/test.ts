@@ -47,7 +47,8 @@ import {
   ModalController,
   NavController,
   NavParams,
-  Platform
+  Platform,
+  ToastController
 } from 'ionic-angular';
 
 import { AppAvailability } from '@ionic-native/app-availability';
@@ -68,7 +69,8 @@ import {
   NavControllerMock,
   PlatformMock,
   StatusBarMock,
-  StorageMock
+  StorageMock,
+  ToastControllerMock
 } from 'ionic-mocks';
 
 import { ExternalAppService } from './app/shared/utils/external-app-service';
@@ -182,6 +184,7 @@ export class TestUtils {
         { provide: Platform, useFactory: () => platformMock },
         { provide: StatusBar, useFactory: () => StatusBarMock.instance() },
         { provide: Storage, useFactory: () => StorageMock.instance() },
+        { provide: ToastController, useFactory: () => ToastControllerMock.instance() },
         { provide: AuthProcessState, useClass: AuthProcessStateMock },
         LaunchNavigator, ExternalAppService,
         { provide: GeolocationService, useClass: GeolocationServiceMock },
