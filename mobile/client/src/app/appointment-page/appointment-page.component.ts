@@ -242,7 +242,9 @@ export class AppointmentPageComponent {
       datetime_start_at: this.bookingData.selectedTime.format(),
       services: this.bookingData.selectedServices.map(s => ({
         service_uuid: s.uuid
-      }))
+      })),
+      has_card_fee_included: false,
+      has_tax_included: true
     };
 
     if (!this.params.isRescheduling) {
