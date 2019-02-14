@@ -133,7 +133,7 @@
       <ng-container *ngIf="hasAttribute(AppointmentAttribute.futureAppointment)">
         <div class="CheckOut-buttons">
           <a (click)="onCancelClick()" class="CheckOut-button is-cancel" data-test-id="appointment_cancel_booking">Cancel Booking</a>
-          <a (click)="onReUseAppointmentClick(true)" class="CheckOut-button" data-test-id="appointment_re_schedule">Re-Schedule</a>
+          <a (click)="onReUseAppointmentClick($event, true)" class="CheckOut-button" data-test-id="appointment_re_schedule">Re-Schedule</a>
         </div>
       </ng-container>
     </div>
@@ -176,7 +176,7 @@
       <!--Re-book-->
       <ng-container *ngIf="hasAttribute(AppointmentAttribute.reBook)">
         <button
-          (click)="onReUseAppointmentClick(false)"
+          (click)="onReUseAppointmentClick($event, false)"
           ion-button
           class="Button">
           Re-book Appointment
