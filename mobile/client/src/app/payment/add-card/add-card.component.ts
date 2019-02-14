@@ -1,9 +1,9 @@
-import { Component, NgZone } from '@angular/core';
+import { Component, NgZone, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Keyboard, NavController } from 'ionic-angular';
 import * as moment from 'moment';
 
-import { ApiFieldAndNonFieldErrors, NonFieldErrorItem } from '~/shared/api-errors';
+import { componentIsActive } from '~/shared/utils/component-is-active';
 import { reportToSentry } from '~/shared/sentry';
 import { invalidFor } from '~/shared/validators/invalid-for.validator';
 
@@ -18,29 +18,20 @@ import { StripeService } from '~/payment/stripe.service.ts';
   templateUrl: 'add-card.component.html'
 })
 export class AddCardComponent {
-  static SHOW_GENERAL_ERROR_MS = 7000;
-
-  static billingError =
-    new ApiFieldAndNonFieldErrors(
-      [new NonFieldErrorItem({ code: 'err_actionable_billing_error_with_message' })]
-    );
+  static CARD_NUMBER_COMMON_DIGITS_COUNT = 16;
+  static CARD_EXP_DIGITS_COUNT = 4;
 
   form: FormGroup;
   isLoading = false;
+
+  @ViewChild('cardExpInput') cardExpInput;
+  @ViewChild('cardCvvInput') cardCvvInput;
 
   /**
    * This field can contain Stripe’s non-field API Error
    * (e.g. card declined or expired, processing error)
    */
-  stripeError: string;
-
-  /**
-   * Next fields are needed to handle Stripe’s non-card-relative errors
-   * (e.g. Stripe is down, authentication in Stripe is failed)
-   */
-  hasGeneralError = false;
-  generalErrorText = 'Payment service is not available. Try again later.';
-  private hideErrorTimeout: any; // Timer
+  error: string;
 
   constructor(
     private api: PaymentsApi,
@@ -70,13 +61,35 @@ export class AddCardComponent {
       }
       this.stripe.setPublishableKey(response.stripe_public_key);
     } else {
-      // An error received from the profile, we can only react with a general error
-      this.toggleGeneralError(true);
+      // An error received from the profile, we can only react with some general error
+      this.showError('Payment service is not available.');
     }
+
+    // Focus next field when a valid card input typed
+    this.form.controls.cardNumber.valueChanges
+      .takeWhile(componentIsActive(this))
+      .subscribe(value => {
+        const cardNumber = value.replace(/[^\d]+/g, '');
+        if (
+          cardNumber.length >= AddCardComponent.CARD_NUMBER_COMMON_DIGITS_COUNT &&
+          this.stripe.validateCardNumber(cardNumber)
+        ) {
+          this.cardExpInput.setFocus();
+        }
+      });
+
+    this.form.controls.cardExp.valueChanges
+      .takeWhile(componentIsActive(this))
+      .subscribe(value => {
+        const mmyy = value.replace(/[^\d]+/g, '');
+        if (mmyy.length === AddCardComponent.CARD_EXP_DIGITS_COUNT) {
+          this.cardCvvInput.setFocus();
+        }
+      });
   }
 
   async onSaveClick(): Promise<void> {
-    this.stripeError = undefined;
+    this.error = undefined;
     this.isLoading = true;
 
     const { cardNumber, cardExp, cardCvv: cvc } = this.form.value;
@@ -102,29 +115,18 @@ export class AddCardComponent {
       stripe_token: stripeResponse.id
     }, {
       // For consistency show billing errors in the same place where Stripe errors are shown.
-      hideGenericAlertOnErrorsLike: [AddCardComponent.billingError]
+      hideAllErrors: true
     }).toPromise();
 
     if (response) {
       this.isLoading = false;
       this.navCtrl.pop();
-      return;
-    }
 
-    // Custom handling of billing non-fields errors.
-    if (error && error instanceof ApiFieldAndNonFieldErrors) {
-      const billingError = error.errors.find(
-        err => err.isEqual(new NonFieldErrorItem({ code: 'err_actionable_billing_error_with_message' }))
-      );
-      if (billingError) {
-        this.isLoading = false;
-        this.stripeError = billingError.getMessage();
-        return;
-      }
+    } else if (error) {
+      this.showError(error.getMessage());
     }
 
     this.isLoading = false;
-    this.toggleGeneralError(true);
   }
 
   /**
@@ -141,7 +143,7 @@ export class AddCardComponent {
 
       default:
         reportToSentry(error);
-        this.toggleGeneralError(true);
+        this.showError(error && error.message);
         // TODO: suggest to re-try or skip (?) adding card and continue with booking
         break;
     }
@@ -150,7 +152,7 @@ export class AddCardComponent {
   private handleCardError(error: StripeError): void {
     if (!error.message) {
       reportToSentry(error);
-      this.toggleGeneralError(true);
+      this.showError();
       return;
     }
 
@@ -170,7 +172,7 @@ export class AddCardComponent {
         break;
 
       default:
-        this.stripeError = error.message;
+        this.showError(error.message);
         break;
     }
   }
@@ -188,19 +190,7 @@ export class AddCardComponent {
     });
   }
 
-  private toggleGeneralError(show: boolean): void {
-    if (this.hideErrorTimeout) {
-      clearTimeout(this.hideErrorTimeout);
-    }
-
-    if (show) {
-      this.hasGeneralError = true;
-
-      this.hideErrorTimeout = setTimeout(() => {
-        this.toggleGeneralError(false);
-      }, AddCardComponent.SHOW_GENERAL_ERROR_MS);
-    } else {
-      this.hasGeneralError = false;
-    }
+  private showError(errorText = 'Unable to save your credit card.'): void {
+    this.error = errorText;
   }
 }

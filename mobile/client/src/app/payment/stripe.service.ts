@@ -62,6 +62,10 @@ export class StripeService {
     return Boolean(this.publishableKey);
   }
 
+  validateCardNumber(cardNumber: string): boolean {
+    return global.Stripe && global.Stripe.validateCardNumber(cardNumber);
+  }
+
   async createToken(card: StripeCardRequest): Promise<StripeResponse> {
     await this.loaded;
     return new Promise<StripeResponse>((resolve, reject) => {

@@ -119,4 +119,5 @@ export interface StripeCard {
 export interface StripeV2 {
   card: StripeCard;
   setPublishableKey(key: string): void;
+  validateCardNumber(cardNumber: string): boolean;
 }
