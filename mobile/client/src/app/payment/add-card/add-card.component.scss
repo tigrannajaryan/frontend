@@ -1,22 +1,4 @@
 add-card {
-  .AddCard-errorPopup {
-    position: fixed;
-    right: 0;
-    left: 0;
-    padding: pxtovw(12px) $content-x-offset;
-    color: white;
-    background: color($colors-shared, danger);
-    opacity: 0;
-    transition:
-      opacity 0.2s ease-in-out,
-      transform 0.6s ease-in-out;
-    transform: translateY(pxtovw(-100px));
-
-    &.is-shown {
-      opacity: 1;
-      transition: transform 0.2s ease-in-out;
-      transform: translateY(0);
-    }
   }
 
   .AddCard-note {

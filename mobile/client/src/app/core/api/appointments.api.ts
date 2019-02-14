@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 
+import { ApiRequestOptions } from '~/shared/api-errors';
 import { ApiResponse } from '~/shared/api/base.models';
 import { Logger } from '~/shared/logger';
 import { ServerStatusTracker } from '~/shared/server-status-tracker';
@@ -38,8 +39,12 @@ export class AppointmentsApi extends BaseService {
     return this.get<ClientAppointmentModel>(`client/appointments/${appointmentUuid}`);
   }
 
-  changeAppointment(appointmentUuid: string, data: AppointmentChangeRequest): Observable<ApiResponse<ClientAppointmentModel>> {
-    return this.post<ClientAppointmentModel>(`client/appointments/${appointmentUuid}`, data);
+  changeAppointment(
+    appointmentUuid: string,
+    data: AppointmentChangeRequest,
+    options: ApiRequestOptions = {}
+  ): Observable<ApiResponse<ClientAppointmentModel>> {
+    return this.post<ClientAppointmentModel>(`client/appointments/${appointmentUuid}`, data, undefined, options);
   }
 
   updateAppointment(appointmentUuid: string, data: AppointmentChangeRequest): Observable<ApiResponse<ClientAppointmentModel>> {
