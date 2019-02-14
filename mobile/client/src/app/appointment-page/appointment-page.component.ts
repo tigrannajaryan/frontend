@@ -53,12 +53,6 @@ export enum AppointmentAttribute {
   AppointmentAttribute describe how appointment appears
   what can be on this page and what can't
 +-----------------------------------+
-|                                   |
-|                                   |
-|                                   |
-|                                   |
-|                                   |
-|                                   |
 | +-------------------------------+ |
 | |                               | |
 | |    |editAppointmentButtons|   | |
@@ -72,10 +66,8 @@ export enum AppointmentAttribute {
 | |    |withComment|              | |
 | |                               | |
 | +---------------+---------------+ |
-|                 |                 |
-|                 +                 |
+|                 |                 |           |
 |                and                |
-|                 +                 |
 |                 |                 |
 | +---------------+---------------+ |
 | |                               | |
