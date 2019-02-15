@@ -1,3 +1,20 @@
+.ErrorToast {
+  .toast-wrapper {
+    top: pxtovw(40px) !important;
+    right: 0;
+    left: 0;
+    background: color($colors-shared, danger);
+    border-radius: 0;
+  }
+
+  .toast-message {
+    padding-top: pxtovw(8px);
+    padding-bottom: pxtovw(8px);
+    font-weight: 500;
+    color: white;
+  }
+}
+
 .PushNotificationToast {
   .toast-wrapper {
     background: white;

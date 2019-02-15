@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
-import { AlertController, NavController, NavParams } from 'ionic-angular';
+import { AlertController, NavController, NavParams, ToastController } from 'ionic-angular';
 import * as moment from 'moment';
 
 import { AppointmentChangeRequest, AppointmentStatus, ClientAppointmentModel } from '~/shared/api/appointments.models';
 import { CheckOutService, ServiceFromAppointment } from '~/shared/api/stylist-app.models';
 import { ISODate, isoDateFormat } from '~/shared/api/base.models';
+import { reportToSentry } from '~/shared/sentry';
 import { formatTimeInZone } from '~/shared/utils/string-utils';
 
 import { AppointmentsApi } from '~/core/api/appointments.api';
@@ -53,12 +54,6 @@ export enum AppointmentAttribute {
   AppointmentAttribute describe how appointment appears
   what can be on this page and what can't
 +-----------------------------------+
-|                                   |
-|                                   |
-|                                   |
-|                                   |
-|                                   |
-|                                   |
 | +-------------------------------+ |
 | |                               | |
 | |    |editAppointmentButtons|   | |
@@ -72,10 +67,8 @@ export enum AppointmentAttribute {
 | |    |withComment|              | |
 | |                               | |
 | +---------------+---------------+ |
-|                 |                 |
-|                 +                 |
+|                 |                 |           |
 |                and                |
-|                 +                 |
 |                 |                 |
 | +---------------+---------------+ |
 | |                               | |
@@ -119,7 +112,8 @@ export class AppointmentPageComponent {
     private bookingData: BookingData,
     private navCtrl: NavController,
     private navParams: NavParams,
-    private paymentsApi: PaymentsApi
+    private paymentsApi: PaymentsApi,
+    private toastCtrl: ToastController
   ) {
   }
 
@@ -250,7 +244,9 @@ export class AppointmentPageComponent {
       datetime_start_at: this.bookingData.selectedTime.format(),
       services: this.bookingData.selectedServices.map(s => ({
         service_uuid: s.uuid
-      }))
+      })),
+      has_card_fee_included: false,
+      has_tax_included: true
     };
 
     if (!this.params.isRescheduling) {
@@ -374,13 +370,32 @@ export class AppointmentPageComponent {
       payment_method_uuid: payment ? payment.uuid : undefined,
       pay_via_made: payment ? true : undefined
     };
-    const { response } = await this.api.changeAppointment(this.params.appointment.uuid, request).toPromise();
+    const { response, error } = await this.api.changeAppointment(
+      this.params.appointment.uuid,
+      request, {
+        // We are showing custom red toast.
+        hideAllErrors: true
+      }
+    ).toPromise();
+
     if (response) {
       const params: ConfirmCheckoutComponentParams = {
         appointment: this.params.appointment
       };
 
       this.navCtrl.push(PageNames.ConfirmCheckout, { params });
+
+    } else if (error) {
+      reportToSentry(error);
+
+      const toast = this.toastCtrl.create({
+        cssClass: 'ErrorToast',
+        duration: 5000, // ms
+        position: 'top',
+        showCloseButton: false,
+        message: error.getMessage()
+      });
+      toast.present();
     }
   }
 

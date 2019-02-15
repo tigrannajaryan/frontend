@@ -148,8 +148,8 @@ export const nonFieldErrorMsgs = new Map<NonFieldErrorCode, string>([
   ['err_end_time_greater_than_start_time', 'Start time cannot be after end time.'],
   ['err_failure_to_setup_oauth', 'General problem with setting up oauth credentials.'],
   ['err_date_too_close', 'The date is too close and cannot be set as Deal of the Week.'],
-  ['err_unrecoverable_billing_error', 'Payment service is not available.'],
-  ['err_actionable_billing_error_with_message', 'Payment service is not available.']
+  ['err_unrecoverable_billing_error', 'Processing of your payment failed.'],
+  ['err_actionable_billing_error_with_message', 'Processing of your payment failed.']
 ]);
 
 /**

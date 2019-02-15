@@ -1,26 +1,11 @@
 add-card {
-  .AddCard-errorPopup {
-    position: fixed;
-    right: 0;
-    left: 0;
-    padding: pxtovw(12px) $content-x-offset;
-    color: white;
-    background: color($colors-shared, danger);
-    opacity: 0;
-    transition:
-      opacity 0.2s ease-in-out,
-      transform 0.6s ease-in-out;
-    transform: translateY(pxtovw(-100px));
-
-    &.is-shown {
-      opacity: 1;
-      transition: transform 0.2s ease-in-out;
-      transform: translateY(0);
-    }
+  .AddCard-form {
+    display: flex;
+    flex-direction: column;
   }
 
   .AddCard-note {
-    margin-top: pxtovw(4px);
+    padding: pxtovw(16px) 0;
     font-size: $shared-base;
     line-height: 16/15 * 1em;
   }
@@ -60,6 +45,10 @@ add-card {
     }
   }
 
+  .AddCard-flexFill {
+    flex: 1;
+  }
+
   .AddCard-formControl.AddCard-formControl--card {
     margin-top: pxtovw(12px);
 
@@ -81,8 +70,12 @@ add-card {
   }
 
   .AddCard-submit {
-    margin-top: pxtovw(16px);
+    margin: 0;
     font-size: $shared-h4;
+  }
+
+  .AddCard-bottom {
+    min-height: pxtovw(106px);
   }
 
   .AddCard-error {
