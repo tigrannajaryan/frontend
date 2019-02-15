@@ -36,8 +36,9 @@ import { SuccessErrorPopupComponent } from '~/shared/components/success-error-po
 import { GoogleSignin } from './shared/google-signin';
 import { IntegrationsApi } from './shared/api/integrations.api';
 import { MadeAnalyticsApi } from './shared/api/made-analytics.api';
-import { InstagramOAuthService } from '~/shared/utils/instagram-oauth-service';
+import { InstagramOAuthService } from '~/shared/oauth/instagram-oauth-service';
 import { ListPickerPopupComponent } from '~/shared/components/list-picker-popup/list-picker-popup.component';
+import { StripeOAuthService } from '~/core/stripe-oauth-service';
 
 import { ENV } from '~/environments/environment.default';
 
@@ -86,6 +87,7 @@ import { DiscountsFirstBookingComponent } from '~/discounts/discounts-first-book
 import { DiscountsRevisitComponent } from '~/discounts/discounts-revisit/discounts-revisit.component';
 import { DiscountsWeekdayComponent } from '~/discounts/discounts-weekday/discounts-weekday.component';
 import { FirstScreenComponent } from '~/first-screen/first-screen';
+import { GetPaidPopupComponent } from '~/appointment/get-paid-popup/get-paid-popup.component';
 import { HomeSlotsComponent } from '~/home-slots/home-slots.component';
 import { InvitationsComponent } from '~/invitations/invitations.component';
 import { MyClientsComponent } from '~/clients/my-clients/my-clients.component';
@@ -168,6 +170,7 @@ const declarations = [
   DiscountsRevisitComponent,
   DiscountsWeekdayComponent,
   FirstScreenComponent,
+  GetPaidPopupComponent,
   HomeSlotsComponent,
   InvitationsComponent,
   ListPickerPopupComponent,
@@ -288,6 +291,7 @@ const declarations = [
     NotificationsApi,
     IntegrationsApi,
     MadeAnalyticsApi,
+    StripeOAuthService,
 
     ExternalAppService,
 

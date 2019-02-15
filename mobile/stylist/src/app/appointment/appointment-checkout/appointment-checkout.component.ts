@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { ModalController, NavController, NavParams } from 'ionic-angular';
 import { Validators } from '@angular/forms';
 import * as moment from 'moment';
 
@@ -17,12 +17,13 @@ import {
 import { InputTypes, isoDateFormat } from '~/shared/api/base.models';
 
 import { HomeService } from '~/core/api/home.service';
+import { StylistServiceProvider } from '~/core/api/stylist.service';
 import { PageNames } from '~/core/page-names';
 import { AddServicesComponentParams } from '~/core/popups/add-services/add-services.component';
 
 import { AppointmentPriceComponentParams } from '~/appointment/appointment-price/appointment-price.component';
+import { GetPaidPopupComponent, GetPaidPopupParams } from '~/appointment/get-paid-popup/get-paid-popup.component';
 import { SettingsFieldComponentParams } from '~/settings/settings-field/settings-field.component';
-import { StylistServiceProvider } from '~/core/api/stylist.service';
 
 export interface AppointmentCheckoutParams {
   appointmentUuid: string;
@@ -69,6 +70,7 @@ export class AppointmentCheckoutComponent {
   private selectedServices: CheckOutService[];
 
   constructor(
+    private modalCtrl: ModalController,
     private navCtrl: NavController,
     private navParams: NavParams,
     private homeService: HomeService,
@@ -203,6 +205,12 @@ export class AppointmentCheckoutComponent {
       }
     };
     this.navCtrl.push(PageNames.SettingsField, { params });
+  }
+
+  onHowToGetPaid(): void {
+    const params: GetPaidPopupParams = { appointment: this.appointment };
+    const popup = this.modalCtrl.create(GetPaidPopupComponent, { params });
+    popup.present();
   }
 
   private isTodayAppointment(): boolean {

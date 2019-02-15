@@ -229,7 +229,10 @@ export class AppointmentPageComponent {
       ENV.ffEnableIncomplete &&
       (
         this.isAppointmentInBooking() ||
-        this.isAbleToCheckoutAppointment()
+        (
+          this.isAbleToCheckoutAppointment() &&
+          this.params.appointment.can_checkout_with_made
+        )
       )
     );
   }
