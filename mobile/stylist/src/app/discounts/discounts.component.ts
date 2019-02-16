@@ -69,8 +69,6 @@ export class DiscountsComponent {
       return;
     }
 
-    // debugger;
-
     const { first_booking, weekdays, deal_of_week_weekday, ...rebook } = discounts;
     this.firstVisit = first_booking;
     this.weekdays = DiscountsComponent.sortWeekdays(weekdays);

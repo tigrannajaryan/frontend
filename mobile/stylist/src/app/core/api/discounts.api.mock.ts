@@ -1,25 +1,11 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 
-import { BaseService } from '~/shared/api/base.service';
-import { Logger } from '~/shared/logger';
-import { ServerStatusTracker } from '~/shared/server-status-tracker';
 import { ApiResponse } from '~/shared/api/base.models';
-import { Discounts, MaximumDiscounts, WeekdayDiscount } from './discounts.models';
-import {
-  ClientModel,
-  GetMyClientsResponse,
-  GetNearbyClientsResponse, GetPricingResponse,
-  MyClientModel
-} from '~/core/api/clients-api.models';
-import * as faker from "faker";
-import { randomPhone } from '~/shared/utils/test-utils';
+import { Discounts, MaximumDiscounts } from './discounts.models';
+import { GetMyClientsResponse } from '~/core/api/clients-api.models';
+import * as faker from 'faker';
 import { BaseServiceMock } from '~/shared/api/base.service.mock';
-import { serviceItemsMock } from '~/core/api/stylist.service.mock';
-import * as moment from '~/core/api/clients-api.mock';
-import { DiscountType } from '~/shared/api/price.models';
-import { WeekdayIso } from '~/shared/weekday';
 
 export const discounts: Discounts = {
   first_booking: faker.random.number({min: 0, max: 100}),
@@ -36,7 +22,7 @@ export const discounts: Discounts = {
     is_working_day: true,
     is_deal_of_week: faker.random.boolean()
   })),
-  deal_of_week_weekday: faker.random.number({min: 1, max: 2}),
+  deal_of_week_weekday: faker.random.number({min: 1, max: 2})
 };
 
 export const maximumDiscounts: MaximumDiscounts = {
