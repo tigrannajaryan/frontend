@@ -1,12 +1,12 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ModalController } from 'ionic-angular';
 
-import { dealOfTheWeekMinDiscount } from '~/shared/constants';
 import { WeekdayIso } from '~/shared/weekday';
 
-import { PercentageSliderSettings } from '~/core/popups/change-percent/change-percent.component';
-import { PageNames } from '~/core/page-names';
 import { WeekdayDiscount } from '~/core/api/discounts.models';
+import { PercentageSliderSettings } from '~/core/popups/change-percent/change-percent.component';
+import { dealOfTheWeekMinDiscount } from '~/shared/constants';
+import { PageNames } from '~/core/page-names';
 
 export enum DiscountSymbol {
   percent = '%',
@@ -19,10 +19,6 @@ export enum DiscountSymbol {
 })
 export class DiscountsListComponent implements OnInit {
   @Input() list: WeekdayDiscount[];
-  @Input() header: {
-    left: string,
-    right: string
-  };
   @Input() dealOfTheWeek: WeekdayIso;
   @Input() symbol: DiscountSymbol;
   @Input() errorMsg: string;

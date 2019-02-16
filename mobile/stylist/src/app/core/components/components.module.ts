@@ -19,15 +19,7 @@ import { MadeTableComponent } from './made-table/made-table';
 import { DirectivesModule } from '~/core/directives/directive.module';
 import { IonicModule } from 'ionic-angular';
 import { AppointmentItemComponent } from '~/core/components/appointment-item/appointment-item.component';
-import { DiscountsListComponent } from '~/core/components/discounts/discounts-list/discounts-list.component';
-import { DiscountsWeekdayShortComponent } from '~/core/components/discounts/discounts-weekday-short/discounts-weekday-short.component';
-import { DiscountsRevisitShortComponent } from '~/core/components/discounts/discounts-revisit-short/discounts-revisit-short.component';
-import {
-  DiscountsFirstBookingShortComponent
-} from '~/core/components/discounts/discounts-first-booking-short/discounts-first-booking-short.component';
-import {
-  DiscountsMaximumShortComponent
-} from '~/core/components/discounts/discounts-maximum-short/discounts-maximum-short.component';
+import { DiscountsListComponent } from '~/core/components/discounts-list/discounts-list.component';
 import { BackHeaderComponent } from '~/core/components/back-header/back-header.component';
 import { MadeMenuHeaderComponent } from '~/core/components/made-menu-header/made-menu-header.component';
 import { PhoneLinkComponent } from '~/shared/components/phone-link/phone-link.component';
@@ -49,10 +41,6 @@ const components = [
   AppointmentItemComponent,
   ContinueFooterComponent,
   DiscountsListComponent,
-  DiscountsWeekdayShortComponent,
-  DiscountsRevisitShortComponent,
-  DiscountsFirstBookingShortComponent,
-  DiscountsMaximumShortComponent,
   EditServicesPricesComponent,
   BackHeaderComponent,
   MbIconsComponent,

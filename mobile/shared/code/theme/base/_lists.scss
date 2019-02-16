@@ -1,6 +1,6 @@
 .MadeCheckList {
   margin-top: pxtovw(16px);
-  font-size: pxtovw(18px);
+  font-size: $shared-h4;
   font-weight: 300;
   line-height: pxtovw(24px);
   color: color($shared-colors, color1);
@@ -34,7 +34,7 @@
   align-items: start;
   justify-content: start;
   margin-bottom: pxtovw(16px);
-  font-size: pxtovw(18px);
+  font-size: $shared-h4;
   line-height: pxtovw(24px);
   color: color($shared-colors, color1);
   letter-spacing: pxtovw(-0.2px);
@@ -68,7 +68,7 @@
 
 .MadeLinkList-cell {
   overflow: hidden;
-  font-size: pxtovw(15px);
+  font-size: $shared-base;
   line-height: pxtovw(16px);
   color: black;
   text-overflow: ellipsis;
@@ -81,5 +81,85 @@
   &.isGrey {
     color: color($grayscale-shared, 500);
     letter-spacing: pxtovw(0.2px);
+  }
+}
+
+.MadeBigList-row {
+  justify-content: space-between;
+  margin: 0 0 pxtovw(16px);
+  padding: 0 0 pxtovw(16px);
+  border-bottom: pxtovw(1px) solid color($grayscale, 200);
+}
+
+.MadeBigList-rowHeader {
+  width: 100%;
+  display: flex;
+  flex-flow: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.MadeBigList-title {
+  flex: 7;
+  font-size: $shared-h4;
+  color: black;
+}
+
+.MadeBigList-text {
+  margin: pxtovw(8px) 0 0;
+  font-size: $shared-base;
+  color: color($colors-shared, warmGrey);
+}
+
+.MadeBigList-dealOfTheWeek {
+  padding: pxtovw(4px) pxtovw(8px);
+  font-size: pxtovw(13px);
+  background: color($colors-shared, lightPeach);
+  color: black;
+  border-radius: pxtovw(8px);
+}
+
+.MadeBigList-value {
+  flex: 4;
+  font-size: $shared-h4;
+  text-align: right;
+  color: color($colors-shared, lightSalmon);
+
+  &.inactive {
+    color: black;
+  }
+}
+
+.MadeBigList-icon {
+  flex: 1;
+  padding-right: pxtovw(7px);
+  font-size: $shared-h4;
+  text-align: right;
+  color: color($colors-shared, warmGrey);
+}
+
+.DiscountsList-head {
+  font-size: pxtovw(13px);
+  color: color($shared-colors, color1);
+}
+
+.DiscountsList-row {
+  min-height: pxtovw(48px);
+  padding: pxtovw(11px) 0;
+  font-size: pxtovw(14px);
+  border-bottom: 1px solid color($grayscale, 200);
+}
+
+.DiscountsList-col {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.DiscountsList-colIcon {
+  ion-icon {
+    padding-right: pxtovw(7px);
+    font-size: pxtovw(25px);
+    color: rgba(0, 0, 0, 0.3);
   }
 }
