@@ -42,7 +42,9 @@ export function createAppointment(): StylistAppointmentModel {
       client_price: Math.random() * 50,
       regular_price: Math.random() * 50,
       is_original: Math.random() < 0.5
-    }))
+    })),
+    stripe_connect_client_id: '',
+    can_checkout_with_made: false
   };
 }
 
