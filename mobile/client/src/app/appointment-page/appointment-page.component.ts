@@ -28,7 +28,6 @@ import {
 import { BookingCompleteComponentParams } from '~/booking/booking-complete/booking-complete.component';
 import { ConfirmCheckoutComponentParams } from '~/confirm-checkout/confirm-checkout.component';
 
-import { ENV } from '~/environments/environment.default';
 import { MadeDisableOnClick } from '~/shared/utils/loading';
 
 export interface AppointmentPageParams {
@@ -90,8 +89,6 @@ export enum AppointmentAttribute {
   templateUrl: 'appointment-page.component.html'
 })
 export class AppointmentPageComponent {
-  ffEnableIncomplete = ENV.ffEnableIncomplete;
-
   AppointmentAttribute = AppointmentAttribute;
   AppointmentStatus = AppointmentStatus;
   formatTimeInZone = formatTimeInZone;
@@ -226,13 +223,10 @@ export class AppointmentPageComponent {
 
   isPaymentShown(): boolean {
     return (
-      ENV.ffEnableIncomplete &&
+      this.isAppointmentInBooking() ||
       (
-        this.isAppointmentInBooking() ||
-        (
-          this.isAbleToCheckoutAppointment() &&
-          this.params.appointment.can_checkout_with_made
-        )
+        this.isAbleToCheckoutAppointment() &&
+        this.params.appointment.can_checkout_with_made
       )
     );
   }
