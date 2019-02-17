@@ -19,7 +19,7 @@ const testCardNumber = '4242424242424242';
   }
 };
 
-describe('InstagramOAuthService', () => {
+describe('CardScannerService', () => {
   beforeEach(async(() =>
     TestBed
       .configureTestingModule({
