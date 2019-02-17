@@ -81,6 +81,29 @@ describe('GetPaidPopupComponent', () => {
       .toBeTruthy();
   });
 
+  it('should have all texts', () => {
+    expect(fixture.nativeElement.textContent)
+      .toContain('How will I get paid?');
+    expect(fixture.nativeElement.textContent)
+      .toContain(
+        'We will charge their credit card and will send you the payment (minus credit card fees)'
+      );
+    expect(fixture.nativeElement.textContent)
+      .toContain('Total Charge');
+    expect(fixture.nativeElement.textContent)
+      .toContain(appointmentMock.grand_total);
+    expect(fixture.nativeElement.textContent)
+      .toContain('Credit Card Fees');
+    expect(fixture.nativeElement.textContent)
+      .toContain(appointmentMock.total_card_fee);
+    expect(fixture.nativeElement.textContent)
+      .toContain('You Earn');
+    expect(fixture.nativeElement.textContent)
+      .toContain(appointmentMock.grand_total - appointmentMock.total_card_fee);
+    expect(fixture.nativeElement.textContent)
+      .toContain('Payment Options');
+  });
+
   it('should connect Stripe payout', async done => {
     const api = fixture.debugElement.injector.get(IntegrationsApi);
     const stripe = fixture.debugElement.injector.get(StripeOAuthService);
@@ -104,6 +127,13 @@ describe('GetPaidPopupComponent', () => {
       .toHaveBeenCalledWith(integrationRequestParams);
     expect(appointmentMock.can_checkout_with_made)
       .toBeTruthy();
+
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.textContent)
+      .toContain('Payout Method');
+    expect(fixture.nativeElement.textContent)
+      .toContain('Stripe');
 
     done();
   });
