@@ -20,6 +20,27 @@
         </ion-col>
       </ion-row>
 
+      <div class="ServicesLis-title without-border SettingsTitleMargin" data-test-id="settingsTaxTitle">Payout Method</div>
+
+      <ion-row (click)="navigateToAddPayout()" data-test-id="settingsPayout" class="DiscountsList-row">
+        <ion-col no-padding col-8 class="DiscountsList-col">
+          <ng-container *ngIf="settings?.can_checkout_with_made; else addPayoutMethod">
+            <ion-row align-items-center class="Settings-stripe">
+              <img src="assets/icons/stripe@3x.png" />
+              <span>Stripe</span>
+            </ion-row>
+          </ng-container>
+
+          <ng-template #addPayoutMethod>Add</ng-template>
+        </ion-col>
+
+        <ion-col col-4 no-padding class="DiscountsList-col DiscountsList-colIcon"
+          *ngIf="!settings?.can_checkout_with_made">
+            <span></span>
+            <ion-icon name="ios-arrow-forward-outline"></ion-icon>
+        </ion-col>
+      </ion-row>
+
       <div class="ServicesLis-title without-border SettingsTitleMargin" data-test-id="settingsTaxTitle">Taxes and Fees</div>
 
       <ion-row (click)="navigateToTaxRate()" data-test-id="settingsTaxRate" class="DiscountsList-row">
@@ -29,17 +50,6 @@
 
         <ion-col col-4 no-padding class="DiscountsList-col DiscountsList-colIcon">
           <div>{{ (settings?.tax_percentage || 0) | number: '1.2' }}%</div>
-          <ion-icon name="ios-arrow-forward-outline"></ion-icon>
-        </ion-col>
-      </ion-row>
-
-      <ion-row (click)="navigateToCardFee()" data-test-id="settingsCardFee" class="DiscountsList-row">
-        <ion-col no-padding col-8 class="DiscountsList-col">
-          Card Fee
-        </ion-col>
-
-        <ion-col col-4 no-padding class="DiscountsList-col DiscountsList-colIcon">
-          <div>{{ (settings?.card_fee_percentage || 0) | number: '1.2' }}%</div>
           <ion-icon name="ios-arrow-forward-outline"></ion-icon>
         </ion-col>
       </ion-row>
