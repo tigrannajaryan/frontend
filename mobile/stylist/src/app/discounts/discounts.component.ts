@@ -1,15 +1,16 @@
 import { Component, ViewChild } from '@angular/core';
-import { Content, NavParams, Slides } from 'ionic-angular';
+import { Content, NavController, NavParams } from 'ionic-angular';
 
 import { DiscountsApi } from '~/core/api/discounts.api';
-import { Discounts, MaximumDiscounts, MaximumDiscountsWithVars, WeekdayDiscount } from '~/core/api/discounts.models';
+import { Discounts, MaximumDiscounts, WeekdayDiscount } from '~/core/api/discounts.models';
 import { PageNames } from '~/core/page-names';
 import { loading } from '~/core/utils/loading';
-import { FirstBooking } from '~/discounts/discounts-first-booking/discounts-first-booking.component';
-import { DiscountsRevisitComponent } from '~/discounts/discounts-revisit/discounts-revisit.component';
+import { DiscountsLoyaltyComponent } from '~/discounts/discounts-loyalty/discounts-loyalty.component';
 import { getProfileStatus, updateProfileStatus } from '~/shared/storage/token-utils';
 import { StylistProfileStatus } from '~/shared/api/stylist-app.models';
-import { WeekdayIso } from '~/shared/weekday';
+import { WEEKDAY_SHORT_NAMES, WeekdayIso } from '~/shared/weekday';
+import { Page } from 'ionic-angular/navigation/nav-util';
+import { DiscountsDealComponent } from '~/discounts/discounts-deal/discounts-deal.component';
 
 export enum DiscountTabNames {
   weekday,
@@ -28,46 +29,37 @@ export interface DiscountsComponentParams {
 })
 export class DiscountsComponent {
   @ViewChild(Content) content: Content;
-  @ViewChild(Slides) slides: Slides;
   PageNames = PageNames;
-  DiscountTabNames = DiscountTabNames;
+  WEEKDAY_SHORT_NAMES = WEEKDAY_SHORT_NAMES;
   weekdays: WeekdayDiscount[];
   rebook: WeekdayDiscount[];
-  firstBooking: FirstBooking = {
-    label: 'First booking',
-    percentage: 0
-  };
-  maximumDiscounts: MaximumDiscountsWithVars = {
-    is_maximum_discount_label: 'Enable Maximum Discount',
-    maximum_discount_label: 'Maximum Discount',
+  firstVisit = 0;
+  maximumDiscounts: MaximumDiscounts = {
     maximum_discount: 0,
     is_maximum_discount_enabled: false
   };
   dealOfTheWeek: WeekdayIso;
-  discountTabs = [
-    { name: 'Daily' },
-    { name: 'Loyalty' },
-    { name: 'First visit' },
-    { name: 'Maximum' }
-  ];
-  activeTab: DiscountTabNames;
   params: DiscountsComponentParams;
   profileStatus: StylistProfileStatus;
+  selectedWeekDay: WeekdayDiscount;
+
+  static sortWeekdays(weekdays: WeekdayDiscount[]): WeekdayDiscount[] {
+    weekdays = weekdays.sort((a, b) => a.weekday - b.weekday); // from 1 (Monday) to 7 (Sunday)
+    weekdays.unshift(weekdays.pop()); // Sunday should be first
+    return weekdays;
+  }
 
   constructor(
     public navParams: NavParams,
+    private navCtrl: NavController,
     private discountsApi: DiscountsApi
   ) {
   }
 
-  async ionViewWillLoad(): Promise<void> {
+  async ionViewWillEnter(): Promise<void> {
     this.params = this.navParams.get('params') as DiscountsComponentParams;
     await this.loadInitialData();
     await this.performInitialSaving(); // if needed
-  }
-
-  ionViewDidLoad(): void {
-    this.activeTab = DiscountTabNames.weekday;
   }
 
   @loading
@@ -78,11 +70,14 @@ export class DiscountsComponent {
     }
 
     const { first_booking, weekdays, deal_of_week_weekday, ...rebook } = discounts;
-    this.firstBooking.percentage = first_booking;
-    this.weekdays = weekdays.sort((a, b) => a.weekday - b.weekday); // from 1 (Monday) to 7 (Sunday)
-    this.weekdays.unshift(this.weekdays.pop()); // Sunday should be first
-    this.dealOfTheWeek = deal_of_week_weekday;
-    this.rebook = DiscountsRevisitComponent.transformRebookToDiscounts(rebook);
+    this.firstVisit = first_booking;
+    this.weekdays = DiscountsComponent.sortWeekdays(weekdays);
+    this.rebook = DiscountsLoyaltyComponent.transformRebookToDiscounts(rebook);
+
+    const weekday = DiscountsDealComponent.getDealOfTheWeekSet(deal_of_week_weekday, weekdays);
+    if (weekday) {
+      this.selectedWeekDay = weekday;
+    }
 
     const maximumDiscounts: MaximumDiscounts = (await this.discountsApi.getMaximumDiscounts().get()).response;
     if (maximumDiscounts) {
@@ -91,32 +86,14 @@ export class DiscountsComponent {
     }
   }
 
+  openDiscountPage(page: Page): void {
+    this.navCtrl.push(page);
+  }
+
   async doRefresh(refresher): Promise<void> {
     await this.loadInitialData();
 
     refresher.complete();
-  }
-
-  changeTab(activeTab: DiscountTabNames): void {
-    this.activeTab = activeTab;
-
-    this.updateSlider(activeTab);
-  }
-
-  // swipe action for tabs
-  onSlideChanged(): void {
-    // if index more or equal to tabs length we got an error
-    if (this.slides.getActiveIndex() >= this.discountTabs.length) {
-      return;
-    }
-    this.activeTab = this.slides.getActiveIndex();
-    this.updateSlider(this.activeTab);
-  }
-
-  updateSlider(activeTab: DiscountTabNames): void {
-    const animationSpeedMs = 500;
-    this.slides.slideTo(activeTab, animationSpeedMs);
-    this.content.scrollToTop(animationSpeedMs);
   }
 
   onWeekdayChange(): void {
@@ -126,18 +103,18 @@ export class DiscountsComponent {
   async onUpdateWeekdayDiscounts(): Promise<void> {
     const discounts: Discounts = (await this.discountsApi.getDiscounts().get()).response;
     if (discounts) {
-      this.weekdays = discounts.weekdays.sort((a, b) => a.weekday - b.weekday); // from 1 (Monday) to 7 (Sunday)
+      this.weekdays = DiscountsComponent.sortWeekdays(discounts.weekdays);
     }
   }
 
   onRevisitChange(): void {
     if (this.rebook) {
-      this.discountsApi.setDiscounts(DiscountsRevisitComponent.transformDiscountsToRebook(this.rebook)).get();
+      this.discountsApi.setDiscounts(DiscountsLoyaltyComponent.transformDiscountsToRebook(this.rebook)).get();
     }
   }
 
   onFirstVisitChange(): void {
-    this.discountsApi.setDiscounts({ first_booking: this.firstBooking.percentage }).get();
+    this.discountsApi.setDiscounts({ first_booking: this.firstVisit }).get();
   }
 
   onMaximumDiscountChange(): void {
@@ -153,9 +130,9 @@ export class DiscountsComponent {
       // Perform initial saving of the discounts and mark them checked.
       const responses = await Promise.all([
         this.discountsApi.setDiscounts({
-          ...DiscountsRevisitComponent.transformDiscountsToRebook(this.rebook),
+          ...DiscountsLoyaltyComponent.transformDiscountsToRebook(this.rebook),
           weekdays: this.weekdays,
-          first_booking: this.firstBooking.percentage
+          first_booking: this.firstVisit
         }).first().toPromise(),
         this.discountsApi.setMaximumDiscounts({
           maximum_discount: this.maximumDiscounts.maximum_discount,

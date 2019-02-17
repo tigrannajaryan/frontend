@@ -2,19 +2,20 @@
 
 
 <ion-content no-padding>
-  <made-nav [activePage]="PageNames.DiscountsWeekday"></made-nav>
-
   <div class="Made-wp Made-wpContent">
     <div class="Made-h1">Daily Discounts</div>
+
+    <div class="Made-text">
+      <div class="Made-textItem">
+        MADE will steadily increase prices to the full price automatically as clients book and your day fills up!
+      </div>
+    </div>
 
     <!-- Show spinner if loading is in progress -->
     <div class="Spinner">
       <ion-spinner *ngIf="isLoading"></ion-spinner>
     </div>
 
-    <discounts-weekday-short [discounts]="discounts" (weekdayChange)="onWeekdayChange()"></discounts-weekday-short>
+    <discounts-list [list]="discounts" [dealOfTheWeek]="dealOfTheWeek" (discountChange)="onSave()"></discounts-list>
   </div>
 </ion-content>
-
-
-<ion-footer madeContinueFooter (continue)="onContinue()"></ion-footer>

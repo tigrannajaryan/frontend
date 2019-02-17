@@ -81,11 +81,9 @@ import { ChangePercentComponent } from '~/core/popups/change-percent/change-perc
 import { ClientDetailsComponent } from '~/clients/client-details/client-details.component';
 import { ClientsCalendarComponent } from '~/calendar/clients-calendar/clients-calendar.component';
 import { ConfirmCheckoutComponent } from '~/core/popups/confirm-checkout/confirm-checkout.component';
-import { DiscountsAlertComponent } from '~/discounts/discounts-alert/discounts-alert.component';
 import { DiscountsComponent } from '~/discounts/discounts.component';
-import { DiscountsFirstBookingComponent } from '~/discounts/discounts-first-booking/discounts-first-booking.component';
-import { DiscountsRevisitComponent } from '~/discounts/discounts-revisit/discounts-revisit.component';
-import { DiscountsWeekdayComponent } from '~/discounts/discounts-weekday/discounts-weekday.component';
+import { DiscountsFirstVisitComponent } from '~/discounts/discounts-first-visit/discounts-first-visit.component';
+import { DiscountsLoyaltyComponent } from '~/discounts/discounts-loyalty/discounts-loyalty.component';
 import { FirstScreenComponent } from '~/first-screen/first-screen';
 import { GetPaidPopupComponent } from '~/appointment/get-paid-popup/get-paid-popup.component';
 import { HomeSlotsComponent } from '~/home-slots/home-slots.component';
@@ -110,6 +108,9 @@ import { StylistPhotoComponent } from '~/onboarding/stylist-photo/stylist-photo.
 import { WelcomeToMadeComponent } from '~/onboarding/welcome-to-made/welcome-to-made.component';
 import { SettingsComponent } from '~/settings/settings.component';
 import { SettingsFieldComponent } from '~/settings/settings-field/settings-field.component';
+import { DiscountsDailyComponent } from '~/discounts/discounts-daily/discounts-daily.component';
+import { DiscountsMaximumComponent } from '~/discounts/discounts-maximum/discounts-maximum.component';
+import { DiscountsDealComponent } from '~/discounts/discounts-deal/discounts-deal.component';
 
 initSentry();
 
@@ -164,17 +165,17 @@ const declarations = [
   ClientDetailsComponent,
   ClientsCalendarComponent,
   ConfirmCheckoutComponent,
-  DiscountsAlertComponent,
   DiscountsComponent,
-  DiscountsFirstBookingComponent,
-  DiscountsRevisitComponent,
-  DiscountsWeekdayComponent,
+  DiscountsDailyComponent,
+  DiscountsDealComponent,
+  DiscountsFirstVisitComponent,
+  DiscountsLoyaltyComponent,
+  DiscountsMaximumComponent,
   FirstScreenComponent,
   GetPaidPopupComponent,
   HomeSlotsComponent,
   InvitationsComponent,
   ListPickerPopupComponent,
-  SettingsFieldComponent,
   MyClientsComponent,
   ProfileComponent,
   PushPrimingScreenComponent,
@@ -184,6 +185,7 @@ const declarations = [
   ServicesComponent,
   ServicesListComponent,
   SettingsComponent,
+  SettingsFieldComponent,
   UpcomingAndPastComponent,
   WorkHoursComponent,
 

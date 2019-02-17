@@ -108,6 +108,8 @@ import { HomeService } from '~/core/api/home.service';
 import { HomeServiceMock } from '~/core/api/home.service.mock';
 
 import { AppModule } from '~/app.module';
+import { DiscountsApi } from '~/core/api/discounts.api';
+import { DiscountsApiMock } from '~/core/api/discounts.api.mock';
 
 declare const require: any;
 declare const console: any;
@@ -192,6 +194,7 @@ export class TestUtils {
         },
         // the API
         { provide: ClientsApi, useClass: ClientsApiMock },
+        { provide: DiscountsApi, useClass: DiscountsApiMock },
         { provide: ClientDetailsApi, useClass: ClientDetailsApiMock },
         { provide: HomeService, useClass: HomeServiceMock },
         { provide: StylistServiceProvider, useClass: StylistServiceMock },
