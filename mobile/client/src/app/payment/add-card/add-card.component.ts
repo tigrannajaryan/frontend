@@ -8,6 +8,7 @@ import { reportToSentry } from '~/shared/sentry';
 import { invalidFor } from '~/shared/validators/invalid-for.validator';
 
 import { PaymentsApi } from '~/core/api/payments.api';
+import { CardScannerService } from '~/core/card-scanner-service';
 import { ProfileDataStore } from '~/profile/profile.data';
 
 import { StripeError, StripeResponse } from '~/payment/stripe.models';
@@ -35,6 +36,7 @@ export class AddCardComponent {
 
   constructor(
     private api: PaymentsApi,
+    private cardScanner: CardScannerService,
     private formBuilder: FormBuilder,
     private keyboard: Keyboard,
     private navCtrl: NavController,
@@ -86,6 +88,16 @@ export class AddCardComponent {
           this.cardCvvInput.setFocus();
         }
       });
+  }
+
+  async onScanCard(): Promise<void> {
+    const cardNumber = await this.cardScanner.scan();
+    if (cardNumber) {
+      this.form.controls.cardNumber.setValue(
+        cardNumber.replace(/(\d{4})/g, '$&  ').trim()
+      );
+      this.form.controls.cardNumber.updateValueAndValidity();
+    }
   }
 
   async onSaveClick(): Promise<void> {
