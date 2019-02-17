@@ -64,19 +64,24 @@
             </ion-col>
           </ion-row>
 
-          <ion-row
-            (click)="onTaxEdit()"
+          <ion-row align-items-center class="CheckOut-tax" data-test-id="appointmentTaxPercentage"
             *ngIf="!params?.isAlreadyCheckedOut || hasTaxIncluded"
-            align-items-center
-            class="CheckOut-tax"
-            data-test-id="appointmentTaxPercentage">
+            (click)="onTaxEdit()">
             <ion-col col-9 no-padding>
-              <span class="text-muted">Tax Rate ({{ previewResponse.tax_percentage | number: '1.2' }}%)</span>
+              <span class="text-muted">Tax Rate ({{ previewResponse.tax_percentage | number: '1.1-3' }}%)</span>
               <button class="Link">Edit</button>
             </ion-col>
             <ion-col col-3 no-padding>
               <span>{{ previewResponse.total_tax.toFixed(2) | currency }}</span>
             </ion-col>
+          </ion-row>
+
+          <ion-row align-items-center class="CheckOut-tax"
+            *ngIf="!params?.isAlreadyCheckedOut"
+            (click)="onHowToGetPaid()">
+              <ion-col col-12 no-padding>
+                <button class="Link">How will I get paid?</button>
+              </ion-col>
           </ion-row>
         </div>
 

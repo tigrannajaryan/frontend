@@ -51,6 +51,8 @@ export interface StylistAppointmentModel extends BaseAppointmentModel {
   client_last_name: string;
   client_profile_photo_url: string;
   client_phone: string;
+  stripe_connect_client_id: string;
+  can_checkout_with_made: boolean;
 }
 
 /**
@@ -66,6 +68,7 @@ export interface ClientAppointmentModel extends BaseAppointmentModel {
   profile_photo_url: string; // client’s photo
   rating: number;
   comment: string;
+  can_checkout_with_made: boolean;
 }
 
 // Next you find shared (between 2 apps) requests and responses.

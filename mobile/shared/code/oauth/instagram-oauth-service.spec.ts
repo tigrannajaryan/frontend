@@ -71,16 +71,19 @@ describe('InstagramOAuthService', () => {
         done();
       });
 
+    const baseUrl = 'https://api.instagram.com/oauth/authorize/';
+    const redirectTo = 'https://madebeauty.com/';
+
     expect(inAppBrowser.open)
       .toHaveBeenCalledWith(
-        `${InstagramOAuthService.baseUrl}?client_id=${fakeClientId}&redirect_uri=${InstagramOAuthService.redirectTo}&response_type=token`,
+        `${baseUrl}?redirect_uri=${redirectTo}&response_type=token&client_id=${fakeClientId}`,
         '_blank', 'location=no,clearsessioncache=yes,clearcache=yes,closebuttoncaption=Cancel'
       );
 
     // Trigger loadstart
     browserWindowMockInstance.getEventListener('loadstart')({
       type: 'loadstart',
-      url: `${InstagramOAuthService.redirectTo}#access_token=${fakeToken}`
+      url: `${redirectTo}#access_token=${fakeToken}`
     });
   });
 });

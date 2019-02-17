@@ -1,0 +1,58 @@
+get-paid-popup {
+  .GetPaidPopup-close {
+    margin-bottom: pxtovw(20px);
+    font-size: pxtovw(42px);
+    color: black;
+  }
+
+  .GetPaidPopup-h1 {
+    margin: 0;
+  }
+
+  .GetPaidPopup-content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 0 pxtovw(24px);
+    background: white;
+  }
+
+  .GetPaidPopup-text {
+    margin: pxtovw(16px) 0;
+    font-size: $shared-h4;
+    line-height: 24 / 18 * 1em;
+  }
+
+  .GetPaidPopup-table {
+    margin-bottom: pxtovw(32px);
+    font-size: $shared-h4;
+    line-height: 24 / 18 * 1em;
+
+    strong {
+      font-weight: bold;
+    }
+  }
+
+  .GetPaidPopup-payout {
+    padding: pxtovw(16px) 0;
+    font-size: $shared-h4;
+    border-top: pxtovw(1px) solid rgba(black, 0.16);
+    border-bottom: pxtovw(1px) solid rgba(black, 0.16);
+  }
+
+  .GetPaidPopup-payoutLink {
+    margin-top: pxtovw(8px);
+  }
+
+  .GetPaidPopup-stripe {
+    margin-top: pxtovw(8px);
+
+    img { // stripe logo
+      $img-size: pxtovw(24px);
+
+      width: $img-size;
+      height: $img-size;
+      margin-right: pxtovw(12px);
+    }
+  }
+}

@@ -116,7 +116,9 @@ export class HomeServiceMock {
         client_uuid: 'string',
         client_profile_photo_url: 'string',
         grand_total: 0,
-        created_at: 'string'
+        created_at: 'string',
+        stripe_connect_client_id: '',
+        can_checkout_with_made: false
       }
     });
   }

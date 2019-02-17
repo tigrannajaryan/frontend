@@ -56,7 +56,10 @@ const appointmentMock: StylistAppointmentModel = {
   client_first_name: faker.name.firstName(),
   client_last_name: faker.name.lastName(),
   client_phone: faker.phone.phoneNumber(),
-  client_profile_photo_url: faker.image.imageUrl()
+  client_profile_photo_url: faker.image.imageUrl(),
+  // Payment
+  stripe_connect_client_id: '',
+  can_checkout_with_made: false
 };
 
 const previewMock: AppointmentPreviewResponse = {

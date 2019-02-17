@@ -3,7 +3,7 @@ import { NavController, NavParams } from 'ionic-angular';
 
 import { Logger } from '~/shared/logger';
 import { showAlert } from '~/shared/utils/alert';
-import { InstagramOAuthService } from '~/shared/utils/instagram-oauth-service';
+import { InstagramOAuthService } from '~/shared/oauth/instagram-oauth-service';
 
 import { ENV } from '~/environments/environment.default';
 
