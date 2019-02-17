@@ -155,7 +155,7 @@ describe('Pages: DiscountsComponent', () => {
     expect(discounts_firstVisit.innerText).toContain(instance.firstVisit);
   });
 
-  it('should show correct value for first visit', () => {
+  it('should show correct value for max discount', () => {
     const discounts_maximum = fixture.nativeElement.querySelector('[data-test-id=discounts_maximum]');
     expect(discounts_maximum).toBeDefined();
     fixture.detectChanges();

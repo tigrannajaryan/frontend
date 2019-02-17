@@ -107,9 +107,14 @@ import { StylistAppStorageMock } from '~/core/stylist-app-storage.mock';
 import { HomeService } from '~/core/api/home.service';
 import { HomeServiceMock } from '~/core/api/home.service.mock';
 
+import { IntegrationsApi } from '~/shared/api/integrations.api';
+import { IntegrationsApiMock } from '~/shared/api/integrations.api.mock';
+
 import { AppModule } from '~/app.module';
 import { DiscountsApi } from '~/core/api/discounts.api';
 import { DiscountsApiMock } from '~/core/api/discounts.api.mock';
+
+import { StripeOAuthService } from '~/core/stripe-oauth-service';
 
 declare const require: any;
 declare const console: any;
@@ -169,7 +174,7 @@ export class TestUtils {
         { provide: PopoverController, useClass: PopoverControllerMock },
         { provide: GoogleAnalytics, useClass: GoogleAnalyticsMock },
         { provide: StylistAppStorage, useClass: StylistAppStorageMock },
-        ExternalAppService, GoogleSignin,
+        ExternalAppService, GoogleSignin, StripeOAuthService,
         {
           provide: AppAvailability,
           useClass: class AppAvailabilityMock {
@@ -200,6 +205,7 @@ export class TestUtils {
         { provide: StylistServiceProvider, useClass: StylistServiceMock },
         { provide: WorktimeApi, useClass: WorktimeApiMock },
         { provide: MadeAnalyticsApi, useClass: MadeAnalyticsApiMock },
+        { provide: IntegrationsApi, useClass: IntegrationsApiMock },
         ...providers
       ],
       imports: [

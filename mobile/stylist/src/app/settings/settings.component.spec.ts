@@ -91,7 +91,11 @@ describe('Pages: SettingsComponent', () => {
     expect(instance.onContactByEmail).toHaveBeenCalledWith('faq@madebeauty.com');
   });
 
-  it('should have two titles', () => {
+  it('should have 3 titles', () => {
+    const settingsPayoutTitle = fixture.nativeElement.querySelector('[data-test-id=settingsPayoutTitle]');
+    expect(settingsPayoutTitle.outerText.trim())
+      .toContain('Payout Method');
+
     const settingsTaxTitle = fixture.nativeElement.querySelector('[data-test-id=settingsTaxTitle]');
     expect(settingsTaxTitle.outerText.trim())
       .toContain('Taxes and Fees');
@@ -101,15 +105,11 @@ describe('Pages: SettingsComponent', () => {
       .toContain('About MADE');
   });
 
-  it('should have rounded tax and card fee', () => {
+  it('should have rounded tax', () => {
     const decimalPipe = fixture.debugElement.injector.get(DecimalPipe);
 
     const settingsTaxRate = fixture.nativeElement.querySelector('[data-test-id=settingsTaxRate]');
     expect(settingsTaxRate.outerText.trim())
       .toContain(`${ decimalPipe.transform(instance.settings.tax_percentage, '1.2')  }%`);
-
-    const settingsCardFee = fixture.nativeElement.querySelector('[data-test-id=settingsCardFee]');
-    expect(settingsCardFee.outerText.trim())
-      .toContain(`${ decimalPipe.transform(instance.settings.card_fee_percentage, '1.2')  }%`);
   });
 });
