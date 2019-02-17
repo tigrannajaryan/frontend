@@ -59,7 +59,6 @@ describe('Pages: SettingsComponent', () => {
 
   xit('should have all links', () => {
     spyOn(instance, 'navigateToTaxRate');
-    spyOn(instance, 'navigateToCardFee');
     spyOn(instance, 'navigateTo');
     spyOn(instance, 'onContactByEmail');
 
@@ -72,12 +71,6 @@ describe('Pages: SettingsComponent', () => {
       .toContain('Tax Rate');
     settingsTaxRate.click();
     expect(instance.navigateToTaxRate).toHaveBeenCalled();
-
-    const settingsCardFee = fixture.nativeElement.querySelector('[data-test-id=settingsCardFee]');
-    expect(settingsCardFee.outerText.trim())
-      .toContain('Card Fee');
-    settingsCardFee.click();
-    expect(instance.navigateToCardFee).toHaveBeenCalled();
 
     const settingsCalendarExample = fixture.nativeElement.querySelector('[data-test-id=settingsCalendarExample]');
     expect(settingsCalendarExample.outerText.trim())
