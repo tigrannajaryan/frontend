@@ -153,6 +153,10 @@ export class TestUtils {
     return TestUtils.configureIonicTestingModule(components, providers, imports)
       .compileComponents()
       .then(() => {
+        if (components.length === 0) {
+          return;
+        }
+
         const fixture: any = TestBed.createComponent(components[0]);
 
         // Needed to use AppModule.injector.get(…):

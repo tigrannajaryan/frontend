@@ -1,6 +1,6 @@
 import { async, TestBed } from '@angular/core/testing';
-import { IonicModule } from 'ionic-angular';
 
+import { TestUtils } from '~/../test';
 import { CardScannerService } from './card-scanner-service';
 
 let instance: CardScannerService;
@@ -21,18 +21,7 @@ const testCardNumber = '4242424242424242';
 
 describe('CardScannerService', () => {
   beforeEach(async(() =>
-    TestBed
-      .configureTestingModule({
-        providers: [
-          CardScannerService
-        ],
-        imports: [
-          // Load all Ionic’s deps:
-          // tslint:disable-next-line:no-invalid-this
-          IonicModule.forRoot(this)
-        ]
-      })
-      .compileComponents()
+    TestUtils.beforeEachCompiler([], [CardScannerService])
       .then(() => {
         instance = TestBed.get(CardScannerService);
       })
