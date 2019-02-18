@@ -1,5 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { IonicModule, NavParams, ViewController } from 'ionic-angular';
+import { NavParams, ViewController } from 'ionic-angular';
 import { ViewControllerMock } from 'ionic-mocks';
 import { of } from 'rxjs/observable/of';
 import * as faker from 'faker';
@@ -9,6 +9,7 @@ import { AppointmentStatus, StylistAppointmentModel } from '~/shared/api/appoint
 import { AddIntegrationRequest, IntegrationsApi, IntegrationTypes } from '~/shared/api/integrations.api';
 import { IntegrationsApiMock } from '~/shared/api/integrations.api.mock';
 
+import { TestUtils } from '~/../test';
 import { StripeOAuthService } from '~/core/stripe-oauth-service';
 
 import { GetPaidPopupComponent, GetPaidPopupParams } from './get-paid-popup.component';
@@ -48,24 +49,14 @@ const appointmentMock: StylistAppointmentModel = {
 
 describe('GetPaidPopupComponent', () => {
   beforeEach(async(() =>
-    TestBed
-      .configureTestingModule({
-        declarations: [GetPaidPopupComponent],
-        providers: [
-          NavParams, StripeOAuthService,
-          { provide: IntegrationsApi, useClass: IntegrationsApiMock },
-          { provide: ViewController, useFactory: () => ViewControllerMock.instance() }
-        ],
-        imports: [
-          // Load all Ionic’s deps:
-          // tslint:disable-next-line:no-invalid-this
-          IonicModule.forRoot(this)
-        ]
-      })
-      .compileComponents()
-      .then(() => {
-        fixture = TestBed.createComponent(GetPaidPopupComponent);
-        instance = fixture.componentInstance;
+    TestUtils.beforeEachCompiler([GetPaidPopupComponent], [
+      StripeOAuthService,
+      { provide: IntegrationsApi, useClass: IntegrationsApiMock },
+      { provide: ViewController, useFactory: () => ViewControllerMock.instance() }
+    ])
+      .then(compiled => {
+        fixture = compiled.fixture;
+        instance = compiled.instance;
       })
       .then(() => {
         params = { appointment: appointmentMock };
