@@ -31,13 +31,15 @@ export class GetPaidPopupComponent implements OnInit {
 
   async onConnectPayout(): Promise<void> {
     const code = await this.stripe.auth(this.params.appointment.stripe_connect_client_id);
-    const params: AddIntegrationRequest = {
-      server_auth_code: code,
-      integration_type: IntegrationTypes.stripe_connect
-    };
-    const { error } = await this.api.addIntegration(params).toPromise();
-    if (!error) {
-      this.params.appointment.can_checkout_with_made = true;
+    if (code) {
+      const params: AddIntegrationRequest = {
+        server_auth_code: code,
+        integration_type: IntegrationTypes.stripe_connect
+      };
+      const { error } = await this.api.addIntegration(params).toPromise();
+      if (!error) {
+        this.params.appointment.can_checkout_with_made = true;
+      }
     }
   }
 
