@@ -10,6 +10,18 @@ add-card {
     line-height: 16/15 * 1em;
   }
 
+  .AddCard-wrap {
+    position: relative;
+
+    img {
+      position: absolute;
+      right: 0;
+      bottom: pxtovw(8px);
+      width: pxtovw(30px);
+      height: pxtovw(26px);
+    }
+  }
+
   .AddCard-formControl {
     .label {
       font-size: $shared-h4;

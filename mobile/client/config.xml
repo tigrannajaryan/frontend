@@ -170,6 +170,7 @@
             <string>applinks:madebeauty.com</string>
         </array>
     </config-file>
+    <plugin name="card.io.cordova.mobilesdk" spec="^2.1.0" />
     <engine name="android" spec="7.1.0" />
     <engine name="ios" spec="4.5.5" />
 </widget>

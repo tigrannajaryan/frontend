@@ -73,6 +73,8 @@ import {
   ToastControllerMock
 } from 'ionic-mocks';
 
+import { BrMaskerModule } from 'brmasker-ionic-3';
+
 import { ExternalAppService } from './app/shared/utils/external-app-service';
 import { GeolocationService } from './app/shared/utils/geolocation.service';
 import { GeolocationServiceMock } from './app/shared/utils/geolocation.service.mock';
@@ -151,6 +153,10 @@ export class TestUtils {
     return TestUtils.configureIonicTestingModule(components, providers, imports)
       .compileComponents()
       .then(() => {
+        if (components.length === 0) {
+          return;
+        }
+
         const fixture: any = TestBed.createComponent(components[0]);
 
         // Needed to use AppModule.injector.get(…):
@@ -225,6 +231,7 @@ export class TestUtils {
           LogoutEffects,
           ServicesEffects
         ]),
+        BrMaskerModule,
         ...imports
       ]
     });

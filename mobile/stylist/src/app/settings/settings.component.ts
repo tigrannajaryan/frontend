@@ -5,10 +5,12 @@ import { Page } from 'ionic-angular/navigation/nav-util';
 
 import { ExternalAppService } from '~/shared/utils/external-app-service';
 import { InputTypes } from '~/shared/api/base.models';
+import { AddIntegrationRequest, IntegrationsApi, IntegrationTypes } from '~/shared/api/integrations.api';
 
 import { PageNames } from '~/core/page-names';
 import { StylistSettings, StylistSettingsKeys } from '~/shared/api/stylist-app.models';
 import { StylistServiceProvider } from '~/core/api/stylist.service';
+import { StripeOAuthService } from '~/core/stripe-oauth-service';
 import { SettingsFieldComponentParams } from '~/settings/settings-field/settings-field.component';
 
 @Component({
@@ -20,8 +22,10 @@ export class SettingsComponent {
   settings: StylistSettings;
 
   constructor(
+    private integrationsApi: IntegrationsApi,
     private navCtrl: NavController,
     private externalAppService: ExternalAppService,
+    private stripe: StripeOAuthService,
     private stylistService: StylistServiceProvider
   ) {
   }
@@ -30,6 +34,18 @@ export class SettingsComponent {
     const { response } = await this.stylistService.getStylistSettings().toPromise();
     if (response) {
       this.settings = response;
+    }
+  }
+
+  async navigateToAddPayout(): Promise<void> {
+    const code = await this.stripe.auth(this.settings.stripe_connect_client_id);
+    const params: AddIntegrationRequest = {
+      server_auth_code: code,
+      integration_type: IntegrationTypes.stripe_connect
+    };
+    const { error } = await this.integrationsApi.addIntegration(params).toPromise();
+    if (!error) {
+      this.settings.can_checkout_with_made = true;
     }
   }
 
@@ -47,26 +63,6 @@ export class SettingsComponent {
       ],
       onSave: async (val: number) => {
         this.settings.tax_percentage = val;
-        await this.stylistService.setStylistSettings(this.settings).toPromise();
-      }
-    };
-    this.navCtrl.push(PageNames.SettingsField, { params });
-  }
-
-  navigateToCardFee(): void {
-    const params: SettingsFieldComponentParams = {
-      title: 'Card Fee Percentage',
-      name: StylistSettingsKeys.card_fee_percentage,
-      inputType: InputTypes.number,
-      value: [
-        this.settings.card_fee_percentage,
-        [
-          Validators.required,
-          Validators.pattern(/^(\d{1,2})(\.\d{1,3})?$/)
-        ]
-      ],
-      onSave: async (val: number) => {
-        this.settings.card_fee_percentage = val;
         await this.stylistService.setStylistSettings(this.settings).toPromise();
       }
     };

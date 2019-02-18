@@ -49,6 +49,8 @@ import { ProfileEffects } from '~/core/effects/profile.effects';
 import { CoreModule } from '~/core/core.module';
 import { DataModule } from '~/core/api/data.module';
 
+import { CardScannerService } from '~/core/card-scanner-service';
+
 import { BaseService } from '~/shared/api/base.service';
 import { ExternalAppService } from '~/shared/utils/external-app-service';
 import { GeolocationService } from '~/shared/utils/geolocation.service';
@@ -232,6 +234,7 @@ const declarations = [
     ExternalAppService,
     GeolocationService,
     ServerStatusTracker,
+    CardScannerService,
 
     Push,
     PushNotification,

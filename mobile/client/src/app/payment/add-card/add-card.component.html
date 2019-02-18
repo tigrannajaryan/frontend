@@ -11,12 +11,15 @@
           You won't be charged until your visit is complete. Pay with card or in-salon at the end of your visit.
         </div>
 
-        <ion-item class="FormControl AddCard-formControl AddCard-formControl--card"
-          [class.is-invalid]="!form.controls.cardNumber.pristine && form.controls.cardNumber.invalid">
-            <ion-label stacked>Card Number</ion-label>
-            <ion-input formControlName="cardNumber" type="tel" placeholder="••••  ••••  ••••  ••••" autocomplete="false"
-              [brmasker]="{mask: '0000  0000  0000  0000  0', type: 'num', len: 19 + 8}"></ion-input>
-        </ion-item>
+        <div class="AddCard-wrap">
+          <ion-item class="FormControl AddCard-formControl AddCard-formControl--card"
+            [class.is-invalid]="!form.controls.cardNumber.pristine && form.controls.cardNumber.invalid">
+              <ion-label stacked>Card Number</ion-label>
+              <ion-input formControlName="cardNumber" type="tel" placeholder="••••  ••••  ••••  ••••" autocomplete="false"
+                [brmasker]="{mask: '0000  0000  0000  0000  0', type: 'num', len: 19 + 8}"></ion-input>
+          </ion-item>
+          <img (click)="onScanCard()" src="assets/icons/card-scan@3x.png" />
+        </div>
 
         <ion-row>
           <ion-col no-padding>

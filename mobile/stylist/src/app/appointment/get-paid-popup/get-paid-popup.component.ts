@@ -30,9 +30,6 @@ export class GetPaidPopupComponent implements OnInit {
   }
 
   async onConnectPayout(): Promise<void> {
-    // Just for test
-    this.params.appointment.stripe_connect_client_id = 'ca_EB9pse6wEFoaC4i6myfBWG4vhdPAqcOu';
-
     const code = await this.stripe.auth(this.params.appointment.stripe_connect_client_id);
     const params: AddIntegrationRequest = {
       server_auth_code: code,
