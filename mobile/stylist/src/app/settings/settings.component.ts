@@ -39,13 +39,15 @@ export class SettingsComponent {
 
   async navigateToAddPayout(): Promise<void> {
     const code = await this.stripe.auth(this.settings.stripe_connect_client_id);
-    const params: AddIntegrationRequest = {
-      server_auth_code: code,
-      integration_type: IntegrationTypes.stripe_connect
-    };
-    const { error } = await this.integrationsApi.addIntegration(params).toPromise();
-    if (!error) {
-      this.settings.can_checkout_with_made = true;
+    if (code) {
+      const params: AddIntegrationRequest = {
+        server_auth_code: code,
+        integration_type: IntegrationTypes.stripe_connect
+      };
+      const { error } = await this.integrationsApi.addIntegration(params).toPromise();
+      if (!error) {
+        this.settings.can_checkout_with_made = true;
+      }
     }
   }
 
