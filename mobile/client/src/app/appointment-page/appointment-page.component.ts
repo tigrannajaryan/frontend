@@ -356,7 +356,7 @@ export class AppointmentPageComponent {
   }
 
   async onCheckoutAndPay(): Promise<void> {
-    this.onCheckout(this.payment);
+    await this.onCheckout(this.payment);
   }
 
   async onCheckout(payment: PaymentMethod): Promise<void> {
