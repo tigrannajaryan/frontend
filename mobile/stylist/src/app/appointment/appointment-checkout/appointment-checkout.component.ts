@@ -41,6 +41,7 @@ export interface AppointmentCheckoutParams {
   templateUrl: 'appointment-checkout.component.html'
 })
 export class AppointmentCheckoutComponent {
+  settings: StylistSettings;
 
   // The following field is returned by the server as a result
   // of us asking for a preview of what the appointment will look
@@ -76,6 +77,13 @@ export class AppointmentCheckoutComponent {
     private homeService: HomeService,
     private stylistService: StylistServiceProvider
   ) {
+  }
+
+  async ionViewWillLoad(): Promise<void> {
+    const { response } = await this.stylistService.getStylistSettings().toPromise();
+    if (response) {
+      this.settings = response;
+    }
   }
 
   async ionViewWillEnter(): Promise<void> {
@@ -159,10 +167,15 @@ export class AppointmentCheckoutComponent {
     await this.updatePreview();
   }
 
-  async onFinalizeCheckoutClick(): Promise<void> {
+  async onCheckoutAndPay(): Promise<void> {
+    await this.onFinalizeCheckoutClick(true);
+  }
+
+  async onFinalizeCheckoutClick(payViaMade = false): Promise<void> {
     const request: AppointmentChangeRequest = {
       ...this.getChangeAppointmentRequestParams(),
-      status: AppointmentStatus.checked_out
+      status: AppointmentStatus.checked_out,
+      pay_via_made: payViaMade
     };
 
     const { response } = await this.homeService.changeAppointment(this.params.appointmentUuid, request).get();

@@ -218,4 +218,30 @@ page-checkout {
       margin-left: pxtovw(7px);
     }
   }
+
+  ion-footer {
+    padding: pxtovw(19px) pxtovw(24px);
+  }
+
+  .AppointmentPage-checkout {
+    position: relative;
+    display: block;
+    width: 100%;
+    font-size: $shared-h4;
+    font-weight: 500;
+
+    [class^="mb-icon"] {
+      $icon-size: pxtovw(16px);
+
+      position: absolute;
+      top: 50%;
+      left: pxtovw(12px);
+      margin-top: -1 * $icon-size / 2;
+      font-size: $icon-size;
+    }
+
+    + .AppointmentPage-checkout {
+      margin-top: pxtovw(12px);
+    }
+  }
 }

@@ -109,9 +109,17 @@
 </ion-content>
 
 <ion-footer
-  *ngIf="!params?.isAlreadyCheckedOut && !params?.isReadonly"
-  (continue)="onFinalizeCheckoutClick()"
-  data-test-id="appointmentFinalizeCheckout"
-  madeContinueFooter
-  [title]="'Checkout' + (previewResponse ? ' $' + previewResponse.grand_total.toFixed() : '')">
+  *ngIf="!params?.isAlreadyCheckedOut && !params?.isReadonly">
+      <!-- Pay and checkout -->
+      <button ion-button class="Button AppointmentPage-checkout"
+        (click)="settings?.can_checkout_with_made ? onCheckoutAndPay() : onHowToGetPaid()">
+          <i class="mb-icon-credit-card"></i>
+          {{ settings?.can_checkout_with_made ? 'Checkout: Pay via MADE App' : 'Add Payment Method' }}
+      </button>
+
+      <!-- Just checkout (paid in salon) -->
+      <button ion-button outline class="Button AppointmentPage-checkout" data-test-id="appointmentFinalizeCheckout"
+        (click)="onFinalizeCheckoutClick()">
+          Checkout: Paid In-Salon
+      </button>
 </ion-footer>
