@@ -51,7 +51,7 @@
             {{ weekday.weekday_verbose }}
           </div>
 
-          <div (click)="onSelectWeekday(weekday)" class="Input-radio">
+          <div *ngIf="weekday.is_working_day" (click)="onSelectWeekday(weekday)" class="Input-radio">
             <input
               id="radio-{{ weekday.weekday }}"
               [value]="weekday.weekday"
@@ -59,6 +59,10 @@
               name="deal"
               type="radio">
             <label for="radio-{{ weekday.weekday }}" class="Input-radioLabel"></label>
+          </div>
+
+          <div *ngIf="!weekday.is_working_day" class="MadeBigList-value inactive">
+            Unavailable
           </div>
         </div>
       </ion-row>
