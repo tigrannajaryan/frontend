@@ -51,9 +51,6 @@ export class AppointmentCheckoutComponent {
   // The details of the appointment
   appointment: StylistAppointmentModel;
 
-  // Tax not included by default
-  hasTaxIncluded = false;
-
   // Change Services/Price true should be only for
   // not checked_out and isTodayAppointment appointment
   hasServicesPriceBtn = false;
@@ -117,7 +114,7 @@ export class AppointmentCheckoutComponent {
         appointment_uuid: this.params.appointmentUuid,
         datetime_start_at: this.appointment.datetime_start_at,
         services: this.selectedServices,
-        has_tax_included: this.hasTaxIncluded,
+        has_tax_included: true,
         has_card_fee_included: false
       };
 
@@ -236,7 +233,7 @@ export class AppointmentCheckoutComponent {
     return {
       status: this.appointment.status,
       services: this.selectedServices,
-      has_tax_included: this.hasTaxIncluded,
+      has_tax_included: true,
       has_card_fee_included: false
     };
   }
