@@ -219,6 +219,39 @@ page-checkout {
     }
   }
 
+  .CheckOut-addMethod {
+    display: flex;
+    flex-flow: wrap;
+    justify-content: space-between;
+    padding: pxtovw(16px);
+    margin: pxtovw(8px) 0;
+    background: color($colors-shared, lightPeach);
+    border-radius: pxtovw(8px);
+    box-shadow: 0 pxtovw(7px) pxtovw(43px) 0 rgba(black, 0.08);
+  }
+
+  .CheckOut-addMethodIcon {
+    margin-right: pxtovw(20px);
+    font-size: pxtovw(25px);
+  }
+
+  .CheckOut-addMethodText {
+    flex: 1;
+    font-size: $shared-h4;
+    font-weight: 300;
+  }
+
+  .CheckOut-addMethodBtn {
+    width: 100%;
+    margin: pxtovw(16px) 0 0;
+    padding: pxtovw(6px) 0;
+    font-size: $shared-h4;
+    font-weight: 700;
+    text-align: center;
+    background: white;
+    border-radius: pxtovw(10px);
+  }
+
   ion-footer {
     padding: pxtovw(19px) pxtovw(24px);
   }

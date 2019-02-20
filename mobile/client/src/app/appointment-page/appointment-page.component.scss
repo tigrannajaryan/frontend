@@ -233,6 +233,16 @@ page-appointment {
     }
   }
 
+  .CheckOut-availability {
+    padding: pxtovw(10px) pxtovw(16px);
+    margin-top: pxtovw(16px);
+    font-size: $shared-base;
+    text-align: center;
+    background: color($colors-shared, lightPeach);
+    border-radius: pxtovw(8px);
+    box-shadow: 0 pxtovw(7px) pxtovw(43px) 0 rgba(black, 0.08);
+  }
+
   // Saved amount block
   // –––––––––––––––––––––
 

@@ -31,6 +31,17 @@
         </ion-row>
       </div>
 
+      <div class="CheckOut-addMethod">
+        <div class="CheckOut-addMethodIcon"><i class="mb-icon-credit-card"></i></div>
+        <div class="CheckOut-addMethodText">Add payout method before clients can pay via MADE app.</div>
+        <div
+          *ngIf="!params?.isAlreadyCheckedOut && !params?.isReadonly && !settings?.can_checkout_with_made"
+          (click)="onHowToGetPaid()"
+          class="CheckOut-addMethodBtn">
+          Add Payout Method
+        </div>
+      </div>
+
       <!-- Receipt card -->
       <div *ngIf="previewResponse" class="CheckOut-card">
 
