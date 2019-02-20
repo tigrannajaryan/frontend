@@ -51,9 +51,6 @@ export class AppointmentCheckoutComponent {
   // The details of the appointment
   appointment: StylistAppointmentModel;
 
-  // Tax not included by default
-  hasTaxIncluded = false;
-
   // Change Services/Price true should be only for
   // not checked_out and isTodayAppointment appointment
   hasServicesPriceBtn = false;
@@ -82,6 +79,11 @@ export class AppointmentCheckoutComponent {
   async ionViewWillEnter(): Promise<void> {
     this.params = this.navParams.get('params') as AppointmentCheckoutParams;
 
+    const settingsResponse = await this.stylistService.getStylistSettings().toPromise();
+    if (settingsResponse && settingsResponse.response) {
+      this.settings = settingsResponse.response;
+    }
+
     const { response } = await this.homeService.getAppointmentById(this.params.appointmentUuid).toPromise();
     if (response) {
       // Re-new appointment
@@ -93,11 +95,6 @@ export class AppointmentCheckoutComponent {
         && this.isTodayAppointment();
     }
     await this.updatePreview();
-
-    const settingsResponse = await this.stylistService.getStylistSettings().toPromise();
-    if (settingsResponse && settingsResponse.response) {
-      this.settings = settingsResponse.response;
-    }
   }
 
   /**
@@ -117,7 +114,7 @@ export class AppointmentCheckoutComponent {
         appointment_uuid: this.params.appointmentUuid,
         datetime_start_at: this.appointment.datetime_start_at,
         services: this.selectedServices,
-        has_tax_included: this.hasTaxIncluded,
+        has_tax_included: true,
         has_card_fee_included: false
       };
 
@@ -236,7 +233,7 @@ export class AppointmentCheckoutComponent {
     return {
       status: this.appointment.status,
       services: this.selectedServices,
-      has_tax_included: this.hasTaxIncluded,
+      has_tax_included: true,
       has_card_fee_included: false
     };
   }
