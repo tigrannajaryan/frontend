@@ -1,4 +1,4 @@
-<div (click)="dismiss()" class="changePercent-close"></div>
+<div (click)="dismiss()" data-test-id="changePercent_dismiss" class="changePercent-close"></div>
 <div [class.is-errorMsg]="data?.errorMsg && percentage > data?.prevDiscountPercent" class="changePercent">
   <div class="Made-wp">
     <div *ngIf="data" class="changePercent-scroll">

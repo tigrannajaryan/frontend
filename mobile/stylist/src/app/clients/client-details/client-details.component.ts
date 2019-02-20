@@ -7,6 +7,7 @@ import { ClientDetailsApi } from '~/core/api/client-details.api';
 import { ClientDetailsModel, MyClientModel } from '~/core/api/clients-api.models';
 import { PageNames } from '~/core/page-names';
 import { ClientsCalendarComponentParams } from '~/calendar/clients-calendar/clients-calendar.component';
+import { MadeDisableOnClick } from '~/shared/utils/loading';
 
 @Component({
   selector: 'client-details',
@@ -31,12 +32,14 @@ export class ClientDetailsComponent {
     }
   }
 
-  onEmailClick(email: string): void {
-    this.externalAppService.openMailApp(email);
+  @MadeDisableOnClick
+  async onEmailClick(email: string): Promise<void> {
+    await this.externalAppService.openMailApp(email);
   }
 
-  onCalendarClick(): void {
+  @MadeDisableOnClick
+  async onCalendarClick(): Promise<void> {
     const params: ClientsCalendarComponentParams = { client: this.clientDetails };
-    this.navCtrl.push(PageNames.ClientsCalendar, { params });
+    await this.navCtrl.push(PageNames.ClientsCalendar, { params });
   }
 }

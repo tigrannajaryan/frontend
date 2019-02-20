@@ -10,6 +10,7 @@ import { MyClientsDataStore } from '~/clients/my-clients/my-clients.data';
 
 import { PageNames } from '~/core/page-names';
 import { InvitationsComponentParams } from '~/shared/components/invitations/abstract-invitations.component';
+import { MadeDisableOnClick } from '~/shared/utils/loading';
 
 export interface MyClientsComponentParams {
   isRootPage?: boolean;
@@ -44,17 +45,19 @@ export class MyClientsComponent {
     return this.requestClients(invalidateCache);
   }
 
-  onInviteClick(): void {
-    const params: InvitationsComponentParams = { isRootPage: true };
-    this.navCtrl.setRoot(PageNames.Invitations, { params });
-  }
-
   onClientClick(client: ClientModel): void {
     this.navCtrl.push(PageNames.ClientDetails, { client });
   }
 
-  onAllClientsClick(): void {
-    this.navCtrl.push(PageNames.AllClients);
+  @MadeDisableOnClick
+  async onInviteClick(): Promise<void> {
+    const params: InvitationsComponentParams = { isRootPage: true };
+    await this.navCtrl.setRoot(PageNames.Invitations, { params });
+  }
+
+  @MadeDisableOnClick
+  async onAllClientsClick(): Promise<void> {
+    await this.navCtrl.push(PageNames.AllClients);
   }
 
   private requestClients(invalidateCache = true): Promise<ApiResponse<GetMyClientsResponse>> {

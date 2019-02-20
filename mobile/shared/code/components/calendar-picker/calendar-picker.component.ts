@@ -5,6 +5,7 @@ import * as moment from 'moment';
 
 import { ISODate, isoDateFormat } from '~/shared/api/base.models';
 import { Weekday, WeekdayIso } from '~/shared/weekday';
+import { MadeDisableOnClick } from '~/shared/utils/loading';
 
 /**
  * Represents one abstract weekday day in CalendarPicker
@@ -121,11 +122,12 @@ export class CalendarPickerComponent implements AfterViewInit, OnInit {
   /**
    * Calls specified callback when some date is selected.
    */
-  onDateSelect(isoDate: ISODate): void {
+  @MadeDisableOnClick
+  async onDateSelect(isoDate: ISODate): Promise<void> {
     if (this.params.onDateSelected) {
-      this.params.onDateSelected(isoDate);
+      await this.params.onDateSelected(isoDate);
     }
-    this.viewCtrl.dismiss();
+    await this.viewCtrl.dismiss();
   }
 
   /**

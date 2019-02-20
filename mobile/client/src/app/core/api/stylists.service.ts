@@ -14,6 +14,7 @@ import {
 } from '~/shared/api/stylists.models';
 
 import { ApiClientError, HttpStatus } from '~/shared/api-errors';
+import { removeParamsFormUrl } from '~/shared/utils/string-utils';
 
 @Injectable()
 export class StylistsService extends BaseService {
@@ -33,11 +34,33 @@ export class StylistsService extends BaseService {
       search_like, search_location,
       latitude: geolocation && geolocation.latitude,
       longitude: geolocation && geolocation.longitude
-    });
+    })
+      .map((response: ApiResponse<StylistsListResponse>) => {
+        if (response.response && response.response.stylists) {
+          for (const item of response.response.stylists) {
+            // all our urls has unique Signature and Expires in each request
+            // override url with url without params
+            // to use it with trackBy function
+            item.profile_photo_url = removeParamsFormUrl(item.profile_photo_url);
+          }
+        }
+        return response;
+      });
   }
 
   getPreferredStylists(): Observable<ApiResponse<PreferredStylistsListResponse>> {
-    return this.get<PreferredStylistsListResponse>('client/preferred-stylists');
+    return this.get<PreferredStylistsListResponse>('client/preferred-stylists')
+      .map((response: ApiResponse<PreferredStylistsListResponse>) => {
+        if (response.response && response.response.stylists) {
+          for (const item of response.response.stylists) {
+            // all our urls has unique Signature and Expires in each request
+            // override url with url without params
+            // to use it with trackBy function
+            item.profile_photo_url = removeParamsFormUrl(item.profile_photo_url);
+          }
+        }
+        return response;
+      });
   }
 
   addPreferredStylist(stylistUuid: string): Observable<ApiResponse<AddPreferredStylistResponse>> {

@@ -120,6 +120,8 @@ describe('Pages: Profile summary', () => {
     expect(logoutLink).toBeDefined();
 
     spyOn(instance, 'onContactByEmail').and.callThrough();
+
+
     instance.onContactByEmail('faq@madebeauty.com');
     expect(instance.onContactByEmail).toHaveBeenCalledWith('faq@madebeauty.com');
   });

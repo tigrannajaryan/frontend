@@ -9,6 +9,7 @@ import { AfterLoginEvent, SharedEventTypes } from '~/shared/events/shared-event-
 import { AuthProcessState } from '~/shared/storage/auth-process-state';
 import { AuthLocalData, authResponseToTokenModel, saveAuthLocalData } from '~/shared/storage/token-utils';
 import { composeRequest, loading } from '~/shared/utils/request-utils';
+import { MadeDisableOnClick } from '~/shared/utils/loading';
 
 export interface AuthConfirmParams {
   phone: string;
@@ -42,6 +43,7 @@ export abstract class AbstractAuthConfirmComponent {
     this.codeInput.autofocus();
   }
 
+  @MadeDisableOnClick
   async onResendCode(): Promise<void> {
     const { response } = await composeRequest<GetCodeResponse>(
       loading((isLoading: boolean) => this.isRequestingNewCode = isLoading),

@@ -15,6 +15,7 @@ import { checkProfileCompleteness } from '~/core/utils/user-utils';
 
 import { LogoutAction } from '~/app.reducers';
 import { ProfileDataStore } from '~/profile/profile.data';
+import { MadeDisableOnClick } from '~/shared/utils/loading';
 
 @Component({
   selector: 'profile-summary',
@@ -58,18 +59,22 @@ export class ProfileSummaryComponent {
     return Boolean(this.profile && this.profile.first_name);
   }
 
-  onEdit(): void {
-    this.app.getRootNav().push(PageNames.ProfileEdit);
+  @MadeDisableOnClick
+  async onEdit(): Promise<void> {
+    await this.app.getRootNav().push(PageNames.ProfileEdit);
   }
 
-  goTo(page: Page, params: any): void {
-    this.app.getRootNav().push(page, params);
+  @MadeDisableOnClick
+  async goTo(page: Page, params: any): Promise<void> {
+    await this.app.getRootNav().push(page, params);
   }
 
+  @MadeDisableOnClick
   async onContactByEmail(mailTo: string): Promise<void> {
-    this.externalAppService.openMailApp(mailTo);
+    await this.externalAppService.openMailApp(mailTo);
   }
 
+  @MadeDisableOnClick
   async onLogout(): Promise<void> {
     const prompt = this.alertCtrl.create({
       title: '',
@@ -85,6 +90,6 @@ export class ProfileSummaryComponent {
         }
       ]
     });
-    prompt.present();
+    await prompt.present();
   }
 }

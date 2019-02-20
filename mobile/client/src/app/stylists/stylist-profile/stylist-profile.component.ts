@@ -19,6 +19,7 @@ import { BookingData } from '~/core/api/booking.data';
 import { PreferredStylistsData } from '~/core/api/preferred-stylists.data';
 import { ClientEventTypes } from '~/core/client-event-types';
 import { VisualWeekCard } from '~/shared/utils/worktime-utils';
+import { MadeDisableOnClick } from '~/shared/utils/loading';
 
 export enum UpdateStylistStatus {
   save,
@@ -114,6 +115,7 @@ export class StylistProfileComponent {
     }
   }
 
+  @MadeDisableOnClick
   async onShowCalendar(): Promise<void> {
     if (this.prices) {
       // Previously we loaded most popular service
@@ -122,11 +124,12 @@ export class StylistProfileComponent {
       // because we need tho show stylist’s calendar without any service selected.
       //
       // NOTE: most popular services will be restored on entering this page again.
-      this.bookingData.setSelectedServices([]);
-      this.navCtrl.push(PageNames.SelectDate);
+      await this.bookingData.setSelectedServices([]);
+      await this.navCtrl.push(PageNames.SelectDate);
     }
   }
 
+  @MadeDisableOnClick
   async onRemoveStylist(): Promise<void> {
     if (!(this.params && this.stylistProfile)) {
       return;
@@ -138,6 +141,7 @@ export class StylistProfileComponent {
     await this.preferredStylistsData.get();
   }
 
+  @MadeDisableOnClick
   async onSaveStylist(): Promise<void> {
     this.stylistProfile.is_preferred = true;
 
@@ -150,20 +154,24 @@ export class StylistProfileComponent {
     await this.preferredStylistsData.get();
   }
 
-  onFollowersClick(): void {
-    this.navCtrl.push(PageNames.Followers, { stylist: this.stylistProfile });
+  @MadeDisableOnClick
+  async onFollowersClick(): Promise<void> {
+    await this.navCtrl.push(PageNames.Followers, { stylist: this.stylistProfile });
   }
 
-  onAddressClick(): void {
-    this.externalAppService.openAddress(this.launchNavigator, this.stylistProfile.salon_address);
+  @MadeDisableOnClick
+  async onAddressClick(): Promise<void> {
+    await this.externalAppService.openAddress(this.launchNavigator, this.stylistProfile.salon_address);
   }
 
-  onInstagramClick(): void {
-    this.externalAppService.openInstagram(this.stylistProfile.instagram_url);
+  @MadeDisableOnClick
+  async onInstagramClick(): Promise<void> {
+    await this.externalAppService.openInstagram(this.stylistProfile.instagram_url);
   }
 
-  onWebsiteClick(): void {
-    this.externalAppService.openWebPage(this.stylistProfile.website_url);
+  @MadeDisableOnClick
+  async onWebsiteClick(): Promise<void> {
+    await this.externalAppService.openWebPage(this.stylistProfile.website_url);
   }
 
   async onStartBooking(): Promise<void> {
@@ -178,7 +186,8 @@ export class StylistProfileComponent {
     this.events.publish(ClientEventTypes.startBooking, this.stylistProfile.uuid);
   }
 
-  onPhoneClick(): void {
+  @MadeDisableOnClick
+  async onPhoneClick(): Promise<void> {
     if (this.stylistProfile && this.stylistProfile.phone) {
       const buttons = [
         {
@@ -200,12 +209,13 @@ export class StylistProfileComponent {
       ];
 
       const actionSheet = this.actionSheetCtrl.create({ buttons });
-      actionSheet.present();
+      await actionSheet.present();
     }
   }
 
-  onEmailClick(): void {
-    this.externalAppService.openMailApp(this.stylistProfile.email);
+  @MadeDisableOnClick
+  async onEmailClick(): Promise<void> {
+    await this.externalAppService.openMailApp(this.stylistProfile.email);
   }
 
   onPhoneCall(): void {

@@ -45,6 +45,7 @@ import { RegistrationForm, RegistrationFormControl } from '~/onboarding/registra
 import { WorkHoursComponentParams } from '~/workhours/workhours.component';
 import { ClientsCalendarComponentParams } from '~/calendar/clients-calendar/clients-calendar.component';
 import { StylistServiceProvider } from '~/core/api/stylist.service';
+import { MadeDisableOnClick } from '~/shared/utils/loading';
 import { StylistAppStorage } from '~/core/stylist-app-storage';
 
 export enum ProfileTabs {
@@ -234,18 +235,6 @@ export class ProfileComponent {
     this.events.unsubscribe(StylistEventTypes.setStylistProfileTab);
   }
 
-  onCalendarClick(): void {
-    if (!this.service) {
-      this.onSetAccountInfo(this.servicesPage);
-    } else {
-      const params: ClientsCalendarComponentParams = {
-        isRootPage: true
-      };
-
-      this.navCtrl.setRoot(PageNames.ClientsCalendar, { params });
-    }
-  }
-
   onTabChange(tabIndex: ProfileTabs): void {
     this.slides.slideTo(tabIndex);
     this.activeTab = this.tabs[tabIndex].name;
@@ -263,56 +252,62 @@ export class ProfileComponent {
     this.refresherEnabled = isEnabled;
   }
 
-  onMyClientsClick(): void {
-    this.navCtrl.push(PageNames.MyClients);
+  @MadeDisableOnClick
+  async onCalendarClick(): Promise<void> {
+    if (!this.service) {
+      await this.onSetAccountInfo(this.servicesPage);
+    } else {
+      const params: ClientsCalendarComponentParams = {
+        isRootPage: true
+      };
+
+      await this.navCtrl.setRoot(PageNames.ClientsCalendar, { params });
+    }
   }
 
-  onMyHoursClick(): void {
+  @MadeDisableOnClick
+  async onMyClientsClick(): Promise<void> {
+    await this.navCtrl.push(PageNames.MyClients);
+  }
+
+  @MadeDisableOnClick
+  async onMyHoursClick(): Promise<void> {
     const params: WorkHoursComponentParams = {
       isRootPage: false
     };
 
-    this.navCtrl.push(PageNames.WorkHours, { params });
+    await this.navCtrl.push(PageNames.WorkHours, { params });
   }
 
-  onFieldEdit(control: RegistrationFormControl): void {
+  @MadeDisableOnClick
+  async onFieldEdit(control: RegistrationFormControl): Promise<void> {
     switch (control) {
       case RegistrationFormControl.SalonAddress:
-        this.navCtrl.push(PageNames.SalonAddress, { params: { isRootPage: true }});
+        await this.navCtrl.push(PageNames.SalonAddress, { params: { isRootPage: true }});
         return;
 
       case RegistrationFormControl.Instagram:
-        this.navCtrl.push(PageNames.ConnectInstagram, { params: { isRootPage: true }});
+        await this.navCtrl.push(PageNames.ConnectInstagram, { params: { isRootPage: true }});
         return;
 
       default:
         const params: FieldEditComponentParams = { isRootPage: true, control };
-        this.navCtrl.push(PageNames.FieldEdit, { params });
+        await this.navCtrl.push(PageNames.FieldEdit, { params });
         return;
     }
   }
 
-  onSetAccountInfo(page: Page): void {
+  @MadeDisableOnClick
+  async onSetAccountInfo(page: Page): Promise<void> {
     const params = {
       isRootPage: false
     };
 
-    this.navCtrl.push(page, { params });
+    await this.navCtrl.push(page, { params });
   }
 
-  shouldShowNotice(page: Page): boolean {
-    if (!this.profileStatus) {
-      return false;
-    }
-
-    return MadeMenuComponent.showNotice(page, this.profileStatus, this.settings);
-  }
-
-  hasPhoto(): boolean {
-    return Boolean(this.photoId.value) || Boolean(this.photoUrl.value);
-  }
-
-  processPhoto(): void {
+  @MadeDisableOnClick
+  async processPhoto(): Promise<void> {
     this.logger.info('processPhoto()');
     const opts: ActionSheetOptions = {
       buttons: [
@@ -348,7 +343,19 @@ export class ProfileComponent {
     }
 
     const actionSheet = this.actionSheetCtrl.create(opts);
-    actionSheet.present();
+    await actionSheet.present();
+  }
+
+  shouldShowNotice(page: Page): boolean {
+    if (!this.profileStatus) {
+      return false;
+    }
+
+    return MadeMenuComponent.showNotice(page, this.profileStatus, this.settings);
+  }
+
+  hasPhoto(): boolean {
+    return Boolean(this.photoId.value) || Boolean(this.photoUrl.value);
   }
 
   @loading

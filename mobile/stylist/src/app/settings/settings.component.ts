@@ -13,6 +13,7 @@ import { StylistServiceProvider } from '~/core/api/stylist.service';
 import { ProfileDataStore } from '~/core/profile.data';
 import { StripeOAuthService } from '~/core/stripe-oauth-service';
 import { SettingsFieldComponentParams } from '~/settings/settings-field/settings-field.component';
+import { MadeDisableOnClick } from '~/shared/utils/loading';
 
 @Component({
   selector: 'page-settings',
@@ -52,7 +53,8 @@ export class SettingsComponent {
     }
   }
 
-  navigateToTaxRate(): void {
+  @MadeDisableOnClick
+  async navigateToTaxRate(): Promise<void> {
     const params: SettingsFieldComponentParams = {
       title: 'Tax Rate Percentage',
       name: StylistSettingsKeys.tax_percentage,
@@ -69,14 +71,16 @@ export class SettingsComponent {
         await this.stylistService.setStylistSettings(this.settings).toPromise();
       }
     };
-    this.navCtrl.push(PageNames.SettingsField, { params });
+    await this.navCtrl.push(PageNames.SettingsField, { params });
   }
 
-  navigateTo(page: Page, params?: any): void {
-    this.navCtrl.push(page, params);
+  @MadeDisableOnClick
+  async navigateTo(page: Page, params?: any): Promise<void> {
+    await this.navCtrl.push(page, params);
   }
 
+  @MadeDisableOnClick
   async onContactByEmail(mailTo: string): Promise<void> {
-    this.externalAppService.openMailApp(mailTo);
+    await this.externalAppService.openMailApp(mailTo);
   }
 }

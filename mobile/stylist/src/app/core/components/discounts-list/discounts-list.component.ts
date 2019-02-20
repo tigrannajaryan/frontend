@@ -7,6 +7,7 @@ import { WeekdayDiscount } from '~/core/api/discounts.models';
 import { PercentageSliderSettings } from '~/core/popups/change-percent/change-percent.component';
 import { dealOfTheWeekMinDiscount } from '~/shared/constants';
 import { PageNames } from '~/core/page-names';
+import { MadeDisableOnClick } from '~/shared/utils/loading';
 
 export enum DiscountSymbol {
   percent = '%',
@@ -40,7 +41,8 @@ export class DiscountsListComponent implements OnInit {
    * Open modal where we can change percent of any item
    * @param index - if array of list
    */
-  onDiscountChange(index: number): void {
+  @MadeDisableOnClick
+  async onDiscountChange(index: number): Promise<void> {
     let prevDiscountPercent: number;
 
     const discount: WeekdayDiscount = this.list[index];
@@ -77,6 +79,6 @@ export class DiscountsListComponent implements OnInit {
         this.discountChange.emit();
       }
     });
-    modal.present();
+    await modal.present();
   }
 }

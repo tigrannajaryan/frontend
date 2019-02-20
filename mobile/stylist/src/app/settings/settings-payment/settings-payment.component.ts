@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Output } from '@angular/core';
+import { MadeDisableOnClick } from '~/shared/utils/loading';
 
 @Component({
   selector: 'settings-payment',
@@ -7,7 +8,8 @@ import { Component, EventEmitter, Output } from '@angular/core';
 export class SettingsPaymentComponent {
   @Output() addPayment = new EventEmitter<void>();
 
-  onAddPayment(): void {
+  @MadeDisableOnClick
+  async onAddPayment(): Promise<void> {
     this.addPayment.emit();
   }
 }

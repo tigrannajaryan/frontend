@@ -7,6 +7,7 @@ import { componentUnloaded } from '~/shared/component-unloaded';
 import { ApiResponse } from '~/shared/api/base.models';
 
 import { ProfileDataStore } from '~/profile/profile.data';
+import { MadeDisableOnClick } from '~/shared/utils/loading';
 
 export enum PrivacyMode {
   public = 'public',
@@ -39,7 +40,8 @@ export class PrivacySettingsComponent {
       });
   }
 
-  showWarningPopup(privacy: PrivacyMode): void {
+  @MadeDisableOnClick
+  async showWarningPopup(privacy: PrivacyMode): Promise<void> {
     if (privacy === PrivacyMode.private) {
       if (this.profile.privacy === PrivacyMode.private) {
         return;
@@ -58,13 +60,13 @@ export class PrivacySettingsComponent {
           }
         }]
       });
-      alert.present();
+      await alert.present();
     } else if (privacy === PrivacyMode.public) {
       if (this.profile.privacy === PrivacyMode.public) {
         return;
       }
 
-      this.profileDataStore.set({ privacy });
+      await this.profileDataStore.set({ privacy });
     }
   }
 }

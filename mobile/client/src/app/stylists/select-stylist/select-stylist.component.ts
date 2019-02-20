@@ -12,7 +12,6 @@ import { PreferredStylistsData } from '~/core/api/preferred-stylists.data';
 import { startBooking } from '~/booking/booking-utils';
 import { MainTabIndex } from '~/main-tabs/main-tabs.component';
 import { ServicesCategoriesParams } from '~/services-categories-page/services-categories-page.component';
-import { removeParamsFormUrl } from '~/shared/utils/string-utils';
 
 @Component({
   selector: 'select-stylist',
@@ -67,10 +66,6 @@ export class SelectStylistComponent {
   };
 
   trackByStylistIdentity(index: number, stylist: StylistModel): string {
-    // all our urls has unique Signature and Expires in each request
-    // override url with url without params
-    stylist.profile_photo_url = removeParamsFormUrl(stylist.profile_photo_url);
-
     const visibleValues = [
       stylist.is_profile_bookable,
       stylist.profile_photo_url,

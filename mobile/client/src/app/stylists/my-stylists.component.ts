@@ -14,7 +14,7 @@ import { ApiResponse } from '~/shared/api/base.models';
 import { ClientEventTypes } from '~/core/client-event-types';
 import { PageNames } from '~/core/page-names';
 import { PreferredStylistsData } from '~/core/api/preferred-stylists.data';
-import { removeParamsFormUrl } from '~/shared/utils/string-utils';
+import { MadeDisableOnClick } from '~/shared/utils/loading';
 
 export enum MyStylistsTabs {
   madeStylists = 0,
@@ -123,10 +123,6 @@ export class MyStylistsComponent {
     }
   }
 
-  goToStylistsSearch(): void {
-    this.navCtrl.push(PageNames.StylistSearch);
-  }
-
   isStylistsSearchButtonVisible(): boolean {
     if (
       this.tabs[MyStylistsTabs.madeStylists].name === this.activeTab &&
@@ -153,7 +149,7 @@ export class MyStylistsComponent {
    */
   splitStylistsList(stylists: PreferredStylistModel[]): void {
     // splitStylists = sorted array of two arrays
-    const splitStylists = stylists.reduce((tabsObj, cur) => {
+    const splitStylists = stylists.reduce((tabsObj, cur: PreferredStylistModel) => {
       const tab = cur.is_profile_bookable ? MyStylistsTabs.madeStylists : MyStylistsTabs.savedStylists;
 
       if (!tabsObj[tab]) {
@@ -175,19 +171,7 @@ export class MyStylistsComponent {
     this.tabs[MyStylistsTabs.savedStylists].loaded = true;
   }
 
-  openStylistPreview(stylist: PreferredStylistModel): void {
-    const params: StylistProfileParams = {
-      stylist
-    };
-
-    this.app.getRootNav().push(PageNames.StylistProfile, { params });
-  }
-
   trackByStylistIdentity(index: number, stylist: StylistModel): string {
-    // all our urls has unique Signature and Expires in each request
-    // override url with url without params
-    stylist.profile_photo_url = removeParamsFormUrl(stylist.profile_photo_url);
-
     const visibleValues = [
       stylist.is_profile_bookable,
       stylist.profile_photo_url,
@@ -199,5 +183,19 @@ export class MyStylistsComponent {
 
     // compare all visible values
     return Md5.init(visibleValues);
+  }
+
+  @MadeDisableOnClick
+  async goToStylistsSearch(): Promise<void> {
+    await this.navCtrl.push(PageNames.StylistSearch);
+  }
+
+  @MadeDisableOnClick
+  async openStylistPreview(stylist: PreferredStylistModel): Promise<void> {
+    const params: StylistProfileParams = {
+      stylist
+    };
+
+    await this.app.getRootNav().push(PageNames.StylistProfile, { params });
   }
 }

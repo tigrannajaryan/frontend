@@ -9,6 +9,7 @@ import { ENV } from '~/environments/environment.default';
 
 import { StylistServiceProvider } from '~/core/api/stylist.service';
 import { PageNames } from '~/core/page-names';
+import { MadeDisableOnClick } from '~/shared/utils/loading';
 
 export interface ConnectInstagramComponentParams {
   isRootPage?: boolean;
@@ -37,19 +38,21 @@ export class ConnectInstagramComponent implements OnInit {
     this.params = this.navParams.get('params') || {};
   }
 
-  onNavigateNext(): void {
+  @MadeDisableOnClick
+  async onNavigateNext(): Promise<void> {
     if (!this.params.isRootPage) {
-      this.navCtrl.push(PageNames.StylistPhoto);
+      await this.navCtrl.push(PageNames.StylistPhoto);
     } else {
-      this.navCtrl.popToRoot();
+      await this.navCtrl.popToRoot();
     }
   }
 
+  @MadeDisableOnClick
   async onContinue(): Promise<void> {
     await this.connect();
 
     if (this.connected) {
-      this.onNavigateNext();
+      await this.onNavigateNext();
     }
   }
 

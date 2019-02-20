@@ -6,7 +6,7 @@ import {
   NavParams
 } from 'ionic-angular';
 
-import { loading } from '~/shared/utils/loading';
+import { loading, MadeDisableOnClick } from '~/shared/utils/loading';
 import { ServiceTemplateSetResponse, StylistServiceProvider } from '~/core/api/stylist.service';
 import { ServiceCategory, ServiceTemplateItem, StylistProfileStatus, StylistServicesListResponse } from '~/shared/api/stylist-app.models';
 import { getProfileStatus, updateProfileStatus } from '~/shared/storage/token-utils';
@@ -82,7 +82,8 @@ export class ServicesListComponent {
    * @param category the category if the service to preselect in the form
    * @param service if omitted indicates that a new service is being created
    */
-  openServiceModal(category: ServiceCategory, service?: ServiceTemplateItem): void {
+  @MadeDisableOnClick
+  async openServiceModal(category: ServiceCategory, service?: ServiceTemplateItem): Promise<void> {
     const itemToEdit: ServiceItemComponentData = {
       categories: this.categories,
       service,
@@ -96,7 +97,7 @@ export class ServicesListComponent {
     profileModal.onDidDismiss(editedItem => {
       this.updateServiceItem(itemToEdit, editedItem);
     });
-    profileModal.present();
+    await profileModal.present();
   }
 
   async onSave(): Promise<void> {
@@ -128,7 +129,8 @@ export class ServicesListComponent {
     }
   }
 
-  deleteConfirm(category: ServiceCategory, idx: number): void {
+  @MadeDisableOnClick
+  async deleteConfirm(category: ServiceCategory, idx: number): Promise<void> {
     const confirm = this.alertCtrl.create({
       message: 'Are you sure you want to delete this service?',
       buttons: [
@@ -143,7 +145,7 @@ export class ServicesListComponent {
         }
       ]
     });
-    confirm.present();
+    await confirm.present();
   }
 
   async deleteService(category: ServiceCategory, idx: number): Promise<void> {

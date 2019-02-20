@@ -11,6 +11,7 @@ import { loading } from '~/core/utils/loading';
 import { StylistServiceProvider } from '~/core/api/stylist.service';
 import { PageNames } from '~/core/page-names';
 import { ServicesCategoriesListData } from '~/services/services-categories/services-categories.component';
+import { MadeDisableOnClick } from '~/shared/utils/loading';
 
 /**
  * Represents the data that is passed in and out of
@@ -51,7 +52,8 @@ export class ServiceItemComponent {
     this.setFormData(this.data);
   }
 
-  openCategoryModal(): void {
+  @MadeDisableOnClick
+  async openCategoryModal(): Promise<void> {
     const data: ServicesCategoriesListData = {
       categories: this.data.categories
     };
@@ -61,9 +63,10 @@ export class ServiceItemComponent {
         this.setFormControl('category', category);
       }
     });
-    profileModal.present();
+    await profileModal.present();
   }
 
+  @MadeDisableOnClick
   async onServiceDelete(): Promise<void> {
     const {service} = this.data;
 
@@ -74,7 +77,7 @@ export class ServiceItemComponent {
     // Empty data indicates deleted item.
     const newData: ServiceItemComponentData = {};
 
-    this.viewCtrl.dismiss(newData);
+    await this.viewCtrl.dismiss(newData);
   }
 
   @loading
@@ -85,7 +88,8 @@ export class ServiceItemComponent {
   /**
    * Submit the data and close the modal.
    */
-  save(): void {
+  @MadeDisableOnClick
+  async save(): Promise<void> {
     const { vars, category, uuid, ...service } = this.form.value;
 
     // uuid should be added only if present
@@ -101,7 +105,7 @@ export class ServiceItemComponent {
       category
     };
 
-    this.viewCtrl.dismiss(newData);
+    await this.viewCtrl.dismiss(newData);
   }
 
   private createForm(): void {

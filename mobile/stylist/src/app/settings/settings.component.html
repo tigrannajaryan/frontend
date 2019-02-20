@@ -25,7 +25,7 @@
       <!-- Stripe Connect -->
       <ion-row data-test-id="settingsPayout" class="DiscountsList-row"
         *ngIf="settings?.can_checkout_with_made; else addPayoutTpl"
-        (click)="navigateToAddPayout()">
+        (click)="navigateToA()">
           <ion-col no-padding col-8 class="DiscountsList-col">
             <ion-row align-items-center class="Settings-stripe">
               <img src="assets/icons/stripe@3x.png" />
@@ -39,12 +39,12 @@
       </ion-row>
 
       <ng-template #addPayoutTpl>
-        <settings-payment (addPayment)="navigateToAddPayout()"></settings-payment>
+        <settings-payment (addPayment)="navigateToA()"></settings-payment>
       </ng-template>
 
       <div class="ServicesLis-title without-border SettingsTitleMargin" data-test-id="settingsTaxTitle">Taxes and Fees</div>
 
-      <ion-row (click)="navigateToTaxRate()" data-test-id="settingsTaxRate" class="DiscountsList-row">
+      <ion-row (click)="navigateToT" data-test-id="settingsTaxRate" class="DiscountsList-row">
         <ion-col no-padding col-8 class="DiscountsList-col">
           Tax Rate
         </ion-col>

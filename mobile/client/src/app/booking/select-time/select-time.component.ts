@@ -4,7 +4,7 @@ import * as moment from 'moment';
 
 import { Logger } from '~/shared/logger';
 import { formatTimeInZone } from '~/shared/utils/string-utils';
-import { loading } from '~/shared/utils/loading';
+import { loading, MadeDisableOnClick } from '~/shared/utils/loading';
 import { ApiResponse } from '~/shared/api/base.models';
 
 import { showAlert } from '~/shared/utils/alert';
@@ -130,11 +130,12 @@ export class SelectTimeComponent {
     }
   }
 
-  onSlotClick(slot: DisplayTimeslot): void {
+  @MadeDisableOnClick
+  async onSlotClick(slot: DisplayTimeslot): Promise<void> {
     if (!slot.isBooked) {
       this.logger.info('SelectTimeComponent.onSlotClick', slot);
       this.bookingData.selectedTime = slot.startTime;
-      this.performBooking();
+      await this.performBooking();
     }
   }
 

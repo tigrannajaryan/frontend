@@ -11,6 +11,7 @@ import { StylistProfileStatus } from '~/shared/api/stylist-app.models';
 import { WEEKDAY_SHORT_NAMES, WeekdayIso } from '~/shared/weekday';
 import { Page } from 'ionic-angular/navigation/nav-util';
 import { DiscountsDealComponent } from '~/discounts/discounts-deal/discounts-deal.component';
+import { MadeDisableOnClick } from '~/shared/utils/loading';
 
 export enum DiscountTabNames {
   weekday,
@@ -86,8 +87,9 @@ export class DiscountsComponent {
     }
   }
 
-  openDiscountPage(page: Page): void {
-    this.navCtrl.push(page);
+  @MadeDisableOnClick
+  async openDiscountPage(page: Page): Promise<void> {
+    await this.navCtrl.push(page);
   }
 
   async doRefresh(refresher): Promise<void> {

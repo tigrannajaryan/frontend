@@ -25,7 +25,7 @@
         <div *ngFor="let empty of Array(startOfMonth.isoWeekday()).fill('')" class="CP-shift"></div>
 
         <ng-container *ngFor="let isoDate of Array.from(month.days.keys())">
-          <div *ngIf="month.days.get(isoDate) as day" [ngClass]="getClassnames(isoDate, day)" (click)="onDateSelect(isoDate)" class="CP-day">
+          <div *ngIf="month.days.get(isoDate) as day" [ngClass]="getClassnames(isoDate, day)" (click)="onDateSelect(isoDate)" class="CP-day" data-test-id="calendarPicker_dateSelect">
             {{ day.day }}
             <div class="indicator">{{ day.day }}</div>
           </div>

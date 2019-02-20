@@ -5,6 +5,7 @@ import { NavController, NavParams } from 'ionic-angular';
 
 import { StylistSettingsKeys } from '~/shared/api/stylist-app.models';
 import { InputTypes } from '~/shared/api/base.models';
+import { MadeDisableOnClick } from '~/shared/utils/loading';
 
 export interface SettingsFieldComponentParams {
   title: string;
@@ -38,11 +39,12 @@ export class SettingsFieldComponent {
     }
   }
 
+  @MadeDisableOnClick
   async onSave(): Promise<void> {
     if (this.control.valid) {
       this.params.onSave(Number(this.control.value));
 
-      this.navCtrl.pop();
+      await this.navCtrl.pop();
     } else {
       throw new Error('Please enter valid value');
     }

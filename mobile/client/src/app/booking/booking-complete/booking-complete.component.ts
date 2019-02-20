@@ -12,6 +12,7 @@ import { CalendarPrimingParams } from '~/shared/components/calendar-priming/cale
 import { PageNames } from '~/core/page-names';
 import { ProfileModel } from '~/core/api/profile.models';
 import { BookingData } from '~/core/api/booking.data';
+import { MadeDisableOnClick } from '~/shared/utils/loading';
 
 export interface BookingCompleteComponentParams {
   appointment: ClientAppointmentModel;
@@ -56,16 +57,18 @@ export class BookingCompleteComponent {
     this.subscription.unsubscribe();
   }
 
-  onReturnHomeClick(): void {
-    this.navCtrl.setRoot(PageNames.MainTabs);
-    this.events.publish(ClientEventTypes.selectMainTab, MainTabIndex.Home);
+  @MadeDisableOnClick
+  async onReturnHomeClick(): Promise<void> {
+    await this.navCtrl.setRoot(PageNames.MainTabs);
+    await this.events.publish(ClientEventTypes.selectMainTab, MainTabIndex.Home);
   }
 
+  @MadeDisableOnClick
   async onAddToCalendarClick(): Promise<void> {
     const params: CalendarPrimingParams = {
       // refresh profile status on success, so that we don't show "Add to Calendar" action anymore.
       onSuccess: () => this.profileDataStore.refresh()
     };
-    this.navCtrl.push(PageNames.CalendarPriming, { params });
+    await this.navCtrl.push(PageNames.CalendarPriming, { params });
   }
 }

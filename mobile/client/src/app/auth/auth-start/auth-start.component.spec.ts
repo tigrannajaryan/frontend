@@ -110,13 +110,14 @@ describe('Pages: Auth Phone', () => {
     done();
   });
 
-  it('should call the API when submitting', () => {
+  it('should call the API when submitting', async () => {
     const authService = fixture.debugElement.injector.get(AuthService);
 
     spyOn(authService, 'getCode').and.returnValue(of({ response: {} }));
 
     instance.phone = testPhone;
-    instance.submit();
+
+    await instance.submit();
 
     expect(authService.getCode)
       .toHaveBeenCalledWith(testPhone);

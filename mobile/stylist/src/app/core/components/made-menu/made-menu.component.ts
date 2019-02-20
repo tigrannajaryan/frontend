@@ -16,6 +16,7 @@ import { ProfileDataStore } from '~/core/profile.data';
 import { calcProfileCompleteness } from '~/core/utils/stylist-utils';
 import { RegistrationForm } from '~/onboarding/registration.form';
 import { StylistServiceProvider } from '~/core/api/stylist.service';
+import { MadeDisableOnClick } from '~/shared/utils/loading';
 
 interface MenuItem {
   title: string;
@@ -143,17 +144,19 @@ export class MadeMenuComponent implements OnInit {
     });
   }
 
-  setPage(redirectToPage: Page, params: any, isRootPage = true): void {
+  @MadeDisableOnClick
+  async setPage(redirectToPage: Page, params: any, isRootPage = true): Promise<void> {
     if (isRootPage) {
       // Reset the content nav to have just this page
       // we wouldn't want the back button to show in this scenario
-      this.nav.setRoot(redirectToPage, { params });
+      await this.nav.setRoot(redirectToPage, { params });
     } else {
-      this.nav.push(redirectToPage, { params });
+      await this.nav.push(redirectToPage, { params });
     }
   }
 
-  onLogoutClick(): void {
+  @MadeDisableOnClick
+  async onLogoutClick(): Promise<void> {
     const prompt = this.alertCtrl.create({
       title: '',
       subTitle: 'Are you sure you want to Logout?',
@@ -170,7 +173,7 @@ export class MadeMenuComponent implements OnInit {
         }
       ]
     });
-    prompt.present();
+    await prompt.present();
   }
 
   hasMenu(currentPage: ViewController): boolean {
@@ -193,8 +196,9 @@ export class MadeMenuComponent implements OnInit {
     return true;
   }
 
-  onMenuClick(): void {
-    this.setPage(PageNames.Profile, {}, true);
+  @MadeDisableOnClick
+  async onMenuClick(): Promise<void> {
+    await this.setPage(PageNames.Profile, {}, true);
   }
 
   shouldShowNotice(page: Page): boolean {

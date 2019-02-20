@@ -6,6 +6,7 @@ import { formatNumber } from 'libphonenumber-js';
 import { ExternalAppService } from '~/shared/utils/external-app-service';
 import { getPhoneNumber } from '~/shared/utils/phone-numbers';
 import { NumberFormat } from '~/shared/directives/phone-input.directive';
+import { MadeDisableOnClick } from '~/shared/utils/loading';
 
 @Component({
   selector: 'phone-link',
@@ -49,14 +50,15 @@ export class PhoneLinkComponent implements OnInit {
     }
   }
 
+  getFormattedPhone(): string {
+    return this.shortForm ? getPhoneNumber(this.phone) : getPhoneNumber(this.phone, NumberFormat.International);
+  }
+
+  @MadeDisableOnClick
   async onClick(): Promise<void> {
     if (!this.readonly) {
       const actionSheet = this.actionSheetCtrl.create({ buttons: this.buttons });
-      actionSheet.present();
+      await actionSheet.present();
     }
-  }
-
-  getFormattedPhone(): string {
-    return this.shortForm ? getPhoneNumber(this.phone) : getPhoneNumber(this.phone, NumberFormat.International);
   }
 }

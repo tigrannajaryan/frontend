@@ -22,6 +22,7 @@ import {
 import { ApiFieldAndNonFieldErrors, FieldErrorItem } from '~/shared/api-errors';
 import { FieldErrorCode } from '~/shared/api-error-codes';
 import { isoDateFormat } from '~/shared/api/base.models';
+import { MadeDisableOnClick } from '~/shared/utils/loading';
 
 function isOverridableError(errorCodeStr: FieldErrorCode): boolean {
   return errorCodeStr === 'err_appointment_in_the_past' ||
@@ -87,8 +88,9 @@ export class AppointmentAddComponent {
     this.subscribeToIsBlockedChanges();
   }
 
-  selectService(): void {
-    this.navCtrl.push(PageNames.AppointmentServices);
+  @MadeDisableOnClick
+  async selectService(): Promise<void> {
+    await this.navCtrl.push(PageNames.AppointmentServices);
   }
 
   async onSubmit(forced = false): Promise<void> {

@@ -3,6 +3,7 @@ import * as moment from 'moment';
 
 import { WEEKDAY_SHORT_NAMES } from '~/shared/weekday';
 import { Workday } from '~/shared/api/worktime.models';
+import { MadeDisableOnClick } from '~/shared/utils/loading';
 
 /**
  * A horizontal calendar with one week from Sun to Sat.
@@ -63,7 +64,8 @@ export class HorizontalCalendarComponent {
     return this.daysWithAppointments[weekdayIso];
   }
 
-  onDateSelect(date: moment.Moment): void {
+  @MadeDisableOnClick
+  async onDateSelect(date: moment.Moment): Promise<void> {
     this.selectedDate = date;
     this.changeDate.emit(date);
   }

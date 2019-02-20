@@ -3,6 +3,7 @@ import * as moment from 'moment';
 
 import { ISODate } from '~/shared/api/base.models';
 import { DayOffer } from '~/shared/api/price.models';
+import { MadeDisableOnClick } from '~/shared/utils/loading';
 
 interface CalendarDay extends DayOffer {
   opacity: number;
@@ -63,7 +64,8 @@ export class PriceCalendarComponent {
     return Array(moment(startOfMonth).daysInMonth()).fill('');
   }
 
-  onSelectOffer(offer: CalendarDay): void {
+  @MadeDisableOnClick
+  async onSelectOffer(offer: CalendarDay): Promise<void> {
     this.dayClick.emit(offer);
   }
 }

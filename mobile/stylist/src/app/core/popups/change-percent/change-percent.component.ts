@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
 import { NavController, NavParams, ViewController } from 'ionic-angular';
+import { MadeDisableOnClick } from '~/shared/utils/loading';
 
 export enum ChangePercentSymbols {
   percent = '%',
@@ -55,11 +56,13 @@ export class ChangePercentComponent implements AfterViewInit {
     this.percentage = this.data.percentage;
   }
 
-  dismiss(): void {
-    this.viewCtrl.dismiss();
+  @MadeDisableOnClick
+  async dismiss(): Promise<void> {
+    await this.viewCtrl.dismiss();
   }
 
-  save(): void {
-    this.viewCtrl.dismiss(this.percentage || 0);
+  @MadeDisableOnClick
+  async save(): Promise<void> {
+    await this.viewCtrl.dismiss(this.percentage || 0);
   }
 }

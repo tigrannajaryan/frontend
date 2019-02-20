@@ -5,6 +5,7 @@ import { DiscountsApi } from '~/core/api/discounts.api';
 import { PageNames } from '~/core/page-names';
 import { ModalController } from 'ionic-angular';
 import { ChangePercentSymbols, PercentageSliderSettings } from '~/core/popups/change-percent/change-percent.component';
+import { MadeDisableOnClick } from '~/shared/utils/loading';
 
 enum DefaultUsdSliderSettings {
   min = 20,
@@ -42,7 +43,8 @@ export class DiscountsMaximumComponent {
     }
   }
 
-  onDiscountChange(): void {
+  @MadeDisableOnClick
+  async onDiscountChange(): Promise<void> {
     const percentage = this.maximumDiscounts.maximum_discount && this.maximumDiscounts.maximum_discount > DefaultUsdSliderSettings.min ?
       this.maximumDiscounts.maximum_discount : DefaultUsdSliderSettings.min;
 
@@ -56,21 +58,21 @@ export class DiscountsMaximumComponent {
     };
 
     const modal = this.modalCtrl.create(PageNames.ChangePercent, { data });
-    modal.onDidDismiss((res: number) => {
+    modal.onDidDismiss(async (res: number) => {
       if (isNaN(res)) {
         return;
       }
 
       if (this.maximumDiscounts.maximum_discount !== res) {
         this.maximumDiscounts.maximum_discount = res;
-        this.onSave();
+        await this.onSave();
       }
     });
-    modal.present();
+    await modal.present();
   }
 
-  onSave(): void {
-    this.discountsApi.setMaximumDiscounts({
+  async onSave(): Promise<void> {
+    await this.discountsApi.setMaximumDiscounts({
       maximum_discount: this.maximumDiscounts.maximum_discount,
       is_maximum_discount_enabled: this.maximumDiscounts.is_maximum_discount_enabled
     }).get();

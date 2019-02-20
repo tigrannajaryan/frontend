@@ -12,6 +12,7 @@ import {
 import { ServiceCategoryModel } from '~/core/api/services.models';
 import { PageNames } from '~/core/page-names';
 import { BookingData } from '~/core/api/booking.data';
+import { MadeDisableOnClick } from '~/shared/utils/loading';
 
 @Component({
   selector: 'page-services',
@@ -41,18 +42,19 @@ export class ServicesPageComponent {
     this.services = this.store.select(selectStylistCategoryServices(stylistUuid, categoryUuid));
   }
 
-  onServiceClick(service: ServiceModel): void {
+  @MadeDisableOnClick
+  async onServiceClick(service: ServiceModel): Promise<void> {
     // Update services:
     const services = (this.isAdditionalService ? this.bookingData.selectedServices : []) || [];
     if (!this.bookingData.hasSelectedService(service)) {
-      this.bookingData.setSelectedServices([...services, service]);
+      await this.bookingData.setSelectedServices([...services, service]);
     }
 
     if (!this.isAdditionalService) {
-      this.navCtrl.push(PageNames.SelectDate);
+      await this.navCtrl.push(PageNames.SelectDate);
     } else {
       const startIndex = this.navCtrl.getActive().index - 1;
-      this.navCtrl.remove(startIndex, 2);
+      await this.navCtrl.remove(startIndex, 2);
     }
   }
 }

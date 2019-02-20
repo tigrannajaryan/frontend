@@ -15,7 +15,7 @@ import { PageNames } from '~/core/page-names';
 import { AppointmentPageParams } from '~/appointment-page/appointment-page.component';
 import { reUseAppointment } from '~/booking/booking-utils';
 import { StylistProfileParams } from '~/stylists/stylist-profile/stylist-profile.component';
-import { removeParamsFormUrl } from '~/shared/utils/string-utils';
+import { MadeDisableOnClick } from '~/shared/utils/loading';
 
 export enum HomeTabName {
   Upcoming = 'Upcoming',
@@ -87,15 +87,10 @@ export class HomeComponent {
   }
 
   trackByPhotoURL(index: number, stylist: PreferredStylistModel): string {
-    // all our urls has unique Signature and Expires in each request
-    return removeParamsFormUrl(stylist.profile_photo_url);
+    return stylist.profile_photo_url;
   }
 
   trackByAppointmentIdentity(index: number, appointment: ClientAppointmentModel): string {
-    // all our urls has unique Signature and Expires in each request
-    // override url with url without params
-    appointment.profile_photo_url = removeParamsFormUrl(appointment.profile_photo_url);
-
     const visibleValues = [
       appointment.datetime_start_at,
       appointment.grand_total,
@@ -152,25 +147,30 @@ export class HomeComponent {
     }
   }
 
-  onBookClick(): void {
+  @MadeDisableOnClick
+  async onBookClick(): Promise<void> {
     this.logger.info('onBookClick');
     this.events.publish(ClientEventTypes.startBooking);
   }
 
-  onStylistClick(stylist: PreferredStylistModel): void {
+  @MadeDisableOnClick
+  async onStylistClick(stylist: PreferredStylistModel): Promise<void> {
     const params: StylistProfileParams = { stylist };
-    this.app.getRootNav().push(PageNames.StylistProfile, { params });
+    await this.app.getRootNav().push(PageNames.StylistProfile, { params });
   }
 
-  onMyStylistsClick(): void {
-    this.app.getRootNav().push(PageNames.MyStylists);
+  @MadeDisableOnClick
+  async onMyStylistsClick(): Promise<void> {
+    await this.app.getRootNav().push(PageNames.MyStylists);
   }
 
-  onSearchStylistsClick(): void {
-    this.app.getRootNav().push(PageNames.StylistSearch);
+  @MadeDisableOnClick
+  async onSearchStylistsClick(): Promise<void> {
+    await this.app.getRootNav().push(PageNames.StylistSearch);
   }
 
-  onAppointmentClick(appointment: ClientAppointmentModel): void {
+  @MadeDisableOnClick
+  async onAppointmentClick(appointment: ClientAppointmentModel): Promise<void> {
     const tab = this.tabs[this.slides.getActiveIndex()];
     if (tab) {
       const params: AppointmentPageParams = { appointment };
@@ -180,10 +180,11 @@ export class HomeComponent {
       if (tab.name === HomeTabName.Past) {
         params.hasRebook = true;
       }
-      this.app.getRootNav().push(PageNames.Appointment, { params });
+      await this.app.getRootNav().push(PageNames.Appointment, { params });
     }
   }
 
+  @MadeDisableOnClick
   async onRebookAppointmentClick(appointment: ClientAppointmentModel): Promise<void> {
     this.logger.info('onReUseAppointmentClick', appointment);
     if (!this.stylists.some(stylist => stylist.uuid === appointment.stylist_uuid)) {
@@ -194,7 +195,7 @@ export class HomeComponent {
       }
     }
 
-    reUseAppointment(appointment, false);
+    await reUseAppointment(appointment, false);
   }
 
   private onAppointmentCancel(): void {

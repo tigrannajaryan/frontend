@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { PageNames } from '~/core/page-names';
+import { MadeDisableOnClick } from '~/shared/utils/loading';
 
 @Component({
   selector: 'first-screen',
@@ -10,7 +11,8 @@ export class FirstScreenComponent {
 
   constructor(private navCtrl: NavController) {}
 
-  getStarted(): void {
-    this.navCtrl.setRoot(PageNames.Auth);
+  @MadeDisableOnClick
+  async getStarted(): Promise<void> {
+    await this.navCtrl.setRoot(PageNames.Auth);
   }
 }

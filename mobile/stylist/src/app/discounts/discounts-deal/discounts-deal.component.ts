@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 
 import { Discounts, WeekdayDiscount } from '~/core/api/discounts.models';
 import { DiscountsApi } from '~/core/api/discounts.api';
-import { loading } from '~/shared/utils/loading';
+import { loading, MadeDisableOnClick } from '~/shared/utils/loading';
 import { PageNames } from '~/core/page-names';
 import { PercentageSliderSettings } from '~/core/popups/change-percent/change-percent.component';
 import { dealOfTheWeekMinDiscount } from '~/shared/constants';
@@ -115,7 +115,8 @@ export class DiscountsDealComponent {
     this.discountsApi.setDiscounts({ weekdays: this.weekdays }).get();
   }
 
-  onDealClick(item: WeekdayDiscount): void {
+  @MadeDisableOnClick
+  async onDealClick(item: WeekdayDiscount): Promise<void> {
     const data: PercentageSliderSettings = {
       label: 'Deal of the Week Discount',
       percentage: item.discount_percent,
@@ -132,15 +133,16 @@ export class DiscountsDealComponent {
 
       this.onSetDeal();
     });
-    modal.present();
+    await modal.present();
   }
 
-  onSelectWeekday($event: MouseEvent, weekday: WeekdayDiscount): void {
+  @MadeDisableOnClick
+  async onSelectWeekday($event: Event, weekday: WeekdayDiscount): Promise<void> {
     $event.preventDefault();
 
     this.newWeekDay = weekday;
 
-    this.onSetDeal();
+    await this.onSetDeal();
   }
 
   async onSetDeal(): Promise<void> {

@@ -16,6 +16,7 @@ import {
 } from '~/core/reducers/services.reducer';
 import { ServiceCategoryModel } from '~/core/api/services.models';
 import { BookingData } from '~/core/api/booking.data';
+import { MadeDisableOnClick } from '~/shared/utils/loading';
 
 export interface ServicesCategoriesParams {
   stylistUuid: string;
@@ -59,8 +60,9 @@ export class ServicesCategoriesPageComponent {
     this.store.dispatch(new GetStylistServicesAction(this.stylistUuid));
   }
 
-  onProceedToServices(categoryUuid: string): void {
-    this.navCtrl.push(PageNames.Services, {
+  @MadeDisableOnClick
+  async onProceedToServices(categoryUuid: string): Promise<void> {
+    await this.navCtrl.push(PageNames.Services, {
       stylistUuid: this.stylistUuid,
       categoryUuid,
       isAdditionalService: this.isAdditionalService

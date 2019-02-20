@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { Discounts } from '~/core/api/discounts.models';
 import { DiscountsApi } from '~/core/api/discounts.api';
 import { PageNames } from '~/core/page-names';
-import { loading } from '~/shared/utils/loading';
+import { loading, MadeDisableOnClick } from '~/shared/utils/loading';
 import { PercentageSliderSettings } from '~/core/popups/change-percent/change-percent.component';
 import { ModalController } from 'ionic-angular';
 
@@ -38,24 +38,25 @@ export class DiscountsFirstVisitComponent {
     }
   }
 
-  onSave(): void {
-    this.discountsApi.setDiscounts({ first_booking: this.firstBooking.percentage }).get();
+  async onSave(): Promise<void> {
+    await this.discountsApi.setDiscounts({ first_booking: this.firstBooking.percentage }).get();
   }
 
-  onDiscountChange(): void {
+  @MadeDisableOnClick
+  async onDiscountChange(): Promise<void> {
     const data: PercentageSliderSettings = this.firstBooking;
 
     const modal = this.modalCtrl.create(PageNames.ChangePercent, { data });
-    modal.onDidDismiss((percent: number) => {
+    modal.onDidDismiss(async (percent: number) => {
       if (isNaN(percent)) {
         return;
       }
 
       if (this.firstBooking.percentage !== percent) {
         this.firstBooking.percentage = percent;
-        this.onSave();
+        await this.onSave();
       }
     });
-    modal.present();
+    await modal.present();
   }
 }

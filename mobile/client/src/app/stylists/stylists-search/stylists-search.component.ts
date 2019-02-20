@@ -10,7 +10,7 @@ import {
   StylistModel,
   StylistsSearchParams
 } from '~/shared/api/stylists.models';
-import { loading } from '~/shared/utils/loading';
+import { loading, MadeDisableOnClick } from '~/shared/utils/loading';
 import { GeolocationService, LatLng } from '~/shared/utils/geolocation.service';
 import { StylistProfileParams } from '~/stylists/stylist-profile/stylist-profile.component';
 import { InvitationsComponentParams } from '~/shared/components/invitations/abstract-invitations.component';
@@ -18,7 +18,6 @@ import { InvitationsComponentParams } from '~/shared/components/invitations/abst
 import { PreferredStylistsData } from '~/core/api/preferred-stylists.data';
 import { StylistsService } from '~/core/api/stylists.service';
 import { PageNames } from '~/core/page-names';
-import { removeParamsFormUrl } from '~/shared/utils/string-utils';
 
 enum ScrollDirection {
   Up = 'up',
@@ -145,14 +144,6 @@ export class StylistSearchComponent implements AfterViewInit {
     this.isLocationInputFocused = isFocused;
   }
 
-  openStylistPreview(stylist: PreferredStylistModel): void {
-    const params: StylistProfileParams = {
-      stylist
-    };
-
-    this.app.getRootNav().push(PageNames.StylistProfile, { params });
-  }
-
   async scrollTop(): Promise<void> {
     await this.content.scrollTo(0, 0, 400);
     this.showHeader();
@@ -178,20 +169,7 @@ export class StylistSearchComponent implements AfterViewInit {
     this.content.resize();
   }
 
-  onInviteStylistClick(): void {
-    const params: InvitationsComponentParams = {
-      isRootPage: false,
-      inClientToStylistInvitation: true
-    };
-
-    this.app.getRootNav().push(PageNames.Invitations, { params });
-  }
-
   trackByStylistIdentity(index: number, stylist: StylistModel): string {
-    // all our urls has unique Signature and Expires in each request
-    // override url with url without params
-    stylist.profile_photo_url = removeParamsFormUrl(stylist.profile_photo_url);
-
     const visibleValues = [
       stylist.is_profile_bookable,
       stylist.profile_photo_url,
@@ -204,6 +182,25 @@ export class StylistSearchComponent implements AfterViewInit {
 
     // compare all visible values
     return Md5.init(visibleValues);
+  }
+
+  @MadeDisableOnClick
+  async onInviteStylistClick(): Promise<void> {
+    const params: InvitationsComponentParams = {
+      isRootPage: false,
+      inClientToStylistInvitation: true
+    };
+
+    await this.app.getRootNav().push(PageNames.Invitations, { params });
+  }
+
+  @MadeDisableOnClick
+  async openStylistPreview(stylist: PreferredStylistModel): Promise<void> {
+    const params: StylistProfileParams = {
+      stylist
+    };
+
+    await this.app.getRootNav().push(PageNames.StylistProfile, { params });
   }
 
   private async requestGeolocation(): Promise<void> {

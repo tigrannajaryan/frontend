@@ -36,6 +36,7 @@ import {
 import { WeekdayIso } from '~/shared/weekday';
 
 import { FocusAppointmentEventParams, StylistEventTypes } from '~/core/stylist-event-types';
+import { MadeDisableOnClick } from '~/shared/utils/loading';
 
 // Default data that we display until the real data is being loaded
 const defaultData: DayAppointmentsResponse = {
@@ -128,11 +129,12 @@ export class HomeSlotsComponent {
     this.events.unsubscribe(StylistEventTypes.focusAppointment);
   }
 
-  onBlockedDayClick(): void {
+  @MadeDisableOnClick
+  async onBlockedDayClick(): Promise<void> {
     const actionSheet = this.actionSheetCtrl.create({
       buttons: this.getBlockedDayActionSheetOptions()
     });
-    actionSheet.present();
+    await actionSheet.present();
   }
 
   getBlockedDayActionSheetOptions(): ActionSheetButton[] {
@@ -194,26 +196,18 @@ export class HomeSlotsComponent {
     return this.selectedDate && this.selectedDate.isSame(moment(), 'day');
   }
 
-  onTodayNavigateClick(): void {
-    this.selectDateAndLoadAppointments(moment().startOf('day'));
+  @MadeDisableOnClick
+  async onTodayNavigateClick(): Promise<void> {
+    await this.selectDateAndLoadAppointments(moment().startOf('day'));
   }
 
-  onChangeTimeGapClick(): void {
+  @MadeDisableOnClick
+  async onChangeTimeGapClick(): Promise<void> {
     const modal = this.modalCtrl.create(PageNames.ChangeGapTime);
-    modal.present();
+    await modal.present();
   }
 
-  onSelectedDateChange(date: moment.Moment): void {
-    this.selectDateAndLoadAppointments(date);
-  }
-
-  onFreeSlotClick(freeSlot: FreeSlot): void {
-    // Show Appointment Add screen when clicked on a free slot.
-    // Preset the date and time of appointment since we already know it.
-    const params: AppointmentAddParams = { startDateTime: freeSlot.startTime };
-    this.navCtrl.push(PageNames.AppointmentAdd, { params });
-  }
-
+  @MadeDisableOnClick
   async onDateAreaClick(): Promise<void> {
     const defaultWeekdays = [];
     const { response: worktime } = await this.worktimeApi.getWorktime().toPromise();
@@ -235,9 +229,9 @@ export class HomeSlotsComponent {
         const dates = Array.from(days.keys());
 
         const { response } = await this.homeService.getDatesWithAppointments({
-            date_from: new Date(dates[0]),
-            date_to: new Date(dates[dates.length - 1])
-          }).toPromise();
+          date_from: new Date(dates[0]),
+          date_to: new Date(dates[dates.length - 1])
+        }).toPromise();
 
         if (response) {
           for (const appointment of response.dates) {
@@ -251,14 +245,26 @@ export class HomeSlotsComponent {
       }
     };
     const popup = this.modalCtrl.create(CalendarPickerComponent, { params });
-    popup.present();
+    await popup.present();
   }
 
-  onAddAppointmentClick(): void {
+  onSelectedDateChange(date: moment.Moment): void {
+    this.selectDateAndLoadAppointments(date);
+  }
+
+  onFreeSlotClick(freeSlot: FreeSlot): void {
+    // Show Appointment Add screen when clicked on a free slot.
+    // Preset the date and time of appointment since we already know it.
+    const params: AppointmentAddParams = { startDateTime: freeSlot.startTime };
+    this.navCtrl.push(PageNames.AppointmentAdd, { params });
+  }
+
+  @MadeDisableOnClick
+  async onAddAppointmentClick(): Promise<void> {
     // Show Appointment Add screen when clicked on Add Appointment button.
     // Preset the date of appointment since we already know it.
     const params: AppointmentAddParams = { startDate: moment(this.selectedDate).startOf('day') };
-    this.navCtrl.push(PageNames.AppointmentAdd, { params });
+    await this.navCtrl.push(PageNames.AppointmentAdd, { params });
   }
 
   /**

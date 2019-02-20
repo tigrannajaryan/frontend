@@ -9,7 +9,7 @@ import { getProfileStatus, updateProfileStatus } from '~/shared/storage/token-ut
 import { StylistProfileStatus } from '~/shared/api/stylist-app.models';
 
 import { PageNames } from '~/core/page-names';
-import { loading } from '~/shared/utils/loading';
+import { loading, MadeDisableOnClick } from '~/shared/utils/loading';
 import { VisualWeekCard } from '~/shared/utils/worktime-utils';
 
 export interface WorkHoursComponentParams {
@@ -48,10 +48,16 @@ export class WorkHoursComponent {
     }
   }
 
+  async autoSave(): Promise<void> {
+    // Save to backendworkhours.component.ts
+    await this.api.setWorktime(this.presentation2api(this.cards)).get();
+  }
+
   /**
    * Click handler for weekday box. Toggles the state of the day.
    */
-  toggleWeekday(toogleDay: VisualWeekday): void {
+  @MadeDisableOnClick
+  async toggleWeekday(toogleDay: VisualWeekday): Promise<void> {
     // If the day is to be enabled, disable the same day
     // from all other cards first.
     if (!toogleDay.enabled) {
@@ -67,22 +73,19 @@ export class WorkHoursComponent {
     // Now toggle the day
     toogleDay.enabled = !toogleDay.enabled;
 
-    this.autoSave();
+    await this.autoSave();
   }
 
-  addNewCard(): void {
+  @MadeDisableOnClick
+  async addNewCard(): Promise<void> {
     this.cards.push(VisualWeekCard.createCard(false));
   }
 
-  deleteCard(index: number): void {
+  @MadeDisableOnClick
+  async deleteCard(index: number): Promise<void> {
     this.cards.splice(index, 1);
 
-    this.autoSave();
-  }
-
-  autoSave(): void {
-    // Save to backendworkhours.component.ts
-    this.api.setWorktime(this.presentation2api(this.cards)).get();
+    await this.autoSave();
   }
 
   private async performInitialSaving(): Promise<void> {

@@ -13,6 +13,7 @@ import { DefaultImage } from '~/core/core.module';
 import { ProfileModel } from '~/core/api/profile.models';
 
 import { ProfileDataStore } from '~/profile/profile.data';
+import { MadeDisableOnClick } from '~/shared/utils/loading';
 
 @Component({
   selector: 'profile-edit',
@@ -85,7 +86,8 @@ export class ProfileEditComponent {
     };
   }
 
-  onProcessPhoto(): void {
+  @MadeDisableOnClick
+  async onProcessPhoto(): Promise<void> {
     const options: ActionSheetOptions = {
       buttons: [
         ...this.photoUploadOptions.buttons,
@@ -104,9 +106,10 @@ export class ProfileEditComponent {
           }] : []
       ]
     };
-    this.actionSheetCtrl.create(options).present();
+    await this.actionSheetCtrl.create(options).present();
   }
 
+  @MadeDisableOnClick
   async onSubmit(): Promise<void> {
     const value = {
       ...this.form.value,
@@ -118,7 +121,7 @@ export class ProfileEditComponent {
 
     if (updated && updated.response) {
       this.form.patchValue(updated.response);
-      this.navCtrl.popToRoot();
+      await this.navCtrl.popToRoot();
     }
   }
 

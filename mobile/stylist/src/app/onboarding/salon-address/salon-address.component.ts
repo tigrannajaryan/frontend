@@ -12,9 +12,9 @@ import { Logger } from '~/shared/logger';
 
 import { StylistServiceProvider } from '~/core/api/stylist.service';
 import { PageNames } from '~/core/page-names';
-import { loading } from '~/core/utils/loading';
 
 import { RegistrationForm } from '~/onboarding/registration.form';
+import { MadeDisableOnClick } from '~/shared/utils/loading';
 
 export interface SalonAddressComponentParams {
   isRootPage?: boolean;
@@ -83,20 +83,20 @@ export class SalonAddressComponent implements AfterViewInit, OnInit {
     return this.address.valid;
   }
 
-  onNavigateNext(): void {
+  async onNavigateNext(): Promise<void> {
     if (!this.params.isRootPage) {
-      this.navCtrl.push(PageNames.ConnectInstagram);
+      await this.navCtrl.push(PageNames.ConnectInstagram);
     } else {
-      this.navCtrl.popToRoot();
+      await this.navCtrl.popToRoot();
     }
   }
 
-  @loading
+  @MadeDisableOnClick
   async onContinue(): Promise<void> {
     if (this.address.valid) {
       await this.registrationForm.save();
 
-      this.onNavigateNext();
+      await this.onNavigateNext();
     }
   }
 

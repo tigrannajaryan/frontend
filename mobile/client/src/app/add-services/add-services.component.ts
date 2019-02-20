@@ -6,6 +6,7 @@ import { CheckOutService, ServiceFromAppointment } from '~/shared/api/stylist-ap
 
 import { GetStylistServicesParams, ServiceCategoryModel } from '~/core/api/services.models';
 import { ServicesService } from '~/core/api/services.service';
+import { MadeDisableOnClick } from '~/shared/utils/loading';
 
 export class AddServicesComponentParams {
   appointment: ClientAppointmentModel;
@@ -67,7 +68,8 @@ export class AddServicesComponent {
     this.addedServices = services;
   }
 
-  protected addServicesClick(): void {
+  @MadeDisableOnClick
+  protected async addServicesClick(): Promise<void> {
     // Call the callback. It is expected that the callback will close this page in a
     // way that mirrors how this page was opened (but this page doesn't really care how)
     this.params.onComplete(this.addedServices);

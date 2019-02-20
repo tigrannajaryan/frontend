@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { MadeDisableOnClick } from '~/shared/utils/loading';
 
 @Component({
   selector: '[madeContinueFooter]',
@@ -9,7 +10,8 @@ export class ContinueFooterComponent {
   @Output() continue = new EventEmitter();
   @Input() title: string;
 
-  onContinue(): void {
+  @MadeDisableOnClick
+  async onContinue(): Promise<void> {
     this.continue.emit();
   }
 }

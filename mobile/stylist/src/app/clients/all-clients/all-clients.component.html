@@ -5,7 +5,7 @@
 </ion-header>
 
 <ion-content no-padding class="MyClients">
-  <ion-refresher (ionRefresh)="onRefresh()">
+  <ion-refresher (ionRefresh)="onRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 

@@ -1,8 +1,9 @@
-<ion-header>
-  <ion-navbar>
+<ion-header class="madeHeader">
+  <ion-navbar class="Made-wp BackHeader-backBtn">
     <ion-title>
       <i class="mb-icon-logo"></i>
     </ion-title>
+
     <ion-buttons end>
       <button (click)="onSubmit()" [disabled]="!form?.valid" class="ProfilePage-submit" ion-button clear data-test-id="submit">
         Done
@@ -10,6 +11,7 @@
     </ion-buttons>
   </ion-navbar>
 </ion-header>
+
 
 <ion-content no-padding class="ProfilePage">
   <div *ngIf="form" class="contentSidePadding ProfilePage-editWp">

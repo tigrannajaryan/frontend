@@ -11,6 +11,7 @@ import { PlatformNames } from '~/shared/constants';
 import { ENV } from '~/environments/environment.default';
 
 import webClientIdMap from '~/../../../support/config/webclientid-config.json';
+import { MadeDisableOnClick } from '~/shared/utils/loading';
 
 export interface CalendarPrimingParams {
   onSuccess?: Function;
@@ -37,12 +38,13 @@ export class CalendarPrimingComponent {
     this.params = this.navParams.get('params') || {};
   }
 
+  @MadeDisableOnClick
   async onEnableCalendarAccess(): Promise<void> {
     // Show loader
     const loading = this.loadingCtrl.create({
       content: 'Please wait...'
     });
-    loading.present();
+    await loading.present();
 
     // Start Google Signin process
     let loginResponse;
@@ -83,8 +85,9 @@ export class CalendarPrimingComponent {
     this.showSuccess(loginResponse.email);
   }
 
-  onBack(): void {
-    this.navCtrl.pop();
+  @MadeDisableOnClick
+  async onBack(): Promise<void> {
+    await this.navCtrl.pop();
   }
 
   private showSuccess(calendarUserEmail: string): void {

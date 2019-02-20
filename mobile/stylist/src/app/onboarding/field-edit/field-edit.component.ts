@@ -9,6 +9,7 @@ import {
   RegistrationForm,
   RegistrationFormControl
 } from '~/onboarding/registration.form';
+import { MadeDisableOnClick } from '~/shared/utils/loading';
 
 export interface FieldEditComponentParams {
   control: RegistrationFormControl;
@@ -87,9 +88,9 @@ export class FieldEditComponent implements OnInit {
     }
   }
 
-  onNavigateNext(): void {
+  async onNavigateNext(): Promise<void> {
     if (this.params.isRootPage) {
-      this.navCtrl.popToRoot();
+      await this.navCtrl.popToRoot();
       return;
     }
 
@@ -97,12 +98,12 @@ export class FieldEditComponent implements OnInit {
       case RegistrationFormControl.FirstName:
       case RegistrationFormControl.LastName: {
         const params: FieldEditComponentParams = { control: RegistrationFormControl.SalonName };
-        this.navCtrl.push(PageNames.FieldEdit, { params });
+        await this.navCtrl.push(PageNames.FieldEdit, { params });
         break;
       }
 
       case RegistrationFormControl.SalonName:
-        this.navCtrl.push(PageNames.SalonAddress);
+        await this.navCtrl.push(PageNames.SalonAddress);
         break;
 
       default:
@@ -110,6 +111,7 @@ export class FieldEditComponent implements OnInit {
     }
   }
 
+  @MadeDisableOnClick
   async onContinue(): Promise<void> {
     if (this.isValid()) {
       if (this.params.isRootPage) {

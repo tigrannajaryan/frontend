@@ -62,7 +62,7 @@ export async function loading<T>(
   }
 }
 
-type MadeDisableOnClickFunction = ($event: MouseEvent, ...args: any[]) => Promise<any>;
+type MadeDisableOnClickFunction = (...args: any[]) => Promise<any>;
 type MadeDisableOnClickDescriptor = TypedPropertyDescriptor<MadeDisableOnClickFunction>;
 /**
  * This function is used as a component’s async method decorator.
@@ -79,26 +79,21 @@ export function MadeDisableOnClick(target: any, name: string, descriptor: MadeDi
   // Some of tslint rules are disabled because a context should be bound when the function is called.
   // tslint:disable:only-arrow-functions, no-invalid-this
   descriptor.value = async function(...args): Promise<any> {
-    const [ event ] = args;
 
-    const currentTarget: HTMLElement = event && event.currentTarget;
+    // set button to disabled state immediately on click function fire
+    document.body.setAttribute('madeDisableOnClickDisabled', '');
 
-    if (currentTarget instanceof HTMLElement) {
-      // set button to disabled state immediately on click function fire
-      currentTarget.setAttribute('madeDisableOnClickDisabled', '');
-
-      args.push(madeDisableOnClickCallBack => {
-        // remove attribute after function done
-        currentTarget.removeAttribute('madeDisableOnClickDisabled');
-      });
-    } else {
-      throw new Error(`@MadeDisableOnClick should have $event parameter, but got ${typeof currentTarget} instead`);
-    }
+    args.push(madeDisableOnClickCallBack => {
+      // remove attribute after function done
+      document.body.removeAttribute('madeDisableOnClickDisabled');
+    });
     try {
       return await original.call(this, ...args);
     } finally {
       // trigger madeDisableOnClickCallBack
-      args[args.length - 1]();
+      setTimeout(() => {
+        args[args.length - 1]();
+      }, 100); // set default delay to cover callback/events cases
     }
   };
 

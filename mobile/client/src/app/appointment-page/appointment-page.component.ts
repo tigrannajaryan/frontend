@@ -231,10 +231,12 @@ export class AppointmentPageComponent {
     );
   }
 
-  onAddPaymentClick(): void {
-    this.navCtrl.push(PageNames.AddCard);
+  @MadeDisableOnClick
+  async onAddPaymentClick(): Promise<void> {
+    await this.navCtrl.push(PageNames.AddCard);
   }
 
+  @MadeDisableOnClick
   async onConfirmClick(): Promise<void> {
     const appointmentRequest: CreateAppointmentRequest = {
       stylist_uuid: this.bookingData.stylist.uuid,
@@ -252,13 +254,13 @@ export class AppointmentPageComponent {
 
       if (createAppointmentResponse) {
         // Appointment succesfully created. Refresh Home screen.
-        this.appointmentsDataStore.home.refresh();
+        await this.appointmentsDataStore.home.refresh();
 
         // Show "booking complete" message.
         const params: BookingCompleteComponentParams = {
           appointment: createAppointmentResponse
         };
-        this.navCtrl.push(PageNames.BookingComplete, { params });
+        await this.navCtrl.push(PageNames.BookingComplete, { params });
       }
     } else {
       // this is rescheduling we want to update current appointment
@@ -272,16 +274,16 @@ export class AppointmentPageComponent {
           appointment: updateAppointmentResponse,
           isRescheduling: true
         };
-        this.navCtrl.push(PageNames.BookingComplete, { params });
+        await this.navCtrl.push(PageNames.BookingComplete, { params });
       }
     }
 
     // Appointment succesfully created. Refresh Home screen.
-    this.appointmentsDataStore.home.refresh();
+    await this.appointmentsDataStore.home.refresh();
   }
 
   @MadeDisableOnClick
-  async onReUseAppointmentClick($event: MouseEvent, isRescheduling: boolean): Promise<void> {
+  async onReUseAppointmentClick(isRescheduling: boolean): Promise<void> {
     const isConfirmed = await confirmRebook(this.params.appointment);
     if (isConfirmed) {
 
@@ -308,7 +310,8 @@ export class AppointmentPageComponent {
     }
   }
 
-  onCancelClick(): void {
+  @MadeDisableOnClick
+  async onCancelClick(): Promise<void> {
     const alert = this.alertCtrl.create({
       message: 'Are you sure you want to cancel this appointment?',
       buttons: [
@@ -324,7 +327,7 @@ export class AppointmentPageComponent {
         }
       ]
     });
-    alert.present();
+    await alert.present();
   }
 
   async onDoCancel(): Promise<void> {
@@ -340,25 +343,29 @@ export class AppointmentPageComponent {
     }
   }
 
-  onChangeServices(): void {
+  @MadeDisableOnClick
+  async onChangeServices(): Promise<void> {
     const params: AddServicesComponentParams = {
       appointment: this.params.appointment,
       selectedServices: this.params.appointment.services,
       onComplete: this.onAddServices.bind(this)
     };
 
-    this.navCtrl.push(PageNames.AddServices, { params });
+    await this.navCtrl.push(PageNames.AddServices, { params });
   }
 
-  onChangePrice(appointment: ClientAppointmentModel): void {
+  @MadeDisableOnClick
+  async onChangePrice(appointment: ClientAppointmentModel): Promise<void> {
     const params: AppointmentPriceComponentParams = { appointment };
-    this.navCtrl.push(PageNames.AppointmentPrice, { params });
+    await this.navCtrl.push(PageNames.AppointmentPrice, { params });
   }
 
+  @MadeDisableOnClick
   async onCheckoutAndPay(): Promise<void> {
     await this.onCheckout(this.payment);
   }
 
+  @MadeDisableOnClick
   async onCheckout(payment: PaymentMethod): Promise<void> {
     const request: AppointmentChangeRequest = {
       status: AppointmentStatus.checked_out,

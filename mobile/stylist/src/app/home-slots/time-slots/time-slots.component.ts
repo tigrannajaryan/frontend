@@ -6,6 +6,7 @@ import { AppointmentStatus, StylistAppointmentModel } from '~/shared/api/appoint
 import { getHoursSinceMidnight } from '~/shared/utils/datetime-utils';
 import { setIntervalOutsideNgZone } from '~/shared/utils/timer-utils';
 import { ISOTimeOnly, isoTimeOnlyFormat } from '~/shared/api/base.models';
+import { MadeDisableOnClick } from '~/shared/utils/loading';
 
 export interface TimeSlotLabel {
   text: string;
@@ -190,7 +191,8 @@ export class TimeSlotsComponent implements AfterViewInit, OnDestroy {
   /**
    * Click handler for slots
    */
-  protected onSlotItemClick(slotItem: TimeSlotItem): void {
+  @MadeDisableOnClick
+  protected async onSlotItemClick(slotItem: TimeSlotItem): Promise<void> {
     // Indicate selected
     this.selectedTimeSlot = slotItem;
 
@@ -198,13 +200,9 @@ export class TimeSlotsComponent implements AfterViewInit, OnDestroy {
       // It is an appointment slot
       this.appointmentClick.emit(slotItem.appointment);
     } else {
-      // It is a free slot. Keep it selected for a while to allow the user to see it
-      const showFreeSlotSelectorForMs = moment.duration(0.2, 'second').asMilliseconds();
-      setTimeout(() => {
-        // Now fire the event to let others know free slot is selected
-        const freeSlot: FreeSlot = { startTime: slotItem.startTime };
-        this.freeSlotClick.emit(freeSlot);
-      }, showFreeSlotSelectorForMs);
+      // Now fire the event to let others know free slot is selected
+      const freeSlot: FreeSlot = { startTime: slotItem.startTime };
+      this.freeSlotClick.emit(freeSlot);
     }
   }
 

@@ -53,7 +53,15 @@
 
     <ion-row text-center>
       <ion-col col-2></ion-col>
-      <ion-col col-8><button (click)="addNewCard()" class="Discounts-btn" ion-button>Add New Shift</button></ion-col>
+      <ion-col col-8>
+        <button
+          (click)="addNewCard()"
+          class="Discounts-btn"
+          data-test-id="workhours_addNew"
+          ion-button>
+          Add New Shift
+        </button>
+      </ion-col>
       <ion-col col-2></ion-col>
     </ion-row>
   </div>
