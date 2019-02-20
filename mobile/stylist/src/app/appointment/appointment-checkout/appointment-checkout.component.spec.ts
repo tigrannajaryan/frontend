@@ -116,7 +116,7 @@ describe('Pages: AppointmentCheckoutComponent', () => {
       isAlreadyCheckedOut: true
     };
     instance.params = navParams.data.params;
-    instance.ionViewWillEnter();
+    await instance.ionViewWillEnter();
 
     spyOn(homeService, 'getAppointmentById').and.returnValue(
       homeServiceMock.getAppointmentById('')
