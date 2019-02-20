@@ -39,7 +39,7 @@
               <i class="mb-icon-plus"></i>
           </div>
           <div class="Home-stylist"
-            *ngFor="let stylist of stylists"
+            *ngFor="let stylist of stylists; trackBy: trackByPhotoURL"
             (click)="onStylistClick(stylist)">
               <img [src]="stylist.profile_photo_url || 'assets/icons/stylist-avatar.png'" />
           </div>
@@ -57,7 +57,7 @@
 
           <ng-container *ngIf="tab.appointments; else loader">
 
-            <ng-container *ngFor="let appointment of tab.appointments">
+            <ng-container *ngFor="let appointment of tab.appointments; trackBy: trackByAppointmentIdentity">
               <appointment-item class="Home-appointment"
                 [appointment]="appointment"
                 (click)="onAppointmentClick(appointment)"></appointment-item>

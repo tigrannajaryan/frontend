@@ -47,3 +47,14 @@ export function trimStr(s?: string): string {
   }
   return s;
 }
+
+export function removeParamsFormUrl(url: string): string {
+  if (
+      url
+      && url.match(/.*(?=\?)/)
+      && url.match(/.*(?=\?)/)[0]
+  ) {
+    return url.match(/.*(?=\?)/)[0];
+  }
+  return url;
+}

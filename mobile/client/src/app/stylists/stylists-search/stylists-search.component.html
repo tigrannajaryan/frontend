@@ -47,7 +47,7 @@
     <!-- Showing stylists -->
     <div *ngIf="!isLoading && stylists" class="StylistsPage-stylists">
       <stylist-card
-        *ngFor="let stylist of stylists"
+        *ngFor="let stylist of stylists; trackBy: trackByStylistIdentity"
         [stylist]="stylist"
         (click)="openStylistPreview(stylist)"></stylist-card>
 

@@ -1,6 +1,7 @@
 import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { App, Content, Header, Keyboard, NavParams } from 'ionic-angular';
+import { Md5 } from 'md5-typescript';
 import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/debounceTime';
 
@@ -17,6 +18,7 @@ import { InvitationsComponentParams } from '~/shared/components/invitations/abst
 import { PreferredStylistsData } from '~/core/api/preferred-stylists.data';
 import { StylistsService } from '~/core/api/stylists.service';
 import { PageNames } from '~/core/page-names';
+import { removeParamsFormUrl } from '~/shared/utils/string-utils';
 
 enum ScrollDirection {
   Up = 'up',
@@ -183,6 +185,25 @@ export class StylistSearchComponent implements AfterViewInit {
     };
 
     this.app.getRootNav().push(PageNames.Invitations, { params });
+  }
+
+  trackByStylistIdentity(index: number, stylist: StylistModel): string {
+    // all our urls has unique Signature and Expires in each request
+    // override url with url without params
+    stylist.profile_photo_url = removeParamsFormUrl(stylist.profile_photo_url);
+
+    const visibleValues = [
+      stylist.is_profile_bookable,
+      stylist.profile_photo_url,
+      stylist.salon_name,
+      stylist.first_name,
+      stylist.last_name,
+      stylist.followers_count,
+      stylist.rating_percentage
+    ];
+
+    // compare all visible values
+    return Md5.init(visibleValues);
   }
 
   private async requestGeolocation(): Promise<void> {

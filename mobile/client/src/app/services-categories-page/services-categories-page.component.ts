@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
+import { Md5 } from 'md5-typescript';
 
 import { Logger } from '~/shared/logger';
 import { RequestState } from '~/shared/api/request.models';
@@ -64,5 +65,17 @@ export class ServicesCategoriesPageComponent {
       categoryUuid,
       isAdditionalService: this.isAdditionalService
     });
+  }
+
+  trackByCategoryIdentity(index: number, category: ServiceCategoryModel): string {
+    const visibleValues = [
+      category.uuid,
+      category.name,
+      category.services,
+      category.category_code
+    ];
+
+    // compare all visible values
+    return Md5.init(visibleValues);
   }
 }
