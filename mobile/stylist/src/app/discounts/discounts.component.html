@@ -12,39 +12,96 @@
 
 
   <div class="Made-wp Made-wpContent">
-    <div class="Tabs-box DiscountsSettings-tabs">
-      <div class="Tabs-wp">
-        <button (click)="changeTab(DiscountTabNames.weekday)" [class.active]="DiscountTabNames.weekday === activeTab" ion-button clear color="dark" class="Tabs-btn active">
-          {{ discountTabs[DiscountTabNames.weekday].name }}
-        </button>
-        <button (click)="changeTab(DiscountTabNames.revisit)" [class.active]="DiscountTabNames.revisit === activeTab" ion-button clear color="dark" class="Tabs-btn">
-          {{ discountTabs[DiscountTabNames.revisit].name }}
-        </button>
-        <button (click)="changeTab(DiscountTabNames.firstVisit)" [class.active]="DiscountTabNames.firstVisit === activeTab" ion-button clear color="dark" class="Tabs-btn">
-          {{ discountTabs[DiscountTabNames.firstVisit].name }}
-        </button>
-        <button (click)="changeTab(DiscountTabNames.max)" [class.active]="DiscountTabNames.max === activeTab" ion-button clear color="dark" class="Tabs-btn">
-          {{ discountTabs[DiscountTabNames.max].name }}
-        </button>
+    <div class="Made-text">
+      <div class="Made-textItem">
+        MADE will steadily increase prices to the full price automatically as clients book and your day fills up!
       </div>
     </div>
 
-    <ion-slides (ionSlideDidChange)="onSlideChanged()" no-padding>
-      <ion-slide>
-        <discounts-weekday-short [profileStatus]="profileStatus" [discounts]="weekdays" [dealOfTheWeek]="dealOfTheWeek" (weekdayChange)="onWeekdayChange()" (updateWeekdayDiscounts)="onUpdateWeekdayDiscounts()"></discounts-weekday-short>
-      </ion-slide>
+    <ion-row (click)="openDiscountPage(PageNames.DiscountsDaily)" data-test-id="discounts_daily" class="MadeBigList-row">
+      <div class="MadeBigList-rowHeader">
+        <div class="MadeBigList-title">
+          Daily Discounts
+        </div>
 
-      <ion-slide>
-        <discounts-revisit-short [discounts]="rebook" (revisitChange)="onRevisitChange()"></discounts-revisit-short>
-      </ion-slide>
+        <i class="MadeBigList-icon mb-icon-right-arrow"></i>
+      </div>
 
-      <ion-slide>
-        <discounts-first-booking-short [firstBooking]="firstBooking" (firstVisitChange)="onFirstVisitChange()"></discounts-first-booking-short>
-      </ion-slide>
+      <div class="MadeBigList-text">
+        Set your discounts on typically slower days.
+      </div>
+    </ion-row>
 
-      <ion-slide>
-        <discounts-maximum-short [maximumDiscounts]="maximumDiscounts" (maximumDiscountChange)="onMaximumDiscountChange()"></discounts-maximum-short>
-      </ion-slide>
-    </ion-slides>
+    <ion-row (click)="openDiscountPage(PageNames.DiscountsDeal)" data-test-id="discounts_deal" class="MadeBigList-row">
+      <div class="MadeBigList-rowHeader">
+        <div class="MadeBigList-title">
+          Deal of the Week
+        </div>
+
+        <div *ngIf="selectedWeekDay" class="MadeBigList-value">
+          {{ WEEKDAY_SHORT_NAMES[selectedWeekDay.weekday] }}: {{ selectedWeekDay.discount_percent }}%
+        </div>
+
+        <i class="MadeBigList-icon mb-icon-right-arrow"></i>
+      </div>
+
+      <div class="MadeBigList-text">
+        One day at 30% or more.
+      </div>
+    </ion-row>
+
+    <ion-row (click)="openDiscountPage(PageNames.DiscountsLoyalty)" data-test-id="discounts_loyalty" class="MadeBigList-row">
+      <div class="MadeBigList-rowHeader">
+        <div class="MadeBigList-title">
+          Loyalty
+        </div>
+
+        <i class="MadeBigList-icon mb-icon-right-arrow"></i>
+      </div>
+
+      <div class="MadeBigList-text">
+        Reward clients if they come back sooner.
+      </div>
+    </ion-row>
+
+    <ion-row (click)="openDiscountPage(PageNames.DiscountsFirstVisit)" data-test-id="discounts_firstVisit" class="MadeBigList-row">
+      <div class="MadeBigList-rowHeader">
+        <div class="MadeBigList-title">
+          First Visit
+        </div>
+
+        <div class="MadeBigList-value">
+          <ng-container *ngIf="firstVisit; else firstVisitDisabled">{{ firstVisit }}%</ng-container>
+          <ng-template #firstVisitDisabled>None</ng-template>
+        </div>
+
+        <i class="MadeBigList-icon mb-icon-right-arrow"></i>
+      </div>
+
+      <div class="MadeBigList-text">
+        Incentive first time clients.
+      </div>
+    </ion-row>
+
+    <ion-row (click)="openDiscountPage(PageNames.DiscountsMaximum)" data-test-id="discounts_maximum" class="MadeBigList-row">
+      <div class="MadeBigList-rowHeader">
+        <div class="MadeBigList-title">
+          Maximum Discount
+        </div>
+
+        <div class="MadeBigList-value">
+          <ng-container *ngIf="maximumDiscounts?.is_maximum_discount_enabled; else maximumDiscountDisabled">
+            ${{ maximumDiscounts?.maximum_discount }}
+          </ng-container>
+          <ng-template #maximumDiscountDisabled>None</ng-template>
+        </div>
+
+        <i class="MadeBigList-icon mb-icon-right-arrow"></i>
+      </div>
+
+      <div class="MadeBigList-text">
+        Set the highest dollar discount.
+      </div>
+    </ion-row>
   </div>
 </ion-content>

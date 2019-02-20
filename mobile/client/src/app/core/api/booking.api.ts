@@ -31,6 +31,8 @@ export interface CreateAppointmentRequest {
   stylist_uuid: string;
   datetime_start_at: ISODateTime;
   services: AppointmentRequestService[];
+  has_card_fee_included?: boolean;
+  has_tax_included?: boolean;
 }
 
 @Injectable()

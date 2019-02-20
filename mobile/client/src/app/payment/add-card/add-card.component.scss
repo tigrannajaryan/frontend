@@ -1,0 +1,98 @@
+add-card {
+  .AddCard-form {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .AddCard-note {
+    padding: pxtovw(16px) 0;
+    font-size: $shared-base;
+    line-height: 16/15 * 1em;
+  }
+
+  .AddCard-wrap {
+    position: relative;
+
+    img {
+      position: absolute;
+      right: 0;
+      bottom: pxtovw(8px);
+      width: pxtovw(30px);
+      height: pxtovw(26px);
+    }
+  }
+
+  .AddCard-formControl {
+    .label {
+      font-size: $shared-h4;
+
+      &[stacked] {
+        font-size: $shared-base;
+      }
+
+      [floating] {
+        transform: translate3d(0, 0, 0) scale(0.84);
+      }
+    }
+
+    &.is-invalid .item-inner {
+      border-color: color($colors-shared, danger) !important;
+    }
+
+    &.item-md.is-invalid .item-inner {
+      box-shadow: inset 0 -1px 0 0 color($colors-shared, danger) !important;
+    }
+
+    input {
+      letter-spacing: pxtovw(1.5px);
+
+      &::placeholder {
+        font-size: $shared-h3;
+        opacity: 0;
+      }
+
+      &:focus::placeholder {
+        opacity: 1;
+      }
+    }
+  }
+
+  .AddCard-flexFill {
+    flex: 1;
+  }
+
+  .AddCard-formControl.AddCard-formControl--card {
+    margin-top: pxtovw(12px);
+
+    input::placeholder {
+      opacity: 1;
+    }
+  }
+
+  .AddCard-formControl--exp {
+    padding-right: pxtovw(12px);
+  }
+
+  .AddCard-formControl--cvc {
+    padding-left: pxtovw(12px);
+
+    input { // hide what was typed
+      -webkit-text-security: disc;
+    }
+  }
+
+  .AddCard-submit {
+    margin: 0;
+    font-size: $shared-h4;
+  }
+
+  .AddCard-bottom {
+    min-height: pxtovw(106px);
+  }
+
+  .AddCard-error {
+    margin-top: pxtovw(16px);
+    font-size: $shared-small;
+    color: color($colors-shared, danger);
+  }
+}

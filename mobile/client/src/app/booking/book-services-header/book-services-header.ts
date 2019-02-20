@@ -42,7 +42,7 @@ export class BookServicesHeaderComponent {
   onAdd(): void {
     const { stylist } = this.bookingData;
     const params: ServicesCategoriesParams = {
-      isAdditionalService: this.bookingData.selectedServices.length > 0,
+      isAdditionalService: true,
       stylistUuid: stylist.uuid
     };
 

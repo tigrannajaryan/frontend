@@ -141,7 +141,9 @@ export type StylistServicesListResponse = StylistServicesList;
 export interface StylistSettings {
   tax_percentage: number;
   card_fee_percentage: number;
+  stripe_connect_client_id?: string;
   google_calendar_integrated?: boolean;
+  can_checkout_with_made?: boolean;
 }
 
 export enum StylistSettingsKeys {

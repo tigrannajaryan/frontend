@@ -21,3 +21,9 @@
     line-height: pxtovw(28px);
   }
 }
+
+[madeDisableOnClickDisabled] {
+  pointer-events: none;
+  filter: blur(1px) grayscale(1);
+}
+

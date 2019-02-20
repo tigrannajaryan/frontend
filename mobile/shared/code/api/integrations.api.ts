@@ -12,7 +12,8 @@ import config from '~/auth/config.json';
 import { UserContext } from '~/shared/user-context';
 
 export enum IntegrationTypes {
-  google_calendar = 'google_calendar'
+  google_calendar = 'google_calendar',
+  stripe_connect = 'stripe_connect'
 }
 
 export interface AddIntegrationRequest {

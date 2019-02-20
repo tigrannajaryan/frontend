@@ -24,7 +24,9 @@ import { Contacts } from '@ionic-native/contacts';
 import { OpenNativeSettings } from '@ionic-native/open-native-settings';
 import { SMS } from '@ionic-native/sms';
 
+import { BrMaskerModule } from 'brmasker-ionic-3';
 import { GalleryModalHammerConfig, GalleryModalModule } from 'ionic-gallery-modal';
+
 import { AgmCoreModule, LAZY_MAPS_API_CONFIG } from '@agm/core';
 
 import { META_REDUCERS, StoreModule } from '@ngrx/store';
@@ -47,6 +49,8 @@ import { ProfileEffects } from '~/core/effects/profile.effects';
 import { CoreModule } from '~/core/core.module';
 import { DataModule } from '~/core/api/data.module';
 
+import { CardScannerService } from '~/core/card-scanner-service';
+
 import { BaseService } from '~/shared/api/base.service';
 import { ExternalAppService } from '~/shared/utils/external-app-service';
 import { GeolocationService } from '~/shared/utils/geolocation.service';
@@ -65,6 +69,7 @@ import { profilePath, profileReducer } from '~/core/reducers/profile.reducer';
 import { servicesPath, servicesReducer } from '~/core/reducers/services.reducer';
 
 import { AboutComponent } from '~/about/about.component';
+import { AddCardComponent } from '~/payment/add-card/add-card.component';
 import { AddServicesComponent } from '~/add-services/add-services.component';
 import { AppointmentPageComponent } from '~/appointment-page/appointment-page.component';
 import { AppointmentPriceComponent } from '~/appointment-price/appointment-price.component';
@@ -113,6 +118,7 @@ if (ENV.production) {
 
 const declarations = [
   AboutComponent,
+  AddCardComponent,
   AddServicesComponent,
   AppointmentPageComponent,
   AppointmentPriceComponent,
@@ -162,6 +168,7 @@ const declarations = [
     SharedSingletonsModule,
     DataModule.forRoot(),
 
+    BrMaskerModule,
     GalleryModalModule,
 
     AgmCoreModule.forRoot(),
@@ -227,6 +234,7 @@ const declarations = [
     ExternalAppService,
     GeolocationService,
     ServerStatusTracker,
+    CardScannerService,
 
     Push,
     PushNotification,

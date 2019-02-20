@@ -201,19 +201,80 @@ page-checkout {
     font-size: $shared-small;
     color: color($colors-shared, warmGrey);
 
-    .col {
-      .text-muted {
-        font-size: $shared-small;
-        line-height: pxtovw(14px);
-      }
+    .col .text-muted {
+      font-size: $shared-small;
+      line-height: pxtovw(14px);
     }
 
     button {
       display: inline-block;
-      margin: 0 0 0 pxtovw(7px);
+      margin: 0;
       font-size: pxtovw(16px);
       vertical-align: middle;
       background: none;
+    }
+
+    .text-muted + button {
+      margin-left: pxtovw(7px);
+    }
+  }
+
+  .CheckOut-addMethod {
+    display: flex;
+    flex-flow: wrap;
+    justify-content: space-between;
+    padding: pxtovw(16px);
+    margin: pxtovw(8px) 0;
+    background: color($colors-shared, lightPeach);
+    border-radius: pxtovw(8px);
+    box-shadow: 0 pxtovw(7px) pxtovw(43px) 0 rgba(black, 0.08);
+  }
+
+  .CheckOut-addMethodIcon {
+    margin-right: pxtovw(20px);
+    font-size: pxtovw(25px);
+  }
+
+  .CheckOut-addMethodText {
+    flex: 1;
+    font-size: $shared-h4;
+    font-weight: 300;
+  }
+
+  .CheckOut-addMethodBtn {
+    width: 100%;
+    margin: pxtovw(16px) 0 0;
+    padding: pxtovw(6px) 0;
+    font-size: $shared-h4;
+    font-weight: 700;
+    text-align: center;
+    background: white;
+    border-radius: pxtovw(10px);
+  }
+
+  ion-footer {
+    padding: pxtovw(19px) pxtovw(24px);
+  }
+
+  .AppointmentPage-checkout {
+    position: relative;
+    display: block;
+    width: 100%;
+    font-size: $shared-h4;
+    font-weight: 500;
+
+    [class^="mb-icon"] {
+      $icon-size: pxtovw(16px);
+
+      position: absolute;
+      top: 50%;
+      left: pxtovw(12px);
+      margin-top: -1 * $icon-size / 2;
+      font-size: $icon-size;
+    }
+
+    + .AppointmentPage-checkout {
+      margin-top: pxtovw(12px);
     }
   }
 }

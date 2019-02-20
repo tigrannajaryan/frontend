@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
-import { AlertController, NavController, NavParams } from 'ionic-angular';
+import { AlertController, NavController, NavParams, ToastController } from 'ionic-angular';
 import * as moment from 'moment';
 
 import { AppointmentChangeRequest, AppointmentStatus, ClientAppointmentModel } from '~/shared/api/appointments.models';
 import { CheckOutService, ServiceFromAppointment } from '~/shared/api/stylist-app.models';
 import { ISODate, isoDateFormat } from '~/shared/api/base.models';
+import { reportToSentry } from '~/shared/sentry';
 import { formatTimeInZone } from '~/shared/utils/string-utils';
 
 import { AppointmentsApi } from '~/core/api/appointments.api';
@@ -13,14 +14,23 @@ import { PageNames } from '~/core/page-names';
 import { AppointmentsDataStore } from '~/core/api/appointments.datastore';
 import { BookingApi, CreateAppointmentRequest } from '~/core/api/booking.api';
 import { BookingData } from '~/core/api/booking.data';
+import { PaymentsApi } from '~/core/api/payments.api';
+import { PaymentMethod, PaymentType } from '~/core/api/payments.models';
 
 import { AddServicesComponentParams } from '~/add-services/add-services.component';
 import { AppointmentPriceComponentParams } from '~/appointment-price/appointment-price.component';
-import { confirmRebook, reUseAppointment } from '~/booking/booking-utils';
+import {
+  checkStylistAvailability,
+  confirmRebook,
+  reUseAppointment,
+  showNoTimeSlotsPopup
+} from '~/booking/booking-utils';
 import { BookingCompleteComponentParams } from '~/booking/booking-complete/booking-complete.component';
 import { ConfirmCheckoutComponentParams } from '~/confirm-checkout/confirm-checkout.component';
 
-export interface AppointmentPageComponentParams {
+import { MadeDisableOnClick } from '~/shared/utils/loading';
+
+export interface AppointmentPageParams {
   appointment: ClientAppointmentModel;
   onCancel?: Function;
   hasRebook?: boolean;
@@ -43,12 +53,6 @@ export enum AppointmentAttribute {
   AppointmentAttribute describe how appointment appears
   what can be on this page and what can't
 +-----------------------------------+
-|                                   |
-|                                   |
-|                                   |
-|                                   |
-|                                   |
-|                                   |
 | +-------------------------------+ |
 | |                               | |
 | |    |editAppointmentButtons|   | |
@@ -62,10 +66,8 @@ export enum AppointmentAttribute {
 | |    |withComment|              | |
 | |                               | |
 | +---------------+---------------+ |
-|                 |                 |
-|                 +                 |
+|                 |                 |           |
 |                and                |
-|                 +                 |
 |                 |                 |
 | +---------------+---------------+ |
 | |                               | |
@@ -90,11 +92,14 @@ export class AppointmentPageComponent {
   AppointmentAttribute = AppointmentAttribute;
   AppointmentStatus = AppointmentStatus;
   formatTimeInZone = formatTimeInZone;
+  PaymentType = PaymentType;
 
-  params: AppointmentPageComponentParams;
+  params: AppointmentPageParams;
 
   isRescheduling = false;
   rescheduledTime: ISODate;
+
+  payment: PaymentMethod;
 
   constructor(
     private api: AppointmentsApi,
@@ -103,11 +108,14 @@ export class AppointmentPageComponent {
     private bookingApi: BookingApi,
     private bookingData: BookingData,
     private navCtrl: NavController,
-    private navParams: NavParams) {
+    private navParams: NavParams,
+    private paymentsApi: PaymentsApi,
+    private toastCtrl: ToastController
+  ) {
   }
 
   async ionViewWillEnter(): Promise<void> {
-    this.params = this.navParams.get('params') as AppointmentPageComponentParams;
+    this.params = this.navParams.get('params') as AppointmentPageParams;
 
     if (this.params.appointment.uuid && !this.params.isRescheduling) {
       // no uuid if booking in progress
@@ -118,6 +126,20 @@ export class AppointmentPageComponent {
         this.params.appointment = response;
       }
     }
+
+    const { response: paymentsResponse } = await this.paymentsApi.getPaymentMethods().toPromise();
+    if (paymentsResponse) {
+      // Assuming there can be only one payment method which is a payment by card
+      this.payment = paymentsResponse.payment_methods[0];
+    }
+  }
+
+  isAppointmentInBooking(): boolean {
+    return (
+      this.params &&
+      this.params.appointment &&
+      !this.params.appointment.uuid
+    );
   }
 
   hasAttribute(appointmentTmpType: AppointmentAttribute): boolean {
@@ -190,13 +212,38 @@ export class AppointmentPageComponent {
     );
   }
 
+  isAbleToCheckoutAppointment(): boolean {
+    return (
+      this.params &&
+      this.params.appointment &&
+      this.params.appointment.status !== AppointmentStatus.checked_out &&
+      this.isTodayAppointment()
+    );
+  }
+
+  isPaymentShown(): boolean {
+    return (
+      this.isAppointmentInBooking() ||
+      (
+        this.isAbleToCheckoutAppointment() &&
+        this.params.appointment.can_checkout_with_made
+      )
+    );
+  }
+
+  onAddPaymentClick(): void {
+    this.navCtrl.push(PageNames.AddCard);
+  }
+
   async onConfirmClick(): Promise<void> {
     const appointmentRequest: CreateAppointmentRequest = {
       stylist_uuid: this.bookingData.stylist.uuid,
       datetime_start_at: this.bookingData.selectedTime.format(),
       services: this.bookingData.selectedServices.map(s => ({
         service_uuid: s.uuid
-      }))
+      })),
+      has_card_fee_included: false,
+      has_tax_included: true
     };
 
     if (!this.params.isRescheduling) {
@@ -233,9 +280,28 @@ export class AppointmentPageComponent {
     this.appointmentsDataStore.home.refresh();
   }
 
-  async onReUseAppointmentClick(isRescheduling: boolean): Promise<void> {
+  @MadeDisableOnClick
+  async onReUseAppointmentClick($event: MouseEvent, isRescheduling: boolean): Promise<void> {
     const isConfirmed = await confirmRebook(this.params.appointment);
     if (isConfirmed) {
+
+      if (isRescheduling && await checkStylistAvailability(this.params.appointment.stylist_uuid)) {
+        // if this is rescheduling click and current stylist have NO available slots
+        showNoTimeSlotsPopup([{
+          text: 'Keep Appointment',
+          cssClass: 'notAvailablePopup-btn'
+        }, {
+          text: 'Cancel Appointment',
+          cssClass: 'notAvailablePopup-btn is-warn',
+          handler: () => {
+            this.onCancelClick();
+          }
+        }]);
+
+        // do nothing
+        return;
+      }
+
       // remove this view from navigation stack
       this.navCtrl.pop();
       reUseAppointment(this.params.appointment, isRescheduling);
@@ -289,19 +355,44 @@ export class AppointmentPageComponent {
     this.navCtrl.push(PageNames.AppointmentPrice, { params });
   }
 
-  async onCheckout(): Promise<void> {
+  async onCheckoutAndPay(): Promise<void> {
+    await this.onCheckout(this.payment);
+  }
+
+  async onCheckout(payment: PaymentMethod): Promise<void> {
     const request: AppointmentChangeRequest = {
       status: AppointmentStatus.checked_out,
       has_card_fee_included: false,
-      has_tax_included: false
+      has_tax_included: true,
+      payment_method_uuid: payment ? payment.uuid : undefined,
+      pay_via_made: payment ? true : undefined
     };
-    const { response } = await this.api.changeAppointment(this.params.appointment.uuid, request).toPromise();
+    const { response, error } = await this.api.changeAppointment(
+      this.params.appointment.uuid,
+      request, {
+        // We are showing custom red toast.
+        hideAllErrors: true
+      }
+    ).toPromise();
+
     if (response) {
       const params: ConfirmCheckoutComponentParams = {
         appointment: this.params.appointment
       };
 
       this.navCtrl.push(PageNames.ConfirmCheckout, { params });
+
+    } else if (error) {
+      reportToSentry(error);
+
+      const toast = this.toastCtrl.create({
+        cssClass: 'ErrorToast',
+        duration: 5000, // ms
+        position: 'top',
+        showCloseButton: false,
+        message: error.getMessage()
+      });
+      toast.present();
     }
   }
 

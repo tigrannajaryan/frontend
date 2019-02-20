@@ -1,0 +1,64 @@
+<ion-header madeHeader></ion-header>
+
+<ion-content>
+  <form autocomplete="off" class="AddCard-form contentSidePadding"
+    [formGroup]="form">
+
+      <div class="AddCard-flexFill">
+
+        <div class="Made-h1">Add Card</div>
+        <div class="text-muted AddCard-note">
+          You won't be charged until your visit is complete. Pay with card or in-salon at the end of your visit.
+        </div>
+
+        <div class="AddCard-wrap">
+          <ion-item class="FormControl AddCard-formControl AddCard-formControl--card"
+            [class.is-invalid]="!form.controls.cardNumber.pristine && form.controls.cardNumber.invalid">
+              <ion-label stacked>Card Number</ion-label>
+              <ion-input formControlName="cardNumber" type="tel" placeholder="••••  ••••  ••••  ••••" autocomplete="false"
+                [brmasker]="{mask: '0000  0000  0000  0000  0', type: 'num', len: 19 + 8}"></ion-input>
+          </ion-item>
+          <img (click)="onScanCard()" src="assets/icons/card-scan@3x.png" />
+        </div>
+
+        <ion-row>
+          <ion-col no-padding>
+            <ion-item class="FormControl AddCard-formControl AddCard-formControl--exp"
+              [class.is-invalid]="!form.controls.cardExp.pristine && form.controls.cardExp.invalid">
+                <ion-label floating>Exp. Date</ion-label>
+                <ion-input #cardExpInput formControlName="cardExp" type="tel" placeholder="mm/yy" autocomplete="false"
+                  [brmasker]="{mask: '00/00', type: 'num'}"></ion-input>
+            </ion-item>
+          </ion-col>
+
+          <ion-col no-padding>
+            <ion-item class="FormControl AddCard-formControl AddCard-formControl--cvc"
+              [class.is-invalid]="!form.controls.cardCvv.pristine && form.controls.cardCvv.invalid">
+                <ion-label floating>CVV</ion-label>
+                <ion-input #cardCvvInput formControlName="cardCvv" type="tel" placeholder="•••" autocomplete="new-password"
+                  [brmasker]="{type: 'num'}"></ion-input>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+
+        <div class="AddCard-error"
+          *ngIf="error || form.controls.cardNumber.errors?.stripe || form.controls.cardExp.errors?.stripe || form.controls.cardCvv.errors?.stripe as error">
+            {{ error }}
+        </div>
+
+      </div>
+
+      <div class="AddCard-bottom">
+        <ion-row justify-content-center>
+          <div class="text-muted AddCard-note">
+            <ion-icon name="md-lock"></ion-icon>
+            <span>&nbsp;Your data protected by SSL connection</span>
+          </div>
+        </ion-row>
+
+        <button ion-button class="Button AddCard-submit"
+          [disabled]="!stripe.isSetPublishableKey() || !form.valid || isLoading"
+          (click)="onSaveClick()">{{ isLoading ? 'Saving…' : 'Save' }}</button>
+      </div>
+  </form>
+</ion-content>

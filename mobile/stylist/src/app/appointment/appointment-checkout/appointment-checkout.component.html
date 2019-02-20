@@ -31,6 +31,14 @@
         </ion-row>
       </div>
 
+      <div *ngIf="!params?.isAlreadyCheckedOut && !params?.isReadonly && !settings?.can_checkout_with_made" class="CheckOut-addMethod">
+        <div class="CheckOut-addMethodIcon"><i class="mb-icon-credit-card"></i></div>
+        <div class="CheckOut-addMethodText">Add payout method before clients can pay via MADE app.</div>
+        <div (click)="onHowToGetPaid()" class="CheckOut-addMethodBtn">
+          Add Payout Method
+        </div>
+      </div>
+
       <!-- Receipt card -->
       <div *ngIf="previewResponse" class="CheckOut-card">
 
@@ -64,19 +72,24 @@
             </ion-col>
           </ion-row>
 
-          <ion-row
-            (click)="onTaxEdit()"
-            *ngIf="!params?.isAlreadyCheckedOut || hasTaxIncluded"
-            align-items-center
-            class="CheckOut-tax"
-            data-test-id="appointmentTaxPercentage">
+          <ion-row align-items-center class="CheckOut-tax" data-test-id="appointmentTaxPercentage"
+            *ngIf="!params?.isAlreadyCheckedOut"
+            (click)="onTaxEdit()">
             <ion-col col-9 no-padding>
-              <span class="text-muted">Tax Rate ({{ previewResponse.tax_percentage | number: '1.2' }}%)</span>
+              <span class="text-muted">Tax Rate ({{ previewResponse.tax_percentage | number: '1.1-3' }}%)</span>
               <button class="Link">Edit</button>
             </ion-col>
             <ion-col col-3 no-padding>
               <span>{{ previewResponse.total_tax.toFixed(2) | currency }}</span>
             </ion-col>
+          </ion-row>
+
+          <ion-row align-items-center class="CheckOut-tax"
+            *ngIf="!params?.isAlreadyCheckedOut"
+            (click)="onHowToGetPaid()">
+              <ion-col col-12 no-padding>
+                <button class="Link">How will I get paid?</button>
+              </ion-col>
           </ion-row>
         </div>
 
@@ -104,9 +117,17 @@
 </ion-content>
 
 <ion-footer
-  *ngIf="!params?.isAlreadyCheckedOut && !params?.isReadonly"
-  (continue)="onFinalizeCheckoutClick()"
-  data-test-id="appointmentFinalizeCheckout"
-  madeContinueFooter
-  [title]="'Checkout' + (previewResponse ? ' $' + previewResponse.grand_total.toFixed() : '')">
+  *ngIf="!params?.isAlreadyCheckedOut && !params?.isReadonly">
+      <!-- Pay and checkout -->
+      <button ion-button class="Button AppointmentPage-checkout"
+        (click)="settings?.can_checkout_with_made ? onCheckoutAndPay() : onHowToGetPaid()">
+          <i class="mb-icon-credit-card"></i>
+          {{ settings?.can_checkout_with_made ? 'Checkout: Pay via MADE App' : 'Add Payment Method' }}
+      </button>
+
+      <!-- Just checkout (paid in salon) -->
+      <button ion-button outline class="Button AppointmentPage-checkout" data-test-id="appointmentFinalizeCheckout"
+        (click)="onFinalizeCheckoutClick()">
+          Checkout: Paid In-Salon
+      </button>
 </ion-footer>

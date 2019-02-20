@@ -13,4 +13,14 @@ page-settings {
     color: color($colors-shared, lightSalmon);
     text-transform: none;
   }
+
+  .Settings-stripe {
+    img {
+      $img-size: pxtovw(24px);
+
+      width: $img-size;
+      height: $img-size;
+      margin-right: pxtovw(12px);
+    }
+  }
 }

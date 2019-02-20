@@ -1,0 +1,24 @@
+<ion-row *ngFor="let weekday of list; let index = index" (click)="weekday.is_working_day && onDiscountChange(index)" class="MadeBigList-row">
+  <div class="MadeBigList-rowHeader">
+    <div [class.inactive]="!weekday.is_working_day" class="MadeBigList-title">
+      {{ weekday.weekday_verbose }}
+    </div>
+
+    <ng-container *ngIf="weekday.is_working_day">
+      <div class="MadeBigList-value">
+        <span *ngIf="!weekday.discount_percent">None</span>
+        <span *ngIf="weekday.discount_percent && symbol === DiscountSymbol.percent">{{ weekday.discount_percent }}{{ symbol }}</span>
+        <span *ngIf="weekday.discount_percent && symbol === DiscountSymbol.dollar">{{ symbol }}{{ weekday.discount_percent }}</span>
+      </div>
+      <i class="MadeBigList-icon mb-icon-right-arrow"></i>
+    </ng-container>
+
+    <div *ngIf="!weekday.is_working_day" class="MadeBigList-value inactive">
+      Unavailable
+    </div>
+  </div>
+
+  <div *ngIf="dealOfTheWeek && dealOfTheWeek === weekday.weekday && weekday.is_working_day" class="MadeBigList-text">
+    <div class="MadeBigList-dealOfTheWeek">Deal of the Week</div>
+  </div>
+</ion-row>

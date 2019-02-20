@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { ModalController, NavController, NavParams } from 'ionic-angular';
 import { Validators } from '@angular/forms';
 import * as moment from 'moment';
 
@@ -17,12 +17,13 @@ import {
 import { InputTypes, isoDateFormat } from '~/shared/api/base.models';
 
 import { HomeService } from '~/core/api/home.service';
+import { StylistServiceProvider } from '~/core/api/stylist.service';
 import { PageNames } from '~/core/page-names';
 import { AddServicesComponentParams } from '~/core/popups/add-services/add-services.component';
 
 import { AppointmentPriceComponentParams } from '~/appointment/appointment-price/appointment-price.component';
+import { GetPaidPopupComponent, GetPaidPopupParams } from '~/appointment/get-paid-popup/get-paid-popup.component';
 import { SettingsFieldComponentParams } from '~/settings/settings-field/settings-field.component';
-import { StylistServiceProvider } from '~/core/api/stylist.service';
 
 export interface AppointmentCheckoutParams {
   appointmentUuid: string;
@@ -40,6 +41,7 @@ export interface AppointmentCheckoutParams {
   templateUrl: 'appointment-checkout.component.html'
 })
 export class AppointmentCheckoutComponent {
+  settings: StylistSettings;
 
   // The following field is returned by the server as a result
   // of us asking for a preview of what the appointment will look
@@ -48,9 +50,6 @@ export class AppointmentCheckoutComponent {
 
   // The details of the appointment
   appointment: StylistAppointmentModel;
-
-  // Tax not included by default
-  hasTaxIncluded = false;
 
   // Change Services/Price true should be only for
   // not checked_out and isTodayAppointment appointment
@@ -69,6 +68,7 @@ export class AppointmentCheckoutComponent {
   private selectedServices: CheckOutService[];
 
   constructor(
+    private modalCtrl: ModalController,
     private navCtrl: NavController,
     private navParams: NavParams,
     private homeService: HomeService,
@@ -78,6 +78,11 @@ export class AppointmentCheckoutComponent {
 
   async ionViewWillEnter(): Promise<void> {
     this.params = this.navParams.get('params') as AppointmentCheckoutParams;
+
+    const settingsResponse = await this.stylistService.getStylistSettings().toPromise();
+    if (settingsResponse && settingsResponse.response) {
+      this.settings = settingsResponse.response;
+    }
 
     const { response } = await this.homeService.getAppointmentById(this.params.appointmentUuid).toPromise();
     if (response) {
@@ -109,7 +114,7 @@ export class AppointmentCheckoutComponent {
         appointment_uuid: this.params.appointmentUuid,
         datetime_start_at: this.appointment.datetime_start_at,
         services: this.selectedServices,
-        has_tax_included: this.hasTaxIncluded,
+        has_tax_included: true,
         has_card_fee_included: false
       };
 
@@ -157,10 +162,15 @@ export class AppointmentCheckoutComponent {
     await this.updatePreview();
   }
 
-  async onFinalizeCheckoutClick(): Promise<void> {
+  async onCheckoutAndPay(): Promise<void> {
+    await this.onFinalizeCheckoutClick(true);
+  }
+
+  async onFinalizeCheckoutClick(payViaMade = false): Promise<void> {
     const request: AppointmentChangeRequest = {
       ...this.getChangeAppointmentRequestParams(),
-      status: AppointmentStatus.checked_out
+      status: AppointmentStatus.checked_out,
+      pay_via_made: payViaMade
     };
 
     const { response } = await this.homeService.changeAppointment(this.params.appointmentUuid, request).get();
@@ -205,6 +215,12 @@ export class AppointmentCheckoutComponent {
     this.navCtrl.push(PageNames.SettingsField, { params });
   }
 
+  onHowToGetPaid(): void {
+    const params: GetPaidPopupParams = { appointment: this.appointment };
+    const popup = this.modalCtrl.create(GetPaidPopupComponent, { params });
+    popup.present();
+  }
+
   private isTodayAppointment(): boolean {
     const appointment = this.appointment;
     return (
@@ -217,7 +233,7 @@ export class AppointmentCheckoutComponent {
     return {
       status: this.appointment.status,
       services: this.selectedServices,
-      has_tax_included: this.hasTaxIncluded,
+      has_tax_included: true,
       has_card_fee_included: false
     };
   }

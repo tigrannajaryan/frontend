@@ -63,7 +63,9 @@
     "@sentry/hub": "4.0.0-beta.12",
     "@sentry/shim": "0.5.4",
     "angular-tslint-rules": "1.3.0",
+    "brmasker-ionic-3": "1.6.3",
     "camelcase": "5.0.0",
+    "card.io.cordova.mobilesdk": "2.1.0",
     "cordova-android": "7.1.0",
     "cordova-android-play-services-gradle-release": "1.4.4",
     "cordova-clipboard": "1.2.1",
@@ -201,7 +203,8 @@
         "DEEPLINK_SCHEME": "https",
         "DEEPLINK_HOST": "madebeauty.com",
         "ANDROID_PATH_PREFIX": "/get/"
-      }
+      },
+      "card.io.cordova.mobilesdk": {}
     },
     "platforms": [
       "android",

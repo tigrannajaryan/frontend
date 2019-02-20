@@ -8,6 +8,7 @@ import { ApiError, HttpStatus } from '~/shared/api-errors';
 
 @Injectable()
 export class BaseServiceMock extends BaseService {
+
   mockRequest<ResponseType>(responseMock: Observable<ResponseType>): Observable<ApiResponse<ResponseType>> {
     return this.prepareResponse('', '', responseMock, {});
   }

@@ -1,0 +1,49 @@
+<ion-header class="madeBackHeader">
+  <ion-toolbar>
+    <ion-icon name="close" class="GetPaidPopup-close" (click)="onDismiss()"></ion-icon>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content no-padding>
+  <div class="GetPaidPopup-content">
+    <div class="Made-h1 GetPaidPopup-h1">How will I get paid?</div>
+
+    <div class="GetPaidPopup-text text-muted">
+      We will charge their credit card and will send you the payment (minus credit card fees)
+    </div>
+
+    <div class="GetPaidPopup-table">
+      <ion-row align-items-center justify-content-between>
+        <span>Total Charge</span>
+        <span>{{ params.appointment.grand_total }}</span>
+      </ion-row>
+      <ion-row align-items-center justify-content-between>
+        <span>Credit Card Fees</span>
+        <span>{{ params.appointment.total_card_fee }}</span>
+      </ion-row>
+      <ion-row align-items-center justify-content-between>
+        <strong>You Earn</strong>
+        <strong>{{ params.appointment.grand_total - params.appointment.total_card_fee }}</strong>
+      </ion-row>
+    </div>
+
+    <ng-container *ngIf="params.appointment.can_checkout_with_made; else payoutLinkTpl">
+      <div class="GetPaidPopup-payout">
+        <ion-row align-items-center justify-content-between>
+          <span>Payout Method</span>
+          <span class="Link" (click)="onConnectPayout()">Connected</span>
+        </ion-row>
+        <ion-row align-items-center justify-content-start class="GetPaidPopup-stripe">
+          <img src="assets/icons/stripe@3x.png" />
+          <span class="text-muted">Stripe</span>
+        </ion-row>
+      </div>
+    </ng-container>
+
+    <ng-template #payoutLinkTpl>
+      <div class="GetPaidPopup-payoutLink">
+        <span class="Link" (click)="onConnectPayout()">Payment Options</span>
+      </div>
+    </ng-template>
+  </div>
+</ion-content>

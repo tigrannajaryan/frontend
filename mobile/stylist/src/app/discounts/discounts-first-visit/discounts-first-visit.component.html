@@ -1,0 +1,40 @@
+<ion-header madeBackHeader></ion-header>
+
+
+<ion-content no-padding>
+  <div class="Made-wp Made-wpContent">
+    <div class="Made-h1">First Visit Discount</div>
+
+    <!-- Show spinner if loading is in progress -->
+    <div class="Spinner">
+      <ion-spinner *ngIf="isLoading"></ion-spinner>
+    </div>
+
+    <div class="Made-text Discounts-textOffset">
+      <div class="Made-textItem">
+        Set a special first-visit discount to attract new clients.
+      </div>
+      <div class="Made-textItem">
+        Click below to edit the discount you’ll give first-time clients.
+      </div>
+    </div>
+
+    <div *ngIf="firstBooking">
+      <ion-row (click)="onDiscountChange()" class="MadeBigList-row">
+        <div class="MadeBigList-rowHeader">
+          <div class="MadeBigList-title">
+            {{ firstBooking.label }}
+          </div>
+
+          <div class="MadeBigList-value">
+            <span *ngIf="!firstBooking.percentage">None</span>
+            <span *ngIf="firstBooking.percentage">{{ firstBooking.percentage }}%</span>
+          </div>
+
+          <i class="MadeBigList-icon mb-icon-right-arrow"></i>
+        </div>
+      </ion-row>
+    </div>
+
+  </div>
+</ion-content>

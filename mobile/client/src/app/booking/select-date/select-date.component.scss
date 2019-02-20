@@ -40,7 +40,7 @@ select-date {
   .alert-sub-title {
     padding: pxtovw(24px);
     margin: 0;
-    font-size: $t-h1;
+    font-size: pxtovw(48px);
     text-align: center;
   }
 
@@ -50,10 +50,18 @@ select-date {
     color: color($grayscale, 500);
   }
 
-  .alert-button {
-    margin: pxtovw(24px) pxtovw(24px) pxtovw(16px);
-    font-weight: normal;
-    color: color($colors, honey);
+  .alert-button-group {
+    margin: pxtovw(16px) 0;
+  }
+
+  .notAvailablePopup-btn {
+    margin: 0 pxtovw(24px);
+    font-weight: 700;
+    color: color($colors-shared, lightSalmon);
     border: 0;
+
+    &.is-warn {
+      color: color($colors-shared, warn);
+    }
   }
 }

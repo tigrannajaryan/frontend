@@ -44,7 +44,7 @@ export const appointmentMock: ClientAppointmentModel = {
   total_tax: faker.random.number(),
   tax_percentage: faker.random.number(),
   card_fee_percentage: faker.random.number(),
-  has_tax_included: false,
+  has_tax_included: true,
   has_card_fee_included: false,
   total_discount_amount: faker.random.number(),
   total_discount_percentage: faker.random.number(),
@@ -56,7 +56,8 @@ export const appointmentMock: ClientAppointmentModel = {
   profile_photo_url: faker.image.imageUrl(),
   salon_name: faker.commerce.productName(),
   rating: 1,
-  comment: faker.lorem.text()
+  comment: faker.lorem.text(),
+  can_checkout_with_made: false
 };
 
 export const previewMock: AppointmentPreviewResponse = {
@@ -72,7 +73,7 @@ export const previewMock: AppointmentPreviewResponse = {
   card_fee_percentage: faker.random.number(),
   services: servicesMock,
   has_card_fee_included: false,
-  has_tax_included: false
+  has_tax_included: true
 };
 
 export function genFake(count: number, status: AppointmentStatus): ClientAppointmentModel[] {
@@ -100,7 +101,7 @@ export function genFake(count: number, status: AppointmentStatus): ClientAppoint
         duration_minutes: 0,
         status,
         has_card_fee_included: false,
-        has_tax_included: false,
+        has_tax_included: true,
         services: Array(Math.round(Math.random()) + 1).fill(undefined).map(() => ({
           service_uuid: faker.random.uuid(),
           service_name: faker.commerce.product(),
@@ -109,7 +110,8 @@ export function genFake(count: number, status: AppointmentStatus): ClientAppoint
           is_original: Math.random() < 0.5
         })),
         rating: 1,
-        comment: faker.lorem.text()
+        comment: faker.lorem.text(),
+        can_checkout_with_made: false
       };
     });
   return response;

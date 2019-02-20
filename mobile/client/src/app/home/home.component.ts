@@ -11,7 +11,7 @@ import { PreferredStylistsData } from '~/core/api/preferred-stylists.data';
 import { ClientEventTypes } from '~/core/client-event-types';
 import { PageNames } from '~/core/page-names';
 
-import { AppointmentPageComponentParams } from '~/appointment-page/appointment-page.component';
+import { AppointmentPageParams } from '~/appointment-page/appointment-page.component';
 import { reUseAppointment } from '~/booking/booking-utils';
 import { StylistProfileParams } from '~/stylists/stylist-profile/stylist-profile.component';
 
@@ -147,7 +147,7 @@ export class HomeComponent {
   onAppointmentClick(appointment: ClientAppointmentModel): void {
     const tab = this.tabs[this.slides.getActiveIndex()];
     if (tab) {
-      const params: AppointmentPageComponentParams = { appointment };
+      const params: AppointmentPageParams = { appointment };
       if (appointment.status === AppointmentStatus.new) {
         params.onCancel = () => this.onAppointmentCancel();
       }

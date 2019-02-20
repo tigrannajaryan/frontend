@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { AlertController, Content, Events, NavController, NavParams } from 'ionic-angular';
+import { Content, Events, NavController, NavParams } from 'ionic-angular';
 import * as moment from 'moment';
 
 import { Logger } from '~/shared/logger';
@@ -11,7 +11,12 @@ import { PageNames } from '~/core/page-names';
 import { BookingData } from '~/core/api/booking.data';
 import { ClientEventTypes } from '~/core/client-event-types';
 import { PreferredStylistsData } from '~/core/api/preferred-stylists.data';
-import { confirmMakeStylistPreferred } from '../booking-utils';
+import {
+  checkStylistAvailability,
+  confirmMakeStylistPreferred,
+  hasMoreAvailableStylists,
+  showNoTimeSlotsPopup
+} from '../booking-utils';
 import { PreferredStylistModel } from '~/shared/api/stylists.models';
 import { isoDateFormat } from '~/shared/api/base.models';
 import { BookServicesHeaderComponent } from '../book-services-header/book-services-header';
@@ -45,7 +50,6 @@ export class SelectDateComponent {
 
   constructor(
     protected bookingData: BookingData,
-    private alertCtrl: AlertController,
     private events: Events,
     private logger: Logger,
     private navCtrl: NavController,
@@ -85,13 +89,24 @@ export class SelectDateComponent {
           // update header after adding hint
           this.onServiceChange();
 
-          // When empty offers or all days of preferred stylist either booked or set to non-working:
-          const notTimeslots =
-            response.prices.length === 0 ||
-            response.prices.every(offer => offer.is_fully_booked || !offer.is_working_day);
+          if (await checkStylistAvailability()) {
+            showNoTimeSlotsPopup([{
+              text: await hasMoreAvailableStylists() ? 'Show available stylists' : 'Search for available stylists',
+              cssClass: 'notAvailablePopup-btn',
+              role: 'cancel',
+              handler: () => {
+                setTimeout(async () => {
+                  await this.navCtrl.setRoot(PageNames.MainTabs);
 
-          if (notTimeslots) {
-            this.showNoTimeSlotsPopup();
+                  // Start booking and show stylists selector if more than 1 stylist remains.
+                  if (await hasMoreAvailableStylists()) {
+                    this.events.publish(ClientEventTypes.startBooking);
+                  } else {
+                    this.events.publish(ClientEventTypes.selectMainTab, MainTabIndex.StylistSearch);
+                  }
+                });
+              }
+            }]);
           }
         }
       });
@@ -133,38 +148,5 @@ export class SelectDateComponent {
     if (this.content) {
       this.content.resize();
     }
-  }
-
-  private async showNoTimeSlotsPopup(): Promise<void> {
-    const preferredStylists = await this.preferredStylists;
-    const otherBookableStylists = preferredStylists.filter(stylist =>
-      stylist.is_profile_bookable &&
-      stylist.uuid !== this.bookingData.stylist.uuid
-    );
-    const hasMoreAvailableStylists = otherBookableStylists.length > 0;
-
-    const popup = this.alertCtrl.create({
-      cssClass: 'SelectDate-notAvailablePopup',
-      title: 'No time slots',
-      subTitle: '🤦‍♀️',
-      message: 'Unfortunately, your stylist does not have any open slots right now.',
-      buttons: [{
-        text: hasMoreAvailableStylists ? 'Show available stylists' : 'Search for available stylists',
-        role: 'cancel',
-        handler: () => {
-          setTimeout(async () => {
-            await this.navCtrl.setRoot(PageNames.MainTabs);
-
-            // Start booking and show stylists selector if more than 1 stylist remains.
-            if (hasMoreAvailableStylists) {
-              this.events.publish(ClientEventTypes.startBooking);
-            } else {
-              this.events.publish(ClientEventTypes.selectMainTab, MainTabIndex.StylistSearch);
-            }
-          });
-        }
-      }]
-    });
-    popup.present();
   }
 }

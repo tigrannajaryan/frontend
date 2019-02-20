@@ -11,7 +11,7 @@ import { showAlert } from '~/shared/utils/alert';
 import { PageNames } from '~/core/page-names';
 import { BookingData } from '~/core/api/booking.data';
 import { BookingApi, CreateAppointmentRequest, TimeslotsResponse } from '~/core/api/booking.api';
-import { AppointmentPageComponentParams } from '~/appointment-page/appointment-page.component';
+import { AppointmentPageParams } from '~/appointment-page/appointment-page.component';
 import { BookServicesHeaderComponent } from '../book-services-header/book-services-header';
 
 interface DisplayTimeslot {
@@ -154,7 +154,9 @@ export class SelectTimeComponent {
       datetime_start_at: this.bookingData.selectedTime.format(),
       services: this.bookingData.selectedServices.map(s => ({
         service_uuid: s.uuid
-      }))
+      })),
+      has_card_fee_included: false,
+      has_tax_included: true
     };
 
     // Preview the appointment
@@ -165,7 +167,7 @@ export class SelectTimeComponent {
         appointment.uuid = this.bookingData.appointmentUuid;
       }
 
-      const params: AppointmentPageComponentParams = {
+      const params: AppointmentPageParams = {
         isRescheduling: this.params && this.params.isRescheduling,
         appointment
       };

@@ -48,6 +48,7 @@ import {
   Keyboard,
   LoadingController,
   MenuController,
+  ModalController,
   NavController,
   NavParams,
   Platform,
@@ -63,6 +64,7 @@ import {
   GoogleAnalyticsMock,
   HapticMock,
   LoadingControllerMock,
+  ModalControllerMock,
   NavControllerMock,
   PlatformMock,
   PopoverControllerMock,
@@ -105,7 +107,14 @@ import { StylistAppStorageMock } from '~/core/stylist-app-storage.mock';
 import { HomeService } from '~/core/api/home.service';
 import { HomeServiceMock } from '~/core/api/home.service.mock';
 
+import { IntegrationsApi } from '~/shared/api/integrations.api';
+import { IntegrationsApiMock } from '~/shared/api/integrations.api.mock';
+
 import { AppModule } from '~/app.module';
+import { DiscountsApi } from '~/core/api/discounts.api';
+import { DiscountsApiMock } from '~/core/api/discounts.api.mock';
+
+import { StripeOAuthService } from '~/core/stripe-oauth-service';
 
 declare const require: any;
 declare const console: any;
@@ -130,6 +139,10 @@ export class TestUtils {
     return TestUtils.configureIonicTestingModule(components, providers, imports)
       .compileComponents()
       .then(() => {
+        if (components.length === 0) {
+          return;
+        }
+
         const fixture: any = TestBed.createComponent(components[0]);
 
         AppModule.injector = fixture.debugElement.injector;
@@ -158,13 +171,14 @@ export class TestUtils {
         { provide: DeepLinker, useFactory: () => ConfigMock.instance() },
         { provide: AlertController, useFactory: () => AlertControllerMock.instance() },
         { provide: LoadingController, useFactory: () => LoadingControllerMock.instance() },
+        { provide: ModalController, useFactory: () => ModalControllerMock.instance() },
         { provide: NavController, useFactory: () => NavControllerMock.instance() },
         { provide: Events, useFactory: () => EventsMock.instance() },
         { provide: Haptic, useFactory: () => HapticMock.instance() },
         { provide: PopoverController, useClass: PopoverControllerMock },
         { provide: GoogleAnalytics, useClass: GoogleAnalyticsMock },
         { provide: StylistAppStorage, useClass: StylistAppStorageMock },
-        ExternalAppService, GoogleSignin,
+        ExternalAppService, GoogleSignin, StripeOAuthService,
         {
           provide: AppAvailability,
           useClass: class AppAvailabilityMock {
@@ -189,11 +203,13 @@ export class TestUtils {
         },
         // the API
         { provide: ClientsApi, useClass: ClientsApiMock },
+        { provide: DiscountsApi, useClass: DiscountsApiMock },
         { provide: ClientDetailsApi, useClass: ClientDetailsApiMock },
         { provide: HomeService, useClass: HomeServiceMock },
         { provide: StylistServiceProvider, useClass: StylistServiceMock },
         { provide: WorktimeApi, useClass: WorktimeApiMock },
         { provide: MadeAnalyticsApi, useClass: MadeAnalyticsApiMock },
+        { provide: IntegrationsApi, useClass: IntegrationsApiMock },
         ...providers
       ],
       imports: [
