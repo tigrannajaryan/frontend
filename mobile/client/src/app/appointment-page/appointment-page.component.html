@@ -106,7 +106,7 @@
         </ion-row>
       </div>
 
-      <div *ngIf="appointment.can_checkout_with_made" class="CheckOut-availability">
+      <div *ngIf="!appointment.can_checkout_with_made" class="CheckOut-availability">
         <b>Card checkout</b> not available until stylist adds payment receipt method.
       </div>
 

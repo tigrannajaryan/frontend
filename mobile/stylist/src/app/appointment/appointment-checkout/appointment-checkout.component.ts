@@ -82,6 +82,11 @@ export class AppointmentCheckoutComponent {
   async ionViewWillEnter(): Promise<void> {
     this.params = this.navParams.get('params') as AppointmentCheckoutParams;
 
+    const settingsResponse = await this.stylistService.getStylistSettings().toPromise();
+    if (settingsResponse && settingsResponse.response) {
+      this.settings = settingsResponse.response;
+    }
+
     const { response } = await this.homeService.getAppointmentById(this.params.appointmentUuid).toPromise();
     if (response) {
       // Re-new appointment
@@ -93,11 +98,6 @@ export class AppointmentCheckoutComponent {
         && this.isTodayAppointment();
     }
     await this.updatePreview();
-
-    const settingsResponse = await this.stylistService.getStylistSettings().toPromise();
-    if (settingsResponse && settingsResponse.response) {
-      this.settings = settingsResponse.response;
-    }
   }
 
   /**
