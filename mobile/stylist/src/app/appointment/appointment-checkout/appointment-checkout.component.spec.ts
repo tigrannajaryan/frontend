@@ -64,13 +64,11 @@ describe('Pages: AppointmentCheckoutComponent', () => {
     );
 
     instance.appointment = (await homeServiceMock.getAppointmentById('').get()).response;
-    // Enable tax by default for new booked appointment if it's not `isAlreadyCheckedOut`
-    instance.hasTaxIncluded = instance.appointment.has_tax_included;
     const appointmentPreview: AppointmentPreviewRequest = {
       appointment_uuid: '',
       datetime_start_at: instance.appointment.datetime_start_at,
       services: instance.appointment.services,
-      has_tax_included: instance.hasTaxIncluded,
+      has_tax_included: true,
       has_card_fee_included: false
     };
 
@@ -123,13 +121,11 @@ describe('Pages: AppointmentCheckoutComponent', () => {
     );
 
     instance.appointment = (await homeServiceMock.getAppointmentById('').get()).response;
-    // Enable tax by default for new booked appointment if it's not `isAlreadyCheckedOut`
-    instance.hasTaxIncluded = false;
     const appointmentPreview: AppointmentPreviewRequest = {
       appointment_uuid: '',
       datetime_start_at: instance.appointment.datetime_start_at,
       services: instance.appointment.services,
-      has_tax_included: instance.hasTaxIncluded,
+      has_tax_included: true,
       has_card_fee_included: false
     };
 
