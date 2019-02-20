@@ -106,6 +106,10 @@
         </ion-row>
       </div>
 
+      <div *ngIf="appointment.can_checkout_with_made" class="CheckOut-availability">
+        <b>Card checkout</b> not available until stylist adds payment receipt method.
+      </div>
+
       <!-- Payment Method -->
       <ng-container *ngIf="isPaymentShown()">
         <ion-row align-items-center justify-content-between class="AppointmentPage-paymentSelect"
