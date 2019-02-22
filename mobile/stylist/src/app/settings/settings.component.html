@@ -22,23 +22,25 @@
 
       <div class="ServicesLis-title without-border SettingsTitleMargin" data-test-id="settingsPayoutTitle">Payout Method</div>
 
-      <ion-row (click)="navigateToAddPayout()" data-test-id="settingsPayout" class="DiscountsList-row">
-        <ion-col no-padding col-8 class="DiscountsList-col">
-          <ng-container *ngIf="settings?.can_checkout_with_made; else addPayoutMethod">
+      <!-- Stripe Connect -->
+      <ion-row data-test-id="settingsPayout" class="DiscountsList-row"
+        *ngIf="settings?.can_checkout_with_made; else addPayoutTpl"
+        (click)="navigateToAddPayout()">
+          <ion-col no-padding col-8 class="DiscountsList-col">
             <ion-row align-items-center class="Settings-stripe">
               <img src="assets/icons/stripe@3x.png" />
               <span>Stripe</span>
             </ion-row>
-          </ng-container>
-
-          <ng-template #addPayoutMethod>Add</ng-template>
-        </ion-col>
-
-        <ion-col col-4 no-padding class="DiscountsList-col DiscountsList-colIcon">
+          </ion-col>
+          <ion-col col-4 no-padding class="DiscountsList-col DiscountsList-colIcon">
             <span></span>
             <ion-icon name="ios-arrow-forward-outline"></ion-icon>
-        </ion-col>
+          </ion-col>
       </ion-row>
+
+      <ng-template #addPayoutTpl>
+        <settings-payment (addPayment)="navigateToAddPayout()"></settings-payment>
+      </ng-template>
 
       <div class="ServicesLis-title without-border SettingsTitleMargin" data-test-id="settingsTaxTitle">Taxes and Fees</div>
 

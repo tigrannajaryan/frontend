@@ -1,0 +1,32 @@
+.SettingsPayment {
+  display: flex;
+  flex-flow: wrap;
+  justify-content: space-between;
+  padding: pxtovw(16px);
+  margin: pxtovw(8px) 0;
+  background: color($colors-shared, lightPeach);
+  border-radius: pxtovw(8px);
+  box-shadow: 0 pxtovw(7px) pxtovw(43px) 0 rgba(black, 0.08);
+
+  .SettingsPayment-icon {
+    margin-right: pxtovw(20px);
+    font-size: pxtovw(25px);
+  }
+
+  .SettingsPayment-text {
+    flex: 1;
+    font-size: $shared-h4;
+    font-weight: 300;
+  }
+
+  .SettingsPayment-submit {
+    width: 100%;
+    padding: pxtovw(6px) 0;
+    margin: pxtovw(16px) 0 0;
+    font-size: $shared-h4;
+    font-weight: 700;
+    text-align: center;
+    background: white;
+    border-radius: pxtovw(10px);
+  }
+}
