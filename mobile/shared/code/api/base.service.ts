@@ -22,7 +22,8 @@ export class BaseService {
   constructor(
     private http: HttpClient,
     protected logger: Logger,
-    private serverStatus: ServerStatusTracker) {
+    private serverStatus: ServerStatusTracker
+  ) {
   }
 
   protected request<ResponseType>(

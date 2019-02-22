@@ -29,7 +29,7 @@
     {
       "name": "xxxxxxxxxxxx",
       "urls": [
-        "https://admindev.madebeauty.com/api/v1/client/preferred-stylists"
+        "https://admindev.madebeauty.com/api/v1/**"
       ],
       "cacheConfig": {
         "maxSize": 5,

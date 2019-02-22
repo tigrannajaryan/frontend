@@ -108,6 +108,7 @@ import { InvitationsComponent } from '~/invitations/invitations.component';
 import { InvitationsApi } from '~/core/api/invitations.api';
 import { FeedBackComponent } from '~/feed-back/feed-back.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
+import { Network } from '@ionic-native/network/ngx';
 
 // Init sentry reporting (inits only if ENV.sentryDsn):
 initSentry();
@@ -216,6 +217,7 @@ const declarations = [
   entryComponents: declarations,
 
   providers: [
+    Network,
     Logger,
 
     // Plugins
