@@ -1,0 +1,42 @@
+{
+  "index": "/index.html",
+  "assetGroups": [{
+    "name": "Brew",
+    "installMode": "prefetch",
+    "resources": {
+      "files": [
+        "/index.html"
+      ],
+      "versionedFiles": [
+        "/build/*.js",
+        "/build/*.css"
+      ],
+      "urls": []
+    }
+  }, {
+    "name": "assets",
+    "installMode": "lazy",
+    "updateMode": "prefetch",
+    "resources": {
+      "files": [
+        "/assets/**"
+      ],
+      "urls": [
+      ]
+    }
+  }],
+  "dataGroups": [
+    {
+      "name": "xxxxxxxxxxxx",
+      "urls": [
+        "https://admindev.madebeauty.com/api/v1/client/preferred-stylists"
+      ],
+      "cacheConfig": {
+        "maxSize": 5,
+        "maxAge": "6h",
+        "timeout": "10s",
+        "strategy": "freshness"
+      }
+    }
+  ]
+}

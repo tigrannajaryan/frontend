@@ -107,6 +107,7 @@ import { GoogleMapsConfig } from '~/shared/google-maps-config';
 import { InvitationsComponent } from '~/invitations/invitations.component';
 import { InvitationsApi } from '~/core/api/invitations.api';
 import { FeedBackComponent } from '~/feed-back/feed-back.component';
+import { ServiceWorkerModule } from '@angular/service-worker';
 
 // Init sentry reporting (inits only if ENV.sentryDsn):
 initSentry();
@@ -205,7 +206,9 @@ const declarations = [
     EffectsModule.forRoot([
       LogoutEffects,
       ServicesEffects
-    ])
+    ]),
+    // ENV.production ? ServiceWorkerModule.register('/ngsw-worker.js') : []
+    ServiceWorkerModule.register('/ngsw-worker.js', { enabled: ENV.production })
   ],
 
   bootstrap: [IonicApp],

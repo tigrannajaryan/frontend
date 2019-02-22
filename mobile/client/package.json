@@ -22,7 +22,10 @@
     "e2e-test": "cd .. && make npm-test-dir-e2e BUILDDIR=client",
     "postinstall": "webdriver-manager update --gecko=false",
     "run-android": "ionic cordova run android --prod --device",
-    "build-full": "npm run build && npm run test-headless && npm run e2e-test"
+    "build-full": "npm run build && npm run test-headless && npm run e2e-test",
+    "ngsw-config": "node_modules/.bin/ngsw-config www /ngsw-config.json",
+    "ngsw-copy": "cp node_modules/@angular/service-worker/ngsw-worker.js www/",
+    "ngsw-build": "cross-env MB_ENV=dev ionic-app-scripts build && npm run ngsw-config && npm run ngsw-copy"
   },
   "dependencies": {
     "@agm/core": "1.0.0-beta.3",
@@ -34,6 +37,7 @@
     "@angular/http": "5.2.9",
     "@angular/platform-browser": "5.2.9",
     "@angular/platform-browser-dynamic": "5.2.9",
+    "@angular/service-worker": "5.2.9",
     "@ionic-native/app-availability": "4.15.0",
     "@ionic-native/app-version": "4.9.0",
     "@ionic-native/camera": "4.10.1",
