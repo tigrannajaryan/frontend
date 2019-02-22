@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { LoadingController } from 'ionic-angular';
 
 import { StylistProfile } from '~/shared/api/stylist-app.models';
 import { DEFAULT_COUNTRY_CODE } from '~/shared/directives/phone-input.directive';
@@ -21,6 +22,12 @@ type StripeAdditionalParamKey =
 @Injectable()
 export class StripeOAuthService extends AbstractOAuthService {
   baseUrl = 'https://connect.stripe.com/oauth/authorize';
+
+  constructor(
+    protected loadingCtrl: LoadingController
+  ) {
+    super();
+  }
 
   async auth(clientId: string, profile: StylistProfile): Promise<string> {
     const params = {

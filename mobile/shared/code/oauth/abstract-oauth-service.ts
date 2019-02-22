@@ -1,3 +1,5 @@
+import { LoadingController } from 'ionic-angular';
+
 import { reportToSentry } from '~/shared/sentry';
 
 // All interfaces added based on https://github.com/apache/cordova-plugin-inappbrowser/blob/master/types/index.d.ts
@@ -26,7 +28,14 @@ interface BrowserWindow {
    */
   addEventListener(eventType: channel, callback: (event: InAppBrowserEvent) => void | Promise<void>): void;
 
-  /** Closes the InAppBrowser window. */
+  /**
+   * Can be used for showing hidden browser window.
+   */
+  show(): void;
+
+  /**
+   * Closes the InAppBrowser window.
+   */
   close(): void;
 }
 
@@ -38,7 +47,19 @@ interface InAppBrowser {
   open(url: string, target?: string, options?: string, replace?: boolean): BrowserWindow;
 }
 
+/**
+ * More verbose name to GET-request params hash.
+ */
+export interface GetParams {
+  [name: string]: any;
+}
+
 export abstract class AbstractOAuthService {
+
+  /**
+   * Injected
+   */
+  protected loadingCtrl: LoadingController;
 
   /**
    * OAuth endpoint URL
@@ -67,8 +88,13 @@ export abstract class AbstractOAuthService {
    * 2. wait for user to pass registration,
    * 3. when redirected back (handled in loadstart) retrieve the token value.
    */
-  protected runOAuth(params: {[name: string]: any}): Promise<InAppBrowserEvent | Error> {
+  protected runOAuth(params: GetParams): Promise<InAppBrowserEvent | Error> {
     return new Promise<InAppBrowserEvent | Error>((resolve, reject) => {
+
+      // Android lacks of a loader indicator when page is loading.
+      // Showing an Ionic’s one. Hides it when first page is loaded.
+      const loader = this.loadingCtrl.create();
+      loader.present();
 
       const requestParams =
         Object.keys(params)
@@ -86,6 +112,11 @@ export abstract class AbstractOAuthService {
           browserWindow.close();
           resolve(event);
         }
+      });
+
+      browserWindow.addEventListener('loadstop', () => {
+        loader.dismiss();
+        browserWindow.show();
       });
 
       browserWindow.addEventListener('loaderror', event => {
@@ -114,7 +145,7 @@ export abstract class AbstractOAuthService {
       throw new Error('cordova not available');
     }
     return (cordova.InAppBrowser as InAppBrowser).open(
-      url, '_blank', 'location=no,clearsessioncache=yes,clearcache=yes,closebuttoncaption=Cancel'
+      url, '_blank', 'location=no,hidden=yes,clearsessioncache=yes,clearcache=yes,closebuttoncaption=Cancel'
     );
   };
 }
