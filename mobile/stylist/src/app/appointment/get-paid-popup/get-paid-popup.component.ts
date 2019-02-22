@@ -4,6 +4,7 @@ import { NavParams, ViewController } from 'ionic-angular';
 import { StylistAppointmentModel } from '~/shared/api/appointments.models';
 import { AddIntegrationRequest, IntegrationsApi, IntegrationTypes } from '~/shared/api/integrations.api';
 
+import { ProfileDataStore } from '~/core/profile.data';
 import { StripeOAuthService } from '~/core/stripe-oauth-service';
 
 export interface GetPaidPopupParams {
@@ -20,6 +21,7 @@ export class GetPaidPopupComponent implements OnInit {
   constructor(
     private api: IntegrationsApi,
     private navParams: NavParams,
+    private profileData: ProfileDataStore,
     private stripe: StripeOAuthService,
     private viewCtrl: ViewController
   ) {
@@ -30,7 +32,8 @@ export class GetPaidPopupComponent implements OnInit {
   }
 
   async onConnectPayout(): Promise<void> {
-    const code = await this.stripe.auth(this.params.appointment.stripe_connect_client_id);
+    const { response: profile } = await this.profileData.get();
+    const code = await this.stripe.auth(this.params.appointment.stripe_connect_client_id, profile);
     if (code) {
       const params: AddIntegrationRequest = {
         server_auth_code: code,
