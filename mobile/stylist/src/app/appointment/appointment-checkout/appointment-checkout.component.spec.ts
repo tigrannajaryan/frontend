@@ -1,15 +1,17 @@
+import { DatePipe, DecimalPipe } from '@angular/common';
+import { HttpClient, HttpHandler } from '@angular/common/http';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { async, ComponentFixture } from '@angular/core/testing';
+import { Haptic, NavParams } from 'ionic-angular';
+
+import { AppointmentPreviewRequest } from '~/shared/api/appointments.models';
+import { HomeService } from '~/core/api/home.service';
+import { HomeServiceMock } from '~/core/api/home.service.mock';
+import { prepareSharedObjectsForTests } from '~/core/test-utils.spec';
 
 import { TestUtils } from '../../../test';
 import { AppointmentCheckoutComponent } from './appointment-checkout.component';
-import { HomeService } from '~/core/api/home.service';
-import { HomeServiceMock } from '~/core/api/home.service.mock';
-import { AppointmentPreviewRequest } from '~/shared/api/appointments.models';
-import { Haptic, NavParams } from 'ionic-angular';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { prepareSharedObjectsForTests } from '~/core/test-utils.spec';
-import { HttpClient, HttpHandler } from '@angular/common/http';
-import { DatePipe, DecimalPipe } from '@angular/common';
+import { SettingsPaymentComponent } from '~/settings/settings-payment/settings-payment.component';
 
 let fixture: ComponentFixture<AppointmentCheckoutComponent>;
 let instance: AppointmentCheckoutComponent;
@@ -20,7 +22,8 @@ describe('Pages: AppointmentCheckoutComponent', () => {
     async(() =>
       TestUtils.beforeEachCompiler(
         [
-          AppointmentCheckoutComponent
+          AppointmentCheckoutComponent,
+          SettingsPaymentComponent
         ],
         [
           HomeService,
