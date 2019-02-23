@@ -120,12 +120,15 @@ export abstract class AbstractOAuthService {
       });
 
       browserWindow.addEventListener('loaderror', event => {
+        loader.dismiss();
+
         const error = new Error(`${event.code} error for ${event.url}, ${event.message}`);
         reportToSentry(error);
         reject(error);
       });
 
       browserWindow.addEventListener('exit', () => {
+        loader.dismiss();
         reject(new Error('user refused to log in'));
       });
     });
