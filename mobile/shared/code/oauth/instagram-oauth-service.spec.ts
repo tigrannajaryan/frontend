@@ -20,17 +20,19 @@ class BrowserWindowMock {
   }
 }
 
-const browserWindowMockInstance = new BrowserWindowMock();
+export const browserWindowMockInstance = new BrowserWindowMock();
 
-const inAppBrowser = {
+export const inAppBrowser = {
   open: jasmine.createSpy('open').and.returnValue(
     browserWindowMockInstance
   )
 };
 
-(window as any).cordova = {
-  InAppBrowser: inAppBrowser
-};
+export function mockCordovaInAppBrowser(): void {
+  (window as any).cordova = {
+    InAppBrowser: inAppBrowser
+  };
+}
 
 let instance: InstagramOAuthService;
 
@@ -38,6 +40,7 @@ describe('InstagramOAuthService', () => {
   beforeEach(async(() =>
     TestUtils.beforeEachCompiler([], [InstagramOAuthService])
       .then(() => {
+        mockCordovaInAppBrowser();
         instance = TestBed.get(InstagramOAuthService);
       })
   ));
