@@ -15,7 +15,8 @@ import {
   ServiceItem,
   StylistProfile,
   StylistProfileCompleteness,
-  StylistProfileStatus
+  StylistProfileStatus,
+  StylistSettings
 } from '~/shared/api/stylist-app.models';
 import { getProfileStatus, updateProfileStatus } from '~/shared/storage/token-utils';
 import { getPhoneNumber } from '~/shared/utils/phone-numbers';
@@ -43,6 +44,7 @@ import { FieldEditComponentParams } from '~/onboarding/field-edit/field-edit.com
 import { RegistrationForm, RegistrationFormControl } from '~/onboarding/registration.form';
 import { WorkHoursComponentParams } from '~/workhours/workhours.component';
 import { ClientsCalendarComponentParams } from '~/calendar/clients-calendar/clients-calendar.component';
+import { StylistServiceProvider } from '~/core/api/stylist.service';
 
 export enum ProfileTabs {
   clientView,
@@ -67,6 +69,7 @@ export class ProfileComponent {
   prices: DayOffer[];
   service: ServiceItem;
   stylistProfile: StylistProfileResponse;
+  settings: StylistSettings;
 
   cards: VisualWeekCard[] = [];
   servicesPage: Page = PageNames.Services;
@@ -100,13 +103,19 @@ export class ProfileComponent {
     private logger: Logger,
     private camera: Camera,
     private baseService: BaseService,
-    private stylistProfileApi: StylistProfileApi
+    private stylistProfileApi: StylistProfileApi,
+    private stylistService: StylistServiceProvider
   ) {
     this.activeTab = this.tabs[ProfileTabs.clientView].name;
   }
 
   async ionViewWillLoad(): Promise<void> {
     this.registrationForm.init();
+
+    const { response: settings } = await this.stylistService.getStylistSettings().toPromise();
+    if (settings) {
+      this.settings = settings;
+    }
   }
 
   @loading
@@ -284,7 +293,7 @@ export class ProfileComponent {
       return false;
     }
 
-    return MadeMenuComponent.showNotice(page, this.profileStatus);
+    return MadeMenuComponent.showNotice(page, this.profileStatus, this.settings);
   }
 
   hasPhoto(): boolean {

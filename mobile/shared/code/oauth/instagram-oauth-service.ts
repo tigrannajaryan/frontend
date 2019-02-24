@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { LoadingController } from 'ionic-angular';
 
 import { AbstractOAuthService, InAppBrowserEvent } from '~/shared/oauth/abstract-oauth-service';
 import { reportToSentry } from '~/shared/sentry';
@@ -6,6 +7,12 @@ import { reportToSentry } from '~/shared/sentry';
 @Injectable()
 export class InstagramOAuthService extends AbstractOAuthService {
   baseUrl = 'https://api.instagram.com/oauth/authorize/';
+
+  constructor(
+    protected loadingCtrl: LoadingController
+  ) {
+    super();
+  }
 
   /**
    * Instagram’s OAuth implementation:

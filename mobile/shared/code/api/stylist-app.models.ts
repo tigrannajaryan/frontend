@@ -19,8 +19,10 @@ export interface StylistProfile extends StylistProfileName {
   profile_photo_url?: string;
   google_api_key?: string;
   google_calendar_integrated?: boolean;
-
   email?: string;
+  salon_city?: string;
+  salon_state?: string;
+  salon_zipcode?: string;
 }
 
 export interface StylistProfileCompleteness {

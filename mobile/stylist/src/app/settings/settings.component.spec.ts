@@ -1,19 +1,21 @@
+import { DecimalPipe } from '@angular/common';
+import { HttpClient, HttpHandler } from '@angular/common/http';
 import { ComponentFixture } from '@angular/core/testing';
 import { NavController } from 'ionic-angular';
 import { AppAvailability } from '@ionic-native/app-availability';
 import { Clipboard } from '@ionic-native/clipboard';
 import { EmailComposer } from '@ionic-native/email-composer';
-import { HttpClient, HttpHandler } from '@angular/common/http';
 
 import { ExternalAppService } from '~/shared/utils/external-app-service';
 
-import { prepareSharedObjectsForTests } from '~/core/test-utils.spec';
-import { PageNames } from '~/core/page-names';
-import { TestUtils } from '../../test';
-import { SettingsComponent } from '~/settings/settings.component';
 import { StylistServiceProvider } from '~/core/api/stylist.service';
 import { StylistServiceMock } from '~/core/api/stylist.service.mock';
-import { DecimalPipe } from '@angular/common';
+import { prepareSharedObjectsForTests } from '~/core/test-utils.spec';
+import { PageNames } from '~/core/page-names';
+
+import { TestUtils } from '../../test';
+import { SettingsComponent } from '~/settings/settings.component';
+import { SettingsPaymentComponent } from '~/settings/settings-payment/settings-payment.component';
 
 let fixture: ComponentFixture<SettingsComponent>;
 let instance: SettingsComponent;
@@ -23,7 +25,10 @@ describe('Pages: SettingsComponent', () => {
   prepareSharedObjectsForTests();
 
   beforeEach(async () => TestUtils.beforeEachCompiler(
-    [SettingsComponent],
+    [
+      SettingsComponent,
+      SettingsPaymentComponent
+    ],
     [
       NavController,
       AppAvailability,

@@ -10,6 +10,7 @@ import { AddIntegrationRequest, IntegrationsApi, IntegrationTypes } from '~/shar
 import { IntegrationsApiMock } from '~/shared/api/integrations.api.mock';
 
 import { TestUtils } from '~/../test';
+import { ProfileDataStore } from '~/core/profile.data';
 import { StripeOAuthService } from '~/core/stripe-oauth-service';
 
 import { GetPaidPopupComponent, GetPaidPopupParams } from './get-paid-popup.component';
@@ -50,7 +51,7 @@ const appointmentMock: StylistAppointmentModel = {
 describe('GetPaidPopupComponent', () => {
   beforeEach(async(() =>
     TestUtils.beforeEachCompiler([GetPaidPopupComponent], [
-      StripeOAuthService,
+      StripeOAuthService, ProfileDataStore,
       { provide: IntegrationsApi, useClass: IntegrationsApiMock },
       { provide: ViewController, useFactory: () => ViewControllerMock.instance() }
     ])
@@ -113,7 +114,7 @@ describe('GetPaidPopupComponent', () => {
     await instance.onConnectPayout();
 
     expect(stripe.auth)
-      .toHaveBeenCalledWith(appointmentMock.stripe_connect_client_id);
+      .toHaveBeenCalled();
     expect(api.addIntegration)
       .toHaveBeenCalledWith(integrationRequestParams);
     expect(appointmentMock.can_checkout_with_made)

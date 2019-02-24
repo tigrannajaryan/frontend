@@ -1,7 +1,7 @@
 import { async, TestBed } from '@angular/core/testing';
-import { IonicModule } from 'ionic-angular';
 import * as faker from 'faker';
 
+import { TestUtils } from '~/../test';
 import { InstagramOAuthService } from './instagram-oauth-service';
 
 type Callback = (...args: any[]) => any;
@@ -20,34 +20,27 @@ class BrowserWindowMock {
   }
 }
 
-const browserWindowMockInstance = new BrowserWindowMock();
+export const browserWindowMockInstance = new BrowserWindowMock();
 
-const inAppBrowser = {
+export const inAppBrowser = {
   open: jasmine.createSpy('open').and.returnValue(
     browserWindowMockInstance
   )
 };
 
-(window as any).cordova = {
-  InAppBrowser: inAppBrowser
-};
+export function mockCordovaInAppBrowser(): void {
+  (window as any).cordova = {
+    InAppBrowser: inAppBrowser
+  };
+}
 
 let instance: InstagramOAuthService;
 
 describe('InstagramOAuthService', () => {
   beforeEach(async(() =>
-    TestBed
-      .configureTestingModule({
-        providers: [
-          InstagramOAuthService
-        ],
-        imports: [
-          // Load all Ionic’s deps:
-          IonicModule.forRoot(this)
-        ]
-      })
-      .compileComponents()
+    TestUtils.beforeEachCompiler([], [InstagramOAuthService])
       .then(() => {
+        mockCordovaInAppBrowser();
         instance = TestBed.get(InstagramOAuthService);
       })
   ));
@@ -77,7 +70,7 @@ describe('InstagramOAuthService', () => {
     expect(inAppBrowser.open)
       .toHaveBeenCalledWith(
         `${baseUrl}?redirect_uri=${redirectTo}&response_type=token&client_id=${fakeClientId}`,
-        '_blank', 'location=no,clearsessioncache=yes,clearcache=yes,closebuttoncaption=Cancel'
+        '_blank', 'location=no,hidden=yes,clearsessioncache=yes,clearcache=yes,closebuttoncaption=Cancel'
       );
 
     // Trigger loadstart
