@@ -15,6 +15,7 @@ import { ApiFieldAndNonFieldErrors, ApiRequestOptions, FieldErrorItem, NonFieldE
 import { Logger } from '~/shared/logger';
 import { ServerStatusTracker } from '~/shared/server-status-tracker';
 import { UserContext } from '~/shared/user-context';
+import { updateProfileStatus } from '~/shared/storage/token-utils';
 
 @Injectable()
 export class AuthService extends BaseService {
@@ -105,6 +106,11 @@ export class AuthService extends BaseService {
       this.userContext.setUserId(response.user_uuid);
     } else {
       this.userContext.setUserId(undefined);
+    }
+
+    // update profile_status
+    if (response && response.profile_status) {
+      updateProfileStatus(response.profile_status);
     }
   }
 }

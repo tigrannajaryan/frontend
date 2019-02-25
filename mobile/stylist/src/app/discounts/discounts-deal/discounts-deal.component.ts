@@ -8,7 +8,7 @@ import { PercentageSliderSettings } from '~/core/popups/change-percent/change-pe
 import { dealOfTheWeekMinDiscount } from '~/shared/constants';
 import { ModalController, NavController } from 'ionic-angular';
 import { WeekdayIso } from '~/shared/weekday';
-import { updateProfileStatus } from '~/shared/storage/token-utils';
+import { getProfileStatus, updateProfileStatus } from '~/shared/storage/token-utils';
 import { StylistProfileStatus } from '~/shared/api/stylist-app.models';
 import { showAlert } from '~/shared/utils/alert';
 import { WorkHoursComponentParams } from '~/workhours/workhours.component';
@@ -25,7 +25,6 @@ export class DiscountsDealComponent {
   oldWeekDay: WeekdayDiscount;
   weekdays: WeekdayDiscount[];
   isLoading = false;
-  profileStatus: StylistProfileStatus;
 
   static getDealOfTheWeekSet(dealOfTheWeek: WeekdayIso, weekdays: WeekdayDiscount[]): WeekdayDiscount {
     return (
@@ -34,6 +33,17 @@ export class DiscountsDealComponent {
       && weekdays.find(discount => discount.weekday === dealOfTheWeek).is_working_day
       && weekdays.find(discount => discount.weekday === dealOfTheWeek)
     );
+  }
+
+  static async updateProfileStatus(): Promise<void> {
+    const profileStatus = await getProfileStatus() as StylistProfileStatus;
+
+    if (profileStatus && profileStatus.must_select_deal_of_week) {
+      await updateProfileStatus({
+        ...profileStatus,
+        must_select_deal_of_week: false
+      });
+    }
   }
 
   constructor(
@@ -94,6 +104,8 @@ export class DiscountsDealComponent {
       this.oldWeekDay = { ...weekday };
       this.newWeekDay = { ...weekday };
     }
+
+    this.onSetDeal();
   }
 
   onSave(): void {
@@ -118,8 +130,12 @@ export class DiscountsDealComponent {
     modal.present();
   }
 
-  onSelectWeekday(weekday: WeekdayDiscount): void {
+  onSelectWeekday($event: MouseEvent, weekday: WeekdayDiscount): void {
+    $event.preventDefault();
+
     this.newWeekDay = weekday;
+
+    this.onSetDeal();
   }
 
   async onSetDeal(): Promise<void> {
@@ -143,17 +159,7 @@ export class DiscountsDealComponent {
     if (response) {
       this.weekdays = weekdays;
       this.oldWeekDay = newWeekDay;
-      await this.updateProfileStatus();
-      this.navCtrl.pop();
-    }
-  }
-
-  private async updateProfileStatus(): Promise<void> {
-    if (this.profileStatus && this.profileStatus.must_select_deal_of_week) {
-      this.profileStatus = await updateProfileStatus({
-        ...this.profileStatus,
-        must_select_deal_of_week: false
-      }) as StylistProfileStatus;
+      await DiscountsDealComponent.updateProfileStatus();
     }
   }
 }
