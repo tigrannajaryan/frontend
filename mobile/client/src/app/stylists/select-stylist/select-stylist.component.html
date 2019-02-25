@@ -19,7 +19,7 @@
     <!-- Showing stylists -->
     <div *ngIf="stylists" class="StylistsPage-stylists">
       <stylist-card
-        *ngFor="let stylist of stylists"
+        *ngFor="let stylist of stylists; trackBy: trackByStylistIdentity"
         [stylist]="stylist"
         (click)="onContinueWithStylist(stylist.uuid)"></stylist-card>
     </div>

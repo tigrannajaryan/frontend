@@ -51,7 +51,7 @@
 
       <div *ngIf="tabs[MyStylistsTabs.madeStylists].loaded" class="Made-wp Made-wpContent">
         <stylist-card
-          *ngFor="let stylist of tabs[MyStylistsTabs.madeStylists].stylists"
+          *ngFor="let stylist of tabs[MyStylistsTabs.madeStylists].stylists; trackBy: trackByStylistIdentity"
           (click)="openStylistPreview(stylist)"
           [stylist]="stylist"></stylist-card>
 
@@ -72,7 +72,7 @@
 
       <div *ngIf="tabs[MyStylistsTabs.savedStylists].loaded" class="Made-wp Made-wpContent">
         <stylist-card
-          *ngFor="let stylist of tabs[MyStylistsTabs.savedStylists].stylists"
+          *ngFor="let stylist of tabs[MyStylistsTabs.savedStylists].stylists; trackBy: trackByStylistIdentity"
           (click)="openStylistPreview(stylist)"
           [stylist]="stylist"></stylist-card>
 

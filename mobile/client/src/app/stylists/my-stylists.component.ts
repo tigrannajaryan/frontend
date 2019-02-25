@@ -1,5 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { App, Events, NavController, Refresher, Slides } from 'ionic-angular';
+import { Md5 } from 'md5-typescript';
 
 import {
   PreferredStylistModel,
@@ -13,6 +14,7 @@ import { ApiResponse } from '~/shared/api/base.models';
 import { ClientEventTypes } from '~/core/client-event-types';
 import { PageNames } from '~/core/page-names';
 import { PreferredStylistsData } from '~/core/api/preferred-stylists.data';
+import { removeParamsFormUrl } from '~/shared/utils/string-utils';
 
 export enum MyStylistsTabs {
   madeStylists = 0,
@@ -179,5 +181,23 @@ export class MyStylistsComponent {
     };
 
     this.app.getRootNav().push(PageNames.StylistProfile, { params });
+  }
+
+  trackByStylistIdentity(index: number, stylist: StylistModel): string {
+    // all our urls has unique Signature and Expires in each request
+    // override url with url without params
+    stylist.profile_photo_url = removeParamsFormUrl(stylist.profile_photo_url);
+
+    const visibleValues = [
+      stylist.is_profile_bookable,
+      stylist.profile_photo_url,
+      stylist.salon_name,
+      stylist.first_name,
+      stylist.last_name,
+      stylist.followers_count
+    ];
+
+    // compare all visible values
+    return Md5.init(visibleValues);
   }
 }

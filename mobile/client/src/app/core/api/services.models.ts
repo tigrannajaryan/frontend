@@ -10,6 +10,7 @@ export interface ServiceCategoryModel {
   name: string;
   services: ServiceModel[];
   category_photo_url?: string;
+  category_code?: string;
 }
 
 export interface GetStylistServicesResponse {

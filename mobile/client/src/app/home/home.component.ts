@@ -1,5 +1,6 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { App, Content, DomController, Events, Refresher, Slides } from 'ionic-angular';
+import { Md5 } from 'md5-typescript';
 
 import { AppointmentStatus, ClientAppointmentModel } from '~/shared/api/appointments.models';
 import { PreferredStylistModel } from '~/shared/api/stylists.models';
@@ -14,6 +15,7 @@ import { PageNames } from '~/core/page-names';
 import { AppointmentPageParams } from '~/appointment-page/appointment-page.component';
 import { reUseAppointment } from '~/booking/booking-utils';
 import { StylistProfileParams } from '~/stylists/stylist-profile/stylist-profile.component';
+import { removeParamsFormUrl } from '~/shared/utils/string-utils';
 
 export enum HomeTabName {
   Upcoming = 'Upcoming',
@@ -82,6 +84,30 @@ export class HomeComponent {
       this.loadTabData(this.slides.getActiveIndex())
     ]);
     refresher.complete();
+  }
+
+  trackByPhotoURL(index: number, stylist: PreferredStylistModel): string {
+    // all our urls has unique Signature and Expires in each request
+    return removeParamsFormUrl(stylist.profile_photo_url);
+  }
+
+  trackByAppointmentIdentity(index: number, appointment: ClientAppointmentModel): string {
+    // all our urls has unique Signature and Expires in each request
+    // override url with url without params
+    appointment.profile_photo_url = removeParamsFormUrl(appointment.profile_photo_url);
+
+    const visibleValues = [
+      appointment.datetime_start_at,
+      appointment.grand_total,
+      appointment.services,
+      appointment.stylist_first_name,
+      appointment.stylist_last_name,
+      appointment.salon_name,
+      appointment.profile_photo_url
+    ];
+
+    // compare all visible values
+    return Md5.init(visibleValues);
   }
 
   /**
