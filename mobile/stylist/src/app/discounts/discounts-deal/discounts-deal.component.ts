@@ -38,6 +38,9 @@ export class DiscountsDealComponent {
   static async updateProfileStatus(): Promise<void> {
     const profileStatus = await getProfileStatus() as StylistProfileStatus;
 
+    // we need to update deal of the week status
+    // to hide red icon in the menu
+    // red icon mean that profile not completely filled
     if (profileStatus && profileStatus.must_select_deal_of_week) {
       await updateProfileStatus({
         ...profileStatus,
