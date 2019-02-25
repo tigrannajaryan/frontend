@@ -82,9 +82,15 @@ function getProfileParams(profile: StylistProfile): GetParams {
     .forEach(([paramKey, profileValue]) => {
       if (profileValue) {
         switch (paramKey as StripeAdditionalParamKey) {
+          case 'url':
+            // Should be prepended with a scheme (http)
+            params['stripe_user[url]'] =
+              profileValue.match(/^https?:\/\//i) ? profileValue : `http://${profileValue}`;
+            break;
           case 'phone_number':
             // The business phone number must be 10 digits only:
-            params[`stripe_user[${paramKey}]`] = profileValue.slice(-10);
+            params['stripe_user[phone_number]'] =
+              profileValue.replace(/[^\d]/g, '').slice(-10);
             break;
           default:
             params[`stripe_user[${paramKey}]`] = profileValue;
