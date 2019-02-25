@@ -1,12 +1,5 @@
-<ion-header class="madeBackHeader">
-  <ion-navbar class="Made-wp BackHeader-backBtn">
-    <ion-buttons end>
-      <button *ngIf="oldWeekDay" (click)="onSetDeal()" id="submitBtn" ion-button icon-only color="dark" class="RightButton">
-        Done
-      </button>
-    </ion-buttons>
-  </ion-navbar>
-</ion-header>
+<ion-header madeBackHeader></ion-header>
+
 
 <ion-content no-padding>
   <div class="Made-wp Made-wpContent">
@@ -45,13 +38,13 @@
 
       <div class="Made-h2 DiscountsDeal-titleMargin">Select a Day</div>
 
-      <ion-row *ngFor="let weekday of weekdays" class="MadeBigList-row">
+      <ion-row *ngFor="let weekday of weekdays" (click)="onSelectWeekday($event, weekday)" class="MadeBigList-row">
         <div class="MadeBigList-rowHeader">
           <div class="MadeBigList-title">
             {{ weekday.weekday_verbose }}
           </div>
 
-          <div *ngIf="weekday.is_working_day" (click)="onSelectWeekday(weekday)" class="Input-radio">
+          <div *ngIf="weekday.is_working_day" class="Input-radio">
             <input
               id="radio-{{ weekday.weekday }}"
               [value]="weekday.weekday"

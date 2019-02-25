@@ -14,3 +14,5 @@ export enum AppStoreWebPage {
 }
 
 export const dealOfTheWeekMinDiscount = 30;
+
+export const currency = 'usd';

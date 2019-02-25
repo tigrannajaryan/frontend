@@ -10,6 +10,7 @@ import { AddIntegrationRequest, IntegrationsApi, IntegrationTypes } from '~/shar
 import { PageNames } from '~/core/page-names';
 import { StylistSettings, StylistSettingsKeys } from '~/shared/api/stylist-app.models';
 import { StylistServiceProvider } from '~/core/api/stylist.service';
+import { ProfileDataStore } from '~/core/profile.data';
 import { StripeOAuthService } from '~/core/stripe-oauth-service';
 import { SettingsFieldComponentParams } from '~/settings/settings-field/settings-field.component';
 
@@ -25,20 +26,20 @@ export class SettingsComponent {
     private integrationsApi: IntegrationsApi,
     private navCtrl: NavController,
     private externalAppService: ExternalAppService,
+    private profileData: ProfileDataStore,
     private stripe: StripeOAuthService,
     private stylistService: StylistServiceProvider
   ) {
   }
 
   async ionViewWillLoad(): Promise<void> {
-    const { response } = await this.stylistService.getStylistSettings().toPromise();
-    if (response) {
-      this.settings = response;
-    }
+    const { response: settings } = await this.stylistService.getStylistSettings().toPromise();
+    this.settings = settings;
   }
 
   async navigateToAddPayout(): Promise<void> {
-    const code = await this.stripe.auth(this.settings.stripe_connect_client_id);
+    const { response: profile } = await this.profileData.get();
+    const code = await this.stripe.auth(this.settings.stripe_connect_client_id, profile);
     if (code) {
       const params: AddIntegrationRequest = {
         server_auth_code: code,

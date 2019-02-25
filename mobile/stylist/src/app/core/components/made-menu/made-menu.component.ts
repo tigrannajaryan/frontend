@@ -4,7 +4,7 @@ import { AlertController, Content, Events, MenuController, Nav, ViewController }
 import { Store } from '@ngrx/store';
 
 import { AuthService } from '~/shared/api/auth.api';
-import { StylistProfile, StylistProfileStatus } from '~/shared/api/stylist-app.models';
+import { StylistProfile, StylistProfileStatus, StylistSettings } from '~/shared/api/stylist-app.models';
 import { SharedEventTypes } from '~/shared/events/shared-event-types';
 import { getAppVersionNumber, getBuildNumber } from '~/shared/get-build-info';
 import { deleteAuthLocalData, getProfileStatus } from '~/shared/storage/token-utils';
@@ -15,6 +15,7 @@ import { clearAllDataStores } from '~/core/data.module';
 import { ProfileDataStore } from '~/core/profile.data';
 import { calcProfileCompleteness } from '~/core/utils/stylist-utils';
 import { RegistrationForm } from '~/onboarding/registration.form';
+import { StylistServiceProvider } from '~/core/api/stylist.service';
 
 interface MenuItem {
   title: string;
@@ -33,6 +34,7 @@ export class MadeMenuComponent implements OnInit {
 
   profile: StylistProfile;
   profileStatus: StylistProfileStatus;
+  settings: StylistSettings;
   menuItems: MenuItem[];
   swipeEnabled: boolean;
 
@@ -48,24 +50,25 @@ export class MadeMenuComponent implements OnInit {
 
   private servicesMenuItem: MenuItem;
 
-  static showNotice(page: Page, profileStatus: StylistProfileStatus): boolean {
-    if (!profileStatus) {
-      return false;
+  static showNotice(page: Page, profileStatus: StylistProfileStatus, settings: StylistSettings): boolean {
+    if (settings && page === PageNames.Settings) {
+      return !settings.can_checkout_with_made;
+    } else if (profileStatus) {
+      switch (page) {
+        case PageNames.Discounts:
+          return !profileStatus.has_weekday_discounts_set || profileStatus.must_select_deal_of_week;
+        case PageNames.Invitations:
+          return !profileStatus.has_invited_clients;
+        case PageNames.Services:
+        case PageNames.ServicesList:
+          return !profileStatus.has_services_set;
+        case PageNames.WorkHours:
+          return !profileStatus.has_business_hours_set;
+        default:
+          break;
+      }
     }
-
-    switch (page) {
-      case PageNames.Discounts:
-        return !profileStatus.has_weekday_discounts_set || profileStatus.must_select_deal_of_week;
-      case PageNames.Invitations:
-        return !profileStatus.has_invited_clients;
-      case PageNames.Services:
-      case PageNames.ServicesList:
-        return !profileStatus.has_services_set;
-      case PageNames.WorkHours:
-        return !profileStatus.has_business_hours_set;
-      default:
-        return false;
-    }
+    return false;
   }
 
   constructor(
@@ -76,6 +79,7 @@ export class MadeMenuComponent implements OnInit {
     private registrationForm: RegistrationForm,
     private store: Store<{}>,
     private alertCtrl: AlertController,
+    private stylistService: StylistServiceProvider,
     private zone: NgZone
   ) {
     const redirectParams = { isRootPage: true };
@@ -130,6 +134,11 @@ export class MadeMenuComponent implements OnInit {
         } else {
           this.servicesMenuItem.redirectToPage = PageNames.Services;
         }
+      }
+
+      const { response: settings } = await this.stylistService.getStylistSettings().toPromise();
+      if (settings) {
+        this.settings = settings;
       }
     });
   }
@@ -193,7 +202,7 @@ export class MadeMenuComponent implements OnInit {
       return false;
     }
 
-    return MadeMenuComponent.showNotice(page, this.profileStatus);
+    return MadeMenuComponent.showNotice(page, this.profileStatus, this.settings);
   }
 
   private async onLogout(): Promise<void> {

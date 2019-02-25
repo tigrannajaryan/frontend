@@ -54,7 +54,9 @@ import {
   Platform,
   PopoverController
 } from 'ionic-angular';
+
 import { StatusBar } from '@ionic-native/status-bar';
+import { Storage } from '@ionic/storage';
 
 import {
   AlertControllerMock,
@@ -68,7 +70,8 @@ import {
   NavControllerMock,
   PlatformMock,
   PopoverControllerMock,
-  StatusBarMock
+  StatusBarMock,
+  StorageMock
 } from 'ionic-mocks';
 
 import { GoogleAnalytics } from '@ionic-native/google-analytics';
@@ -173,6 +176,7 @@ export class TestUtils {
         { provide: LoadingController, useFactory: () => LoadingControllerMock.instance() },
         { provide: ModalController, useFactory: () => ModalControllerMock.instance() },
         { provide: NavController, useFactory: () => NavControllerMock.instance() },
+        { provide: Storage, useFactory: () => StorageMock.instance() },
         { provide: Events, useFactory: () => EventsMock.instance() },
         { provide: Haptic, useFactory: () => HapticMock.instance() },
         { provide: PopoverController, useClass: PopoverControllerMock },
