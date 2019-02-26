@@ -129,6 +129,8 @@ export class DiscountsDealComponent {
       }
 
       item.discount_percent = res;
+
+      this.onSetDeal();
     });
     modal.present();
   }
