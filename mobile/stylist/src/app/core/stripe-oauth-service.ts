@@ -23,6 +23,10 @@ type StripeAdditionalParamKey =
 export class StripeOAuthService extends AbstractOAuthService {
   baseUrl = 'https://connect.stripe.com/oauth/authorize';
 
+  static showGeneralErrorAlert(): void {
+    showAlert('', 'Unable to add payment method');
+  }
+
   constructor(
     protected loadingCtrl: LoadingController
   ) {
@@ -43,7 +47,7 @@ export class StripeOAuthService extends AbstractOAuthService {
     try {
       event = (await this.runOAuth(params)) as InAppBrowserEvent;
     } catch (error) {
-      showAlert('', 'Unable to add payment method');
+      StripeOAuthService.showGeneralErrorAlert();
       return;
     }
     const code = event.url.match(/code=([\w|\.]+)/);
@@ -52,6 +56,7 @@ export class StripeOAuthService extends AbstractOAuthService {
     } else {
       const error = new Error(`Cannot retrieve Stripe code from ${event.url}.`);
       reportToSentry(error);
+      StripeOAuthService.showGeneralErrorAlert();
     }
   }
 }
