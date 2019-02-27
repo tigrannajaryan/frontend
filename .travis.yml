@@ -25,7 +25,7 @@ notifications:
 # global env variables, common to each build's environment
 env:
   global:
-    - APP_VERSION_NUMBER=1.4.1
+    - APP_VERSION_NUMBER=1.4.2
     - IOS_SDK="iphoneos12.1"
     - ANDROID_BUILD_TOOLS_VERSION="27.0.1"
     - >-
