@@ -36,7 +36,7 @@
         (addPayment)="onHowToGetPaid()"></settings-payment>
 
       <!-- Receipt card -->
-      <div *ngIf="previewResponse" class="CheckOut-card">
+      <div *ngIf="appointment" class="CheckOut-card">
 
         <!-- Price -->
         <div class="CheckOut-price">
@@ -49,14 +49,14 @@
             <ion-spinner *ngIf="isLoading" [duration]="500"></ion-spinner>
             <ng-container *ngIf="!isLoading">
               <span>$</span>
-              <b data-test-id="appointmentPrice">{{ previewResponse.grand_total.toFixed() }}</b>
+              <b data-test-id="appointmentPrice">{{ appointment.grand_total.toFixed() }}</b>
             </ng-container>
           </div>
         </div>
 
         <!-- Details -->
-        <div *ngIf="previewResponse.services.length > 0" class="CheckOut-details">
-          <ion-row align-items-center *ngFor="let service of previewResponse.services; let index = index;" class="CheckOut-detailsServices" data-test-id="appointmentServices">
+        <div *ngIf="appointment.services.length > 0" class="CheckOut-details">
+          <ion-row align-items-center *ngFor="let service of appointment.services; let index = index;" class="CheckOut-detailsServices" data-test-id="appointmentServices">
             <ion-col col-6 no-padding>
               <span>{{ service.service_name }}</span>
             </ion-col>
@@ -72,11 +72,11 @@
             *ngIf="!params?.isAlreadyCheckedOut"
             (click)="onTaxEdit()">
             <ion-col col-9 no-padding>
-              <span class="text-muted">Tax Rate ({{ previewResponse.tax_percentage | number: '1.1-3' }}%)</span>
+              <span class="text-muted">Tax Rate ({{ appointment.tax_percentage | number: '1.1-3' }}%)</span>
               <button class="Link">Edit</button>
             </ion-col>
             <ion-col col-3 no-padding>
-              <span>{{ previewResponse.total_tax.toFixed(2) | currency }}</span>
+              <span>{{ appointment.total_tax.toFixed(2) | currency }}</span>
             </ion-col>
           </ion-row>
 
@@ -93,7 +93,7 @@
         <ion-row *ngIf="hasServicesPriceBtn">
           <ion-col (click)="addServicesClick()" class="CheckOut-controlBtn">
             <span>Change </span>
-            <ng-container *ngIf="previewResponse.services.length > 1; else oneTpl">Services</ng-container>
+            <ng-container *ngIf="appointment.services.length > 1; else oneTpl">Services</ng-container>
             <ng-template #oneTpl>Service</ng-template>
           </ion-col>
 

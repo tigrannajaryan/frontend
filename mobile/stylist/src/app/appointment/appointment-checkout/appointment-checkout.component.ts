@@ -43,11 +43,6 @@ export interface AppointmentCheckoutParams {
 export class AppointmentCheckoutComponent {
   settings: StylistSettings;
 
-  // The following field is returned by the server as a result
-  // of us asking for a preview of what the appointment will look
-  // like if we checkout using provided list of services.
-  previewResponse: AppointmentPreviewResponse;
-
   // The details of the appointment
   appointment: StylistAppointmentModel;
 
@@ -94,37 +89,6 @@ export class AppointmentCheckoutComponent {
         AppointmentStatus.checked_out.indexOf(this.appointment.status) === -1
         && this.isTodayAppointment();
     }
-    await this.updatePreview();
-  }
-
-  /**
-   * Sends currently selected set of services and calculation options
-   * to the backend and receives a preview of final total price, etc,
-   * then updates the screen with received data.
-   */
-  async updatePreview(): Promise<void> {
-
-    if (!this.appointment) {
-      return;
-    }
-
-    try {
-      this.isLoading = true;
-      const appointmentPreview: AppointmentPreviewRequest = {
-        appointment_uuid: this.params.appointmentUuid,
-        datetime_start_at: this.appointment.datetime_start_at,
-        services: this.selectedServices,
-        has_tax_included: true,
-        has_card_fee_included: false
-      };
-
-      this.previewResponse = (await this.homeService.getAppointmentPreview(appointmentPreview).get()).response;
-      if (this.previewResponse) {
-        this.subTotalRegularPrice = this.previewResponse.services.reduce((a, c) => (a + c.regular_price), 0);
-      }
-    } finally {
-      this.isLoading = false;
-    }
   }
 
   addServicesClick(): void {
@@ -157,9 +121,6 @@ export class AppointmentCheckoutComponent {
 
     // Close AddServicesComponent page and show this page
     this.navCtrl.pop();
-
-    // And update preview
-    await this.updatePreview();
   }
 
   async onCheckoutAndPay(): Promise<void> {
