@@ -5,8 +5,6 @@ import * as moment from 'moment';
 
 import {
   AppointmentChangeRequest,
-  AppointmentPreviewRequest,
-  AppointmentPreviewResponse,
   AppointmentStatus,
   StylistAppointmentModel
 } from '~/shared/api/appointments.models';
