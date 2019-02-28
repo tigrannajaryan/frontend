@@ -323,4 +323,15 @@ describe('Pages: ProfileComponent', async () => {
     expect(stylistProfilePreview_MadeUserComment.innerText).toContain(instance.stylistRating[0].comment);
     expect(stylistProfilePreview_MadeUserComment.innerText).toContain(instance.stylistRating[1].comment);
   });
+
+  it('should see set services box if services is not set yet', () => {
+    instance.profileStatus = {
+      ...instance.profileStatus,
+      has_services_set: false
+    };
+    fixture.detectChanges();
+
+    const stylistProfilePreview_viewable = fixture.nativeElement.querySelector('[data-test-id=stylistProfilePreview_viewable]');
+    expect(stylistProfilePreview_viewable).toBeDefined();
+  });
 });
