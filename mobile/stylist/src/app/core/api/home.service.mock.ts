@@ -112,7 +112,14 @@ export class HomeServiceMock {
         datetime_start_at: '2018-01-02T00:00:00+00:00',
         duration_minutes: 0,
         status: AppointmentStatus.new,
-        services: [],
+        services: [{
+          service_uuid: '',
+          service_name: 'Color',
+          client_price: 0,
+          regular_price: 0,
+          is_original: false,
+          isChecked: false
+        }],
         client_uuid: 'string',
         client_profile_photo_url: 'string',
         grand_total: 0,

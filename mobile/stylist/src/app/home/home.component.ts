@@ -220,10 +220,7 @@ export class UpcomingAndPastComponent {
    */
   checkOutAppointmentClick(appointment: StylistAppointmentModel): void {
     const params: AppointmentCheckoutParams = {
-      appointmentUuid: appointment.uuid,
-
-      // Allow to checkout any appointment that is not already checked out.
-      isAlreadyCheckedOut: appointment.status === AppointmentStatus.checked_out
+      appointmentUuid: appointment.uuid
     };
     this.navCtrl.push(PageNames.AppointmentCheckout, { params });
   }

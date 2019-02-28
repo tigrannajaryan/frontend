@@ -174,9 +174,6 @@ export class HomeSlotsComponent {
   checkOutOrDetailsClick(appointment: StylistAppointmentModel): void {
     const params: AppointmentCheckoutParams = {
       appointmentUuid: appointment.uuid,
-
-      // Allow to checkout any appointment that is not already checked out.
-      isAlreadyCheckedOut: appointment.status === AppointmentStatus.checked_out,
       isReadonly: HomeSlotsComponent.isUpcomingAppointment(appointment)
     };
     this.navCtrl.push(PageNames.AppointmentCheckout, { params });
@@ -275,8 +272,11 @@ export class HomeSlotsComponent {
       // Show "Details" or "Checkout" action for real appointments
       if (appointment.status !== AppointmentStatus.cancelled_by_client) {
 
-        const text = (appointment.status === AppointmentStatus.checked_out ||
-          HomeSlotsComponent.isUpcomingAppointment(appointment)) ? 'Details' : 'View and Check Out';
+        const text = (
+            appointment.status === AppointmentStatus.checked_out ||
+            appointment.status === AppointmentStatus.no_show ||
+            HomeSlotsComponent.isUpcomingAppointment(appointment)
+          ) ? 'Details' : 'View and Check Out';
 
         buttons.push({
           text,
