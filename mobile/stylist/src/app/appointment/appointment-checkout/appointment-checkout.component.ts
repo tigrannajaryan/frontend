@@ -5,6 +5,8 @@ import * as moment from 'moment';
 
 import {
   AppointmentChangeRequest,
+  AppointmentPreviewRequest,
+  AppointmentPreviewResponse,
   AppointmentStatus,
   StylistAppointmentModel
 } from '~/shared/api/appointments.models';
@@ -22,10 +24,10 @@ import { AddServicesComponentParams } from '~/core/popups/add-services/add-servi
 import { AppointmentPriceComponentParams } from '~/appointment/appointment-price/appointment-price.component';
 import { GetPaidPopupComponent, GetPaidPopupParams } from '~/appointment/get-paid-popup/get-paid-popup.component';
 import { SettingsFieldComponentParams } from '~/settings/settings-field/settings-field.component';
+import { loading } from '~/shared/utils/loading';
 
 export interface AppointmentCheckoutParams {
   appointmentUuid: string;
-  isAlreadyCheckedOut?: boolean;
   isReadonly?: boolean;
 }
 
@@ -45,10 +47,8 @@ export class AppointmentCheckoutComponent {
   appointment: StylistAppointmentModel;
 
   // Change Services/Price true should be only for
-  // not checked_out and isTodayAppointment appointment
+  // not findished (checked_out or no_show) and isTodayAppointment appointment
   hasServicesPriceBtn = false;
-
-  subTotalRegularPrice: number;
 
   isLoading = false;
   AppointmentStatus = AppointmentStatus;
@@ -76,17 +76,9 @@ export class AppointmentCheckoutComponent {
     if (settingsResponse && settingsResponse.response) {
       this.settings = settingsResponse.response;
     }
+    debugger;
 
-    const { response } = await this.homeService.getAppointmentById(this.params.appointmentUuid).toPromise();
-    if (response) {
-      // Re-new appointment
-      // TODO: pass only appointmentUuid to the component?
-      this.appointment = response;
-      this.selectedServices = this.appointment.services.map(el => ({ service_uuid: el.service_uuid }));
-      this.hasServicesPriceBtn =
-        AppointmentStatus.checked_out.indexOf(this.appointment.status) === -1
-        && this.isTodayAppointment();
-    }
+    await this.loadAppointment(this.params.appointmentUuid);
   }
 
   addServicesClick(): void {
@@ -155,20 +147,23 @@ export class AppointmentCheckoutComponent {
       name: StylistSettingsKeys.tax_percentage,
       inputType: InputTypes.number,
       value: [
-        this.previewResponse.tax_percentage,
+        this.appointment.tax_percentage,
         [
           Validators.required,
           Validators.pattern(/^(\d{1,2})(\.\d{1,3})?$/)
         ]
       ],
       onSave: async (val: number) => {
-        this.previewResponse.tax_percentage = val;
-
+        this.appointment.tax_percentage = val;
         const settings: StylistSettings = {
           tax_percentage: val,
-          card_fee_percentage: this.previewResponse.card_fee_percentage
+          card_fee_percentage: this.appointment.card_fee_percentage
         };
+        // Update the tax in stylist’s settings
         await this.stylistService.setStylistSettings(settings).toPromise();
+
+        // Re-new appointment data
+        await this.loadAppointment(this.appointment.uuid);
       }
     };
     this.navCtrl.push(PageNames.SettingsField, { params });
@@ -180,12 +175,61 @@ export class AppointmentCheckoutComponent {
     popup.present();
   }
 
-  private isTodayAppointment(): boolean {
-    const appointment = this.appointment;
+  isFinishedAppointment(appointment: StylistAppointmentModel): boolean {
+    return (
+      Boolean(appointment)
+      && [AppointmentStatus.checked_out, AppointmentStatus.no_show].indexOf(appointment.status) !== -1
+    );
+  }
+
+  isTodayAppointment(appointment: StylistAppointmentModel): boolean {
     return (
       Boolean(appointment) &&
       moment().format(isoDateFormat) === moment(appointment.datetime_start_at).format(isoDateFormat)
     );
+  }
+
+  private async loadAppointment(appointmentUuid: string): Promise<void> {
+    const { response: appointment } = await loading(this, this.homeService.getAppointmentById(appointmentUuid).toPromise());
+    if (appointment) {
+      // Save services to be used in change appointment requests
+      // (see onAddServices() and getChangeAppointmentRequestParams()).
+      this.selectedServices = appointment.services.map(el => ({ service_uuid: el.service_uuid }));
+      // Indicate to show or not to show change services/price buttons.
+      // Buttons are shown when
+      // - the date of the appointment is today
+      // - and when the appointment is not finished (not checked out or marked as no-show).
+      const finishedAppointment = this.isFinishedAppointment(appointment);
+      this.hasServicesPriceBtn = !finishedAppointment && this.isTodayAppointment(appointment);
+      // Get appointment preview with newest tax settings.
+      if (!finishedAppointment) {
+        // After appointment was created the tax setting of the stylist might have been changed.
+        if (appointment.tax_percentage !== this.settings.tax_percentage) {
+          // To be sure the tax is newest/latest we use preview appointment API edpoint.
+          const preview = await this.getPreview(appointment);
+          // Update appointment values.
+          if (preview) {
+            appointment.tax_percentage = preview.tax_percentage;
+            appointment.total_tax = preview.total_tax;
+            appointment.grand_total = preview.grand_total;
+          }
+        }
+      }
+      // Save appointment. Placed in the bottom to show it in the view with updated preview-depenedent values.
+      this.appointment = appointment;
+    }
+  }
+
+  private async getPreview(appointment: StylistAppointmentModel): Promise<AppointmentPreviewResponse> {
+    const appointmentPreview: AppointmentPreviewRequest = {
+      appointment_uuid: appointment.uuid,
+      datetime_start_at: appointment.datetime_start_at,
+      services: this.selectedServices,
+      has_tax_included: true,
+      has_card_fee_included: false
+    };
+    const { response } = await loading(this, this.homeService.getAppointmentPreview(appointmentPreview));
+    return response;
   }
 
   private getChangeAppointmentRequestParams(): AppointmentChangeRequest {

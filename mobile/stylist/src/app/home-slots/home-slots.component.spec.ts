@@ -217,7 +217,7 @@ describe('Pages: HomeSlotsComponent', () => {
     );
     expect(buttons)
       .toEqual([
-        { text: 'View and Check Out' },
+        { text: 'Details' },
         // 'No Show' removed in this case
         // { text: 'No Show' },
         { text: 'Add to Google Calendar' },

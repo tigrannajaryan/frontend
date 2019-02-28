@@ -3,8 +3,10 @@ import { HttpClient, HttpHandler } from '@angular/common/http';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { async, ComponentFixture } from '@angular/core/testing';
 import { Haptic, NavParams } from 'ionic-angular';
+import { of } from 'rxjs/observable/of';
+import * as faker from 'faker';
 
-import { AppointmentPreviewRequest } from '~/shared/api/appointments.models';
+import { AppointmentStatus } from '~/shared/api/appointments.models';
 import { HomeService } from '~/core/api/home.service';
 import { HomeServiceMock } from '~/core/api/home.service.mock';
 import { prepareSharedObjectsForTests } from '~/core/test-utils.spec';
@@ -49,33 +51,23 @@ describe('Pages: AppointmentCheckoutComponent', () => {
       .toBeTruthy();
   }));
 
-  // TODO: fix the test
-  xit('appointment not checkedOut', async () => {
+  it('appointment not checkedOut', async () => {
     const datePipe = fixture.debugElement.injector.get(DatePipe);
     const decimalPipe = fixture.debugElement.injector.get(DecimalPipe);
     const homeService = fixture.debugElement.injector.get(HomeService);
     const homeServiceMock = fixture.debugElement.injector.get(HomeServiceMock);
     const navParams = fixture.debugElement.injector.get(NavParams);
-    navParams.data.params = {
-      appointmentUuid: ''
-    };
-    instance.params = navParams.data.params;
-    instance.ionViewWillEnter();
+
+    navParams.data.params = { appointmentUuid: faker.random.uuid() };
+
+    const appointmentMock = (await homeServiceMock.getAppointmentById('').get()).response;
+    appointmentMock.status = AppointmentStatus.new;
 
     spyOn(homeService, 'getAppointmentById').and.returnValue(
-      homeServiceMock.getAppointmentById('')
+      of({ response: appointmentMock })
     );
 
-    instance.appointment = (await homeServiceMock.getAppointmentById('').get()).response;
-    const appointmentPreview: AppointmentPreviewRequest = {
-      appointment_uuid: '',
-      datetime_start_at: instance.appointment.datetime_start_at,
-      services: instance.appointment.services,
-      has_tax_included: true,
-      has_card_fee_included: false
-    };
-
-    instance.previewResponse = (await homeServiceMock.getAppointmentPreview(appointmentPreview).get()).response;
+    await instance.ionViewWillEnter();
     fixture.detectChanges();
 
     const appointmentTitle = fixture.nativeElement.querySelector('[data-test-id=appointmentTitle]');
@@ -91,14 +83,14 @@ describe('Pages: AppointmentCheckoutComponent', () => {
       .toBe(instance.appointment.client_first_name + instance.appointment.client_last_name);
 
     const appointmentPrice = fixture.nativeElement.querySelector('[data-test-id=appointmentPrice]');
-    expect(appointmentPrice.innerText).toBe(instance.previewResponse.grand_total.toFixed());
+    expect(appointmentPrice.innerText).toBe(instance.appointment.grand_total.toFixed());
 
     const appointmentServices = fixture.nativeElement.querySelectorAll('[data-test-id=appointmentServices]');
-    expect(appointmentServices.length).toBe(instance.previewResponse.services.length);
+    expect(appointmentServices.length).toBe(instance.appointment.services.length);
 
     const appointmentTaxPercentage = fixture.nativeElement.querySelector('[data-test-id=appointmentTaxPercentage]');
     expect(appointmentTaxPercentage.innerText.replace(/\s/g, ''))
-      .toContain(`TaxRate(${ decimalPipe.transform(instance.previewResponse.tax_percentage, '1.2')  }%)`);
+      .toContain(`TaxRate(${ decimalPipe.transform(instance.appointment.tax_percentage, '1.1-3')  }%)`);
 
     const appointmentAddServiceBtn = fixture.nativeElement.querySelector('[data-test-id=appointmentAddServiceBtn]');
     expect(appointmentAddServiceBtn).toBeDefined();
@@ -109,30 +101,21 @@ describe('Pages: AppointmentCheckoutComponent', () => {
 
   it('appointment checkedOut', async () => {
     const datePipe = fixture.debugElement.injector.get(DatePipe);
+    const decimalPipe = fixture.debugElement.injector.get(DecimalPipe);
     const homeService = fixture.debugElement.injector.get(HomeService);
     const homeServiceMock = fixture.debugElement.injector.get(HomeServiceMock);
     const navParams = fixture.debugElement.injector.get(NavParams);
-    navParams.data.params = {
-      appointmentUuid: '',
-      isAlreadyCheckedOut: true
-    };
-    instance.params = navParams.data.params;
-    await instance.ionViewWillEnter();
+
+    navParams.data.params = { appointmentUuid: faker.random.uuid() };
+
+    const appointmentMock = (await homeServiceMock.getAppointmentById('').get()).response;
+    appointmentMock.status = AppointmentStatus.checked_out;
 
     spyOn(homeService, 'getAppointmentById').and.returnValue(
-      homeServiceMock.getAppointmentById('')
+      of({ response: appointmentMock })
     );
 
-    instance.appointment = (await homeServiceMock.getAppointmentById('').get()).response;
-    const appointmentPreview: AppointmentPreviewRequest = {
-      appointment_uuid: '',
-      datetime_start_at: instance.appointment.datetime_start_at,
-      services: instance.appointment.services,
-      has_tax_included: true,
-      has_card_fee_included: false
-    };
-
-    instance.previewResponse = (await homeServiceMock.getAppointmentPreview(appointmentPreview).get()).response;
+    await instance.ionViewWillEnter();
     fixture.detectChanges();
 
     const appointmentTitle = fixture.nativeElement.querySelector('[data-test-id=appointmentTitle]');
@@ -148,14 +131,14 @@ describe('Pages: AppointmentCheckoutComponent', () => {
       .toBe(instance.appointment.client_first_name + instance.appointment.client_last_name);
 
     const appointmentPrice = fixture.nativeElement.querySelector('[data-test-id=appointmentPrice]');
-    expect(appointmentPrice.innerText).toBe(instance.previewResponse.grand_total.toFixed());
+    expect(appointmentPrice.innerText).toBe(instance.appointment.grand_total.toFixed());
 
     const appointmentServices = fixture.nativeElement.querySelectorAll('[data-test-id=appointmentServices]');
-    expect(appointmentServices.length).toBe(instance.previewResponse.services.length);
+    expect(appointmentServices.length).toBe(instance.appointment.services.length);
 
     const appointmentTaxPercentage = fixture.nativeElement.querySelector('[data-test-id=appointmentTaxPercentage]');
-    expect(appointmentTaxPercentage)
-      .toBeNull();
+    expect(appointmentTaxPercentage.innerText.replace(/\s/g, ''))
+      .toContain(`TaxRate(${ decimalPipe.transform(instance.appointment.tax_percentage, '1.1-3')  }%)`);
 
     const appointmentCardFeePercentage = fixture.nativeElement.querySelector('[data-test-id=appointmentCardFeePercentage]');
     expect(appointmentCardFeePercentage)
