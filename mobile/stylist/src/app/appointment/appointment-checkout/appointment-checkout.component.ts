@@ -76,7 +76,6 @@ export class AppointmentCheckoutComponent {
     if (settingsResponse && settingsResponse.response) {
       this.settings = settingsResponse.response;
     }
-    debugger;
 
     await this.loadAppointment(this.params.appointmentUuid);
   }
