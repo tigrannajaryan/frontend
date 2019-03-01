@@ -15,6 +15,8 @@ export interface StylistProfile extends StylistProfileName {
   instagram_integrated: boolean;
   website_url: string;
   followers_count: number;
+  profile_status: StylistProfileStatus;
+
   profile_photo_id?: string;
   profile_photo_url?: string;
   google_api_key?: string;
@@ -28,6 +30,34 @@ export interface StylistProfile extends StylistProfileName {
 export interface StylistProfileCompleteness {
   isProfileComplete: boolean;
   completenessPercent: number;
+  profileIncomplete: ProfileIncompleteObject[];
+}
+
+// we use this interface in profile incomplete page
+// for the list of incomplete items
+export interface ProfileIncompleteObject {
+  name: string;
+  type: ProfileIncompleteField;
+  isComplete: boolean;
+  onClick(): void;
+}
+
+export enum ProfileIncompleteField {
+  first_name,
+  last_name,
+  salon_name,
+  salon_address,
+  profile_photo_url,
+  email,
+  website_url,
+  instagram_integrated,
+  has_deal_of_week,
+  has_weekday_discounts_set,
+  has_invited_clients,
+  has_services_set,
+  has_business_hours_set,
+  can_checkout_with_made,
+  google_calendar_integrated
 }
 
 export interface StylistProfileStatus {
@@ -39,6 +69,8 @@ export interface StylistProfileStatus {
   has_other_discounts_set: boolean;
   has_invited_clients: boolean;
   must_select_deal_of_week: boolean;
+  can_checkout_with_made: boolean;
+  google_calendar_integrated: boolean;
 }
 
 // Weekday discounts

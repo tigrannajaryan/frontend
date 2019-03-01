@@ -22,7 +22,6 @@ export interface PageDescr {
  * history for that page and returns the full list of pages that should
  * be set as navigation history. The last item in this list is the page
  * to show.
- * Must match behavior of isRegistrationComplete.
  * @param profileStatus as returned by auth.
  */
 export async function createNavHistoryList(profileStatus: StylistProfileStatus): Promise<PageDescr[]> {
@@ -69,14 +68,6 @@ export async function nextToShowForCompleteProfile(): Promise<PageDescr> {
 
   // Show home screen
   return { page: PageNames.HomeSlots };
-}
-
-/**
- * Returns true if profile status indicates that all registation screens were
- * completed. Must match behavior of createNavHistoryList.
- */
-export function isRegistrationComplete(profileStatus: StylistProfileStatus): boolean {
-  return profileStatus.has_personal_data;
 }
 
 /**

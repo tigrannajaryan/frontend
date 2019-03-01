@@ -41,8 +41,26 @@ export class DiscountsApiMock extends BaseServiceMock {
     );
   }
 
+  setDiscounts(): Observable<ApiResponse<Discounts>> {
+    return this.mockRequest<Discounts>(
+      Observable.create(observer => {
+        observer.next(discounts);
+        observer.complete();
+      })
+    );
+  }
+
   getMaximumDiscounts(): Observable<ApiResponse<GetMyClientsResponse>> {
     return this.mockRequest<GetMyClientsResponse>(
+      Observable.create(observer => {
+        observer.next(maximumDiscounts);
+        observer.complete();
+      })
+    );
+  }
+
+  setMaximumDiscounts(): Observable<ApiResponse<MaximumDiscounts>> {
+    return this.mockRequest<MaximumDiscounts>(
       Observable.create(observer => {
         observer.next(maximumDiscounts);
         observer.complete();

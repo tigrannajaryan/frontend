@@ -8,8 +8,7 @@ import {
 
 import { loading } from '~/shared/utils/loading';
 import { ServiceTemplateSetResponse, StylistServiceProvider } from '~/core/api/stylist.service';
-import { ServiceCategory, ServiceTemplateItem, StylistProfileStatus, StylistServicesListResponse } from '~/shared/api/stylist-app.models';
-import { getProfileStatus, updateProfileStatus } from '~/shared/storage/token-utils';
+import { ServiceCategory, ServiceTemplateItem, StylistServicesListResponse } from '~/shared/api/stylist-app.models';
 import { StylistServicesDataStore } from '~/services/services-list/services.data';
 
 import { PageNames } from '~/core/page-names';
@@ -113,12 +112,6 @@ export class ServicesListComponent {
       await this.servicesData.deleteCache();
 
       if (response) {
-        const profileStatus = await getProfileStatus() as StylistProfileStatus;
-        await updateProfileStatus({
-          ...profileStatus,
-          has_services_set: true
-        });
-
         // If no services exists we landed to Services page to enter stylist’s services first.
         // When this happens ServicesList becomes a second page in stack. After services
         // are saved ServicesList should become a root page.

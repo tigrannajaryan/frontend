@@ -11,12 +11,11 @@ import { Contacts } from '@ionic-native/contacts';
 import { normalizePhoneNumber } from '~/shared/utils/phone-numbers';
 import { Discounts } from '~/core/api/discounts.models';
 import { DiscountsApi } from '~/core/api/discounts.api';
-import { StylistProfile, StylistProfileStatus } from '~/shared/api/stylist-app.models';
+import { StylistProfile } from '~/shared/api/stylist-app.models';
 import { ClientInvitation, InvitationStatus } from '~/shared/api/invitations.models';
 import { InvitationsApi } from '~/core/api/invitations.api';
 import { ApiResponse } from '~/shared/api/base.models';
 import { showAlert } from '~/shared/utils/alert';
-import { getProfileStatus, updateProfileStatus } from '~/shared/storage/token-utils';
 
 import { PageNames } from '~/core/page-names';
 import { ProfileDataStore } from '~/core/profile.data';
@@ -24,7 +23,6 @@ import {
   AbstractInvitationsComponent, defaultCountry,
   InvitationsComponentParams
 } from '~/shared/components/invitations/abstract-invitations.component';
-import { OpenNativeSettings } from '@ionic-native/open-native-settings';
 
 class ErrorWrapper {
   constructor(readonly error) { }
@@ -44,7 +42,6 @@ export class InvitationsComponent extends AbstractInvitationsComponent {
 
   constructor(
     protected contacts: Contacts,
-    protected openNativeSettings: OpenNativeSettings,
     protected sms: SMS,
     protected alertCtrl: AlertController,
     private discountsApi: DiscountsApi,
@@ -54,18 +51,6 @@ export class InvitationsComponent extends AbstractInvitationsComponent {
     private profileData: ProfileDataStore
   ) {
     super();
-  }
-
-  protected async ionViewWillLoad(): Promise<void> {
-    // After it’s visited set has_invited_clients to true. It indicates
-    // that a stylist has seen the inivitations screen.
-    const profileStatus = await getProfileStatus() as StylistProfileStatus;
-    if (profileStatus && !profileStatus.has_invited_clients) {
-      await updateProfileStatus({
-        ...profileStatus,
-        has_invited_clients: true
-      });
-    }
   }
 
   protected ionViewWillEnter(): void {

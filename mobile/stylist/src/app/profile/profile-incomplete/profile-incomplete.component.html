@@ -1,0 +1,40 @@
+<ion-header madeBackHeader></ion-header>
+
+
+<ion-content no-padding>
+  <div *ngIf="stylistProfileCompleteness" class="Made-wp Made-wpContent">
+    <div *ngIf="stylistProfileCompleteness.completenessPercent < 100">
+      <div class="profileIncomplete-Title">
+        <h2>Profile Incomplete</h2>
+
+        <span class="is-warn">
+        {{ 100 - stylistProfileCompleteness.completenessPercent }}%
+      </span>
+      </div>
+
+      <div *ngFor="let item of stylistProfileCompleteness.profileIncomplete">
+        <div *ngIf="!item.isComplete" (click)="item.onClick()" class="profileIncomplete-item">
+          <div>{{ item.name }}</div>
+          <i class="mb-icon-right-arrow"></i>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="stylistProfileCompleteness.completenessPercent !== 100">
+      <div class="profileIncomplete-Title is-completed">
+        <h2>Completed</h2>
+
+        <span class="is-done">
+        {{ stylistProfileCompleteness.completenessPercent }}%
+      </span>
+      </div>
+
+      <div *ngFor="let item of stylistProfileCompleteness.profileIncomplete">
+        <div *ngIf="item.isComplete" class="profileIncomplete-item">
+          <div>{{ item.name }}</div>
+          <i class="mb-icon-check is-done"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-content>

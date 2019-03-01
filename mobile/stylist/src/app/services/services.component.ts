@@ -3,8 +3,7 @@ import { NavController, NavParams } from 'ionic-angular';
 import { DomSanitizer } from '@angular/platform-browser';
 import { SafeStyle } from '@angular/platform-browser/src/security/dom_sanitization_service';
 
-import { ServiceTemplateSetBase, StylistProfileStatus } from '~/shared/api/stylist-app.models';
-import { getProfileStatus, updateProfileStatus } from '~/shared/storage/token-utils';
+import { ServiceTemplateSetBase } from '~/shared/api/stylist-app.models';
 import { loading } from '~/shared/utils/loading';
 
 import { StylistServiceProvider } from '~/core/api/stylist.service';
@@ -71,13 +70,6 @@ export class ServicesComponent {
   private async guardRedirect(): Promise<void> {
     const { response } = await this.servicesData.get();
     if (response && response.categories.some(({ services }) => services.length !== 0)) {
-      const profileStatus = await getProfileStatus() as StylistProfileStatus;
-      if (profileStatus) {
-        await updateProfileStatus({
-          ...profileStatus,
-          has_services_set: true
-        });
-      }
       const params: ServicesListComponentParams = { isRootPage: true };
       this.navCtrl.setRoot(PageNames.ServicesList, { params });
     }

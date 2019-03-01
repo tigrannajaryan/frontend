@@ -29,7 +29,19 @@ const fakeProfile: StylistProfile = {
   email: faker.internet.email(),
   salon_city: faker.address.city(),
   salon_state: faker.address.state(),
-  salon_zipcode: faker.address.zipCode()
+  salon_zipcode: faker.address.zipCode(),
+  profile_status: {
+    has_business_hours_set: true,
+    has_invited_clients: true,
+    has_other_discounts_set: true,
+    has_personal_data: true,
+    has_picture_set: true,
+    has_services_set: true,
+    has_weekday_discounts_set: true,
+    must_select_deal_of_week: false,
+    can_checkout_with_made: true,
+    google_calendar_integrated: true
+  }
 };
 
 let instance: StripeOAuthService;

@@ -4,10 +4,13 @@ import { AlertController, Content, Events, MenuController, Nav, ViewController }
 import { Store } from '@ngrx/store';
 
 import { AuthService } from '~/shared/api/auth.api';
-import { StylistProfile, StylistProfileStatus, StylistSettings } from '~/shared/api/stylist-app.models';
+import {
+  StylistProfile,
+  StylistProfileCompleteness
+} from '~/shared/api/stylist-app.models';
 import { SharedEventTypes } from '~/shared/events/shared-event-types';
 import { getAppVersionNumber, getBuildNumber } from '~/shared/get-build-info';
-import { deleteAuthLocalData, getProfileStatus } from '~/shared/storage/token-utils';
+import { deleteAuthLocalData } from '~/shared/storage/token-utils';
 
 import { LogoutAction } from '~/app.reducers';
 import { PageNames } from '~/core/page-names';
@@ -15,7 +18,6 @@ import { clearAllDataStores } from '~/core/data.module';
 import { ProfileDataStore } from '~/core/profile.data';
 import { calcProfileCompleteness } from '~/core/utils/stylist-utils';
 import { RegistrationForm } from '~/onboarding/registration.form';
-import { StylistServiceProvider } from '~/core/api/stylist.service';
 
 interface MenuItem {
   title: string;
@@ -32,9 +34,8 @@ export class MadeMenuComponent implements OnInit {
   @Input() content: Content;
   @Input() nav: Nav;
 
+  stylistProfileCompleteness: StylistProfileCompleteness;
   profile: StylistProfile;
-  profileStatus: StylistProfileStatus;
-  settings: StylistSettings;
   menuItems: MenuItem[];
   swipeEnabled: boolean;
 
@@ -50,25 +51,25 @@ export class MadeMenuComponent implements OnInit {
 
   private servicesMenuItem: MenuItem;
 
-  static showNotice(page: Page, profileStatus: StylistProfileStatus, settings: StylistSettings): boolean {
-    if (settings && page === PageNames.Settings) {
-      return !settings.can_checkout_with_made;
-    } else if (profileStatus) {
-      switch (page) {
-        case PageNames.Discounts:
-          return !profileStatus.has_weekday_discounts_set || profileStatus.must_select_deal_of_week;
-        case PageNames.Invitations:
-          return !profileStatus.has_invited_clients;
-        case PageNames.Services:
-        case PageNames.ServicesList:
-          return !profileStatus.has_services_set;
-        case PageNames.WorkHours:
-          return !profileStatus.has_business_hours_set;
-        default:
-          break;
-      }
+  static showNotice(page: Page, profile: StylistProfile): boolean {
+    switch (page) {
+      case PageNames.Settings:
+        return !profile.profile_status.can_checkout_with_made
+          || !profile.profile_status.google_calendar_integrated;
+      case PageNames.Discounts:
+        return !profile.profile_status.has_weekday_discounts_set
+          || profile.profile_status.must_select_deal_of_week;
+      case PageNames.Invitations:
+        return !profile.profile_status.has_invited_clients;
+      case PageNames.Services:
+      case PageNames.ServicesList:
+        return !profile.profile_status.has_services_set;
+      case PageNames.WorkHours:
+        return !profile.profile_status.has_business_hours_set;
+      default:
+        return false;
     }
-    return false;
+
   }
 
   constructor(
@@ -79,7 +80,6 @@ export class MadeMenuComponent implements OnInit {
     private registrationForm: RegistrationForm,
     private store: Store<{}>,
     private alertCtrl: AlertController,
-    private stylistService: StylistServiceProvider,
     private zone: NgZone
   ) {
     const redirectParams = { isRootPage: true };
@@ -121,24 +121,18 @@ export class MadeMenuComponent implements OnInit {
     this.zone.run(async () => {
       // Make view updates based on profile and profile status
 
-      const { response: profile } = await this.profileData.get();
+      const { response: profile } = await this.profileData.get({ refresh: true });
       this.profile = profile;
 
-      const profileStatus: StylistProfileStatus = await getProfileStatus() as StylistProfileStatus;
-      this.profileStatus = profileStatus;
-
-      if (this.profileStatus) {
+      if (this.profile && this.profile.profile_status) {
         // Set services page or services template page based on `has_services_set`:
-        if (this.profileStatus.has_services_set) {
+        if (this.profile.profile_status.has_services_set) {
           this.servicesMenuItem.redirectToPage = PageNames.ServicesList;
         } else {
           this.servicesMenuItem.redirectToPage = PageNames.Services;
         }
-      }
 
-      const { response: settings } = await this.stylistService.getStylistSettings().toPromise();
-      if (settings) {
-        this.settings = settings;
+        this.stylistProfileCompleteness = calcProfileCompleteness(this.profile);
       }
     });
   }
@@ -186,23 +180,16 @@ export class MadeMenuComponent implements OnInit {
     return true;
   }
 
-  isProfileComplete(): boolean {
-    if (this.profile) {
-      return calcProfileCompleteness(this.profile).isProfileComplete;
-    }
-    return true;
-  }
-
   onMenuClick(): void {
     this.setPage(PageNames.Profile, {}, true);
   }
 
-  shouldShowNotice(page: Page): boolean {
-    if (!this.profileStatus) {
+  shouldShowNotice(redirectToPage: Page): boolean {
+    if (!this.profile) {
       return false;
     }
 
-    return MadeMenuComponent.showNotice(page, this.profileStatus, this.settings);
+    return MadeMenuComponent.showNotice(redirectToPage, this.profile);
   }
 
   private async onLogout(): Promise<void> {

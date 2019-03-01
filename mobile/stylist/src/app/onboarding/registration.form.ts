@@ -4,6 +4,14 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { emptyOr, instagramValidator } from '~/shared/validators';
 
 import { ProfileDataStore } from '~/core/profile.data';
+import { loading } from '~/core/utils/loading';
+import { PhotoSourceType } from '~/shared/constants';
+import { Camera, CameraOptions } from '@ionic-native/camera';
+import { showAlert } from '~/shared/utils/alert';
+import { downscalePhoto, urlToFile } from '~/shared/image-utils';
+import { BaseService } from '~/shared/api/base.service';
+import { ActionSheetController, ActionSheetOptions, App } from 'ionic-angular';
+import { Logger } from '~/shared/logger';
 
 /**
  * This enum is used to store all the fields editable in registration process.
@@ -42,6 +50,11 @@ export class RegistrationForm {
   private phone: string;
 
   constructor(
+    private logger: Logger,
+    private camera: Camera,
+    private app: App,
+    private actionSheetCtrl: ActionSheetController,
+    private baseService: BaseService,
     private formBuilder: FormBuilder,
     private profileData: ProfileDataStore
   ) {
@@ -141,6 +154,90 @@ export class RegistrationForm {
       ...this.getProfilePhotoData()
     };
     await this.profileData.set(data);
+  }
+
+  @loading
+  async takePhoto(sourceType: PhotoSourceType): Promise<void> {
+    let imageData;
+    try {
+      const options: CameraOptions = {
+        quality: 50,
+        destinationType: this.camera.DestinationType.DATA_URL,
+        encodingType: this.camera.EncodingType.JPEG,
+        mediaType: this.camera.MediaType.PICTURE,
+        correctOrientation: true,
+        sourceType // PHOTOLIBRARY = 0, CAMERA = 1
+      };
+
+      imageData = await this.camera.getPicture(options);
+    } catch (e) {
+      const capitalize = e.charAt(0).toUpperCase() + e.slice(1);
+      showAlert('', capitalize);
+      return;
+    }
+
+    // imageData is either a base64 encoded string or a file URI
+    // If it's base64:
+    const originalBase64Image = `data:image/jpeg;base64,${imageData}`;
+
+    const downscaledBase64Image = await downscalePhoto(originalBase64Image);
+
+    // set image preview
+    this.form.get('profile_photo_url').setValue(downscaledBase64Image);
+
+    // convert base64 to File after to formData and send it to server
+    const file = await urlToFile(downscaledBase64Image, 'file.png');
+    const formData = new FormData();
+    formData.append('file', file);
+
+    const { response } = await this.baseService.uploadFile<{ uuid: string }>(formData).toPromise();
+    this.form.get('profile_photo_id').setValue(response.uuid);
+
+    await this.save();
+    await this.app.getRootNav().popToRoot();
+  }
+
+  processPhoto(): void {
+    this.logger.info('processPhoto()');
+    const opts: ActionSheetOptions = {
+      buttons: [
+        {
+          text: 'Take Photo',
+          handler: () => {
+            this.takePhoto(PhotoSourceType.camera);
+          }
+        }, {
+          text: 'Add Photo',
+          handler: () => {
+            this.takePhoto(PhotoSourceType.photoLibrary);
+          }
+        }, {
+          text: 'Cancel',
+          role: 'cancel'
+        }
+      ]
+    };
+
+    if (this.hasPhoto()) {
+      opts.buttons.splice(-1, 0, {
+        text: 'Remove Photo',
+        role: 'destructive',
+        handler: () => {
+          this.form.get('profile_photo_url').setValue('');
+          // tslint:disable-next-line:no-null-keyword
+          this.form.get('profile_photo_id').setValue(null);
+
+          this.save();
+        }
+      });
+    }
+
+    const actionSheet = this.actionSheetCtrl.create(opts);
+    actionSheet.present();
+  }
+
+  hasPhoto(): boolean {
+    return Boolean(this.form.value.profile_photo_id) || Boolean(this.form.value.profile_photo_url);
   }
 
   private getProfilePhotoData(): { profile_photo_id: string } {

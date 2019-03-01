@@ -72,7 +72,9 @@ describe('Shared functions: profileStatusToPage', () => {
       has_picture_set: true,
       has_services_set: true,
       has_weekday_discounts_set: true,
-      must_select_deal_of_week: false
+      must_select_deal_of_week: false,
+      can_checkout_with_made: true,
+      google_calendar_integrated: true
     };
 
     spyOn(pushNotification, 'needToShowPermissionScreen').and.returnValue(

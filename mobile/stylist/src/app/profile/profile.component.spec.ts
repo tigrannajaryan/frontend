@@ -133,13 +133,13 @@ describe('Pages: ProfileComponent', async () => {
     instance.activeTab = ProfileTabNames.clientView;
     fixture.detectChanges();
     spyOn(instance, 'onFieldEdit');
-    spyOn(instance, 'processPhoto');
+    spyOn(instance, 'onAddPhoto');
 
     instance.profile.profile_photo_url = '';
     fixture.detectChanges();
     const stylistProfilePreviewPhoto = fixture.nativeElement.querySelector('[data-test-id=stylistProfilePreviewPhoto]');
     stylistProfilePreviewPhoto.click();
-    expect(instance.processPhoto).toHaveBeenCalled();
+    expect(instance.onAddPhoto).toHaveBeenCalled();
 
     instance.profile.instagram_url = '';
     fixture.detectChanges();
@@ -170,16 +170,6 @@ describe('Pages: ProfileComponent', async () => {
 
   it('should have not set Account Info', () => {
     instance.activeTab = ProfileTabNames.edit;
-    instance.profileStatus = {
-      has_business_hours_set: false,
-      has_invited_clients: false,
-      has_other_discounts_set: false,
-      has_personal_data: false,
-      has_picture_set: false,
-      has_services_set: false,
-      has_weekday_discounts_set: false,
-      must_select_deal_of_week: true
-    };
     fixture.detectChanges();
 
     const ProfileEditAccountInfoHours = fixture.nativeElement.querySelector('[data-test-id=ProfileEditAccountInfoHours]');
@@ -203,7 +193,8 @@ describe('Pages: ProfileComponent', async () => {
 
   it('should have set Account Info', () => {
     instance.activeTab = ProfileTabNames.edit;
-    instance.profileStatus = {
+
+    instance.profile.profile_status = {
       has_business_hours_set: true,
       has_invited_clients: true,
       has_other_discounts_set: true,
@@ -211,8 +202,13 @@ describe('Pages: ProfileComponent', async () => {
       has_picture_set: true,
       has_services_set: true,
       has_weekday_discounts_set: true,
-      must_select_deal_of_week: false
+      must_select_deal_of_week: false,
+      can_checkout_with_made: true,
+      google_calendar_integrated: true
     };
+
+    instance.stylistProfileCompleteness = calcProfileCompleteness(instance.profile);
+
     fixture.detectChanges();
 
     const ProfileEditAccountInfoHours = fixture.nativeElement.querySelector('[data-test-id=ProfileEditAccountInfoHours]');
@@ -236,16 +232,6 @@ describe('Pages: ProfileComponent', async () => {
 
   xit('should be able to edit Account Info field', () => {
     instance.activeTab = ProfileTabNames.edit;
-    instance.profileStatus = {
-      has_business_hours_set: true,
-      has_invited_clients: true,
-      has_other_discounts_set: true,
-      has_personal_data: true,
-      has_picture_set: true,
-      has_services_set: true,
-      has_weekday_discounts_set: true,
-      must_select_deal_of_week: false
-    };
     instance.servicesPage = PageNames.ServicesList;
     fixture.detectChanges();
 
@@ -269,11 +255,11 @@ describe('Pages: ProfileComponent', async () => {
     fixture.detectChanges();
 
     spyOn(instance, 'onFieldEdit');
-    spyOn(instance, 'processPhoto');
+    spyOn(instance, 'onAddPhoto');
 
     const ProfileEditPhoto = fixture.nativeElement.querySelector('[data-test-id=ProfileEditPhoto]');
     ProfileEditPhoto.click();
-    expect(instance.processPhoto).toHaveBeenCalled();
+    expect(instance.onAddPhoto).toHaveBeenCalled();
 
     const ProfileEditInstagram = fixture.nativeElement.querySelector('[data-test-id=ProfileEditInstagram]');
     ProfileEditInstagram.click();
@@ -325,10 +311,6 @@ describe('Pages: ProfileComponent', async () => {
   });
 
   it('should see set services box if services is not set yet', () => {
-    instance.profileStatus = {
-      ...instance.profileStatus,
-      has_services_set: false
-    };
     fixture.detectChanges();
 
     const stylistProfilePreview_viewable = fixture.nativeElement.querySelector('[data-test-id=stylistProfilePreview_viewable]');

@@ -43,6 +43,7 @@ import { SettingsFieldComponent } from '~/settings/settings-field/settings-field
 import { DiscountsDailyComponent } from '~/discounts/discounts-daily/discounts-daily.component';
 import { DiscountsMaximumComponent } from '~/discounts/discounts-maximum/discounts-maximum.component';
 import { DiscountsDealComponent } from '~/discounts/discounts-deal/discounts-deal.component';
+import { ProfileIncompleteComponent } from '~/profile/profile-incomplete/profile-incomplete.component';
 import { EducationalComponent } from '~/core/popups/educational/educational.component';
 
 /**
@@ -85,6 +86,7 @@ export const PageNames: {[key: string]: Page} = {
   Invitations: InvitationsComponent,
   MyClients: MyClientsComponent,
   Profile: ProfileComponent,
+  ProfileIncomplete: ProfileIncompleteComponent,
   PushPrimingScreen: PushPrimingScreenComponent,
   RegistrationDone: RegistrationDoneComponent,
   SalonAddress: SalonAddressComponent,

@@ -34,7 +34,19 @@ export async function createTestStylist(serviceNames: string[], clientPhoneNumbe
     instagram_integrated: true,
     website_url: faker.internet.url(),
     profile_photo_url: faker.random.image(),
-    followers_count: faker.random.number()
+    followers_count: faker.random.number(),
+    profile_status: {
+      has_business_hours_set: true,
+      has_invited_clients: true,
+      has_other_discounts_set: true,
+      has_personal_data: true,
+      has_picture_set: true,
+      has_services_set: true,
+      has_weekday_discounts_set: true,
+      must_select_deal_of_week: false,
+      can_checkout_with_made: true,
+      google_calendar_integrated: true
+    }
   };
   const profileResponse = await stylistApi.setProfile(stylistProfile);
   expect(profileResponse.uuid).toBeDefined();

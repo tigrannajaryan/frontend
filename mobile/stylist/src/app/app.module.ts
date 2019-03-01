@@ -112,6 +112,7 @@ import { SettingsFieldComponent } from '~/settings/settings-field/settings-field
 import { DiscountsDailyComponent } from '~/discounts/discounts-daily/discounts-daily.component';
 import { DiscountsMaximumComponent } from '~/discounts/discounts-maximum/discounts-maximum.component';
 import { DiscountsDealComponent } from '~/discounts/discounts-deal/discounts-deal.component';
+import { ProfileIncompleteComponent } from '~/profile/profile-incomplete/profile-incomplete.component';
 import { EducationalComponent } from '~/core/popups/educational/educational.component';
 
 initSentry();
@@ -181,6 +182,7 @@ const declarations = [
   ListPickerPopupComponent,
   MyClientsComponent,
   ProfileComponent,
+  ProfileIncompleteComponent,
   PushPrimingScreenComponent,
   RegistrationDoneComponent,
   ServiceItemComponent,
