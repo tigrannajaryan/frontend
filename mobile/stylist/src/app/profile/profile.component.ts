@@ -5,7 +5,7 @@ import { Camera, CameraOptions } from '@ionic-native/camera';
 import {
   ActionSheetController,
   ActionSheetOptions,
-  Events,
+  Events, ModalController,
   NavController,
   NavParams, Slides
 } from 'ionic-angular';
@@ -45,6 +45,7 @@ import { RegistrationForm, RegistrationFormControl } from '~/onboarding/registra
 import { WorkHoursComponentParams } from '~/workhours/workhours.component';
 import { ClientsCalendarComponentParams } from '~/calendar/clients-calendar/clients-calendar.component';
 import { StylistServiceProvider } from '~/core/api/stylist.service';
+import { StylistAppStorage } from '~/core/stylist-app-storage';
 
 export enum ProfileTabs {
   clientView,
@@ -95,6 +96,7 @@ export class ProfileComponent {
     public navCtrl: NavController,
     public navParams: NavParams,
     public profileData: ProfileDataStore,
+    private storage: StylistAppStorage,
     private actionSheetCtrl: ActionSheetController,
     private clientsApi: ClientsApi,
     private events: Events,
@@ -104,6 +106,7 @@ export class ProfileComponent {
     private camera: Camera,
     private baseService: BaseService,
     private stylistProfileApi: StylistProfileApi,
+    private modalCtrl: ModalController,
     private stylistService: StylistServiceProvider
   ) {
     this.activeTab = this.tabs[ProfileTabs.clientView].name;
@@ -120,6 +123,10 @@ export class ProfileComponent {
 
   @loading
   async ionViewWillEnter(): Promise<void> {
+    if (!this.storage.get('hasSeenEducationalPopups')) {
+      this.showEducationalPopup();
+    }
+
     // Allow to set active tab from outside the component
     this.events.subscribe(StylistEventTypes.setStylistProfileTab, (params: SetStylistProfileTabEventParams) => {
       this.onTabChange(params.profileTab);
@@ -216,6 +223,11 @@ export class ProfileComponent {
     if (response) {
       this.prices = response.prices;
     }
+  }
+
+  showEducationalPopup(): void {
+    const modal = this.modalCtrl.create(PageNames.Educational);
+    modal.present();
   }
 
   ionViewWillLeave(): void {

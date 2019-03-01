@@ -1,0 +1,52 @@
+educational-popup {
+  background: rgba(black, 0.25);
+
+  .educational {
+    position: absolute;
+    left: pxtovw(32px);
+    bottom: pxtovw(27px);
+    width: pxtovw(312px);
+    height: pxtovw(521px);
+    padding: pxtovw(24px) pxtovw(16px) pxtovw(16px);
+    text-align: center;
+    background: color($colors, white);
+    border-radius: pxtovw(16px);
+  }
+
+  .educational-title {
+    margin-bottom: pxtovw(8px);
+    font-size: pxtovw(28px);
+    line-height: pxtovw(32px);
+    letter-spacing: pxtovw(-0.7px);
+    font-weight: 600;
+  }
+
+  .educational-image {
+    width: 100%;
+  }
+
+  .slide-zoom {
+    height: 100%;
+  }
+
+  .Link {
+    position: absolute;
+    right: pxtovw(27px);
+    bottom: pxtovw(23px);
+    z-index: 1;
+  }
+
+  .swiper-pagination-bullet {
+    width: pxtovw(6px);
+    height: pxtovw(6px);
+    background: color($colors-shared, santasGray);
+  }
+
+  .swiper-pagination-bullet-active {
+    background: color($colors-shared, lightPeach);
+  }
+
+  .swiper-container-horizontal > .swiper-pagination-bullets .swiper-pagination-bullet {
+    margin: 0 pxtovw(4px);
+  }
+}
