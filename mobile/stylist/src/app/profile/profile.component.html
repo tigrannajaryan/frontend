@@ -42,6 +42,15 @@
         <div class="Tabs-slide">
           <div *ngIf="profile">
             <div class="Made-wp">
+              <div
+                *ngIf="shouldShowNotice(PageNames.ServicesList)"
+                (click)="onSetAccountInfo(servicesPage)"
+                class="StylistProfilePreview-viewable"
+                data-test-id="stylistProfilePreview_viewable">
+                <div>Click to <b>set services</b> to make <br> your profile viewable.</div>
+                <i class="mb-icon-cuts"></i>
+              </div>
+
               <div class="StylistProfilePreview-name" data-test-id="stylistProfilePreviewName">{{ profile.first_name }}</div>
 
             <div class="StylistProfilePreview-salon" data-test-id="stylistProfilePreviewSalon">

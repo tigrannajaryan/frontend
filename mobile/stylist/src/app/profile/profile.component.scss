@@ -151,4 +151,23 @@ page-profile {
     color: color($colors, warmGrey);
     text-align: left;
   }
+
+  .StylistProfilePreview-viewable {
+    display: flex;
+    flex-flow: row;
+    justify-content: space-between;
+    width: 100%;
+    margin: 0 0 pxtovw(16px);
+    padding: pxtovw(16px);
+    font-size: pxtovw(18px);
+    line-height: pxtovw(24px);
+    text-align: left;
+    background: color($colors-shared, lightPeach);
+    border-radius: pxtovw(16px);
+
+    i {
+      margin-left: pxtovw(16px);
+      font-size: pxtovw(46px);
+    }
+  }
 }
