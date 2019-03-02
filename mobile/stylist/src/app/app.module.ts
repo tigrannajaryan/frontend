@@ -112,6 +112,7 @@ import { SettingsFieldComponent } from '~/settings/settings-field/settings-field
 import { DiscountsDailyComponent } from '~/discounts/discounts-daily/discounts-daily.component';
 import { DiscountsMaximumComponent } from '~/discounts/discounts-maximum/discounts-maximum.component';
 import { DiscountsDealComponent } from '~/discounts/discounts-deal/discounts-deal.component';
+import { EducationalComponent } from '~/core/popups/educational/educational.component';
 
 initSentry();
 
@@ -172,6 +173,7 @@ const declarations = [
   DiscountsFirstVisitComponent,
   DiscountsLoyaltyComponent,
   DiscountsMaximumComponent,
+  EducationalComponent,
   FirstScreenComponent,
   GetPaidPopupComponent,
   HomeSlotsComponent,

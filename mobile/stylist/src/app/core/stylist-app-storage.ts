@@ -11,6 +11,7 @@ import { PushPersistentData } from '~/shared/push/push-notification';
  */
 export interface StylistAppPersistentData {
   pushNotificationParams: PushPersistentData;
+  hasSeenEducationalPopups: boolean;
 }
 
 /**
@@ -29,7 +30,8 @@ export class StylistAppStorage extends AppStorage<StylistAppPersistentData> {
         isPermissionGranted: false,
         isPermissionDenied: false,
         lastPrimingScreenShown: undefined
-      }
+      },
+      hasSeenEducationalPopups: false
     };
 
     super(storage, logger, defaultData);

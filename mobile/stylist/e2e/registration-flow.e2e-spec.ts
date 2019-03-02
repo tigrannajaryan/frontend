@@ -105,6 +105,11 @@ describe('Registration Flow', () => {
     await registrationDonePage.continue();
   });
 
+  it('should skip all educational slides', async () => {
+    await waitFor(profilePage.getProfileEditTab);
+    await profilePage.watchEducationalPopup();
+  });
+
   it('should change tab on profile screen to Edit tab', async () => {
     await waitFor(profilePage.getProfileEditTab);
     await click(profilePage.getProfileEditTab);

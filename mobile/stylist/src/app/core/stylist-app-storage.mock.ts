@@ -14,7 +14,8 @@ export class StylistAppStorageMock extends AppStorageMock<StylistAppPersistentDa
         isPermissionGranted: false,
         isPermissionDenied: false,
         lastPrimingScreenShown: undefined
-      }
+      },
+      hasSeenEducationalPopups: false
     };
     super(initialMockData);
   }

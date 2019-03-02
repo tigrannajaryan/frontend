@@ -1,0 +1,26 @@
+<div class="educational">
+  <ion-slides
+    [pager]="isPagerVisible"
+    (ionSlideReachEnd)="isPagerVisible = false"
+    (ionSlidePrevEnd)="isPagerVisible = true">
+    <ion-slide>
+      <div class="educational-title">Set Your Services</div>
+      <img class="educational-image" src="assets/imgs/educational/1.png" alt="">
+    </ion-slide>
+    <ion-slide>
+      <div class="educational-title">Set Your Hours</div>
+      <img class="educational-image" src="assets/imgs/educational/2.png" alt="">
+    </ion-slide>
+    <ion-slide>
+      <div class="educational-title">Set Your Discounts</div>
+      <img class="educational-image" src="assets/imgs/educational/3.png" alt="">
+    </ion-slide>
+    <ion-slide>
+      <div class="educational-title">Invite Your Clients</div>
+      <img class="educational-image" src="assets/imgs/educational/4.png" alt="">
+      <button (click)="dismiss()" data-test-id="educational_gotIt" class="Discounts-btn" ion-button>Got It</button>
+    </ion-slide>
+  </ion-slides>
+
+  <div *ngIf="isPagerVisible" (click)="slides.slideNext()" data-test-id="educational_next" class="Link">Next</div>
+</div>
