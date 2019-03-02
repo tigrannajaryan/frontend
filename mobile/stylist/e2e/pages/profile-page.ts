@@ -13,6 +13,8 @@ class ProfilePage {
   get getProfileEditAccountInfoHoursBtn() { return $('page-profile [data-test-id=ProfileEditAccountInfoHours]'); }
   get getProfileEditAccountInfoServiceBtn() { return $('page-profile [data-test-id=ProfileEditAccountInfoService]'); }
   get getProfileEditAccountInfoDiscountsBtn() { return $('page-profile [data-test-id=ProfileEditAccountInfoDiscounts]'); }
+  get getEducationalNextBtn() { return $('educational-popup [data-test-id=educational_next]'); }
+  get getEducationalGotItBtn() { return $('educational-popup [data-test-id=educational_gotIt]'); }
 
   // Operations
   async goToHoursPage() {
@@ -32,6 +34,14 @@ class ProfilePage {
   async goToDiscountsPage() {
     await waitFor(profilePage.getProfileEditTab);
     await click(profilePage.getProfileEditAccountInfoDiscountsBtn);
+  }
+  async watchEducationalPopup() {
+    await waitFor(profilePage.getEducationalNextBtn);
+    await click(profilePage.getEducationalNextBtn);
+    await click(profilePage.getEducationalNextBtn);
+    await click(profilePage.getEducationalNextBtn);
+    await click(profilePage.getEducationalGotItBtn);
+    await waitForNot(profilePage.getEducationalNextBtn);
   }
 }
 

@@ -18,9 +18,9 @@
     <ion-slide>
       <div class="educational-title">Invite Your Clients</div>
       <img class="educational-image" src="assets/imgs/educational/4.png" alt="">
-      <button (click)="dismiss()" class="Discounts-btn" ion-button>Got It</button>
+      <button (click)="dismiss()" data-test-id="educational_gotIt" class="Discounts-btn" ion-button>Got It</button>
     </ion-slide>
   </ion-slides>
 
-  <div *ngIf="isPagerVisible" (click)="slides.slideNext()" class="Link">Next</div>
+  <div *ngIf="isPagerVisible" (click)="slides.slideNext()" data-test-id="educational_next" class="Link">Next</div>
 </div>
