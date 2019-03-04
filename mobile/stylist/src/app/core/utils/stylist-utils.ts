@@ -1,7 +1,7 @@
 import { App } from 'ionic-angular';
 import {
-  ProfileIncompleteObject,
   ProfileIncompleteField,
+  ProfileIncompleteObject,
   StylistProfile,
   StylistProfileCompleteness
 } from '~/shared/api/stylist-app.models';
