@@ -180,7 +180,7 @@ export function calcProfileCompleteness(fields: StylistProfile): StylistProfileC
   ];
 
   for (const key of profileCompleteness.keys()) {
-    profileIncomplete[key].isComplete = !!profileCompleteness[key];
+    profileIncomplete[key].isComplete = Boolean(profileCompleteness[key]);
   }
 
   const complete = Number(profileCompleteness.reduce((previousValue: number, currentValue) => {
