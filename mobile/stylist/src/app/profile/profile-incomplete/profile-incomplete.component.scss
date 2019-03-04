@@ -37,7 +37,7 @@ page-profile-incomplete {
     font-size: pxtovw(18px);
     line-height: pxtovw(24px);
     border-radius: pxtovw(4px);
-    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.08);
+    box-shadow: 0 pxtovw(2px) pxtovw(8px) 0 rgba(black, 0.08);
 
     i {
       font-size: pxtovw(24px);
