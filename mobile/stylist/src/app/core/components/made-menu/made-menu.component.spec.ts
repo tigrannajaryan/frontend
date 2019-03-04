@@ -1,6 +1,7 @@
 import { ComponentFixture } from '@angular/core/testing';
 import { HttpClient, HttpHandler } from '@angular/common/http';
 import { AppVersion } from '@ionic-native/app-version';
+import { Camera } from '@ionic-native/camera';
 import 'rxjs/add/observable/of';
 
 import { TestUtils } from '~/../test';
@@ -19,7 +20,14 @@ describe('Component: menu', () => {
 
   beforeEach(async () => TestUtils.beforeEachCompiler(
     [MadeMenuComponent],
-    [AuthService, AppVersion, HttpClient, HttpHandler, ProfileDataStore])
+    [
+      AuthService,
+      AppVersion,
+      HttpClient,
+      HttpHandler,
+      Camera,
+      ProfileDataStore
+    ])
     .then(async compiled => {
       fixture = compiled.fixture;
       instance = compiled.instance;

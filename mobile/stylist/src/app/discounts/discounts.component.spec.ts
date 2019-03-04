@@ -47,7 +47,13 @@ describe('Pages: DiscountsComponent', () => {
         spyOn(discountsApiMock, 'getDiscounts').and.returnValue(of({
           response: discounts
         }));
+        spyOn(discountsApiMock, 'setDiscounts').and.returnValue(of({
+          response: discounts
+        }));
         spyOn(discountsApiMock, 'getMaximumDiscounts').and.returnValue(of({
+          response: maximumDiscounts
+        }));
+        spyOn(discountsApiMock, 'setMaximumDiscounts').and.returnValue(of({
           response: maximumDiscounts
         }));
 

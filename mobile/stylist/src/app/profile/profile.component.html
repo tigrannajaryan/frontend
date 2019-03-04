@@ -4,10 +4,15 @@
   </ion-title>
 
   <ion-toolbar class="ProfilePage-toolbar" no-padding>
-    <div *ngIf="!stylistProfileCompleteness?.isProfileComplete" class="ProfilePage-completion" data-test-id="isProfileComplete">
+    <div
+      *ngIf="!stylistProfileCompleteness?.isProfileComplete"
+      (click)="onIncompleteClick()"
+      class="ProfilePage-completion"
+      data-test-id="isProfileComplete">
       <span data-test-id="completenessPercent">
         Profile completion: {{ stylistProfileCompleteness?.completenessPercent }}%
         <img class="ProfilePage-blockItemNameNotice" src="assets/icons/!@2x.png" />
+        <i class="mb-icon-right-arrow"></i>
       </span>
     </div>
 
@@ -70,7 +75,7 @@
               </div>
             </div>
 
-            <div (click)="processPhoto()" class="StylistProfilePreview-photo" data-test-id="stylistProfilePreviewPhoto">
+            <div (click)="onAddPhoto()" class="StylistProfilePreview-photo" data-test-id="stylistProfilePreviewPhoto">
               <img [src]="photoUrl?.value  || 'assets/icons/stylist-avatar.png'" alt="">
             </div>
 
@@ -290,7 +295,7 @@
               <div class="ProfilePage-blockItemName">
                 <span>Image <img *ngIf="!photoUrl?.value" class="ProfilePage-blockItemNameNotice" src="assets/icons/!@2x.png" /></span>
               </div>
-              <div (click)="processPhoto()" class="ProfilePage-blockItemPictureWp">
+              <div (click)="onAddPhoto()" class="ProfilePage-blockItemPictureWp">
                 <div *ngIf="photoUrl?.value" class="ProfilePage-blockItemPicture"><img [src]="photoUrl?.value" alt=""></div>
                 <div *ngIf="!photoUrl?.value" class="ProfilePage-blockItemPicture"><img src="assets/icons/stylist-avatar.png" alt=""></div>
 

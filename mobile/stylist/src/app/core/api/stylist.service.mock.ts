@@ -39,7 +39,19 @@ export const profileSummaryMock = {
     followers_count: faker.random.number(),
     profile_photo_url: '',
     instagram_integrated: true,
-    email: faker.internet.email()
+    email: faker.internet.email(),
+    profile_status: {
+      has_business_hours_set: false,
+      has_invited_clients: false,
+      has_other_discounts_set: false,
+      has_personal_data: false,
+      has_picture_set: false,
+      has_services_set: false,
+      has_weekday_discounts_set: false,
+      must_select_deal_of_week: false,
+      can_checkout_with_made: false,
+      google_calendar_integrated: false
+    }
   },
   services: [
     { name: faker.commerce.productName(), base_price: Number(faker.commerce.price()), duration_minutes: 40 },

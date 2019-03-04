@@ -8,11 +8,10 @@ import { PercentageSliderSettings } from '~/core/popups/change-percent/change-pe
 import { dealOfTheWeekMinDiscount } from '~/shared/constants';
 import { ModalController, NavController } from 'ionic-angular';
 import { WeekdayIso } from '~/shared/weekday';
-import { getProfileStatus, updateProfileStatus } from '~/shared/storage/token-utils';
-import { StylistProfileStatus } from '~/shared/api/stylist-app.models';
 import { showAlert } from '~/shared/utils/alert';
 import { WorkHoursComponentParams } from '~/workhours/workhours.component';
 import { DiscountsComponent } from '~/discounts/discounts.component';
+import { ProfileDataStore } from '~/core/profile.data';
 
 @Component({
   selector: 'page-discounts-deal',
@@ -35,23 +34,10 @@ export class DiscountsDealComponent {
     );
   }
 
-  static async updateProfileStatus(): Promise<void> {
-    const profileStatus = await getProfileStatus() as StylistProfileStatus;
-
-    // we need to update deal of the week status
-    // to hide red icon in the menu
-    // red icon mean that profile not completely filled
-    if (profileStatus && profileStatus.must_select_deal_of_week) {
-      await updateProfileStatus({
-        ...profileStatus,
-        must_select_deal_of_week: false
-      });
-    }
-  }
-
   constructor(
     public navCtrl: NavController,
     public modalCtrl: ModalController,
+    public profileData: ProfileDataStore,
     private discountsApi: DiscountsApi
   ) {
     this.loadInitialData();
@@ -164,7 +150,6 @@ export class DiscountsDealComponent {
     if (response) {
       this.weekdays = weekdays;
       this.oldWeekDay = newWeekDay;
-      await DiscountsDealComponent.updateProfileStatus();
     }
   }
 }

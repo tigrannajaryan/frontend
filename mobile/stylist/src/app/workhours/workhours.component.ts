@@ -5,12 +5,12 @@ import * as moment from 'moment';
 import { Workday, Worktime } from '~/shared/api/worktime.models';
 import { WorktimeApi } from '~/core/api/worktime.api';
 import { firstWeekday, lastWeekday, VisualWeekday, WeekdayIso } from '~/shared/weekday';
-import { getProfileStatus, updateProfileStatus } from '~/shared/storage/token-utils';
-import { StylistProfileStatus } from '~/shared/api/stylist-app.models';
+import { StylistProfile } from '~/shared/api/stylist-app.models';
 
 import { PageNames } from '~/core/page-names';
 import { loading } from '~/shared/utils/loading';
 import { VisualWeekCard } from '~/shared/utils/worktime-utils';
+import { ProfileDataStore } from '~/core/profile.data';
 
 export interface WorkHoursComponentParams {
   isRootPage?: boolean;
@@ -30,6 +30,7 @@ export class WorkHoursComponent {
   isLoading = false;
 
   constructor(
+    public profileData: ProfileDataStore,
     private api: WorktimeApi,
     private navParams: NavParams
   ) { }
@@ -86,15 +87,14 @@ export class WorkHoursComponent {
   }
 
   private async performInitialSaving(): Promise<void> {
-    const profileStatus = await getProfileStatus() as StylistProfileStatus;
-    if (profileStatus && !profileStatus.has_business_hours_set) {
-      const { response } = await this.api.setWorktime(this.presentation2api(this.cards)).get();
-      if (response) {
-        await updateProfileStatus({
-          ...profileStatus,
-          has_business_hours_set: true
-        });
-      }
+    let profile: StylistProfile;
+    const { response } = await this.profileData.get();
+    if (response) {
+      profile = response;
+    }
+
+    if (profile && profile.profile_status && !profile.profile_status.has_business_hours_set) {
+      await this.api.setWorktime(this.presentation2api(this.cards)).get();
     }
   }
 

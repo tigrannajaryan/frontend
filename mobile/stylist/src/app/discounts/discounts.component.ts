@@ -6,18 +6,11 @@ import { Discounts, MaximumDiscounts, WeekdayDiscount } from '~/core/api/discoun
 import { PageNames } from '~/core/page-names';
 import { loading } from '~/core/utils/loading';
 import { DiscountsLoyaltyComponent } from '~/discounts/discounts-loyalty/discounts-loyalty.component';
-import { getProfileStatus, updateProfileStatus } from '~/shared/storage/token-utils';
-import { StylistProfileStatus } from '~/shared/api/stylist-app.models';
-import { WEEKDAY_SHORT_NAMES, WeekdayIso } from '~/shared/weekday';
+import { StylistProfile } from '~/shared/api/stylist-app.models';
+import { WEEKDAY_SHORT_NAMES } from '~/shared/weekday';
 import { Page } from 'ionic-angular/navigation/nav-util';
 import { DiscountsDealComponent } from '~/discounts/discounts-deal/discounts-deal.component';
-
-export enum DiscountTabNames {
-  weekday,
-  revisit,
-  firstVisit,
-  max
-}
+import { ProfileDataStore } from '~/core/profile.data';
 
 export interface DiscountsComponentParams {
   isRootPage?: boolean;
@@ -38,9 +31,7 @@ export class DiscountsComponent {
     maximum_discount: 0,
     is_maximum_discount_enabled: false
   };
-  dealOfTheWeek: WeekdayIso;
   params: DiscountsComponentParams;
-  profileStatus: StylistProfileStatus;
   selectedWeekDay: WeekdayDiscount;
 
   static sortWeekdays(weekdays: WeekdayDiscount[]): WeekdayDiscount[] {
@@ -51,6 +42,7 @@ export class DiscountsComponent {
 
   constructor(
     public navParams: NavParams,
+    public profileData: ProfileDataStore,
     private navCtrl: NavController,
     private discountsApi: DiscountsApi
   ) {
@@ -96,39 +88,16 @@ export class DiscountsComponent {
     refresher.complete();
   }
 
-  onWeekdayChange(): void {
-    this.discountsApi.setDiscounts({ weekdays: this.weekdays }).get();
-  }
-
-  async onUpdateWeekdayDiscounts(): Promise<void> {
-    const discounts: Discounts = (await this.discountsApi.getDiscounts().get()).response;
-    if (discounts) {
-      this.weekdays = DiscountsComponent.sortWeekdays(discounts.weekdays);
-    }
-  }
-
-  onRevisitChange(): void {
-    if (this.rebook) {
-      this.discountsApi.setDiscounts(DiscountsLoyaltyComponent.transformDiscountsToRebook(this.rebook)).get();
-    }
-  }
-
-  onFirstVisitChange(): void {
-    this.discountsApi.setDiscounts({ first_booking: this.firstVisit }).get();
-  }
-
-  onMaximumDiscountChange(): void {
-    this.discountsApi.setMaximumDiscounts({
-      maximum_discount: this.maximumDiscounts.maximum_discount,
-      is_maximum_discount_enabled: this.maximumDiscounts.is_maximum_discount_enabled
-    }).get();
-  }
-
   private async performInitialSaving(): Promise<void> {
-    this.profileStatus = await getProfileStatus() as StylistProfileStatus;
-    if (this.profileStatus && !this.profileStatus.has_weekday_discounts_set && this.rebook) {
+    let profile: StylistProfile;
+    const { response } = await this.profileData.get();
+    if (response) {
+      profile = response;
+    }
+
+    if (profile && profile.profile_status && !profile.profile_status.has_weekday_discounts_set && this.rebook) {
       // Perform initial saving of the discounts and mark them checked.
-      const responses = await Promise.all([
+      await Promise.all([
         this.discountsApi.setDiscounts({
           ...DiscountsLoyaltyComponent.transformDiscountsToRebook(this.rebook),
           weekdays: this.weekdays,
@@ -139,13 +108,6 @@ export class DiscountsComponent {
           is_maximum_discount_enabled: this.maximumDiscounts.is_maximum_discount_enabled
         }).first().toPromise()
       ]);
-      // If succeded and return no errors mark discounts checked.
-      if (responses.every(({ error }) => !error)) {
-        this.profileStatus = await updateProfileStatus({
-          ...this.profileStatus,
-          has_weekday_discounts_set: true
-        }) as StylistProfileStatus;
-      }
     }
   }
 }
