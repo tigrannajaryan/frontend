@@ -10,6 +10,11 @@ import { RegistrationForm, RegistrationFormControl } from '~/onboarding/registra
 import { AppModule } from '~/app.module';
 import { FieldEditComponentParams } from '~/onboarding/field-edit/field-edit.component';
 
+const noop = () => {
+  // we use an empty function ”noop” to not overcomplicate the code with checks for `onClick` existence
+  // onClick is required method for each ProfileIncompleteObject
+};
+
 export function calcProfileCompleteness(fields: StylistProfile): StylistProfileCompleteness {
   const {
     first_name,
@@ -53,33 +58,25 @@ export function calcProfileCompleteness(fields: StylistProfile): StylistProfileC
       name: 'Set First Name',
       type: ProfileIncompleteField.first_name,
       isComplete: false,
-      onClick: () => {
-        // this is required field on registration
-      }
+      onClick: noop
     },
     {
       name: 'Set Last Name',
       type: ProfileIncompleteField.last_name,
       isComplete: false,
-      onClick: () => {
-        // this is required field on registration
-      }
+      onClick: noop
     },
     {
       name: 'Set Salon Name',
       type: ProfileIncompleteField.salon_name,
       isComplete: false,
-      onClick: () => {
-        // this is required field on registration
-      }
+      onClick: noop
     },
     {
       name: 'Set Salon Address',
       type: ProfileIncompleteField.salon_address,
       isComplete: false,
-      onClick: () => {
-        // this is required field on registration
-      }
+      onClick: noop
     },
     {
       name: 'Add Photo',
