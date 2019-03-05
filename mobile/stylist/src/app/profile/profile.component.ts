@@ -159,8 +159,6 @@ export class ProfileComponent {
         &&
         this.stylistProfileCompleteness.profileIncomplete[ProfileIncompleteField.has_invited_clients].isComplete
         &&
-        this.stylistProfileCompleteness.profileIncomplete[ProfileIncompleteField.has_deal_of_week].isComplete
-        &&
         this.stylistProfileCompleteness.profileIncomplete[ProfileIncompleteField.has_weekday_discounts_set].isComplete
       ) {
         this.storage.set('hasSeenEducationalPopups', true);

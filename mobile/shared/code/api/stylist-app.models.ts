@@ -51,7 +51,6 @@ export enum ProfileIncompleteField {
   email,
   website_url,
   instagram_integrated,
-  has_deal_of_week,
   has_weekday_discounts_set,
   has_invited_clients,
   has_services_set,

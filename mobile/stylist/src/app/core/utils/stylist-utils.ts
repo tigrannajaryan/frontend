@@ -28,9 +28,6 @@ export function calcProfileCompleteness(fields: StylistProfile): StylistProfileC
     profile_status
   } = fields;
 
-  // tslint:disable-next-line:variable-name
-  const has_deal_of_week = !profile_status.must_select_deal_of_week;
-
   // set all required fields
   const profileCompleteness = [
     first_name,
@@ -41,7 +38,6 @@ export function calcProfileCompleteness(fields: StylistProfile): StylistProfileC
     email,
     website_url,
     instagram_integrated,
-    has_deal_of_week,
     profile_status.has_weekday_discounts_set,
     profile_status.has_invited_clients,
     profile_status.has_services_set,
@@ -119,19 +115,11 @@ export function calcProfileCompleteness(fields: StylistProfile): StylistProfileC
       }
     },
     {
-      name: 'Set Deal of the Week',
-      type: ProfileIncompleteField.has_deal_of_week,
-      isComplete: false,
-      onClick: () => {
-        app.getRootNav().push(PageNames.DiscountsDeal);
-      }
-    },
-    {
-      name: 'Set Daily Discounts',
+      name: 'Set Discounts',
       type: ProfileIncompleteField.has_weekday_discounts_set,
       isComplete: false,
       onClick: () => {
-        app.getRootNav().push(PageNames.DiscountsDaily);
+        app.getRootNav().push(PageNames.Discounts, { isRootPage: true });
       }
     },
     {
