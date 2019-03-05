@@ -127,7 +127,7 @@ export function calcProfileCompleteness(fields: StylistProfile): StylistProfileC
       }
     },
     {
-      name: 'Set Discounts',
+      name: 'Set Daily Discounts',
       type: ProfileIncompleteField.has_weekday_discounts_set,
       isComplete: false,
       onClick: () => {
@@ -167,7 +167,7 @@ export function calcProfileCompleteness(fields: StylistProfile): StylistProfileC
       }
     },
     {
-      name: 'Set Your Payment Method',
+      name: 'Connect Your Google Calendar',
       type: ProfileIncompleteField.google_calendar_integrated,
       isComplete: false,
       onClick: () => {
