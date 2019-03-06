@@ -162,7 +162,101 @@
   {
     "url": "https://github.com/sindresorhus/camelcase/blob/master/license",
     "title": "camelcase (MIT License)"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/SebastianM/angular-google-maps/master/LICENSE",
+    "title": "angular-google-maps (MIT License)"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/amarkes/br-masker-ionic-3/master/LICENSE",
+    "title": "brmasker-ionic-3 (MIT License)"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/card-io/card.io-Cordova-Plugin/master/LICENSE",
+    "title": "card.io.cordova.mobilesdk (MIT License)"
+  },
+  {
+    "url": "https://github.com/dpa99c/cordova-android-play-services-gradle-release#license",
+    "title": "cordova-android-play-services-gradle-release (MIT License)"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/guyromb/cordova-open-native-settings/master/LICENSE",
+    "title": "cordova-open-native-settings (MIT License)"
+  },
+  {
+    "url": "https://github.com/ohh2ahh/AppAvailability#5-license",
+    "title": "cordova-plugin-appavailability (MIT License)"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/apache/cordova-plugin-geolocation/master/LICENSE",
+    "title": "cordova-plugin-geolocation (Apache License)"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/danwilson/google-analytics-plugin/master/LICENSE",
+    "title": "cordova-plugin-google-analytics (MIT License)"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/EddyVerbruggen/cordova-plugin-googleplus/master/MIT",
+    "title": "cordova-plugin-googleplus (MIT License)"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/apache/cordova-plugin-statusbar/master/LICENSE",
+    "title": "cordova-plugin-statusbar (Apache License)"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/cordova-sms/cordova-sms-plugin/master/LICENSE",
+    "title": "cordova-sms-plugin (MIT License)"
+  },
+  {
+    "url": "https://github.com/xpbrew/cordova-sqlite-storage/blob/dev/LICENSE.md",
+    "title": "cordova-sqlite-storage (Apache License)"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/chemerisuk/cordova-support-google-services/master/LICENSE",
+    "title": "cordova-support-google-services (MIT License)"
+  },
+  {
+    "url": "https://github.com/dpa99c/cordova-diagnostic-plugin#license",
+    "title": "cordova.plugins.diagnostic (MIT License)"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/krisk/Fuse/master/LICENSE",
+    "title": "fuse.js (Apache License)"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/ionic-team/ionic-v3/master/LICENSE",
+    "title": "ionic-angular (MIT License)"
+  },
+  {
+    "url": "https://github.com/nikini/ionic-gallery-modal",
+    "title": "ionic-gallery-modal (MIT License)"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/e-imaxina/cordova-plugin-deeplinks/master/LICENSE",
+    "title": "ionic-plugin-deeplinks (MIT License)"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/Hipparch/Md5-typescript/master/LICENSE",
+    "title": "md5-typescript (MIT License)"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/podtrackers/cordova-multidex/master/LICENSE",
+    "title": "phonegap-plugin-multidex (MIT License)"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/phonegap/phonegap-plugin-push/master/MIT-LICENSE",
+    "title": "phonegap-plugin-push (MIT License)"
+  },
+  {
+    "url": "https://github.com/dpa99c/phonegap-launch-navigator#license",
+    "title": "uk.co.workingedge.phonegap.plugin.launchnavigator (MIT License)"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/kelektiv/node-uuid/master/LICENSE.md",
+    "title": "uuid (MIT License)"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/apache/cordova-plugin-contacts/master/LICENSE",
+    "title": "cordova-plugin-contacts (Apache License)"
   }
 ]
-
-
