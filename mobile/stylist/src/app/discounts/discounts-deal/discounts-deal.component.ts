@@ -93,8 +93,6 @@ export class DiscountsDealComponent {
       this.oldWeekDay = { ...weekday };
       this.newWeekDay = { ...weekday };
     }
-
-    this.onSetDeal();
   }
 
   onSave(): void {
