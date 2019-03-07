@@ -147,6 +147,10 @@
         <variable name="WEB_APPLICATION_CLIENT_ID" value="17636556416-l518l3bkc3pev82sl9d2dq6vrd1th7hc.apps.googleusercontent.com" />
     </plugin>
     <plugin name="cordova-plugin-datepicker" spec="0.9.3" />
+    <plugin name="cordova-plugin-facebook4" spec="3.2.0">
+        <variable name="APP_ID" value="467418693781904" />
+        <variable name="APP_NAME" value="Made Pro" />
+    </plugin>
     <config-file parent="com.apple.developer.associated-domains" target="*-Debug.plist">
         <array>
             <string>applinks:madebeauty.com</string>
