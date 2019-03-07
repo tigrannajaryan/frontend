@@ -9,12 +9,13 @@ import {
   ConfirmCodeParams,
   ConfirmCodeResponse,
   GetCodeParams,
-  GetCodeResponse
+  GetCodeResponse, UserRole
 } from '~/shared/api/auth.models';
 import { ApiFieldAndNonFieldErrors, ApiRequestOptions, FieldErrorItem, NonFieldErrorItem } from '~/shared/api-errors';
 import { Logger } from '~/shared/logger';
 import { ServerStatusTracker } from '~/shared/server-status-tracker';
 import { UserContext } from '~/shared/user-context';
+import { reportToSentry } from '~/shared/sentry';
 
 @Injectable()
 export class AuthService extends BaseService {
@@ -68,7 +69,7 @@ export class AuthService extends BaseService {
   refreshAuth(authToken: string): Observable<ApiResponse<AuthResponse>> {
     const request = { token: authToken, role: BaseService.role };
     return this.processAuthResponse(
-      () => this.post<AuthResponse>('auth/refresh-token', request));
+      () => this.post<AuthResponse>('auth/refresh-token', request), request);
   }
 
   logout(): void {
@@ -80,17 +81,24 @@ export class AuthService extends BaseService {
    * remember it. If the call failed clear previously rememebered response.
    * @param apiCall function to call to perform the API call. Must return a promise
    *                to AuthResponse.
+   * @param body we need it in case of error with refresh-token
    * @returns the same response that it received from apiCall (or re-throws the error).
    */
-  private processAuthResponse(apiCall: () => Observable<ApiResponse<AuthResponse>>): Observable<ApiResponse<AuthResponse>> {
+  private processAuthResponse(apiCall: () => Observable<ApiResponse<AuthResponse>>, body?: { token: string, role: UserRole }): Observable<ApiResponse<AuthResponse>> {
     return apiCall()
       .map(response => {
         if (!response.error) {
           this.handleAuthResponse(response.response);
         } else {
+          const authError = {
+            error: response.error,
+            body: body,
+          };
+
           // Failed authentication. Clear previously saved successfull response (if any).
           this.handleAuthResponse(undefined);
-          this.logger.error('Authentication failed:', response.error.getMessage());
+          this.logger.error('Authentication fields:', authError);
+          reportToSentry(authError);
         }
         return response;
       });
