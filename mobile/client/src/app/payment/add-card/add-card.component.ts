@@ -1,6 +1,6 @@
 import { Component, NgZone, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Keyboard, NavController } from 'ionic-angular';
+import { Keyboard, NavController, Platform } from 'ionic-angular';
 import * as moment from 'moment';
 
 import { componentIsActive } from '~/shared/utils/component-is-active';
@@ -24,6 +24,7 @@ export class AddCardComponent {
 
   form: FormGroup;
   isLoading = false;
+  isAndroid = false;
 
   @ViewChild('cardExpInput') cardExpInput;
   @ViewChild('cardCvvInput') cardCvvInput;
@@ -42,11 +43,17 @@ export class AddCardComponent {
     private navCtrl: NavController,
     private profileData: ProfileDataStore,
     protected stripe: StripeService,
-    private zone: NgZone
+    private zone: NgZone,
+    private platform: Platform
   ) {
   }
 
   async ionViewWillLoad(): Promise<void> {
+    // if this is android we need to hide onScanCard button
+    // because this plugin have bug with android (CardIOCancel fired but not CardIOComplete)
+    // https://github.com/card-io/card.io-Cordova-Plugin/issues/64
+    this.isAndroid = this.platform.is('android');
+
     // Show keyboard nav btns
     this.keyboard.hideFormAccessoryBar(false);
 
