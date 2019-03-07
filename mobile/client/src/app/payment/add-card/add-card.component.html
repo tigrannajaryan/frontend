@@ -18,7 +18,7 @@
               <ion-input formControlName="cardNumber" type="tel" placeholder="••••  ••••  ••••  ••••" autocomplete="false"
                 [brmasker]="{mask: '0000  0000  0000  0000  0', type: 'num', len: 19 + 8}"></ion-input>
           </ion-item>
-          <img (click)="onScanCard()" src="assets/icons/card-scan@3x.png" />
+          <img *ngIf="!isAndroid" (click)="onScanCard()" src="assets/icons/card-scan@3x.png" />
         </div>
 
         <ion-row>
