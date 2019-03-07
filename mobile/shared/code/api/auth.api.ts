@@ -97,7 +97,7 @@ export class AuthService extends BaseService {
 
           // Failed authentication. Clear previously saved successfull response (if any).
           this.handleAuthResponse(undefined);
-          this.logger.error('Authentication fields:', authError);
+          this.logger.error('Authentication fields:', JSON.stringify(authError));
           reportToSentry(authError);
         }
         return response;
