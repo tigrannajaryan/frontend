@@ -43,6 +43,7 @@ export class MadeAnalyticsApi extends BaseService {
   private sessionId: string = v4();
   private platformName: PlatformNames;
   private sessionInited: Promise<void>;
+  private enabled = false;
 
   constructor(
     http: HttpClient,
@@ -57,6 +58,10 @@ export class MadeAnalyticsApi extends BaseService {
   }
 
   startSession(): void {
+    if (!this.enabled) {
+      return;
+    }
+
     const request: AnalyticsStartSession = {
       ...this.composeEvent(),
       role: BaseService.role,
@@ -68,6 +73,10 @@ export class MadeAnalyticsApi extends BaseService {
   }
 
   async trackView(viewTitle: string): Promise<void> {
+    if (!this.enabled) {
+      return;
+    }
+
     await this.sessionInited;
     const request: AnalayticsEventView = { ...this.composeEvent(), view_title: viewTitle };
     return this.callAnalyticsApi('common/analytics/views', request);
