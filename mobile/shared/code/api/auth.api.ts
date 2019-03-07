@@ -84,7 +84,10 @@ export class AuthService extends BaseService {
    * @param body we need it in case of error with refresh-token
    * @returns the same response that it received from apiCall (or re-throws the error).
    */
-  private processAuthResponse(apiCall: () => Observable<ApiResponse<AuthResponse>>, body?: { token: string, role: UserRole }): Observable<ApiResponse<AuthResponse>> {
+  private processAuthResponse(
+      apiCall: () => Observable<ApiResponse<AuthResponse>>,
+      body?: { token: string, role: UserRole }
+      ): Observable<ApiResponse<AuthResponse>> {
     return apiCall()
       .map(response => {
         if (!response.error) {
@@ -92,7 +95,7 @@ export class AuthService extends BaseService {
         } else {
           const authError = {
             error: response.error,
-            body: body,
+            body
           };
 
           // Failed authentication. Clear previously saved successfull response (if any).
