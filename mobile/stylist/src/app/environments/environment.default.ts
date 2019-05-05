@@ -12,8 +12,8 @@ export const ENV = {
   gaTrackingId: undefined,
 
   // Firebase Cloud Messaging Sender ID. Use Staging push notifications by default
-  FCM_PUSH_SENDER_ID: '17636556416',
+  FCM_PUSH_SENDER_ID: undefined,
 
   // ID of Made Pro client, check https://www.instagram.com/developer/clients
-  INSTAGRAM_CLIENT_ID: '417299d1d7ee4c67972fd7b62c8d5044'
+  INSTAGRAM_CLIENT_ID: undefined
 };

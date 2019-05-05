@@ -50,8 +50,8 @@
         <splash density="port-xxxhdpi" src="resources/android/splash/drawable-port-xxxhdpi-screen.png" />
         <resource-file src="google-services-staging.json" target="app/google-services.json" />
         <config-file parent="/resources" target="./res/values/strings.xml">
-            <string name="fb_app_id">334939343971396</string>
-            <string name="fb_app_name">MadeBeauty</string>
+            <string name="fb_app_id"></string>
+            <string name="fb_app_name"></string>
         </config-file>
     </platform>
     <platform name="ios">
@@ -100,8 +100,8 @@
         <splash height="2732" src="resources/ios/splash/Default@2x~universal~anyany.png" width="2732" />
         <resource-file src="google-services-staging.json" target="app/google-services.json" />
         <config-file parent="/resources" target="./res/values/strings.xml">
-            <string name="fb_app_id">334939343971396</string>
-            <string name="fb_app_name">MadeBeauty</string>
+            <string name="fb_app_id"></string>
+            <string name="fb_app_name"></string>
         </config-file>
     </platform>
     <plugin name="cordova-plugin-whitelist" spec="1.3.3" />
@@ -133,7 +133,7 @@
     </plugin>
     <plugin name="phonegap-plugin-push" spec="2.2.3">
         <variable name="FCM_VERSION" value="11.0.1" />
-        <variable name="SENDER_ID" value="17636556416" />
+        <variable name="SENDER_ID" value="" />
         <variable name="ANDROID_SUPPORT_V13_VERSION" value="27.+" />
     </plugin>
     <plugin name="cordova-android-play-services-gradle-release" spec="1.4.4">
@@ -141,12 +141,12 @@
     </plugin>
     <plugin name="cordova-plugin-googleplus" spec="5.3.2">
         <variable name="PLAY_SERVICES_VERSION" value="11.0.1" />
-        <variable name="REVERSED_CLIENT_ID" value="com.googleusercontent.apps.833238145213-u4lbuebvh1voqude6fo0qa3poc4aru75" />
-        <variable name="WEB_APPLICATION_CLIENT_ID" value="17636556416-l518l3bkc3pev82sl9d2dq6vrd1th7hc.apps.googleusercontent.com" />
+        <variable name="REVERSED_CLIENT_ID" value="" />
+        <variable name="WEB_APPLICATION_CLIENT_ID" value="" />
     </plugin>
     <plugin name="cordova-plugin-facebook4" spec="3.2.0">
-        <variable name="APP_ID" value="334939343971396" />
-        <variable name="APP_NAME" value="MadeBeauty" />
+        <variable name="APP_ID" value="" />
+        <variable name="APP_NAME" value="" />
     </plugin>
     <plugin name="ionic-plugin-deeplinks" spec="1.0.17">
         <variable name="URL_SCHEME" value="madebeauty" />

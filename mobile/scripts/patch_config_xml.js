@@ -62,11 +62,11 @@ function patchConfigObject(obj, projectRootPath, platforms) {
   // Reversed client id is only needed for iOS
   var googlePlusProductionReversedClientId = {
     staging: {
-      ios: "apps.googleusercontent.com.17636556416-l518l3bkc3pev82sl9d2dq6vrd1th7hc",
+      ios: "",
       android: "" // Android does not use reverse client id
     },
     prod: {
-      ios: "com.googleusercontent.apps.833238145213-u4lbuebvh1voqude6fo0qa3poc4aru75",
+      ios: "",
       android: "" // Android does not use reverse client id
     }
   };
@@ -74,12 +74,12 @@ function patchConfigObject(obj, projectRootPath, platforms) {
   // Facebook App Ids for Facebook plugin
   var facebookAppId = {
     staging: {
-      client: "334939343971396",
-      stylist: "467418693781904"
+      client: "",
+      stylist: ""
     },
     prod: {
-      client: "485733848602904",
-      stylist: "315613705946728"
+      client: "",
+      stylist: ""
     }
   };
 

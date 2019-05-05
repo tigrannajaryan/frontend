@@ -11,5 +11,5 @@ export const ENV = {
   gaTrackingId: undefined,
 
   // Firebase Cloud Messaging Sender ID
-  FCM_PUSH_SENDER_ID: '833238145213'
+  FCM_PUSH_SENDER_ID: undefined
 };

@@ -1,10 +1,10 @@
 {
   "staging": {
-    "ios": "17636556416-l518l3bkc3pev82sl9d2dq6vrd1th7hc.apps.googleusercontent.com",
-    "android": "17636556416-l518l3bkc3pev82sl9d2dq6vrd1th7hc.apps.googleusercontent.com"
+    "ios": "",
+    "android": ""
   },
   "prod": {
-    "ios": "833238145213-h0usauchlokkr7ubaijs8pnm76co14to.apps.googleusercontent.com",
-    "android": "833238145213-h0usauchlokkr7ubaijs8pnm76co14to.apps.googleusercontent.com"
+    "ios": "",
+    "android": ""
   }
 }
