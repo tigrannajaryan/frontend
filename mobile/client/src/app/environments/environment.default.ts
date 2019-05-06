@@ -15,5 +15,5 @@ export const ENV = {
   gaTrackingId: undefined,
 
   // Firebase Cloud Messaging Sender ID. Use Staging push notifications by default
-  FCM_PUSH_SENDER_ID: '17636556416'
+  FCM_PUSH_SENDER_ID: undefined
 };

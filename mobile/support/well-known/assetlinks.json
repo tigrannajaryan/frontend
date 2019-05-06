@@ -2,17 +2,17 @@
   "relation": ["delegate_permission/common.handle_all_urls"],
   "target": {
     "namespace": "android_app",
-    "package_name": "com.madebeauty.client.prod",
+    "package_name": "",
     "sha256_cert_fingerprints":
-    ["D0:79:62:C1:ED:1E:F0:E5:B6:C1:55:3A:C7:34:19:D7:99:69:31:07:94:FD:50:F7:B4:23:17:86:C0:9A:63:C4"]
+    [""]
   }
 },
 {
   "relation": ["delegate_permission/common.handle_all_urls"],
   "target": {
     "namespace": "android_app",
-    "package_name": "com.madebeauty.stylist.prod",
+    "package_name": "",
     "sha256_cert_fingerprints":
-    ["D0:79:62:C1:ED:1E:F0:E5:B6:C1:55:3A:C7:34:19:D7:99:69:31:07:94:FD:50:F7:B4:23:17:86:C0:9A:63:C4"]
+    [""]
   }
 }]

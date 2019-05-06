@@ -185,7 +185,7 @@
       },
       "phonegap-plugin-push": {
         "FCM_VERSION": "11.0.1",
-        "SENDER_ID": "17636556416",
+        "SENDER_ID": "",
         "ANDROID_SUPPORT_V13_VERSION": "27.+"
       },
       "cordova-android-play-services-gradle-release": {
@@ -193,13 +193,13 @@
       },
       "cordova-plugin-datepicker": {},
       "cordova-plugin-googleplus": {
-        "REVERSED_CLIENT_ID": "com.googleusercontent.apps.833238145213-u4lbuebvh1voqude6fo0qa3poc4aru75",
-        "WEB_APPLICATION_CLIENT_ID": "17636556416-l518l3bkc3pev82sl9d2dq6vrd1th7hc.apps.googleusercontent.com",
+        "REVERSED_CLIENT_ID": "",
+        "WEB_APPLICATION_CLIENT_ID": "",
         "PLAY_SERVICES_VERSION": "11.0.1"
       },
       "cordova-plugin-facebook4": {
-        "APP_ID": "123456789",
-        "APP_NAME": "Made Pro"
+        "APP_ID": "",
+        "APP_NAME": ""
       },
       "ionic-plugin-deeplinks": {
         "URL_SCHEME": "madepro",
